@@ -26,8 +26,13 @@ export const HeadshotPanel = (props, context) => {
     ['Temporary Flavor Text', temporary_flavor_text],
   ];
 
-  const [tabIndex, setTab] = useLocalState(context, 'tab-index', 0);
-  const make_tabs = !!(naked_flavor_text || temporary_flavor_text);
+  const [tabIndex, setTab] = useLocalState(
+    context,
+    'tab-index',
+    flavor_text ? 0 : naked_flavor_text ? 1 : temporary_flavor_text ? 2 : 0 //this is ass
+  );
+  const make_tabs =
+    !!flavor_text + !!naked_flavor_text + !!temporary_flavor_text > 1;
   const cs_name =
     (mob_type === 'ai' && 'AI Core') ||
     (mob_type === 'cyborg' && 'Cyborg') ||

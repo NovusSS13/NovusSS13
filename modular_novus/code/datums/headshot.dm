@@ -69,7 +69,7 @@
 		.["custom_species_name"] = custom_species_name || human.dna.species.name //also no custom species for cyborgs. ew.
 		.["custom_species_desc"] = custom_species_desc || (!custom_species_name && jointext(human.dna.species.get_species_lore(), "\n\n"))
 
-		if((human.get_all_covered_flags() & (GROIN|CHEST)) == (GROIN|CHEST)) //is naked check. arbitrary but w/e
+		if((~(human.get_all_covered_flags()) & (GROIN|CHEST)) == (GROIN|CHEST)) //is naked check. arbitrary but w/e
 			.["naked_flavor_text"] = naked_flavor_text || null
 
 	else if(iscyborg(owner))
@@ -123,5 +123,6 @@
 	if(temporary_flavor_text)
 		examine_list += span_info(temporary_flavor_text)
 
+	examine_list += "\n"
 	examine_list += "<a class='info bold' href='?src=[REF(src)];open_examine_panel=1'>You could probably take a closer look..</a>"
 
