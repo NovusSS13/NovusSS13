@@ -5391,4 +5391,9 @@
 #include "interface\fonts\spess_font.dm"
 #include "interface\fonts\tiny_unicode.dm"
 #include "interface\fonts\vcr_osd_mono.dm"
+#include "modular_novus\code\datums\headshot.dm"
+#include "modular_novus\code\modules\client\preferences\flavor.dm"
+#include "modular_novus\code\modules\jobs\job_types\_job.dm"
+#include "modular_novus\code\modules\mob\living\living_defines.dm"
+#include "modular_novus\code\modules\mob\living\living_verbs.dm"
 // END_INCLUDE
