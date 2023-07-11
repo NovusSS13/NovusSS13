@@ -1025,7 +1025,7 @@
 
 /mob/living/carbon/proc/create_internal_organs()
 	for(var/obj/item/organ/organ as anything in organs)
-		internal_organ.Insert(src)
+		organ.Insert(src)
 
 /proc/cmp_organ_slot_asc(slot_a, slot_b)
 	return GLOB.organ_process_order.Find(slot_a) - GLOB.organ_process_order.Find(slot_b)
