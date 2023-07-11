@@ -1,4 +1,3 @@
-
 /obj/item/bodypart/chest
 	name = BODY_ZONE_CHEST
 	desc = "It's impolite to stare at a person's chest."
@@ -13,9 +12,10 @@
 	grind_results = null
 	wound_resistance = 10
 	bodypart_trait_source = CHEST_TRAIT
-	///The bodytype(s) allowed to attach to this chest.
+	/// The bodytype(s) allowed to attach to this chest.
 	var/acceptable_bodytype = BODYTYPE_HUMANOID
 
+	/// Current item inserted in the chest's cavity, if any
 	var/obj/item/cavity_item
 
 	/// Offset to apply to equipment worn as a uniform
@@ -54,6 +54,72 @@
 		cavity_item.forceMove(drop_location())
 		cavity_item = null
 	..()
+
+/obj/item/bodypart/chest/get_limb_icon(dropped)
+	. = ..()
+	// husks don't get any of the fancy stuff
+	if(is_invisible || is_husked)
+		return .
+	. += get_underwear_icon(dropped)
+	return .
+
+/obj/item/bodypart/chest/proc/get_underwear_icon(dropped)
+	SHOULD_CALL_PARENT(TRUE)
+	RETURN_TYPE(/list)
+	. = list()
+	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible || is_husked || !ishuman(owner) || HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+		return .
+
+	var/mob/living/carbon/human/human_owner = owner
+
+	var/atom/location = loc || owner || src
+	var/image_dir = (dropped ? SOUTH : NONE)
+
+	if(human_owner.underwear)
+		var/datum/sprite_accessory/underwear/underwear = GLOB.underwear_list[human_owner.underwear]
+		var/mutable_appearance/underwear_overlay
+		if(underwear)
+			if(is_dimorphic && limb_gender == "f" && (underwear.gender == MALE))
+				underwear_overlay = wear_female_version(underwear.icon_state, underwear.icon, BODY_LAYER, FEMALE_UNIFORM_FULL)
+			else
+				underwear_overlay = mutable_appearance(underwear.icon, underwear.icon_state, -BODY_LAYER)
+			if(!underwear.use_static)
+				underwear_overlay.color = human_owner.underwear_color
+			underwear_overlay.dir = image_dir
+			//Emissive blocker
+			if(blocks_emissive)
+				underwear_overlay.overlays += emissive_blocker(underwear_overlay.icon, underwear_overlay.icon_state, location)
+			worn_uniform_offset?.apply_offset(underwear_overlay)
+			. += underwear_overlay
+
+	if(human_owner.undershirt)
+		var/datum/sprite_accessory/undershirt/undershirt = GLOB.undershirt_list[human_owner.undershirt]
+		if(undershirt)
+			var/mutable_appearance/shirt_overlay
+			if(is_dimorphic && limb_gender == "f")
+				shirt_overlay = wear_female_version(undershirt.icon_state, undershirt.icon, BODY_LAYER)
+			else
+				shirt_overlay = mutable_appearance(undershirt.icon, undershirt.icon_state, -BODY_LAYER)
+			shirt_overlay.dir = image_dir
+			//Emissive blocker
+			if(blocks_emissive)
+				shirt_overlay.overlays += emissive_blocker(shirt_overlay.icon, shirt_overlay.icon_state, location)
+			worn_uniform_offset?.apply_offset(shirt_overlay)
+			. += shirt_overlay
+
+	//handling socks here is not ideal and this should be moved to be handled by legs somehow, but that's for later i guess
+	if(human_owner.socks && (human_owner.num_legs >= 2) && !(human_owner.bodytype & BODYTYPE_DIGITIGRADE))
+		var/datum/sprite_accessory/socks/socks = GLOB.socks_list[human_owner.socks]
+		if(socks)
+			var/mutable_appearance/socks_overlay = mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)
+			socks_overlay.dir = image_dir
+			//Emissive blocker
+			if(blocks_emissive)
+				socks_overlay.overlays += emissive_blocker(socks_overlay.icon, socks_overlay.icon_state, location)
+			worn_uniform_offset?.apply_offset(socks_overlay)
+			. += socks_overlay
+
+	return .
 
 /obj/item/bodypart/chest/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
