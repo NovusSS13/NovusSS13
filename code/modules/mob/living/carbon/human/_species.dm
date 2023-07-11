@@ -27,9 +27,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	 */
 	var/plural_form
 
-	///Whether or not the race has sexual characteristics (biological genders). At the moment this is only FALSE for skeletons and shadows
-	var/sexes = TRUE
-
 	///The maximum number of bodyparts this species can have.
 	var/max_bodypart_count = 6
 	///This allows races to have specific hair colors. If null, it uses the H's hair/facial hair colors. If "mutcolor", it uses the H's mutant_color. If "fixedmutcolor", it uses fixedmutcolor
@@ -53,8 +50,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/skinned_type
 	///flags for inventory slots the race can't equip stuff to. Golems cannot wear jumpsuits, for example.
 	var/no_equip_flags
-	///What languages this species can understand and say. Use a [language holder datum][/datum/language_holder] in this var.
-	var/datum/language_holder/species_language_holder = /datum/language_holder
+	/// What languages this species can understand and say.
+	/// Use a [language holder datum][/datum/language_holder] typepath in this var.
+	/// Should never be null.
+	var/datum/language_holder/species_language_holder = /datum/language_holder/human_basic
 	/**
 	  * Visible CURRENT bodyparts that are unique to a species.
 	  * DO NOT USE THIS AS A LIST OF ALL POSSIBLE BODYPARTS AS IT WILL FUCK
@@ -139,13 +138,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// The icon_state of the fire overlay added when sufficently ablaze and standing. see onfire.dmi
 	var/fire_overlay = "human"
 
-	/// Generic traits tied to having the species.
-	var/list/inherent_traits = list()
 	/// List of biotypes the mob belongs to. Used by diseases.
 	var/inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	/// The type of respiration the mob is capable of doing. Used by adjustOxyLoss.
 	var/inherent_respiration_type = RESPIRATION_OXYGEN
-	///List of factions the mob gain upon gaining this species.
+	/// Generic traits tied to having the species.
+	var/list/inherent_traits = list()
+	/// List of factions the mob gain upon gaining this species.
 	var/list/inherent_factions
 
 	///What gas does this species breathe? Used by suffocation screen alerts, most of actual gas breathing is handled by mutantlungs. See [life.dm][code/modules/mob/living/carbon/human/life.dm]
@@ -487,13 +486,22 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(length(inherent_traits))
 		C.add_traits(inherent_traits, SPECIES_TRAIT)
 
-	if(inherent_factions)
+	if(length(inherent_factions))
 		for(var/i in inherent_factions)
 			C.faction += i //Using +=/-= for this in case you also gain the faction from a different source.
 
-	SEND_SIGNAL(C, COMSIG_SPECIES_GAIN, src, old_species)
+	// All languages associated with this language holder are added with source [LANGUAGE_SPECIES]
+	// rather than source [LANGUAGE_ATOM], so we can track what to remove if our species changes again
+	var/datum/language_holder/gaining_holder = GLOB.prototype_language_holders[species_language_holder]
+	for(var/language in gaining_holder.understood_languages)
+		C.grant_language(language, UNDERSTOOD_LANGUAGE, LANGUAGE_SPECIES)
+	for(var/language in gaining_holder.spoken_languages)
+		C.grant_language(language, SPOKEN_LANGUAGE, LANGUAGE_SPECIES)
+	for(var/language in gaining_holder.blocked_languages)
+		C.add_blocked_language(language, LANGUAGE_SPECIES)
 
 	properly_gained = TRUE
+	SEND_SIGNAL(C, COMSIG_SPECIES_GAIN, src, old_species)
 
 /**
  * Proc called when a carbon is no longer this species.
@@ -508,8 +516,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	SHOULD_CALL_PARENT(TRUE)
 	C.butcher_results = null
-	for(var/X in inherent_traits)
-		REMOVE_TRAIT(C, X, SPECIES_TRAIT)
 
 	for(var/obj/item/organ/external/organ in C.organs)
 		organ.Remove(C)
@@ -525,11 +531,24 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		C.dna.mutation_index[new_species.inert_mutation] = create_sequence(new_species.inert_mutation)
 		C.dna.default_mutation_genes[new_species.inert_mutation] = C.dna.mutation_index[new_species.inert_mutation]
 
-	if(inherent_factions)
+	if(length(inherent_traits))
+		for(var/X in inherent_traits)
+			REMOVE_TRAIT(C, X, SPECIES_TRAIT)
+
+	if(length(inherent_factions))
 		for(var/i in inherent_factions)
 			C.faction -= i
 
 	clear_tail_moodlets(C)
+
+	// Removes all languages previously associated with [LANGUAGE_SPECIES], gaining our new species will add new ones back
+	var/datum/language_holder/losing_holder = GLOB.prototype_language_holders[species_language_holder]
+	for(var/language in losing_holder.understood_languages)
+		C.remove_language(language, UNDERSTOOD_LANGUAGE, LANGUAGE_SPECIES)
+	for(var/language in losing_holder.spoken_languages)
+		C.remove_language(language, SPOKEN_LANGUAGE, LANGUAGE_SPECIES)
+	for(var/language in losing_holder.blocked_languages)
+		C.remove_blocked_language(language, LANGUAGE_SPECIES)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_LOSS, src)
 
@@ -2199,21 +2218,23 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_language_perk()
-	var/list/to_add = list()
 
 	// Grab galactic common as a path, for comparisons
 	var/datum/language/common_language = /datum/language/common
 
 	// Now let's find all the languages they can speak that aren't common
 	var/list/bonus_languages = list()
-	var/datum/language_holder/temp_holder = new species_language_holder()
-	for(var/datum/language/language_type as anything in temp_holder.spoken_languages)
+	var/datum/language_holder/basic_holder = GLOB.prototype_language_holders[species_language_holder]
+	for(var/datum/language/language_type as anything in basic_holder.spoken_languages)
 		if(ispath(language_type, common_language))
 			continue
 		bonus_languages += initial(language_type.name)
 
-	// If we have any languages we can speak: create a perk for them all
-	if(length(bonus_languages))
+	if(!length(bonus_languages))
+		return // You're boring
+
+	var/list/to_add = list()
+	if(common_language in basic_holder.spoken_languages)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "comment",
@@ -2221,7 +2242,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "Alongside [initial(common_language.name)], [plural_form] gain the ability to speak [english_list(bonus_languages)].",
 		))
 
-	qdel(temp_holder)
+	else
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = "comment",
+			SPECIES_PERK_NAME = "Foreign Speaker",
+			SPECIES_PERK_DESC = "[plural_form] may not speak [initial(common_language.name)], but they can speak [english_list(bonus_languages)].",
+		))
 
 	return to_add
 
