@@ -90,7 +90,7 @@
 		to_chat(owner, span_warning("Your [src] reels in pain as you're incapable of holding down all that food!"))
 
 /// Handles digesting reagents and sending them to the body
-/obj/item/organ/internal/stomach/proc/handle_digestion(seconds_per_tick, times_fired)
+/obj/item/organ/stomach/proc/handle_digestion(seconds_per_tick, times_fired)
 	if(organ_flags & ORGAN_FAILING)
 		return
 	for(var/datum/reagent/bit as anything in reagents.reagent_list)

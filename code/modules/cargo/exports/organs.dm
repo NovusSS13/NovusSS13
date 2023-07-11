@@ -36,13 +36,12 @@
 	unit_name = "humanoid tounge"
 	export_types = list(/obj/item/organ/tongue)
 
-/datum/export/organ/external/tail/lizard
+/datum/export/organ/tail/lizard
 	cost = CARGO_CRATE_VALUE * 1.25
 	unit_name = "lizard tail"
 	export_types = list(/obj/item/organ/tail/lizard)
 
-
-/datum/export/organ/external/tail/cat
+/datum/export/organ/tail/cat
 	cost = CARGO_CRATE_VALUE * 1.5
 	unit_name = "cat tail"
 	export_types = list(/obj/item/organ/tail/cat)

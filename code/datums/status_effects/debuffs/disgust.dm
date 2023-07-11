@@ -100,7 +100,7 @@
 		if(SPT_PROB(13, seconds_per_tick))
 			carbon_owner.set_eye_blur_if_lower(6 SECONDS)
 
-	var/obj/item/organ/internal/stomach/stomach = carbon_owner.get_organ_slot(ORGAN_SLOT_STOMACH_AID)
+	var/obj/item/organ/stomach/stomach = carbon_owner.get_organ_slot(ORGAN_SLOT_STOMACH_AID)
 	var/disgust_decrease = 0.25 * seconds_per_tick
 	if(stomach && !(stomach.organ_flags & ORGAN_FAILING))
 		disgust_decrease *= stomach.disgust_metabolism
