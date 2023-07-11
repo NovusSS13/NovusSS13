@@ -13,10 +13,6 @@
 	///Take on the dna/preference from whoever we're gonna be inserted in
 	var/imprint_on_next_insertion = TRUE
 
-/datum/bodypart_overlay/mutant/get_overlay(layer, obj/item/bodypart/limb)
-	inherit_color(limb) // If draw_color is not set yet, go ahead and do that
-	return ..()
-
 ///Completely random image and color generation (obeys what a player can choose from)
 /datum/bodypart_overlay/mutant/proc/randomize_appearance()
 	randomize_sprite()
@@ -25,17 +21,25 @@
 
 ///Grab a random sprite
 /datum/bodypart_overlay/mutant/proc/randomize_sprite()
-	sprite_datum = get_random_appearance()
+	sprite_datum = get_random_sprite_accessory()
 
-///Grab a random appearance datum (thats not locked)
-/datum/bodypart_overlay/mutant/proc/get_random_appearance()
+///Grab a random sprite accessory datum (thats not locked)
+/datum/bodypart_overlay/mutant/proc/get_random_sprite_accessory()
 	var/list/valid_restyles = list()
 	var/list/feature_list = get_global_feature_list()
 	for(var/accessory in feature_list)
 		var/datum/sprite_accessory/accessory_datum = feature_list[accessory]
-		if(initial(accessory_datum.locked)) //locked is for stuff that shouldn't appear here
+		//locked is for stuff that shouldn't appear here
+		//nameless sprite accessories are not valid for mutant bodypart overlays
+		//SPRITE_ACCESSORY_NONE is not valid for mutant bodypart overlays
+		if(initial(accessory_datum.locked) || \
+			!initial(accessory_datum.name) || \
+			(initial(accessory_datum.name) == SPRITE_ACCESSORY_NONE))
 			continue
 		valid_restyles += accessory_datum
+	//no restyles? this is fucked
+	if(!length(valid_restyles))
+		CRASH("[type] had no available valid appearances on get_random_appearance()!")
 	return pick(valid_restyles)
 
 ///Return the BASE icon state of the sprite datum (so not the gender, layer, feature_key)
@@ -43,7 +47,7 @@
 	return sprite_datum.icon_state
 
 ///Get the image we need to draw on the person. Called from get_overlay() which is called from _bodyparts.dm. Limb can be null
-/datum/bodypart_overlay/mutant/get_image(image_layer, obj/item/bodypart/limb)
+/datum/bodypart_overlay/mutant/get_image(layer, obj/item/bodypart/limb)
 	if(!sprite_datum)
 		CRASH("Trying to call get_image() on [type] while it didn't have a sprite_datum. This shouldn't happen, report it as soon as possible.")
 
@@ -51,12 +55,14 @@
 	var/list/icon_state_builder = list()
 	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
 	icon_state_builder += feature_key
-	icon_state_builder += get_base_icon_state()
-	icon_state_builder += mutant_bodyparts_layertext(image_layer)
+	var/base_icon_state = get_base_icon_state() //MONKEYS. GOD DAMN MONKEYS.
+	if(base_icon_state)
+		icon_state_builder += base_icon_state
+	icon_state_builder += mutant_bodyparts_layertext(layer)
 
 	var/finished_icon_state = icon_state_builder.Join("_")
 
-	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = image_layer)
+	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
 
 	if(sprite_datum.center)
 		center_image(appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
@@ -64,7 +70,6 @@
 	return appearance
 
 /datum/bodypart_overlay/mutant/color_image(image/overlay, layer, obj/item/bodypart/limb)
-
 	overlay.color = sprite_datum.color_src ? draw_color : null
 
 /datum/bodypart_overlay/mutant/added_to_limb(obj/item/bodypart/limb)
@@ -90,7 +95,7 @@
 
 ///Return a dumb glob list for this specific feature (called from parse_sprite)
 /datum/bodypart_overlay/mutant/proc/get_global_feature_list()
-	CRASH("External organ has no feature list, it will render invisible")
+	CRASH("[type] has no feature list, it will render invisible")
 
 ///Give the organ its color. Force will override the existing one.
 /datum/bodypart_overlay/mutant/proc/inherit_color(obj/item/bodypart/ownerlimb, force)

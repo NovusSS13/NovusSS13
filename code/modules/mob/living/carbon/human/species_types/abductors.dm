@@ -10,7 +10,7 @@
 		TRAIT_NOBREATH,
 		TRAIT_VIRUSIMMUNE,
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/abductor
+	mutanttongue = /obj/item/organ/tongue/abductor
 	mutantstomach = null
 	mutantheart = null
 	mutantlungs = null

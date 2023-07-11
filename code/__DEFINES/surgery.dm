@@ -23,7 +23,9 @@
 /// Can't be removed using surgery or other common means
 #define ORGAN_UNREMOVABLE (1<<8)
 /// Can't be seen by scanners, doesn't anger body purists
-#define ORGAN_HIDDEN (1<<9)
+#define ORGAN_HIDDEN (1<<7)
+/// Has been destroyed beyond any relief
+#define ORGAN_DESTROYED (1<<8)
 
 /// Helper to figure out if a limb is organic
 #define IS_ORGANIC_LIMB(limb) (limb.bodytype & BODYTYPE_ORGANIC)

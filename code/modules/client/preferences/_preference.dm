@@ -114,7 +114,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 	/// If the selected species has this in its /datum/species/var/external_organs,
 	/// will show the feature as selectable.
-	var/relevant_external_organ = null
+	var/relevant_cosmetic_organ = null
 
 	/// If the selected species has this head_flag by default,
 	/// will show the feature as selectable.
@@ -327,7 +327,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	if ( \
 		!isnull(relevant_mutant_bodypart) \
 		|| !isnull(relevant_inherent_trait) \
-		|| !isnull(relevant_external_organ) \
+		|| !isnull(relevant_cosmetic_organ) \
 		|| !isnull(relevant_head_flag) \
 	)
 		var/species_type = preferences.read_preference(/datum/preference/choiced/species)

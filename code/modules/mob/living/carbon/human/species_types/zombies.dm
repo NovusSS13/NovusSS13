@@ -5,8 +5,6 @@
 	name = "High-Functioning Zombie"
 	id = SPECIES_ZOMBIE
 	meat = /obj/item/food/meat/slab/human/mutant/zombie
-	mutanttongue = /obj/item/organ/internal/tongue/zombie
-	//alphabetize inherent_traits
 	inherent_traits = list(
 		// SHARED WITH ALL ZOMBIES
 		TRAIT_AGENDER,
@@ -29,10 +27,13 @@
 		TRAIT_NOBLOOD,
 		TRAIT_SUCCUMB_OVERRIDE,
 	)
+
+	mutanttongue = /obj/item/organ/tongue/zombie
 	mutantstomach = null
 	mutantheart = null
 	mutantliver = null
 	mutantlungs = null
+
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | ERT_SPAWN
 	bodytemp_normal = T0C // They have no natural body heat, the environment regulates body temp
@@ -93,9 +94,9 @@
 	id = SPECIES_ZOMBIE_INFECTIOUS
 	examine_limb_id = SPECIES_ZOMBIE
 	damage_modifier = 20 // 120 damage to KO a zombie, which kills it
-	mutanteyes = /obj/item/organ/internal/eyes/zombie
-	mutantbrain = /obj/item/organ/internal/brain/zombie
-	mutanttongue = /obj/item/organ/internal/tongue/zombie
+	mutanteyes = /obj/item/organ/eyes/zombie
+	mutantbrain = /obj/item/organ/brain/zombie
+	mutanttongue = /obj/item/organ/tongue/zombie
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 
 	inherent_traits = list(
@@ -175,7 +176,7 @@
 //Congrats you somehow died so hard you stopped being a zombie
 /datum/species/zombie/infectious/spec_death(gibbed, mob/living/carbon/C)
 	. = ..()
-	var/obj/item/organ/internal/zombie_infection/infection
+	var/obj/item/organ/zombie_infection/infection
 	infection = C.get_organ_slot(ORGAN_SLOT_ZOMBIE)
 	if(infection)
 		qdel(infection)
@@ -186,7 +187,7 @@
 	// Deal with the source of this zombie corruption
 	// Infection organ needs to be handled separately from mutant_organs
 	// because it persists through species transitions
-	var/obj/item/organ/internal/zombie_infection/infection
+	var/obj/item/organ/zombie_infection/infection
 	infection = C.get_organ_slot(ORGAN_SLOT_ZOMBIE)
 	if(!infection)
 		infection = new()

@@ -33,7 +33,7 @@
 	if(HAS_TRAIT(target, TRAIT_VIRUS_RESISTANCE) && prob(75))
 		return
 
-	var/obj/item/organ/internal/zombie_infection/infection
+	var/obj/item/organ/zombie_infection/infection
 	infection = target.get_organ_slot(ORGAN_SLOT_ZOMBIE)
 	if(!infection)
 		infection = new()

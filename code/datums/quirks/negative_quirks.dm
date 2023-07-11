@@ -684,21 +684,22 @@
 	var/obj/item/organ/prosthetic
 	switch(organ_slot)
 		if(ORGAN_SLOT_HEART)
-			prosthetic = new /obj/item/organ/internal/heart/cybernetic/surplus
+			prosthetic = new /obj/item/organ/heart/cybernetic/surplus
 			slot_string = "heart"
 		if(ORGAN_SLOT_LUNGS)
-			prosthetic = new /obj/item/organ/internal/lungs/cybernetic/surplus
+			prosthetic = new /obj/item/organ/lungs/cybernetic/surplus
 			slot_string = "lungs"
 		if(ORGAN_SLOT_LIVER)
-			prosthetic = new /obj/item/organ/internal/liver/cybernetic/surplus
+			prosthetic = new /obj/item/organ/liver/cybernetic/surplus
 			slot_string = "liver"
 		if(ORGAN_SLOT_STOMACH)
-			prosthetic = new /obj/item/organ/internal/stomach/cybernetic/surplus
+			prosthetic = new /obj/item/organ/stomach/cybernetic/surplus
 			slot_string = "stomach"
 	medical_record_text = "During physical examination, patient was found to have a low-budget prosthetic [slot_string]. \
 	<b>Removal of these organs is known to be dangerous to the patient as well as the practitioner.</b>"
 	old_organ = human_holder.get_organ_slot(organ_slot)
-	if(prosthetic.Insert(human_holder, special = TRUE, drop_if_replaced = TRUE))
+	old_organ?.before_organ_replacement(prosthetic)
+	if(prosthetic.Insert(human_holder, special = TRUE, drop_if_replaced = FALSE) && old_organ)
 		old_organ.moveToNullspace()
 		STOP_PROCESSING(SSobj, old_organ)
 
@@ -708,7 +709,9 @@
 
 /datum/quirk/prosthetic_organ/remove()
 	if(old_organ)
-		old_organ.Insert(quirk_holder, special = TRUE)
+		var/obj/item/organ/prosthetic = quirk_holder.get_organ_slot(old_organ.slot)
+		prosthetic?.before_organ_replacement(old_organ)
+		old_organ.Insert(quirk_holder, special = TRUE, drop_if_replaced = FALSE)
 	old_organ = null
 
 /datum/quirk/tin_man
@@ -724,10 +727,10 @@
 /datum/quirk/tin_man/add_unique(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/static/list/organ_slots = list(
-		ORGAN_SLOT_HEART = /obj/item/organ/internal/heart/cybernetic/surplus,
-		ORGAN_SLOT_LUNGS = /obj/item/organ/internal/lungs/cybernetic/surplus,
-		ORGAN_SLOT_LIVER = /obj/item/organ/internal/liver/cybernetic/surplus,
-		ORGAN_SLOT_STOMACH = /obj/item/organ/internal/stomach/cybernetic/surplus,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart/cybernetic/surplus,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/cybernetic/surplus,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/cybernetic/surplus,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/cybernetic/surplus,
 	)
 	var/list/possible_organ_slots = organ_slots.Copy()
 	if(HAS_TRAIT(human_holder, TRAIT_NOBLOOD))
@@ -742,8 +745,10 @@
 		return
 	for(var/organ_slot in possible_organ_slots)
 		var/organ_path = possible_organ_slots[organ_slot]
+		var/obj/item/organ/old_organ = human_holder.get_organ_slot(organ_slot)
 		var/obj/item/organ/new_organ = new organ_path()
-		new_organ.Insert(human_holder, special = TRUE)
+		old_organ?.before_organ_replacement(new_organ)
+		new_organ.Insert(human_holder, special = TRUE, drop_if_replaced = FALSE)
 
 /datum/quirk/tin_man/post_add()
 	to_chat(quirk_holder, span_boldannounce("Most of your internal organs have been replaced with surplus prosthetics. They are fragile and will easily come apart under duress. \
@@ -1042,7 +1047,7 @@
 	. = ..()
 	quirk_holder.add_mob_memory(/datum/memory/key/quirk_smoker, protagonist = quirk_holder, preferred_brand = initial(drug_container_type.name))
 	// smoker lungs have 25% less health and healing
-	var/obj/item/organ/internal/lungs/smoker_lungs = quirk_holder.get_organ_slot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/smoker_lungs = quirk_holder.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(smoker_lungs && IS_ORGANIC_ORGAN(smoker_lungs)) // robotic lungs aren't affected
 		smoker_lungs.maxHealth = smoker_lungs.maxHealth * 0.75
 		smoker_lungs.healing_factor = smoker_lungs.healing_factor * 0.75
@@ -1106,7 +1111,7 @@
 
 	quirk_holder.add_mob_memory(/datum/memory/key/quirk_alcoholic, protagonist = quirk_holder, preferred_brandy = initial(favorite_alcohol.name))
 	// alcoholic livers have 25% less health and healing
-	var/obj/item/organ/internal/liver/alcohol_liver = quirk_holder.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/alcohol_liver = quirk_holder.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(alcohol_liver && IS_ORGANIC_ORGAN(alcohol_liver)) // robotic livers aren't affected
 		alcohol_liver.maxHealth = alcohol_liver.maxHealth * 0.75
 		alcohol_liver.healing_factor = alcohol_liver.healing_factor * 0.75
