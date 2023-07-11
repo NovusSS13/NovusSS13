@@ -128,7 +128,7 @@
 
 /obj/item/organ/internal/liver/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	//If your liver is failing, then we use the liverless version of metabolize
+	//If your liver is failing, or you have forced liverless metabolism, then we use the liverless version of metabolize
 	if((organ_flags & ORGAN_FAILING) || HAS_TRAIT(owner, TRAIT_LIVERLESS_METABOLISM))
 		owner.reagents.metabolize(owner, seconds_per_tick, times_fired, can_overdose = TRUE, liverless = TRUE)
 		return
@@ -160,9 +160,8 @@
 	if(provide_pain_message && damage > 10 && SPT_PROB(damage/6, seconds_per_tick)) //the higher the damage the higher the probability
 		to_chat(owner, span_warning("You feel a dull pain in your abdomen."))
 
-
 /obj/item/organ/internal/liver/handle_failing_organs(seconds_per_tick)
-	if(HAS_TRAIT(owner, TRAIT_STABLELIVER) || HAS_TRAIT(owner, TRAIT_LIVERLESS_METABOLISM))
+	if(!owner.needs_liver())
 		return
 	return ..()
 
@@ -191,18 +190,18 @@
 		//After 60 seconds we begin to feel the effects
 		if(1 * LIVER_FAILURE_STAGE_SECONDS to 2 * LIVER_FAILURE_STAGE_SECONDS - 1)
 			owner.adjustToxLoss(0.2 * seconds_per_tick,forced = TRUE)
-			owner.adjust_disgust(0.1 * seconds_per_tick)
+			owner.adjust_disgust_effect(0.1 * seconds_per_tick)
 
 		if(2 * LIVER_FAILURE_STAGE_SECONDS to 3 * LIVER_FAILURE_STAGE_SECONDS - 1)
 			owner.adjustToxLoss(0.4 * seconds_per_tick,forced = TRUE)
 			owner.adjust_drowsiness(0.5 SECONDS * seconds_per_tick)
-			owner.adjust_disgust(0.3 * seconds_per_tick)
+			owner.adjust_disgust_effect(0.3 * seconds_per_tick)
 
 		if(3 * LIVER_FAILURE_STAGE_SECONDS to 4 * LIVER_FAILURE_STAGE_SECONDS - 1)
 			owner.adjustToxLoss(0.6 * seconds_per_tick,forced = TRUE)
 			owner.adjustOrganLoss(pick(ORGAN_SLOT_HEART,ORGAN_SLOT_LUNGS,ORGAN_SLOT_STOMACH,ORGAN_SLOT_EYES,ORGAN_SLOT_EARS),0.2 * seconds_per_tick)
 			owner.adjust_drowsiness(1 SECONDS * seconds_per_tick)
-			owner.adjust_disgust(0.6 * seconds_per_tick)
+			owner.adjust_disgust_effect(0.6 * seconds_per_tick)
 
 			if(SPT_PROB(1.5, seconds_per_tick))
 				owner.emote("drool")
@@ -211,7 +210,7 @@
 			owner.adjustToxLoss(0.8 * seconds_per_tick,forced = TRUE)
 			owner.adjustOrganLoss(pick(ORGAN_SLOT_HEART,ORGAN_SLOT_LUNGS,ORGAN_SLOT_STOMACH,ORGAN_SLOT_EYES,ORGAN_SLOT_EARS),0.5 * seconds_per_tick)
 			owner.adjust_drowsiness(1.6 SECONDS * seconds_per_tick)
-			owner.adjust_disgust(1.2 * seconds_per_tick)
+			owner.adjust_disgust_effect(1.2 * seconds_per_tick)
 
 			if(SPT_PROB(3, seconds_per_tick))
 				owner.emote("drool")
