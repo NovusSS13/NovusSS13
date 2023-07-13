@@ -1,5 +1,3 @@
-
-
 //NOTE: Breathing happens once per FOUR TICKS, unless the last breath fails. In which case it happens once per ONE TICK! So oxyloss healing is done once per 4 ticks while oxyloss damage is applied once per tick!
 
 // bitflags for the percentual amount of protection a piece of clothing which covers the body part offers.
@@ -33,10 +31,12 @@
 			//handle active mutations
 			for(var/datum/mutation/human/human_mutation as anything in dna.mutations)
 				human_mutation.on_life(seconds_per_tick, times_fired)
-			//heart attack stuff
+			//heart attack stuff - this should be handled by the heart organ when one exists, but isn't currently
 			handle_heart(seconds_per_tick, times_fired)
 			//handles liver failure effects, if we lack a liver
 			handle_liver(seconds_per_tick, times_fired)
+			//handles hunger, if we lack a stomach
+			handle_stomach(seconds_per_tick, times_fired)
 
 		// for special species interactions
 		dna.species.spec_life(src, seconds_per_tick, times_fired)
@@ -49,7 +49,6 @@
 
 	if(stat != DEAD)
 		return TRUE
-
 
 /mob/living/carbon/human/calculate_affecting_pressure(pressure)
 	var/chest_covered = FALSE
@@ -73,7 +72,7 @@
 		return ..()
 
 /mob/living/carbon/human/check_breath(datum/gas_mixture/breath)
-	var/obj/item/organ/internal/lungs/human_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/human_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(human_lungs)
 		return human_lungs.check_breath(breath, src)
 
@@ -271,17 +270,18 @@
 	return min(1, thermal_protection)
 
 /mob/living/carbon/human/handle_random_events(seconds_per_tick, times_fired)
-	//Puke if toxloss is too high
-	if(stat)
-		return
-	if(getToxLoss() < 45 || nutrition <= 20)
+	if(stat >= UNCONSCIOUS || (nutrition <= 20))
 		return
 
-	lastpuke += SPT_PROB(30, seconds_per_tick)
-	if(lastpuke >= 50) // about 25 second delay I guess // This is actually closer to 150 seconds
+	//puking only if toxloss is high enough
+	if(getToxLoss() < 45)
+		puke_counter = 0
+		return
+
+	puke_counter += SPT_PROB(30, seconds_per_tick)
+	if(puke_counter >= 50) // about 25 second delay I guess // This is actually closer to 150 seconds
 		vomit(20)
-		lastpuke = 0
-
+		puke_counter = 0
 
 /mob/living/carbon/human/has_smoke_protection()
 	if(isclothing(wear_mask))
@@ -296,17 +296,71 @@
 			return TRUE
 	return ..()
 
+/// Handles heart attacks, even if we don't have a heart
 /mob/living/carbon/human/proc/handle_heart(seconds_per_tick, times_fired)
-	var/we_breath = !HAS_TRAIT_FROM(src, TRAIT_NOBREATH, SPECIES_TRAIT)
-
 	if(!undergoing_cardiac_arrest())
 		return
 
-	if(we_breath)
+	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
 		adjustOxyLoss(4 * seconds_per_tick)
-		Unconscious(80)
+		Unconscious(8 SECONDS)
 	// Tissues die without blood circulation
 	adjustBruteLoss(1 * seconds_per_tick)
+
+/// Handles stomach adjacent stuff (hunger and disgust) if we lack a stomach.
+/mob/living/carbon/human/proc/handle_stomach(seconds_per_tick, times_fired)
+	if(get_organ_slot(ORGAN_SLOT_STOMACH))
+		return //everything is being handled by the stomach
+	handle_hunger(seconds_per_tick, times_fired)
+
+/// Handles hunger if we lack a stomach (and do not have TRAIT_NOHUNGER).
+/mob/living/carbon/human/proc/handle_hunger(seconds_per_tick, times_fired)
+	if(HAS_TRAIT(src, TRAIT_NOHUNGER))
+		return //hunger is for BABIES
+
+	// nutrition decrease and satiety
+	if((nutrition > 0) && (stat < DEAD))
+		// THEY HUNGER
+		var/hunger_rate = HUNGER_FACTOR * 3 //3 times hunger rate as having a normal stomach, fuck you
+		if(mob_mood && (mob_mood.sanity > SANITY_DISTURBED))
+			hunger_rate *= max(1 - 0.002 * mob_mood.sanity, 0.5) //0.85 to 0.75
+		hunger_rate *= physiology.hunger_mod
+		adjust_nutrition(-hunger_rate * seconds_per_tick)
+
+	// The fucking TRAIT_FAT mutation is the dumbest shit ever. It makes the code so difficult to work with
+	if(nutrition > NUTRITION_LEVEL_FULL && !HAS_TRAIT(src, TRAIT_NOFAT))
+		if(overeatduration < 20 MINUTES) //capped so people don't take forever to unfat
+			overeatduration = min(overeatduration + (1 SECONDS * seconds_per_tick), 20 MINUTES)
+	else
+		if(overeatduration > 0)
+			overeatduration = max(overeatduration - (2 SECONDS * seconds_per_tick), 0) //doubled the unfat rate
+
+	if(HAS_TRAIT_FROM(src, TRAIT_FAT, OBESITY))//I share your pain, past coder.
+		if(overeatduration < 200 SECONDS)
+			to_chat(src, span_notice("You feel fit again!"))
+			REMOVE_TRAIT(src, TRAIT_FAT, OBESITY)
+			remove_movespeed_modifier(/datum/movespeed_modifier/obesity)
+	else
+		if(overeatduration >= 200 SECONDS)
+			to_chat(src, span_danger("You suddenly feel blubbery!"))
+			ADD_TRAIT(src, TRAIT_FAT, OBESITY)
+			add_movespeed_modifier(/datum/movespeed_modifier/obesity)
+
+	//always sluggish while lacking a stomach
+	if(metabolism_efficiency != 0.8)
+		to_chat(src, span_notice("You feel sluggish."))
+	metabolism_efficiency = 0.8
+
+	//Hunger slowdown for if mood isn't enabled
+	if(CONFIG_GET(flag/disable_human_mood))
+		var/hungry = (500 - nutrition) / 5 //So overeat would be 100 and default level would be 80
+		if(hungry >= 70)
+			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, multiplicative_slowdown = (hungry / 50))
+		else
+			remove_movespeed_modifier(/datum/movespeed_modifier/hunger)
+
+	// Always display starving alert if lacking a stomach, even if not actually hungry (i think it's pretty funny)
+	throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/starving)
 
 #undef THERMAL_PROTECTION_HEAD
 #undef THERMAL_PROTECTION_CHEST

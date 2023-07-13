@@ -3,18 +3,19 @@
 	name = "Golem"
 	id = SPECIES_GOLEM
 	inherent_traits = list(
-		TRAIT_NO_UNDERWEAR,
+		TRAIT_AGENDER,
 		TRAIT_GENELESS,
 		TRAIT_LAVA_IMMUNE,
-		TRAIT_NOBREATH,
-		TRAIT_NODISMEMBER,
 		TRAIT_NOBLOOD,
-		TRAIT_NOFIRE,
-		TRAIT_PIERCEIMMUNE,
-		TRAIT_RADIMMUNE,
+		TRAIT_NOBREATH,
 		TRAIT_NO_DNA_COPY,
+		TRAIT_NOFIRE,
 		TRAIT_NO_TRANSFORMATION_STING,
 		TRAIT_NO_AUGMENTS,
+		TRAIT_NODISMEMBER,
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_PIERCEIMMUNE,
+		TRAIT_RADIMMUNE,
 	)
 	mutantheart = null
 	mutantlungs = null
@@ -24,20 +25,19 @@
 	siemens_coeff = 0
 	no_equip_flags = ITEM_SLOT_MASK | ITEM_SLOT_OCLOTHING | ITEM_SLOT_GLOVES | ITEM_SLOT_FEET | ITEM_SLOT_ICLOTHING | ITEM_SLOT_SUITSTORE
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
-	sexes = FALSE
 	meat = /obj/item/food/meat/slab/human/mutant/golem
 	species_language_holder = /datum/language_holder/golem
 
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_LAVALAND_SAFE
 	bodytemp_cold_damage_limit = BODYTEMP_COLD_ICEBOX_SAFE
 
-	mutant_organs = list(/obj/item/organ/internal/adamantine_resonator)
-	mutanteyes = /obj/item/organ/internal/eyes/golem
-	mutantbrain = /obj/item/organ/internal/brain/golem
-	mutanttongue = /obj/item/organ/internal/tongue/golem
-	mutantstomach = /obj/item/organ/internal/stomach/golem
-	mutantliver = /obj/item/organ/internal/liver/golem
-	mutantappendix = /obj/item/organ/internal/appendix/golem
+	mutant_organs = list(/obj/item/organ/adamantine_resonator)
+	mutanteyes = /obj/item/organ/eyes/golem
+	mutantbrain = /obj/item/organ/brain/golem
+	mutanttongue = /obj/item/organ/tongue/golem
+	mutantstomach = /obj/item/organ/stomach/golem
+	mutantliver = /obj/item/organ/liver/golem
+	mutantappendix = /obj/item/organ/appendix/golem
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem,

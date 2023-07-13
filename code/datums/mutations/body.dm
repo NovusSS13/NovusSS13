@@ -343,7 +343,7 @@
 		owner.visible_message(warpmessage, span_userdanger("You feel a wave of nausea as you fall through reality!"))
 		var/warpdistance = rand(10, 15) * GET_MUTATION_POWER(src)
 		do_teleport(owner, get_turf(owner), warpdistance, channel = TELEPORT_CHANNEL_FREE)
-		owner.adjust_disgust(GET_MUTATION_SYNCHRONIZER(src) * (warpchance * warpdistance))
+		owner.adjust_disgust_effect(GET_MUTATION_SYNCHRONIZER(src) * (warpchance * warpdistance))
 		warpchance = 0
 		owner.visible_message(span_danger("[owner] appears out of nowhere!"))
 	else
@@ -471,7 +471,7 @@
 
 	explosion(owner, light_impact_range = 2, adminlog = TRUE, explosion_cause = src)
 	for(var/mob/living/carbon/human/splashed in view(2, owner))
-		var/obj/item/organ/internal/eyes/eyes = splashed.get_organ_slot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = splashed.get_organ_slot(ORGAN_SLOT_EYES)
 		if(eyes)
 			to_chat(splashed, span_userdanger("You are blinded by a shower of blood!"))
 			eyes.apply_organ_damage(5)
@@ -498,9 +498,9 @@
 	if(.)//cant add
 		return TRUE
 
-	var/obj/item/organ/internal/brain/brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(brain)
-		brain.zone = BODY_ZONE_CHEST
+		brain.set_zone(BODY_ZONE_CHEST, special = TRUE) //I swear to god if this ever fails because of a SOMEHOW missing chest
 
 	var/obj/item/bodypart/head/head = owner.get_bodypart(BODY_ZONE_HEAD)
 	if(head)
@@ -515,14 +515,16 @@
 	. = ..()
 	if(.)
 		return TRUE
-	var/obj/item/organ/internal/brain/brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(brain) //so this doesn't instantly kill you. we could delete the brain, but it lets people cure brain issues they /really/ shouldn't be
-		brain.zone = initial(brain.zone)
 	UnregisterSignal(owner, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB)
 	var/successful = owner.regenerate_limb(BODY_ZONE_HEAD)
 	if(!successful)
 		stack_trace("HARS mutation head regeneration failed! (usually caused by headless syndrome having a head)")
 		return TRUE
+	var/obj/item/organ/brain/brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
+	if(brain)
+		//so this doesn't instantly kill you
+		//we could delete the brain, but it lets people cure brain issues they /really/ shouldn't cure
+		brain.set_zone(initial(brain.zone))
 	owner.dna.species.regenerate_organs(owner, replace_current = FALSE, excluded_zones = list(BODY_ZONE_CHEST)) //replace_current needs to be FALSE to prevent weird adding and removing mutation healing
 	owner.apply_damage(damage = 50, damagetype = BRUTE, def_zone = BODY_ZONE_HEAD) //and this to DISCOURAGE organ farming, or at least not make it free.
 	owner.visible_message(span_warning("[owner]'s head returns with a sickening crunch!"), span_warning("Your head regrows with a sickening crack! Ouch."))

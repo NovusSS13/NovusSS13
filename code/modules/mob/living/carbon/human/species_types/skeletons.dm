@@ -2,37 +2,37 @@
 	// 2spooky
 	name = "Spooky Scary Skeleton"
 	id = SPECIES_SKELETON
-	sexes = FALSE
 	meat = /obj/item/food/meat/slab/human/mutant/skeleton
 	inherent_traits = list(
-		TRAIT_NO_UNDERWEAR,
+		TRAIT_AGENDER,
 		TRAIT_CAN_USE_FLIGHT_POTION,
 		TRAIT_EASYDISMEMBER,
 		TRAIT_FAKEDEATH,
 		TRAIT_GENELESS,
 		TRAIT_LIMBATTACHMENT,
+		TRAIT_NOBLOOD,
 		TRAIT_NOBREATH,
 		TRAIT_NOCLONELOSS,
-		TRAIT_RADIMMUNE,
+		TRAIT_NO_DNA_COPY,
+		TRAIT_NO_TRANSFORMATION_STING,
+		TRAIT_NO_UNDERWEAR,
 		TRAIT_PIERCEIMMUNE,
+		TRAIT_RADIMMUNE,
 		TRAIT_RESISTCOLD,
 		TRAIT_RESISTHEAT,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_TOXIMMUNE,
 		TRAIT_XENO_IMMUNE,
-		TRAIT_NOBLOOD,
-		TRAIT_NO_DNA_COPY,
-		TRAIT_NO_TRANSFORMATION_STING,
 	)
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
-	mutanttongue = /obj/item/organ/internal/tongue/bone
-	mutantstomach = /obj/item/organ/internal/stomach/bone
+	mutanttongue = /obj/item/organ/tongue/bone
+	mutantstomach = /obj/item/organ/stomach/bone
 	mutantappendix = null
 	mutantheart = null
-	mutantliver = /obj/item/organ/internal/liver/bone
+	mutantliver = /obj/item/organ/liver/bone
 	mutantlungs = null
-	wing_types = list(/obj/item/organ/external/wings/functional/skeleton)
+	wing_types = list(/obj/item/organ/wings/functional/skeleton)
 	//They can technically be in an ERT
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 	species_cookie = /obj/item/reagent_containers/condiment/milk

@@ -2,10 +2,10 @@
 	name = "\improper Ethereal"
 	id = SPECIES_ETHEREAL
 	meat = /obj/item/food/meat/slab/human/mutant/ethereal
-	mutantlungs = /obj/item/organ/internal/lungs/ethereal
-	mutantstomach = /obj/item/organ/internal/stomach/ethereal
-	mutanttongue = /obj/item/organ/internal/tongue/ethereal
-	mutantheart = /obj/item/organ/internal/heart/ethereal
+	mutantlungs = /obj/item/organ/lungs/ethereal
+	mutantstomach = /obj/item/organ/stomach/ethereal
+	mutanttongue = /obj/item/organ/tongue/ethereal
+	mutantheart = /obj/item/organ/heart/ethereal
 	exotic_blood = /datum/reagent/consumable/liquidelectricity //Liquid Electricity. fuck you think of something better gamer
 	exotic_bloodtype = "LE"
 	siemens_coeff = 0.5 //They thrive on energy
@@ -19,7 +19,6 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_cookie = /obj/item/food/energybar
 	species_language_holder = /datum/language_holder/ethereal
-	sexes = FALSE //no fetish content allowed
 	// Body temperature for ethereals is much higher than humans as they like hotter environments
 	bodytemp_normal = (BODYTEMP_NORMAL + 50)
 	bodytemp_heat_damage_limit = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD // about 150C
@@ -71,7 +70,7 @@
 	new_ethereal.set_safe_hunger_level()
 	update_mail_goodies(ethereal)
 
-	var/obj/item/organ/internal/heart/ethereal/ethereal_heart = new_ethereal.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/ethereal/ethereal_heart = new_ethereal.get_organ_slot(ORGAN_SLOT_HEART)
 	ethereal_heart.ethereal_color = default_color
 
 	for(var/obj/item/bodypart/limb as anything in new_ethereal.bodyparts)
@@ -240,7 +239,7 @@
 	name = "Lustrous"
 	id = SPECIES_ETHEREAL_LUSTROUS
 	examine_limb_id = SPECIES_ETHEREAL
-	mutantbrain = /obj/item/organ/internal/brain/lustrous
+	mutantbrain = /obj/item/organ/brain/lustrous
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	inherent_traits = list(
 		TRAIT_NO_UNDERWEAR,

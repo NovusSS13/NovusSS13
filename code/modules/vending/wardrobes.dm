@@ -163,7 +163,7 @@
 		/obj/item/clothing/head/costume/mailman = 1,
 		/obj/item/clothing/under/misc/mailman = 1,
 		/obj/item/clothing/under/rank/cargo/miner = 3,
-		
+
 	)
 	refill_canister = /obj/item/vending_refill/wardrobe/cargo_wardrobe
 	payment_department = ACCOUNT_CAR
@@ -192,7 +192,7 @@
 	contraband = list(
 		/obj/item/clothing/under/costume/mech_suit = 2,
 		/obj/item/clothing/suit/hooded/techpriest = 2,
-		/obj/item/organ/internal/tongue/robot = 2,
+		/obj/item/organ/tongue/robot = 2,
 	)
 	refill_canister = /obj/item/vending_refill/wardrobe/robo_wardrobe
 	extra_price = PAYCHECK_COMMAND * 1.2
@@ -222,7 +222,7 @@
 		/obj/item/storage/backpack/satchel/science = 3,
 		/obj/item/storage/backpack/duffelbag/science = 3,
 		/obj/item/radio/headset/headset_sci = 3,
-		
+
 	)
 	refill_canister = /obj/item/vending_refill/wardrobe/science_wardrobe
 	payment_department = ACCOUNT_SCI

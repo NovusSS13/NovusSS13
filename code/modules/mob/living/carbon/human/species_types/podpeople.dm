@@ -7,8 +7,8 @@
 		TRAIT_MUTANT_COLORS,
 		TRAIT_PLANT_SAFE,
 	)
-	external_organs = list(
-		/obj/item/organ/external/pod_hair = "None",
+	cosmetic_organs = list(
+		/obj/item/organ/pod_hair = "None",
 	)
 	inherent_biotypes = MOB_ORGANIC | MOB_HUMANOID | MOB_PLANT
 	inherent_factions = list(FACTION_PLANTS, FACTION_VINES)
@@ -19,7 +19,7 @@
 	exotic_blood = /datum/reagent/water
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/plant
-	mutanttongue = /obj/item/organ/internal/tongue/pod
+	mutanttongue = /obj/item/organ/tongue/pod
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/pod,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/pod,
@@ -61,7 +61,7 @@
 	if(H.nutrition > NUTRITION_LEVEL_ALMOST_FULL) //don't make podpeople fat because they stood in the sun for too long
 		H.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
 
-	if(H.nutrition < NUTRITION_LEVEL_STARVING + 50)
+	if(H.nutrition < NUTRITION_LEVEL_SLUGGISH)
 		H.take_overall_damage(brute = 1 * seconds_per_tick, required_bodytype = BODYTYPE_ORGANIC)
 
 /datum/species/pod/handle_chemical(datum/reagent/chem, mob/living/carbon/human/affected, seconds_per_tick, times_fired)
@@ -100,4 +100,4 @@
 	return to_add
 
 /datum/species/pod/randomize_features(mob/living/carbon/human_mob)
-	randomize_external_organs(human_mob)
+	randomize_cosmetic_organs(human_mob)

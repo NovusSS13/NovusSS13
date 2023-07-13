@@ -459,7 +459,7 @@
  */
 /mob/living/carbon/proc/expel_ingested(atom/bite, amount)
 	visible_message(span_danger("[src] throws up all over [p_them()]self!"), \
-					span_userdanger("You are unable to keep the [bite] down without a stomach!"))
+					span_userdanger("You are unable to keep the [bite] down without a functioning stomach!"))
 
 	var/turf/floor = get_turf(src)
 	var/obj/effect/decal/cleanable/vomit/spew = new(floor, get_static_viruses())
@@ -548,7 +548,7 @@
 	lighting_cutoff = initial(lighting_cutoff)
 	lighting_color_cutoffs = list(lighting_cutoff_red, lighting_cutoff_green, lighting_cutoff_blue)
 
-	var/obj/item/organ/internal/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if(eyes)
 		set_invis_see(eyes.see_invisible)
 		new_sight |= eyes.sight_flags
@@ -611,7 +611,7 @@
 	if(isclothing(glasses))
 		tint += glasses.tint
 
-	var/obj/item/organ/internal/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if(eyes)
 		tint += eyes.tint
 
@@ -855,11 +855,11 @@
 		return FALSE
 
 	// We can't heal them if they're missing their lungs
-	if(!HAS_TRAIT(src, TRAIT_NOBREATH) && !isnull(dna?.species.mutantlungs) && !get_organ_slot(ORGAN_SLOT_LUNGS))
+	if(!HAS_TRAIT(src, TRAIT_NOBREATH) && !get_organ_slot(ORGAN_SLOT_LUNGS))
 		return FALSE
 
 	// And we can't heal them if they're missing their liver
-	if(!HAS_TRAIT(src, TRAIT_LIVERLESS_METABOLISM) && !isnull(dna?.species.mutantliver) && !get_organ_slot(ORGAN_SLOT_LIVER))
+	if(needs_liver() && !get_organ_slot(ORGAN_SLOT_LIVER))
 		return FALSE
 
 	return ..()
@@ -901,7 +901,7 @@
 	return ..()
 
 /mob/living/carbon/can_be_revived()
-	if(!get_organ_by_type(/obj/item/organ/internal/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)) || HAS_TRAIT(src, TRAIT_HUSK))
+	if(!get_organ_by_type(/obj/item/organ/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)) || HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
 	return ..()
 
@@ -920,7 +920,7 @@
 
 	// Only check for a heart if they actually need a heart. Who would've thunk
 	if (needs_heart())
-		var/obj/item/organ/internal/heart = get_organ_by_type(/obj/item/organ/internal/heart)
+		var/obj/item/organ/heart = get_organ_by_type(/obj/item/organ/heart)
 
 		if (!heart)
 			return DEFIB_FAIL_NO_HEART
@@ -928,7 +928,7 @@
 		if (heart.organ_flags & ORGAN_FAILING)
 			return DEFIB_FAIL_FAILING_HEART
 
-	var/obj/item/organ/internal/brain/current_brain = get_organ_by_type(/obj/item/organ/internal/brain)
+	var/obj/item/organ/brain/current_brain = get_organ_by_type(/obj/item/organ/brain)
 
 	if (QDELETED(current_brain))
 		return DEFIB_FAIL_NO_BRAIN
@@ -978,7 +978,7 @@
 /mob/living/carbon/proc/on_lost_hand(obj/item/bodypart/arm/lost_hand)
 	hand_bodyparts[lost_hand.held_index] = null
 
-///Proc to hook behavior on bodypart additions. Do not directly call. You're looking for [/obj/item/bodypart/proc/try_attach_limb()].
+/// Proc to hook behavior on bodypart additions. Do not directly call. You're looking for [/obj/item/bodypart/proc/try_attach_limb()].
 /mob/living/carbon/proc/add_bodypart(obj/item/bodypart/new_bodypart)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -997,7 +997,7 @@
 
 	synchronize_bodytypes()
 
-///Proc to hook behavior on bodypart removals.  Do not directly call. You're looking for [/obj/item/bodypart/proc/drop_limb()].
+/// Proc to hook behavior on bodypart removals.  Do not directly call. You're looking for [/obj/item/bodypart/proc/drop_limb()].
 /mob/living/carbon/proc/remove_bodypart(obj/item/bodypart/old_bodypart)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -1024,8 +1024,8 @@
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bodypart, update = TRUE, multiplicative_slowdown = final_modification)
 
 /mob/living/carbon/proc/create_internal_organs()
-	for(var/obj/item/organ/internal/internal_organ in organs)
-		internal_organ.Insert(src)
+	for(var/obj/item/organ/organ as anything in organs)
+		organ.Insert(src)
 
 /proc/cmp_organ_slot_asc(slot_a, slot_b)
 	return GLOB.organ_process_order.Find(slot_a) - GLOB.organ_process_order.Find(slot_b)
@@ -1272,7 +1272,7 @@
 /mob/living/carbon/proc/adjust_skillchip_complexity_modifier(delta)
 	skillchip_complexity_modifier += delta
 
-	var/obj/item/organ/internal/brain/brain = get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 
 	if(!brain)
 		return
@@ -1309,9 +1309,6 @@
 
 /mob/living/carbon/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if(NAMEOF(src, disgust))
-			set_disgust(var_value)
-			. = TRUE
 		if(NAMEOF(src, handcuffed))
 			set_handcuffed(var_value)
 			. = TRUE

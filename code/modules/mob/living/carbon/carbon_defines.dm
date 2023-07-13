@@ -11,8 +11,8 @@
 	usable_hands = 0 //Populated on init through list/bodyparts
 	mobility_flags = MOBILITY_FLAGS_CARBON_DEFAULT
 	blocks_emissive = EMISSIVE_BLOCK_NONE
-	///List of [/obj/item/organ/internal] in the mob. They don't go in the contents for some reason I don't want to know.
-	var/list/obj/item/organ/internal/organs = list()
+	///List of [/obj/item/organ] in the mob. They don't go in the contents for some reason I don't want to know.
+	var/list/obj/item/organ/organs = list()
 	///Same as [above][/mob/living/carbon/var/organs], but stores "slot ID" - "organ" pairs for easy access.
 	var/list/organs_slot = list()
 	///How many dream images we have left to send
@@ -22,11 +22,6 @@
 	var/obj/item/handcuffed = null
 	///Same as handcuffs but for legs. Bear traps use this.
 	var/obj/item/legcuffed = null
-
-	/// Measure of how disgusted we are. See DISGUST_LEVEL_GROSS and friends
-	var/disgust = 0
-	/// How disgusted we were LAST time we processed disgust. Helps prevent unneeded work
-	var/old_disgust = 0
 
 	//inventory slots
 	var/obj/item/back = null
@@ -112,9 +107,6 @@
 
 	/// Only load in visual organs
 	var/visual_only_organs = FALSE
-
-	/// Stores the result of our last known top_offset generation for optimisation purposes when drawing limb icons.
-	var/last_top_offset
 
 	/// A bitfield of "bodytypes", updated by /obj/item/bodypart/proc/synchronize_bodytypes()
 	var/bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC
