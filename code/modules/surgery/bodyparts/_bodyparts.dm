@@ -99,12 +99,6 @@
 	/// Burn damage gets multiplied by this on receive_damage()
 	var/burn_modifier = 1
 
-	// Subtractive damage modifiers
-	/// Amount subtracted from brute damage inflicted on the limb.
-	var/brute_reduction = 0
-	/// Amount subtracted from burn damage inflicted on the limb.
-	var/burn_reduction = 0
-
 	// Coloring and proper item icon update
 	/// Skin tone, if we are compatible with those
 	var/skin_tone = ""
@@ -423,8 +417,6 @@
 	var/dmg_multi = CONFIG_GET(number/damage_multiplier) * hit_percent
 	brute = round(max(brute * brute_modifier * wound_damage_multiplier * dmg_multi, 0), DAMAGE_PRECISION)
 	burn = round(max(burn * burn_modifier * wound_damage_multiplier * dmg_multi, 0), DAMAGE_PRECISION)
-	brute = max(0, brute - brute_reduction)
-	burn = max(0, burn - burn_reduction)
 
 	if(!brute && !burn)
 		return FALSE
