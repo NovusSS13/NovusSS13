@@ -71,7 +71,6 @@
 	hair_color = human_head_owner.hair_color
 	facial_hairstyle = human_head_owner.facial_hairstyle
 	facial_hair_color = human_head_owner.facial_hair_color
-	fixed_hair_color = owner_species.hair_color //Can be null
 	switch(owner_species.hair_color)
 		if(ORGAN_COLOR_MUTANT)
 			if(HAS_TRAIT(human_head_owner, TRAIT_FIXED_MUTANT_COLORS) && owner_species.fixed_mut_color)
@@ -79,7 +78,7 @@
 			else
 				fixed_hair_color = tricolor_to_hex(human_head_owner.dna.features["mcolor"])
 		else
-			fixed_hair_color = owner_species.hair_color
+			fixed_hair_color = owner_species.hair_color //Most likely null
 	hair_alpha = owner_species.hair_alpha
 	gradient_styles = human_head_owner.grad_style?.Copy()
 	gradient_colors = human_head_owner.grad_color?.Copy()
