@@ -99,3 +99,10 @@
 		ownerlimb.update_icon_dropped()
 	else if(use_mob_sprite_as_obj_sprite) //are we out in the world, unprotected by flesh?
 		update_appearance()
+
+/obj/item/organ/proc/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
+	//for reasons i don't want to know, this CAN be null!
+	if(receiver.dna.features[bodypart_overlay.feature_key])
+		bodypart_overlay.set_appearance_from_name(receiver.dna.features[bodypart_overlay.feature_key])
+	bodypart_overlay.inherit_color(owner_limb)
+	bodypart_overlay.imprint_on_next_insertion = FALSE

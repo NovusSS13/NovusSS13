@@ -16,6 +16,12 @@
 		TRAIT_TOXINLOVER,
 		TRAIT_NOBLOOD,
 	)
+	cosmetic_organs = list(
+		/obj/item/organ/genital/penis = "None",
+		/obj/item/organ/genital/testicles = "None",
+		/obj/item/organ/genital/breasts = "None",
+		/obj/item/organ/genital/vagina = "None"
+	)
 	mutanttongue = /obj/item/organ/tongue/jelly
 	mutantlungs = /obj/item/organ/lungs/slime
 	mutanteyes = /obj/item/organ/eyes/jelly

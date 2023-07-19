@@ -226,6 +226,19 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(features["pod_hair"])
 		L[DNA_POD_HAIR_BLOCK] = construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len)
 
+	if(features["penis_shape"])
+		L[DNA_PENIS_SHAPE_BLOCK] = construct_block(GLOB.penis_list.Find(features["penis_shape"]), GLOB.penis_list.len)
+	if(features["penis_size"])
+		L[DNA_PENIS_SIZE_BLOCK] = construct_block(GLOB.penis_size_names.Find(features["penis_size"]), GLOB.penis_size_names.len)
+	if(features["testicles_shape"])
+		L[DNA_TESTICLES_SHAPE_BLOCK] = construct_block(GLOB.testicles_list.Find(features["testicles_shape"]), GLOB.testicles_list.len)
+	if(features["vagina_shape"])
+		L[DNA_VAGINA_SHAPE_BLOCK] = construct_block(GLOB.vagina_list.Find(features["vagina_shape"]), GLOB.vagina_list.len)
+	if(features["breasts_shape"])
+		L[DNA_BREASTS_SHAPE_BLOCK] = construct_block(GLOB.breasts_list.Find(features["breasts_shape"]), GLOB.breasts_list.len)
+	if(features["breasts_size"])
+		L[DNA_BREASTS_SIZE_BLOCK] = construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len)
+
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
 
@@ -357,6 +370,19 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len))
 		if(DNA_POD_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len))
+
+		if(DNA_PENIS_SHAPE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.penis_list.Find(features["penis_shape"]), GLOB.penis_list.len))
+		if(DNA_PENIS_SIZE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.penis_size_names.Find(features["penis_size"]), GLOB.penis_size_names.len))
+		if(DNA_TESTICLES_SHAPE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.testicles_list.Find(features["testicles_shape"]), GLOB.testicles_list.len))
+		if(DNA_VAGINA_SHAPE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.vagina_list.Find(features["vagina_shape"]), GLOB.vagina_list.len))
+		if(DNA_BREASTS_SHAPE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.breasts_list.Find(features["breasts_shape"]), GLOB.breasts_list.len))
+		if(DNA_BREASTS_SIZE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len))
 
 //Please use add_mutation or activate_mutation instead
 /datum/dna/proc/force_give(datum/mutation/human/HM)
@@ -633,6 +659,19 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["caps"] = GLOB.caps_list[deconstruct_block(get_uni_feature_block(features, DNA_MUSHROOM_CAPS_BLOCK), GLOB.caps_list.len)]
 	if(dna.features["pod_hair"])
 		dna.features["pod_hair"] = GLOB.pod_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_POD_HAIR_BLOCK), GLOB.pod_hair_list.len)]
+
+	if(dna.features["penis_shape"])
+		dna.features["penis_shape"] = GLOB.penis_list[deconstruct_block(get_uni_feature_block(features, DNA_PENIS_SHAPE_BLOCK), GLOB.penis_list.len)]
+	if(dna.features["penis_size"])
+		dna.features["penis_size"] = GLOB.penis_size_names[deconstruct_block(get_uni_feature_block(features, DNA_PENIS_SIZE_BLOCK), GLOB.penis_size_names.len)]
+	if(dna.features["testicles_shape"])
+		dna.features["testicles_shape"] = GLOB.testicles_list[deconstruct_block(get_uni_feature_block(features, DNA_TESTICLES_SHAPE_BLOCK), GLOB.testicles_list.len)]
+	if(dna.features["vagina_shape"])
+		dna.features["vagina_shape"] = GLOB.vagina_list[deconstruct_block(get_uni_feature_block(features, DNA_VAGINA_SHAPE_BLOCK), GLOB.vagina_list.len)]
+	if(dna.features["breasts_shape"])
+		dna.features["breasts_shape"] = GLOB.breasts_list[deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SHAPE_BLOCK), GLOB.breasts_list.len)]
+	if(dna.features["breasts_size"])
+		dna.features["breasts_size"] = GLOB.breasts_size_names[deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SIZE_BLOCK), GLOB.breasts_size_names.len)]
 
 	for(var/obj/item/organ/organ as anything in organs)
 		organ.mutate_feature(features, src)

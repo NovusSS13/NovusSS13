@@ -92,7 +92,7 @@
 /proc/check_wall_item(floor_loc, dir_toward_wall, check_external = 0)
 	var/wall_loc = get_step(floor_loc, dir_toward_wall)
 	for(var/obj/checked_object in floor_loc)
-		if(is_type_in_typecache(checked_object, GLOB.WALLITEMS_INTERIOR) && !check_external)
+		if(is_type_in_typecache(checked_object, GLOB.wallitems_interior) && !check_external)
 			//Direction works sometimes
 			if(checked_object.dir == dir_toward_wall)
 				return TRUE
@@ -102,7 +102,7 @@
 			if(get_turf_pixel(checked_object) == wall_loc)
 				return TRUE
 
-		if(is_type_in_typecache(checked_object, GLOB.WALLITEMS_EXTERIOR) && check_external)
+		if(is_type_in_typecache(checked_object, GLOB.wallitems_exterior) && check_external)
 			if(checked_object.dir == dir_toward_wall)
 				return TRUE
 
@@ -111,7 +111,7 @@
 	if (check_external)
 		return FALSE
 	for(var/obj/checked_object in wall_loc)
-		if(is_type_in_typecache(checked_object, GLOB.WALLITEMS_INTERIOR))
+		if(is_type_in_typecache(checked_object, GLOB.wallitems_interior))
 			if(checked_object.pixel_x == 0 && checked_object.pixel_y == 0)
 				return TRUE
 	return FALSE
