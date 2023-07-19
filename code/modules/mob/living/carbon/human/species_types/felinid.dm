@@ -8,6 +8,11 @@
 	cosmetic_organs = list(
 		/obj/item/organ/ears/cat = "Cat",
 		/obj/item/organ/tail/cat = "Cat",
+
+		/obj/item/organ/genital/penis = "None",
+		/obj/item/organ/genital/testicles = "None",
+		/obj/item/organ/genital/breasts = "None",
+		/obj/item/organ/genital/vagina = "None"
 	)
 	inherent_traits = list(
 		TRAIT_CAN_USE_FLIGHT_POTION,

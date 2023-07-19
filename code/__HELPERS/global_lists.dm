@@ -34,6 +34,12 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 
+	//genitals
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/penis, GLOB.penis_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/testicles, GLOB.testicles_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/breasts, GLOB.breasts_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/vagina, GLOB.vagina_list, add_blank = TRUE)
+
 /// Inits GLOB.species_list. Not using GLOBAL_LIST_INIT b/c it depends on GLOB.string_lists
 /proc/init_species_list()
 	for(var/spath in subtypesof(/datum/species))
@@ -218,7 +224,7 @@
  * Checks if that loc and dir has an item on the wall
 **/
 // Wall mounted machinery which are visually on the wall.
-GLOBAL_LIST_INIT(WALLITEMS_INTERIOR, typecacheof(list(
+GLOBAL_LIST_INIT(wallitems_interior, typecacheof(list(
 	/obj/item/radio/intercom,
 	/obj/item/storage/secure/safe,
 	/obj/machinery/airalarm,
@@ -253,7 +259,7 @@ GLOBAL_LIST_INIT(WALLITEMS_INTERIOR, typecacheof(list(
 
 // Wall mounted machinery which are visually coming out of the wall.
 // These do not conflict with machinery which are visually placed on the wall.
-GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
+GLOBAL_LIST_INIT(wallitems_exterior, typecacheof(list(
 	/obj/machinery/camera,
 	/obj/machinery/light,
 	/obj/structure/camera_assembly,

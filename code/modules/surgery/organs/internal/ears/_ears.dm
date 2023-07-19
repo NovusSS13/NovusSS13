@@ -90,18 +90,20 @@
 	. = ..()
 	//fucking lovely, we have to deal with the inners
 	layer = bitflag_to_layer(layer)
-	if(sprite_datum.hasinner)
-		var/gender = (limb?.limb_gender == FEMALE) ? "f" : "m"
-		var/list/icon_state_builder = list()
-		icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
-		icon_state_builder += "[feature_key]inner"
-		icon_state_builder += get_base_icon_state()
-		icon_state_builder += mutant_bodyparts_layertext(layer)
+	if(!sprite_datum.hasinner)
+		return
 
-		var/finished_icon_state = icon_state_builder.Join("_")
+	var/gender = (limb?.limb_gender == FEMALE) ? "f" : "m"
+	var/list/icon_state_builder = list()
+	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
+	icon_state_builder += "[feature_key]inner"
+	icon_state_builder += get_base_icon_state()
+	icon_state_builder += mutant_bodyparts_layertext(layer)
 
-		var/mutable_appearance/inner_appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
-		. += inner_appearance
+	var/finished_icon_state = icon_state_builder.Join("_")
+
+	var/mutable_appearance/inner_appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
+	. += inner_appearance
 
 /datum/bodypart_overlay/mutant/ears/generate_icon_cache()
 	. = ..()

@@ -41,6 +41,39 @@ GLOBAL_LIST_EMPTY(moth_markings_list)
 GLOBAL_LIST_EMPTY(caps_list)
 GLOBAL_LIST_EMPTY(pod_hair_list)
 
+	//Human bits bits
+GLOBAL_LIST_EMPTY(penis_list)
+GLOBAL_LIST_EMPTY(testicles_list)
+GLOBAL_LIST_EMPTY(breasts_list)
+GLOBAL_LIST_EMPTY(vagina_list)
+
+GLOBAL_LIST_INIT(penis_size_names, list(
+	"1" = "Tiny",
+	"2" = "Average",
+	"3" = "Big",
+	"4" = "Enormous"
+))
+
+GLOBAL_LIST_INIT(breasts_size_names, list(
+	"1" = "A",
+	"2" = "C",
+	"3" = "B",
+	"4" = "D",
+	"5" = "E",
+	"6" = "F",
+	"7" = "G",
+	"8" = "H",
+	"9" = "I",
+	"10" = "J",
+	"11" = "K",
+	"12" = "L",
+	"13" = "M",
+	"14" = "N",
+	"15" = "O",
+	"16" = "P"
+))
+
+
 GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"Blue" = "#3399ff",
 	"Bright Yellow" = "#ffff99",

@@ -32,6 +32,13 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/fly,
 	)
 
+	cosmetic_organs = list(
+		/obj/item/organ/genital/penis = "None",
+		/obj/item/organ/genital/testicles = "None",
+		/obj/item/organ/genital/breasts = "None",
+		/obj/item/organ/genital/vagina = "None"
+	)
+
 /datum/species/fly/check_species_weakness(obj/item/weapon, mob/living/attacker)
 	if(istype(weapon, /obj/item/melee/flyswatter))
 		return 30 //Flyswatters deal 30x damage to flypeople.

@@ -58,8 +58,15 @@
 #define DNA_MUSHROOM_CAPS_BLOCK 15
 #define DNA_POD_HAIR_BLOCK 16
 
+#define DNA_PENIS_SHAPE_BLOCK 17
+#define DNA_PENIS_SIZE_BLOCK 17
+#define DNA_TESTICLES_SHAPE_BLOCK 18
+#define DNA_VAGINA_SHAPE_BLOCK 19
+#define DNA_BREASTS_SHAPE_BLOCK 20
+#define DNA_BREASTS_SIZE_BLOCK 21
+
 /// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 16
+#define DNA_FEATURE_BLOCKS 21
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -101,6 +108,13 @@
 #define ORGAN_SLOT_EXTERNAL_BODYMARKINGS "bodymarkings"
 #define ORGAN_SLOT_EXTERNAL_MUSHROOM_CAP "mushroom_cap"
 #define ORGAN_SLOT_EXTERNAL_POD_HAIR "pod_hair"
+
+// genitalia
+#define ORGAN_SLOT_PENIS "penis"
+#define ORGAN_SLOT_TESTICLES "testicles" //no bob im not adding 2 slots for each testicle
+#define ORGAN_SLOT_BREASTS "breasts"
+#define ORGAN_SLOT_VAGINA "vagina"
+#define ORGAN_SLOT_WOMB "womb"
 
 // xenomorph organ slots
 #define ORGAN_SLOT_XENO_ACIDGLAND "acid_gland"
