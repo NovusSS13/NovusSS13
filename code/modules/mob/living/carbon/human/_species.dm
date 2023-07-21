@@ -414,7 +414,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		// Cosmetic organ checking - We need to check the cosmetic organs owned by the carbon itself,
 		// because we want to also remove ones not shared by its species.
 		// This should be done even if species was not changed.
-		if(cosmetic_organ.type in cosmetic_organs)
+		if(cosmetic_organ.type in cosmetic_organs && (cosmetic_organ.bodypart_overlay && organ_holder.dna.features[cosmetic_organ.bodypart_overlay.feature_key] != SPRITE_ACCESSORY_NONE)) //nvm bob you were right
 			continue // Don't remove cosmetic organs this species is supposed to have.
 
 		cosmetic_organ.Remove(organ_holder)

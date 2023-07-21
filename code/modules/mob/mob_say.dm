@@ -47,9 +47,21 @@
 		to_chat(usr, span_danger("Speech is currently admin-disabled."))
 		return
 
-	message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
+	message = trim(copytext_char(sanitize(message), 1, MAX_EMOTE_LEN))
 
 	QUEUE_OR_CALL_VERB_FOR(VERB_CALLBACK(src, TYPE_PROC_REF(/mob, emote), "me", 1, message, TRUE), SSspeech_controller)
+
+/mob/verb/subtle_verb(message as text)
+	set name = "Subtle"
+	set category = "IC"
+
+	if(GLOB.say_disabled) //This is here to try to identify lag problems
+		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		return
+
+	message = trim(copytext_char(sanitize(message), 1, MAX_EMOTE_LEN))
+
+	QUEUE_OR_CALL_VERB_FOR(VERB_CALLBACK(src, TYPE_PROC_REF(/mob, emote), "subtle", 1, message, TRUE), SSspeech_controller)
 
 /mob/try_speak(message, ignore_spam = FALSE, forced = null, filterproof = FALSE)
 	SHOULD_CALL_PARENT(TRUE)

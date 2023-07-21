@@ -82,6 +82,7 @@
 
 /datum/sprite_accessory/breasts
 	icon = 'icons/mob/species/genitals/breasts_onmob.dmi'
+	var/max_size = 16
 
 /datum/sprite_accessory/breasts/pair
 	name = "Pair"
@@ -90,7 +91,9 @@
 /datum/sprite_accessory/breasts/quad
 	name = "Quad"
 	icon_state = "quad"
+	max_size = 5
 
 /datum/sprite_accessory/breasts/sextuple
 	name = "Sextuple"
 	icon_state = "sextuple"
+	max_size = 5
