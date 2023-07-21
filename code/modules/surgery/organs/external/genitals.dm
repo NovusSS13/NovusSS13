@@ -2,8 +2,6 @@
 #define EXPOSURE_CLOTHING 1
 #define EXPOSURE_ALWAYS 2
 
-#define DEFAULT_AROUSAL_OPTIONS list("Not aroused" = 0, "Partly aroused" = 1, "Fully aroused" = 2)
-
 //very sex
 /obj/item/organ/genital
 	name = "genital"
@@ -189,3 +187,7 @@
 	if(genital_visibility == EXPOSURE_CLOTHING)
 		return !(human.get_all_covered_flags() & CHEST)
 	return ..()
+
+#undef EXPOSURE_ALWAYS
+#undef EXPOSURE_CLOTHING
+#undef EXPOSURE_NEVER
