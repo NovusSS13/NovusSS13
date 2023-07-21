@@ -203,6 +203,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/proc/on_remove(mob/living/carbon/organ_owner, special = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	if(!iscarbon(organ_owner))
+		stack_trace("Organ removal should not be happening on non carbon mobs: [organ_owner]")
+
 	for(var/trait in organ_traits)
 		REMOVE_TRAIT(organ_owner, trait, REF(src))
 
@@ -224,6 +227,22 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	SEND_SIGNAL(src, COMSIG_ORGAN_REMOVED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_LOSE_ORGAN, src, special)
 
+	var/list/diseases = organ_owner.get_static_viruses()
+	if(LAZYLEN(diseases))
+		var/list/datum/disease/diseases_to_add = list()
+		for(var/datum/disease/disease as anything in diseases)
+			// robotic organs are immune to disease unless 'inorganic biology' symptom is present
+			if(IS_ROBOTIC_ORGAN(src) && !(disease.infectable_biotypes & MOB_ROBOTIC))
+				continue
+
+			// admin or special viruses that should not be reproduced
+			if(disease.spread_flags & (DISEASE_SPREAD_SPECIAL | DISEASE_SPREAD_NON_CONTAGIOUS))
+				continue
+
+			diseases_to_add += disease
+		if(LAZYLEN(diseases_to_add))
+			AddComponent(/datum/component/infective, diseases_to_add)
+
 	if(external_bodytypes)
 		organ_owner.synchronize_bodytypes()
 	if(visual)
@@ -231,6 +250,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	//we're being taken out and dropped
 	if(use_mob_sprite_as_obj_sprite)
 		update_appearance()
+
 
 /// Transfers the organ to a given detached limb, this proc should only be used on dismemberment
 /obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/new_bodypart, special = FALSE)
@@ -358,6 +378,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 
 	if(!damage) // No sense healing if you're not even hurt bro
+		return
+
+	if(IS_ROBOTIC_ORGAN(src)) // Robotic organs don't naturally heal
 		return
 
 	///Damage decrements by a percent of its maxhealth
