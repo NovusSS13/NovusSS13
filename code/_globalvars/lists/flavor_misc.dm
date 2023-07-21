@@ -73,6 +73,11 @@ GLOBAL_LIST_INIT(breasts_size_names, list(
 	"16" = "P"
 ))
 
+GLOBAL_LIST_INIT(genital_visibility_list, list(
+	"Always hidden" = 0,
+	"Hidden behind clothing" = 1,
+	"Always visible" = 2,
+))
 
 GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"Blue" = "#3399ff",
