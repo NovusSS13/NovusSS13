@@ -74,7 +74,7 @@
 			balloon_alert(user, "no water!")
 			return
 
-		used_item.reagents.trans_to(/datum/reagent/water, 5)
+		used_item.reagents.trans_to(src, 5)
 		user.visible_message(
 			span_notice("[user] pours some water into [src]."),
 			span_notice("You pour some water to [src].")
