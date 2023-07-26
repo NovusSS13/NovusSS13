@@ -106,7 +106,7 @@
 		worn_face_offset?.apply_offset(lip_overlay)
 		. += lip_overlay
 		//Emissive blocker
-		if(blocks_emissive)
+		if(blocks_emissive != EMISSIVE_BLOCK_NONE)
 			var/image/lip_blocker = emissive_blocker(lip_overlay.icon, lip_overlay.icon_state, location)
 			lip_blocker.dir = image_dir
 			worn_face_offset?.apply_offset(lip_blocker)
@@ -131,7 +131,7 @@
 				facial_hair_gradient_overlay.dir = image_dir
 				. += facial_hair_gradient_overlay
 			//Emissive blocker
-			if(blocks_emissive)
+			if(blocks_emissive != EMISSIVE_BLOCK_NONE)
 				var/image/facial_blocker = emissive_blocker(facial_hair_overlay.icon, facial_hair_overlay.icon_state, location)
 				facial_blocker.dir = image_dir
 				worn_face_offset?.apply_offset(facial_hair_overlay)
@@ -156,7 +156,7 @@
 				hair_gradient_overlay.dir = image_dir
 				. += hair_gradient_overlay
 			//Emissive blocker
-			if(blocks_emissive)
+			if(blocks_emissive != EMISSIVE_BLOCK_NONE)
 				var/image/hair_blocker = emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, location)
 				hair_blocker.dir = image_dir
 				worn_face_offset?.apply_offset(hair_blocker)
@@ -210,7 +210,7 @@
 	var/atom/location = loc || owner || src
 	var/image/left_blocker
 	var/image/right_blocker
-	if(blocks_emissive)
+	if(blocks_emissive != EMISSIVE_BLOCK_NONE)
 		left_blocker = emissive_blocker(left_eye.icon, left_eye.icon_state, location)
 		right_blocker = emissive_blocker(right_eye.icon, right_eye.icon_state, location)
 		. += left_blocker
