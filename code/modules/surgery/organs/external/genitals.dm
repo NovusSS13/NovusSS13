@@ -11,16 +11,14 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	var/genital_size = 1
-	var/arousal_state = 0
-	var/list/arousal_options = null
+	use_mob_sprite_as_obj_sprite = TRUE
 
 /obj/item/organ/genital/proc/set_genital_size(value)
 	return //handled by subtypes
 
 /obj/item/organ/genital/Remove(mob/living/carbon/organ_owner, special)
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
-	arousal_state = 0
+	overlay.arousal_state = 0
 	overlay.genital_visibility = EXPOSURE_CLOTHING
 	return ..()
 
@@ -30,14 +28,15 @@
 	var/arousal_state = 0
 	var/uses_skintone = FALSE
 	var/genital_visibility = EXPOSURE_CLOTHING
+	var/list/arousal_options = null
 
 /datum/bodypart_overlay/mutant/genital/can_draw_on_bodypart(mob/living/carbon/human/human)
 	switch(genital_visibility)
-		if(EXPOSURE_NEVER)
+		if(GENITAL_VISIBILITY_NEVER)
 			return FALSE //duh
-		if(EXPOSURE_ALWAYS)
+		if(GENITAL_VISIBILITY_ALWAYS)
 			return TRUE //duher
-	// exposure_clothing is handled by subtypes
+	return FALSE // GENITAL_VISIBILITY_CLOTHING is handled by subtypes
 
 
 
@@ -48,7 +47,6 @@
 	dna_block = DNA_PENIS_SHAPE_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/penis
 	preference = "feature_penis_shape"
-	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_PENIS
@@ -60,23 +58,27 @@
 		set_genital_size(size)
 
 /obj/item/organ/genital/penis/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
+	. = ..()
 	set_genital_size(receiver.dna.features["penis_size"] || 2)
-	return ..()
 
 /obj/item/organ/genital/penis/set_genital_size(value)
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
 
 	value = clamp(text2num(value), 1, 4)
-	genital_size = value
 	overlay.genital_size = value
 
 /datum/bodypart_overlay/mutant/genital/penis
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
 	feature_key = "penis"
+	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
 /datum/bodypart_overlay/mutant/genital/penis/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(genital_visibility == EXPOSURE_CLOTHING)
-		return !(human.get_all_covered_flags() & GROIN)
+		if(!(human.get_all_covered_flags() & GROIN))
+			return FALSE
+		//this is fucked man
+		if(human.underwear && (human.underwear != "Nude"))
+			return FALSE
 	return ..()
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
@@ -110,7 +112,11 @@
 
 /datum/bodypart_overlay/mutant/genital/testicles/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(genital_visibility == EXPOSURE_CLOTHING)
-		return !(human.get_all_covered_flags() & GROIN)
+		if(!(human.get_all_covered_flags() & GROIN))
+			return FALSE
+		//this is fucked
+		if(human.underwear && (human.underwear != "Nude"))
+			return FALSE
 	return ..()
 
 
@@ -121,7 +127,6 @@
 	dna_block = DNA_VAGINA_SHAPE_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/vagina
 	preference = "feature_vagina_shape"
-	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_VAGINA
@@ -129,6 +134,7 @@
 /datum/bodypart_overlay/mutant/genital/vagina
 	layers = EXTERNAL_FRONT
 	feature_key = "vagina"
+	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
 /datum/bodypart_overlay/mutant/genital/vagina/get_base_icon_state()
 	return "[sprite_datum.icon_state]_[arousal_state][uses_skintone ? "_s" : ""]"
@@ -138,7 +144,11 @@
 
 /datum/bodypart_overlay/mutant/genital/vagina/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(genital_visibility == EXPOSURE_CLOTHING)
-		return !(human.get_all_covered_flags() & GROIN)
+		if(!(human.get_all_covered_flags() & GROIN))
+			return FALSE
+		//this is fucked
+		if(human.underwear && (human.underwear != "Nude"))
+			return FALSE
 	return ..()
 
 
@@ -154,11 +164,10 @@
 	slot = ORGAN_SLOT_BREASTS
 
 /obj/item/organ/genital/breasts/set_genital_size(value)
-	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
 	var/datum/sprite_accessory/breasts/sprite_accessory = bodypart_overlay.sprite_datum
-
 	value = clamp(text2num(value), 1, sprite_accessory.max_size)
-	genital_size = value
+
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
 	overlay.genital_size = value
 
 /obj/item/organ/genital/breasts/mutate_feature(features, mob/living/carbon/human/human)
@@ -168,8 +177,8 @@
 		set_genital_size(size)
 
 /obj/item/organ/genital/breasts/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
+	. = ..()
 	set_genital_size(receiver.dna.features["breasts_size"] || 2)
-	return ..()
 
 
 
@@ -185,7 +194,11 @@
 
 /datum/bodypart_overlay/mutant/genital/breasts/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(genital_visibility == EXPOSURE_CLOTHING)
-		return !(human.get_all_covered_flags() & CHEST)
+		if(!(human.get_all_covered_flags() & CHEST))
+			return FALSE
+		//this is fucked
+		if(human.undershirt && (human.undershirt != "Nude"))
+			return FALSE
 	return ..()
 
 #undef EXPOSURE_ALWAYS

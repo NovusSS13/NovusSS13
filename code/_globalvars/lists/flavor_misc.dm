@@ -74,9 +74,9 @@ GLOBAL_LIST_INIT(breasts_size_names, list(
 ))
 
 GLOBAL_LIST_INIT(genital_visibility_list, list(
-	"Always hidden" = 0,
-	"Hidden behind clothing" = 1,
-	"Always visible" = 2,
+	"Always hidden" = GENITAL_VISIBILITY_NEVER,
+	"Hidden behind clothing" = GENITAL_VISIBILITY_CLOTHING,
+	"Always visible" = GENITAL_VISIBILITY_ALWAYS,
 ))
 
 GLOBAL_LIST_INIT(color_list_ethereal, list(

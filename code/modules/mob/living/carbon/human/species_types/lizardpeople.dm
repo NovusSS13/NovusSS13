@@ -19,11 +19,11 @@
 		/obj/item/organ/snout = "Round",
 		/obj/item/organ/spines = "None",
 		/obj/item/organ/tail/lizard = "Smooth",
-		//bob i will kill you
+		//bob i will kill you //i will kill you too null, you fucking dolt
 		/obj/item/organ/genital/penis = "None",
 		/obj/item/organ/genital/testicles = "None",
 		/obj/item/organ/genital/breasts = "None",
-		/obj/item/organ/genital/vagina = "None"
+		/obj/item/organ/genital/vagina = "None",
 	)
 	mutanttongue = /obj/item/organ/tongue/lizard
 	coldmod = 1.5

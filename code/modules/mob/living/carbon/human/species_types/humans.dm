@@ -9,7 +9,7 @@
 		/obj/item/organ/genital/penis = "None",
 		/obj/item/organ/genital/testicles = "None",
 		/obj/item/organ/genital/breasts = "None",
-		/obj/item/organ/genital/vagina = "None"
+		/obj/item/organ/genital/vagina = "None",
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT

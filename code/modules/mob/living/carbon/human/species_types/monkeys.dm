@@ -5,11 +5,6 @@
 	id = SPECIES_MONKEY
 	cosmetic_organs = list(
 		/obj/item/organ/tail/monkey = "Monkey",
-
-		/obj/item/organ/genital/penis = "None",
-		/obj/item/organ/genital/testicles = "None",
-		/obj/item/organ/genital/breasts = "None",
-		/obj/item/organ/genital/vagina = "None"
 	)
 	mutanttongue = /obj/item/organ/tongue/monkey
 	mutantbrain = /obj/item/organ/brain/primate

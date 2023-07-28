@@ -8,3 +8,11 @@
 // Tail wagging
 #define WAG_ABLE (1<<0)
 #define WAG_WAGGING (1<<1)
+
+// Genital visibility
+/// Never visible
+#define GENITAL_VISIBILITY_NEVER 0
+/// Visible when naked
+#define GENITAL_VISIBILITY_CLOTHING 1
+/// Always visible
+#define GENITAL_VISIBILITY_ALWAYS 2
