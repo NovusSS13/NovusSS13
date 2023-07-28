@@ -14,12 +14,10 @@
 	attack_verb_continuous = list("mops", "bashes", "bludgeons", "whacks")
 	attack_verb_simple = list("mop", "bash", "bludgeon", "whack")
 	resistance_flags = FLAMMABLE
-	var/mopcount = 0
-	///Maximum volume of reagents it can hold.
-	var/max_reagent_volume = 15
-	var/mopspeed = 1.5 SECONDS
 	force_string = "robust... against germs"
-	var/insertable = TRUE
+	///Maximum volume of reagents it can hold.
+	var/max_reagent_volume = 60
+	var/mopspeed = 1.5 SECONDS
 	var/static/list/clean_blacklist = typecacheof(list(
 		/obj/item/reagent_containers/cup/bucket,
 		/obj/structure/mop_bucket,
@@ -34,6 +32,9 @@
 /obj/item/mop/Destroy(force)
 	GLOB.janitor_devices -= src
 	return ..()
+
+/obj/item/mop/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
+	return mop_liquids(target, user, proximity_flag, click_parameters) || ..()
 
 ///Checks whether or not we should clean.
 /obj/item/mop/proc/should_clean(datum/cleaning_source, atom/atom_to_clean, mob/living/cleaner)
@@ -54,19 +55,37 @@
  */
 /obj/item/mop/proc/apply_reagents(datum/cleaning_source, turf/cleaned_turf, mob/living/cleaner)
 	reagents.expose(cleaned_turf, TOUCH, 10) //Needed for proper floor wetting.
-	var/val2remove = 1
+	var/val2remove = 4
 	if(cleaner?.mind)
-		val2remove = round(cleaner.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER), 0.1)
+		val2remove *= round(cleaner.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER), 0.1)
 	reagents.remove_any(val2remove) //reaction() doesn't use up the reagents
 
-/obj/item/mop/cyborg/Initialize(mapload)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_NODROP, CYBORG_ITEM_TRAIT)
+/obj/item/mop/proc/mop_liquids(turf/target, mob/user, proximity_flag, click_parameters)
+	. = NONE
+	if(proximity_flag)
+		return
+
+	if(!istype(target) || !target.liquids)
+		return
+
+	. = COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN
+
+	var/free_space = reagents.maximum_volume - reagents.total_volume
+	if(free_space <= 0)
+		to_chat(user, span_warning("Your mop can't absorb any more liquids!"))
+		return
+
+	var/datum/reagents/turf_reagents = target.liquids.take_reagents_flat(free_space)
+	turf_reagents.trans_to(reagents, turf_reagents.total_volume)
+	qdel(turf_reagents)
+
+	to_chat(user, span_notice("You soak up some liquids with your mop."))
+	user.changeNext_move(CLICK_CD_CLICK_ABILITY)
 
 /obj/item/mop/advanced
 	desc = "The most advanced tool in a custodian's arsenal, complete with a condenser for self-wetting! Just think of all the viscera you will clean up with this!"
 	name = "advanced mop"
-	max_reagent_volume = 10
+	max_reagent_volume = 120
 	icon_state = "advmop"
 	inhand_icon_state = "advmop"
 	lefthand_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
@@ -77,7 +96,7 @@
 	mopspeed = 0.8 SECONDS
 	var/refill_enabled = TRUE //Self-refill toggle for when a janitor decides to mop with something other than water.
 	/// Amount of reagent to refill per second
-	var/refill_rate = 0.5
+	var/refill_rate = 2
 	var/refill_reagent = /datum/reagent/water //Determins what reagent to use for refilling, just in case someone wanted to make a HOLY MOP OF PURGING
 
 /obj/item/mop/advanced/Initialize(mapload)
@@ -106,5 +125,7 @@
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
+
+/obj/item/mop/cyborg
+
 /obj/item/mop/advanced/cyborg
-	insertable = FALSE

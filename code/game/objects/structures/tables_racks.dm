@@ -604,6 +604,10 @@
 	integrity_failure = 0.25
 	armor_type = /datum/armor/table_reinforced
 
+/obj/structure/table/reinforced/Initialize()
+	. = ..()
+	AddElement(/datum/element/liquids_height, 20)
+
 /datum/armor/table_reinforced
 	melee = 10
 	bullet = 30

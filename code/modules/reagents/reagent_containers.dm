@@ -40,6 +40,8 @@
 
 /obj/item/reagent_containers/Initialize(mapload, vol)
 	. = ..()
+	AddComponent(/datum/component/liquids_interaction, on_interaction_callback = TYPE_PROC_REF(/obj/item/reagent_containers, attack_on_liquids_turf))
+
 	if(isnum(vol) && vol > 0)
 		volume = vol
 	create_reagents(volume, reagent_flags)
@@ -202,38 +204,47 @@
 		. = TRUE
 
 /obj/item/reagent_containers/proc/SplashReagents(atom/target, thrown = FALSE, override_spillable = FALSE)
-	if(!reagents || !reagents.total_volume || (!spillable && !override_spillable))
+	if(!reagents?.total_volume || (!spillable && !override_spillable))
 		return
-	var/mob/thrown_by = thrownby?.resolve()
 
-	if(ismob(target) && target.reagents)
-		var/splash_multiplier = 1
-		if(thrown)
-			splash_multiplier *= (rand(5,10) * 0.1) //Not all of it makes contact with the target
-		var/mob/M = target
-		var/turf/target_turf = get_turf(target)
-		var/R
-		target.visible_message(span_danger("[M] is splashed with something!"), \
-						span_userdanger("[M] is splashed with something!"))
+	if(bartender_check(target))
+		visible_message(span_notice("[src] lands onto \the [target] without spilling a single drop."))
+		return
+
+	var/mob/thrown_by = thrownby?.resolve()
+	if(ismovable(target))
+		target.visible_message(
+			span_danger("[target] is splashed with something!"),
+			span_userdanger("[target] is splashed with something!")
+		)
+		var/list/logged_reagents = list()
 		for(var/datum/reagent/A in reagents.reagent_list)
-			R += "[A.type]  ([num2text(A.volume)]),"
+			logged_reagents += "[A.type]  ([num2text(A.volume)])"
 
 		if(thrown_by)
-			log_combat(thrown_by, M, "splashed", R)
-		reagents.expose(target, TOUCH, splash_multiplier)
+			log_combat(thrown_by, target, "splashed", english_list(logged_reagents))
+
+		var/splash_multiplier = 0
+		if(target.reagents)
+			splash_multiplier = 0.1 * rand(5,10)
+			reagents.expose(target, TOUCH, splash_multiplier)
+
+		var/turf/target_turf = get_turf(target)
 		reagents.expose(target_turf, TOUCH, (1 - splash_multiplier)) // 1 - splash_multiplier because it's what didn't hit the target
 
-	else if(bartender_check(target) && thrown)
-		visible_message(span_notice("[src] lands onto the [target.name] without spilling a single drop."))
-		return
-
 	else
-		if(isturf(target) && reagents.reagent_list.len && thrown_by)
+		var/turf/target_turf = target
+		if(!istype(target_turf)) //so help me god
+			stack_trace("how the fuck did you manage to SplashReagents on an AREA")
+			return
+
+		if(thrown_by)
 			log_combat(thrown_by, target, "splashed (thrown) [english_list(reagents.reagent_list)]", "in [AREACOORD(target)]")
 			thrown_by.log_message("splashed (thrown) [english_list(reagents.reagent_list)] on [target].", LOG_ATTACK)
 			message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
+
 		visible_message(span_notice("[src] spills its contents all over [target]."))
-		reagents.expose(target, TOUCH)
+		target_turf.add_liquid_from_reagents(reagents)
 		if(QDELETED(src))
 			return
 
@@ -279,3 +290,38 @@
 
 	filling.color = mix_color_from_reagents(reagents.reagent_list)
 	. += filling
+
+// first arg == src
+/obj/item/reagent_containers/proc/attack_on_liquids_turf(obj/item/reagent_containers/_, turf/target_turf, mob/living/user, obj/effect/abstract/turf_liquid/liquids)
+	if(user.combat_mode)
+		return FALSE
+
+	if(!(reagent_flags & REFILLABLE))
+		return FALSE
+
+	if(!Adjacent(target_turf))
+		return FALSE
+
+	if(liquids.fire_state) //Use an extinguisher first
+		to_chat(user, span_warning("You can't scoop up anything while it's on fire!"))
+		return TRUE
+
+	if(liquids.height == 1)
+		to_chat(user, span_warning("The puddle is too shallow to scoop anything up!"))
+		return TRUE
+
+	var/free_space = reagents.maximum_volume - reagents.total_volume
+	if(free_space <= 0)
+		to_chat(user, span_warning("You can't fit any more liquids inside [src]!"))
+		return TRUE
+
+	var/desired_transfer = amount_per_transfer_from_this
+	if(desired_transfer > free_space)
+		desired_transfer = free_space
+
+	var/datum/reagents/turf_reagents = liquids.take_reagents_flat(desired_transfer)
+	turf_reagents.trans_to(src.reagents, turf_reagents.total_volume)
+	qdel(turf_reagents)
+	to_chat(user, span_notice("You scoop up around [amount_per_transfer_from_this] units of liquids with [src]."))
+	user.changeNext_move(CLICK_CD_MELEE)
+	return TRUE

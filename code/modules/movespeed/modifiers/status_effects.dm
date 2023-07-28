@@ -34,3 +34,7 @@
 
 /datum/movespeed_modifier/status_effect/light_speed
 	multiplicative_slowdown = -0.2 // lighting is pretty slow in BYOND
+
+/datum/movespeed_modifier/status_effect/water_slowdown
+	variable = TRUE
+	blacklisted_movetypes = (FLYING|FLOATING)

@@ -200,21 +200,33 @@
 	var/total_heat_capacity = air.heat_capacity()
 	var/partial_heat_capacity = total_heat_capacity * (share_volume / air.volume)
 
-	var/turf_temperature = target.GetTemperature()
-	var/turf_heat_capacity = target.GetHeatCapacity()
+	if(target.liquids?.liquid_state >= LIQUID_STATE_FOR_HEAT_EXCHANGERS)
+		var/turf_heat_capacity = target.liquids.total_reagents * REAGENT_HEAT_CAPACITY
+		var/delta_temperature = (air.temperature - target.liquids.temp)
 
-	if(turf_heat_capacity <= 0 || partial_heat_capacity <= 0)
-		return TRUE
+		if(turf_heat_capacity <= 0 || partial_heat_capacity <= 0)
+			return TRUE
 
-	var/delta_temperature = turf_temperature - air.temperature
+		var/heat = thermal_conductivity * delta_temperature * (partial_heat_capacity * turf_heat_capacity / (partial_heat_capacity + turf_heat_capacity))
 
-	var/heat = thermal_conductivity * CALCULATE_CONDUCTION_ENERGY(delta_temperature, partial_heat_capacity, turf_heat_capacity)
-	air.temperature += heat / total_heat_capacity
-	target.TakeTemperature(-1 * heat / turf_heat_capacity)
+		air.temperature -= heat / total_heat_capacity
+		if(!target.liquids.immutable)
+			target.liquids.temp += heat / turf_heat_capacity
+	else
+		var/turf_temperature = target.GetTemperature()
+		var/turf_heat_capacity = target.GetHeatCapacity()
+		if(turf_heat_capacity <= 0 || partial_heat_capacity <= 0)
+			return TRUE
 
-	if(target.blocks_air)
-		target.temperature_expose(air, target.temperature)
-	update = TRUE
+		var/delta_temperature = turf_temperature - air.temperature
+
+		var/heat = thermal_conductivity * CALCULATE_CONDUCTION_ENERGY(delta_temperature, partial_heat_capacity, turf_heat_capacity)
+		air.temperature += heat / total_heat_capacity
+		target.TakeTemperature(-1 * heat / turf_heat_capacity)
+
+		if(target.blocks_air)
+			target.temperature_expose(air, target.temperature)
+		update = TRUE
 
 /datum/pipeline/proc/return_air()
 	. = other_airs + air

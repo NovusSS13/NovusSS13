@@ -289,6 +289,7 @@
 	inhand_icon_state = "plumberer_sci"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
+	has_ammobar = TRUE
 
 /obj/item/construction/plumbing/research/set_plumbing_designs()
 	plumbing_design_types = list(
@@ -314,6 +315,7 @@
 	name = "service plumbing constructor"
 	desc = "A type of plumbing constructor designed to rapidly deploy the machines needed to make a brewery."
 	icon_state = "plumberer_service"
+	has_ammobar = TRUE
 
 /obj/item/construction/plumbing/service/set_plumbing_designs()
 	plumbing_design_types = list(
@@ -340,4 +342,25 @@
 		/obj/machinery/plumbing/bottler = 50,
 		/obj/machinery/plumbing/tank = 20,
 		/obj/machinery/plumbing/acclimator = 10,
+	)
+
+
+/obj/item/construction/plumbing/engineering
+	name = "engineering plumbing constructor"
+	desc = "A type of plumbing constructor designed to rapidly deploy the machines needed for logistics regarding fluids."
+	icon_state = "plumberer_engi"
+	has_ammobar = TRUE
+
+/obj/item/construction/plumbing/engineering/set_plumbing_designs()
+	plumbing_design_types = list(
+		/obj/machinery/duct = 1,
+		/obj/machinery/plumbing/input = 5,
+		/obj/machinery/plumbing/output = 5,
+		/obj/machinery/plumbing/tank = 20,
+		/obj/machinery/plumbing/acclimator = 10,
+		/obj/machinery/plumbing/filter = 5,
+		/obj/machinery/plumbing/splitter = 5,
+		/obj/machinery/plumbing/disposer = 10,
+		/obj/machinery/plumbing/floor_pump/input = 20,
+		/obj/machinery/plumbing/floor_pump/output = 20
 	)

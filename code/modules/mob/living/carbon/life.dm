@@ -108,9 +108,31 @@
 				breath = loc_as_obj.handle_internal_lifeform(src, BREATH_VOLUME)
 
 			else if(isturf(loc)) //Breathe from loc as turf
+				//Underwater breathing
+				var/turf/T = loc
+				if(T.liquids && !HAS_TRAIT(src, TRAIT_NOBREATH) && ((body_position == LYING_DOWN && T.liquids.liquid_state >= LIQUID_STATE_WAIST) || (body_position == STANDING_UP && T.liquids.liquid_state >= LIQUID_STATE_FULLTILE)))
+					//Officially trying to breathe underwater
+					if(HAS_TRAIT(src, TRAIT_WATER_BREATHING))
+						failed_last_breath = FALSE
+						clear_alert("not_enough_oxy")
+						return
+
+					adjustOxyLoss(3)
+					failed_last_breath = TRUE
+					if(oxyloss <= OXYGEN_DAMAGE_CHOKING_THRESHOLD && stat == CONSCIOUS)
+						to_chat(src, span_userdanger("You hold in your breath!"))
+						return
+
+					//Try and drink water#]
+					var/datum/reagents/turf_reagents = T.liquids.take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_BREATH_AMOUNT)
+					turf_reagents.trans_to(src, turf_reagents.total_volume, methods = INGEST)
+					qdel(turf_reagents)
+					visible_message(span_warning("[src] chokes on water!"), span_userdanger("You're choking on water!"))
+					return
+
 				var/breath_moles = 0
 				if(environment)
-					breath_moles = environment.total_moles()*BREATH_PERCENTAGE
+					breath_moles = environment.total_moles() * BREATH_PERCENTAGE
 
 				breath = loc.remove_air(breath_moles)
 		else //Breathe from loc as obj again
