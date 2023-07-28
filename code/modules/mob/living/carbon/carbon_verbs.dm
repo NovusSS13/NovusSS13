@@ -38,7 +38,8 @@
 
 	var/list/genitals = list()
 	for(var/obj/item/organ/genital/genital in organs)
-		if(isnull(genital.bodypart_overlay?.arousal_options))
+		var/datum/bodypart_overlay/mutant/genital/genital_overlay = genital.bodypart_overlay
+		if(isnull(genital_overlay?.arousal_options))
 			continue
 
 		genitals += genital
@@ -56,5 +57,5 @@
 		return
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = chosen_genital.bodypart_overlay
-	overlay.arousal_state = chosen_genital.arousal_options[chosen_arousal]
+	overlay.arousal_state = overlay.arousal_options[chosen_arousal]
 	update_body_parts()
