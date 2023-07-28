@@ -2,38 +2,41 @@
 
 /// Part of `update_limb()`, basically does all the head specific icon stuff.
 /obj/item/bodypart/head/proc/update_hair_and_lips(dropping_limb, is_creating)
+	//needs an owner to be done, no way to avoid it
+	if(!owner)
+		return
 	var/mob/living/carbon/human/human_head_owner = owner
 	var/datum/species/owner_species = human_head_owner?.dna.species
 
 	//HIDDEN CHECKS START
 	hair_hidden = FALSE
 	facial_hair_hidden = FALSE
-	if(human_head_owner)
-		if(human_head_owner.head)
-			var/obj/item/hat = human_head_owner.head
-			if(hat.flags_inv & HIDEHAIR)
-				hair_hidden = TRUE
-			if(hat.flags_inv & HIDEFACIALHAIR)
-				facial_hair_hidden = TRUE
-
-		if(human_head_owner.wear_mask)
-			var/obj/item/mask = human_head_owner.wear_mask
-			if(mask.flags_inv & HIDEHAIR)
-				hair_hidden = TRUE
-			if(mask.flags_inv & HIDEFACIALHAIR)
-				facial_hair_hidden = TRUE
-
-		if(human_head_owner.w_uniform)
-			var/obj/item/item_uniform = human_head_owner.w_uniform
-			if(item_uniform.flags_inv & HIDEHAIR)
-				hair_hidden = TRUE
-			if(item_uniform.flags_inv & HIDEFACIALHAIR)
-				facial_hair_hidden = TRUE
-		//invisibility and husk stuff
+	if(owner)
 		if(HAS_TRAIT(human_head_owner, TRAIT_INVISIBLE_MAN) || HAS_TRAIT(human_head_owner, TRAIT_HUSK))
 			hair_hidden = TRUE
 			facial_hair_hidden = TRUE
-	if(is_husked)
+		if(istype(human_head_owner))
+			if(human_head_owner.head)
+				var/obj/item/hat = human_head_owner.head
+				if(hat.flags_inv & HIDEHAIR)
+					hair_hidden = TRUE
+				if(hat.flags_inv & HIDEFACIALHAIR)
+					facial_hair_hidden = TRUE
+
+			if(human_head_owner.wear_mask)
+				var/obj/item/mask = human_head_owner.wear_mask
+				if(mask.flags_inv & HIDEHAIR)
+					hair_hidden = TRUE
+				if(mask.flags_inv & HIDEFACIALHAIR)
+					facial_hair_hidden = TRUE
+
+			if(human_head_owner.w_uniform)
+				var/obj/item/item_uniform = human_head_owner.w_uniform
+				if(item_uniform.flags_inv & HIDEHAIR)
+					hair_hidden = TRUE
+				if(item_uniform.flags_inv & HIDEFACIALHAIR)
+					facial_hair_hidden = TRUE
+	if(is_husked || is_invisible)
 		hair_hidden = TRUE
 		facial_hair_hidden = TRUE
 	//HIDDEN CHECKS END
@@ -59,7 +62,7 @@
 		else
 			show_eyeless = FALSE
 
-	if(!is_creating || !owner)
+	if(!is_creating || !istype(human_head_owner))
 		return
 
 	lip_style = human_head_owner.lip_style
@@ -78,21 +81,21 @@
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 	. = list()
+	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible || is_husked)
+		return .
 
 	var/atom/location = loc || owner || src
-	var/image_dir = NONE
-	if(dropped)
-		image_dir = SOUTH
+	var/image_dir = (dropped ? SOUTH : NONE)
 
 	var/datum/sprite_accessory/sprite_accessory
-	if(!facial_hair_hidden && lip_style && (head_flags & HEAD_LIPS))
+	if(lip_style && (head_flags & HEAD_LIPS))
 		//not a sprite accessory, don't ask
 		//Overlay
 		var/image/lip_overlay = image('icons/mob/species/human/human_face.dmi', "lips_[lip_style]", -BODY_LAYER, image_dir)
 		lip_overlay.color = lip_color
 		//Emissive blocker
 		if(blocks_emissive)
-			lip_overlay.overlays += emissive_blocker(lip_overlay.icon, lip_overlay.icon_state, location, alpha = facial_hair_alpha)
+			lip_overlay.overlays += emissive_blocker(lip_overlay.icon, lip_overlay.icon_state, location)
 		//Offsets
 		worn_face_offset?.apply_offset(lip_overlay)
 		. += lip_overlay
@@ -115,6 +118,7 @@
 			if(facial_hair_gradient_style)
 				var/facial_hair_gradient_color = LAZYACCESS(gradient_colors, GRADIENT_FACIAL_HAIR_KEY)
 				var/image/facial_hair_gradient_overlay = get_gradient_overlay(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, GLOB.facial_hair_gradients_list[facial_hair_gradient_style], facial_hair_gradient_color)
+				worn_face_offset?.apply_offset(facial_hair_gradient_overlay)
 				. += facial_hair_gradient_overlay
 
 	var/image/hair_overlay
@@ -135,6 +139,7 @@
 			if(hair_gradient_style)
 				var/hair_gradient_color = LAZYACCESS(gradient_colors, GRADIENT_HAIR_KEY)
 				var/image/hair_gradient_overlay = get_gradient_overlay(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, GLOB.hair_gradients_list[hair_gradient_style], hair_gradient_color)
+				worn_face_offset?.apply_offset(hair_gradient_overlay)
 				. += hair_gradient_overlay
 
 	if(show_debrained && (head_flags & HEAD_DEBRAIN))
@@ -167,7 +172,7 @@
 	if(bodytype & BODYTYPE_ALIEN)
 		debrain_icon = 'icons/mob/species/alien/bodyparts.dmi'
 		debrain_icon_state = "debrained_alien"
-	else if(bodytype & BODYTYPE_LARVA_PLACEHOLDER)
+	else if(bodytype & BODYTYPE_LARVA)
 		debrain_icon = 'icons/mob/species/alien/bodyparts.dmi'
 		debrain_icon_state = "debrained_larva"
 	else if(bodytype & BODYTYPE_GOLEM)

@@ -29,6 +29,7 @@ GLOBAL_LIST_EMPTY(animated_spines_list)
 
 	//Mutant Human bits
 GLOBAL_LIST_EMPTY(tails_list)
+GLOBAL_LIST_EMPTY(tails_list_monkey)
 GLOBAL_LIST_EMPTY(tails_list_human) //Only exists for preference choices. Use "tails_list" otherwise.
 GLOBAL_LIST_EMPTY(tails_list_lizard) //See above!
 GLOBAL_LIST_EMPTY(ears_list)
@@ -39,6 +40,44 @@ GLOBAL_LIST_EMPTY(moth_antennae_list)
 GLOBAL_LIST_EMPTY(moth_markings_list)
 GLOBAL_LIST_EMPTY(caps_list)
 GLOBAL_LIST_EMPTY(pod_hair_list)
+
+	//Human bits bits
+GLOBAL_LIST_EMPTY(penis_list)
+GLOBAL_LIST_EMPTY(testicles_list)
+GLOBAL_LIST_EMPTY(breasts_list)
+GLOBAL_LIST_EMPTY(vagina_list)
+
+GLOBAL_LIST_INIT(penis_size_names, list(
+	"1" = "Tiny",
+	"2" = "Average",
+	"3" = "Big",
+	"4" = "Enormous"
+))
+
+GLOBAL_LIST_INIT(breasts_size_names, list(
+	"1" = "A",
+	"2" = "C",
+	"3" = "B",
+	"4" = "D",
+	"5" = "E",
+	"6" = "F",
+	"7" = "G",
+	"8" = "H",
+	"9" = "I",
+	"10" = "J",
+	"11" = "K",
+	"12" = "L",
+	"13" = "M",
+	"14" = "N",
+	"15" = "O",
+	"16" = "P"
+))
+
+GLOBAL_LIST_INIT(genital_visibility_list, list(
+	"Always hidden" = 0,
+	"Hidden behind clothing" = 1,
+	"Always visible" = 2,
+))
 
 GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"Blue" = "#3399ff",

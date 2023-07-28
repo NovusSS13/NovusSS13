@@ -57,7 +57,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	///The type of mutant race the player is if applicable (i.e. potato-man)
 	var/datum/species/species = new /datum/species/human
 	///first value is mutant color
-	var/list/features = list("FFF")
+	var/list/features = list()
 	///Stores the hashed values of the person's non-human features
 	var/unique_features
 	///Stores the real name of the person who originally got this dna datum. Used primarely for changelings,
@@ -193,7 +193,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /datum/dna/proc/generate_unique_features()
 	. = ""
 	var/list/L = new /list(DNA_FEATURE_BLOCKS)
-
 	if(features["mcolor"])
 		L[DNA_MUTANT_COLOR_BLOCK] = sanitize_hexcolor(features["mcolor"], include_crunch = FALSE)
 	if(features["ethcolor"])
@@ -202,6 +201,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_LIZARD_MARKINGS_BLOCK] = construct_block(GLOB.body_markings_list.Find(features["body_markings"]), GLOB.body_markings_list.len)
 	if(features["tail_cat"])
 		L[DNA_TAIL_BLOCK] = construct_block(GLOB.tails_list_human.Find(features["tail_cat"]), GLOB.tails_list_human.len)
+	if(features["tail_monkey"])
+		L[DNA_MONKEY_TAIL_BLOCK] = construct_block(GLOB.tails_list_monkey.Find(features["tail_monkey"]), GLOB.tails_list_monkey.len)
 	if(features["tail_lizard"])
 		L[DNA_LIZARD_TAIL_BLOCK] = construct_block(GLOB.tails_list_lizard.Find(features["tail_lizard"]), GLOB.tails_list_lizard.len)
 	if(features["snout"])
@@ -224,6 +225,19 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_MUSHROOM_CAPS_BLOCK] = construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len)
 	if(features["pod_hair"])
 		L[DNA_POD_HAIR_BLOCK] = construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len)
+
+	if(features["penis_shape"])
+		L[DNA_PENIS_SHAPE_BLOCK] = construct_block(GLOB.penis_list.Find(features["penis_shape"]), GLOB.penis_list.len)
+	if(features["penis_size"])
+		L[DNA_PENIS_SIZE_BLOCK] = construct_block(GLOB.penis_size_names.Find(features["penis_size"]), GLOB.penis_size_names.len)
+	if(features["testicles_shape"])
+		L[DNA_TESTICLES_SHAPE_BLOCK] = construct_block(GLOB.testicles_list.Find(features["testicles_shape"]), GLOB.testicles_list.len)
+	if(features["vagina_shape"])
+		L[DNA_VAGINA_SHAPE_BLOCK] = construct_block(GLOB.vagina_list.Find(features["vagina_shape"]), GLOB.vagina_list.len)
+	if(features["breasts_shape"])
+		L[DNA_BREASTS_SHAPE_BLOCK] = construct_block(GLOB.breasts_list.Find(features["breasts_shape"]), GLOB.breasts_list.len)
+	if(features["breasts_size"])
+		L[DNA_BREASTS_SIZE_BLOCK] = construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len)
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -356,6 +370,19 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len))
 		if(DNA_POD_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len))
+
+		if(DNA_PENIS_SHAPE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.penis_list.Find(features["penis_shape"]), GLOB.penis_list.len))
+		if(DNA_PENIS_SIZE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.penis_size_names.Find(features["penis_size"]), GLOB.penis_size_names.len))
+		if(DNA_TESTICLES_SHAPE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.testicles_list.Find(features["testicles_shape"]), GLOB.testicles_list.len))
+		if(DNA_VAGINA_SHAPE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.vagina_list.Find(features["vagina_shape"]), GLOB.vagina_list.len))
+		if(DNA_BREASTS_SHAPE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.breasts_list.Find(features["breasts_shape"]), GLOB.breasts_list.len))
+		if(DNA_BREASTS_SIZE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len))
 
 //Please use add_mutation or activate_mutation instead
 /datum/dna/proc/force_give(datum/mutation/human/HM)
@@ -612,6 +639,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["spines"] = GLOB.spines_list[deconstruct_block(get_uni_feature_block(features, DNA_SPINES_BLOCK), GLOB.spines_list.len)]
 	if(dna.features["tail_cat"])
 		dna.features["tail_cat"] = GLOB.tails_list_human[deconstruct_block(get_uni_feature_block(features, DNA_TAIL_BLOCK), GLOB.tails_list_human.len)]
+	if(dna.features["tail_monkey"])
+		dna.features["tail_monkey"] = GLOB.tails_list_monkey[deconstruct_block(get_uni_feature_block(features, DNA_MONKEY_TAIL_BLOCK), GLOB.tails_list_monkey.len)]
 	if(dna.features["tail_lizard"])
 		dna.features["tail_lizard"] = GLOB.tails_list_lizard[deconstruct_block(get_uni_feature_block(features, DNA_LIZARD_TAIL_BLOCK), GLOB.tails_list_lizard.len)]
 	if(dna.features["ears"])
@@ -631,14 +660,24 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(dna.features["pod_hair"])
 		dna.features["pod_hair"] = GLOB.pod_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_POD_HAIR_BLOCK), GLOB.pod_hair_list.len)]
 
-	for(var/obj/item/organ/external/external_organ in organs)
-		external_organ.mutate_feature(features, src)
+	if(dna.features["penis_shape"])
+		dna.features["penis_shape"] = GLOB.penis_list[deconstruct_block(get_uni_feature_block(features, DNA_PENIS_SHAPE_BLOCK), GLOB.penis_list.len)]
+	if(dna.features["penis_size"])
+		dna.features["penis_size"] = GLOB.penis_size_names[deconstruct_block(get_uni_feature_block(features, DNA_PENIS_SIZE_BLOCK), GLOB.penis_size_names.len)]
+	if(dna.features["testicles_shape"])
+		dna.features["testicles_shape"] = GLOB.testicles_list[deconstruct_block(get_uni_feature_block(features, DNA_TESTICLES_SHAPE_BLOCK), GLOB.testicles_list.len)]
+	if(dna.features["vagina_shape"])
+		dna.features["vagina_shape"] = GLOB.vagina_list[deconstruct_block(get_uni_feature_block(features, DNA_VAGINA_SHAPE_BLOCK), GLOB.vagina_list.len)]
+	if(dna.features["breasts_shape"])
+		dna.features["breasts_shape"] = GLOB.breasts_list[deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SHAPE_BLOCK), GLOB.breasts_list.len)]
+	if(dna.features["breasts_size"])
+		dna.features["breasts_size"] = GLOB.breasts_size_names[deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SIZE_BLOCK), GLOB.breasts_size_names.len)]
+
+	for(var/obj/item/organ/organ as anything in organs)
+		organ.mutate_feature(features, src)
 
 	if(icon_update)
-		if(mutcolor_update)
-			update_body(is_creating = TRUE)
-		else
-			update_body()
+		update_body(is_creating = mutcolor_update)
 		if(mutations_overlay_update)
 			update_mutations_overlay()
 
@@ -847,16 +886,18 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				ForceContractDisease(new/datum/disease/decloning()) //slow acting, non-viral clone damage based GBS
 			if(8)
 				var/list/elligible_organs = list()
-				for(var/obj/item/organ/internal/internal_organ in organs) //make sure we dont get an implant or cavity item
-					elligible_organs += internal_organ
+				for(var/obj/item/organ/organ as anything in organs) //make sure we dont get an implant or cavity item
+					if(organ.organ_flags & ORGAN_UNREMOVABLE)
+						continue
+					elligible_organs += organ
 				vomit(20, TRUE)
-				if(elligible_organs.len)
-					var/obj/item/organ/O = pick(elligible_organs)
-					O.Remove(src)
-					visible_message(span_danger("[src] vomits up [p_their()] [O.name]!"), span_danger("You vomit up your [O.name]")) //no "vomit up your heart"
-					O.forceMove(drop_location())
+				if(length(elligible_organs))
+					var/obj/item/organ/vomited_organ = pick(elligible_organs)
+					vomited_organ.Remove(src)
+					visible_message(span_danger("[src] vomits up [p_their()] [vomited_organ.name]!"), span_danger("You vomit up your [vomited_organ.name]")) //no "vomit up your heart"
+					vomited_organ.forceMove(drop_location())
 					if(prob(20))
-						O.animate_atom_living()
+						vomited_organ.animate_atom_living()
 			if(9 to 10)
 				ForceContractDisease(new/datum/disease/gastrolosis())
 				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
@@ -897,7 +938,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 /mob/living/carbon/human/proc/something_horrible_mindmelt()
 	if(!is_blind())
-		var/obj/item/organ/internal/eyes/eyes = locate(/obj/item/organ/internal/eyes) in organs
+		var/obj/item/organ/eyes/eyes = locate(/obj/item/organ/eyes) in organs
 		if(!eyes)
 			return
 		eyes.Remove(src)

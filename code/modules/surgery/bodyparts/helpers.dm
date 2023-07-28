@@ -133,12 +133,15 @@
 				continue
 			return TRUE
 
-//Helper for quickly creating a new limb - used by augment code in species.dm spec_attacked_by
-//
-// FUCK YOU AUGMENT CODE - With love, Kapu
+// Helper for quickly creating a new, compatible limb
 /mob/living/carbon/proc/newBodyPart(zone)
 	var/path = dna.species.bodypart_overrides[zone]
+	// we are not supposed to have that zone
+	if(!path)
+		return
 	var/obj/item/bodypart/new_bodypart = new path()
+	if(new_bodypart)
+		new_bodypart.update_limb(is_creating = TRUE)
 	return new_bodypart
 
 /mob/living/carbon/alien/larva/newBodyPart(zone)
@@ -148,7 +151,9 @@
 			new_bodypart = new /obj/item/bodypart/head/larva()
 		if(BODY_ZONE_CHEST)
 			new_bodypart = new /obj/item/bodypart/chest/larva()
-	. = new_bodypart
+	if(new_bodypart)
+		new_bodypart.update_limb(is_creating = TRUE)
+	return new_bodypart
 
 /mob/living/carbon/alien/adult/newBodyPart(zone)
 	var/obj/item/bodypart/new_bodypart
@@ -167,16 +172,15 @@
 			new_bodypart = new /obj/item/bodypart/chest/alien()
 	if(new_bodypart)
 		new_bodypart.update_limb(is_creating = TRUE)
+	return new_bodypart
 
 /// Makes sure that the owner's bodytype flags match the flags of all of it's parts and organs
 /mob/living/carbon/proc/synchronize_bodytypes()
-	var/all_limb_flags = NONE
+	var/final_bodytype = NONE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
-		for(var/obj/item/organ/external/ext_organ as anything in limb.external_organs)
-			all_limb_flags |= ext_organ.external_bodytypes
-		all_limb_flags |= limb.bodytype
-
-	bodytype = all_limb_flags
+		final_bodytype |= limb.bodytype | limb.external_bodytypes
+	bodytype = final_bodytype
+	return final_bodytype
 
 /proc/skintone2hex(skin_tone)
 	. = 0

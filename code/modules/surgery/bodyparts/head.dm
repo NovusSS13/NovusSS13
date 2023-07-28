@@ -13,7 +13,7 @@
 	px_x = 0
 	px_y = -8
 	wound_resistance = 5
-	disabled_wound_penalty = 25
+	maxdamage_wound_penalty = 25
 	scars_covered_by_clothes = FALSE
 	grind_results = null
 	is_dimorphic = TRUE
@@ -27,10 +27,10 @@
 	bodypart_trait_source = HEAD_TRAIT
 
 	var/mob/living/brain/brainmob //The current occupant.
-	var/obj/item/organ/internal/brain/brain //The brain organ
-	var/obj/item/organ/internal/eyes/eyes
-	var/obj/item/organ/internal/ears/ears
-	var/obj/item/organ/internal/tongue/tongue
+	var/obj/item/organ/brain/brain //The brain organ
+	var/obj/item/organ/eyes/eyes
+	var/obj/item/organ/ears/ears
+	var/obj/item/organ/tongue/tongue
 
 	/// Do we show the information about missing organs upon being examined? Defaults to TRUE, useful for Dullahan heads.
 	var/show_organs_on_examine = TRUE
@@ -152,55 +152,39 @@
 		if(!tongue)
 			. += span_info("[real_name]'s tongue has been removed.")
 
-/obj/item/bodypart/head/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT)
-		return FALSE
-	return ..()
-
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
-	var/atom/drop_loc = drop_location()
-	for(var/obj/item/head_item in src)
-		if(head_item == brain)
-			if(user)
-				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
-			if(brainmob)
-				brainmob.container = null
-				brainmob.forceMove(brain)
-				brain.brainmob = brainmob
-				brainmob = null
-			if(violent_removal && prob(rand(80, 100))) //ghetto surgery can damage the brain.
-				to_chat(user, span_warning("[brain] was damaged in the process!"))
-				brain.set_organ_damage(brain.maxHealth)
-			brain.forceMove(drop_loc)
-			brain = null
-			update_icon_dropped()
-		else
-			if(istype(head_item, /obj/item/reagent_containers/pill))
-				for(var/datum/action/item_action/hands_free/activate_pill/pill_action in head_item.actions)
-					qdel(pill_action)
-			else if(isorgan(head_item))
-				var/obj/item/organ/organ = head_item
-				if(organ.organ_flags & ORGAN_UNREMOVABLE)
-					continue
-			head_item.forceMove(drop_loc)
+	. = ..()
+	if(brain)
+		if(user)
+			user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
+		if(brainmob)
+			brainmob.container = null
+			brainmob.forceMove(brain)
+			brain.brainmob = brainmob
+			brainmob = null
+		if(violent_removal && prob(80)) //ghetto surgery can damage the brain.
+			to_chat(user, span_warning("[brain] was damaged in the process!"))
+			brain.set_organ_damage(brain.maxHealth)
+		brain = null
 	eyes = null
 	ears = null
 	tongue = null
-	update_limb()
-	return ..()
 
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
-	real_name = owner.real_name
-	if(HAS_TRAIT(owner, TRAIT_HUSK))
-		real_name = "Unknown"
+	if(owner)
+		real_name = owner.real_name
+		if(HAS_TRAIT(owner, TRAIT_HUSK))
+			real_name = "Unknown"
 	update_hair_and_lips(dropping_limb, is_creating)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/item/bodypart/head/get_limb_icon(dropped)
 	. = ..()
-
+	// husks don't get any of the fancy stuff
+	if(is_invisible || is_husked)
+		return .
 	. += get_hair_and_lips_icon(dropped)
 	// We need to get the eyes if we are dropped (ugh)
 	if(dropped)
@@ -230,7 +214,7 @@
 			worn_face_offset?.apply_offset(no_eyes)
 			. += no_eyes
 
-	return
+	return .
 
 /obj/item/bodypart/head/talk_into(mob/holder, message, channel, spans, datum/language/language, list/message_mods)
 	var/mob/headholder = holder
@@ -242,42 +226,3 @@
 
 /obj/item/bodypart/head/GetVoice()
 	return "The head of [real_name]"
-
-/obj/item/bodypart/head/monkey
-	icon = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_static = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_husk = 'icons/mob/species/monkey/bodyparts.dmi'
-	husk_type = "monkey"
-	icon_state = "default_monkey_head"
-	limb_id = SPECIES_MONKEY
-	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
-	should_draw_greyscale = FALSE
-	dmg_overlay_type = SPECIES_MONKEY
-	is_dimorphic = FALSE
-	head_flags = HEAD_LIPS|HEAD_DEBRAIN
-
-/obj/item/bodypart/head/alien
-	icon = 'icons/mob/species/alien/bodyparts.dmi'
-	icon_static = 'icons/mob/species/alien/bodyparts.dmi'
-	icon_state = "alien_head"
-	limb_id = BODYPART_ID_ALIEN
-	is_dimorphic = FALSE
-	should_draw_greyscale = FALSE
-	px_x = 0
-	px_y = 0
-	bodypart_flags = BODYPART_UNREMOVABLE
-	max_damage = 500
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ALIEN | BODYTYPE_ORGANIC
-
-/obj/item/bodypart/head/larva
-	icon = 'icons/mob/species/alien/bodyparts.dmi'
-	icon_static = 'icons/mob/species/alien/bodyparts.dmi'
-	icon_state = "larva_head"
-	limb_id = BODYPART_ID_LARVA
-	is_dimorphic = FALSE
-	should_draw_greyscale = FALSE
-	px_x = 0
-	px_y = 0
-	bodypart_flags = BODYPART_UNREMOVABLE
-	max_damage = 50
-	bodytype = BODYTYPE_LARVA_PLACEHOLDER | BODYTYPE_ORGANIC

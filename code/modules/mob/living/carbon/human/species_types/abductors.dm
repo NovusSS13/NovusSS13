@@ -1,16 +1,16 @@
 /datum/species/abductor
 	name = "Abductor"
 	id = SPECIES_ABDUCTOR
-	sexes = FALSE
 	inherent_traits = list(
+		TRAIT_AGENDER,
+		TRAIT_CHUNKYFINGERS_IGNORE_BATON,
+		TRAIT_NOBLOOD,
+		TRAIT_NOHUNGER,
 		TRAIT_NO_UNDERWEAR,
 		TRAIT_NOBREATH,
-		TRAIT_NOHUNGER,
 		TRAIT_VIRUSIMMUNE,
-		TRAIT_NOBLOOD,
-		TRAIT_CHUNKYFINGERS_IGNORE_BATON,
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/abductor
+	mutanttongue = /obj/item/organ/tongue/abductor
 	mutantstomach = null
 	mutantheart = null
 	mutantlungs = null

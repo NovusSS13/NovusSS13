@@ -5,18 +5,19 @@
 /// The priority at which species runs, needed for external organs to apply properly.
 #define PREFERENCE_PRIORITY_SPECIES 2
 
-/**
- * Some preferences get applied directly to bodyparts (anything head_flags related right now).
- * These must apply after species, as species gaining might replace the bodyparts of the human.
- */
-#define PREFERENCE_PRIORITY_BODYPARTS 3
-
 /// The priority at which gender is determined, needed for proper randomization.
-#define PREFERENCE_PRIORITY_GENDER 4
+#define PREFERENCE_PRIORITY_GENDER 3
 
 /// The priority at which body type is decided, applied after gender so we can
 /// support the "use gender" option.
-#define PREFERENCE_PRIORITY_BODY_TYPE 5
+#define PREFERENCE_PRIORITY_BODY_TYPE 4
+
+/**
+ * Some preferences get applied directly to bodyparts (anything head_flags related right now).
+ * These must apply after species, as species gaining might replace the bodyparts of the human.
+ * These also should apply after gender and body type, as those might change the bodyparts.
+ */
+#define PREFERENCE_PRIORITY_BODYPARTS 5
 
 /// The priority at which names are decided, needed for proper randomization.
 #define PREFERENCE_PRIORITY_NAMES 6
@@ -113,7 +114,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 	/// If the selected species has this in its /datum/species/var/external_organs,
 	/// will show the feature as selectable.
-	var/relevant_external_organ = null
+	var/relevant_cosmetic_organ = null
 
 	/// If the selected species has this head_flag by default,
 	/// will show the feature as selectable.
@@ -209,7 +210,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /// Apply this preference onto the given human.
 /// Must be overriden by subtypes.
 /// Called when the savefile_identifier == PREFERENCE_CHARACTER.
-/datum/preference/proc/apply_to_human(mob/living/carbon/human/target, value)
+/datum/preference/proc/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("`apply_to_human()` was not implemented for [type]!")
@@ -326,7 +327,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	if ( \
 		!isnull(relevant_mutant_bodypart) \
 		|| !isnull(relevant_inherent_trait) \
-		|| !isnull(relevant_external_organ) \
+		|| !isnull(relevant_cosmetic_organ) \
 		|| !isnull(relevant_head_flag) \
 	)
 		var/species_type = preferences.read_preference(/datum/preference/choiced/species)

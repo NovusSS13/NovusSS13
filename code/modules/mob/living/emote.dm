@@ -140,14 +140,14 @@
 	if(. && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/open = FALSE
-		var/obj/item/organ/external/wings/functional/wings = H.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
+		var/obj/item/organ/wings/functional/wings = H.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
 		if(istype(wings))
 			if(wings.wings_open)
 				open = TRUE
 				wings.close_wings()
 			else
 				wings.open_wings()
-			addtimer(CALLBACK(wings,  open ? TYPE_PROC_REF(/obj/item/organ/external/wings/functional, open_wings) : TYPE_PROC_REF(/obj/item/organ/external/wings/functional, close_wings)), wing_time)
+			addtimer(CALLBACK(wings,  open ? TYPE_PROC_REF(/obj/item/organ/wings/functional, open_wings) : TYPE_PROC_REF(/obj/item/organ/wings/functional, close_wings)), wing_time)
 
 /datum/emote/living/flap/aflap
 	key = "aflap"
@@ -627,6 +627,58 @@
 
 /datum/emote/living/custom/replace_pronoun(mob/user, message)
 	return message
+
+
+/datum/emote/living/subtle
+	key = "subtle"
+	key_third_person = "subtle"
+	message = null
+
+/datum/emote/living/subtle/can_run_emote(mob/user, status_check, intentional)
+	return ..() && intentional
+
+/datum/emote/living/subtle/proc/check_invalid(mob/user, input)
+	var/static/regex/stop_bad_mime = regex(@"says|exclaims|yells|asks")
+	if(stop_bad_mime.Find(input, 1, 1))
+		to_chat(user, span_danger("Invalid emote."))
+		return TRUE
+	return FALSE
+
+/datum/emote/living/subtle/run_emote(mob/user, params, type_override = null, intentional = FALSE)
+	if(!can_run_emote(user, TRUE, intentional) || QDELETED(user))
+		return FALSE
+
+	if(is_banned_from(user.ckey, "Emote"))
+		to_chat(user, span_boldwarning("You cannot send custom emotes (banned)."))
+		return FALSE
+
+	if(user.client?.prefs.muted & MUTE_IC)
+		to_chat(user, span_boldwarning("You cannot send IC messages (muted)."))
+		return FALSE
+
+	params ||= tgui_input_text(user, "Choose an emote to display.", max_length = MAX_EMOTE_LEN, multiline = TRUE, encode = FALSE)
+	if(!params)
+		return FALSE
+
+	if(!intentional)
+		if(check_invalid(user, params))
+			return FALSE
+		params = html_encode(params)
+
+	user.log_message("(SUBTLE) [params]", LOG_EMOTE)
+
+	if(params[1] != " " && params[1] != "," && params[1] != "'")
+		params = " " + params
+
+	for(var/mob/receiver in range(1, src))
+		receiver.show_message("<b>[user]</b>[params]") //ghosts being included in this (and not being broadcasted globally) is intentional. subtle is SUBTLE after all.
+
+	return TRUE
+
+
+/datum/emote/living/subtle/replace_pronoun(mob/user, message)
+	return message
+
 
 /datum/emote/living/beep
 	key = "beep"

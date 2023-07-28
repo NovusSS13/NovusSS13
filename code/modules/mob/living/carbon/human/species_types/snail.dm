@@ -2,6 +2,7 @@
 	name = "Snailperson"
 	id = SPECIES_SNAIL
 	inherent_traits = list(
+		TRAIT_AGENDER,
 		TRAIT_MUTANT_COLORS,
 		TRAIT_NO_UNDERWEAR,
 		TRAIT_NO_SLIP_ALL,
@@ -10,10 +11,9 @@
 	coldmod = 0.5 //snails only come out when its cold and wet
 	siemens_coeff = 2 //snails are mostly water
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | RACE_SWAP
-	sexes = FALSE //snails are hermaphrodites
 
-	mutanteyes = /obj/item/organ/internal/eyes/snail
-	mutanttongue = /obj/item/organ/internal/tongue/snail
+	mutanteyes = /obj/item/organ/eyes/snail
+	mutanttongue = /obj/item/organ/tongue/snail
 	exotic_blood = /datum/reagent/lube
 
 	bodypart_overrides = list(

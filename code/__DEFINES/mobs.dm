@@ -79,7 +79,7 @@
 ///The limb is snouted.
 #define BODYTYPE_SNOUTED (1<<5)
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
-#define BODYTYPE_LARVA_PLACEHOLDER (1<<6)
+#define BODYTYPE_LARVA (1<<6)
 ///The limb is from a xenomorph.
 #define BODYTYPE_ALIEN (1<<7)
 ///The limb is from a golem
@@ -272,6 +272,7 @@
 #define NUTRITION_LEVEL_WELL_FED 450
 #define NUTRITION_LEVEL_FED 350
 #define NUTRITION_LEVEL_HUNGRY 250
+#define NUTRITION_LEVEL_SLUGGISH 200
 #define NUTRITION_LEVEL_STARVING 150
 
 #define NUTRITION_LEVEL_START_MIN 250
@@ -680,7 +681,7 @@ GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 #define BODYPARTS_LOW_LAYER 32
 /// Layer for most bodyparts, appears above BODYPARTS_LOW_LAYER and below BODYPARTS_HIGH_LAYER
 #define BODYPARTS_LAYER 31
-/// Mutantrace features (snout, body markings) that must appear above the body parts
+/// Mutantrace features (snout, body markings) that must appear above the body parts, but below underwear
 #define BODY_ADJ_LAYER 30
 /// Underwear, undershirts, socks, eyes, lips(makeup)
 #define BODY_LAYER 29

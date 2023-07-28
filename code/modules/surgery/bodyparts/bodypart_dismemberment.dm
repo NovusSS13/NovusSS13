@@ -1,11 +1,20 @@
-
-/obj/item/bodypart/proc/can_dismember(obj/item/item)
+/obj/item/bodypart/proc/can_dismember(damage_source)
 	if(bodypart_flags & BODYPART_UNREMOVABLE)
 		return FALSE
 	return TRUE
 
-///Remove target limb from it's owner, with side effects.
-/obj/item/bodypart/proc/dismember(dam_type = BRUTE, silent=TRUE)
+/obj/item/bodypart/chest/can_dismember(damage_source)
+	if(owner.stat < HARD_CRIT || !organs)
+		return FALSE
+	return ..()
+
+/obj/item/bodypart/head/can_dismember(damage_source)
+	if(owner.stat < HARD_CRIT)
+		return FALSE
+	return ..()
+
+/// Remove target limb from it's owner, with side effects.
+/obj/item/bodypart/proc/dismember(dam_type = BRUTE, silent = TRUE)
 	if(!owner || (bodypart_flags & BODYPART_UNREMOVABLE))
 		return FALSE
 	var/mob/living/carbon/limb_owner = owner
@@ -15,7 +24,7 @@
 		return FALSE
 
 	var/obj/item/bodypart/affecting = limb_owner.get_bodypart(BODY_ZONE_CHEST)
-	affecting.receive_damage(clamp(brute_dam/2 * affecting.body_damage_coeff, 15, 50), clamp(burn_dam/2 * affecting.body_damage_coeff, 0, 50), wound_bonus=CANT_WOUND) //Damage the chest based on limb's existing damage
+	affecting.receive_damage(clamp(brute_dam/2 * affecting.body_damage_coeff, 15, 50), clamp(burn_dam/2 * affecting.body_damage_coeff, 0, 50), wound_bonus = CANT_WOUND) //Damage the chest based on limb's existing damage
 	if(!silent)
 		limb_owner.visible_message(span_danger("<B>[limb_owner]'s [name] is violently dismembered!</B>"))
 	INVOKE_ASYNC(limb_owner, TYPE_PROC_REF(/mob, emote), "scream")
@@ -49,39 +58,42 @@
 	throw_at(target_turf, throw_range, throw_speed)
 	return TRUE
 
-
 /obj/item/bodypart/chest/dismember()
-	if(!owner)
+	if(!owner || (bodypart_flags & BODYPART_UNREMOVABLE))
 		return FALSE
-	var/mob/living/carbon/chest_owner = owner
-	if(bodypart_flags & BODYPART_UNREMOVABLE)
+	if(owner.status_flags & GODMODE)
 		return FALSE
-	if(HAS_TRAIT(chest_owner, TRAIT_NODISMEMBER))
+	if(HAS_TRAIT(owner, TRAIT_NODISMEMBER))
 		return FALSE
-	. = list()
-	if(isturf(chest_owner.loc))
-		chest_owner.add_splatter_floor(chest_owner.loc)
-	playsound(get_turf(chest_owner), 'sound/misc/splort.ogg', 80, TRUE)
-	for(var/obj/item/organ/organ as anything in chest_owner.organs)
-		var/org_zone = check_zone(organ.zone)
-		if(org_zone != BODY_ZONE_CHEST)
-			continue
-		organ.Remove(chest_owner)
-		organ.forceMove(chest_owner.loc)
-		. += organ
+	return drop_organs(violent_removal = TRUE)
 
-	for(var/obj/item/organ/external/ext_organ as anything in src.external_organs)
-		if(!(ext_organ.organ_flags & ORGAN_UNREMOVABLE))
-			ext_organ.Remove(chest_owner)
-			ext_organ.forceMove(chest_owner.loc)
-			. += ext_organ
+///empties the bodypart from its organs and other things inside it
+/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal)
+	SHOULD_CALL_PARENT(TRUE)
 
-	if(cavity_item)
-		cavity_item.forceMove(chest_owner.loc)
-		. += cavity_item
-		cavity_item = null
+	var/atom/drop_loc = drop_location()
+	if(IS_ORGANIC_LIMB(src))
+		playsound(drop_loc, 'sound/misc/splort.ogg', 50, TRUE, -1)
+	seep_gauze(9999) // destroy any existing gauze if any exists
+	if(owner)
+		for(var/obj/item/organ/organ as anything in organs)
+			organ.Remove(owner)
+			organ.forceMove(drop_loc)
+	else
+		for(var/obj/item/organ/organ as anything in organs)
+			organ.remove_from_limb(src)
+			organ.forceMove(drop_loc)
+	for(var/obj/item/item_in_bodypart in src)
+		item_in_bodypart.forceMove(drop_loc)
 
+	if(owner)
+		owner.update_body_parts()
+	else
+		update_icon_dropped()
 
+/obj/item/bodypart/chest/drop_organs(mob/user, violent_removal)
+	. = ..()
+	cavity_item = null
 
 ///limb removal. The "special" argument is used for swapping a limb with a new one without the effects of losing a limb kicking in.
 /obj/item/bodypart/proc/drop_limb(special, dismembered)
@@ -102,8 +114,8 @@
 		scar.victim = null
 		LAZYREMOVE(owner.all_scars, scar)
 
-	for(var/obj/item/organ/external/ext_organ as anything in external_organs)
-		ext_organ.transfer_to_limb(src, null) //Null is the second arg because the bodypart is being removed from it's owner.
+	for(var/obj/item/organ/organ as anything in organs)
+		organ.transfer_to_limb(src, special) //Null is the second arg because the bodypart is being removed from it's owner.
 
 	var/mob/living/carbon/phantom_owner = set_owner(null) // so we can still refer to the guy who lost their limb after said limb forgets 'em
 
@@ -126,28 +138,22 @@
 					to_chat(phantom_owner, span_warning("You feel your [mutation] deactivating from the loss of your [body_zone]!"))
 					phantom_owner.dna.force_lose(mutation)
 
-		for(var/obj/item/organ/organ as anything in phantom_owner.organs) //internal organs inside the dismembered limb are dropped.
-			var/org_zone = check_zone(organ.zone)
-			if(org_zone != body_zone)
-				continue
-			organ.transfer_to_limb(src, phantom_owner)
-
 	update_icon_dropped()
 	phantom_owner.update_health_hud() //update the healthdoll
 	phantom_owner.update_body()
 	phantom_owner.update_body_parts()
 
-	if(!drop_loc) // drop_loc = null happens when a "dummy human" used for rendering icons on prefs screen gets its limbs replaced.
-		qdel(src)
-		return
-
-	if(bodypart_flags & BODYPART_PSEUDOPART)
-		drop_organs(phantom_owner) //Psuedoparts shouldn't have organs, but just in case
-		qdel(src)
-		return
-
-	forceMove(drop_loc)
 	SEND_SIGNAL(phantom_owner, COMSIG_CARBON_POST_REMOVE_LIMB, src, dismembered)
+	// drop_loc = null happens when a "dummy human" used for rendering icons on prefs screen gets its limbs replaced.
+	if(!drop_loc)
+		qdel(src)
+		return
+	// pseudoparts should always be qdel'd, they're not real
+	if(bodypart_flags & BODYPART_PSEUDOPART)
+		drop_organs(phantom_owner) //pseudoparts shouldn't have organs, but just in case they do, we drop them
+		qdel(src)
+		return
+	forceMove(drop_loc)
 
 /**
  * get_mangled_state() is relevant for flesh and bone bodyparts, and returns whether this bodypart has mangled skin, mangled bone, or both (or neither i guess)
@@ -159,11 +165,10 @@
  */
 /obj/item/bodypart/proc/get_mangled_state()
 	. = BODYPART_MANGLED_NONE
-
 	for(var/datum/wound/iter_wound as anything in wounds)
-		if((iter_wound.wound_flags & MANGLES_BONE))
+		if(iter_wound.wound_flags & MANGLES_BONE)
 			. |= BODYPART_MANGLED_BONE
-		if((iter_wound.wound_flags & MANGLES_FLESH))
+		if(iter_wound.wound_flags & MANGLES_FLESH)
 			. |= BODYPART_MANGLED_FLESH
 
 /**
@@ -192,41 +197,6 @@
 	if(prob(base_chance))
 		var/datum/wound/loss/dismembering = new
 		return dismembering.apply_dismember(src, wounding_type)
-
-///Transfers the organ to the limb, and to the limb's owner, if it has one. This is done on drop_limb().
-/obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/bodypart, mob/living/carbon/bodypart_owner)
-	Remove(bodypart_owner)
-	add_to_limb(bodypart)
-
-///Adds the organ to a bodypart, used in transfer_to_limb()
-/obj/item/organ/proc/add_to_limb(obj/item/bodypart/bodypart)
-	forceMove(bodypart)
-
-///Removes the organ from the limb, placing it into nullspace.
-/obj/item/organ/proc/remove_from_limb()
-	moveToNullspace()
-
-/obj/item/organ/internal/brain/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
-	Remove(head_owner) //Changeling brain concerns are now handled in Remove
-	forceMove(head)
-	head.brain = src
-	if(brainmob)
-		head.brainmob = brainmob
-		brainmob = null
-		head.brainmob.forceMove(head)
-		head.brainmob.set_stat(DEAD)
-
-/obj/item/organ/internal/eyes/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
-	head.eyes = src
-	..()
-
-/obj/item/organ/internal/ears/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
-	head.ears = src
-	..()
-
-/obj/item/organ/internal/tongue/transfer_to_limb(obj/item/bodypart/head/head, mob/living/carbon/human/head_owner)
-	head.tongue = src
-	..()
 
 /obj/item/bodypart/chest/drop_limb(special)
 	if(special)
@@ -268,37 +238,50 @@
 			owner.dropItemToGround(owner.shoes, TRUE)
 	return ..()
 
-/obj/item/bodypart/head/drop_limb(special)
+/obj/item/bodypart/head/drop_limb(special, dismembered)
 	if(!special)
-		//Drop all worn head items
+		// Drop all worn head items
 		for(var/obj/item/head_item as anything in list(owner.glasses, owner.ears, owner.wear_mask, owner.head))
 			owner.dropItemToGround(head_item, force = TRUE)
 
-	qdel(owner.GetComponent(/datum/component/creamed)) //clean creampie overlay flushed emoji
-
-	//Handle dental implants
+	// Handle dental implants
 	for(var/datum/action/item_action/hands_free/activate_pill/pill_action in owner.actions)
 		pill_action.Remove(owner)
 		var/obj/pill = pill_action.target
 		if(pill)
 			pill.forceMove(src)
 
+	// Update the name of the head to reflect the owner's real name
 	name = "[owner.real_name]'s head"
 	return ..()
 
-///Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails.
-/obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner, special)
+/// Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails
+/obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner, special = FALSE, keep_old_organs = TRUE)
 	if(!istype(limb_owner))
 		return
+
 	var/obj/item/bodypart/old_limb = limb_owner.get_bodypart(body_zone)
+	var/list/fucking_organs
 	if(old_limb)
-		old_limb.drop_limb(TRUE)
+		// We have to do this stupid goofy loop because guess what fucker,
+		// the old limb might drop in nullspace therefore the organs get deleted (ugh)
+		if(keep_old_organs)
+			fucking_organs = list()
+			for(var/obj/item/organ/organ as anything in old_limb.organs)
+				organ.Remove(limb_owner, special = TRUE)
+				organ.forceMove(src)
+				fucking_organs += organ
+		old_limb.drop_limb(special = TRUE) //always true, this limb is being replaced even if the new one isn't
 
 	. = try_attach_limb(limb_owner, special)
 	if(!.) //If it failed to replace, re-attach their old limb as if nothing happened.
-		old_limb.try_attach_limb(limb_owner, TRUE)
+		old_limb.try_attach_limb(limb_owner, special = TRUE) //always true, this limb is being replaced even if the new one isn't
+	//god this is ass
+	if(keep_old_organs)
+		for(var/obj/item/organ/organ as anything in fucking_organs)
+			organ.Insert(limb_owner, special = TRUE)
 
-///Checks if a limb qualifies as a BODYPART_IMPLANTED
+/// Checks if a limb qualifies as a BODYPART_IMPLANTED
 /obj/item/bodypart/proc/check_for_frankenstein(mob/living/carbon/human/monster)
 	if(!istype(monster))
 		return FALSE
@@ -311,14 +294,15 @@
 /obj/item/bodypart/proc/can_attach_limb(mob/living/carbon/new_limb_owner, special)
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)
 		return FALSE
-
-	var/obj/item/bodypart/chest/mob_chest = new_limb_owner.get_bodypart(BODY_ZONE_CHEST)
-	if(mob_chest && !(mob_chest.acceptable_bodytype & bodytype) && !special)
-		return FALSE
+	if(!special)
+		var/obj/item/bodypart/chest/mob_chest = new_limb_owner.get_bodypart(BODY_ZONE_CHEST)
+		if(mob_chest && !(mob_chest.acceptable_bodytype & bodytype))
+			return FALSE
 	return TRUE
 
-///Attach src to target mob if able, returns FALSE if it fails to.
-/obj/item/bodypart/proc/try_attach_limb(mob/living/carbon/new_limb_owner, special)
+/// Attach src to target mob if able, returns FALSE if it fails to.
+/obj/item/bodypart/proc/try_attach_limb(mob/living/carbon/new_limb_owner, special = FALSE)
+	SHOULD_NOT_SLEEP(TRUE)
 	if(!can_attach_limb(new_limb_owner, special))
 		return FALSE
 
@@ -336,8 +320,9 @@
 				qdel(attach_surgery)
 				break
 
-	for(var/obj/item/organ/limb_organ in contents)
-		limb_organ.Insert(new_limb_owner, TRUE)
+	for(var/obj/item/organ/organ as anything in organs)
+		organ.remove_from_limb(src) //fucking ass
+		organ.Insert(new_limb_owner, special)
 
 	for(var/datum/wound/wound as anything in wounds)
 		// we have to remove the wound from the limb wound list first, so that we can reapply it fresh with the new person
@@ -367,20 +352,9 @@
 /obj/item/bodypart/head/try_attach_limb(mob/living/carbon/new_head_owner, special = FALSE)
 	// These are stored before calling super. This is so that if the head is from a different body, it persists its appearance.
 	var/old_real_name = src.real_name
-
 	. = ..()
-
 	if(!.)
 		return
-
-	if(brain)
-		brain = null
-	if(tongue)
-		tongue = null
-	if(ears)
-		ears = null
-	if(eyes)
-		eyes = null
 
 	if(old_real_name)
 		new_head_owner.real_name = old_real_name
@@ -409,7 +383,8 @@
 	new_head_owner.update_body()
 	new_head_owner.update_damage_overlays()
 
-/mob/living/carbon/proc/regenerate_limbs(list/excluded_zones = list())
+/// Regenerates all missing limbs, except the ones in excluded_zones
+/mob/living/carbon/proc/regenerate_limbs(list/excluded_zones)
 	SEND_SIGNAL(src, COMSIG_CARBON_REGENERATE_LIMBS, excluded_zones)
 	var/list/zone_list = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
 	if(length(excluded_zones))
@@ -417,13 +392,15 @@
 	for(var/limb_zone in zone_list)
 		regenerate_limb(limb_zone)
 
+/// Regenerates a specfic limb, if it's missing.
 /mob/living/carbon/proc/regenerate_limb(limb_zone)
 	var/obj/item/bodypart/limb
 	if(get_bodypart(limb_zone))
 		return FALSE
+
 	limb = newBodyPart(limb_zone, 0, 0)
 	if(limb)
-		if(!limb.try_attach_limb(src, TRUE))
+		if(!limb.try_attach_limb(src, special = TRUE))
 			qdel(limb)
 			return FALSE
 		limb.update_limb(is_creating = TRUE)
@@ -432,13 +409,15 @@
 		scaries.generate(limb, phantom_loss)
 
 		//Copied from /datum/species/proc/on_species_gain()
-		for(var/obj/item/organ/external/organ_path as anything in dna.species.external_organs)
+		//fucking stupid shit to be honest
+		for(var/obj/item/organ/organ_path as anything in dna.species.cosmetic_organs)
 			//Load a persons preferences from DNA
 			var/zone = initial(organ_path.zone)
 			if(zone != limb_zone)
 				continue
-			var/obj/item/organ/external/new_organ = SSwardrobe.provide_type(organ_path)
-			new_organ.Insert(src)
+			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
+			new_organ.Insert(src, special = TRUE)
 
 		update_body_parts()
 		return TRUE
+	return FALSE

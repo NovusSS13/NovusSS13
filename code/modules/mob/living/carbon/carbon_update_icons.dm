@@ -492,7 +492,10 @@
 		. += emissive_blocker(standing.icon, standing.icon_state, src, alpha = standing.alpha)
 	SEND_SIGNAL(src, COMSIG_ITEM_GET_WORN_OVERLAYS, ., standing, isinhands, icon_file)
 
-///Checks to see if any bodyparts need to be redrawn, then does so. update_limb_data = TRUE redraws the limbs to conform to the owner.
+/**
+ * Checks to see if any bodyparts need to be redrawn, then does so.
+ * update_limb_data = TRUE redraws the limbs to conform to the owner.
+ */
 /mob/living/carbon/proc/update_body_parts(update_limb_data)
 	update_damage_overlays()
 	update_wound_overlays()
@@ -504,7 +507,7 @@
 		var/old_key = icon_render_keys?[limb.body_zone] //Checks the mob's icon render key list for the bodypart
 		icon_render_keys[limb.body_zone] = (limb.is_husked) ? limb.generate_husk_key().Join() : limb.generate_icon_key().Join() //Generates a key for the current bodypart
 
-		if(icon_render_keys[limb.body_zone] != old_key || get_top_offset() != last_top_offset) //If the keys match, that means the limb doesn't need to be redrawn
+		if(icon_render_keys[limb.body_zone] != old_key) //If the keys match, that means the limb doesn't need to be redrawn
 			needs_update += limb
 
 	var/list/missing_bodyparts = get_missing_limbs()
@@ -520,17 +523,12 @@
 	var/list/new_limbs = list()
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
 		if(limb in needs_update)
-			var/bodypart_icon = limb.get_limb_icon()
-			if(!istype(limb, /obj/item/bodypart/leg))
-				var/top_offset = get_top_offset()
-				for(var/image/image as anything in bodypart_icon)
-					image.pixel_y += top_offset
+			var/list/bodypart_icon = limb.get_limb_icon()
+			limb.apply_top_offset(bodypart_icon)
 			new_limbs += bodypart_icon
 			limb_icon_cache[icon_render_keys[limb.body_zone]] = bodypart_icon //Caches the icon with the bodypart key, as it is new
 		else
 			new_limbs += limb_icon_cache[icon_render_keys[limb.body_zone]] //Pulls existing sprites from the cache
-		last_top_offset = get_top_offset()
-
 
 	remove_overlay(BODYPARTS_LAYER)
 
@@ -576,10 +574,14 @@
 		. += "-[draw_color]"
 	if(is_invisible)
 		. += "-invisible"
-	for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
-		if(!overlay.can_draw_on_bodypart(owner))
-			continue
-		. += "-[jointext(overlay.generate_icon_cache(), "-")]"
+	else if(is_husked)
+		. += "-husk"
+	else
+		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
+			if(!overlay.can_draw_on_bodypart(owner))
+				continue
+			. += "-[jointext(overlay.generate_icon_cache(), "-")]"
+	. += "-[get_applicable_top_offset()]"
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		. += "-[human_owner.get_mob_height()]"
@@ -592,6 +594,7 @@
 	. += "[husk_type]"
 	. += "-husk"
 	. += "-[body_zone]"
+	. += "-[get_applicable_top_offset()]"
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		. += "-[human_owner.get_mob_height()]"
@@ -604,7 +607,7 @@
 		. += "-[lip_color]"
 
 	if(facial_hair_hidden)
-		. += "-FACIAL_HAIR_HIDDEN"
+		. += "-facial_hair_hidden"
 	else
 		. += "-[facial_hairstyle]"
 		. += "-[override_hair_color || fixed_hair_color || facial_hair_color]"
@@ -614,13 +617,13 @@
 			. += "-[gradient_colors[GRADIENT_FACIAL_HAIR_KEY]]"
 
 	if(show_eyeless)
-		. += "-SHOW_EYELESS"
+		. += "-show_eyeless"
 	if(show_debrained)
-		. += "-SHOW_DEBRAINED"
+		. += "-show_debrained"
 		return .
 
 	if(hair_hidden)
-		. += "-HAIR_HIDDEN"
+		. += "-hair_hidden"
 	else
 		. += "-[hairstyle]"
 		. += "-[override_hair_color || fixed_hair_color || hair_color]"
@@ -628,6 +631,19 @@
 		if(gradient_styles?[GRADIENT_HAIR_KEY])
 			. += "-[gradient_styles[GRADIENT_HAIR_KEY]]"
 			. += "-[gradient_colors[GRADIENT_HAIR_KEY]]"
+
+	return .
+
+/obj/item/bodypart/chest/generate_icon_key()
+	. = ..()
+	if(!(bodytype & BODYTYPE_HUMANOID) || !ishuman(owner) || HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+		return .
+
+	var/mob/living/carbon/human/human_owner = owner
+	. += "-[human_owner.underwear]"
+	. += "-[human_owner.underwear_color]"
+	. += "-[human_owner.undershirt]"
+	. += "-[human_owner.socks]"
 
 	return .
 

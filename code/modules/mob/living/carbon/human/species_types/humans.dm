@@ -5,7 +5,12 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 		TRAIT_USES_SKINTONES,
 	)
-	mutant_bodyparts = list("wings" = "None")
+	cosmetic_organs = list(
+		/obj/item/organ/genital/penis = "None",
+		/obj/item/organ/genital/testicles = "None",
+		/obj/item/organ/genital/breasts = "None",
+		/obj/item/organ/genital/vagina = "None"
+	)
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	payday_modifier = 1

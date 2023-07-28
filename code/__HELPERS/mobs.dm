@@ -29,7 +29,7 @@
 			return "#000000"
 
 /proc/random_underwear(gender)
-	if(!GLOB.underwear_list.len)
+	if(!length(GLOB.underwear_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/underwear, GLOB.underwear_list, GLOB.underwear_m, GLOB.underwear_f)
 	switch(gender)
 		if(MALE)
@@ -40,7 +40,7 @@
 			return pick(GLOB.underwear_list)
 
 /proc/random_undershirt(gender)
-	if(!GLOB.undershirt_list.len)
+	if(!length(GLOB.undershirt_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/undershirt, GLOB.undershirt_list, GLOB.undershirt_m, GLOB.undershirt_f)
 	switch(gender)
 		if(MALE)
@@ -51,7 +51,7 @@
 			return pick(GLOB.undershirt_list)
 
 /proc/random_socks()
-	if(!GLOB.socks_list.len)
+	if(!length(GLOB.socks_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, GLOB.socks_list)
 	return pick(GLOB.socks_list)
 
@@ -59,47 +59,61 @@
 	return pick(GLOB.backpacklist)
 
 /proc/random_features()
-	if(!GLOB.tails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/, GLOB.tails_list,  add_blank = TRUE)
-	if(!GLOB.tails_list_human.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human,  add_blank = TRUE)
-	if(!GLOB.tails_list_lizard.len)
+	if(!length(GLOB.tails_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list, add_blank = TRUE)
+	if(!length(GLOB.tails_list_human))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human, add_blank = TRUE)
+	if(!length(GLOB.tails_list_monkey))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey)
+	if(!length(GLOB.tails_list_lizard))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
-	if(!GLOB.snouts_list.len)
+	if(!length(GLOB.snouts_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
-	if(!GLOB.horns_list.len)
+	if(!length(GLOB.horns_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/horns, GLOB.horns_list)
-	if(!GLOB.ears_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.horns_list)
-	if(!GLOB.frills_list.len)
+	if(!length(GLOB.ears_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list)
+	if(!length(GLOB.frills_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
-	if(!GLOB.spines_list.len)
+	if(!length(GLOB.spines_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
-	if(!GLOB.legs_list.len)
+	if(!length(GLOB.legs_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
-	if(!GLOB.body_markings_list.len)
+	if(!length(GLOB.body_markings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, GLOB.body_markings_list)
-	if(!GLOB.wings_list.len)
+	if(!length(GLOB.wings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
-	if(!GLOB.moth_wings_list.len)
+	if(!length(GLOB.moth_wings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
-	if(!GLOB.moth_antennae_list.len)
+	if(!length(GLOB.moth_antennae_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
-	if(!GLOB.moth_markings_list.len)
+	if(!length(GLOB.moth_markings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
-	if(!GLOB.pod_hair_list.len)
+	if(!length(GLOB.caps_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
+	if(!length(GLOB.pod_hair_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
+	if(!length(GLOB.penis_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/penis, GLOB.penis_list, add_blank = TRUE)
+	if(!length(GLOB.testicles_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/testicles, GLOB.testicles_list, add_blank = TRUE)
+	if(!length(GLOB.breasts_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/breasts, GLOB.breasts_list, add_blank = TRUE)
+	if(!length(GLOB.vagina_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/vagina, GLOB.vagina_list, add_blank = TRUE)
 
 	//For now we will always return none for tail_human and ears. | "For now" he says.
+	//God this is fucking
 	return(list(
 		"mcolor" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
 		"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)],
-		"tail_cat" = "None",
+		"tail_cat" = "Cat",
+		"tail_monkey" = "Monkey",
 		"tail_lizard" = "Smooth",
 		"wings" = "None",
 		"snout" = pick(GLOB.snouts_list),
 		"horns" = pick(GLOB.horns_list),
-		"ears" = "None",
+		"ears" = "Cat", //should_organ_apply_to() is being a fucking bitch, this is necessary
 		"frills" = pick(GLOB.frills_list),
 		"spines" = pick(GLOB.spines_list),
 		"body_markings" = pick(GLOB.body_markings_list),
@@ -108,7 +122,6 @@
 		"moth_wings" = pick(GLOB.moth_wings_list),
 		"moth_antennae" = pick(GLOB.moth_antennae_list),
 		"moth_markings" = pick(GLOB.moth_markings_list),
-		"tail_monkey" = "None",
 		"pod_hair" = pick(GLOB.pod_hair_list),
 	))
 
@@ -696,7 +709,7 @@ GLOBAL_LIST_EMPTY(species_list)
 		mob_occupant = head.brainmob
 
 	else if(isorgan(occupant))
-		var/obj/item/organ/internal/brain/brain = occupant
+		var/obj/item/organ/brain/brain = occupant
 		mob_occupant = brain.brainmob
 
 	return mob_occupant

@@ -292,7 +292,7 @@
 /datum/reagent/drug/happiness/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	affected_mob.remove_status_effect(/datum/status_effect/jitter)
 	affected_mob.remove_status_effect(/datum/status_effect/confusion)
-	affected_mob.disgust = 0
+	affected_mob.set_disgust_effect(0)
 	affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2 * REM * seconds_per_tick, required_organ_flag = affected_organ_flags)
 	..()
 	. = TRUE
@@ -327,7 +327,7 @@
 /datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/carbon/L)
 	..()
 	ADD_TRAIT(L, TRAIT_BATON_RESISTANCE, type)
-	var/obj/item/organ/internal/liver/liver = L.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = L.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		L.add_mood_event("maintenance_fun", /datum/mood_event/maintenance_high)
 		metabolization_rate *= 0.8
@@ -368,7 +368,7 @@
 	chemical_flags = NONE
 
 /datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/carbon/L)
-	var/obj/item/organ/internal/liver/liver = L.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = L.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		L.add_mood_event("maintenance_fun", /datum/mood_event/maintenance_high)
 		metabolization_rate *= 0.8
@@ -642,8 +642,8 @@
 	spin_count = 0 //Do a super spin.
 	dancer.visible_message(span_danger("[dancer] spins around violently!"), span_danger("You spin around violently!"))
 	dancer.spin(30, 2)
-	if(dancer.disgust < 40)
-		dancer.adjust_disgust(10)
+	if(dancer.get_disgust_amount() < 40)
+		dancer.adjust_disgust_effect(10)
 	if(!dancer.pulledby)
 		return
 	var/dancer_turf = get_turf(dancer)
@@ -706,8 +706,6 @@
 ///This proc turns the living mob passed as the arg "invisible_man"s invisible by giving him the invisible man trait and updating his body, this changes the sprite of all his organic limbs to a 1 alpha version.
 /datum/reagent/drug/saturnx/proc/turn_man_invisible(mob/living/carbon/invisible_man, requires_liver = TRUE)
 	if(requires_liver)
-		if(!invisible_man.get_organ_slot(ORGAN_SLOT_LIVER))
-			return
 		if(invisible_man.undergoing_liver_failure())
 			return
 		if(HAS_TRAIT(invisible_man, TRAIT_LIVERLESS_METABOLISM))

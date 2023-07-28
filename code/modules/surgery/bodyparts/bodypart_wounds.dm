@@ -79,7 +79,7 @@
 	injury_roll += check_woundings_mods(woundtype, damage, wound_bonus, bare_wound_bonus)
 	if(injury_roll > WOUND_DISMEMBER_OUTRIGHT_THRESH && prob(get_damage() / max_damage * 100))
 		var/datum/wound/loss/dismembering = new
-		dismembering.apply_dismember(src, woundtype, outright = TRUE, attack_direction = attack_direction)
+		dismembering.apply_dismember(src, woundtype, outright = TRUE, attack_direction = attack_direction, damage_source = damage_source)
 		return
 
 	var/list/wounds_checking = GLOB.global_wound_types[woundtype]
@@ -165,7 +165,7 @@
 
 	var/part_mod = -wound_resistance
 	if(get_damage() >= max_damage)
-		part_mod += disabled_wound_penalty
+		part_mod += maxdamage_wound_penalty
 
 	injury_mod += part_mod
 
