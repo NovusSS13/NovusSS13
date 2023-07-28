@@ -4102,6 +4102,7 @@
 #include "code\modules\mob\living\carbon\carbon_say.dm"
 #include "code\modules\mob\living\carbon\carbon_stripping.dm"
 #include "code\modules\mob\living\carbon\carbon_update_icons.dm"
+#include "code\modules\mob\living\carbon\carbon_verbs.dm"
 #include "code\modules\mob\living\carbon\damage_procs.dm"
 #include "code\modules\mob\living\carbon\death.dm"
 #include "code\modules\mob\living\carbon\emote.dm"

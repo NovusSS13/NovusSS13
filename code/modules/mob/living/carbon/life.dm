@@ -486,7 +486,7 @@
 		wound.handle_process(seconds_per_tick, times_fired)
 
 /mob/living/carbon/handle_mutations(time_since_irradiated, seconds_per_tick, times_fired)
-	if(!dna?.temporary_mutations.len)
+	if(!LAZYLEN(dna?.temporary_mutations))
 		return
 
 	for(var/mut in dna.temporary_mutations)

@@ -11,9 +11,7 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	var/genital_size = 1
-	var/arousal_state = 0
-	var/list/arousal_options = null
+	use_mob_sprite_as_obj_sprite = TRUE
 
 /obj/item/organ/genital/proc/set_genital_size(value)
 	return //handled by subtypes
@@ -30,6 +28,7 @@
 	var/arousal_state = 0
 	var/uses_skintone = FALSE
 	var/genital_visibility = EXPOSURE_CLOTHING
+	var/list/arousal_options = null
 
 /datum/bodypart_overlay/mutant/genital/can_draw_on_bodypart(mob/living/carbon/human/human)
 	switch(genital_visibility)
@@ -60,8 +59,8 @@
 		set_genital_size(size)
 
 /obj/item/organ/genital/penis/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
+	. = ..()
 	set_genital_size(receiver.dna.features["penis_size"] || 2)
-	return ..()
 
 /obj/item/organ/genital/penis/set_genital_size(value)
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
@@ -168,8 +167,8 @@
 		set_genital_size(size)
 
 /obj/item/organ/genital/breasts/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
+	. = ..()
 	set_genital_size(receiver.dna.features["breasts_size"] || 2)
-	return ..()
 
 
 

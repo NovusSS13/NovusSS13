@@ -19,7 +19,7 @@
 		/obj/item/organ/genital/penis = "None",
 		/obj/item/organ/genital/testicles = "None",
 		/obj/item/organ/genital/breasts = "None",
-		/obj/item/organ/genital/vagina = "None"
+		/obj/item/organ/genital/vagina = "None",
 	)
 	meat = /obj/item/food/meat/slab/human/mutant/moth
 	mutanttongue = /obj/item/organ/tongue/moth
