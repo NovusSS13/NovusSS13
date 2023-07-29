@@ -14,6 +14,9 @@
 	default_container = /obj/item/reagent_containers/cup/glass/bottle/beer
 	fallback_icon = 'icons/obj/drinks/bottles.dmi'
 	fallback_icon_state = "beer"
+
+	liquid_fire_power = 10
+	liquid_fire_burnrate = 0.1
 	/**
 	 * Boozepwr Chart
 	 *
@@ -118,6 +121,7 @@
 	taste_description = "dish water"
 	ph = 5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	liquid_fire_power = 2
 
 /datum/reagent/consumable/ethanol/beer/maltliquor
 	name = "Malt Liquor"
@@ -284,6 +288,7 @@
 	taste_description = "dryness"
 	ph = 3.5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	liquid_fire_power = 0
 
 /datum/reagent/consumable/ethanol/threemileisland/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	drinker.set_drugginess(100 SECONDS * REM * seconds_per_tick)

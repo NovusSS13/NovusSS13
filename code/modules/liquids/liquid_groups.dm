@@ -151,14 +151,14 @@ GLOBAL_VAR_INIT(liquid_debug_colors, FALSE)
 	last_cached_thermal = cached_thermal
 	last_cached_fraction_share = cached_add
 	last_cached_total_volume = cached_volume
-	var/mixed_color = use_liquids_color ? mix_color_from_reagents(cached_add) : color
+	var/mixed_color = use_liquids_color ? mix_color_from_reagent_list(cached_add) : color
 	if(use_liquids_color)
-		mixed_color = mix_color_from_reagents(cached_add)
+		mixed_color = mix_color_from_reagent_list(cached_add)
 	else if (GLOB.liquid_debug_colors)
 		mixed_color = color
 	else
 		if(!cached_color)
-			cached_color = mix_color_from_reagents(cached_add)
+			cached_color = mix_color_from_reagent_list(cached_add)
 		mixed_color = cached_color
 
 	var/height = CEILING(cached_volume/LIQUID_HEIGHT_DIVISOR, 1)

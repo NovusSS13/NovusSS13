@@ -59,7 +59,6 @@
 			spread_reagents(holder, epicenter, affected_range)
 		holder.clear_reagents()
 
-	epicenter.add_liquid_from_reagents(holder)
 	if(tmp_holder)
 		qdel(holder)
 	else

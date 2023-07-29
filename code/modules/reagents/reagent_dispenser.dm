@@ -169,8 +169,10 @@
 		fuel_amount = volatiles.volume
 
 	if(!try_explode || fuel_amount < 25)
+		var/turf/source = get_turf(src)
+		if(istype(source))
+			source.add_liquid_from_reagents(reagents)
 		visible_message(span_danger("\The [src] ruptures!"))
-		chem_splash(loc, null, 2 + (reagents.total_volume / 1000), list(reagents))
 		qdel(src)
 		return
 

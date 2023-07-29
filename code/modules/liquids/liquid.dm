@@ -13,8 +13,8 @@
 	light_color = LIGHT_COLOR_FIRE
 
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WATER)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WATER)
+	smoothing_groups = SMOOTH_GROUP_WATER
+	canSmoothWith = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WATER
 
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/height = 1
@@ -319,7 +319,7 @@
 			SSliquids.processing_fire[my_turf] = TRUE
 
 /obj/effect/abstract/turf_liquid/proc/set_reagent_color_for_liquid()
-	color = mix_color_from_reagents(reagent_list)
+	color = mix_color_from_reagent_list(reagent_list)
 
 /obj/effect/abstract/turf_liquid/proc/calculate_height()
 	var/new_height = CEILING(total_reagents, 1)/LIQUID_HEIGHT_DIVISOR
