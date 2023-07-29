@@ -248,9 +248,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(visual)
 		organ_owner.update_body_parts()
 	//we're being taken out and dropped
-	if(use_mob_sprite_as_obj_sprite)
+	if(use_bodypart_overlay_as_sprite || use_bodypart_overlay_as_color)
 		update_appearance()
-
 
 /// Transfers the organ to a given detached limb, this proc should only be used on dismemberment
 /obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/new_bodypart, special = FALSE)

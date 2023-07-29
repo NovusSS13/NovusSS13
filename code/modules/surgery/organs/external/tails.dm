@@ -25,7 +25,6 @@
 
 /obj/item/organ/tail/on_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
-	RegisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL, PROC_REF(wag))
 	original_owner ||= WEAKREF(organ_owner)
 
 	organ_owner.clear_mood_event("tail_lost")
@@ -38,6 +37,7 @@
 		organ_owner.add_mood_event("wrong_tail_regained", /datum/mood_event/tail_regained_wrong)
 
 	paired_spines = organ_owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
+	RegisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL, PROC_REF(wag))
 	RegisterSignal(organ_owner, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_for_spines))
 	RegisterSignal(organ_owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_for_spines_loss))
 
@@ -48,8 +48,6 @@
 
 /obj/item/organ/tail/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
-	if(paired_spines)
-		paired_spines = null
 	UnregisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL)
 	UnregisterSignal(organ_owner, COMSIG_CARBON_GAIN_ORGAN)
 	UnregisterSignal(organ_owner, COMSIG_CARBON_LOSE_ORGAN)

@@ -14,14 +14,23 @@
 
 	/**
 	 * Set to EXTERNAL_BEHIND, EXTERNAL_FRONT or EXTERNAL_ADJACENT if you want to draw one of those layers as the object sprite.
-	 * FALSE to use your own.
+	 * NONE to use your own.
 	 * This will not work if it doesn't have a limb to generate it's icon with, yes that is scuffed.
 	 */
-	var/use_mob_sprite_as_obj_sprite = FALSE
+	var/use_bodypart_overlay_as_sprite = NONE
+	/// Whether or not to use the color of the bodypart overlay to color the organ
+	var/use_bodypart_overlay_as_color = TRUE
 	/// Does this organ have any bodytypes to pass to it's ownerlimb?
 	var/external_bodytypes = NONE
 	/// Which flags does a 'modification tool' need to have to restyle us, if it all possible (located in code/_DEFINES/mobs)
 	var/restyle_flags = NONE
+
+/obj/item/organ/update_icon(updates)
+	. = ..()
+	if(!use_bodypart_overlay_as_color)
+		return
+
+	color = bodypart_overlay.color
 
 /obj/item/organ/update_overlays()
 	. = ..()
@@ -52,7 +61,7 @@
 		else
 			bodypart_overlay.imprint_on_next_insertion = FALSE
 
-	if(use_mob_sprite_as_obj_sprite)
+	if(use_bodypart_overlay_as_sprite || use_bodypart_overlay_as_color)
 		update_appearance()
 
 /// Returns an examine list about the visual elements of this organ.
@@ -113,5 +122,5 @@
 		owner.update_body_parts()
 	else if(ownerlimb) //are we in a limb?
 		ownerlimb.update_icon_dropped()
-	else if(use_mob_sprite_as_obj_sprite) //are we out in the world, unprotected by flesh?
+	else if(use_bodypart_overlay_as_sprite || use_bodypart_overlay_as_color) //are we out in the world, unprotected by flesh?
 		update_appearance()
