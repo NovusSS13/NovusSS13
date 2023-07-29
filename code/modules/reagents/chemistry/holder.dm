@@ -432,14 +432,14 @@
 		if (holder_reagent.type == reagent)
 			if(!amount)
 				if(needs_metabolizing && !holder_reagent.metabolizing)
-					return FALSE
+					return null
 				return holder_reagent
 			else
 				if(round(holder_reagent.volume, CHEMICAL_QUANTISATION_LEVEL) >= amount)
 					if(needs_metabolizing && !holder_reagent.metabolizing)
-						return FALSE
+						return null
 					return holder_reagent
-	return FALSE
+	return null
 
 /**
  * Check if this holder contains a reagent with a chemical_flags containing this flag

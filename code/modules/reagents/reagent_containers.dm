@@ -292,14 +292,14 @@
 	. += filling
 
 // first arg == src
-/obj/item/reagent_containers/proc/attack_on_liquids_turf(obj/item/_, turf/target_turf, mob/living/user, atom/movable/turf_liquid/liquids)
+/obj/item/reagent_containers/proc/attack_on_liquids_turf(turf/target_turf, mob/living/user, atom/movable/turf_liquid/liquids)
 	if(user.combat_mode)
 		return FALSE
 
 	if(!(reagent_flags & REFILLABLE))
 		return FALSE
 
-	if(!Adjacent(target_turf))
+	if(!user.can_perform_action(liquids))
 		return FALSE
 
 	if(liquids.fire_state) //Use an extinguisher first

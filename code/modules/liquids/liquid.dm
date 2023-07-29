@@ -143,10 +143,11 @@
 				total_reagents -= burn_rate
 
 	my_turf.hotspot_expose((T20C+50) + (50*fire_state), 125)
-	for(var/A in my_turf.contents)
-		var/atom/AT = A
-		if(!QDELETED(AT))
-			AT.fire_act((T20C+50) + (50*fire_state), 125)
+	for(var/atom/movable/movable as anything in my_turf)
+		if(QDELETED(movable))
+			continue
+
+		movable.fire_act((T20C+50) + (50*fire_state), 125)
 
 	if(reagent_list.len == 0)
 		qdel(src, TRUE)
