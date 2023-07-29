@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(liquids)
 
 /datum/controller/subsystem/liquids/proc/get_immutable(type)
 	if(!singleton_immutables[type])
-		var/obj/effect/abstract/turf_liquid/immutable/new_one = new type()
+		var/atom/movable/turf_liquid/immutable/new_one = new type()
 		singleton_immutables[type] = new_one
 	return singleton_immutables[type]
 

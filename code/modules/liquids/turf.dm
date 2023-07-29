@@ -17,7 +17,7 @@
 		lgroup.remove_from_group(src)
 	SSliquids.add_active_turf(src)
 
-/obj/effect/abstract/turf_liquid/proc/liquid_simple_delete_flat(flat_amount)
+/atom/movable/turf_liquid/proc/liquid_simple_delete_flat(flat_amount)
 	if(flat_amount >= total_reagents)
 		qdel(src, TRUE)
 		return

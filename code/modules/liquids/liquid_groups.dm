@@ -113,7 +113,7 @@ GLOBAL_VAR_INIT(liquid_debug_colors, FALSE)
 	var/cached_thermal = 0
 
 	var/turf/T
-	var/obj/effect/abstract/turf_liquid/cached_liquids
+	var/atom/movable/turf_liquid/cached_liquids
 	for(var/t in members)
 		T = t
 		if(T.liquids)

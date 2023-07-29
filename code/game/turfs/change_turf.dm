@@ -77,7 +77,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	var/old_directional_opacity = directional_opacity
 	var/old_dynamic_lumcount = dynamic_lumcount
 
-	var/obj/effect/abstract/turf_liquid/old_liquids = liquids
+	var/atom/movable/turf_liquid/old_liquids = liquids
 	if(lgroup)
 		lgroup.remove_from_group(src)
 

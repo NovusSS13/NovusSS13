@@ -32,5 +32,5 @@
 ///from /datum/element/footstep/prepare_step(): (list/steps)
 #define COMSIG_TURF_PREPARE_STEP_SOUND "turf_prepare_step_sound"
 
-///from base of /obj/effect/abstract/turf_liquid/Initialize() (/obj/effect/abstract/turf_liquid/liquids)
+///from base of /atom/movable/turf_liquid/Initialize() (/atom/movable/turf_liquid/liquids)
 #define COMSIG_TURF_LIQUIDS_CREATION "turf_liquids_creation"

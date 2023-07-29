@@ -1,4 +1,4 @@
-/obj/effect/abstract/turf_liquid
+/atom/movable/turf_liquid
 	name = "liquid"
 	icon = 'icons/effects/liquid.dmi'
 	icon_state = "water-0"
@@ -44,10 +44,10 @@
 		"[LIQUID_STATE_FULLTILE]" = "$ going [span_danger("over your head")]",
 	)
 
-/obj/effect/abstract/turf_liquid/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+/atom/movable/turf_liquid/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
 	return
 
-/obj/effect/abstract/turf_liquid/proc/check_fire(hotspotted = FALSE)
+/atom/movable/turf_liquid/proc/check_fire(hotspotted = FALSE)
 	var/my_burn_power = get_burn_power(hotspotted)
 	if(!my_burn_power)
 		if(fire_state)
@@ -73,7 +73,7 @@
 
 	return TRUE
 
-/obj/effect/abstract/turf_liquid/proc/set_fire_state(new_state)
+/atom/movable/turf_liquid/proc/set_fire_state(new_state)
 	fire_state = new_state
 	switch(fire_state)
 		if(LIQUID_FIRE_STATE_NONE)
@@ -91,7 +91,7 @@
 	update_light()
 	update_liquid_vis()
 
-/obj/effect/abstract/turf_liquid/proc/get_burn_power(hotspotted = FALSE)
+/atom/movable/turf_liquid/proc/get_burn_power(hotspotted = FALSE)
 	//We are not on fire and werent ignited by a hotspot exposure, no fire pls
 	if(!hotspotted && !fire_state)
 		return FALSE
@@ -110,12 +110,12 @@
 	//Finally, we burn
 	return total_burn_power
 
-/obj/effect/abstract/turf_liquid/extinguish()
+/atom/movable/turf_liquid/extinguish()
 	. = ..()
 	if(fire_state)
 		set_fire_state(LIQUID_FIRE_STATE_NONE)
 
-/obj/effect/abstract/turf_liquid/proc/process_fire()
+/atom/movable/turf_liquid/proc/process_fire()
 	if(!fire_state)
 		SSliquids.processing_fire -= my_turf
 	var/old_state = fire_state
@@ -156,7 +156,7 @@
 			calculate_height()
 			set_reagent_color_for_liquid()
 
-/obj/effect/abstract/turf_liquid/proc/process_evaporation()
+/atom/movable/turf_liquid/proc/process_evaporation()
 	if(immutable)
 		SSliquids.evaporation_queue -= my_turf
 		return
@@ -190,7 +190,7 @@
 		calculate_height()
 		set_reagent_color_for_liquid()
 
-/obj/effect/abstract/turf_liquid/forceMove(atom/destination, no_tp=FALSE, harderforce = FALSE)
+/atom/movable/turf_liquid/forceMove(atom/destination, no_tp=FALSE, harderforce = FALSE)
 	if(harderforce)
 		. = ..()
 
@@ -202,7 +202,7 @@
  * * overlay_layer - the layer
  * * overlay_plane - the plane
  */
-/obj/effect/abstract/turf_liquid/proc/add_liquid_overlay(overlay_state, overlay_layer, overlay_plane)
+/atom/movable/turf_liquid/proc/add_liquid_overlay(overlay_state, overlay_layer, overlay_plane)
 	PRIVATE_PROC(TRUE)
 
 	add_overlay(mutable_appearance(
@@ -220,7 +220,7 @@
  * * state - the stage number.
  * * has_top - if this stage has a top.
  */
-/obj/effect/abstract/turf_liquid/proc/add_state_layer(state, has_top)
+/atom/movable/turf_liquid/proc/add_state_layer(state, has_top)
 	PRIVATE_PROC(TRUE)
 
 	add_liquid_overlay("stage[state]_bottom", ABOVE_MOB_LAYER, GAME_PLANE_UPPER)
@@ -230,7 +230,7 @@
 
 	add_liquid_overlay("stage[state]_top", GATEWAY_UNDERLAY_LAYER, GAME_PLANE)
 
-/obj/effect/abstract/turf_liquid/proc/set_new_liquid_state(new_state)
+/atom/movable/turf_liquid/proc/set_new_liquid_state(new_state)
 	liquid_state = new_state
 	if(no_effects)
 		return
@@ -245,7 +245,7 @@
 		if(LIQUID_STATE_FULLTILE)
 			add_state_layer(4, has_top = FALSE)
 
-/obj/effect/abstract/turf_liquid/proc/update_liquid_vis()
+/atom/movable/turf_liquid/proc/update_liquid_vis()
 	if(no_effects)
 		return
 	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
@@ -264,7 +264,7 @@
 			SSvis_overlays.add_vis_overlay(src, icon, "fire_big", BELOW_MOB_LAYER, GAME_PLANE, add_appearance_flags = RESET_COLOR|RESET_ALPHA)
 
 //Takes a flat of our reagents and returns it, possibly qdeling our liquids
-/obj/effect/abstract/turf_liquid/proc/take_reagents_flat(flat_amount)
+/atom/movable/turf_liquid/proc/take_reagents_flat(flat_amount)
 	var/datum/reagents/tempr = new(10000)
 	if(flat_amount >= total_reagents)
 		tempr.add_reagent_list(reagent_list, no_react = TRUE)
@@ -282,11 +282,11 @@
 	tempr.chem_temp = temp
 	return tempr
 
-/obj/effect/abstract/turf_liquid/immutable/take_reagents_flat(flat_amount)
+/atom/movable/turf_liquid/immutable/take_reagents_flat(flat_amount)
 	return simulate_reagents_flat(flat_amount)
 
 //Returns a reagents holder with all the reagents with a higher volume than the threshold
-/obj/effect/abstract/turf_liquid/proc/simulate_reagents_threshold(amount_threshold)
+/atom/movable/turf_liquid/proc/simulate_reagents_threshold(amount_threshold)
 	var/datum/reagents/tempr = new(10000)
 	var/passed_list = list()
 	for(var/reagent_type in reagent_list)
@@ -299,7 +299,7 @@
 	return tempr
 
 //Returns a flat of our reagents without any effects on the liquids
-/obj/effect/abstract/turf_liquid/proc/simulate_reagents_flat(flat_amount)
+/atom/movable/turf_liquid/proc/simulate_reagents_flat(flat_amount)
 	var/datum/reagents/tempr = new(10000)
 	if(flat_amount >= total_reagents)
 		tempr.add_reagent_list(reagent_list, no_react = TRUE)
@@ -313,15 +313,15 @@
 	tempr.chem_temp = temp
 	return tempr
 
-/obj/effect/abstract/turf_liquid/fire_act(temperature, volume)
+/atom/movable/turf_liquid/fire_act(temperature, volume)
 	if(!fire_state)
 		if(check_fire(TRUE))
 			SSliquids.processing_fire[my_turf] = TRUE
 
-/obj/effect/abstract/turf_liquid/proc/set_reagent_color_for_liquid()
+/atom/movable/turf_liquid/proc/set_reagent_color_for_liquid()
 	color = mix_color_from_reagent_list(reagent_list)
 
-/obj/effect/abstract/turf_liquid/proc/calculate_height()
+/atom/movable/turf_liquid/proc/calculate_height()
 	var/new_height = CEILING(total_reagents, 1)/LIQUID_HEIGHT_DIVISOR
 	set_height(new_height)
 	var/determined_new_state
@@ -342,7 +342,7 @@
 	if(determined_new_state != liquid_state)
 		set_new_liquid_state(determined_new_state)
 
-/obj/effect/abstract/turf_liquid/immutable/calculate_height()
+/atom/movable/turf_liquid/immutable/calculate_height()
 	var/new_height = CEILING(total_reagents, 1)/LIQUID_HEIGHT_DIVISOR
 	set_height(new_height)
 	var/determined_new_state
@@ -360,7 +360,7 @@
 	if(determined_new_state != liquid_state)
 		set_new_liquid_state(determined_new_state)
 
-/obj/effect/abstract/turf_liquid/proc/set_height(new_height)
+/atom/movable/turf_liquid/proc/set_height(new_height)
 	var/prev_height = height
 	height = new_height
 	if(abs(height - prev_height) > WATER_HEIGH_DIFFERENCE_DELTA_SPLASH)
@@ -405,10 +405,10 @@
 						else
 							step(AM, dir)
 
-/obj/effect/abstract/turf_liquid/immutable/set_height(new_height)
+/atom/movable/turf_liquid/immutable/set_height(new_height)
 	height = new_height
 
-/obj/effect/abstract/turf_liquid/proc/movable_entered(datum/source, atom/movable/AM)
+/atom/movable/turf_liquid/proc/movable_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
 	var/turf/T = source
 	if(isobserver(AM))
@@ -432,7 +432,7 @@
 	if(fire_state)
 		AM.fire_act((T20C+50) + (50*fire_state), 125)
 
-/obj/effect/abstract/turf_liquid/proc/mob_fall(datum/source, list/falling_movables, levels)
+/atom/movable/turf_liquid/proc/mob_fall(datum/source, list/falling_movables, levels)
 	var/turf/turf = source
 	if(!istype(turf)) //what
 		return NONE
@@ -462,7 +462,7 @@
 		fallen_mob.emote("cough")
 		to_chat(fallen_mob, span_userdanger("You fall in and swallow some water!"))
 
-/obj/effect/abstract/turf_liquid/Initialize(mapload)
+/atom/movable/turf_liquid/Initialize(mapload)
 	. = ..()
 	if(!SSliquids)
 		CRASH("Liquid Turf created with the liquids sybsystem not yet initialized!")
@@ -485,7 +485,7 @@
 		qdel(src, TRUE)
 	*/
 
-/obj/effect/abstract/turf_liquid/Destroy(force)
+/atom/movable/turf_liquid/Destroy(force)
 	if(force)
 		UnregisterSignal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_INTERCEPT_Z_FALL, COMSIG_ATOM_EXAMINE))
 		if(my_turf.lgroup)
@@ -503,18 +503,18 @@
 		return QDEL_HINT_LETMELIVE
 	return ..()
 
-/obj/effect/abstract/turf_liquid/immutable/Destroy(force)
+/atom/movable/turf_liquid/immutable/Destroy(force)
 	if(force)
 		stack_trace("Something tried to hard destroy an immutable liquid.")
 	return ..()
 
 //Exposes my turf with simulated reagents
-/obj/effect/abstract/turf_liquid/proc/ExposeMyTurf()
+/atom/movable/turf_liquid/proc/ExposeMyTurf()
 	var/datum/reagents/tempr = simulate_reagents_threshold(LIQUID_REAGENT_THRESHOLD_TURF_EXPOSURE)
 	tempr.expose(my_turf, TOUCH, tempr.total_volume)
 	qdel(tempr)
 
-/obj/effect/abstract/turf_liquid/proc/ChangeToNewTurf(turf/NewT)
+/atom/movable/turf_liquid/proc/ChangeToNewTurf(turf/NewT)
 	if(NewT.liquids)
 		stack_trace("Liquids tried to change to a new turf, that already had liquids on it!")
 
@@ -544,7 +544,7 @@
  * * examiner - the user
  * * examine_text - the examine list
  *  */
-/obj/effect/abstract/turf_liquid/proc/examine_turf(turf/source, mob/examiner, list/examine_list)
+/atom/movable/turf_liquid/proc/examine_turf(turf/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
 
 	// This should always have reagents if this effect object exists, but as a sanity check...
@@ -587,26 +587,26 @@
 	layer = FLY_LAYER
 	randomdir = FALSE
 
-/obj/effect/abstract/turf_liquid/immutable
+/atom/movable/turf_liquid/immutable
 	immutable = TRUE
 	var/list/starting_mixture = list(/datum/reagent/water = 600)
 	var/starting_temp = T20C
 
 //STRICTLY FOR IMMUTABLES DESPITE NOT BEING /immutable
-/obj/effect/abstract/turf_liquid/proc/add_turf(turf/T)
+/atom/movable/turf_liquid/proc/add_turf(turf/T)
 	T.liquids = src
 	T.vis_contents += src
 	SSliquids.active_immutables[T] = TRUE
 	RegisterSignal(T, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
 	RegisterSignal(T, COMSIG_ATOM_INTERCEPT_Z_FALL, PROC_REF(mob_fall))
 
-/obj/effect/abstract/turf_liquid/proc/remove_turf(turf/T)
+/atom/movable/turf_liquid/proc/remove_turf(turf/T)
 	SSliquids.active_immutables -= T
 	T.liquids = null
 	T.vis_contents -= src
 	UnregisterSignal(T, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_INTERCEPT_Z_FALL))
 
-/obj/effect/abstract/turf_liquid/immutable/ocean
+/atom/movable/turf_liquid/immutable/ocean
 	smoothing_flags = NONE
 	icon_state = "ocean"
 	base_icon_state = "ocean"
@@ -616,10 +616,10 @@
 	no_effects = TRUE
 	vis_flags = NONE
 
-/obj/effect/abstract/turf_liquid/immutable/ocean/warm
+/atom/movable/turf_liquid/immutable/ocean/warm
 	starting_temp = T20C+20
 
-/obj/effect/abstract/turf_liquid/immutable/Initialize(mapload)
+/atom/movable/turf_liquid/immutable/Initialize(mapload)
 	. = ..()
 	reagent_list = starting_mixture.Copy()
 	total_reagents = 0

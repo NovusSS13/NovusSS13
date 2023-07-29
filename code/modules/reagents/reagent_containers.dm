@@ -292,7 +292,7 @@
 	. += filling
 
 // first arg == src
-/obj/item/reagent_containers/proc/attack_on_liquids_turf(obj/item/reagent_containers/_, turf/target_turf, mob/living/user, obj/effect/abstract/turf_liquid/liquids)
+/obj/item/reagent_containers/proc/attack_on_liquids_turf(obj/item/_, turf/target_turf, mob/living/user, atom/movable/turf_liquid/liquids)
 	if(user.combat_mode)
 		return FALSE
 

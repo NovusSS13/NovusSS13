@@ -104,7 +104,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	/// Never directly access this, use get_explosive_block() instead
 	var/inherent_explosive_resistance = -1
 
-	var/obj/effect/abstract/turf_liquid/liquids
+	var/atom/movable/turf_liquid/liquids
 	var/liquid_height = 0
 	var/turf_height = 0
 

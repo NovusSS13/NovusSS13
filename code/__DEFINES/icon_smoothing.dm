@@ -174,7 +174,7 @@ DEFINE_BITFIELD(smoothing_flags, list(
 
 #define SMOOTH_GROUP_INDUSTRIAL_LIFT S_OBJ(71) ///obj/structure/industrial_lift
 
-#define SMOOTH_GROUP_WATER S_OBJ(72)			///obj/effect/abstract/turf_liquid
+#define SMOOTH_GROUP_WATER S_OBJ(72)			///atom/movable/turf_liquid
 
 #define SMOOTH_GROUP_GAS_TANK S_OBJ(73)
 
