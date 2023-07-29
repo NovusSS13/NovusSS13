@@ -555,8 +555,8 @@
 
 /datum/status_effect/water_affected/proc/calculate_water_slow()
 	//Factor in swimming skill here?
-	var/turf/T = get_turf(owner)
-	var/slowdown_amount = T.liquids.liquid_state * 0.5
+	var/turf/turf = get_turf(owner)
+	var/slowdown_amount = turf.liquids.liquid_state * 0.5
 	owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/status_effect/water_slowdown, multiplicative_slowdown = slowdown_amount)
 
 /datum/status_effect/water_affected/tick()

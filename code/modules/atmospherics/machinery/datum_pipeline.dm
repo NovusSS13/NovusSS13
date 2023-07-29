@@ -202,7 +202,7 @@
 
 	if(target.liquids?.liquid_state >= LIQUID_STATE_FOR_HEAT_EXCHANGERS)
 		var/turf_heat_capacity = target.liquids.total_reagents * REAGENT_HEAT_CAPACITY
-		var/delta_temperature = (air.temperature - target.liquids.temp)
+		var/delta_temperature = (air.temperature - target.liquids.temperature)
 
 		if(turf_heat_capacity <= 0 || partial_heat_capacity <= 0)
 			return TRUE
@@ -211,7 +211,7 @@
 
 		air.temperature -= heat / total_heat_capacity
 		if(!target.liquids.immutable)
-			target.liquids.temp += heat / turf_heat_capacity
+			target.liquids.temperature += heat / turf_heat_capacity
 	else
 		var/turf_temperature = target.GetTemperature()
 		var/turf_heat_capacity = target.GetHeatCapacity()

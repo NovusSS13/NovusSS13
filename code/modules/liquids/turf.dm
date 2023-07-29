@@ -36,16 +36,17 @@
 		liquids.reagent_list[r_type] -= volume_change
 		liquids.total_reagents -= volume_change
 
-/turf/proc/liquid_fraction_share(turf/T, fraction)
+/turf/proc/liquid_fraction_share(turf/shared_turf, fraction)
 	if(!liquids)
 		return
 	if(fraction > 1)
 		CRASH("Fraction share more than 100%")
-	for(var/r_type in liquids.reagent_list)
-		var/volume_change = liquids.reagent_list[r_type] * fraction
-		liquids.reagent_list[r_type] -= volume_change
+	for(var/reagent_type in liquids.reagent_list)
+		var/volume_change = liquids.reagent_list[reagent_type] * fraction
+		liquids.reagent_list[reagent_type] -= volume_change
 		liquids.total_reagents -= volume_change
-		T.add_liquid(r_type, volume_change, TRUE, liquids.temp)
+		shared_turf.add_liquid(reagent_type, volume_change, TRUE, liquids.temperature)
+
 	liquids.has_cached_share = FALSE
 
 /turf/proc/liquid_update_turf()
@@ -55,22 +56,23 @@
 	//Check atmos adjacency to cut off any disconnected groups
 	if(lgroup)
 		var/assoc_atmos_turfs = list()
-		for(var/tur in get_atmos_adjacent_turfs())
-			assoc_atmos_turfs[tur] = TRUE
+		for(var/turf/adj_turf in get_atmos_adjacent_turfs())
+			assoc_atmos_turfs[adj_turf] = TRUE
+
 		//Check any cardinals that may have a matching group
 		for(var/direction in GLOB.cardinals)
-			var/turf/T = get_step(src, direction)
+			var/turf/adj_turf = get_step(src, direction)
 			//Same group of which we do not share atmos adjacency
-			if(!assoc_atmos_turfs[T] && T.lgroup && T.lgroup == lgroup)
-				T.lgroup.check_adjacency(T)
+			if(!assoc_atmos_turfs[adj_turf] && adj_turf.lgroup && adj_turf.lgroup == lgroup)
+				adj_turf.lgroup.check_adjacency(adj_turf)
 
 	SSliquids.add_active_turf(src)
 
 /turf/proc/add_liquid_from_reagents(datum/reagents/giver, no_react = FALSE)
 	var/list/compiled_list = list()
-	for(var/r in giver.reagent_list)
-		var/datum/reagent/R = r
-		compiled_list[R.type] = R.volume
+	for(var/datum/reagent/reagent as anything in giver.reagent_list)
+		compiled_list[reagent.type] = reagent.volume
+
 	add_liquid_list(compiled_list, no_react, giver.chem_temp)
 
 //More efficient than add_liquid for multiples
@@ -81,7 +83,7 @@
 		return
 
 	var/prev_total_reagents = liquids.total_reagents
-	var/prev_thermal_energy = prev_total_reagents * liquids.temp
+	var/prev_thermal_energy = prev_total_reagents * liquids.temperature
 
 	for(var/reagent in reagent_list)
 		if(!liquids.reagent_list[reagent])
@@ -90,13 +92,13 @@
 		liquids.total_reagents += reagent_list[reagent]
 
 	var/recieved_thermal_energy = (liquids.total_reagents - prev_total_reagents) * chem_temp
-	liquids.temp = (recieved_thermal_energy + prev_thermal_energy) / liquids.total_reagents
+	liquids.temperature = (recieved_thermal_energy + prev_thermal_energy) / liquids.total_reagents
 
 	if(!no_react)
 		//We do react so, make a simulation
 		create_reagents(10000) //Reagents are on turf level, should they be on liquids instead?
 		reagents.add_reagent_list(liquids.reagent_list, no_react = TRUE)
-		reagents.chem_temp = liquids.temp
+		reagents.chem_temp = liquids.temperature
 		if(reagents.handle_reactions())//Any reactions happened, so re-calculate our reagents
 			liquids.reagent_list = list()
 			liquids.total_reagents = 0
@@ -105,7 +107,7 @@
 				liquids.reagent_list[R.type] = R.volume
 				liquids.total_reagents += R.volume
 
-			liquids.temp = reagents.chem_temp
+			liquids.temperature = reagents.chem_temp
 			if(!liquids.total_reagents) //Our reaction exerted all of our reagents, remove self
 				qdel(reagents)
 				qdel(liquids)
@@ -127,14 +129,14 @@
 	if(liquids.immutable)
 		return
 
-	var/prev_thermal_energy = liquids.total_reagents * liquids.temp
+	var/prev_thermal_energy = liquids.total_reagents * liquids.temperature
 
 	if(!liquids.reagent_list[reagent])
 		liquids.reagent_list[reagent] = 0
 	liquids.reagent_list[reagent] += amount
 	liquids.total_reagents += amount
 
-	liquids.temp = ((amount * chem_temp) + prev_thermal_energy) / liquids.total_reagents
+	liquids.temperature = ((amount * chem_temp) + prev_thermal_energy) / liquids.total_reagents
 
 	if(!no_react)
 		//We do react so, make a simulation
@@ -143,11 +145,11 @@
 		if(reagents.handle_reactions())//Any reactions happened, so re-calculate our reagents
 			liquids.reagent_list = list()
 			liquids.total_reagents = 0
-			for(var/r in reagents.reagent_list)
-				var/datum/reagent/R = r
-				liquids.reagent_list[R.type] = R.volume
-				liquids.total_reagents += R.volume
-			liquids.temp = reagents.chem_temp
+			for(var/datum/reagent/stored_reagent in reagents.reagent_list)
+				liquids.reagent_list[stored_reagent.type] = stored_reagent.volume
+				liquids.total_reagents += stored_reagent.volume
+			liquids.temperature = reagents.chem_temp
+
 		qdel(reagents)
 		//Expose turf
 		liquids.ExposeMyTurf()
@@ -171,24 +173,24 @@
 /turf
 	var/datum/liquid_group/lgroup
 
-/turf/proc/can_share_liquids_with(turf/T)
-	if(T.z != z) //No Z here handling currently
+/turf/proc/can_share_liquids_with(turf/shared_turf)
+	if(shared_turf.z != z) //No Z here handling currently
 		return FALSE
 	/*
 	if(T.lgroup && T.lgroup != lgroup) //TEMPORARY@!!!!!!!!
 		return FALSE
 	*/
-	if(T.liquids && T.liquids.immutable)
+	if(shared_turf.liquids && shared_turf.liquids.immutable)
 		return FALSE
 
 	var/my_liquid_height = liquids ? liquids.height : 0
 	if(my_liquid_height < 1)
 		return FALSE
-	var/target_height = T.liquids ? T.liquids.height : 0
+	var/target_height = shared_turf.liquids ? shared_turf.liquids.height : 0
 
 	//Varied heights handling:
-	if(liquid_height != T.liquid_height)
-		if(my_liquid_height+liquid_height < target_height + T.liquid_height + 1)
+	if(liquid_height != shared_turf.liquid_height)
+		if((my_liquid_height + liquid_height) < (target_height + shared_turf.liquid_height + 1))
 			return FALSE
 		else
 			return TRUE
@@ -201,21 +203,26 @@
 
 /turf/proc/process_liquid_cell()
 	if(!liquids)
-		if(!lgroup)
-			for(var/tur in get_atmos_adjacent_turfs())
-				var/turf/T2 = tur
-				if(T2.liquids)
-					if(T2.liquids.immutable)
-						SSliquids.active_immutables[T2] = TRUE
-					else if (T2.can_share_liquids_with(src))
-						if(T2.lgroup)
-							lgroup = new(liquid_height)
-							lgroup.add_to_group(src)
-						SSliquids.add_active_turf(T2)
-						SSliquids.remove_active_turf(src)
-						break
+		if(lgroup)
+			SSliquids.remove_active_turf(src)
+			return
+		for(var/turf/adj_turf as anything in get_atmos_adjacent_turfs())
+			if(!adj_turf.liquids)
+				continue
+			if(adj_turf.liquids.immutable)
+				SSliquids.active_immutables[adj_turf] = TRUE
+				continue
+			if(!adj_turf.can_share_liquids_with(src))
+				continue
+			if(adj_turf.lgroup)
+				lgroup = new(liquid_height)
+				lgroup.add_to_group(src)
+			SSliquids.add_active_turf(adj_turf)
+			SSliquids.remove_active_turf(src)
+			break
 		SSliquids.remove_active_turf(src)
 		return
+
 	if(!lgroup)
 		lgroup = new(liquid_height)
 		lgroup.add_to_group(src)
@@ -240,7 +247,7 @@
 				continue
 
 			any_share = TRUE
-			T.add_liquid_list(liquids.reagent_list, TRUE, liquids.temp)
+			T.add_liquid_list(liquids.reagent_list, TRUE, liquids.temperature)
 	if(!any_share)
 		SSliquids.active_immutables -= src
 

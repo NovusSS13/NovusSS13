@@ -1465,7 +1465,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/turf/turf = humi.loc
 		if(turf.liquids && turf.liquids.liquid_state > LIQUID_STATE_PUDDLE)
 			var/submergment_percent = SUBMERGEMENT_PERCENT(humi, turf.liquids)
-			area_temp = (area_temp * (1 - submergment_percent)) + (turf.liquids.temp * submergment_percent)
+			area_temp = (area_temp * (1 - submergment_percent)) + (turf.liquids.temperature * submergment_percent)
 
 	// Get the insulation value based on the area's temp
 	var/thermal_protection = humi.get_insulation_protection(area_temp)

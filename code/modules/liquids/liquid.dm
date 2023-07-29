@@ -29,7 +29,7 @@
 
 	var/list/reagent_list = list()
 	var/total_reagents = 0
-	var/temp = T20C
+	var/temperature = T20C
 
 	var/fire_state = LIQUID_FIRE_STATE_NONE
 
@@ -123,16 +123,14 @@
 		SSliquids.processing_fire -= my_turf
 	//Try spreading
 	if(fire_state == old_state) //If an extinguisher made our fire smaller, dont spread, else it's too hard to put out
-		for(var/t in my_turf.atmos_adjacent_turfs)
-			var/turf/T = t
-			if(T.liquids && !T.liquids.fire_state && T.liquids.check_fire(TRUE))
-				SSliquids.processing_fire[T] = TRUE
+		for(var/turf/adj_turf as anything in my_turf.atmos_adjacent_turfs)
+			if(adj_turf.liquids && !adj_turf.liquids.fire_state && adj_turf.liquids.check_fire(TRUE))
+				SSliquids.processing_fire[adj_turf] = TRUE
 	//Burn our resources
-	var/datum/reagent/R //Faster declaration
 	var/burn_rate
-	for(var/reagent_type in reagent_list)
-		R = reagent_type
-		burn_rate = initial(R.liquid_fire_burnrate)
+	//casted as reagent bcuz of initial
+	for(var/datum/reagent/reagent_type as anything in reagent_list)
+		burn_rate = initial(reagent_type.liquid_fire_burnrate)
 		if(burn_rate)
 			var/amt = reagent_list[reagent_type]
 			if(burn_rate >= amt)
@@ -142,20 +140,21 @@
 				reagent_list[reagent_type] -= burn_rate
 				total_reagents -= burn_rate
 
-	my_turf.hotspot_expose((T20C+50) + (50*fire_state), 125)
+	my_turf.hotspot_expose((T20C + 50) + (50 * fire_state), 125)
 	for(var/atom/movable/movable as anything in my_turf)
 		if(QDELETED(movable))
 			continue
 
-		movable.fire_act((T20C+50) + (50*fire_state), 125)
+		movable.fire_act((T20C + 50) + (50 * fire_state), 125)
 
 	if(reagent_list.len == 0)
 		qdel(src, TRUE)
-	else
-		has_cached_share = FALSE
-		if(!my_turf.lgroup)
-			calculate_height()
-			set_reagent_color_for_liquid()
+		return
+
+	has_cached_share = FALSE
+	if(!my_turf.lgroup)
+		calculate_height()
+		set_reagent_color_for_liquid()
 
 /atom/movable/turf_liquid/proc/process_evaporation()
 	if(immutable)
@@ -170,26 +169,29 @@
 		return
 	//See if any of our reagents evaporates
 	var/any_change = FALSE
-	var/datum/reagent/R //Faster declaration
-	for(var/reagent_type in reagent_list)
-		R = reagent_type
+
+	//cast as reagent bcuz initial
+	for(var/datum/reagent/reagent_type in reagent_list)
 		//We evaporate. bye bye
-		if(initial(R.evaporates))
+		if(initial(reagent_type.evaporates))
 			total_reagents -= reagent_list[reagent_type]
 			reagent_list -= reagent_type
 			any_change = TRUE
+
 	if(!any_change)
 		SSliquids.evaporation_queue -= my_turf
 		return
+
 	//No total reagents. Commit death
 	if(reagent_list.len == 0)
 		qdel(src, TRUE)
+		return
+
 	//Reagents still left. Recalculte height and color and remove us from the queue
-	else
-		has_cached_share = FALSE
-		SSliquids.evaporation_queue -= my_turf
-		calculate_height()
-		set_reagent_color_for_liquid()
+	has_cached_share = FALSE
+	SSliquids.evaporation_queue -= my_turf
+	calculate_height()
+	set_reagent_color_for_liquid()
 
 /atom/movable/turf_liquid/forceMove(atom/destination, no_tp=FALSE, harderforce = FALSE)
 	if(harderforce)
@@ -266,9 +268,9 @@
 
 //Takes a flat of our reagents and returns it, possibly qdeling our liquids
 /atom/movable/turf_liquid/proc/take_reagents_flat(flat_amount)
-	var/datum/reagents/tempr = new(10000)
+	var/datum/reagents/temp_reagents = new(10000)
 	if(flat_amount >= total_reagents)
-		tempr.add_reagent_list(reagent_list, no_react = TRUE)
+		temp_reagents.add_reagent_list(reagent_list, no_react = TRUE)
 		qdel(src, TRUE)
 	else
 		var/fraction = flat_amount/total_reagents
@@ -278,46 +280,53 @@
 			reagent_list[reagent_type] -= amount
 			total_reagents -= amount
 			passed_list[reagent_type] = amount
-		tempr.add_reagent_list(passed_list, no_react = TRUE)
+		temp_reagents.add_reagent_list(passed_list, no_react = TRUE)
 		has_cached_share = FALSE
-	tempr.chem_temp = temp
-	return tempr
+
+	temp_reagents.chem_temp = temperature
+	return temp_reagents
 
 /atom/movable/turf_liquid/immutable/take_reagents_flat(flat_amount)
 	return simulate_reagents_flat(flat_amount)
 
 //Returns a reagents holder with all the reagents with a higher volume than the threshold
 /atom/movable/turf_liquid/proc/simulate_reagents_threshold(amount_threshold)
-	var/datum/reagents/tempr = new(10000)
+	var/datum/reagents/temp_reagents = new(10000)
 	var/passed_list = list()
 	for(var/reagent_type in reagent_list)
 		var/amount = reagent_list[reagent_type]
 		if(amount_threshold && amount < amount_threshold)
 			continue
 		passed_list[reagent_type] = amount
-	tempr.add_reagent_list(passed_list, no_react = TRUE)
-	tempr.chem_temp = temp
-	return tempr
+
+	temp_reagents.add_reagent_list(passed_list, no_react = TRUE)
+	temp_reagents.chem_temp = temperature
+	return temp_reagents
 
 //Returns a flat of our reagents without any effects on the liquids
 /atom/movable/turf_liquid/proc/simulate_reagents_flat(flat_amount)
-	var/datum/reagents/tempr = new(10000)
+	var/datum/reagents/temp_reagents = new(10000)
 	if(flat_amount >= total_reagents)
-		tempr.add_reagent_list(reagent_list, no_react = TRUE)
-	else
-		var/fraction = flat_amount/total_reagents
-		var/passed_list = list()
-		for(var/reagent_type in reagent_list)
-			var/amount = fraction * reagent_list[reagent_type]
-			passed_list[reagent_type] = amount
-		tempr.add_reagent_list(passed_list, no_react = TRUE)
-	tempr.chem_temp = temp
-	return tempr
+		temp_reagents.add_reagent_list(reagent_list, no_react = TRUE)
+		temp_reagents.chem_temp = temperature
+		return temp_reagents
+
+	var/fraction = flat_amount/total_reagents
+	var/passed_list = list()
+	for(var/reagent_type in reagent_list)
+		var/amount = fraction * reagent_list[reagent_type]
+		passed_list[reagent_type] = amount
+
+	temp_reagents.add_reagent_list(passed_list, no_react = TRUE)
+	temp_reagents.chem_temp = temperature
+	return temp_reagents
 
 /atom/movable/turf_liquid/fire_act(temperature, volume)
-	if(!fire_state)
-		if(check_fire(TRUE))
-			SSliquids.processing_fire[my_turf] = TRUE
+	if(fire_state)
+		return
+
+	if(check_fire(TRUE))
+		SSliquids.processing_fire[my_turf] = TRUE
 
 /atom/movable/turf_liquid/proc/set_reagent_color_for_liquid()
 	color = mix_color_from_reagent_list(reagent_list)
@@ -345,8 +354,9 @@
 
 /atom/movable/turf_liquid/immutable/calculate_height()
 	var/new_height = CEILING(total_reagents, 1)/LIQUID_HEIGHT_DIVISOR
-	set_height(new_height)
 	var/determined_new_state
+
+	set_height(new_height)
 	switch(new_height)
 		if(0 to LIQUID_ANKLES_LEVEL_HEIGHT-1)
 			determined_new_state = LIQUID_STATE_PUDDLE
@@ -358,62 +368,73 @@
 			determined_new_state = LIQUID_STATE_SHOULDERS
 		if(LIQUID_FULLTILE_LEVEL_HEIGHT to INFINITY)
 			determined_new_state = LIQUID_STATE_FULLTILE
+
 	if(determined_new_state != liquid_state)
 		set_new_liquid_state(determined_new_state)
 
 /atom/movable/turf_liquid/proc/set_height(new_height)
 	var/prev_height = height
 	height = new_height
-	if(abs(height - prev_height) > WATER_HEIGH_DIFFERENCE_DELTA_SPLASH)
-		//Splash
-		if(prob(WATER_HEIGH_DIFFERENCE_SOUND_CHANCE))
-			var/sound_to_play = pick(
-				'sound/effects/water_wade1.ogg',
-				'sound/effects/water_wade2.ogg',
-				'sound/effects/water_wade3.ogg',
-				'sound/effects/water_wade4.ogg',
-			)
-			playsound(my_turf, sound_to_play, 60, 0)
-		var/obj/splashy = new /obj/effect/temp_visual/liquid_splash(my_turf)
-		splashy.color = color
-		if(height >= LIQUID_WAIST_LEVEL_HEIGHT)
-			//Push things into some direction, like space wind
-			var/turf/dest_turf
-			var/last_height = height
-			for(var/turf/adj_turf as anything in my_turf.atmos_adjacent_turfs)
-				if(adj_turf.z != my_turf.z)
-					continue
-				if(!adj_turf.liquids) //Automatic winner
-					dest_turf = adj_turf
-					break
-				if(adj_turf.liquids.height < last_height)
-					dest_turf = adj_turf
-					last_height = adj_turf.liquids.height
+	if(abs(height - prev_height) <= WATER_HEIGH_DIFFERENCE_DELTA_SPLASH)
+		return //nothing to do
 
-			if(dest_turf)
-				var/dir = get_dir(my_turf, dest_turf)
-				var/atom/movable/AM
-				for(var/thing in my_turf)
-					AM = thing
-					if(!AM.anchored && !AM.pulledby && !isobserver(AM) && (AM.move_resist < INFINITY))
-						if(iscarbon(AM))
-							var/mob/living/carbon/C = AM
-							if(!HAS_TRAIT(C, TRAIT_NEGATES_GRAVITY))
-								step(C, dir)
-								if(prob(60) && C.body_position != LYING_DOWN)
-									to_chat(C, span_userdanger("The current knocks you down!"))
-									C.Paralyze(60)
-						else
-							step(AM, dir)
+	//Splash
+	if(prob(WATER_HEIGH_DIFFERENCE_SOUND_CHANCE))
+		var/sound_to_play = pick(
+			'sound/effects/water_wade1.ogg',
+			'sound/effects/water_wade2.ogg',
+			'sound/effects/water_wade3.ogg',
+			'sound/effects/water_wade4.ogg',
+		)
+		playsound(my_turf, sound_to_play, 60, 0)
+
+	var/obj/effect/temp_visual/liquid_splash/splashy = new(my_turf)
+	splashy.color = color
+	if(height < LIQUID_WAIST_LEVEL_HEIGHT)
+		return
+
+	//Push things into some direction, like space wind
+	var/turf/dest_turf
+	var/last_height = height
+	for(var/turf/adj_turf as anything in my_turf.atmos_adjacent_turfs)
+		if(adj_turf.z != my_turf.z)
+			continue
+		if(!adj_turf.liquids) //Automatic winner
+			dest_turf = adj_turf
+			break
+		if(adj_turf.liquids.height < last_height)
+			dest_turf = adj_turf
+			last_height = adj_turf.liquids.height
+
+	if(!dest_turf)
+		return
+
+	var/dir = get_dir(my_turf, dest_turf)
+	for(var/atom/movable/movable as anything in my_turf)
+		if(movable.anchored || movable.pulledby || isobserver(movable) || (movable.move_resist >= INFINITY))
+			continue
+
+		if(!iscarbon(movable))
+			step(movable, dir)
+			continue
+
+		var/mob/living/carbon/carbon_mob = movable
+		if(HAS_TRAIT(carbon_mob, TRAIT_NEGATES_GRAVITY))
+			continue
+
+		step(carbon_mob, dir)
+		if(prob(60) && carbon_mob.body_position != LYING_DOWN)
+			to_chat(carbon_mob, span_userdanger("The current knocks you down!"))
+			carbon_mob.Paralyze(60)
 
 /atom/movable/turf_liquid/immutable/set_height(new_height)
 	height = new_height
 
-/atom/movable/turf_liquid/proc/movable_entered(datum/source, atom/movable/AM)
+/atom/movable/turf_liquid/proc/movable_entered(turf/source_turf, atom/movable/movable)
 	SIGNAL_HANDLER
-	var/turf/T = source
-	if(isobserver(AM))
+	if(isobserver(movable) || iscameramob(movable))
 		return //ghosts, camera eyes, etc. don't make water splashy splashy
+
 	if(liquid_state >= LIQUID_STATE_ANKLES)
 		if(prob(30))
 			var/sound_to_play = pick(
@@ -422,16 +443,19 @@
 				'sound/effects/water_wade3.ogg',
 				'sound/effects/water_wade4.ogg',
 			)
-			playsound(T, sound_to_play, 50, 0)
-		if(iscarbon(AM))
-			var/mob/living/carbon/C = AM
-			C.apply_status_effect(/datum/status_effect/water_affected)
-	else if (isliving(AM))
-		var/mob/living/L = AM
-		if(prob(7) && !(L.movement_type & FLYING))
-			L.slip(60, T, NO_SLIP_WHEN_WALKING, 20, TRUE)
+			playsound(source_turf, sound_to_play, 50, 0)
+
+		if(iscarbon(movable))
+			var/mob/living/carbon/carbon_mob = movable
+			carbon_mob.apply_status_effect(/datum/status_effect/water_affected)
+
+	else if(isliving(movable))
+		var/mob/living/living_mob = movable
+		if(prob(7) && !(living_mob.movement_type & FLYING))
+			living_mob.slip(60, source_turf, NO_SLIP_WHEN_WALKING, 20, TRUE)
+
 	if(fire_state)
-		AM.fire_act((T20C+50) + (50*fire_state), 125)
+		movable.fire_act((T20C + 50) + (50 * fire_state), 125)
 
 /atom/movable/turf_liquid/proc/mob_fall(datum/source, list/falling_movables, levels)
 	var/turf/turf = source
@@ -455,9 +479,9 @@
 			to_chat(fallen_mob, span_userdanger("You fall in the water!"))
 			continue
 
-		var/datum/reagents/tempr = take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_FALL_AMOUNT)
-		tempr.trans_to(fallen_mob, tempr.total_volume, methods = INGEST)
-		qdel(tempr)
+		var/datum/reagents/turf_reagents = take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_FALL_AMOUNT)
+		turf_reagents.trans_to(fallen_mob, turf_reagents.total_volume, methods = INGEST)
+		qdel(turf_reagents)
 
 		fallen_mob.adjustOxyLoss(5)
 		fallen_mob.emote("cough")
@@ -575,7 +599,7 @@
 				var/volume = round(reagent_list[reagent_type], 0.01)
 				examine_list += "&bull; [volume] units of [reagent_name]"
 
-		examine_list += span_notice("The solution has a temperature of [temp]K.")
+		examine_list += span_notice("The solution has a temperature of [temperature]K.")
 		examine_list += "<hr>"
 		return
 
@@ -594,18 +618,18 @@
 	var/starting_temp = T20C
 
 //STRICTLY FOR IMMUTABLES DESPITE NOT BEING /immutable
-/atom/movable/turf_liquid/proc/add_turf(turf/T)
-	T.liquids = src
-	T.vis_contents += src
-	SSliquids.active_immutables[T] = TRUE
-	RegisterSignal(T, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
-	RegisterSignal(T, COMSIG_ATOM_INTERCEPT_Z_FALL, PROC_REF(mob_fall))
+/atom/movable/turf_liquid/proc/add_turf(turf/added_turf)
+	added_turf.liquids = src
+	added_turf.vis_contents += src
+	SSliquids.active_immutables[added_turf] = TRUE
+	RegisterSignal(added_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
+	RegisterSignal(added_turf, COMSIG_ATOM_INTERCEPT_Z_FALL, PROC_REF(mob_fall))
 
-/atom/movable/turf_liquid/proc/remove_turf(turf/T)
-	SSliquids.active_immutables -= T
-	T.liquids = null
-	T.vis_contents -= src
-	UnregisterSignal(T, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_INTERCEPT_Z_FALL))
+/atom/movable/turf_liquid/proc/remove_turf(turf/removed_turf)
+	SSliquids.active_immutables -= removed_turf
+	removed_turf.liquids = null
+	removed_turf.vis_contents -= src
+	UnregisterSignal(removed_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_INTERCEPT_Z_FALL))
 
 /atom/movable/turf_liquid/immutable/ocean
 	smoothing_flags = NONE
@@ -626,6 +650,6 @@
 	total_reagents = 0
 	for(var/key in reagent_list)
 		total_reagents += reagent_list[key]
-	temp = starting_temp
+	temperature = starting_temp
 	calculate_height()
 	set_reagent_color_for_liquid()
