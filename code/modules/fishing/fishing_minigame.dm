@@ -81,7 +81,7 @@
 	RegisterSignal(user, COMSIG_MOB_CLICKON, PROC_REF(handle_click))
 	start_baiting_phase()
 	to_chat(user, span_notice("You start fishing..."))
-	playsound(lure, 'sound/effects/splash.ogg', 100)
+	playsound(lure, 'sound/effects/fish_splash.ogg', 100)
 
 /datum/fishing_challenge/proc/handle_click()
 	if(phase == WAIT_PHASE) //Reset wait
@@ -114,7 +114,7 @@
 			used_rod.consume_bait()
 	if(win)
 		if(reward_path != FISHING_DUD)
-			playsound(lure, 'sound/effects/bigsplash.ogg', 100)
+			playsound(lure, 'sound/effects/splash.ogg', 100)
 	else
 		user.balloon_alert(user, "it got away")
 	SEND_SIGNAL(src, COMSIG_FISHING_CHALLENGE_COMPLETED, user, win, perfect_win)

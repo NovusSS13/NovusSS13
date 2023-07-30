@@ -250,7 +250,7 @@
 /obj/structure/aquarium/proc/aquarium_smash()
 	broken = TRUE
 	var/possible_destinations_for_fish = list()
-	var/droploc = drop_location()
+	var/turf/droploc = drop_location()
 	if(isturf(droploc))
 		possible_destinations_for_fish = get_adjacent_open_turfs(droploc)
 	else
@@ -258,10 +258,10 @@
 	playsound(src, 'sound/effects/glassbr3.ogg', 100, TRUE)
 	for(var/atom/movable/fish in contents)
 		fish.forceMove(pick(possible_destinations_for_fish))
-	if(fluid_type != AQUARIUM_FLUID_AIR)
+	if(fluid_type != AQUARIUM_FLUID_AIR && istype(droploc))
 		var/datum/reagents/reagent_splash = new()
 		reagent_splash.add_reagent(/datum/reagent/water, 30)
-		chem_splash(droploc, null, 3, list(reagent_splash))
+		droploc.add_liquid_from_reagents(reagent_splash)
 	update_appearance()
 
 #undef AQUARIUM_LAYER_STEP

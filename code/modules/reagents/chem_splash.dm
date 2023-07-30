@@ -17,9 +17,8 @@
  * - [reactants][/list/datum/reagents]: The set of reagent holders to combine.
  * - extra_heat: Some amount to heat the combined reagents by before reacting them.
  * - threatscale: A multiplier for the reagent quantities involved.
- * - adminlog: Whether to alert the admins that this has occured.
  */
-/proc/chem_splash(turf/epicenter, datum/reagents/holder = null, affected_range = 3, list/datum/reagents/reactants = list(), extra_heat = 0, threatscale = 1, adminlog = 1)
+/proc/chem_splash(turf/epicenter, datum/reagents/holder = null, affected_range = 3, list/datum/reagents/reactants = list(), extra_heat = 0, threatscale = 1)
 	if(!isturf(epicenter) || !reactants.len || threatscale <= 0)
 		return
 

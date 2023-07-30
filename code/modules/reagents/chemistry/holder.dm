@@ -281,11 +281,13 @@
 	return TRUE
 
 /// Like add_reagent but you can enter a list. Format it like this: list(/datum/reagent/toxin = 10, "beer" = 15)
-/datum/reagents/proc/add_reagent_list(list/list_reagents, list/data=null)
+/datum/reagents/proc/add_reagent_list(list/list_reagents, list/data = null, no_react = FALSE)
 	for(var/r_id in list_reagents)
 		var/amt = list_reagents[r_id]
-		add_reagent(r_id, amt, data)
+		add_reagent(r_id, amt, data, no_react = TRUE)
 
+	if(!no_react)
+		handle_reactions()
 
 /// Remove a specific reagent
 /datum/reagents/proc/remove_reagent(reagent, amount, safety = TRUE)//Added a safety check for the trans_id_to
@@ -430,14 +432,14 @@
 		if (holder_reagent.type == reagent)
 			if(!amount)
 				if(needs_metabolizing && !holder_reagent.metabolizing)
-					return FALSE
+					return null
 				return holder_reagent
 			else
 				if(round(holder_reagent.volume, CHEMICAL_QUANTISATION_LEVEL) >= amount)
 					if(needs_metabolizing && !holder_reagent.metabolizing)
-						return FALSE
+						return null
 					return holder_reagent
-	return FALSE
+	return null
 
 /**
  * Check if this holder contains a reagent with a chemical_flags containing this flag
@@ -534,7 +536,7 @@
 			var/transfer_amount = reagent.volume * part
 			if(methods)
 				reagent.on_transfer(target_atom, methods, transfer_amount * multiplier)
-			remove_reagent(reagent.type, transfer_amount)
+			remove_reagent(reagent.type, transfer_amount, safety = TRUE)
 			var/list/reagent_qualities = list(REAGENT_TRANSFER_AMOUNT = transfer_amount, REAGENT_PURITY = reagent.purity)
 			transfer_log[reagent.type] = reagent_qualities
 
@@ -561,7 +563,7 @@
 				else
 					R.expose_single(reagent, target_atom, methods, transfer_amount, show_message)
 				reagent.on_transfer(target_atom, methods, transfer_amount * multiplier)
-			remove_reagent(reagent.type, transfer_amount)
+			remove_reagent(reagent.type, transfer_amount, safety = TRUE)
 			var/list/reagent_qualities = list(REAGENT_TRANSFER_AMOUNT = transfer_amount, REAGENT_PURITY = reagent.purity)
 			transfer_log[reagent.type] = reagent_qualities
 

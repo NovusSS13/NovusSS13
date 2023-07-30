@@ -154,39 +154,51 @@
  * This is most dangerous for fuel tanks, which will explosion().
  * Other dispensers will scatter their contents within range.
  */
-/obj/structure/reagent_dispensers/proc/boom()
+/obj/structure/reagent_dispensers/proc/boom(try_explode = FALSE)
 	if(QDELETED(src))
 		return // little bit of sanity sauce before we wreck ourselves somehow
-	var/datum/reagent/fuel/volatiles = reagents.has_reagent(/datum/reagent/fuel)
-	var/fuel_amt = 0
-	if(istype(volatiles) && volatiles.volume >= 25)
-		fuel_amt = volatiles.volume
-		reagents.del_reagent(/datum/reagent/fuel) // not actually used for the explosion
-	if(reagents.total_volume)
-		if(!fuel_amt)
-			visible_message(span_danger("\The [src] ruptures!"))
-		// Leave it up to future terrorists to figure out the best way to mix reagents with fuel for a useful boom here
-		chem_splash(loc, null, 2 + (reagents.total_volume + fuel_amt) / 1000, list(reagents), extra_heat=(fuel_amt / 50),adminlog=(fuel_amt<25))
 
-	if(fuel_amt) // with that done, actually explode
-		visible_message(span_danger("\The [src] explodes!"))
-		// old code for reference:
-		// standard fuel tank = 1000 units = heavy_impact_range = 1, light_impact_range = 5, flame_range = 5
-		// big fuel tank =SHEET_MATERIAL_AMOUNT * 2.5 units = devastation_range = 1, heavy_impact_range = 2, light_impact_range = 7, flame_range = 12
-		// It did not account for how much fuel was actually in the tank at all, just the size of the tank.
-		// I encourage others to better scale these numbers in the future.
-		// As it stands this is a minor nerf in exchange for an easy bombing technique working that has been broken for a while.
-		switch(volatiles.volume)
-			if(25 to 150)
-				explosion(src, light_impact_range = 1, flame_range = 2)
-			if(150 to 300)
-				explosion(src, light_impact_range = 2, flame_range = 3)
-			if(300 to 750)
-				explosion(src, heavy_impact_range = 1, light_impact_range = 3, flame_range = 5)
-			if(750 to 1500)
-				explosion(src, heavy_impact_range = 1, light_impact_range = 4, flame_range = 6)
-			if(1500 to INFINITY)
-				explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 6, flame_range = 8)
+	if(!reagents.total_volume)
+		qdel(src) // :shrug:
+		return
+
+	var/fuel_amount = 0
+
+	var/datum/reagent/fuel/volatiles = reagents.has_reagent(/datum/reagent/fuel)
+	if(volatiles?.volume >= 25)
+		fuel_amount = volatiles.volume
+
+	if(!try_explode || fuel_amount < 25)
+		var/turf/source = get_turf(src)
+		if(istype(source))
+			source.add_liquid_from_reagents(reagents)
+		visible_message(span_danger("\The [src] ruptures!"))
+		qdel(src)
+		return
+
+	if(fuel_amount >= 25)
+		reagents.del_reagent(/datum/reagent/fuel) //not used for the explosion
+
+	// Leave it up to future terrorists to figure out the best way to mix reagents with fuel for a useful boom here
+	visible_message(span_danger("\The [src] explodes!"))
+	chem_splash(loc, null, 2 + ((fuel_amount + reagents.total_volume) / 1000), list(reagents), extra_heat = (fuel_amount / 50))
+
+	// standard fuel tank = 1000 units = heavy_impact_range = 1, light_impact_range = 5, flame_range = 5
+	// big fuel tank =SHEET_MATERIAL_AMOUNT * 2.5 units = devastation_range = 1, heavy_impact_range = 2, light_impact_range = 7, flame_range = 12
+	// It did not account for how much fuel was actually in the tank at all, just the size of the tank.
+	// I encourage others to better scale these numbers in the future.
+	// As it stands this is a minor nerf in exchange for an easy bombing technique working that has been broken for a while.
+	switch(fuel_amount) // old code for reference:
+		if(25 to 150)
+			explosion(src, light_impact_range = 1, flame_range = 2)
+		if(150 to 300)
+			explosion(src, light_impact_range = 2, flame_range = 3)
+		if(300 to 750)
+			explosion(src, heavy_impact_range = 1, light_impact_range = 3, flame_range = 5)
+		if(750 to 1500)
+			explosion(src, heavy_impact_range = 1, light_impact_range = 4, flame_range = 6)
+		if(1500 to INFINITY)
+			explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 6, flame_range = 8)
 	qdel(src)
 
 /obj/structure/reagent_dispensers/deconstruct(disassembled = TRUE)
@@ -252,24 +264,24 @@
 		icon_state = "fuel_fools"
 
 /obj/structure/reagent_dispensers/fueltank/blob_act(obj/structure/blob/B)
-	boom()
+	boom(try_explode = TRUE)
 
 /obj/structure/reagent_dispensers/fueltank/ex_act()
-	boom()
+	boom(try_explode = TRUE)
 	return TRUE
 
 /obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume)
-	boom()
+	boom(try_explode = TRUE)
 
 /obj/structure/reagent_dispensers/fueltank/zap_act(power, zap_flags)
 	. = ..() //extend the zap
-	if(ZAP_OBJ_DAMAGE & zap_flags)
-		boom()
+	if(zap_flags & ZAP_OBJ_DAMAGE)
+		boom(try_explode = TRUE)
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/projectile/hitting_projectile)
-	if(hitting_projectile.damage > 0 && ((hitting_projectile.damage_type == BURN) || (hitting_projectile.damage_type == BRUTE)))
+	if(hitting_projectile.damage_type == BURN && hitting_projectile.damage > 0)
 		log_bomber(hitting_projectile.firer, "detonated a", src, "via projectile")
-		boom()
+		boom(try_explode = TRUE)
 		return hitting_projectile.on_hit(src, 0)
 
 	// we override parent like this because otherwise we won't actually properly log the fact that a projectile caused this welding tank to explode.
@@ -293,7 +305,7 @@
 		else
 			user.visible_message(span_danger("[user] catastrophically fails at refilling [user.p_their()] [I.name]!"), span_userdanger("That was stupid of you."))
 			log_bomber(user, "detonated a", src, "via welding tool")
-			boom()
+			boom(try_explode = TRUE)
 		return
 
 	return ..()
