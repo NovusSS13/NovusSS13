@@ -38,6 +38,18 @@
 	/// The icon file to take fill icon appearances from
 	var/fill_icon = 'icons/obj/medical/reagent_fillings.dmi'
 
+/obj/item/reagent_containers/apply_fantasy_bonuses(bonus)
+	. = ..()
+	if(reagents)
+		reagents.maximum_volume = modify_fantasy_variable("maximum_volume", reagents.maximum_volume, bonus * 10, minimum = 5)
+	volume = modify_fantasy_variable("maximum_volume_beaker", volume, bonus * 10, minimum = 5)
+
+/obj/item/reagent_containers/remove_fantasy_bonuses(bonus)
+	if(reagents)
+		reagents.maximum_volume = reset_fantasy_variable("maximum_volume", reagents.maximum_volume)
+	volume = reset_fantasy_variable("maximum_volume_beaker", volume)
+	return ..()
+
 /obj/item/reagent_containers/Initialize(mapload, vol)
 	. = ..()
 	AddComponent(/datum/component/liquids_interaction, on_interaction_callback = TYPE_PROC_REF(/obj/item/reagent_containers, attack_on_liquids_turf))
