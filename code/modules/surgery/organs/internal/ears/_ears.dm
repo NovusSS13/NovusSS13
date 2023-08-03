@@ -52,7 +52,8 @@
 		to_chat(owner, span_warning("The ringing in your ears grows louder, blocking out any external noises for a moment."))
 
 	. = ..()
-	// if we have non-damage related deafness like mutations, quirks or clothing (earmuffs), don't bother processing here. Ear healing from earmuffs or chems happen elsewhere
+	// if we have non-damage related deafness like mutations, quirks or clothing (earmuffs), don't bother processing here.
+	// Ear healing from earmuffs or chems happen elsewhere.
 	if(HAS_TRAIT_NOT_FROM(owner, TRAIT_DEAF, EAR_DAMAGE))
 		return
 
@@ -166,11 +167,34 @@
 		REMOVE_WADDLE(ear_owner, WADDLE_SOURCE_PENGUIN)
 
 /obj/item/organ/ears/cybernetic
-	name = "cybernetic ears"
+	name = "basic cybernetic ears"
 	icon_state = "ears-c"
 	desc = "A basic cybernetic organ designed to mimic the operation of ears."
 	damage_multiplier = 0.9
 	organ_flags = ORGAN_ROBOTIC
+
+/obj/item/organ/ears/cybernetic/upgraded
+	name = "cybernetic ears"
+	icon_state = "ears-c-u"
+	desc =  "An advanced cybernetic ear, surpassing the performance of organic ears."
+	damage_multiplier = 0.5
+
+/obj/item/organ/ears/cybernetic/whisper
+	name = "whisper-sensitive cybernetic ears"
+	icon_state = "ears-c-u"
+	desc = "Allows the user to more easily hear whispers. The user becomes extra vulnerable to loud noises, however"
+	// Same sensitivity as felinid ears
+	damage_multiplier = 2
+	organ_traits = list(TRAIT_GOOD_HEARING)
+
+// "X-ray ears" that let you hear through walls
+/obj/item/organ/ears/cybernetic/xray
+	name = "wall-penetrating cybernetic ears"
+	icon_state = "ears-c-u"
+	desc = "Throguh the power of modern engineering, allows the user to hear speech through walls. The user becomes extra vulnerable to loud noises, however"
+	// Same sensitivity as felinid ears
+	damage_multiplier = 2
+	organ_traits = list(TRAIT_XRAY_HEARING)
 
 /obj/item/organ/ears/cybernetic/emp_act(severity)
 	. = ..()
