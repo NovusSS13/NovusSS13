@@ -412,7 +412,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(cosmetic_organ.slot in organ_slots)
 			continue
 		// Cosmetic organ checking - We need to check the cosmetic organs owned by the carbon itself,
-		// because we want to also remove ones not shared by its species.
+		// because we want to also remove ones not shared by this species.
 		// This should be done even if species was not changed.
 		if(cosmetic_organ.type in cosmetic_organs)
 			continue // Don't remove cosmetic organs this species is supposed to have.
@@ -1459,6 +1459,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	// Get the temperature of the environment for area
 	var/area_temp = humi.get_temperature(environment)
+
+	//Special handling for getting liquids temperature
+	if(isturf(humi.loc))
+		var/turf/turf = humi.loc
+		if(turf.liquids && turf.liquids.liquid_state > LIQUID_STATE_PUDDLE)
+			var/submergment_percent = SUBMERGEMENT_PERCENT(humi, turf.liquids)
+			area_temp = (area_temp * (1 - submergment_percent)) + (turf.liquids.temperature * submergment_percent)
 
 	// Get the insulation value based on the area's temp
 	var/thermal_protection = humi.get_insulation_protection(area_temp)

@@ -13,6 +13,61 @@
 	var/broken = FALSE
 	var/burnt = FALSE
 
+/turf/open/CanPass(atom/movable/mover, border_dir)
+	if(isliving(mover))
+		var/turf/AT = get_turf(mover)
+		if(AT && AT.turf_height - turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
+			return FALSE
+	return ..()
+
+/turf/open/Exit(atom/movable/mover, atom/newloc)
+	. = ..()
+	if(. && isliving(mover) && mover.has_gravity() && isturf(newloc))
+		var/mob/living/L = mover
+		var/turf/T = get_turf(newloc)
+		if(T && T.turf_height - turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
+			L.on_fall()
+			L.onZImpact(T, 1)
+
+/turf/open/MouseDrop_T(mob/living/M, mob/living/user)
+	if(!isliving(M) || !isliving(user) || !M.has_gravity() || !Adjacent(user) || !M.Adjacent(user) || !(user.stat == CONSCIOUS) || user.body_position == LYING_DOWN)
+		return
+	if(!M.has_gravity())
+		return
+	var/turf/T = get_turf(M)
+	if(!T)
+		return
+	if(T.turf_height - turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
+		//Climb up
+		if(user == M)
+			M.visible_message(
+				span_notice("[user] starts climbing onto [src].."),
+				span_notice("You start climbing onto [src].")
+			)
+		else
+			M.visible_message(
+				span_notice("[user] starts pulling [M] onto [src].."),
+				span_notice("You start pulling [M] onto [src]..")
+			)
+
+		if(do_after(user, 2 SECONDS, M))
+			M.forceMove(src)
+		return
+	if(turf_height - T.turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
+		//Climb down
+		if(user == M)
+			M.visible_message(
+				span_notice("[user] starts lowering down to [src].."),
+				span_notice("You start lowering yourself to [src]..")
+			)
+		else
+			M.visible_message(
+				span_notice("[user] starts lowering [M] down to [src].."),
+				span_notice("You start lowering [M] down to [src]..")
+			)
+		if(do_after(user, 2 SECONDS, M))
+			M.forceMove(src)
+		return
 
 /// Returns a list of every turf state considered "broken".
 /// Will be randomly chosen if a turf breaks at runtime.
