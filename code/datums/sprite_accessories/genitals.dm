@@ -82,7 +82,7 @@
 
 /datum/sprite_accessory/breasts
 	icon = 'icons/mob/species/genitals/breasts_onmob.dmi'
-	var/max_size = 16
+	var/max_size = 5
 
 /datum/sprite_accessory/breasts/pair
 	name = "Pair"
