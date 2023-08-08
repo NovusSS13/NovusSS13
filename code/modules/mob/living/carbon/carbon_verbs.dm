@@ -52,7 +52,8 @@
 	if(isnull(chosen_genital) || stat == DEAD || !(chosen_genital in organs))
 		return
 
-	var/chosen_arousal = tgui_input_list(src, "Choose the desired arousal.", items = chosen_genital.arousal_options)
+	var/datum/bodypart_overlay/mutant/genital/genital_overlay = chosen_genital.bodypart_overlay
+	var/chosen_arousal = tgui_input_list(src, "Choose the desired arousal.", items = genital_overlay.arousal_options)
 	if(isnull(chosen_genital) || stat == DEAD || !(chosen_genital in organs))
 		return
 
