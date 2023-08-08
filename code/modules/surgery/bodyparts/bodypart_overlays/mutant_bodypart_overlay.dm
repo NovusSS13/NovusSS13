@@ -77,13 +77,21 @@
 
 ///Change our accessory sprite, using the accesssory type. If you need to change the sprite for something, use simple_change_sprite()
 /datum/bodypart_overlay/mutant/set_appearance(accessory_type)
-	sprite_datum = fetch_sprite_datum(accessory_type)
+	var/valid_sprite_datum = fetch_sprite_datum(accessory_type)
+	if(!valid_sprite_datum)
+		return FALSE
+	sprite_datum = valid_sprite_datum
 	cache_key = jointext(generate_icon_cache(), "_")
+	return TRUE
 
 ///In a lot of cases, appearances are stored in DNA as the Name, instead of the path. Use set_appearance instead of possible
 /datum/bodypart_overlay/mutant/proc/set_appearance_from_name(accessory_name)
-	sprite_datum = fetch_sprite_datum_from_name(accessory_name)
+	var/valid_sprite_datum = fetch_sprite_datum_from_name(accessory_name)
+	if(!valid_sprite_datum)
+		return FALSE
+	sprite_datum = valid_sprite_datum
 	cache_key = jointext(generate_icon_cache(), "_")
+	return TRUE
 
 ///Generate a unique key based on our sprites. So that if we've aleady drawn these sprites, they can be found in the cache and wont have to be drawn again (blessing and curse, but mostly curse)
 /datum/bodypart_overlay/mutant/generate_icon_cache()
@@ -98,7 +106,7 @@
 	CRASH("[type] has no feature list, it will render invisible")
 
 ///Give the organ its color. Force will override the existing one.
-/datum/bodypart_overlay/mutant/proc/inherit_color(obj/item/bodypart/ownerlimb, force)
+/datum/bodypart_overlay/mutant/proc/inherit_color(obj/item/bodypart/ownerlimb, force = FALSE)
 	if(isnull(ownerlimb))
 		draw_color = null
 		return TRUE
@@ -113,7 +121,7 @@
 			draw_color = ownerlimb.draw_color
 		if(ORGAN_COLOR_HAIR)
 			if(!ishuman(ownerlimb.owner))
-				return
+				return FALSE
 			var/mob/living/carbon/human/human_owner = ownerlimb.owner
 			var/obj/item/bodypart/head/my_head = human_owner.get_bodypart(BODY_ZONE_HEAD) //not always the same as ownerlimb
 			//head hair color takes priority, owner hair color is a backup if we lack a head or something

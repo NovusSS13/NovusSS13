@@ -112,7 +112,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// will show the feature as selectable.
 	var/relevant_inherent_trait = null
 
-	/// If the selected species has this in its /datum/species/var/external_organs,
+	/// If the selected species has this in its /datum/species/var/cosmetic_organs,
 	/// will show the feature as selectable.
 	var/relevant_cosmetic_organ = null
 
