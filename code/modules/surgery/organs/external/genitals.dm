@@ -1,7 +1,3 @@
-#define EXPOSURE_NEVER 0
-#define EXPOSURE_CLOTHING 1
-#define EXPOSURE_ALWAYS 2
-
 //very sex
 /obj/item/organ/genital
 	name = "genital"
@@ -23,7 +19,7 @@
 	//reset overlay to default visibility and arousal when removed
 	if(istype(genital_overlay))
 		genital_overlay.arousal_state = 0
-		genital_overlay.genital_visibility = EXPOSURE_CLOTHING
+		genital_overlay.genital_visibility = GENITAL_VISIBILITY_CLOTHING
 	return ..()
 
 /datum/bodypart_overlay/mutant/genital
@@ -32,7 +28,7 @@
 	/// Whether or not the overlay should use skintones for coloring
 	var/uses_skintone = FALSE
 	/// Basically determines visibility behavior for the overlay, generally can be changed by the user
-	var/genital_visibility = EXPOSURE_CLOTHING
+	var/genital_visibility = GENITAL_VISIBILITY_CLOTHING
 	/// Arousal state, used for building the icon state
 	var/arousal_state = 0
 	/// Arousal options that can be selected by the user
@@ -44,7 +40,7 @@
 			return FALSE //duh
 		if(GENITAL_VISIBILITY_ALWAYS)
 			return TRUE //duher
-	return FALSE // GENITAL_VISIBILITY_CLOTHING is handled by subtypes
+	return TRUE // GENITAL_VISIBILITY_CLOTHING is handled by subtypes
 
 
 /obj/item/organ/genital/penis
@@ -80,13 +76,15 @@
 	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
 /datum/bodypart_overlay/mutant/genital/penis/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(genital_visibility == EXPOSURE_CLOTHING)
+	. = ..()
+	if(!.)
+		return
+	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
 		if(human.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
 		if(human.underwear && (human.underwear != "Nude"))
 			return FALSE
-	return ..()
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
 	return "[sprite_datum.icon_state]_[genital_size]_[arousal_state][uses_skintone ? "_s" : ""]"
@@ -117,13 +115,15 @@
 	return GLOB.testicles_list
 
 /datum/bodypart_overlay/mutant/genital/testicles/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(genital_visibility == EXPOSURE_CLOTHING)
+	. = ..()
+	if(!.)
+		return
+	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
 		if(human.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked
 		if(human.underwear && (human.underwear != "Nude"))
 			return FALSE
-	return ..()
 
 
 /obj/item/organ/genital/vagina
@@ -149,13 +149,15 @@
 	return GLOB.vagina_list
 
 /datum/bodypart_overlay/mutant/genital/vagina/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(genital_visibility == EXPOSURE_CLOTHING)
+	. = ..()
+	if(!.)
+		return
+	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
 		if(human.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked
 		if(human.underwear && (human.underwear != "Nude"))
 			return FALSE
-	return ..()
 
 
 /obj/item/organ/genital/breasts
@@ -197,14 +199,12 @@
 	return GLOB.breasts_list
 
 /datum/bodypart_overlay/mutant/genital/breasts/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(genital_visibility == EXPOSURE_CLOTHING)
+	. = ..()
+	if(!.)
+		return
+	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
 		if(human.get_all_covered_flags() & CHEST)
 			return FALSE
 		//this is fucked
 		if(human.undershirt && (human.undershirt != "Nude"))
 			return FALSE
-	return ..()
-
-#undef EXPOSURE_ALWAYS
-#undef EXPOSURE_CLOTHING
-#undef EXPOSURE_NEVER
