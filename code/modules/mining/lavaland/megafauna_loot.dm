@@ -725,8 +725,7 @@
 			to_chat(user, span_danger("Your appearance morphs to that of a very small humanoid ash dragon! You get to look like a freak without the cool abilities."))
 			consumer.dna.features = list(
 				"mcolor" = "#A02720",
-				"tail_lizard" = "Dark Tiger",
-				"tail_human" = "None",
+				"tail" = "Dark Tiger",
 				"snout" = "Sharp",
 				"horns" = "Curled",
 				"ears" = "None",

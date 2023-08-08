@@ -47,7 +47,11 @@
 		bodypart_overlay.imprint_on_next_insertion = FALSE
 	else
 		bodypart_overlay.randomize_appearance()
-		bodypart_overlay.imprint_on_next_insertion = TRUE
+		//jank, but only imprint next insert if we are in nullspace
+		if(!loc)
+			bodypart_overlay.imprint_on_next_insertion = TRUE
+		else
+			bodypart_overlay.imprint_on_next_insertion = FALSE
 
 	if(use_mob_sprite_as_obj_sprite)
 		update_appearance()
@@ -63,7 +67,7 @@
 		if(bodypart_overlay.imprint_on_next_insertion)
 			. += span_info("Interesting... This organ has many stem cells, and will adapt to a new owner's DNA.")
 		if(bodypart_overlay.sprite_datum?.name)
-			. += span_info("This organ has a \"<em>[bodypart_overlay.sprite_datum.name]</em>\" style.")
+			. += span_info("This organ has a <em>\"[bodypart_overlay.sprite_datum.name]\"</em> style.")
 
 	if(restyle_flags)
 		var/list/restyle_tools = list()
@@ -100,9 +104,12 @@
 	else if(use_mob_sprite_as_obj_sprite) //are we out in the world, unprotected by flesh?
 		update_appearance()
 
+/**
+ * Proc used to change the organ to match the DNA of the owner.
+ */
 /obj/item/organ/proc/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
 	//for reasons i don't want to know, this CAN be null!
 	if(receiver.dna.features[bodypart_overlay.feature_key])
 		bodypart_overlay.set_appearance_from_name(receiver.dna.features[bodypart_overlay.feature_key])
-	bodypart_overlay.inherit_color(owner_limb)
+	bodypart_overlay.inherit_color(owner_limb, force = TRUE)
 	bodypart_overlay.imprint_on_next_insertion = FALSE
