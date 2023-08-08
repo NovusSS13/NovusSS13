@@ -15,9 +15,9 @@
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail
 
-	///Does this tail have a wagging sprite, and is it currently wagging?
+	/// Does this tail have a wagging sprite, and is it currently wagging?
 	var/wag_flags = NONE
-	///The original owner of this tail
+	/// The original owner of this tail
 	var/original_owner //Yay, snowflake code!
 
 /obj/item/organ/tail/Insert(mob/living/carbon/receiver, special, drop_if_replaced)
@@ -55,22 +55,23 @@
 		stop_wag()
 	owner.update_body_parts()
 
-///We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
+/// We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
 /obj/item/organ/tail/proc/start_wag()
 	var/datum/bodypart_overlay/mutant/tail/accessory = bodypart_overlay
 	wag_flags |= WAG_WAGGING
 	accessory.wagging = TRUE
 
-///We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
+/// We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
 /obj/item/organ/tail/proc/stop_wag()
 	var/datum/bodypart_overlay/mutant/tail/accessory = bodypart_overlay
 	wag_flags &= ~WAG_WAGGING
 	accessory.wagging = FALSE
 
-///Tail parent type (which is MONKEEEEEEEEEEE by default), with wagging functionality
+/// Tail parent type (which is MONKEEEEEEEEEEE by default), with wagging functionality
 /datum/bodypart_overlay/mutant/tail
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
-	feature_key = "tail_monkey"
+	feature_key = "tail"
+	/// Whether or not the tail is wagging
 	var/wagging = FALSE
 
 /datum/bodypart_overlay/mutant/tail/get_global_feature_list()
@@ -93,9 +94,8 @@
 
 	wag_flags = WAG_ABLE
 
-///Cat tail bodypart overlay
+/// Cat tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/cat
-	feature_key = "tail_cat"
 	color_source = ORGAN_COLOR_HAIR
 
 /datum/bodypart_overlay/mutant/tail/cat/get_global_feature_list()
@@ -108,11 +108,8 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/monkey
 
-	dna_block = DNA_MONKEY_TAIL_BLOCK
-
-///Monkey tail bodypart overlay
+/// Monkey tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/monkey
-	feature_key = "tail_monkey"
 	color_source = NONE
 
 /datum/bodypart_overlay/mutant/tail/monkey/get_base_icon_state() // WE DON'T HAVE ONE MOTHERFUCKER
@@ -129,7 +126,7 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/lizard
 
 	wag_flags = WAG_ABLE
-	dna_block = DNA_LIZARD_TAIL_BLOCK
+
 	/// A reference to the paired_spines, since for some fucking reason tail spines are tied to the spines themselves.
 	var/obj/item/organ/spines/paired_spines
 
@@ -157,9 +154,8 @@
 		var/datum/bodypart_overlay/mutant/spines/accessory = paired_spines.bodypart_overlay
 		accessory.wagging = FALSE
 
-///Lizard tail bodypart overlay datum
+/// Lizard tail bodypart overlay datum
 /datum/bodypart_overlay/mutant/tail/lizard
-	feature_key = "tail_lizard"
 
 /datum/bodypart_overlay/mutant/tail/lizard/get_global_feature_list()
 	return GLOB.tails_list_lizard
