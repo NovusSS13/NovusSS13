@@ -71,6 +71,7 @@
 /datum/bodypart_overlay/mutant/tail
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
 	feature_key = "tail"
+	feature_key_color = "tail_color" //not used unless it's a lizard tail
 	/// Whether or not the tail is wagging
 	var/wagging = FALSE
 
@@ -156,6 +157,7 @@
 
 /// Lizard tail bodypart overlay datum
 /datum/bodypart_overlay/mutant/tail/lizard
+	color_source = ORGAN_COLOR_DNA
 
 /datum/bodypart_overlay/mutant/tail/lizard/get_global_feature_list()
 	return GLOB.tails_list_lizard

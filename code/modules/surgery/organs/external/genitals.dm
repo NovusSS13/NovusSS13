@@ -23,6 +23,7 @@
 	return ..()
 
 /datum/bodypart_overlay/mutant/genital
+	color_source = ORGAN_COLOR_DNA
 	/// Size of the organ, used for building the icon state
 	var/genital_size = 1
 	/// Whether or not the overlay should use skintones for coloring
