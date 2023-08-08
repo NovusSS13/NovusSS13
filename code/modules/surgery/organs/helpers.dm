@@ -56,6 +56,6 @@
 	if(isnull(feature_key))
 		return TRUE
 
-	if(isnull(target.dna.features[feature_key]) && (target.dna.features[feature_key] != SPRITE_ACCESSORY_NONE))
+	if(!isnull(target.dna.features[feature_key]) && (target.dna.features[feature_key] != SPRITE_ACCESSORY_NONE))
 		return TRUE
 	return FALSE

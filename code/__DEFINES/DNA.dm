@@ -57,11 +57,11 @@
 #define DNA_POD_HAIR_BLOCK 14
 
 //dumb genital crap ugh
-#define DNA_PENIS_SHAPE_BLOCK 15
+#define DNA_PENIS_BLOCK 15
 #define DNA_PENIS_SIZE_BLOCK 16
-#define DNA_TESTICLES_SHAPE_BLOCK 17
-#define DNA_VAGINA_SHAPE_BLOCK 18
-#define DNA_BREASTS_SHAPE_BLOCK 19
+#define DNA_TESTICLES_BLOCK 17
+#define DNA_VAGINA_BLOCK 18
+#define DNA_BREASTS_BLOCK 19
 #define DNA_BREASTS_SIZE_BLOCK 20
 
 /// This number needs to equal the total number of DNA blocks
