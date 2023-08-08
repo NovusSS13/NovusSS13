@@ -394,7 +394,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(mutant_organ)
 			if(current_organ)
 				current_organ.Remove(organ_holder)
-				QDEL_NULL(current_organ)
+				qdel(current_organ)
 		for(var/cosmetic_organ in old_species.cosmetic_organs)
 			if(cosmetic_organ in cosmetic_organs)
 				continue // need this cosmetic organ, but we already have it!
@@ -402,7 +402,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(cosmetic_organ)
 			if(current_organ)
 				current_organ.Remove(organ_holder)
-				QDEL_NULL(current_organ)
+				qdel(current_organ)
 
 	for(var/obj/item/organ/cosmetic_organ as anything in organ_holder.organs)
 		// Not a cosmetic organ, don't fuck with it
@@ -412,13 +412,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(cosmetic_organ.slot in organ_slots)
 			continue
 		// Cosmetic organ checking - We need to check the cosmetic organs owned by the carbon itself,
-		// because we want to also remove ones not shared by this species.
+		// because we want to remove ones not shared by this species.
 		// This should be done even if species was not changed.
 		if(cosmetic_organ.type in cosmetic_organs)
 			continue // Don't remove cosmetic organs this species is supposed to have.
 
 		cosmetic_organ.Remove(organ_holder)
-		QDEL_NULL(cosmetic_organ)
+		qdel(cosmetic_organ)
 
 	var/list/species_organs = mutant_organs + cosmetic_organs
 	for(var/organ_path in species_organs)
