@@ -83,7 +83,7 @@
 /datum/sprite_accessory/breasts
 	icon = 'icons/mob/species/genitals/breasts_onmob.dmi'
 	/// Maximum size this titty accessory can reach
-	var/max_size = 5
+	var/max_size = 16
 
 /datum/sprite_accessory/breasts/pair
 	name = "Pair"
