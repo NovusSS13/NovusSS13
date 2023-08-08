@@ -270,7 +270,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		var/datum/mutation/human/A = GET_INITIALIZED_MUTATION(mutation) //leaves the possibility to change difficulty mid-round
 		if(!A)
 			return
-		difficulty = A.difficultyil
+		difficulty = A.difficulty
 	difficulty += rand(-2,4)
 	var/sequence = GET_SEQUENCE(mutation)
 	if(active)
