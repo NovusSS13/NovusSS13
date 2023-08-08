@@ -28,6 +28,11 @@
 /datum/preference/toggle/testicles_uses_skintone/is_accessible(datum/preferences/preferences)
 	return ..() && preferences.read_preference(/datum/preference/choiced/testicles) != SPRITE_ACCESSORY_NONE
 
+/datum/preference/toggle/testicles_uses_skintone/create_informed_default_value(datum/preferences/preferences)
+	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	var/datum/species/species = new species_type
+	return (TRAIT_USES_SKINTONES in species.inherent_traits)
+
 /datum/preference/toggle/testicles_uses_skintone/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	var/obj/item/organ/genital/testicles = target.get_organ_slot(ORGAN_SLOT_TESTICLES)
 	if(isnull(testicles))
