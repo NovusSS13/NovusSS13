@@ -1,17 +1,17 @@
-/datum/preference/choiced/breasts_shape
-	savefile_key = "feature_breasts_shape"
+/datum/preference/choiced/breasts
+	savefile_key = "feature_breasts"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
 
-/datum/preference/choiced/breasts_shape/init_possible_values()
+/datum/preference/choiced/breasts/init_possible_values()
 	return assoc_to_keys_features(GLOB.breasts_list)
 
-/datum/preference/choiced/breasts_shape/apply_to_human(mob/living/carbon/human/target, value)
+/datum/preference/choiced/breasts/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["breasts"] = value
 
-/datum/preference/choiced/breasts_shape/create_informed_default_value(datum/preferences/preferences)
-	if(preferences.read_preference(/datum/preference/choiced/body_type) != FEMALE)
+/datum/preference/choiced/breasts/create_informed_default_value(datum/preferences/preferences)
+	if(preferences.read_preference(/datum/preference/choiced/gender) != FEMALE)
 		return SPRITE_ACCESSORY_NONE
 
 	var/datum/sprite_accessory/penis/boring_human_breasts = /datum/sprite_accessory/breasts/pair
@@ -35,7 +35,7 @@
 	return data
 
 /datum/preference/choiced/breasts_size/is_accessible(datum/preferences/preferences)
-	return ..() && preferences.read_preference(/datum/preference/choiced/breasts_shape) != SPRITE_ACCESSORY_NONE
+	return ..() && preferences.read_preference(/datum/preference/choiced/breasts) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/choiced/breasts_size/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["breasts_size"] = value
@@ -52,7 +52,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
 
 /datum/preference/toggle/breasts_uses_skintone/is_accessible(datum/preferences/preferences)
-	return ..() && preferences.read_preference(/datum/preference/choiced/breasts_shape) != SPRITE_ACCESSORY_NONE
+	return ..() && preferences.read_preference(/datum/preference/choiced/breasts) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/toggle/breasts_uses_skintone/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	var/obj/item/organ/genital/breasts = target.get_organ_slot(ORGAN_SLOT_BREASTS)

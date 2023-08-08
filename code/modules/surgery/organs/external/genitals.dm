@@ -1,11 +1,9 @@
-#define EXPOSURE_NEVER 0
-#define EXPOSURE_CLOTHING 1
-#define EXPOSURE_ALWAYS 2
-
 //very sex
 /obj/item/organ/genital
 	name = "genital"
-	desc = "A reproductive organ used for large amounts of coderbussing."
+	desc = "A reproductive organ that is completely invalid and you should not be seeing."
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/genital
 
 	visual = TRUE
 	process_life = FALSE
@@ -17,18 +15,24 @@
 	return //handled by subtypes
 
 /obj/item/organ/genital/Remove(mob/living/carbon/organ_owner, special)
-	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
-	overlay.arousal_state = 0
-	overlay.genital_visibility = EXPOSURE_CLOTHING
+	var/datum/bodypart_overlay/mutant/genital/genital_overlay = bodypart_overlay
+	//reset overlay to default visibility and arousal when removed
+	if(istype(genital_overlay))
+		genital_overlay.arousal_state = 0
+		genital_overlay.genital_visibility = GENITAL_VISIBILITY_CLOTHING
 	return ..()
 
-
 /datum/bodypart_overlay/mutant/genital
+	/// Size of the organ, used for building the icon state
 	var/genital_size = 1
-	var/arousal_state = 0
+	/// Whether or not the overlay should use skintones for coloring
 	var/uses_skintone = FALSE
-	var/genital_visibility = EXPOSURE_CLOTHING
-	var/list/arousal_options = null
+	/// Basically determines visibility behavior for the overlay, generally can be changed by the user
+	var/genital_visibility = GENITAL_VISIBILITY_CLOTHING
+	/// Arousal state, used for building the icon state
+	var/arousal_state = 0
+	/// Arousal options that can be selected by the user
+	var/list/arousal_options
 
 /datum/bodypart_overlay/mutant/genital/can_draw_on_bodypart(mob/living/carbon/human/human)
 	switch(genital_visibility)
@@ -36,17 +40,16 @@
 			return FALSE //duh
 		if(GENITAL_VISIBILITY_ALWAYS)
 			return TRUE //duher
-	return FALSE // GENITAL_VISIBILITY_CLOTHING is handled by subtypes
-
+	return TRUE // GENITAL_VISIBILITY_CLOTHING is handled by subtypes
 
 
 /obj/item/organ/genital/penis
 	name = "penis"
 	desc = "A male reproductive organ."
 
-	dna_block = DNA_PENIS_SHAPE_BLOCK
+	dna_block = DNA_PENIS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/penis
-	preference = "feature_penis_shape"
+	preference = "feature_penis"
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_PENIS
@@ -73,13 +76,15 @@
 	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
 /datum/bodypart_overlay/mutant/genital/penis/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(genital_visibility == EXPOSURE_CLOTHING)
-		if(!(human.get_all_covered_flags() & GROIN))
+	. = ..()
+	if(!.)
+		return
+	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
+		if(human.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
 		if(human.underwear && (human.underwear != "Nude"))
 			return FALSE
-	return ..()
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
 	return "[sprite_datum.icon_state]_[genital_size]_[arousal_state][uses_skintone ? "_s" : ""]"
@@ -88,14 +93,13 @@
 	return GLOB.penis_list
 
 
-
 /obj/item/organ/genital/testicles
 	name = "testicles"
 	desc = "A male reproductive organ."
 
-	dna_block = DNA_TESTICLES_SHAPE_BLOCK
+	dna_block = DNA_TESTICLES_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/testicles
-	preference = "feature_testicles_shape"
+	preference = "feature_testicles"
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_TESTICLES
@@ -111,22 +115,24 @@
 	return GLOB.testicles_list
 
 /datum/bodypart_overlay/mutant/genital/testicles/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(genital_visibility == EXPOSURE_CLOTHING)
-		if(!(human.get_all_covered_flags() & GROIN))
+	. = ..()
+	if(!.)
+		return
+	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
+		if(human.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked
 		if(human.underwear && (human.underwear != "Nude"))
 			return FALSE
-	return ..()
 
 
 /obj/item/organ/genital/vagina
 	name = "vagina"
 	desc = "A female reproductive organ."
 
-	dna_block = DNA_VAGINA_SHAPE_BLOCK
+	dna_block = DNA_VAGINA_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/vagina
-	preference = "feature_vagina_shape"
+	preference = "feature_vagina"
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_VAGINA
@@ -143,22 +149,24 @@
 	return GLOB.vagina_list
 
 /datum/bodypart_overlay/mutant/genital/vagina/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(genital_visibility == EXPOSURE_CLOTHING)
-		if(!(human.get_all_covered_flags() & GROIN))
+	. = ..()
+	if(!.)
+		return
+	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
+		if(human.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked
 		if(human.underwear && (human.underwear != "Nude"))
 			return FALSE
-	return ..()
 
 
 /obj/item/organ/genital/breasts
 	name = "breasts"
-	desc = "A female nonreproductive organ."
+	desc = "A female secondary sexual characteristic."
 
-	dna_block = DNA_BREASTS_SHAPE_BLOCK
+	dna_block = DNA_BREASTS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/breasts
-	preference = "feature_breasts_shape"
+	preference = "feature_breasts"
 
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_BREASTS
@@ -180,8 +188,6 @@
 	. = ..()
 	set_genital_size(receiver.dna.features["breasts_size"] || 2)
 
-
-
 /datum/bodypart_overlay/mutant/genital/breasts
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
 	feature_key = "breasts"
@@ -193,14 +199,12 @@
 	return GLOB.breasts_list
 
 /datum/bodypart_overlay/mutant/genital/breasts/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(genital_visibility == EXPOSURE_CLOTHING)
-		if(!(human.get_all_covered_flags() & CHEST))
+	. = ..()
+	if(!.)
+		return
+	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
+		if(human.get_all_covered_flags() & CHEST)
 			return FALSE
 		//this is fucked
 		if(human.undershirt && (human.undershirt != "Nude"))
 			return FALSE
-	return ..()
-
-#undef EXPOSURE_ALWAYS
-#undef EXPOSURE_CLOTHING
-#undef EXPOSURE_NEVER

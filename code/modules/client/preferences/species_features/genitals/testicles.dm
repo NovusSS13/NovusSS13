@@ -1,17 +1,17 @@
-/datum/preference/choiced/testicles_shape
-	savefile_key = "feature_testicles_shape"
+/datum/preference/choiced/testicles
+	savefile_key = "feature_testicles"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
 
-/datum/preference/choiced/testicles_shape/init_possible_values()
+/datum/preference/choiced/testicles/init_possible_values()
 	return assoc_to_keys_features(GLOB.testicles_list)
 
-/datum/preference/choiced/testicles_shape/apply_to_human(mob/living/carbon/human/target, value)
+/datum/preference/choiced/testicles/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["testicles"] = value
 
-/datum/preference/choiced/testicles_shape/create_informed_default_value(datum/preferences/preferences)
-	if(preferences.read_preference(/datum/preference/choiced/body_type) != MALE)
+/datum/preference/choiced/testicles/create_informed_default_value(datum/preferences/preferences)
+	if(preferences.read_preference(/datum/preference/choiced/gender) != MALE)
 		return SPRITE_ACCESSORY_NONE
 
 	var/datum/sprite_accessory/testicles/testicles = /datum/sprite_accessory/testicles/pair
@@ -26,7 +26,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
 
 /datum/preference/toggle/testicles_uses_skintone/is_accessible(datum/preferences/preferences)
-	return ..() && preferences.read_preference(/datum/preference/choiced/testicles_shape) != SPRITE_ACCESSORY_NONE
+	return ..() && preferences.read_preference(/datum/preference/choiced/testicles) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/toggle/testicles_uses_skintone/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	var/obj/item/organ/genital/testicles = target.get_organ_slot(ORGAN_SLOT_TESTICLES)

@@ -16,11 +16,11 @@
 		return
 
 	var/obj/item/organ/genital/chosen_genital = tgui_input_list(src, "Choose the genital to adjust.", items = genitals)
-	if(isnull(chosen_genital) || stat == DEAD || !(chosen_genital in organs))
+	if(isnull(chosen_genital) || (stat > CONSCIOUS) || !(chosen_genital in organs))
 		return
 
 	var/chosen_visibility = tgui_input_list(src, "Choose the desired visibility.", items = GLOB.genital_visibility_list)
-	if(isnull(chosen_genital) || stat == DEAD || !(chosen_genital in organs))
+	if(isnull(chosen_genital) || (stat > CONSCIOUS) || !(chosen_genital in organs))
 		return
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = chosen_genital.bodypart_overlay
@@ -44,17 +44,17 @@
 
 		genitals += genital
 
-	if(length(genitals) == 0)
+	if(!length(genitals))
 		to_chat(usr, span_warning("You don't have any genitals to adjust."))
 		return
 
 	var/obj/item/organ/genital/chosen_genital = tgui_input_list(src, "Choose the genital to adjust.", items = genitals)
-	if(isnull(chosen_genital) || stat == DEAD || !(chosen_genital in organs))
+	if(isnull(chosen_genital) || (stat > CONSCIOUS) || !(chosen_genital in organs))
 		return
 
 	var/datum/bodypart_overlay/mutant/genital/genital_overlay = chosen_genital.bodypart_overlay
 	var/chosen_arousal = tgui_input_list(src, "Choose the desired arousal.", items = genital_overlay.arousal_options)
-	if(isnull(chosen_genital) || stat == DEAD || !(chosen_genital in organs))
+	if(isnull(chosen_arousal) || (stat > CONSCIOUS) || !(chosen_genital in organs))
 		return
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = chosen_genital.bodypart_overlay

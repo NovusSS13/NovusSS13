@@ -1,6 +1,6 @@
 import { CheckboxInput, FeatureChoiced, FeatureDropdownInput, FeatureToggle } from '../base';
 
-export const feature_penis_shape: FeatureChoiced = {
+export const feature_penis: FeatureChoiced = {
   name: 'Penis Type',
   component: FeatureDropdownInput,
 };
@@ -14,7 +14,7 @@ export const feature_penis_skintone: FeatureToggle = {
   component: CheckboxInput,
 };
 
-export const feature_testicles_shape: FeatureChoiced = {
+export const feature_testicles: FeatureChoiced = {
   name: 'Testicle Type',
   component: FeatureDropdownInput,
 };
@@ -23,7 +23,7 @@ export const feature_testicles_skintone: FeatureToggle = {
   component: CheckboxInput,
 };
 
-export const feature_vagina_shape: FeatureChoiced = {
+export const feature_vagina: FeatureChoiced = {
   name: 'Vagina Type',
   component: FeatureDropdownInput,
 };
@@ -32,7 +32,7 @@ export const feature_vagina_skintone: FeatureToggle = {
   component: CheckboxInput,
 };
 
-export const feature_breasts_shape: FeatureChoiced = {
+export const feature_breasts: FeatureChoiced = {
   name: 'Breasts Type',
   component: FeatureDropdownInput,
 };
