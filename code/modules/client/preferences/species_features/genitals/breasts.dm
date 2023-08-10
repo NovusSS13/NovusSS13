@@ -55,8 +55,9 @@
 	return ..() && preferences.read_preference(/datum/preference/choiced/breasts) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/toggle/breasts_uses_skintone/create_informed_default_value(datum/preferences/preferences)
-	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
-	return (TRAIT_USES_SKINTONES in initial(species.inherent_traits))
+	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	var/datum/species/species = new species_type
+	return (TRAIT_USES_SKINTONES in species.inherent_traits)
 
 /datum/preference/toggle/breasts_uses_skintone/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	var/obj/item/organ/genital/breasts = target.get_organ_slot(ORGAN_SLOT_BREASTS)
