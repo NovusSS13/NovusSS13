@@ -229,6 +229,20 @@
 		else
 			msg += "[t_He] [t_is] quite chubby.\n"
 
+	// genital handling. not on organ/on_owner_examine() because i want a pretty list.
+	var/static/list/genital_examines = list(ORGAN_SLOT_PENIS, ORGAN_SLOT_TESTICLES, ORGAN_SLOT_VAGINA, ORGAN_SLOT_BREASTS)
+	var/list/genital_strings = list()
+	for(var/slot in genital_examines)
+		var/obj/item/organ/genital/genital = get_organ_slot(slot)
+		if(!genital || genital.bodypart_overlay.can_draw_on_bodypart(src))
+			continue
+
+		genital_strings += genital.get_genital_examine()
+
+	if(length(genital_strings))
+		msg += "[t_He] [t_has] [english_list(genital_strings)] laying bare on [t_his] body."
+
+
 	var/apparent_blood_volume = blood_volume
 	if(HAS_TRAIT(src, TRAIT_USES_SKINTONES) && (skin_tone == "albino"))
 		apparent_blood_volume -= 150 // enough to knock you down one tier
