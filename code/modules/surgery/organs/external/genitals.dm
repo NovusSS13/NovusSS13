@@ -9,9 +9,10 @@
 	process_life = FALSE
 	process_death = FALSE
 
-/obj/item/organ/genital/update_appearance(updates)
+/obj/item/organ/genital/update_icon_state()
 	. = ..()
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	color = overlay.draw_color
 	icon_state = "[overlay.sprite_datum.icon_state]_[overlay.genital_size][overlay.uses_skintone ? "_s" : ""]"
 
 /obj/item/organ/genital/on_remove(mob/living/carbon/organ_owner, special)
@@ -19,8 +20,8 @@
 	var/datum/bodypart_overlay/mutant/genital/genital_overlay = bodypart_overlay
 	//reset overlay to default visibility and arousal when removed
 	if(istype(genital_overlay))
-		overlay.arousal_state = 0
-		overlay.genital_visibility = EXPOSURE_CLOTHING
+		genital_overlay.arousal_state = 0
+		genital_overlay.genital_visibility = GENITAL_VISIBILITY_CLOTHING
 	update_appearance()
 
 /obj/item/organ/genital/proc/set_genital_size(value)
@@ -84,7 +85,8 @@
 
 	var/size = lowertext(GLOB.penis_size_names["[overlay.genital_size]"])
 	var/shape = "[overlay.arousal_state ? "erect" : "flaccid"] [lowertext(overlay.sprite_datum.name)]"
-	return "\a[overlay.genital_size % 2 ? "n" : ""] [size], [shape] penis"
+	//the modulo is because GLOB.penis_size_names conveniently has sizes arranged in a way that lets us do this
+	return "[overlay.genital_size % 2 ? "an" : "a"] [size], [shape] penis"
 
 /datum/bodypart_overlay/mutant/genital/penis
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
@@ -125,7 +127,7 @@
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
 
 	//until we have more testicles, this is enough
-	return "a pair of [GLOB.penis_size_names["[overlay.genital_size]"]] testicles"
+	return "a pair of [lowertext(GLOB.penis_size_names["[overlay.genital_size]"])] testicles"
 
 /datum/bodypart_overlay/mutant/genital/testicles
 	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
@@ -161,10 +163,16 @@
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_VAGINA
 
+/obj/item/organ/genital/vagina/update_icon_state()
+	. = ..()
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	icon_state = "vagina[overlay.uses_skintone ? "_s" : ""]"
+
 /obj/item/organ/genital/vagina/get_genital_examine()
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	var/datum/sprite_accessory/vagina/accessory = overlay.sprite_datum
 
-	return "a [overlay.arousal_state ? "moist" : "dry"] [overlay.sprite_datum.name == "Cloaca" ? "cloaca" : "[lowertext(overlay.sprite_datum.name)] [name]"]"
+	return "a [overlay.arousal_state ? "moist" : "dry"] [accessory.examine_name_override || "[lowertext(overlay.sprite_datum.name)] [name]"]"
 
 
 /datum/bodypart_overlay/mutant/genital/vagina
@@ -216,10 +224,9 @@
 
 /obj/item/organ/genital/breasts/get_genital_examine()
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	var/datum/sprite_accessory/breasts/accessory = overlay.sprite_datum
 
-	if(overlay.sprite_datum.name == "Pair")
-		return "a pair of breasts"
-	return "a set of [overlay.sprite_datum.name] breasts" //a set of sextuple breasts. this sucks but im too tired to think of an alternative
+	return "[accessory.examine_name] of [overlay.arousal_state ? "perked up " : ""] breasts"
 
 
 /obj/item/organ/genital/breasts/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)

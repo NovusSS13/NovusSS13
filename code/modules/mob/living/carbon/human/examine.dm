@@ -127,6 +127,19 @@
 	if(get_bodypart(BODY_ZONE_HEAD) && !get_organ_by_type(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
+	// genital handling. not on organ/on_owner_examine() because i want a pretty list.
+	var/static/list/genital_examines = list(ORGAN_SLOT_PENIS, ORGAN_SLOT_TESTICLES, ORGAN_SLOT_VAGINA, ORGAN_SLOT_BREASTS)
+	var/list/genital_strings = list()
+	for(var/slot in genital_examines)
+		var/obj/item/organ/genital/genital = get_organ_slot(slot)
+		if(!genital?.bodypart_overlay.can_draw_on_bodypart(src))
+			continue
+
+		genital_strings += genital.get_genital_examine()
+
+	if(length(genital_strings))
+		. += span_notice("\n[t_He] [t_has] [english_list(genital_strings)], on full display.")
+
 	var/list/msg = list()
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -228,19 +241,6 @@
 			msg += "[t_He] [t_is] plump and delicious looking - Like a fat little piggy. A tasty piggy.\n"
 		else
 			msg += "[t_He] [t_is] quite chubby.\n"
-
-	// genital handling. not on organ/on_owner_examine() because i want a pretty list.
-	var/static/list/genital_examines = list(ORGAN_SLOT_PENIS, ORGAN_SLOT_TESTICLES, ORGAN_SLOT_VAGINA, ORGAN_SLOT_BREASTS)
-	var/list/genital_strings = list()
-	for(var/slot in genital_examines)
-		var/obj/item/organ/genital/genital = get_organ_slot(slot)
-		if(!genital || genital.bodypart_overlay.can_draw_on_bodypart(src))
-			continue
-
-		genital_strings += genital.get_genital_examine()
-
-	if(length(genital_strings))
-		msg += "[t_He] [t_has] [english_list(genital_strings)] laying bare on [t_his] body."
 
 
 	var/apparent_blood_volume = blood_volume

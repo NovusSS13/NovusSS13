@@ -437,9 +437,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			// feature parity with every other organ too.
 			if(current_organ)
 				current_organ.before_organ_replacement(replacement)
-			var/default_feature = cosmetic_organs[organ_path]
-			if(default_feature)
-				current_organ.bodypart_overlay?.set_appearance_from_name(default_feature)
+
+				var/default_feature = cosmetic_organs[organ_path]
+				if(default_feature)
+					current_organ.bodypart_overlay?.set_appearance_from_name(default_feature)
+
 			// organ.Insert will qdel any current organs in that slot, so we don't need to.
 			replacement.Insert(organ_holder, special = TRUE, drop_if_replaced = FALSE)
 
