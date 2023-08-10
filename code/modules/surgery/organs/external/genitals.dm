@@ -201,6 +201,7 @@
 /obj/item/organ/genital/breasts
 	name = "breasts"
 	desc = "A female secondary sexual characteristic."
+	icon = 'icons/obj/medical/organs/genitals/breasts.dmi'
 
 	dna_block = DNA_BREASTS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/breasts
