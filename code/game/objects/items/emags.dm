@@ -49,7 +49,6 @@
 	. = ..()
 	if (!proximity_flag)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	playsound(src, 'sound/items/bikehorn.ogg', 50, TRUE)
 
 /obj/item/card/emag/Initialize(mapload)
@@ -64,7 +63,6 @@
 	var/atom/A = target
 	if(!proximity && prox_check)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(!can_emag(target, user))
 		return
 	log_combat(user, A, "attempted to emag")

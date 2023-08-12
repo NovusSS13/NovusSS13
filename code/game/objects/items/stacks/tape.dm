@@ -46,8 +46,6 @@
 	if(!istype(target))
 		return
 
-	. |= AFTERATTACK_PROCESSED_ITEM
-
 	if(target.embedding && target.embedding == conferred_embed)
 		to_chat(user, span_warning("[target] is already coated in [src]!"))
 		return .

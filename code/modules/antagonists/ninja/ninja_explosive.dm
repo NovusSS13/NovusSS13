@@ -42,7 +42,6 @@
 	if(!IS_SPACE_NINJA(ninja))
 		to_chat(ninja, span_notice("While it appears normal, you can't seem to detonate the charge."))
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if (!check_loc(ninja))
 		return .
 	detonator = WEAKREF(ninja)

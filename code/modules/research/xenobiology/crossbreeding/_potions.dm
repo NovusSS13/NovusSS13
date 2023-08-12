@@ -14,7 +14,6 @@ Slimecrossing Potions
 /obj/item/slimepotion/extract_cloner/afterattack(obj/item/target, mob/user , proximity)
 	if(!proximity)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(is_reagent_container(target))
 		return ..(target, user, proximity)
 	if(istype(target, /obj/item/slimecross))
@@ -117,7 +116,6 @@ Slimecrossing Potions
 	if(!istype(C))
 		to_chat(user, span_warning("The potion can only be used on clothing!"))
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(istype(C, /obj/item/clothing/suit/space))
 		to_chat(user, span_warning("The [C] is already pressure-resistant!"))
 		return . | ..()
@@ -162,7 +160,7 @@ Slimecrossing Potions
 	if(!istype(C))
 		to_chat(user, span_warning("You can't coat this with lavaproofing fluid!"))
 		return ..()
-	. |= AFTERATTACK_PROCESSED_ITEM
+
 	to_chat(user, span_notice("You slather the red gunk over the [C], making it lavaproof."))
 	C.name = "lavaproof [C.name]"
 	C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)

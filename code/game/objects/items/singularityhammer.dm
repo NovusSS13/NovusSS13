@@ -63,7 +63,7 @@
 	. = ..()
 	if(!proximity)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
+
 	if(HAS_TRAIT(src, TRAIT_WIELDED))
 		if(charged)
 			charged = FALSE

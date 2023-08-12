@@ -281,7 +281,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	if(!proximity_flag)
 		return
 	if(SEND_SIGNAL(bible_smacked, COMSIG_BIBLE_SMACKED, user, proximity_flag, click_parameters) & COMSIG_END_BIBLE_CHAIN)
-		return . | AFTERATTACK_PROCESSED_ITEM
+		return .
 	if(isfloorturf(bible_smacked))
 		if(user.mind?.holy_role)
 			var/area/current_area = get_area(bible_smacked)
@@ -294,19 +294,16 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 
 	if(user.mind?.holy_role)
 		if(bible_smacked.reagents && bible_smacked.reagents.has_reagent(/datum/reagent/water)) // blesses all the water in the holder
-			. |= AFTERATTACK_PROCESSED_ITEM
 			bible_smacked.balloon_alert(user, "blessed")
 			var/water2holy = bible_smacked.reagents.get_reagent_amount(/datum/reagent/water)
 			bible_smacked.reagents.del_reagent(/datum/reagent/water)
 			bible_smacked.reagents.add_reagent(/datum/reagent/water/holywater,water2holy)
 		if(bible_smacked.reagents && bible_smacked.reagents.has_reagent(/datum/reagent/fuel/unholywater)) // yeah yeah, copy pasted code - sue me
-			. |= AFTERATTACK_PROCESSED_ITEM
 			bible_smacked.balloon_alert(user, "purified")
 			var/unholy2holy = bible_smacked.reagents.get_reagent_amount(/datum/reagent/fuel/unholywater)
 			bible_smacked.reagents.del_reagent(/datum/reagent/fuel/unholywater)
 			bible_smacked.reagents.add_reagent(/datum/reagent/water/holywater,unholy2holy)
 		if(istype(bible_smacked, /obj/item/book/bible) && !istype(bible_smacked, /obj/item/book/bible/syndicate))
-			. |= AFTERATTACK_PROCESSED_ITEM
 			bible_smacked.balloon_alert(user, "converted")
 			var/obj/item/book/bible/other_bible = bible_smacked
 			other_bible.name = name
@@ -315,7 +312,6 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 			other_bible.deity_name = deity_name
 
 	if(istype(bible_smacked, /obj/item/cult_bastard) && !IS_CULTIST(user))
-		. |= AFTERATTACK_PROCESSED_ITEM
 		var/obj/item/cult_bastard/sword = bible_smacked
 		bible_smacked.balloon_alert(user, "exorcising...")
 		playsound(src,'sound/hallucinations/veryfar_noise.ogg',40,TRUE)

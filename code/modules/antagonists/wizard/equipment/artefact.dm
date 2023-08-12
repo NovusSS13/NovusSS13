@@ -436,7 +436,6 @@
 		return
 	if(!check_allowed_items(target, not_inside = TRUE))
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	var/turf/afterattack_turf = get_turf(target)
 	if(istype(target, /obj/machinery/vending/runic_vendor))
 		var/obj/machinery/vending/runic_vendor/runic_explosion_target = target

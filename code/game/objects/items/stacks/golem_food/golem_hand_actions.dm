@@ -31,7 +31,7 @@
 	if (!held_gibtonite)
 		to_chat(user, span_warning("[src] fizzles, it was a dud!"))
 		qdel(src)
-		return TRUE | AFTERATTACK_PROCESSED_ITEM
+		return TRUE
 	playsound(src, 'sound/weapons/sonic_jackhammer.ogg', 50, TRUE)
 	held_gibtonite.forceMove(get_turf(src))
 	held_gibtonite.det_time = 2 SECONDS
@@ -39,7 +39,7 @@
 	held_gibtonite.throw_at(target, range = 10, speed = 3, thrower = user)
 	held_gibtonite = null
 	qdel(src)
-	return TRUE | AFTERATTACK_PROCESSED_ITEM
+	return TRUE
 
 /// Called when you can't hold it in any longer and just drop it on the ground
 /obj/item/gibtonite_hand/proc/release_gibtonite()
@@ -74,10 +74,10 @@
 	var/turf/target_turf = get_turf(target)
 	if (get_dist(target_turf, get_turf(src)) > teleport_range)
 		balloon_alert(user, "too far!")
-		return TRUE | AFTERATTACK_PROCESSED_ITEM
+		return TRUE
 	if (target_turf.is_blocked_turf(exclude_mobs = TRUE))
 		balloon_alert(user, "no room!")
-		return TRUE | AFTERATTACK_PROCESSED_ITEM
+		return TRUE
 
 	var/obj/effect/temp_visual/teleport_golem/landing_indicator = new(target_turf)
 	user.add_filter(BLUESPACE_GLOW_FILTER, 2, list("type" = "outline", "color" = COLOR_BRIGHT_BLUE, "alpha" = 0, "size" = 1))

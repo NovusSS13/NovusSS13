@@ -28,8 +28,6 @@
 	if(!proximity || !istype(target))
 		return
 
-	. |= AFTERATTACK_PROCESSED_ITEM
-
 	target.AddComponent(/datum/component/fantasy, upgrade_amount, null, null, can_backfire, TRUE)
 
 	uses -= 1

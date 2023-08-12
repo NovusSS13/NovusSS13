@@ -53,8 +53,6 @@ Slimecrossing Items
 	return ret
 
 /obj/item/camera/rewind/afterattack(atom/target, mob/user, flag)
-	. |= AFTERATTACK_PROCESSED_ITEM
-
 	if(!on || !pictures_left || !isturf(target.loc))
 		return .
 
@@ -78,8 +76,6 @@ Slimecrossing Items
 	pictures_max = 1
 
 /obj/item/camera/timefreeze/afterattack(atom/target, mob/user, flag)
-	. |= AFTERATTACK_PROCESSED_ITEM
-
 	if(!on || !pictures_left || !isturf(target.loc))
 		return .
 	new /obj/effect/timestop(get_turf(target), 2, 50, list(user))

@@ -341,7 +341,7 @@ Moving interrupts
 	if (!sculpting && prepared_block && ismovable(target) && prepared_block.completion == 0)
 		prepared_block.set_target(target,user)
 
-	return . | AFTERATTACK_PROCESSED_ITEM
+	return .
 
 /// Starts or continues the sculpting action on the carving block material
 /obj/item/chisel/proc/start_sculpting(mob/living/user)
