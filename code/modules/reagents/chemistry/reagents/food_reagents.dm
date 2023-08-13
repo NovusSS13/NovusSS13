@@ -459,6 +459,20 @@
 	taste_description = "bitterness"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
+/datum/reagent/consumable/coco/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
+	if(isfelinid(M))
+		if(SPT_PROB(20, seconds_per_tick))
+			M.adjust_disgust_effect(20)
+		if(SPT_PROB(5, seconds_per_tick))
+			M.visible_message(span_warning("[M] [pick("dry heaves!","coughs!","splutters!")]"))
+		if(SPT_PROB(10, seconds_per_tick))
+			var/sick_message = pick("Your insides revolt at the presence of lethal chocolate!", "You feel nyauseous.", "You're nya't feeling so good.","You feel like your insides are melting.","You feel illsies.")
+			to_chat(M, span_notice(sick_message))
+		if(SPT_PROB(35, seconds_per_tick))
+			var/obj/item/organ/guts = pick(M.organs)
+			guts.apply_organ_damage(15)
+	..()
+
 /datum/reagent/consumable/garlic //NOTE: having garlic in your blood stops vampires from biting you.
 	name = "Garlic Juice"
 	description = "Crushed garlic. Chefs love it, but it can make you smell bad."
@@ -935,6 +949,20 @@
 	taste_description = "sweet chocolate"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	glass_price = DRINK_PRICE_EASY
+
+/datum/reagent/consumable/chocolatepudding/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
+	if(isfelinid(M))
+		if(SPT_PROB(20, seconds_per_tick))
+			M.adjust_disgust_effect(20)
+		if(SPT_PROB(5, seconds_per_tick))
+			M.visible_message(span_warning("[M] [pick("dry heaves!","coughs!","splutters!")]"))
+		if(SPT_PROB(10, seconds_per_tick))
+			var/sick_message = pick("Your insides revolt at the presence of lethal chocolate!", "You feel nyauseous.", "You're nya't feeling so good.","You feel like your insides are melting.","You feel illsies.")
+			to_chat(M, span_notice(sick_message))
+		if(SPT_PROB(35, seconds_per_tick))
+			var/obj/item/organ/guts = pick(M.organs)
+			guts.apply_organ_damage(15)
+	..()
 
 /datum/glass_style/drinking_glass/chocolatepudding
 	required_drink_type = /datum/reagent/consumable/chocolatepudding
