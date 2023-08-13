@@ -5,10 +5,6 @@
 	item_path = /obj/item/stack/marker_beacon/ten
 	cost_per_order = 100
 
-/datum/orderable_item/mining/skeleton_key
-	item_path = /obj/item/skeleton_key
-	cost_per_order = 777
-
 /datum/orderable_item/mining/mining_stabilizer
 	item_path = /obj/item/mining_stabilizer
 	cost_per_order = 400
