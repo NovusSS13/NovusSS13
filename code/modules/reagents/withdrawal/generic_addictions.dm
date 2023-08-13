@@ -123,10 +123,14 @@
 	if(!ishuman(affected_carbon))
 		return
 	to_chat(affected_carbon, span_warning("You feel yourself adapt to the darkness."))
-	var/mob/living/carbon/human/affected_human = affected_carbon
-	var/obj/item/organ/eyes/empowered_eyes = affected_human.get_organ_by_type(/obj/item/organ/eyes)
+
+	var/obj/item/organ/liver/empowered_liver = affected_carbon.get_organ_by_type(/obj/item/organ/liver)
+	if(empowered_liver)
+		ADD_TRAIT(empowered_liver, TRAIT_MAINTENANCE_METABOLISM, "maint_drug_addiction")
+
+	var/obj/item/organ/eyes/empowered_eyes = affected_carbon.get_organ_by_type(/obj/item/organ/eyes)
 	if(empowered_eyes)
-		ADD_TRAIT(affected_human, TRAIT_NIGHT_VISION, "maint_drug_addiction")
+		ADD_TRAIT(affected_carbon, TRAIT_NIGHT_VISION, "maint_drug_addiction")
 		empowered_eyes?.refresh()
 
 /datum/addiction/maintenance_drugs/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
