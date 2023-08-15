@@ -52,7 +52,12 @@
 	desc_inert = "The core has decayed, and is completely useless."
 	icon_state = "legion_core"
 	icon_state_inert = "legion_core_decayed"
-	icon_state_preserved = "legion_core_stable"
+	icon_state_preserved = "legion_core"
+
+/obj/item/organ/monster_core/regenerative_core/legion/update_overlays()
+	. = ..()
+	if(!inert && !decay_timer)
+		. += "legion_soul_crackle"
 
 /// Action used by the regenerative core
 /datum/action/cooldown/monster_core_action/regenerative_core

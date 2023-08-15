@@ -57,9 +57,11 @@
 	elimination = TRUE
 	appearance_flags = LONG_GLIDE
 	mouse_opacity = MOUSE_OPACITY_ICON
-	attack_action_types = list(/datum/action/innate/megafauna_attack/create_skull,
-							   /datum/action/innate/megafauna_attack/charge_target,
-							   /datum/action/innate/megafauna_attack/create_turrets)
+	attack_action_types = list(
+		/datum/action/innate/megafauna_attack/create_skull,
+		/datum/action/innate/megafauna_attack/charge_target,
+		/datum/action/innate/megafauna_attack/create_turrets
+	)
 	small_sprite_type = /datum/action/small_sprite/megafauna/legion
 	var/size = LEGION_LARGE
 	var/charging = FALSE
@@ -75,18 +77,9 @@
 	maxHealth = 350
 	size = LEGION_MEDIUM
 
-/mob/living/simple_animal/hostile/megafauna/legion/medium/left
-	icon_state = "mega_legion_left"
-
-/mob/living/simple_animal/hostile/megafauna/legion/medium/eye
-	icon_state = "mega_legion_eye"
-
-/mob/living/simple_animal/hostile/megafauna/legion/medium/right
-	icon_state = "mega_legion_right"
 
 /mob/living/simple_animal/hostile/megafauna/legion/small
 	icon = 'icons/mob/simple/lavaland/lavaland_monsters.dmi'
-	icon_state = "mega_legion"
 	pixel_x = 0
 	pixel_y = 0
 	maxHealth = 200
@@ -253,9 +246,8 @@
 			for (var/i in 0 to 2)
 				new /mob/living/simple_animal/hostile/megafauna/legion/small(loc)
 		if (LEGION_MEDIUM)
-			new /mob/living/simple_animal/hostile/megafauna/legion/medium/left(loc)
-			new /mob/living/simple_animal/hostile/megafauna/legion/medium/right(loc)
-			new /mob/living/simple_animal/hostile/megafauna/legion/medium/eye(loc)
+			for(var/i in 0 to 2)
+				new /mob/living/simple_animal/hostile/megafauna/legion/medium(loc)
 
 ///A basic turret that shoots at nearby mobs. Intended to be used for the legion megafauna.
 /obj/structure/legionturret

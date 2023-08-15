@@ -48,16 +48,16 @@
 
 				all_records += list(current_record)
 		if("medical")
-			for(var/datum/record/crew/person in GLOB.manifest.general)
+			for(var/datum/record/crew/record in GLOB.manifest.general)
 				var/list/current_record = list()
 
-				current_record["bloodtype"] = person.blood_type
-				current_record["ma_dis"] = person.major_disabilities_desc
-				current_record["mi_dis"] = person.minor_disabilities_desc
-				current_record["physical_status"] = person.physical_status
-				current_record["mental_status"] = person.mental_status
-				current_record["name"] = person.name
-				current_record["notes"] = person.medical_notes
+				current_record["name"] = record.name
+				current_record["bloodtype"] = record.blood_type
+				current_record["ma_dis"] = record.major_disabilities_desc
+				current_record["mi_dis"] = record.minor_disabilities_desc
+				current_record["physical_status"] = record.physical_status
+				current_record["mental_status"] = record.mental_status
+				current_record["notes"] = record.medical_notes
 
 				all_records += list(current_record)
 
