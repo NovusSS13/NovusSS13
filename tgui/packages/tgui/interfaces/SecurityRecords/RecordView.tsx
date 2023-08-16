@@ -52,7 +52,7 @@ const RecordInfo = (props, context) => {
     fingerprint,
     gender,
     name,
-    notes,
+    note,
     rank,
     species,
     wanted_status,
@@ -172,7 +172,7 @@ const RecordInfo = (props, context) => {
               <EditableText
                 field="security_note"
                 target_ref={crew_ref}
-                text={notes.join('\n')}
+                text={note}
               />
             </LabeledList.Item>
           </LabeledList>

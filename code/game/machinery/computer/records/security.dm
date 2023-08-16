@@ -125,7 +125,7 @@
 			fingerprint = target.fingerprint,
 			gender = target.gender,
 			name = target.name,
-			notes = target.security_notes,
+			note = target.security_note,
 			rank = target.rank,
 			species = target.species,
 			wanted_status = target.wanted_status,
@@ -175,7 +175,7 @@
 
 		if("set_note")
 			var/note = params["note"]
-			target.security_notes = trim(note, MAX_MESSAGE_LEN)
+			target.security_note = trim(note, MAX_MESSAGE_LEN)
 			return TRUE
 
 		if("set_wanted")
@@ -254,7 +254,7 @@
 /obj/machinery/computer/records/security/expunge_record_info(datum/record/crew/target)
 	target.citations.Cut()
 	target.crimes.Cut()
-	target.security_notes.Cut()
+	target.security_note = null
 	target.wanted_status = WANTED_NONE
 
 	return TRUE

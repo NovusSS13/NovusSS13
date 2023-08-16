@@ -126,6 +126,11 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 		dna_ref = person.dna,
 		mind_ref = person.mind,
 	)
+	var/medical_note = person_client?.prefs.read_preference(/datum/preference/text/flavor/medical_record_notes)
+	if(medical_note)
+		medical_note = new /datum/medical_note(content = medical_note)
+	var/security_note = person_client?.prefs.read_preference(/datum/preference/text/flavor/security_record_notes)
+
 
 	return new /datum/record/crew(
 		age = person.age,
@@ -146,8 +151,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 		minor_disabilities = person.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY),
 		minor_disabilities_desc = person.get_quirk_string(TRUE, CAT_QUIRK_MINOR_DISABILITY),
 		quirk_notes = person.get_quirk_string(TRUE, CAT_QUIRK_NOTES),
-		medical_notes = person_client?.prefs.read_preference(/datum/preference/text/flavor/medical_record_notes),
-		security_notes = person_client?.prefs.read_preference(/datum/preference/text/flavor/security_record_notes)
+		medical_notes = list(medical_note),
+		security_note = security_note
 	)
 
 /// Edits the rank and trim of the found record.

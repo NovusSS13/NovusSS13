@@ -77,7 +77,7 @@
 	/// Positive and neutral quirk strings
 	var/quirk_notes
 	/// Security note
-	var/list/security_notes = list()
+	var/security_note
 	/// Current arrest status
 	var/wanted_status = WANTED_NONE
 
@@ -103,7 +103,7 @@
 	mental_status = MENTAL_STABLE,
 	quirk_notes,
 	medical_notes,
-	security_notes
+	security_note
 )
 	. = ..()
 	src.lock_ref = lock_ref
@@ -115,7 +115,7 @@
 	src.mental_status = mental_status
 	src.quirk_notes = quirk_notes
 	src.medical_notes = medical_notes
-	src.security_notes = security_notes
+	src.security_note = security_note
 
 	GLOB.manifest.general += src
 
@@ -267,9 +267,8 @@
 	final_paper_text += "</table><br><br>"
 
 	final_paper_text += "<center>Important Notes:</center><br>"
-	if(length(security_notes))
-		for(var/note in security_notes)
-			final_paper_text += "- [note]<br>"
+	if(security_note)
+		final_paper_text += "- [security_note]<br>"
 	if(description)
 		final_paper_text += "- [description]<br>"
 
