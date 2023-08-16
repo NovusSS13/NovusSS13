@@ -46,6 +46,8 @@
 
 /datum/sprite_accessory/vagina
 	icon = 'icons/mob/species/genitals/vagina_onmob.dmi'
+	/// If set, will override the "name vagina" examine text in vagina/get_genital_examine()
+	var/examine_name_override = null
 
 /datum/sprite_accessory/vagina/human
 	name = "Human"
@@ -78,23 +80,28 @@
 /datum/sprite_accessory/vagina/cloaca
 	name = "Cloaca"
 	icon_state = "cloaca"
-
+	examine_name_override = "cloaca" //yes, this var exists only for this.
 
 /datum/sprite_accessory/breasts
 	icon = 'icons/mob/species/genitals/breasts_onmob.dmi'
+	/// The text that shows up in organ/get_genital_examine()
+	var/examine_name = null
 	/// Maximum size this titty accessory can reach
 	var/max_size = 16
 
 /datum/sprite_accessory/breasts/pair
 	name = "Pair"
 	icon_state = "pair"
+	examine_name = "a pair"
 
 /datum/sprite_accessory/breasts/quad
 	name = "Quad"
 	icon_state = "quad"
 	max_size = 5
+	examine_name = "two pairs"
 
 /datum/sprite_accessory/breasts/sextuple
 	name = "Sextuple"
 	icon_state = "sextuple"
 	max_size = 5
+	examine_name = "a sextuplet"
