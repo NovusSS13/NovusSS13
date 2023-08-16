@@ -850,20 +850,6 @@
 	taste_description = "chocolate milk"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/milk/chocolate_milk/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
-	if(isfelinid(affected_mob))
-		if(SPT_PROB(20, seconds_per_tick))
-			affected_mob.adjust_disgust_effect(20)
-		if(SPT_PROB(5, seconds_per_tick))
-			affected_mob.visible_message(span_warning("[affected_mob] [pick("dry heaves!","coughs!","splutters!")]"))
-		if(SPT_PROB(10, seconds_per_tick))
-			var/sick_message = pick("Your insides revolt at the presence of lethal chocolate!", "You feel nyauseous.", "You're nya't feeling so good.","You feel like your insides are melting.","You feel illsies.")
-			to_chat(affected_mob, span_notice(sick_message))
-		if(SPT_PROB(35, seconds_per_tick))
-			var/obj/item/organ/guts = pick(affected_mob.organs)
-			guts.apply_organ_damage(15)
-	..()
-
 /datum/reagent/consumable/hot_coco
 	name = "Hot Coco"
 	description = "Made with love! And coco beans."
@@ -879,18 +865,6 @@
 		. = TRUE
 	if(holder.has_reagent(/datum/reagent/consumable/capsaicin))
 		holder.remove_reagent(/datum/reagent/consumable/capsaicin, 2 * REM * seconds_per_tick)
-
-	if(isfelinid(affected_mob))
-		if(SPT_PROB(20, seconds_per_tick))
-			affected_mob.adjust_disgust_effect(20)
-		if(SPT_PROB(5, seconds_per_tick))
-			affected_mob.visible_message(span_warning("[affected_mob] [pick("dry heaves!","coughs!","splutters!")]"))
-		if(SPT_PROB(10, seconds_per_tick))
-			var/sick_message = pick("Your insides revolt at the presence of lethal chocolate!", "You feel nyauseous.", "You're nya't feeling so good.","You feel like your insides are melting.","You feel illsies.")
-			to_chat(affected_mob, span_notice(sick_message))
-		if(SPT_PROB(35, seconds_per_tick))
-			var/obj/item/organ/guts = pick(affected_mob.organs)
-			guts.apply_organ_damage(15)
 	..()
 
 /datum/reagent/consumable/italian_coco
@@ -901,22 +875,6 @@
 	quality = DRINK_VERYGOOD
 	taste_description = "thick creamy chocolate"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/consumable/italian_coco/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
-	affected_mob.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, affected_mob.get_body_temp_normal())
-	if(isfelinid(affected_mob))
-		if(SPT_PROB(20, seconds_per_tick))
-			affected_mob.adjust_disgust_effect(20)
-		if(SPT_PROB(5, seconds_per_tick))
-			affected_mob.visible_message(span_warning("[affected_mob] [pick("dry heaves!","coughs!","splutters!")]"))
-		if(SPT_PROB(10, seconds_per_tick))
-			var/sick_message = pick("Your insides revolt at the presence of lethal chocolate!", "You feel nyauseous.", "You're nya't feeling so good.","You feel like your insides are melting.","You feel illsies.")
-			to_chat(affected_mob, span_notice(sick_message))
-		if(SPT_PROB(35, seconds_per_tick))
-			var/obj/item/organ/guts = pick(affected_mob.organs)
-			guts.apply_organ_damage(15)
-
-	return ..()
 
 /datum/reagent/consumable/menthol
 	name = "Menthol"
