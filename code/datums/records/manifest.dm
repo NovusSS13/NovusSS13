@@ -16,7 +16,7 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 		if(readied_player.new_character)
 			log_manifest(readied_player.ckey,readied_player.new_character.mind,readied_player.new_character)
 		if(ishuman(readied_player.new_character))
-			inject(readied_player.new_character)
+			inject(readied_player.new_character, readied_player.client)
 		CHECK_TICK
 
 /// Gets the current manifest.
@@ -97,7 +97,7 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 
 /// Injects a record into the manifest.
-/datum/manifest/proc/inject(mob/living/carbon/human/person)
+/datum/manifest/proc/inject(mob/living/carbon/human/person, client/person_client)
 	set waitfor = FALSE
 	if(!(person.mind?.assigned_role.job_flags & JOB_CREW_MANIFEST))
 		return
@@ -127,7 +127,7 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 		mind_ref = person.mind,
 	)
 
-	new /datum/record/crew(
+	return new /datum/record/crew(
 		age = person.age,
 		blood_type = person.dna.blood_type,
 		character_appearance = character_appearance,
@@ -146,9 +146,9 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 		minor_disabilities = person.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY),
 		minor_disabilities_desc = person.get_quirk_string(TRUE, CAT_QUIRK_MINOR_DISABILITY),
 		quirk_notes = person.get_quirk_string(TRUE, CAT_QUIRK_NOTES),
+		medical_notes = person_client?.prefs.read_preference(/datum/preference/text/flavor/medical_record_notes),
+		security_notes = person_client?.prefs.read_preference(/datum/preference/text/flavor/security_record_notes)
 	)
-
-	return
 
 /// Edits the rank and trim of the found record.
 /datum/manifest/proc/modify(name, assignment, trim)

@@ -241,7 +241,7 @@
 				to_chat(human_user, span_warning("ERROR: Unable to locate data core entry for target."))
 				return
 			if(href_list["status"])
-				var/new_status = tgui_input_list(human_user, "Specify a new criminal status for this person.", "Security HUD", WANTED_STATUSES(), target_record.wanted_status)
+				var/new_status = tgui_input_list(human_user, "Specify a new criminal status for this person.", "Security HUD", WANTED_STATUSES, target_record.wanted_status)
 				if(!new_status || !target_record || !human_user.canUseHUD() || !HAS_TRAIT(human_user, TRAIT_SECURITY_HUD))
 					return
 
@@ -263,7 +263,7 @@
 				to_chat(human_user, "<b>Name:</b> [target_record.name]")
 				to_chat(human_user, "<b>Criminal Status:</b> [target_record.wanted_status]")
 				to_chat(human_user, "<b>Citations:</b> [length(target_record.citations)]")
-				to_chat(human_user, "<b>Note:</b> [target_record.security_note || "None"]")
+				to_chat(human_user, "<b>Notes:</b> [target_record.security_notes.Join("<br>") || "None"]")
 				to_chat(human_user, "<b>Rapsheet:</b> [length(target_record.crimes)] incidents")
 				if(length(target_record.crimes))
 					for(var/datum/crime/crime in target_record.crimes)
@@ -312,7 +312,7 @@
 				if(!target_record || !new_note || !allowed_access || !human_user.canUseHUD() || !HAS_TRAIT(human_user, TRAIT_SECURITY_HUD))
 					return
 
-				target_record.security_note = new_note
+				target_record.security_notes += new_note
 
 				return
 

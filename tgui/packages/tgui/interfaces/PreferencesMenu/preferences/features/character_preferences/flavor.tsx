@@ -49,3 +49,13 @@ export const headshot_link: Feature<string> = {
   name: 'Headshot Link',
   component: FeatureShortTextInput,
 };
+
+export const medical_record_notes: Feature<string> = {
+  name: 'Medical Record Notes',
+  component: FeatureTextInput,
+};
+
+export const security_record_notes: Feature<string> = {
+  name: 'Security Record Notes',
+  component: FeatureTextInput,
+};

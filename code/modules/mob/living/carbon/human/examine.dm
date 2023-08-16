@@ -388,8 +388,8 @@
 				target_record = find_record(perpname)
 				if(target_record)
 					wanted_status = target_record.wanted_status
-					if(target_record.security_note)
-						security_note = target_record.security_note
+					if(length(target_record.security_notes))
+						security_note = jointext(target_record.security_notes, "<br>")
 
 				. += "<span class='deptradio'>Criminal status:</span> <a href='?src=[REF(src)];hud=s;status=1;examine_time=[world.time]'>\[[wanted_status]\]</a>"
 				. += "<span class='deptradio'>Important Notes: [security_note]"

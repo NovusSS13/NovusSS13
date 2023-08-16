@@ -47,7 +47,7 @@
 			citations = citations,
 			crew_name = target.name,
 			crew_ref = REF(target),
-			notes = target.security_note,
+			notes = target.security_notes,
 			rank = target.rank,
 		))
 
@@ -163,7 +163,7 @@
 	bounty_text += "<b>Details:</b><br>[warrant.details]<br>"
 	bounty_text += "<b>Issued to:</b><br>[usr]<br>"
 	bounty_text += "<b>Issued on:</b><br>[warrant.time]<br>"
-	bounty_text += "<b>Comments:</b><br>[!target.security_note ? "None." : target.security_note]<br><br>"
+	bounty_text += "<b>Comments:</b><br>[length(target.security_notes) ? "<br>[jointext(target.security_notes, "<br>")]" : "None."]<br><br>"
 	bounty_text += "<center><b>FINE:</b> [warrant.fine] credits</center>"
 
 	printing = TRUE

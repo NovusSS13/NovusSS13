@@ -20,7 +20,7 @@ export type SecurityRecord = {
   fingerprint: string;
   gender: string;
   name: string;
-  note: string;
+  notes: string[];
   rank: string;
   species: string;
   wanted_status: string;
