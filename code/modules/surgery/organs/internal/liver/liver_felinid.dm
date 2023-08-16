@@ -11,7 +11,7 @@
 	var/static/list/choccy_chems = list(
 		/datum/reagent/consumable/coco,
 		/datum/reagent/consumable/hot_coco,
-		/datum/reagent/consumable/italian_coco
+		/datum/reagent/consumable/italian_coco,
 		/datum/reagent/consumable/choccyshake,
 		/datum/reagent/consumable/chocolatepudding,
 		/datum/reagent/consumable/milk/chocolate_milk,
@@ -21,12 +21,12 @@
 			continue
 
 		if(SPT_PROB(20, seconds_per_tick))
-			affected_mob.adjust_disgust_effect(20)
+			organ_owner.adjust_disgust_effect(20)
 		if(SPT_PROB(5, seconds_per_tick))
-			affected_mob.visible_message(span_warning("[affected_mob] [pick("dry heaves!","coughs!","splutters!")]"))
+			organ_owner.visible_message(span_warning("[organ_owner] [pick("dry heaves!","coughs!","splutters!")]"))
 		if(SPT_PROB(10, seconds_per_tick))
 			var/sick_message = pick("Your insides revolt at the presence of lethal chocolate!", "You feel nyauseous.", "You're nya't feeling so good.","You feel like your insides are melting.","You feel illsies.")
-			to_chat(affected_mob, span_notice(sick_message))
+			to_chat(organ_owner, span_notice(sick_message))
 		if(SPT_PROB(35, seconds_per_tick))
-			var/obj/item/organ/guts = pick(affected_mob.organs)
+			var/obj/item/organ/guts = pick(organ_owner.organs)
 			guts.apply_organ_damage(15)
