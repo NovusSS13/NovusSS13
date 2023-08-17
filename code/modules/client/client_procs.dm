@@ -83,6 +83,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			to_chat(src, span_danger("Your previous action was ignored because you've done too many in a second"))
 			return
 
+	if(!age_verify())
+		return
+
 	// Tgui Topic middleware
 	if(tgui_Topic(href_list))
 		return
@@ -513,7 +516,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(!tooltips)
 		tooltips = new /datum/tooltip(src)
 
-	if (!interviewee)
+	if(!age_verify())
+		return
+
+	if(!interviewee)
 		initialize_menus()
 
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
@@ -592,6 +598,72 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	Master.UpdateTickRate()
 	..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
 	return QDEL_HINT_HARDDEL_NOW
+
+/client/proc/age_verify()
+	if(!CONFIG_GET(flag/age_verification) || holder) //we dont care
+		return TRUE
+
+	if(!set_db_player_flags())
+		message_admins("Allowed [src] through the age gate, as connection to the DB could not be established.")
+		return TRUE // iunno
+
+	if(prefs.db_flags & DB_FLAG_AGE_VETTED) //completed? Skip
+		return TRUE
+
+	var/input = input(src, "You must be over 18 to play on this server. By pressing \"Yes\" you acknowledge that you are at least 18 years of age.", "Age Gate", "No") as anything in list("Yes", "No")
+	if(input == "Yes")
+		message_admins("[ckey] has joined through the automated age gate process.")
+		update_flag_db(DB_FLAG_AGE_VETTED, TRUE)
+		return TRUE
+
+
+	var/special_columns = list(
+		"bantime" = "NOW()",
+		"server_ip" = "INET_ATON(?)",
+		"ip" = "INET_ATON(?)",
+		"a_ip" = "INET_ATON(?)",
+		"expiration_time" = "IF(? IS NULL, NULL, NOW() + INTERVAL ? [interval])"
+	)
+	var/list/sql_ban = list(list(
+		// Server info
+		"server_ip" = world.internet_address || 0,
+		"server_port" = world.port,
+		"round_id" = GLOB.round_id,
+		// Client ban info
+		"role" = "Server",
+		"expiration_time" = -1,
+		"applies_to_admins" = FALSE,
+		"reason" = "SYSTEM BAN - Inputted date during join verification was under 18 years of age. Contact administration on discord for verification.",
+		"ckey" = ckey || null,
+		"ip" = address || null,
+		"computerid" = computer_id || null,
+		// Admin banning info
+		"a_ckey" = "SYSTEM (Automated-Age-Gate)",
+		"a_ip" = null,
+		"a_computerid" = "0",
+		"who" = GLOB.clients.Join(", "),
+		"adminwho" = GLOB.admins.Join(", "), //doesnt include stealthmins but whatever
+	))
+
+	add_system_note("Automated-Age-Gate", "Failed automatic age gate process.")
+	if(!SSdbcore.MassInsert(format_table_name("ban"), sql_ban, warn = TRUE, special_columns = special_columns))
+		// this is the part where you should panic.
+		qdel(query_add_ban)
+		message_admins("WARNING! Failed to ban [ckey] for failing the automatic age gate.")
+		send2tgs_adminless_only("WARNING! Failed to ban [ckey] for failing the automatic age gate.")
+		qdel(client)
+		return FALSE
+
+	create_message("note", player_ckey, "SYSTEM (Automated-Age-Gate)", "SYSTEM BAN - Inputted date during join verification was under 18 years of age. Contact administration on discord for verification.", null, null, 0, 0, null, 0, "high")
+
+	// announce this
+	message_admins("[ckey] has been banned for failing the automatic age gate.")
+	send2tgs_adminless_only("[ckey] has been banned for failing the automatic age gate.")
+
+	// removing the client disconnects them
+	qdel(client)
+	return FALSE
+
 
 /client/proc/set_client_age_from_db(connectiontopic)
 	if (is_guest_key(src.key))

@@ -428,3 +428,6 @@
 /datum/config_entry/str_list/tts_voice_blacklist
 
 /datum/config_entry/flag/give_tutorials_without_db
+
+/datum/config_entry/flag/age_verification //are we using the automated age verification which asks users if they're 18+?
+	default = TRUE
