@@ -168,7 +168,7 @@
 	foodtypes = GRAIN | DAIRY | FRUIT | SUGAR
 	venue_value = FOOD_PRICE_CHEAP
 	slice_type = /obj/item/food/cakeslice/lemon
-1
+
 /obj/item/food/cakeslice/lemon
 	name = "lemon cake slice"
 	desc = "Just a slice of cake, it is enough for everyone."
