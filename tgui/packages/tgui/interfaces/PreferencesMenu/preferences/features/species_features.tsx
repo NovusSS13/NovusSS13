@@ -79,6 +79,11 @@ export const feature_lizard_spines: FeatureChoiced = {
   },
 };
 
+export const feature_lizard_spines_color: FeatureChoiced = {
+  name: 'Spines Color',
+  component: FeatureTriColorInput,
+};
+
 export const feature_lizard_tail: FeatureChoiced = {
   name: 'Tail',
   component: (
@@ -86,6 +91,11 @@ export const feature_lizard_tail: FeatureChoiced = {
   ) => {
     return <FeatureDropdownInput buttons {...props} />;
   },
+};
+
+export const feature_lizard_tail_color: FeatureChoiced = {
+  name: 'Tail Color',
+  component: FeatureTriColorInput,
 };
 
 export const feature_mcolor: Feature<string> = {

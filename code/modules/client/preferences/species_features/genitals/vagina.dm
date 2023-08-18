@@ -48,7 +48,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
 
 /datum/preference/tri_color/vagina/is_accessible(datum/preferences/preferences)
-	return ..() && !preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone)
+	return ..() && (preferences.read_preference(/datum/preference/choiced/vagina) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone)
 
 /datum/preference/tri_color/vagina/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["vagina_color"] = value

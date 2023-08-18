@@ -48,7 +48,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
 
 /datum/preference/tri_color/testicles/is_accessible(datum/preferences/preferences)
-	return ..() && !preferences.read_preference(/datum/preference/toggle/testicles_uses_skintone)
+	return ..() && (preferences.read_preference(/datum/preference/choiced/testicles) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/testicles_uses_skintone)
 
 /datum/preference/tri_color/testicles/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["testicles_color"] = value

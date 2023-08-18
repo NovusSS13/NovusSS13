@@ -20,8 +20,14 @@ GLOBAL_LIST_INIT(identity_block_lengths, list(
  * (commonly abbreviated with uf) and its blocks. Both ui and uf have a standard block length of 3 ASCII characters.
  */
 GLOBAL_LIST_INIT(features_block_lengths, list(
-		"[DNA_MUTANT_COLOR_BLOCK]" = DNA_BLOCK_SIZE_COLOR,
-		"[DNA_ETHEREAL_COLOR_BLOCK]" = DNA_BLOCK_SIZE_COLOR,
+		"[DNA_MUTANT_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_ETHEREAL_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_TAIL_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_SPINES_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_PENIS_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_TESTICLES_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_VAGINA_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_BREASTS_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
 	))
 
 /**
@@ -201,6 +207,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_LIZARD_MARKINGS_BLOCK] = construct_block(GLOB.body_markings_list.Find(features["body_markings"]), GLOB.body_markings_list.len)
 	if(features["tail"])
 		L[DNA_TAIL_BLOCK] = construct_block(GLOB.tails_list.Find(features["tail"]), GLOB.tails_list.len)
+	if(features["tail_color"])
+		L[DNA_TAIL_COLOR_BLOCK] = serialize_dna_color(features["tail_color"])
 	if(features["snout"])
 		L[DNA_SNOUT_BLOCK] = construct_block(GLOB.snouts_list.Find(features["snout"]), GLOB.snouts_list.len)
 	if(features["horns"])
@@ -209,6 +217,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_FRILLS_BLOCK] = construct_block(GLOB.frills_list.Find(features["frills"]), GLOB.frills_list.len)
 	if(features["spines"])
 		L[DNA_SPINES_BLOCK] = construct_block(GLOB.spines_list.Find(features["spines"]), GLOB.spines_list.len)
+	if(features["spines_color"])
+		L[DNA_SPINES_COLOR_BLOCK] = serialize_dna_color(features["spines_color"])
 	if(features["ears"])
 		L[DNA_EARS_BLOCK] = construct_block(GLOB.ears_list.Find(features["ears"]), GLOB.ears_list.len)
 	if(features["moth_wings"] != "Burnt Off")
@@ -224,14 +234,22 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 	if(features["penis"])
 		L[DNA_PENIS_BLOCK] = construct_block(GLOB.penis_list.Find(features["penis"]), GLOB.penis_list.len)
+	if(features["penis_color"])
+		L[DNA_PENIS_COLOR_BLOCK] = serialize_dna_color(features["penis_color"])
 	if(features["penis_size"])
 		L[DNA_PENIS_SIZE_BLOCK] = construct_block(GLOB.penis_size_names.Find(features["penis_size"]), GLOB.penis_size_names.len)
 	if(features["testicles"])
 		L[DNA_TESTICLES_BLOCK] = construct_block(GLOB.testicles_list.Find(features["testicles"]), GLOB.testicles_list.len)
+	if(features["testicles_color"])
+		L[DNA_TESTICLES_COLOR_BLOCK] = serialize_dna_color(features["testicles_color"])
 	if(features["vagina"])
 		L[DNA_VAGINA_BLOCK] = construct_block(GLOB.vagina_list.Find(features["vagina"]), GLOB.vagina_list.len)
+	if(features["vagina_color"])
+		L[DNA_VAGINA_COLOR_BLOCK] = serialize_dna_color(features["vagina_color"])
 	if(features["breasts"])
 		L[DNA_BREASTS_BLOCK] = construct_block(GLOB.breasts_list.Find(features["breasts"]), GLOB.breasts_list.len)
+	if(features["breasts_color"])
+		L[DNA_BREASTS_COLOR_BLOCK] = serialize_dna_color(features["breasts_color"])
 	if(features["breasts_size"])
 		L[DNA_BREASTS_SIZE_BLOCK] = construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len)
 
@@ -858,12 +876,17 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 /proc/unserialize_dna_color(given_color)
 	var/color1 = sanitize_hexcolor(copytext(given_color, 1, 1+DEFAULT_HEX_COLOR_LEN), DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
-	var/color2 = sanitize_hexcolor(copytext(given_color, 1+DEFAULT_HEX_COLOR_LEN, 1+DEFAULT_HEX_COLOR_LEN*2), DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
-	var/color3 = sanitize_hexcolor(copytext(given_color, 1+DEFAULT_HEX_COLOR_LEN*2, 1+DEFAULT_HEX_COLOR_LEN*3), DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
+	var/color2 = sanitize_hexcolor(copytext(given_color, 1+DEFAULT_HEX_COLOR_LEN, 1+(DEFAULT_HEX_COLOR_LEN*2)), DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
+	var/color3 = sanitize_hexcolor(copytext(given_color, 1+(DEFAULT_HEX_COLOR_LEN*2), 1+(DEFAULT_HEX_COLOR_LEN*3)), DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
 	//all colors are the same, just return the first
 	if((color1 == color2) && (color2 == color3))
 		return color1
 	return list(color1, color2, color3)
+
+/proc/tricolor_to_hex(given_color)
+	if(!islist(given_color))
+		return given_color
+	return given_color[1]
 
 /////////////////////////// DNA HELPER-PROCS
 

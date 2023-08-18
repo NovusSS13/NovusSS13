@@ -73,7 +73,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
 
 /datum/preference/tri_color/penis/is_accessible(datum/preferences/preferences)
-	return ..() && !preferences.read_preference(/datum/preference/toggle/penis_uses_skintone)
+	return ..() && (preferences.read_preference(/datum/preference/choiced/penis) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/penis_uses_skintone)
 
 /datum/preference/tri_color/penis/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["penis_color"] = value

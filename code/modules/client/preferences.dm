@@ -277,17 +277,20 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			return TRUE
 		if("set_tricolor_preference")
 			var/requested_preference_key = params["preference"]
-			var/requested_preference_index = params["preferenceindex"]
+			var/requested_preference_index = params["value"]
 
 			var/datum/preference/requested_preference = GLOB.preference_entries_by_key[requested_preference_key]
-			if(isnull(requested_preference))
+			if (isnull(requested_preference))
 				return FALSE
 
-			if(!istype(requested_preference, /datum/preference/tri_color) )
+			if (!istype(requested_preference, /datum/preference/tri_color))
 				return FALSE
 
 			var/list/color_list = read_preference(requested_preference.type)
-			var/default_value = sanitize_hexcolor(color_list[requested_preference_index], 6, TRUE)
+			if (!islist(color_list))
+				return FALSE //wtf?
+
+			var/default_value = sanitize_hexcolor(color_list[requested_preference_index], DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
 
 			// Yielding
 			var/new_color = input(
@@ -296,17 +299,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				null,
 				default_value || COLOR_WHITE,
 			) as color | null
-
-			if(!new_color)
+			if (!new_color)
 				return FALSE
 
-			var/list/new_color_list = list(
-				(requested_preference_index == 1 ? new_color : color_list[1]),
-				(requested_preference_index == 2 ? new_color : color_list[2]),
-				(requested_preference_index == 3 ? new_color : color_list[3])
-			)
-
-			if(!update_preference(requested_preference, new_color_list))
+			color_list[requested_preference_index] = new_color
+			if (!update_preference(requested_preference, color_list))
 				return FALSE
 
 			return TRUE

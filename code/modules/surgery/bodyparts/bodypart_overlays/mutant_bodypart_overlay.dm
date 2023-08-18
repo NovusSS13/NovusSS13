@@ -164,6 +164,7 @@
 
 ///Returns a validated version of the given color in accordance with the sprite accessory in use
 /datum/bodypart_overlay/mutant/proc/validate_color(given_color)
+	//return a list if the sprite datum wants matrixed colors
 	if(sprite_datum.use_matrixed_colors)
 		//sanitize normally if it's already a matrix color
 		if(islist(given_color))
@@ -174,7 +175,8 @@
 		//repeat the same color thrice otherwise
 		var/sanitized_color = sanitize_hexcolor(given_color, include_crunch = TRUE)
 		return list(sanitized_color, sanitized_color, sanitized_color)
-	//take only the first color if it's a matrix
+	//return a string otherwise
+	//take and sanitize only the first color if it's a matrix
 	if(islist(given_color))
 		return sanitize_hexcolor(given_color[1], include_crunch = TRUE)
 	//just sanitize normally otherwise

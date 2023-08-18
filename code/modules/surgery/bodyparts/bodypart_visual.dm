@@ -70,9 +70,9 @@
 	else if(HAS_TRAIT(human_owner, TRAIT_MUTANT_COLORS))
 		skin_tone = ""
 		if(owner_species.fixed_mut_color)
-			species_color = owner_species.fixed_mut_color
+			species_color = tricolor_to_hex(owner_species.fixed_mut_color)
 		else
-			species_color = human_owner.dna.features["mcolor"]
+			species_color = tricolor_to_hex(human_owner.dna.features["mcolor"])
 	else
 		skin_tone = ""
 		species_color = ""

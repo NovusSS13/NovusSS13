@@ -27,7 +27,8 @@
 //DNA - Because fuck you and your magic numbers being all over the codebase.
 #define DNA_BLOCK_SIZE 3
 
-#define DNA_BLOCK_SIZE_COLOR DEFAULT_HEX_COLOR_LEN * 3 //needs to hold tricolors sometimes
+#define DNA_BLOCK_SIZE_COLOR DEFAULT_HEX_COLOR_LEN
+#define DNA_BLOCK_SIZE_TRICOLOR DEFAULT_HEX_COLOR_LEN * 3
 
 #define DNA_GENDER_BLOCK 1
 #define DNA_SKIN_TONE_BLOCK 2
@@ -45,27 +46,33 @@
 #define DNA_ETHEREAL_COLOR_BLOCK 2
 #define DNA_LIZARD_MARKINGS_BLOCK 3
 #define DNA_TAIL_BLOCK 4
-#define DNA_SNOUT_BLOCK 5
-#define DNA_HORNS_BLOCK 6
-#define DNA_FRILLS_BLOCK 7
-#define DNA_SPINES_BLOCK 8
-#define DNA_EARS_BLOCK 9
-#define DNA_MOTH_WINGS_BLOCK 10
-#define DNA_MOTH_ANTENNAE_BLOCK 11
-#define DNA_MOTH_MARKINGS_BLOCK 12
-#define DNA_MUSHROOM_CAPS_BLOCK 13
-#define DNA_POD_HAIR_BLOCK 14
+#define DNA_TAIL_COLOR_BLOCK 5
+#define DNA_SNOUT_BLOCK 6
+#define DNA_HORNS_BLOCK 7
+#define DNA_FRILLS_BLOCK 8
+#define DNA_SPINES_BLOCK 9
+#define DNA_SPINES_COLOR_BLOCK 10
+#define DNA_EARS_BLOCK 11
+#define DNA_MOTH_WINGS_BLOCK 12
+#define DNA_MOTH_ANTENNAE_BLOCK 13
+#define DNA_MOTH_MARKINGS_BLOCK 14
+#define DNA_MUSHROOM_CAPS_BLOCK 15
+#define DNA_POD_HAIR_BLOCK 16
 
 //dumb genital crap ugh
-#define DNA_PENIS_BLOCK 15
-#define DNA_PENIS_SIZE_BLOCK 16
-#define DNA_TESTICLES_BLOCK 17
-#define DNA_VAGINA_BLOCK 18
-#define DNA_BREASTS_BLOCK 19
-#define DNA_BREASTS_SIZE_BLOCK 20
+#define DNA_PENIS_BLOCK 17
+#define DNA_PENIS_COLOR_BLOCK 18
+#define DNA_PENIS_SIZE_BLOCK 19
+#define DNA_TESTICLES_BLOCK 20
+#define DNA_TESTICLES_COLOR_BLOCK 21
+#define DNA_VAGINA_BLOCK 22
+#define DNA_VAGINA_COLOR_BLOCK 23
+#define DNA_BREASTS_BLOCK 24
+#define DNA_BREASTS_COLOR_BLOCK 25
+#define DNA_BREASTS_SIZE_BLOCK 26
 
 /// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 20
+#define DNA_FEATURE_BLOCKS 26
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -80,9 +87,6 @@
 #define G_MALE 1
 #define G_FEMALE 2
 #define G_PLURAL 3
-
-//Defines for Golem Species IDs
-#define SPECIES_GOLEM "golem"
 
 // Defines for used in creating "perks" for the species preference pages.
 /// A key that designates UI icon displayed on the perk.

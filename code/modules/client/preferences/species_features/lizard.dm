@@ -131,6 +131,15 @@
 	var/datum/sprite_accessory/spines/no_spines = /datum/sprite_accessory/spines/none
 	return initial(no_spines.name)
 
+/datum/preference/tri_color/lizard_spines
+	savefile_key = "feature_lizard_spines_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/spines
+
+/datum/preference/tri_color/lizard_spines/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["spines_color"] = value
+
 /datum/preference/choiced/lizard_tail
 	savefile_key = "feature_lizard_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -146,3 +155,12 @@
 /datum/preference/choiced/lizard_tail/create_default_value()
 	var/datum/sprite_accessory/tails/lizard/smooth/tail = /datum/sprite_accessory/tails/lizard/smooth
 	return initial(tail.name)
+
+/datum/preference/tri_color/lizard_tail
+	savefile_key = "feature_lizard_tail_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/tail/lizard
+
+/datum/preference/tri_color/lizard_tail/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["tail_color"] = value

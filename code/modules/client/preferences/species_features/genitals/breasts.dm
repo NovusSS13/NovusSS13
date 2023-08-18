@@ -74,7 +74,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
 
 /datum/preference/tri_color/breasts/is_accessible(datum/preferences/preferences)
-	return ..() && !preferences.read_preference(/datum/preference/toggle/breasts_uses_skintone)
+	return ..() && (preferences.read_preference(/datum/preference/choiced/breasts) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/breasts_uses_skintone)
 
 /datum/preference/tri_color/breasts/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["breasts_color"] = value
