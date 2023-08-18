@@ -83,10 +83,26 @@
 /// Update our features after something changed our appearance (if we have an attached DNA block)
 /obj/item/organ/proc/mutate_feature(features, mob/living/carbon/human/human)
 	if(!dna_block)
-		return
+		return FALSE
 
 	var/list/feature_list = bodypart_overlay.get_global_feature_list()
-	bodypart_overlay.set_appearance_from_name(feature_list[deconstruct_block(get_uni_feature_block(features, dna_block), feature_list.len)])
+	var/say_my_name = feature_list[deconstruct_block(get_uni_feature_block(features, dna_block), feature_list.len)]
+	//the dna is fucking invalid for this organ if it has no associated sprite accessory, or it happens to be blank
+	if(!say_my_name || (say_my_name == SPRITE_ACCESSORY_NONE))
+		return FALSE
+
+	bodypart_overlay.set_appearance_from_name(say_my_name)
+	return TRUE
+
+/**
+ * Proc used to change the organ to match the DNA of the owner, IF POSSIBLE.
+ */
+/obj/item/organ/proc/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
+	var/say_my_name = receiver.dna.features[bodypart_overlay.feature_key] //for reasons i don't want to know, this CAN be null!
+	if(say_my_name && (say_my_name != SPRITE_ACCESSORY_NONE))
+		bodypart_overlay.set_appearance_from_name(receiver.dna.features[bodypart_overlay.feature_key])
+	bodypart_overlay.inherit_color(owner_limb, force = TRUE)
+	bodypart_overlay.imprint_on_next_insertion = FALSE
 
 /**
  * If you need to change an organ's visuals for simple one-offs, use this.
@@ -103,13 +119,3 @@
 		ownerlimb.update_icon_dropped()
 	else if(use_mob_sprite_as_obj_sprite) //are we out in the world, unprotected by flesh?
 		update_appearance()
-
-/**
- * Proc used to change the organ to match the DNA of the owner.
- */
-/obj/item/organ/proc/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
-	//for reasons i don't want to know, this CAN be null!
-	if(receiver.dna.features[bodypart_overlay.feature_key])
-		bodypart_overlay.set_appearance_from_name(receiver.dna.features[bodypart_overlay.feature_key])
-	bodypart_overlay.inherit_color(owner_limb, force = TRUE)
-	bodypart_overlay.imprint_on_next_insertion = FALSE

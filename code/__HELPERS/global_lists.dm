@@ -17,7 +17,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, GLOB.body_markings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/horns, GLOB.horns_list)
@@ -35,10 +35,10 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 
 	//genitals
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/penis, GLOB.penis_list, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/testicles, GLOB.testicles_list, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/breasts, GLOB.breasts_list, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/vagina, GLOB.vagina_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/penis, GLOB.penis_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/testicles, GLOB.testicles_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/breasts, GLOB.breasts_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/vagina, GLOB.vagina_list, add_blank = TRUE)
 
 /// Inits GLOB.species_list. Not using GLOBAL_LIST_INIT b/c it depends on GLOB.string_lists
 /proc/init_species_list()

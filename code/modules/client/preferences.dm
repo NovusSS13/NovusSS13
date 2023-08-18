@@ -275,6 +275,38 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE
 
 			return TRUE
+		if("set_tricolor_preference")
+			var/requested_preference_key = params["preference"]
+			var/requested_preference_index = params["value"]
+
+			var/datum/preference/requested_preference = GLOB.preference_entries_by_key[requested_preference_key]
+			if (isnull(requested_preference))
+				return FALSE
+
+			if (!istype(requested_preference, /datum/preference/tri_color))
+				return FALSE
+
+			var/list/color_list = read_preference(requested_preference.type)
+			if (!islist(color_list))
+				return FALSE //wtf?
+
+			var/default_value = sanitize_hexcolor(color_list[requested_preference_index], DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
+
+			// Yielding
+			var/new_color = input(
+				usr,
+				"Select new color",
+				null,
+				default_value || COLOR_WHITE,
+			) as color | null
+			if (!new_color)
+				return FALSE
+
+			color_list[requested_preference_index] = new_color
+			if (!update_preference(requested_preference, color_list))
+				return FALSE
+
+			return TRUE
 
 	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
 		var/delegation = preference_middleware.action_delegations[action]

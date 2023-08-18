@@ -96,6 +96,7 @@
 #define SPECIES_ETHEREAL_LUSTROUS "lustrous"
 #define SPECIES_FELINE "felinid"
 #define SPECIES_FLYPERSON "fly"
+#define SPECIES_GOLEM "golem"
 #define SPECIES_HUMAN "human"
 #define SPECIES_JELLYPERSON "jelly"
 #define SPECIES_SLIMEPERSON "slime"

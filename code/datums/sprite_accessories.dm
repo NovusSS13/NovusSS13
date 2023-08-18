@@ -46,12 +46,14 @@
 	return L
 
 /datum/sprite_accessory
+	/// The preview name of the accessory.
+	var/name
 	/// The icon file the accessory is located in.
 	var/icon
 	/// The icon_state of the accessory.
 	var/icon_state
-	/// The preview name of the accessory.
-	var/name
+	/// Dumb shit, a suffix for the feature key that should be appended when building the icon
+	var/feature_suffix
 	/// Determines if the accessory will be skipped or included in random hair generations.
 	var/gender = NEUTER
 	/// Something that can be worn by either gender, but looks different on each.
@@ -63,6 +65,8 @@
 	 * This is the source that this accessory will get its color from. Default is MUTCOLOR, but can also be HAIR, FACEHAIR, EYECOLOR and 0 if none.
 	 */
 	var/color_src = MUTANT_COLOR
+	/// Whether or not we should treat our colors as an RGB matrix
+	var/use_matrixed_colors = FALSE
 	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
 	var/hasinner = FALSE
 	/// Is this part locked from roundstart selection? Used for parts that apply effects.
@@ -1746,6 +1750,7 @@
 
 /datum/sprite_accessory/tails/lizard
 	icon = 'icons/mob/species/lizard/lizard_tails.dmi'
+	feature_suffix = "lizard"
 
 /datum/sprite_accessory/tails/lizard/smooth
 	name = "Smooth"
@@ -1763,11 +1768,17 @@
 	name = "Spikes"
 	icon_state = "spikes"
 
+/datum/sprite_accessory/tails/human
+	feature_suffix = "human"
+
 /datum/sprite_accessory/tails/human/cat
 	name = "Cat"
 	icon = 'icons/mob/species/human/cat_features.dmi'
 	icon_state = "default"
 	color_src = HAIR_COLOR
+
+/datum/sprite_accessory/tails/monkey
+	feature_suffix = "monkey"
 
 /datum/sprite_accessory/tails/monkey/monkey
 	name = "Monkey"

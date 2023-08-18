@@ -5,6 +5,8 @@
 
 	///Defines what kind of 'organ' we're looking at. Sprites have names like 'm_mothwings_firemoth_ADJ'. 'mothwings' would then be feature_key
 	var/feature_key = ""
+	///Feature key for the color of the organ, if color_source is ORGAN_COLOR_DNA
+	var/feature_color_key = ""
 
 	///The color this organ draws with. Updated by bodypart/inherit_color()
 	var/draw_color
@@ -17,7 +19,6 @@
 /datum/bodypart_overlay/mutant/proc/randomize_appearance()
 	randomize_sprite()
 	draw_color = "#[random_color()]"
-	imprint_on_next_insertion = FALSE
 
 ///Grab a random sprite
 /datum/bodypart_overlay/mutant/proc/randomize_sprite()
@@ -55,6 +56,8 @@
 	var/list/icon_state_builder = list()
 	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
 	icon_state_builder += feature_key
+	if(sprite_datum.feature_suffix)
+		icon_state_builder += sprite_datum.feature_suffix
 	var/base_icon_state = get_base_icon_state() //MONKEYS. GOD DAMN MONKEYS.
 	if(base_icon_state)
 		icon_state_builder += base_icon_state
@@ -81,6 +84,8 @@
 	if(!valid_sprite_datum)
 		return FALSE
 	sprite_datum = valid_sprite_datum
+	if(draw_color)
+		draw_color = validate_color(draw_color)
 	cache_key = jointext(generate_icon_cache(), "_")
 	return TRUE
 
@@ -90,6 +95,8 @@
 	if(!valid_sprite_datum)
 		return FALSE
 	sprite_datum = valid_sprite_datum
+	if(draw_color)
+		draw_color = validate_color(draw_color)
 	cache_key = jointext(generate_icon_cache(), "_")
 	return TRUE
 
@@ -98,7 +105,11 @@
 	. = list()
 	. += "[get_base_icon_state()]"
 	. += "[feature_key]"
-	. += "[draw_color]"
+	if(islist(draw_color))
+		for(var/subcolor in draw_color)
+			. += "[subcolor]"
+	else
+		. += "[draw_color]"
 	return .
 
 ///Return a dumb glob list for this specific feature (called from parse_sprite)
@@ -108,17 +119,25 @@
 ///Give the organ its color. Force will override the existing one.
 /datum/bodypart_overlay/mutant/proc/inherit_color(obj/item/bodypart/ownerlimb, force = FALSE)
 	if(isnull(ownerlimb))
-		draw_color = null
 		return TRUE
 
 	if(draw_color && !force)
 		return FALSE
 
 	switch(color_source)
-		if(ORGAN_COLOR_OVERRIDE)
-			draw_color = override_color(ownerlimb.draw_color)
 		if(ORGAN_COLOR_INHERIT)
 			draw_color = ownerlimb.draw_color
+		if(ORGAN_COLOR_DNA)
+			if(!ishuman(ownerlimb.owner))
+				return FALSE
+			var/dna_color = LAZYACCESS(ownerlimb.owner.dna.features, feature_color_key)
+			//DNA didn't really give us an answer? use the limb's draw color i guess...
+			if(!dna_color)
+				draw_color = ownerlimb.draw_color
+			else
+				draw_color = dna_color
+		if(ORGAN_COLOR_OVERRIDE)
+			draw_color = override_color(ownerlimb.draw_color)
 		if(ORGAN_COLOR_HAIR)
 			if(!ishuman(ownerlimb.owner))
 				return FALSE
@@ -129,8 +148,39 @@
 				draw_color = my_head.hair_color
 			else
 				draw_color = human_owner.hair_color
-
+		if(ORGAN_COLOR_FACIAL_HAIR)
+			if(!ishuman(ownerlimb.owner))
+				return FALSE
+			var/mob/living/carbon/human/human_owner = ownerlimb.owner
+			var/obj/item/bodypart/head/my_head = human_owner.get_bodypart(BODY_ZONE_HEAD) //not always the same as ownerlimb
+			//head facial hair color takes priority, owner facial hair color is a backup if we lack a head or something
+			if(my_head)
+				draw_color = my_head.facial_hair_color
+			else
+				draw_color = human_owner.facial_hair_color
+	//convert to a matrix color (or deconvert) if necessary
+	draw_color = validate_color(draw_color)
 	return TRUE
+
+///Returns a validated version of the given color in accordance with the sprite accessory in use
+/datum/bodypart_overlay/mutant/proc/validate_color(given_color)
+	//return a list if the sprite datum wants matrixed colors
+	if(sprite_datum.use_matrixed_colors)
+		//sanitize normally if it's already a matrix color
+		if(islist(given_color))
+			var/list/validated_color = list()
+			for(var/subcolor in given_color)
+				validated_color += sanitize_hexcolor(subcolor, include_crunch = TRUE)
+			return validated_color
+		//repeat the same color thrice otherwise
+		var/sanitized_color = sanitize_hexcolor(given_color, include_crunch = TRUE)
+		return list(sanitized_color, sanitized_color, sanitized_color)
+	//return a string otherwise
+	//take and sanitize only the first color if it's a matrix
+	if(islist(given_color))
+		return sanitize_hexcolor(given_color[1], include_crunch = TRUE)
+	//just sanitize normally otherwise
+	return sanitize_hexcolor(given_color, include_crunch = TRUE)
 
 ///Sprite accessories are singletons, stored list("Big Snout" = instance of /datum/sprite_accessory/snout/big), so here we get that singleton
 /datum/bodypart_overlay/mutant/proc/fetch_sprite_datum(datum/sprite_accessory/accessory_path)

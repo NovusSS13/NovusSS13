@@ -14,7 +14,7 @@
 	if(preferences.read_preference(/datum/preference/choiced/gender) != FEMALE)
 		return SPRITE_ACCESSORY_NONE
 
-	var/datum/sprite_accessory/penis/boring_human_breasts = /datum/sprite_accessory/breasts/pair
+	var/datum/sprite_accessory/genital/breasts/boring_human_breasts = /datum/sprite_accessory/genital/breasts/pair
 	return initial(boring_human_breasts.name)
 
 
@@ -66,3 +66,15 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = breasts?.bodypart_overlay
 	overlay.uses_skintone = value
+
+/datum/preference/tri_color/breasts
+	savefile_key = "feature_breasts_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
+
+/datum/preference/tri_color/breasts/is_accessible(datum/preferences/preferences)
+	return ..() && (preferences.read_preference(/datum/preference/choiced/breasts) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/breasts_uses_skintone)
+
+/datum/preference/tri_color/breasts/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["breasts_color"] = value

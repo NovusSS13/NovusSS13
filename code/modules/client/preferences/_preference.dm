@@ -575,3 +575,27 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /datum/preference/text/compile_constant_data()
 	return list("maximum_length" = maximum_value_length)
+
+/// Like a normal color preference, but three colors.
+/datum/preference/tri_color
+	abstract_type = /datum/preference/tri_color
+
+/datum/preference/tri_color/create_default_value()
+	return list("#FFFFFF", "#FFFFFF", "#FFFFFF")
+
+/datum/preference/tri_color/is_valid(value)
+	var/list/value_list = value
+	if(!islist(value_list))
+		return FALSE
+	if(LAZYLEN(value) != 3)
+		return FALSE
+	if(!findtext(sanitize_hexcolor(value[1], 6, TRUE), GLOB.is_color) || !findtext(sanitize_hexcolor(value[2], 6, TRUE), GLOB.is_color) || !findtext(sanitize_hexcolor(value[3], 6, TRUE), GLOB.is_color))
+		return FALSE
+	return TRUE
+
+/datum/preference/tri_color/deserialize(input, datum/preferences/preferences)
+	if(!islist(input))
+		return list("#FFFFFF", "#FFFFFF", "#FFFFFF")
+	var/list/input_colors = input
+	return list(sanitize_hexcolor(input_colors[1], 6, TRUE), sanitize_hexcolor(input_colors[2], 6, TRUE), sanitize_hexcolor(input_colors[3], 6, TRUE))
+

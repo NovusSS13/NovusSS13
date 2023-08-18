@@ -1,4 +1,4 @@
-import { FeatureColorInput, Feature, FeatureChoiced, FeatureDropdownInput, FeatureValueProps, FeatureChoicedServerData } from './base';
+import { FeatureTriColorInput, FeatureColorInput, Feature, FeatureChoiced, FeatureDropdownInput, FeatureValueProps, FeatureChoicedServerData } from './base';
 
 export const eye_color: Feature<string> = {
   name: 'Eye color',
@@ -79,6 +79,11 @@ export const feature_lizard_spines: FeatureChoiced = {
   },
 };
 
+export const feature_lizard_spines_color: FeatureChoiced = {
+  name: 'Spines Color',
+  component: FeatureTriColorInput,
+};
+
 export const feature_lizard_tail: FeatureChoiced = {
   name: 'Tail',
   component: (
@@ -88,9 +93,14 @@ export const feature_lizard_tail: FeatureChoiced = {
   },
 };
 
+export const feature_lizard_tail_color: FeatureChoiced = {
+  name: 'Tail Color',
+  component: FeatureTriColorInput,
+};
+
 export const feature_mcolor: Feature<string> = {
   name: 'Mutant color',
-  component: FeatureColorInput,
+  component: FeatureTriColorInput,
 };
 
 export const underwear_color: Feature<string> = {

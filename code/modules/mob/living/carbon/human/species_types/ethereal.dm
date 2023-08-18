@@ -58,7 +58,7 @@
 	if(!ishuman(new_ethereal))
 		return
 	var/mob/living/carbon/human/ethereal = new_ethereal
-	default_color = ethereal.dna.features["ethcolor"]
+	default_color = tricolor_to_hex(ethereal.dna.features["ethcolor"])
 	r1 = GETREDPART(default_color)
 	g1 = GETGREENPART(default_color)
 	b1 = GETBLUEPART(default_color)
@@ -107,7 +107,7 @@
 	if(!ethereal_light)
 		return
 	if(default_color != ethereal.dna.features["ethcolor"])
-		var/new_color = ethereal.dna.features["ethcolor"]
+		var/new_color = tricolor_to_hex(ethereal.dna.features["ethcolor"])
 		r1 = GETREDPART(new_color)
 		g1 = GETGREENPART(new_color)
 		b1 = GETBLUEPART(new_color)
@@ -270,5 +270,5 @@
 
 /datum/species/ethereal/lustrous/on_species_gain(mob/living/carbon/new_lustrous, datum/species/old_species, pref_load)
 	..()
-	default_color = new_lustrous.dna.features["ethcolor"]
+	default_color = tricolor_to_hex(new_lustrous.dna.features["ethcolor"])
 	new_lustrous.dna.features["ethcolor"] = GLOB.color_list_lustrous[pick(GLOB.color_list_lustrous)] //Picks one of 5 lustrous-specific colors.

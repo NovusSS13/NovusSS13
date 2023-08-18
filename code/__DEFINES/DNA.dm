@@ -28,6 +28,7 @@
 #define DNA_BLOCK_SIZE 3
 
 #define DNA_BLOCK_SIZE_COLOR DEFAULT_HEX_COLOR_LEN
+#define DNA_BLOCK_SIZE_TRICOLOR DEFAULT_HEX_COLOR_LEN * 3
 
 #define DNA_GENDER_BLOCK 1
 #define DNA_SKIN_TONE_BLOCK 2
@@ -45,89 +46,37 @@
 #define DNA_ETHEREAL_COLOR_BLOCK 2
 #define DNA_LIZARD_MARKINGS_BLOCK 3
 #define DNA_TAIL_BLOCK 4
-#define DNA_SNOUT_BLOCK 5
-#define DNA_HORNS_BLOCK 6
-#define DNA_FRILLS_BLOCK 7
-#define DNA_SPINES_BLOCK 8
-#define DNA_EARS_BLOCK 9
-#define DNA_MOTH_WINGS_BLOCK 10
-#define DNA_MOTH_ANTENNAE_BLOCK 11
-#define DNA_MOTH_MARKINGS_BLOCK 12
-#define DNA_MUSHROOM_CAPS_BLOCK 13
-#define DNA_POD_HAIR_BLOCK 14
+#define DNA_TAIL_COLOR_BLOCK 5
+#define DNA_SNOUT_BLOCK 6
+#define DNA_HORNS_BLOCK 7
+#define DNA_FRILLS_BLOCK 8
+#define DNA_SPINES_BLOCK 9
+#define DNA_SPINES_COLOR_BLOCK 10
+#define DNA_EARS_BLOCK 11
+#define DNA_MOTH_WINGS_BLOCK 12
+#define DNA_MOTH_ANTENNAE_BLOCK 13
+#define DNA_MOTH_MARKINGS_BLOCK 14
+#define DNA_MUSHROOM_CAPS_BLOCK 15
+#define DNA_POD_HAIR_BLOCK 16
 
 //dumb genital crap ugh
-#define DNA_PENIS_BLOCK 15
-#define DNA_PENIS_SIZE_BLOCK 16
-#define DNA_TESTICLES_BLOCK 17
-#define DNA_VAGINA_BLOCK 18
-#define DNA_BREASTS_BLOCK 19
-#define DNA_BREASTS_SIZE_BLOCK 20
+#define DNA_PENIS_BLOCK 17
+#define DNA_PENIS_COLOR_BLOCK 18
+#define DNA_PENIS_SIZE_BLOCK 19
+#define DNA_TESTICLES_BLOCK 20
+#define DNA_TESTICLES_COLOR_BLOCK 21
+#define DNA_VAGINA_BLOCK 22
+#define DNA_VAGINA_COLOR_BLOCK 23
+#define DNA_BREASTS_BLOCK 24
+#define DNA_BREASTS_COLOR_BLOCK 25
+#define DNA_BREASTS_SIZE_BLOCK 26
 
 /// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 20
+#define DNA_FEATURE_BLOCKS 26
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
 #define DNA_UNIQUE_ENZYMES_LEN 32
-
-//organ slots
-#define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
-#define ORGAN_SLOT_APPENDIX "appendix"
-#define ORGAN_SLOT_BRAIN "brain"
-#define ORGAN_SLOT_BRAIN_ANTIDROP "brain_antidrop"
-#define ORGAN_SLOT_BRAIN_ANTISTUN "brain_antistun"
-#define ORGAN_SLOT_BREATHING_TUBE "breathing_tube"
-#define ORGAN_SLOT_EARS "ears"
-#define ORGAN_SLOT_EYES "eyes"
-#define ORGAN_SLOT_HEART "heart"
-#define ORGAN_SLOT_HEART_AID "heartdrive"
-#define ORGAN_SLOT_HUD "eye_hud"
-#define ORGAN_SLOT_LIVER "liver"
-#define ORGAN_SLOT_LUNGS "lungs"
-#define ORGAN_SLOT_PARASITE_EGG "parasite_egg"
-#define ORGAN_SLOT_MONSTER_CORE "monstercore"
-#define ORGAN_SLOT_RIGHT_ARM_AUG "r_arm_device"
-#define ORGAN_SLOT_LEFT_ARM_AUG "l_arm_device" //This one ignores alphabetical order cause the arms should be together
-#define ORGAN_SLOT_STOMACH "stomach"
-#define ORGAN_SLOT_STOMACH_AID "stomach_aid"
-#define ORGAN_SLOT_THRUSTERS "thrusters"
-#define ORGAN_SLOT_TONGUE "tongue"
-#define ORGAN_SLOT_VOICE "vocal_cords"
-#define ORGAN_SLOT_ZOMBIE "zombie_infection"
-
-// organ slot external
-#define ORGAN_SLOT_EXTERNAL_TAIL "tail"
-#define ORGAN_SLOT_EXTERNAL_SPINES "spines"
-#define ORGAN_SLOT_EXTERNAL_SNOUT "snout"
-#define ORGAN_SLOT_EXTERNAL_FRILLS "frills"
-#define ORGAN_SLOT_EXTERNAL_HORNS "horns"
-#define ORGAN_SLOT_EXTERNAL_WINGS "wings"
-#define ORGAN_SLOT_EXTERNAL_ANTENNAE "antennae"
-#define ORGAN_SLOT_EXTERNAL_BODYMARKINGS "bodymarkings"
-#define ORGAN_SLOT_EXTERNAL_MUSHROOM_CAP "mushroom_cap"
-#define ORGAN_SLOT_EXTERNAL_POD_HAIR "pod_hair"
-
-// genitalia
-#define ORGAN_SLOT_PENIS "penis"
-#define ORGAN_SLOT_TESTICLES "testicles" //no bob im not adding 2 slots for each testicle
-#define ORGAN_SLOT_BREASTS "breasts"
-#define ORGAN_SLOT_VAGINA "vagina"
-#define ORGAN_SLOT_WOMB "womb"
-
-// xenomorph organ slots
-#define ORGAN_SLOT_XENO_ACIDGLAND "acid_gland"
-#define ORGAN_SLOT_XENO_EGGSAC "eggsac"
-#define ORGAN_SLOT_XENO_HIVENODE "hive_node"
-#define ORGAN_SLOT_XENO_NEUROTOXINGLAND "neurotoxin_gland"
-#define ORGAN_SLOT_XENO_PLASMAVESSEL "plasma_vessel"
-#define ORGAN_SLOT_XENO_RESINSPINNER "resin_spinner"
-
-//organ defines
-#define STANDARD_ORGAN_THRESHOLD 100
-#define STANDARD_ORGAN_HEALING (50 / 100000)
-/// designed to fail organs when left to decay for ~15 minutes
-#define STANDARD_ORGAN_DECAY (111 / 100000)
 
 //used for the can_chromosome var on mutations
 #define CHROMOSOME_NEVER 0
@@ -138,53 +87,6 @@
 #define G_MALE 1
 #define G_FEMALE 2
 #define G_PLURAL 3
-
-/// Defines how a mob's organs_slot is ordered
-/// Exists so Life()'s organ process order is consistent
-GLOBAL_LIST_INIT(organ_process_order, list(
-	ORGAN_SLOT_BRAIN,
-	ORGAN_SLOT_APPENDIX,
-	ORGAN_SLOT_RIGHT_ARM_AUG,
-	ORGAN_SLOT_LEFT_ARM_AUG,
-	ORGAN_SLOT_STOMACH,
-	ORGAN_SLOT_STOMACH_AID,
-	ORGAN_SLOT_BREATHING_TUBE,
-	ORGAN_SLOT_EARS,
-	ORGAN_SLOT_EYES,
-	ORGAN_SLOT_LUNGS,
-	ORGAN_SLOT_HEART,
-	ORGAN_SLOT_ZOMBIE,
-	ORGAN_SLOT_THRUSTERS,
-	ORGAN_SLOT_HUD,
-	ORGAN_SLOT_LIVER,
-	ORGAN_SLOT_TONGUE,
-	ORGAN_SLOT_VOICE,
-	ORGAN_SLOT_ADAMANTINE_RESONATOR,
-	ORGAN_SLOT_HEART_AID,
-	ORGAN_SLOT_BRAIN_ANTIDROP,
-	ORGAN_SLOT_BRAIN_ANTISTUN,
-	ORGAN_SLOT_PARASITE_EGG,
-	ORGAN_SLOT_MONSTER_CORE,
-	ORGAN_SLOT_XENO_PLASMAVESSEL,
-	ORGAN_SLOT_XENO_HIVENODE,
-	ORGAN_SLOT_XENO_RESINSPINNER,
-	ORGAN_SLOT_XENO_ACIDGLAND,
-	ORGAN_SLOT_XENO_NEUROTOXINGLAND,
-	ORGAN_SLOT_XENO_EGGSAC,
-	ORGAN_SLOT_EXTERNAL_TAIL,
-	ORGAN_SLOT_EXTERNAL_SPINES,
-	ORGAN_SLOT_EXTERNAL_SNOUT,
-	ORGAN_SLOT_EXTERNAL_FRILLS,
-	ORGAN_SLOT_EXTERNAL_HORNS,
-	ORGAN_SLOT_EXTERNAL_WINGS,
-	ORGAN_SLOT_EXTERNAL_ANTENNAE,
-	ORGAN_SLOT_EXTERNAL_BODYMARKINGS,
-	ORGAN_SLOT_EXTERNAL_MUSHROOM_CAP,
-	ORGAN_SLOT_EXTERNAL_POD_HAIR,
-))
-
-//Defines for Golem Species IDs
-#define SPECIES_GOLEM "golem"
 
 // Defines for used in creating "perks" for the species preference pages.
 /// A key that designates UI icon displayed on the perk.
