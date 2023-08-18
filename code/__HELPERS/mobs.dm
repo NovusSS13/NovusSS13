@@ -64,7 +64,7 @@
 	if(!length(GLOB.tails_list_human))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human, add_blank = TRUE)
 	if(!length(GLOB.tails_list_monkey))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey, add_blank = TRUE)
 	if(!length(GLOB.tails_list_lizard))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
 	if(!length(GLOB.snouts_list))
@@ -94,15 +94,14 @@
 	if(!length(GLOB.pod_hair_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 	if(!length(GLOB.penis_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/penis, GLOB.penis_list, add_blank = TRUE)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/penis, GLOB.penis_list, add_blank = TRUE)
 	if(!length(GLOB.testicles_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/testicles, GLOB.testicles_list, add_blank = TRUE)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/testicles, GLOB.testicles_list, add_blank = TRUE)
 	if(!length(GLOB.breasts_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/breasts, GLOB.breasts_list, add_blank = TRUE)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/breasts, GLOB.breasts_list, add_blank = TRUE)
 	if(!length(GLOB.vagina_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/vagina, GLOB.vagina_list, add_blank = TRUE)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/vagina, GLOB.vagina_list, add_blank = TRUE)
 
-	//For now we will always return none for tail_human and ears. | "For now" he says.
 	//God this is fucking
 	return(list(
 		"mcolor" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",

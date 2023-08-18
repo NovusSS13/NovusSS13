@@ -46,12 +46,14 @@
 	return L
 
 /datum/sprite_accessory
+	/// The preview name of the accessory.
+	var/name
 	/// The icon file the accessory is located in.
 	var/icon
 	/// The icon_state of the accessory.
 	var/icon_state
-	/// The preview name of the accessory.
-	var/name
+	/// Dumb shit, a suffix for the feature key that should be appended when building the icon
+	var/feature_suffix
 	/// Determines if the accessory will be skipped or included in random hair generations.
 	var/gender = NEUTER
 	/// Something that can be worn by either gender, but looks different on each.
@@ -1748,6 +1750,7 @@
 
 /datum/sprite_accessory/tails/lizard
 	icon = 'icons/mob/species/lizard/lizard_tails.dmi'
+	feature_suffix = "lizard"
 
 /datum/sprite_accessory/tails/lizard/smooth
 	name = "Smooth"
@@ -1765,11 +1768,17 @@
 	name = "Spikes"
 	icon_state = "spikes"
 
+/datum/sprite_accessory/tails/human
+	feature_suffix = "human"
+
 /datum/sprite_accessory/tails/human/cat
 	name = "Cat"
 	icon = 'icons/mob/species/human/cat_features.dmi'
 	icon_state = "default"
 	color_src = HAIR_COLOR
+
+/datum/sprite_accessory/tails/monkey
+	feature_suffix = "monkey"
 
 /datum/sprite_accessory/tails/monkey/monkey
 	name = "Monkey"

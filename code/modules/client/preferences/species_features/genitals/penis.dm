@@ -14,9 +14,8 @@
 	if(preferences.read_preference(/datum/preference/choiced/gender) != MALE)
 		return SPRITE_ACCESSORY_NONE
 
-	var/datum/sprite_accessory/penis/boring_human_penis = /datum/sprite_accessory/penis/human
+	var/datum/sprite_accessory/genital/penis/boring_human_penis = /datum/sprite_accessory/genital/penis/human
 	return initial(boring_human_penis.name)
-
 
 /datum/preference/choiced/penis_size
 	savefile_key = "feature_penis_size"
@@ -66,3 +65,15 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = penis.bodypart_overlay
 	overlay.uses_skintone = value
+
+/datum/preference/tri_color/penis
+	savefile_key = "feature_penis_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/genital/penis
+
+/datum/preference/tri_color/penis/is_accessible(datum/preferences/preferences)
+	return ..() && !preferences.read_preference(/datum/preference/toggle/penis_uses_skintone)
+
+/datum/preference/tri_color/penis/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["penis_color"] = value

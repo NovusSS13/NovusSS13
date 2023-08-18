@@ -14,7 +14,7 @@
 	if(preferences.read_preference(/datum/preference/choiced/gender) != FEMALE)
 		return SPRITE_ACCESSORY_NONE
 
-	var/datum/sprite_accessory/penis/boring_human_vagina = /datum/sprite_accessory/vagina/human
+	var/datum/sprite_accessory/genital/vagina/boring_human_vagina = /datum/sprite_accessory/genital/vagina/human
 	return initial(boring_human_vagina.name)
 
 
@@ -40,3 +40,15 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = vagina.bodypart_overlay
 	overlay.uses_skintone = value
+
+/datum/preference/tri_color/vagina
+	savefile_key = "feature_vagina_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
+
+/datum/preference/tri_color/vagina/is_accessible(datum/preferences/preferences)
+	return ..() && !preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone)
+
+/datum/preference/tri_color/vagina/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["vagina_color"] = value

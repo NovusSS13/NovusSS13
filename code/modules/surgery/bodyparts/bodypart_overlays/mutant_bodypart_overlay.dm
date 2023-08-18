@@ -56,6 +56,8 @@
 	var/list/icon_state_builder = list()
 	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
 	icon_state_builder += feature_key
+	if(sprite_datum.feature_suffix)
+		icon_state_builder += sprite_datum.feature_suffix
 	var/base_icon_state = get_base_icon_state() //MONKEYS. GOD DAMN MONKEYS.
 	if(base_icon_state)
 		icon_state_builder += base_icon_state
