@@ -63,6 +63,8 @@
 	 * This is the source that this accessory will get its color from. Default is MUTCOLOR, but can also be HAIR, FACEHAIR, EYECOLOR and 0 if none.
 	 */
 	var/color_src = MUTANT_COLOR
+	/// Whether or not we should treat our colors as an RGB matrix
+	var/use_matrixed_colors = FALSE
 	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
 	var/hasinner = FALSE
 	/// Is this part locked from roundstart selection? Used for parts that apply effects.

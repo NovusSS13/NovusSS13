@@ -27,7 +27,7 @@
 //DNA - Because fuck you and your magic numbers being all over the codebase.
 #define DNA_BLOCK_SIZE 3
 
-#define DNA_BLOCK_SIZE_COLOR DEFAULT_HEX_COLOR_LEN
+#define DNA_BLOCK_SIZE_COLOR DEFAULT_HEX_COLOR_LEN * 3 //needs to hold tricolors sometimes
 
 #define DNA_GENDER_BLOCK 1
 #define DNA_SKIN_TONE_BLOCK 2
