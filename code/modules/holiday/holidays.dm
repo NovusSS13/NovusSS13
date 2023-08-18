@@ -92,8 +92,11 @@
 		if(PATTERN_RANDOM)
 			return "#[random_short_color()]"
 		if(PATTERN_RAINBOW)
-			var/datum/holiday/pride_week/rainbow_datum = new()
+			var/datum/holiday/stonewall_week/rainbow_datum = new()
 			return rainbow_datum.get_holiday_colors(thing_to_color, PATTERN_DEFAULT)
+		if(PATTERN_AMERICAN)
+			var/datum/holiday/usa/patriot_datum = new()
+			return patriot_datum.get_holiday_colors(thing_to_color, PATTERN_DEFAULT)
 	if(!length(GLOB.holidays))
 		return
 	for(var/holiday_key in GLOB.holidays)
@@ -103,18 +106,6 @@
 // The actual holidays
 
 // JANUARY
-
-//Fleet Day is celebrated on Jan 19th, the date on which moths were merged (#34498)
-/datum/holiday/fleet_day
-	name = "Fleet Day"
-	begin_month = JANUARY
-	begin_day = 19
-
-/datum/holiday/fleet_day/greet()
-	return "This day commemorates another year of successful survival aboard the Mothic Grand Nomad Fleet. Moths galaxywide are encouraged to eat, drink, and be merry."
-
-/datum/holiday/fleet_day/getStationPrefix()
-	return pick("Moth", "Fleet", "Nomadic")
 
 // FEBRUARY
 
@@ -261,6 +252,9 @@
 	name = "Four-Twenty"
 	begin_day = 20
 	begin_month = APRIL
+	holiday_colors = list(
+		COLOR_GREEN,
+	) //dude weed lmao
 
 /datum/holiday/fourtwenty/getStationPrefix()
 	return pick("Snoop","Blunt","Toke","Dank","Cheech","Chong")
@@ -297,18 +291,6 @@
 	drone_hat = /obj/item/clothing/head/utility/hardhat
 	mail_holiday = TRUE
 
-//Draconic Day is celebrated on May 3rd, the date on which the Draconic language was merged (#26780)
-/datum/holiday/draconic_day
-	name = "Draconic Language Day"
-	begin_month = MAY
-	begin_day = 3
-
-/datum/holiday/draconic_day/greet()
-	return "On this day, Lizardkind celebrates their language with literature and other cultural works."
-
-/datum/holiday/draconic_day/getStationPrefix()
-	return pick("Draconic", "Literature", "Reading")
-
 /datum/holiday/firefighter
 	name = "Firefighter's Day"
 	begin_day = 4
@@ -329,17 +311,17 @@
 
 // JUNE
 
-//The Festival of Atrakor's Might (Tizira's Moon) is celebrated on June 15th, the date on which the lizard visual revamp was merged (#9808)
-/datum/holiday/atrakor_festival
-	name = "Festival of Atrakor's Might"
+//Day of Marvin Heemeyer's wrath against Granby, Colorado
+/datum/holiday/killdozer_day
+	name = "Killdozer Day"
+	begin_day = 4
 	begin_month = JUNE
-	begin_day = 15
 
-/datum/holiday/atrakor_festival/greet()
-	return "On this day, the Lizards traditionally celebrate the Festival of Atrakor's Might, where they honour the moon god with lavishly adorned clothing, large portions of food, and a massive celebration into the night."
+/datum/holiday/killdozer_day/greet()
+	return "On June 4th, 2004 Marvin Heemeyer lowered the armored shell over top of himself, entombing himself inside the Killdozer to make his last stand."
 
-/datum/holiday/atrakor_festival/getStationPrefix()
-	return pick("Moon", "Night Sky", "Celebration")
+/datum/holiday/killdozer_day/getStationPrefix()
+	return pick("Retribution", "Rampage", "Tread", "Bulldozer", "Muffler Shop", "Granby")
 
 /// Garbage DAYYYYY
 /// Huh?.... NOOOO
@@ -348,7 +330,6 @@
 /datum/holiday/garbageday
 	name = GARBAGEDAY
 	begin_day = 17
-	end_day = 17
 	begin_month = JUNE
 
 /datum/holiday/summersolstice
@@ -356,19 +337,21 @@
 	begin_day = 21
 	begin_month = JUNE
 
-/datum/holiday/pride_week
-	name = PRIDE_WEEK
+//i'd really love to somehow make gay people spawn with baseball bats and such on stonewall riots week
+//but how the fuck do i code a gay detection system
+/datum/holiday/stonewall_week
+	name = STONEWALL_WEEK
+	begin_day = 28
 	begin_month = JUNE
-	// Stonewall was June 28th, this captures its week.
-	begin_day = 23
-	end_day = 29
+	end_day = 3
+	end_month = JULY
 	holiday_colors = list(
-	COLOR_PRIDE_PURPLE,
-	COLOR_PRIDE_BLUE,
-	COLOR_PRIDE_GREEN,
-	COLOR_PRIDE_YELLOW,
-	COLOR_PRIDE_ORANGE,
-	COLOR_PRIDE_RED,
+		COLOR_PRIDE_PURPLE,
+		COLOR_PRIDE_BLUE,
+		COLOR_PRIDE_GREEN,
+		COLOR_PRIDE_YELLOW,
+		COLOR_PRIDE_ORANGE,
+		COLOR_PRIDE_RED,
 	)
 
 // JULY
@@ -394,9 +377,18 @@
 	begin_day = 4
 	begin_month = JULY
 	mail_holiday = TRUE
+	holiday_colors = list(
+		"#0A3161",
+		"#B31942",
+		"#FFFFFF",
+		"#B31942",
+		"#FFFFFF",
+		"#B31942",
+		"#FFFFFF",
+	) //oh say can you see...
 
 /datum/holiday/usa/getStationPrefix()
-	return pick("Independent","American","Burger","Bald Eagle","Star-Spangled", "Fireworks")
+	return pick("Independent","American","Burger","Bald Eagle","Star-Spangled","Fireworks","Gun-Toting","Freedom")
 
 /datum/holiday/writer
 	name = "Writer's Day"
@@ -464,18 +456,6 @@
 	return pick("Kyiv", "Ukraine")
 
 // SEPTEMBER
-
-//Tiziran Unification Day is celebrated on Sept 1st, the day on which lizards were made a roundstart race
-/datum/holiday/tiziran_unification
-	name = "Tiziran Unification Day"
-	begin_month = SEPTEMBER
-	begin_day = 1
-
-/datum/holiday/tiziran_unification/greet()
-	return "On this day over 400 years ago, Lizardkind first united under a single banner, ready to face the stars as one unified people."
-
-/datum/holiday/tiziran_unification/getStationPrefix()
-	return pick("Tizira", "Lizard", "Imperial")
 
 /datum/holiday/ianbirthday
 	name = "Ian's Birthday" //github.com/tgstation/tgstation/commit/de7e4f0de0d568cd6e1f0d7bcc3fd34700598acb

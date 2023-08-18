@@ -105,6 +105,8 @@
 #define PATTERN_RANDOM "random"
 /// Generate rainbow color turf decals
 #define PATTERN_RAINBOW "rainbow"
+/// Generate PATRIOTIC color turf decals
+#define PATTERN_AMERICAN "american"
 
 /**
  * Finds the midpoint of two given turfs.
