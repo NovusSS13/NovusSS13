@@ -3,8 +3,8 @@
 	greyscale_colors = null
 
 /obj/item/clothing/gloves/color/yellow
-	desc = "These gloves provide protection against electric shock. The thickness of the rubber makes your fingers seem bigger."
 	name = "insulated gloves"
+	desc = "These gloves provide protection against electric shock."
 	icon_state = "yellow"
 	inhand_icon_state = "ygloves"
 	siemens_coefficient = 0
@@ -13,7 +13,6 @@
 	custom_price = PAYCHECK_CREW * 10
 	custom_premium_price = PAYCHECK_COMMAND * 6
 	cut_type = /obj/item/clothing/gloves/cut
-	clothing_traits = list(TRAIT_CHUNKYFINGERS)
 
 /datum/armor/color_yellow
 	bio = 50
@@ -71,7 +70,7 @@
 		location.visible_message(span_warning("[src] crumble[p_s()] away into nothing.")) // just like my dreams after working with .dm
 		qdel(src)
 
-/obj/item/clothing/gloves/color/fyellow                             //Cheap Chinese Crap
+/obj/item/clothing/gloves/color/fyellow //Cheap Chinese Crap
 	desc = "These gloves are cheap knockoffs of the coveted ones - no way this can end badly."
 	name = "budget insulated gloves"
 	icon_state = "yellow"

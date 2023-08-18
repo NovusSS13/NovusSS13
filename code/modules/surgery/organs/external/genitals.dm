@@ -1,7 +1,7 @@
 //very sex
 /obj/item/organ/genital
 	name = "genital"
-	desc = "A reproductive organ that is completely invalid and you should not be seeing."
+	desc = "A reproductive organ which is completely invalid and which you should not be seeing. Make a bug report or bother the cooders."
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital
 
@@ -9,18 +9,27 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	use_mob_sprite_as_obj_sprite = TRUE
+/obj/item/organ/genital/update_icon_state()
+	. = ..()
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	color = overlay.draw_color
+	icon_state = "[overlay.sprite_datum.icon_state]_[overlay.genital_size][overlay.uses_skintone ? "_s" : ""]"
 
-/obj/item/organ/genital/proc/set_genital_size(value)
-	return //handled by subtypes
-
-/obj/item/organ/genital/Remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/genital/on_remove(mob/living/carbon/organ_owner, special)
+	. = ..()
 	var/datum/bodypart_overlay/mutant/genital/genital_overlay = bodypart_overlay
 	//reset overlay to default visibility and arousal when removed
 	if(istype(genital_overlay))
 		genital_overlay.arousal_state = 0
 		genital_overlay.genital_visibility = GENITAL_VISIBILITY_CLOTHING
-	return ..()
+	update_appearance()
+
+/obj/item/organ/genital/proc/set_genital_size(value)
+	return //handled by subtypes
+
+/obj/item/organ/genital/proc/get_genital_examine()
+	return "very buggy genital" //handled by subtypes
+
 
 /datum/bodypart_overlay/mutant/genital
 	color_source = ORGAN_COLOR_DNA
@@ -47,6 +56,7 @@
 /obj/item/organ/genital/penis
 	name = "penis"
 	desc = "A male reproductive organ."
+	icon = 'icons/obj/medical/organs/genitals/penis.dmi'
 
 	dna_block = DNA_PENIS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/penis
@@ -70,6 +80,14 @@
 
 	value = clamp(text2num(value), 1, 4)
 	overlay.genital_size = value
+
+/obj/item/organ/genital/penis/get_genital_examine()
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+
+	var/size = lowertext(GLOB.penis_size_names["[overlay.genital_size]"])
+	var/shape = "[overlay.arousal_state ? "erect" : "flaccid"] [lowertext(overlay.sprite_datum.name)]"
+	//the modulo is because GLOB.penis_size_names conveniently has sizes arranged in a way that lets us do this
+	return "[overlay.genital_size % 2 ? "an" : "a"] [size], [shape] penis"
 
 /datum/bodypart_overlay/mutant/genital/penis
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
@@ -97,6 +115,7 @@
 /obj/item/organ/genital/testicles
 	name = "testicles"
 	desc = "A male reproductive organ."
+	icon = 'icons/obj/medical/organs/genitals/testicles.dmi'
 
 	dna_block = DNA_TESTICLES_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/testicles
@@ -104,6 +123,12 @@
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_TESTICLES
+
+/obj/item/organ/genital/testicles/get_genital_examine()
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+
+	//until we have more testicles, this is enough
+	return "a pair of [lowertext(GLOB.penis_size_names["[overlay.genital_size]"])] testicles"
 
 /datum/bodypart_overlay/mutant/genital/testicles
 	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
@@ -130,6 +155,7 @@
 /obj/item/organ/genital/vagina
 	name = "vagina"
 	desc = "A female reproductive organ."
+	icon = 'icons/obj/medical/organs/genitals/vagina.dmi'
 
 	dna_block = DNA_VAGINA_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/vagina
@@ -137,6 +163,18 @@
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_VAGINA
+
+/obj/item/organ/genital/vagina/update_icon_state()
+	. = ..()
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	icon_state = "vagina[overlay.uses_skintone ? "_s" : ""]"
+
+/obj/item/organ/genital/vagina/get_genital_examine()
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	var/datum/sprite_accessory/vagina/accessory = overlay.sprite_datum
+
+	return "a [overlay.arousal_state ? "moist" : "dry"] [accessory.examine_name_override || "[lowertext(overlay.sprite_datum.name)] [name]"]"
+
 
 /datum/bodypart_overlay/mutant/genital/vagina
 	layers = EXTERNAL_FRONT
@@ -164,6 +202,7 @@
 /obj/item/organ/genital/breasts
 	name = "breasts"
 	desc = "A female secondary sexual characteristic."
+	icon = 'icons/obj/medical/organs/genitals/breasts.dmi'
 
 	dna_block = DNA_BREASTS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/breasts
@@ -172,6 +211,12 @@
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_BREASTS
 
+/obj/item/organ/genital/breasts/mutate_feature(features, mob/living/carbon/human/human)
+	. = ..()
+	var/size = deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SIZE_BLOCK), length(GLOB.breasts_size_names))
+	if(size)
+		set_genital_size(size)
+
 /obj/item/organ/genital/breasts/set_genital_size(value)
 	var/datum/sprite_accessory/breasts/sprite_accessory = bodypart_overlay.sprite_datum
 	value = clamp(text2num(value), 1, sprite_accessory.max_size)
@@ -179,11 +224,12 @@
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
 	overlay.genital_size = value
 
-/obj/item/organ/genital/breasts/mutate_feature(features, mob/living/carbon/human/human)
-	. = ..()
-	var/size = deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SIZE_BLOCK), length(GLOB.breasts_size_names))
-	if(size)
-		set_genital_size(size)
+/obj/item/organ/genital/breasts/get_genital_examine()
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	var/datum/sprite_accessory/breasts/accessory = overlay.sprite_datum
+
+	return "[accessory.examine_name] of [overlay.arousal_state ? "perked up " : ""] breasts"
+
 
 /obj/item/organ/genital/breasts/imprint_dna(mob/living/carbon/receiver, obj/item/bodypart/owner_limb)
 	. = ..()
