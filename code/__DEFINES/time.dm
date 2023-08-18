@@ -37,6 +37,7 @@
 //based Novus exclusive holidays
 #define STONEWALL_WEEK "Stonewall Riots Week"
 #define KILLDOZER_DAY "Killdozer Day"
+#define UNCLE_TED_DAY "Uncle Ted Day"
 
 /*
 

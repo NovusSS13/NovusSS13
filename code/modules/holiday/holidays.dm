@@ -312,16 +312,28 @@
 // JUNE
 
 //Day of Marvin Heemeyer's wrath against Granby, Colorado
-/datum/holiday/killdozer_day
-	name = "Killdozer Day"
+/datum/holiday/killdozer
+	name = KILLDOZER_DAY
 	begin_day = 4
 	begin_month = JUNE
 
-/datum/holiday/killdozer_day/greet()
-	return "On June 4th, 2004 Marvin Heemeyer lowered the armored shell over top of himself, entombing himself inside the Killdozer to make his last stand."
+/datum/holiday/killdozer/greet()
+	return "On June 4th, 2004 Marvin John Heemeyer lowered the armored shell over top of himself, entombing himself inside the Killdozer to make his last stand."
 
-/datum/holiday/killdozer_day/getStationPrefix()
+/datum/holiday/killdozer/getStationPrefix()
 	return pick("Retribution", "Rampage", "Tread", "Bulldozer", "Muffler Shop", "Granby")
+
+//RIP Ted, we will miss you
+/datum/holiday/uncle_ted
+	name = UNCLE_TED_DAY
+	begin_day = 10
+	begin_month = JUNE
+
+/datum/holiday/uncle_ted/greet()
+	return "On June 10th, 2023 Theodore John Kaczynski died in his prison cell at the Federal Medical Center in Butner, North Carolina."
+
+/datum/holiday/uncle_ted/getStationPrefix()
+	return pick("Industrial Society", "Anarcho-Primitivist", "Luddite", "Eco-Terrorist")
 
 /// Garbage DAYYYYY
 /// Huh?.... NOOOO
