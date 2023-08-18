@@ -62,8 +62,10 @@
 #define ORGAN_COLOR_DNA (1<<1)
 /// Uses /datum/bodypart_overlay/proc/override_color()'s return value
 #define ORGAN_COLOR_OVERRIDE (1<<2)
-/// Uses the parent's haircolor
+/// Uses the parent's hair color
 #define ORGAN_COLOR_HAIR (1<<3)
+/// Uses the parent's facial hair color
+#define ORGAN_COLOR_FACIAL_HAIR (1<<4)
 
 // Tail wagging
 /// Tail is capable of wagging

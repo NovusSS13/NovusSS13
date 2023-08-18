@@ -71,7 +71,7 @@
 /datum/bodypart_overlay/mutant/tail
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
 	feature_key = "tail"
-	feature_key_color = "tail_color" //not used unless it's a lizard tail
+	feature_color_key = "tail_color" //not used unless it's a lizard tail
 	/// Whether or not the tail is wagging
 	var/wagging = FALSE
 
