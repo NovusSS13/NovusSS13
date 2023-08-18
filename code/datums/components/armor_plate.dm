@@ -92,3 +92,11 @@
 		if(!LAZYLEN(mech.occupants))
 			overlay_string += "-open"
 		overlays += overlay_string
+
+/datum/component/armor_plate/proc/fully_upgrade()
+	var/atom/atom_parent = parent
+	while(amount < maxamount)
+		amount++
+		atom_parent.set_armor(atom_parent.get_armor().add_other_armor(armor_mod))
+		SEND_SIGNAL(atom_parent, COMSIG_ARMOR_PLATED, amount, maxamount)
+	atom_parent.update_appearance()

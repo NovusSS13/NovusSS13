@@ -87,6 +87,8 @@ GLOBAL_LIST_INIT(arcade_prize_pool, list(
 	. = ..()
 
 	Reset()
+	if(check_holidays(UNCLE_TED_DAY)) //rip uncle ted
+		emag_act()
 
 /obj/machinery/computer/arcade/proc/prizevend(mob/living/user, prizes = 1)
 	SEND_SIGNAL(src, COMSIG_ARCADE_PRIZEVEND, user, prizes)

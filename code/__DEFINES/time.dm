@@ -33,8 +33,12 @@
 #define FESTIVE_SEASON "Festive Season"
 #define GARBAGEDAY "Garbage Day"
 #define MONKEYDAY "Monkey Day"
-#define PRIDE_WEEK "Pride Week"
-#define MOTH_WEEK "Moth Week"
+
+//based Novus exclusive holidays
+#define STONEWALL_WEEK "Stonewall Riots Week"
+#define KILLDOZER_DAY "Killdozer Day"
+#define UNCLE_TED_DAY "Uncle Ted Day"
+
 /*
 
 Days of the week to make it easier to reference them.

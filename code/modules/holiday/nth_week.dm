@@ -66,21 +66,3 @@
 
 /datum/holiday/beer/getStationPrefix()
 	return pick("Stout","Porter","Lager","Ale","Malt","Bock","Doppelbock","Hefeweizen","Pilsner","IPA","Lite") //I'm sorry for the last one
-
-/datum/holiday/nth_week/moth
-	name = MOTH_WEEK
-	begin_week = 3
-	end_week = 4
-	begin_month = JULY
-	begin_weekday = SATURDAY
-	end_weekday = SUNDAY
-
-//National Moth Week falls on the last full week of July, including the saturday and sunday before. See http://nationalmothweek.org/ for precise tracking.
-/datum/holiday/nth_week/moth/shouldCelebrate(dd, mm, yyyy, ddd)
-	if(first_day_of_month(yyyy, mm) >= 5) //Friday or later start of the month means week 5 is a full week.
-		begin_week += 1
-		end_week += 1
-	return ..(dd, mm, yyyy, ddd)
-
-/datum/holiday/nth_week/moth/getStationPrefix()
-	return pick("Mothball","Lepidopteran","Lightbulb","Moth","Giant Atlas","Twin-spotted Sphynx","Madagascan Sunset","Luna","Death's Head","Emperor Gum","Polyphenus","Oleander Hawk","Io","Rosy Maple","Cecropia","Noctuidae","Giant Leopard","Dysphania Militaris","Garden Tiger")

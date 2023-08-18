@@ -56,6 +56,11 @@
 	pda_slot = ITEM_SLOT_LPOCKET
 	skillchips = list(/obj/item/skillchip/job/roboticist)
 
+/datum/outfit/job/roboticist/pre_equip(mob/living/carbon/human/H, visualsOnly)
+	. = ..()
+	if(check_holidays(KILLDOZER_DAY))
+		r_hand = /obj/item/toy/mecha/deathripley
+
 /datum/outfit/job/roboticist/mod
 	name = "Roboticist (MODsuit)"
 	suit_store = /obj/item/tank/internals/oxygen

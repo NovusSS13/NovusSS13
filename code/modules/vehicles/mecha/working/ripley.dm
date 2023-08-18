@@ -195,6 +195,26 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	if(!GLOB.cargo_ripley && mapload)
 		GLOB.cargo_ripley = src
 
+	if(check_holidays(KILLDOZER_DAY))
+		//NAHHH, today the cargo ripley gets an upgrade alright
+		name = "\proper KILLDOZER"
+		desc = "Sometimes reasonable men must do unreasonable things."
+		max_integrity = 300
+		repair_damage(max_integrity)
+		for(var/key in equip_by_category)
+			for(var/obj/item/mecha_parts/mecha_equipment/equipment as anything in equip_by_category[key])
+				equipment.detach()
+				qdel(equipment)
+		var/obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/kill/kill_clamp = new(src)
+		kill_clamp.attach(src, TRUE)
+		var/obj/item/mecha_parts/mecha_equipment/ejector/ejector = new(src)
+		ejector.attach(src)
+		var/datum/component/armor_plate/armor_plate = GetComponent(/datum/component/armor_plate)
+		if(armor_plate)
+			armor_plate.fully_upgrade()
+		var/list/greyscale = list(0.3,0.3,0.3, 0.59,0.59,0.59, 0.11,0.11,0.11, 0,0,0)
+		add_atom_colour(greyscale, FIXED_COLOUR_PRIORITY)
+
 /obj/vehicle/sealed/mecha/ripley/cargo/Destroy()
 	if(GLOB.cargo_ripley == src)
 		GLOB.cargo_ripley = null
