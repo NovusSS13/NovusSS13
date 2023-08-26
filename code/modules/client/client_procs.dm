@@ -622,7 +622,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		"server_ip" = "INET_ATON(?)",
 		"ip" = "INET_ATON(?)",
 		"a_ip" = "INET_ATON(?)",
-		"expiration_time" = "IF(? IS NULL, NULL, NOW() + INTERVAL ? [interval])"
+		"expiration_time" = "-1"
 	)
 	var/list/sql_ban = list(list(
 		// Server info
@@ -648,20 +648,19 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	add_system_note("Automated-Age-Gate", "Failed automatic age gate process.")
 	if(!SSdbcore.MassInsert(format_table_name("ban"), sql_ban, warn = TRUE, special_columns = special_columns))
 		// this is the part where you should panic.
-		qdel(query_add_ban)
 		message_admins("WARNING! Failed to ban [ckey] for failing the automatic age gate.")
 		send2tgs_adminless_only("WARNING! Failed to ban [ckey] for failing the automatic age gate.")
-		qdel(client)
+		qdel(src)
 		return FALSE
 
-	create_message("note", player_ckey, "SYSTEM (Automated-Age-Gate)", "SYSTEM BAN - Inputted date during join verification was under 18 years of age. Contact administration on discord for verification.", null, null, 0, 0, null, 0, "high")
+	create_message("note", ckey, "SYSTEM (Automated-Age-Gate)", "SYSTEM BAN - Inputted date during join verification was under 18 years of age. Contact administration on discord for verification.", null, null, 0, 0, null, 0, "high")
 
 	// announce this
 	message_admins("[ckey] has been banned for failing the automatic age gate.")
 	send2tgs_adminless_only("[ckey] has been banned for failing the automatic age gate.")
 
 	// removing the client disconnects them
-	qdel(client)
+	qdel(src)
 	return FALSE
 
 
