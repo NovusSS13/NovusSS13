@@ -368,7 +368,7 @@ CREATE TABLE `player` (
   `accountjoindate` DATE DEFAULT NULL,
   `flags` smallint(5) unsigned DEFAULT '0' NOT NULL,
 	`month` varchar(32) DEFAULT NULL,
-	`year` int(11) unsinged DEFAULT NULL,
+	`year` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`ckey`),
   KEY `idx_player_cid_ckey` (`computerid`,`ckey`),
   KEY `idx_player_ip_ckey` (`ip`,`ckey`)
