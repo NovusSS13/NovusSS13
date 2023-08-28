@@ -5,6 +5,7 @@
 	examine_limb_id = SPECIES_HUMAN
 	mutanttongue = /obj/item/organ/tongue/cat
 	mutantears = /obj/item/organ/ears/cat // Yes we need to set it here and on cosmetic_organs. Ass.
+	mutantliver = /obj/item/organ/liver/felinid
 	cosmetic_organs = list(
 		/obj/item/organ/ears/cat = "Cat",
 		/obj/item/organ/tail/cat = "Cat",
