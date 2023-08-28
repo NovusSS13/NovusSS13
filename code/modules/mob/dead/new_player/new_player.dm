@@ -49,7 +49,7 @@
 	if (!client)
 		return
 
-	if (client.interviewee)
+	if (client.interviewee || client.age_gated)
 		return
 
 	if (href_list["viewpoll"])

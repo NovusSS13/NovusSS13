@@ -6,7 +6,7 @@
 	if(!owner || !owner.client)
 		return
 
-	if (owner.client.interviewee)
+	if (owner.client.interviewee || owner.client.age_gated)
 		return
 
 	var/list/buttons = subtypesof(/atom/movable/screen/lobby)
@@ -46,7 +46,7 @@
 	if(owner != REF(usr))
 		return
 
-	if(!usr.client || usr.client.interviewee)
+	if(!usr.client || usr.client.interviewee || usr.client.age_gated)
 		return
 
 	. = ..()
@@ -61,7 +61,7 @@
 	if(owner != REF(usr))
 		return
 
-	if(!usr.client || usr.client.interviewee)
+	if(!usr.client || usr.client.interviewee || usr.client.age_gated)
 		return
 
 	. = ..()
@@ -72,7 +72,7 @@
 	if(owner != REF(usr))
 		return
 
-	if(!usr.client || usr.client.interviewee)
+	if(!usr.client || usr.client.interviewee || usr.client.age_gated)
 		return
 
 	. = ..()

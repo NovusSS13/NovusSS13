@@ -14,12 +14,17 @@
 		mind.active = TRUE
 		mind.set_current(src)
 
-	// Check if user should be added to interview queue
-	if (!client.holder && CONFIG_GET(flag/panic_bunker) && CONFIG_GET(flag/panic_bunker_interview) && !(client.ckey in GLOB.interviews.approved_ckeys))
-		var/required_living_minutes = CONFIG_GET(number/panic_bunker_living)
-		var/living_minutes = client.get_exp_living(TRUE)
-		if (required_living_minutes >= living_minutes)
-			client.interviewee = TRUE
+
+	if(!client.holder)
+		// Check if user should be added to interview queue
+		if(CONFIG_GET(flag/panic_bunker) && CONFIG_GET(flag/panic_bunker_interview) && !(client.ckey in GLOB.interviews.approved_ckeys))
+			var/required_living_minutes = CONFIG_GET(number/panic_bunker_living)
+			var/living_minutes = client.get_exp_living(TRUE)
+			if(required_living_minutes >= living_minutes)
+				client.interviewee = TRUE
+		// Perform automated age verification if necessary
+		if(!client.passed_age_check())
+			client.perform_age_check()
 
 	. = ..()
 	if(!. || !client)
@@ -50,6 +55,9 @@
 	// and set the player's client up for interview.
 	if(client.interviewee)
 		register_for_interview()
+		return
+	// Below message does not really make sense if still being age gated
+	if(client.age_gated)
 		return
 
 	if(SSticker.current_state < GAME_STATE_SETTING_UP)

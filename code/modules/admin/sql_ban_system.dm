@@ -967,7 +967,7 @@
 		edit_log.open()
 	qdel(query_get_ban_edits)
 
-/datum/admins/proc/ban_target_string(player_key, player_ip, player_cid)
+/proc/ban_target_string(player_key, player_ip, player_cid)
 	. = list()
 	if(player_key)
 		. += player_key
@@ -1034,7 +1034,7 @@
  * * kick_banned_players - TRUE if we want to kick affected players, FALSE otherwise. This should generally only be TRUE for server bans.
  * * applies_to_admins - TRUE if this ban applies to admins and we may need to kick them, FALSE otherwise.
  */
-/datum/admins/proc/notify_all_banned_players(banned_player_ckey, banned_player_ip, banned_player_cid, banned_player_message, banned_other_message, kick_banned_players, applies_to_admins)
+/proc/notify_all_banned_players(banned_player_ckey, banned_player_ip, banned_player_cid, banned_player_message, banned_other_message, kick_banned_players, applies_to_admins)
 	var/client/player_client = GLOB.directory[banned_player_ckey]
 
 	var/appeal_url = "No ban appeal url set!"
@@ -1057,6 +1057,101 @@
 				is_admin = TRUE
 			if(kick_banned_players && (!is_admin || (is_admin && applies_to_admins)))
 				qdel(other_player_client)
+
+/**
+ * Basically, a version of create_ban exclusively for code use, for any automated bans not performed by admins.
+ */
+/proc/create_system_ban(player_key, ip_check, player_ip, cid_check, player_cid, use_last_connection, applies_to_admins, duration, interval, severity, reason, list/roles_to_ban)
+	//nuh uh
+	if(IsAdminAdvancedProcCall())
+		return FALSE
+	if(!SSdbcore.Connect())
+		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
+		return FALSE
+	var/player_ckey = ckey(player_key)
+	if(player_ckey)
+		var/datum/db_query/query_create_ban_get_player = SSdbcore.NewQuery({"
+			SELECT byond_key, INET_NTOA(ip), computerid FROM [format_table_name("player")] WHERE ckey = :player_ckey
+		"}, list("player_ckey" = player_ckey))
+		if(!query_create_ban_get_player.warn_execute())
+			qdel(query_create_ban_get_player)
+			return
+		if(query_create_ban_get_player.NextRow())
+			player_key = query_create_ban_get_player.item[1]
+			if(use_last_connection)
+				if(ip_check)
+					player_ip = query_create_ban_get_player.item[2]
+				if(cid_check)
+					player_cid = query_create_ban_get_player.item[3]
+		qdel(query_create_ban_get_player)
+	var/admin_ckey = "SYSTEM"
+	var/admin_ip = "127.0.0.1"
+	var/admin_cid = "0"
+	duration = text2num(duration)
+	if (!(interval in list("SECOND", "MINUTE", "HOUR", "DAY", "WEEK", "MONTH", "YEAR")))
+		interval = "MINUTE"
+	var/time_message = "[duration] [lowertext(interval)]" //no DisplayTimeText because our duration is of variable interval type
+	if(duration > 1) //pluralize the interval if necessary
+		time_message += "s"
+	var/is_server_ban = (roles_to_ban[1] == "Server")
+	var/note_reason = "Banned from [is_server_ban ? "the server" : " Roles: [roles_to_ban.Join(", ")]"] [isnull(duration) ? "permanently" : "for [time_message]"] - [reason]"
+	var/list/clients_online = GLOB.clients.Copy()
+	var/list/admins_online = list()
+	for(var/client/C in clients_online)
+		if(C.holder) //deadmins aren't included since they wouldn't show up on adminwho
+			admins_online += C
+	var/who = clients_online.Join(", ")
+	var/adminwho = admins_online.Join(", ")
+	var/kn = key_name("SYSTEM")
+	var/kna = key_name_admin("SYSTEM")
+
+	var/special_columns = list(
+		"bantime" = "NOW()",
+		"server_ip" = "INET_ATON(?)",
+		"ip" = "INET_ATON(?)",
+		"a_ip" = "INET_ATON(?)",
+		"expiration_time" = "IF(? IS NULL, NULL, NOW() + INTERVAL ? [interval])"
+	)
+	var/sql_ban = list()
+	for(var/role in roles_to_ban)
+		sql_ban += list(list(
+			"server_ip" = world.internet_address || 0,
+			"server_port" = world.port,
+			"round_id" = GLOB.round_id,
+			"role" = role,
+			"expiration_time" = duration,
+			"applies_to_admins" = applies_to_admins,
+			"reason" = reason,
+			"ckey" = player_ckey || null,
+			"ip" = player_ip || null,
+			"computerid" = player_cid || null,
+			"a_ckey" = admin_ckey,
+			"a_ip" = admin_ip || null,
+			"a_computerid" = admin_cid,
+			"who" = who,
+			"adminwho" = adminwho
+		))
+	if(!SSdbcore.MassInsert(format_table_name("ban"), sql_ban, warn = TRUE, special_columns = special_columns))
+		return FALSE
+	var/target = ban_target_string(player_key, player_ip, player_cid)
+	var/msg = "has created a [isnull(duration) ? "permanent" : "temporary [time_message]"] [applies_to_admins ? "admin " : ""][is_server_ban ? "server ban" : "role ban from [roles_to_ban.len] roles"] for [target]." // SKYRAT EDIT CHANGE - MULTISERVER
+	log_admin_private("[kn] [msg][is_server_ban ? "" : " Roles: [roles_to_ban.Join(", ")]"] Reason: [reason]")
+	message_admins("[kna] [msg][is_server_ban ? "" : " Roles: [roles_to_ban.Join("\n")]"]\nReason: [reason]")
+	if(applies_to_admins)
+		send2adminchat("BAN ALERT","[kn] [msg]")
+	if(player_ckey)
+		create_message("note", player_ckey, admin_ckey, note_reason, null, null, 0, 0, null, 0, severity)
+
+	var/player_ban_notification = span_boldannounce("You have been [applies_to_admins ? "admin " : ""]banned by [usr.client.key] from [is_server_ban ? "the server" : " Roles: [roles_to_ban.Join(", ")]"].\nReason: [reason]</span><br>[span_danger("This ban is [isnull(duration) ? "permanent." : "temporary, it will be removed in [time_message]."] The round ID is [GLOB.round_id].")]")
+	var/other_ban_notification = span_boldannounce("Another player sharing your IP or CID has been banned by [usr.client.key] from [is_server_ban ? "the server" : " Roles: [roles_to_ban.Join(", ")]"].\nReason: [reason]</span><br>[span_danger("This ban is [isnull(duration) ? "permanent." : "temporary, it will be removed in [time_message]."] The round ID is [GLOB.round_id].")]")
+
+	notify_all_banned_players(player_ckey, player_ip, player_cid, player_ban_notification, other_ban_notification, is_server_ban, applies_to_admins)
+
+	var/datum/admin_help/linked_ahelp_ticket = admin_ticket_log(player_ckey, "[kna] [msg]")
+	if(is_server_ban && linked_ahelp_ticket)
+		linked_ahelp_ticket.Resolve()
+
+	return TRUE
 
 #undef MAX_ADMINBANS_PER_ADMIN
 #undef MAX_ADMINBANS_PER_HEADMIN

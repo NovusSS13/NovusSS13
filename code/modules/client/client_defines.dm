@@ -256,6 +256,9 @@
 	/// If the client is currently under the restrictions of the interview system
 	var/interviewee = FALSE
 
+	/// If the client is currently under the restrictions of the age gate system
+	var/age_gated = FALSE
+
 	/// Whether or not this client has standard hotkeys enabled
 	var/hotkeys = TRUE
 
