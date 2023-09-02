@@ -65,6 +65,7 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = penis.bodypart_overlay
 	overlay.uses_skintone = value
+	overlay.color_source = value ? ORGAN_COLOR_INHERIT : ORGAN_COLOR_DNA
 
 /datum/preference/tri_color/penis
 	savefile_key = "feature_penis_color"

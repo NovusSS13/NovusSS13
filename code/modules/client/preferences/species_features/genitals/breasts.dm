@@ -66,6 +66,7 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = breasts?.bodypart_overlay
 	overlay.uses_skintone = value
+	overlay.color_source = value ? ORGAN_COLOR_INHERIT : ORGAN_COLOR_DNA
 
 /datum/preference/tri_color/breasts
 	savefile_key = "feature_breasts_color"

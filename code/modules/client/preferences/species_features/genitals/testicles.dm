@@ -40,6 +40,7 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = testicles.bodypart_overlay
 	overlay.uses_skintone = value
+	overlay.color_source = value ? ORGAN_COLOR_INHERIT : ORGAN_COLOR_DNA
 
 /datum/preference/tri_color/testicles
 	savefile_key = "feature_testicles_color"
