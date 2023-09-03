@@ -11,7 +11,7 @@
 	///The color this organ draws with. Updated by bodypart/inherit_color()
 	var/draw_color
 	///Where does this organ inherit it's color from?
-	var/color_source = ORGAN_COLOR_INHERIT
+	var/color_source = ORGAN_COLOR_LIMB
 	///Take on the dna/preference from whoever we're gonna be inserted in
 	var/imprint_on_next_insertion = TRUE
 
@@ -119,13 +119,13 @@
 ///Give the organ its color. Force will override the existing one.
 /datum/bodypart_overlay/mutant/proc/inherit_color(obj/item/bodypart/ownerlimb, force = FALSE)
 	if(isnull(ownerlimb))
-		return TRUE
+		return FALSE
 
 	if(draw_color && !force)
 		return FALSE
 
 	switch(color_source)
-		if(ORGAN_COLOR_INHERIT)
+		if(ORGAN_COLOR_LIMB)
 			draw_color = ownerlimb.draw_color
 		if(ORGAN_COLOR_DNA)
 			if(!ishuman(ownerlimb.owner))

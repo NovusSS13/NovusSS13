@@ -53,6 +53,13 @@
 			return TRUE //duher
 	return TRUE // GENITAL_VISIBILITY_CLOTHING is handled by subtypes
 
+/datum/bodypart_overlay/mutant/genital/inherit_color(obj/item/bodypart/ownerlimb, force = FALSE)
+	. = ..()
+	if(!.)
+		return
+	//skintone handling, a bit silly but i don't really want to change the color source for... reasons
+	if(uses_skintone && (color_source == ORGAN_COLOR_DNA))
+		draw_color = ownerlimb.draw_color
 
 /obj/item/organ/genital/penis
 	name = "penis"

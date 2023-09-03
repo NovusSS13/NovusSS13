@@ -57,7 +57,7 @@
 #define STANDARD_ORGAN_DECAY (111 / 100000)
 
 /// Uses the parent limb's drawcolor value.
-#define ORGAN_COLOR_INHERIT (1<<0)
+#define ORGAN_COLOR_LIMB (1<<0)
 /// Uses a DNA feature for coloring, if one is available.
 #define ORGAN_COLOR_DNA (1<<1)
 /// Uses /datum/bodypart_overlay/proc/override_color()'s return value
