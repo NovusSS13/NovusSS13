@@ -124,7 +124,7 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 /datum/latejoin_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 
-	if(!ui.user.client || ui.user.client.interviewee || !isnewplayer(ui.user))
+	if(!ui.user.client || ui.user.client.interviewee || ui.user.client.age_gated || !isnewplayer(ui.user))
 		return TRUE
 
 	var/mob/dead/new_player/owner = ui.user

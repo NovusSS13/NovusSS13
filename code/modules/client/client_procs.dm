@@ -513,7 +513,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(!tooltips)
 		tooltips = new /datum/tooltip(src)
 
-	if (!interviewee)
+	if(!interviewee && !age_gated)
 		initialize_menus()
 
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
@@ -891,7 +891,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	..()
 
 /client/proc/add_verbs_from_config()
-	if (interviewee)
+	if(interviewee || age_gated)
 		return
 	if(CONFIG_GET(flag/see_own_notes))
 		add_verb(src, /client/proc/self_notes)
