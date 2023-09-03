@@ -16,30 +16,37 @@
 /datum/sprite_accessory/genital/penis/knotted
 	name = "Knotted"
 	icon_state = "knotted"
+	supports_skintones = FALSE
 
 /datum/sprite_accessory/genital/penis/flared
 	name = "Flared"
 	icon_state = "flared"
+	supports_skintones = FALSE
 
 /datum/sprite_accessory/genital/penis/barbknot
 	name = "Barbed, Knotted"
 	icon_state = "barbknot"
+	supports_skintones = FALSE
 
 /datum/sprite_accessory/genital/penis/tapered
 	name = "Tapered"
 	icon_state = "tapered"
+	supports_skintones = FALSE
 
 /datum/sprite_accessory/genital/penis/tentacle
 	name = "Tentacled"
 	icon_state = "tentacle"
+	supports_skintones = FALSE
 
 /datum/sprite_accessory/genital/penis/hemi
 	name = "Hemi"
 	icon_state = "hemi"
+	supports_skintones = FALSE
 
 /datum/sprite_accessory/genital/penis/hemiknot
 	name = "Hemi, Knotted"
 	icon_state = "hemiknot"
+	supports_skintones = FALSE
 
 
 

@@ -438,7 +438,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			if(current_organ)
 				current_organ.before_organ_replacement(replacement)
 				var/default_feature = cosmetic_organs[organ_path]
-				if(default_feature)
+				if(default_feature && (default_feature != SPRITE_ACCESSORY_NONE))
 					current_organ.bodypart_overlay?.set_appearance_from_name(default_feature)
 
 			// organ.Insert will qdel any current organs in that slot, so we don't need to.
