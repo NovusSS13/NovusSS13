@@ -8,7 +8,8 @@
 	var/list/feature_list = bodypart_overlay.get_global_feature_list()
 	for(var/accessory in feature_list)
 		var/datum/sprite_accessory/accessory_datum = feature_list[accessory]
-		if(initial(accessory_datum.locked)) //locked is for stuff that shouldn't appear here
+		//locked is for stuff that shouldn't appear here
+		if(initial(accessory_datum.locked) || (initial(accessory_datum.name) == SPRITE_ACCESSORY_NONE))
 			continue
 		valid_restyles[accessory] = accessory_datum
 

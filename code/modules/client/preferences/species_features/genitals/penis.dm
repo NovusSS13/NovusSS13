@@ -38,15 +38,18 @@
 /datum/preference/choiced/mutant/penis_size/create_default_value()
 	return "2"
 
-/datum/preference/tri_color/mutant/penis
+/datum/preference/tricolor/mutant/penis
 	savefile_key = "feature_penis_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
 	relevant_feature = "penis_color"
 
-/datum/preference/tri_color/mutant/penis/is_accessible(datum/preferences/preferences)
+/datum/preference/tricolor/mutant/penis/is_accessible(datum/preferences/preferences)
 	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/penis) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/penis_uses_skintone)
+
+/datum/preference/tricolor/mutant/penis/get_global_feature_list()
+	return GLOB.penis_list
 
 /datum/preference/toggle/penis_uses_skintone
 	savefile_key = "feature_penis_skintone"

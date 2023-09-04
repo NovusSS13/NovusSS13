@@ -387,7 +387,8 @@ export const FeatureTextInput = (
   );
 };
 
-export const FeatureTriColorInput = (props: FeatureValueProps<string[]>) => {
+export const FeatureTriColorInput = (props: FeatureValueProps<string>) => {
+  const value = props.value.split(';');
   const buttonFromValue = (index) => {
     return (
       <Stack.Item>
@@ -402,9 +403,9 @@ export const FeatureTriColorInput = (props: FeatureValueProps<string[]>) => {
             <Stack.Item>
               <Box
                 style={{
-                  background: props.value[index].startsWith('#')
-                    ? props.value[index]
-                    : `#${props.value[index]}`,
+                  background: value[index].startsWith('#')
+                    ? value[index]
+                    : `#${value[index]}`,
                   border: '2px solid white',
                   'box-sizing': 'content-box',
                   height: '11px',
@@ -417,7 +418,6 @@ export const FeatureTriColorInput = (props: FeatureValueProps<string[]>) => {
                 }}
               />
             </Stack.Item>
-
             {!props.shrink && <Stack.Item>Change</Stack.Item>}
           </Stack>
         </Button>
@@ -426,33 +426,9 @@ export const FeatureTriColorInput = (props: FeatureValueProps<string[]>) => {
   };
   return (
     <Stack align="center" fill>
-      {buttonFromValue(0)}
-      {buttonFromValue(1)}
-      {buttonFromValue(2)}
-    </Stack>
-  );
-};
-
-export const FeatureTriBoolInput = (props: FeatureValueProps<boolean[]>) => {
-  const buttonFromValue = (index) => {
-    return (
-      <Stack.Item align="center" fill>
-        <Button.Checkbox
-          checked={!!props.value[index]}
-          onClick={() => {
-            const currentValue = [...props.value];
-            currentValue[index] = !currentValue[index];
-            props.handleSetValue(currentValue);
-          }}
-        />
-      </Stack.Item>
-    );
-  };
-  return (
-    <Stack align="center" fill>
-      {buttonFromValue(0)}
-      {buttonFromValue(1)}
-      {buttonFromValue(2)}
+      {value.length > 0 && buttonFromValue(0)}
+      {value.length > 1 && buttonFromValue(1)}
+      {value.length > 2 && buttonFromValue(2)}
     </Stack>
   );
 };

@@ -80,23 +80,21 @@
 	should_generate_icons = TRUE
 	relevant_cosmetic_organ = /obj/item/organ/frills
 	relevant_feature = "frills"
+	supplemental_feature_key = "feature_lizard_frills_color"
 
 /datum/preference/choiced/mutant/lizard_frills/init_possible_values()
 	return generate_lizard_side_shots(GLOB.frills_list, "frills")
 
-/datum/preference/choiced/mutant/lizard_frills/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_frills_color"
-
-	return data
-
-/datum/preference/tri_color/mutant/lizard_frills
+/datum/preference/tricolor/mutant/lizard_frills
 	savefile_key = "feature_lizard_frills_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/frills
 	relevant_feature = "frills_color"
+	primary_feature_key = "feature_lizard_frills"
+
+/datum/preference/tricolor/mutant/lizard_frills/get_global_feature_list()
+	return GLOB.frills_list
 
 /datum/preference/choiced/mutant/lizard_horns
 	savefile_key = "feature_lizard_horns"
@@ -106,23 +104,21 @@
 	should_generate_icons = TRUE
 	relevant_cosmetic_organ = /obj/item/organ/horns
 	relevant_feature = "horns"
+	supplemental_feature_key = "horns_color"
 
 /datum/preference/choiced/mutant/lizard_horns/init_possible_values()
 	return generate_lizard_side_shots(GLOB.horns_list, "horns")
 
-/datum/preference/choiced/mutant/lizard_horns/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_horns_color"
-
-	return data
-
-/datum/preference/tri_color/mutant/lizard_horns
+/datum/preference/tricolor/mutant/lizard_horns
 	savefile_key = "feature_lizard_horns_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/horns
 	relevant_feature = "horns_color"
+	primary_feature_key = "feature_lizard_horns"
+
+/datum/preference/tricolor/mutant/lizard_horns/get_global_feature_list()
+	return GLOB.horns_list
 
 /datum/preference/choiced/mutant/lizard_snout
 	savefile_key = "feature_lizard_snout"
@@ -132,23 +128,21 @@
 	should_generate_icons = TRUE
 	relevant_cosmetic_organ = /obj/item/organ/snout
 	relevant_feature = "snout"
+	supplemental_feature_key = "feature_lizard_snout_color"
 
 /datum/preference/choiced/mutant/lizard_snout/init_possible_values()
 	return generate_lizard_side_shots(GLOB.snouts_list, "snout", include_snout = FALSE)
 
-/datum/preference/choiced/mutant/lizard_snout/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_snout_color"
-
-	return data
-
-/datum/preference/tri_color/mutant/lizard_snout
+/datum/preference/tricolor/mutant/lizard_snout
 	savefile_key = "feature_lizard_snout_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/snout
 	relevant_feature = "snout_color"
+	primary_feature_key = "feature_lizard_snout"
+
+/datum/preference/tricolor/mutant/lizard_snout/get_global_feature_list()
+	return GLOB.snouts_list
 
 /datum/preference/choiced/mutant/lizard_spines
 	savefile_key = "feature_lizard_spines"
@@ -156,6 +150,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/spines
 	relevant_feature = "spines"
+	supplemental_feature_key = "feature_lizard_spines_color"
 
 /datum/preference/choiced/mutant/lizard_spines/init_possible_values()
 	return assoc_to_keys_features(GLOB.spines_list)
@@ -164,19 +159,16 @@
 	var/datum/sprite_accessory/spines/no_spines = /datum/sprite_accessory/spines/none
 	return initial(no_spines.name)
 
-/datum/preference/choiced/mutant/lizard_spines/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_spines_color"
-
-	return data
-
-/datum/preference/tri_color/mutant/lizard_spines
+/datum/preference/tricolor/mutant/lizard_spines
 	savefile_key = "feature_lizard_spines_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/spines
 	relevant_feature = "spines_color"
+	primary_feature_key = "feature_lizard_spines"
+
+/datum/preference/tricolor/mutant/lizard_spines/get_global_feature_list()
+	return GLOB.spines_list
 
 /datum/preference/choiced/mutant/lizard_tail
 	savefile_key = "feature_lizard_tail"
@@ -184,6 +176,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/tail/lizard
 	relevant_feature = "tail"
+	supplemental_feature_key = "feature_lizard_tail_color"
 
 /datum/preference/choiced/mutant/lizard_tail/init_possible_values()
 	return assoc_to_keys_features(GLOB.tails_list_lizard)
@@ -192,16 +185,13 @@
 	var/datum/sprite_accessory/tails/lizard/smooth/tail = /datum/sprite_accessory/tails/lizard/smooth
 	return initial(tail.name)
 
-/datum/preference/choiced/mutant/lizard_tail/compile_constant_data()
-	var/list/data = ..()
-
-	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_tail_color"
-
-	return data
-
-/datum/preference/tri_color/mutant/lizard_tail
+/datum/preference/tricolor/mutant/lizard_tail
 	savefile_key = "feature_lizard_tail_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/tail/lizard
 	relevant_feature = "tail_color"
+	primary_feature_key = "feature_lizard_tail"
+
+/datum/preference/tricolor/mutant/lizard_tail/get_global_feature_list()
+	return GLOB.tails_list

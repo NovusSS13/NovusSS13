@@ -15,15 +15,18 @@
 	var/datum/sprite_accessory/genital/vagina/boring_human_vagina = /datum/sprite_accessory/genital/vagina/human
 	return initial(boring_human_vagina.name)
 
-/datum/preference/tri_color/mutant/vagina
+/datum/preference/tricolor/mutant/vagina
 	savefile_key = "feature_vagina_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
 	relevant_feature = "vagina_color"
 
-/datum/preference/tri_color/mutant/vagina/is_accessible(datum/preferences/preferences)
+/datum/preference/tricolor/mutant/vagina/is_accessible(datum/preferences/preferences)
 	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/vagina) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone)
+
+/datum/preference/tricolor/mutant/vagina/get_global_feature_list()
+	return GLOB.testicles_list
 
 /datum/preference/toggle/vagina_uses_skintone
 	savefile_key = "feature_vagina_skintone"

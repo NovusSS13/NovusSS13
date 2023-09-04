@@ -40,7 +40,7 @@
 			else
 				male += D.name
 				female += D.name
-	if(add_blank)
+	if(add_blank && !L[SPRITE_ACCESSORY_NONE])
 		L[SPRITE_ACCESSORY_NONE] = new /datum/sprite_accessory/blank
 
 	return L
@@ -65,8 +65,8 @@
 	 * This is the source that this accessory will get its color from. Default is MUTCOLOR, but can also be HAIR, FACEHAIR, EYECOLOR and 0 if none.
 	 */
 	var/color_src = MUTANT_COLOR
-	/// Whether or not we should treat our colors as an RGB matrix
-	var/use_matrixed_colors = FALSE
+	/// Amount of colors we use actually use for coloring, from 1 to 3
+	var/color_amount = 1
 	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
 	var/hasinner = FALSE
 	/// Is this part locked from roundstart selection? Used for parts that apply effects.

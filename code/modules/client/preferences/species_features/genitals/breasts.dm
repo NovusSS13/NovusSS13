@@ -39,15 +39,18 @@
 /datum/preference/choiced/mutant/breasts_size/create_default_value()
 	return "2"
 
-/datum/preference/tri_color/mutant/breasts
+/datum/preference/tricolor/mutant/breasts
 	savefile_key = "feature_breasts_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
 	relevant_feature = "breasts_color"
 
-/datum/preference/tri_color/mutant/breasts/is_accessible(datum/preferences/preferences)
+/datum/preference/tricolor/mutant/breasts/is_accessible(datum/preferences/preferences)
 	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/breasts) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/breasts_uses_skintone)
+
+/datum/preference/tricolor/mutant/breasts/get_global_feature_list()
+	return GLOB.breasts_list
 
 /datum/preference/toggle/breasts_uses_skintone
 	savefile_key = "feature_breasts_skintone"
