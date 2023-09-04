@@ -438,11 +438,18 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(memo_message)
 			to_chat(src, memo_message)
 		adminGreet()
-	if (mob && reconnecting)
-		var/stealth_admin = mob.client?.holder?.fakekey
-		var/announce_leave = mob.client?.prefs?.read_preference(/datum/preference/toggle/broadcast_login_logout)
-		if (!stealth_admin)
-			deadchat_broadcast(" has reconnected.", "<b>[mob][mob.get_realname_string()]</b>", follow_target = mob, turf_target = get_turf(mob), message_type = DEADCHAT_LOGIN_LOGOUT, admin_only=!announce_leave)
+	if(mob)
+		if(reconnecting)
+			var/stealth_admin = mob.client?.holder?.fakekey
+			var/announce_leave = mob.client?.prefs?.read_preference(/datum/preference/toggle/broadcast_login_logout)
+			if (!stealth_admin)
+				deadchat_broadcast(" has reconnected.", "<b>[mob][mob.get_realname_string()]</b>", follow_target = mob, turf_target = get_turf(mob), message_type = DEADCHAT_LOGIN_LOGOUT, admin_only=!announce_leave)
+
+		var/connect_msg = "<b>[key]</b> has [reconnecting ? "reconnected." : "joined the server."]"
+		for(var/client/client)
+			if(client.prefs?.read_preference(/datum/preference/toggle/display_login_logout))
+				to_chat(client, "<span class='ooc purple'>[connect_msg]</span>")
+
 	add_verbs_from_config()
 
 	// This needs to be before the client age from db is updated as it'll be updated by then.
@@ -546,6 +553,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if (!stealth_admin)
 			deadchat_broadcast(" has disconnected.", "<b>[mob][mob.get_realname_string()]</b>", follow_target = mob, turf_target = get_turf(mob), message_type = DEADCHAT_LOGIN_LOGOUT, admin_only=!announce_join)
 		mob.become_uncliented()
+
+		var/disconnect_msg = "<b>[key]</b> has [GLOB.last_banned_key == key ? "been banned. So long, gay Bowser!" : "disconnected."]"
+		for(var/client/client)
+			if(client.prefs?.read_preference(/datum/preference/toggle/display_login_logout))
+				to_chat(client, "<span class='ooc purple'>[disconnect_msg]</span>")
 
 	GLOB.clients -= src
 	GLOB.directory -= ckey
