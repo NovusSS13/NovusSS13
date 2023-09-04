@@ -23,7 +23,11 @@ GLOBAL_LIST_INIT(features_block_lengths, list(
 		"[DNA_MUTANT_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
 		"[DNA_ETHEREAL_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
 		"[DNA_TAIL_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_SNOUT_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_HORNS_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_FRILLS_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
 		"[DNA_SPINES_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
+		"[DNA_EARS_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
 		"[DNA_PENIS_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
 		"[DNA_TESTICLES_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
 		"[DNA_VAGINA_COLOR_BLOCK]" = DNA_BLOCK_SIZE_TRICOLOR,
@@ -211,16 +215,24 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_TAIL_COLOR_BLOCK] = serialize_dna_color(features["tail_color"])
 	if(features["snout"])
 		L[DNA_SNOUT_BLOCK] = construct_block(GLOB.snouts_list.Find(features["snout"]), GLOB.snouts_list.len)
+	if(features["snout_color"])
+		L[DNA_SNOUT_COLOR_BLOCK] = serialize_dna_color(features["snout_color"])
 	if(features["horns"])
 		L[DNA_HORNS_BLOCK] = construct_block(GLOB.horns_list.Find(features["horns"]), GLOB.horns_list.len)
+	if(features["horns_color"])
+		L[DNA_HORNS_COLOR_BLOCK] = serialize_dna_color(features["horns_color"])
 	if(features["frills"])
 		L[DNA_FRILLS_BLOCK] = construct_block(GLOB.frills_list.Find(features["frills"]), GLOB.frills_list.len)
+	if(features["frills_color"])
+		L[DNA_FRILLS_COLOR_BLOCK] = serialize_dna_color(features["frills_color"])
 	if(features["spines"])
 		L[DNA_SPINES_BLOCK] = construct_block(GLOB.spines_list.Find(features["spines"]), GLOB.spines_list.len)
 	if(features["spines_color"])
 		L[DNA_SPINES_COLOR_BLOCK] = serialize_dna_color(features["spines_color"])
 	if(features["ears"])
 		L[DNA_EARS_BLOCK] = construct_block(GLOB.ears_list.Find(features["ears"]), GLOB.ears_list.len)
+	if(features["ears_color"])
+		L[DNA_EARS_COLOR_BLOCK] = serialize_dna_color(features["ears_color"])
 	if(features["moth_wings"] != "Burnt Off")
 		L[DNA_MOTH_WINGS_BLOCK] = construct_block(GLOB.moth_wings_list.Find(features["moth_wings"]), GLOB.moth_wings_list.len)
 	if(features["moth_antennae"] != "Burnt Off")
@@ -232,6 +244,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(features["pod_hair"])
 		L[DNA_POD_HAIR_BLOCK] = construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len)
 
+	//awfulness begins here
 	if(features["penis"])
 		L[DNA_PENIS_BLOCK] = construct_block(GLOB.penis_list.Find(features["penis"]), GLOB.penis_list.len)
 	if(features["penis_color"])
@@ -252,6 +265,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_BREASTS_COLOR_BLOCK] = serialize_dna_color(features["breasts_color"])
 	if(features["breasts_size"])
 		L[DNA_BREASTS_SIZE_BLOCK] = construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len)
+	//awfulness ends here
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -364,16 +378,28 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.body_markings_list.Find(features["body_markings"]), GLOB.body_markings_list.len))
 		if(DNA_TAIL_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list.Find(features["tail"]), GLOB.tails_list.len))
+		if(DNA_TAIL_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["tail_color"]))
 		if(DNA_SNOUT_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.snouts_list.Find(features["snout"]), GLOB.snouts_list.len))
+		if(DNA_SNOUT_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["snout_color"]))
 		if(DNA_HORNS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.horns_list.Find(features["horns"]), GLOB.horns_list.len))
+		if(DNA_HORNS_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["horns_color"]))
 		if(DNA_FRILLS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.frills_list.Find(features["frills"]), GLOB.frills_list.len))
+		if(DNA_FRILLS_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["frills_color"]))
 		if(DNA_SPINES_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.spines_list.Find(features["spines"]), GLOB.spines_list.len))
+		if(DNA_SPINES_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["spines_color"]))
 		if(DNA_EARS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.ears_list.Find(features["ears"]), GLOB.ears_list.len))
+		if(DNA_EARS_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["ears_color"]))
 		if(DNA_MOTH_WINGS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.moth_wings_list.Find(features["moth_wings"]), GLOB.moth_wings_list.len))
 		if(DNA_MOTH_ANTENNAE_BLOCK)
@@ -387,14 +413,22 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 		if(DNA_PENIS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.penis_list.Find(features["penis"]), GLOB.penis_list.len))
+		if(DNA_PENIS_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["penis_color"]))
 		if(DNA_PENIS_SIZE_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.penis_size_names.Find(features["penis_size"]), GLOB.penis_size_names.len))
 		if(DNA_TESTICLES_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.testicles_list.Find(features["testicles"]), GLOB.testicles_list.len))
+		if(DNA_TESTICLES_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["testicles_color"]))
 		if(DNA_VAGINA_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.vagina_list.Find(features["vagina"]), GLOB.vagina_list.len))
+		if(DNA_VAGINA_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["vagina_color"]))
 		if(DNA_BREASTS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.breasts_list.Find(features["breasts"]), GLOB.breasts_list.len))
+		if(DNA_BREASTS_COLOR_BLOCK)
+			set_uni_feature_block(blocknumber, serialize_dna_color(features["breasts_color"]))
 		if(DNA_BREASTS_SIZE_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len))
 
@@ -643,18 +677,30 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["ethcolor"] = unserialize_dna_color(get_uni_feature_block(features, DNA_ETHEREAL_COLOR_BLOCK))
 	if(dna.features["body_markings"])
 		dna.features["body_markings"] = GLOB.body_markings_list[deconstruct_block(get_uni_feature_block(features, DNA_LIZARD_MARKINGS_BLOCK), GLOB.body_markings_list.len)]
-	if(dna.features["snout"])
-		dna.features["snout"] = GLOB.snouts_list[deconstruct_block(get_uni_feature_block(features, DNA_SNOUT_BLOCK), GLOB.snouts_list.len)]
-	if(dna.features["horns"])
-		dna.features["horns"] = GLOB.horns_list[deconstruct_block(get_uni_feature_block(features, DNA_HORNS_BLOCK), GLOB.horns_list.len)]
-	if(dna.features["frills"])
-		dna.features["frills"] = GLOB.frills_list[deconstruct_block(get_uni_feature_block(features, DNA_FRILLS_BLOCK), GLOB.frills_list.len)]
-	if(dna.features["spines"])
-		dna.features["spines"] = GLOB.spines_list[deconstruct_block(get_uni_feature_block(features, DNA_SPINES_BLOCK), GLOB.spines_list.len)]
 	if(dna.features["tail"])
 		dna.features["tail"] = GLOB.tails_list[deconstruct_block(get_uni_feature_block(features, DNA_TAIL_BLOCK), GLOB.tails_list.len)]
+	if(dna.features["tail_color"])
+		dna.features["tail_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_TAIL_COLOR_BLOCK))
+	if(dna.features["snout"])
+		dna.features["snout"] = GLOB.snouts_list[deconstruct_block(get_uni_feature_block(features, DNA_SNOUT_BLOCK), GLOB.snouts_list.len)]
+	if(dna.features["snout_color"])
+		dna.features["snout_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_SNOUT_COLOR_BLOCK))
+	if(dna.features["horns"])
+		dna.features["horns"] = GLOB.horns_list[deconstruct_block(get_uni_feature_block(features, DNA_HORNS_BLOCK), GLOB.horns_list.len)]
+	if(dna.features["horns_color"])
+		dna.features["horns_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_HORNS_COLOR_BLOCK))
+	if(dna.features["frills"])
+		dna.features["frills"] = GLOB.frills_list[deconstruct_block(get_uni_feature_block(features, DNA_FRILLS_BLOCK), GLOB.frills_list.len)]
+	if(dna.features["frills_color"])
+		dna.features["frills_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_FRILLS_COLOR_BLOCK))
+	if(dna.features["spines"])
+		dna.features["spines"] = GLOB.spines_list[deconstruct_block(get_uni_feature_block(features, DNA_SPINES_BLOCK), GLOB.spines_list.len)]
+	if(dna.features["spines_color"])
+		dna.features["spines_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_SPINES_COLOR_BLOCK))
 	if(dna.features["ears"])
 		dna.features["ears"] = GLOB.ears_list[deconstruct_block(get_uni_feature_block(features, DNA_EARS_BLOCK), GLOB.ears_list.len)]
+	if(dna.features["ears_color"])
+		dna.features["ears_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_EARS_COLOR_BLOCK))
 	if(dna.features["moth_wings"])
 		var/genetic_value = GLOB.moth_wings_list[deconstruct_block(get_uni_feature_block(features, DNA_MOTH_WINGS_BLOCK), GLOB.moth_wings_list.len)]
 		dna.features["original_moth_wings"] = genetic_value
@@ -672,14 +718,22 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 	if(dna.features["penis"])
 		dna.features["penis"] = GLOB.penis_list[deconstruct_block(get_uni_feature_block(features, DNA_PENIS_BLOCK), GLOB.penis_list.len)]
+	if(dna.features["penis_color"])
+		dna.features["penis_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_PENIS_COLOR_BLOCK))
 	if(dna.features["penis_size"])
 		dna.features["penis_size"] = GLOB.penis_size_names[deconstruct_block(get_uni_feature_block(features, DNA_PENIS_SIZE_BLOCK), GLOB.penis_size_names.len)]
 	if(dna.features["testicles"])
 		dna.features["testicles"] = GLOB.testicles_list[deconstruct_block(get_uni_feature_block(features, DNA_TESTICLES_BLOCK), GLOB.testicles_list.len)]
+	if(dna.features["testicles_color"])
+		dna.features["testicles_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_TESTICLES_COLOR_BLOCK))
 	if(dna.features["vagina"])
 		dna.features["vagina"] = GLOB.vagina_list[deconstruct_block(get_uni_feature_block(features, DNA_VAGINA_BLOCK), GLOB.vagina_list.len)]
+	if(dna.features["vagina_color"])
+		dna.features["vagina_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_VAGINA_COLOR_BLOCK))
 	if(dna.features["breasts"])
 		dna.features["breasts"] = GLOB.breasts_list[deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_BLOCK), GLOB.breasts_list.len)]
+	if(dna.features["breasts_color"])
+		dna.features["breasts_color"] = unserialize_dna_color(get_uni_feature_block(features, DNA_BREASTS_COLOR_BLOCK))
 	if(dna.features["breasts_size"])
 		dna.features["breasts_size"] = GLOB.breasts_size_names[deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SIZE_BLOCK), GLOB.breasts_size_names.len)]
 

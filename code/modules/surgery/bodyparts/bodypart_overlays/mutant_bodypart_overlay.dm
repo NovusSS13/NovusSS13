@@ -130,7 +130,8 @@
 		if(ORGAN_COLOR_DNA)
 			if(!ishuman(ownerlimb.owner))
 				return FALSE
-			var/dna_color = LAZYACCESS(ownerlimb.owner.dna.features, feature_color_key)
+			var/actual_color_key = feature_color_key ? feature_color_key : "mcolor"
+			var/dna_color = LAZYACCESS(ownerlimb.owner.dna.features, actual_color_key)
 			//DNA didn't really give us an answer? use the limb's draw color i guess...
 			if(!dna_color)
 				draw_color = ownerlimb.draw_color

@@ -1,22 +1,29 @@
-/datum/preference/choiced/testicles
+/datum/preference/choiced/mutant/testicles
 	savefile_key = "feature_testicles"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
+	relevant_feature = "testicles"
 
-/datum/preference/choiced/testicles/init_possible_values()
+/datum/preference/choiced/mutant/testicles/init_possible_values()
 	return assoc_to_keys_features(GLOB.testicles_list)
 
-/datum/preference/choiced/testicles/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["testicles"] = value
-
-/datum/preference/choiced/testicles/create_informed_default_value(datum/preferences/preferences)
+/datum/preference/choiced/mutant/testicles/create_informed_default_value(datum/preferences/preferences)
 	if(preferences.read_preference(/datum/preference/choiced/gender) != MALE)
 		return SPRITE_ACCESSORY_NONE
 
 	var/datum/sprite_accessory/genital/testicles/testicles = /datum/sprite_accessory/genital/testicles/pair
 	return initial(testicles.name)
 
+/datum/preference/tri_color/mutant/testicles
+	savefile_key = "feature_testicles_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
+	relevant_feature = "testicles_color"
+
+/datum/preference/tri_color/mutant/testicles/is_accessible(datum/preferences/preferences)
+	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/testicles) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/testicles_uses_skintone)
 
 /datum/preference/toggle/testicles_uses_skintone
 	savefile_key = "feature_testicles_skintone"
@@ -26,7 +33,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
 
 /datum/preference/toggle/testicles_uses_skintone/is_accessible(datum/preferences/preferences)
-	return ..() && preferences.read_preference(/datum/preference/choiced/testicles) != SPRITE_ACCESSORY_NONE
+	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/testicles) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/toggle/testicles_uses_skintone/create_informed_default_value(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
@@ -40,15 +47,3 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = testicles.bodypart_overlay
 	overlay.uses_skintone = value
-
-/datum/preference/tri_color/testicles
-	savefile_key = "feature_testicles_color"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
-
-/datum/preference/tri_color/testicles/is_accessible(datum/preferences/preferences)
-	return ..() && (preferences.read_preference(/datum/preference/choiced/testicles) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/testicles_uses_skintone)
-
-/datum/preference/tri_color/testicles/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["testicles_color"] = value

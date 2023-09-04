@@ -1,11 +1,12 @@
-/datum/preference/choiced/moth_antennae
+/datum/preference/choiced/mutant/moth_antennae
 	savefile_key = "feature_moth_antennae"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Antennae"
 	should_generate_icons = TRUE
+	relevant_feature = "moth_antennae"
 
-/datum/preference/choiced/moth_antennae/init_possible_values()
+/datum/preference/choiced/mutant/moth_antennae/init_possible_values()
 	var/list/values = list()
 
 	var/icon/moth_head = icon('icons/mob/species/moth/bodyparts.dmi', "moth_head")
@@ -25,18 +26,16 @@
 
 	return values
 
-/datum/preference/choiced/moth_antennae/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["moth_antennae"] = value
-
-/datum/preference/choiced/moth_markings
+/datum/preference/choiced/mutant/moth_markings
 	savefile_key = "feature_moth_markings"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Body markings"
 	should_generate_icons = TRUE
 	relevant_mutant_bodypart = "moth_markings"
+	relevant_feature = "moth_markings"
 
-/datum/preference/choiced/moth_markings/init_possible_values()
+/datum/preference/choiced/mutant/moth_markings/init_possible_values()
 	var/list/values = list()
 
 	var/icon/moth_body = icon('icons/blanks/32x32.dmi', "nothing")
@@ -79,22 +78,17 @@
 
 	return values
 
-/datum/preference/choiced/moth_markings/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["moth_markings"] = value
-
-/datum/preference/choiced/moth_wings
+/datum/preference/choiced/mutant/moth_wings
 	savefile_key = "feature_moth_wings"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Moth wings"
 	should_generate_icons = TRUE
+	relevant_feature = "moth_wings"
 
-/datum/preference/choiced/moth_wings/init_possible_values()
+/datum/preference/choiced/mutant/moth_wings/init_possible_values()
 	return possible_values_for_sprite_accessory_list_for_body_part(
 		GLOB.moth_wings_list,
 		"moth_wings",
 		list("BEHIND", "FRONT"),
 	)
-
-/datum/preference/choiced/moth_wings/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["moth_wings"] = value

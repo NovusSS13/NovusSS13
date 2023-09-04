@@ -5,6 +5,11 @@ export const eye_color: Feature<string> = {
   component: FeatureColorInput,
 };
 
+export const heterochromatic: Feature<string> = {
+  name: 'Heterochromatic (Right Eye) color',
+  component: FeatureColorInput,
+};
+
 export const facial_hair_color: Feature<string> = {
   name: 'Facial hair color',
   component: FeatureColorInput,
@@ -43,7 +48,7 @@ export const hair_gradient_color: Feature<string> = {
   component: FeatureColorInput,
 };
 
-export const feature_human_ears: FeatureChoiced = {
+export const feature_felinid_ears: FeatureChoiced = {
   name: 'Ears',
   component: (
     props: FeatureValueProps<string, string, FeatureChoicedServerData>
@@ -52,13 +57,23 @@ export const feature_human_ears: FeatureChoiced = {
   },
 };
 
-export const feature_human_tail: FeatureChoiced = {
+export const feature_ears_color: FeatureChoiced = {
+  name: 'Ears color',
+  component: FeatureTriColorInput,
+};
+
+export const feature_felinid_tail: FeatureChoiced = {
   name: 'Tail',
   component: (
     props: FeatureValueProps<string, string, FeatureChoicedServerData>
   ) => {
     return <FeatureDropdownInput buttons {...props} />;
   },
+};
+
+export const feature_felinid_tail_color: FeatureChoiced = {
+  name: 'Tail color',
+  component: FeatureTriColorInput,
 };
 
 export const feature_lizard_legs: FeatureChoiced = {
@@ -80,7 +95,7 @@ export const feature_lizard_spines: FeatureChoiced = {
 };
 
 export const feature_lizard_spines_color: FeatureChoiced = {
-  name: 'Spines Color',
+  name: 'Spines color',
   component: FeatureTriColorInput,
 };
 
@@ -94,7 +109,7 @@ export const feature_lizard_tail: FeatureChoiced = {
 };
 
 export const feature_lizard_tail_color: FeatureChoiced = {
-  name: 'Tail Color',
+  name: 'Tail color',
   component: FeatureTriColorInput,
 };
 
@@ -111,9 +126,4 @@ export const underwear_color: Feature<string> = {
 export const feature_vampire_status: Feature<string> = {
   name: 'Vampire status',
   component: FeatureDropdownInput,
-};
-
-export const heterochromatic: Feature<string> = {
-  name: 'Heterochromatic (Right Eye) color',
-  component: FeatureColorInput,
 };

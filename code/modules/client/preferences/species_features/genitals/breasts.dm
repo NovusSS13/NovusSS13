@@ -1,16 +1,14 @@
-/datum/preference/choiced/breasts
+/datum/preference/choiced/mutant/breasts
 	savefile_key = "feature_breasts"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
+	relevant_feature = "breasts"
 
-/datum/preference/choiced/breasts/init_possible_values()
+/datum/preference/choiced/mutant/breasts/init_possible_values()
 	return assoc_to_keys_features(GLOB.breasts_list)
 
-/datum/preference/choiced/breasts/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["breasts"] = value
-
-/datum/preference/choiced/breasts/create_informed_default_value(datum/preferences/preferences)
+/datum/preference/choiced/mutant/breasts/create_informed_default_value(datum/preferences/preferences)
 	if(preferences.read_preference(/datum/preference/choiced/gender) != FEMALE)
 		return SPRITE_ACCESSORY_NONE
 
@@ -18,31 +16,38 @@
 	return initial(boring_human_breasts.name)
 
 
-/datum/preference/choiced/breasts_size
+/datum/preference/choiced/mutant/breasts_size
 	savefile_key = "feature_breasts_size"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
+	relevant_feature = "breasts_size"
 
-/datum/preference/choiced/breasts_size/init_possible_values()
+/datum/preference/choiced/mutant/breasts_size/init_possible_values()
 	return assoc_to_keys(GLOB.breasts_size_names)
 
-/datum/preference/choiced/breasts_size/compile_constant_data()
+/datum/preference/choiced/mutant/breasts_size/compile_constant_data()
 	var/list/data = ..()
 
 	data[CHOICED_PREFERENCE_DISPLAY_NAMES] = GLOB.breasts_size_names
 
 	return data
 
-/datum/preference/choiced/breasts_size/is_accessible(datum/preferences/preferences)
-	return ..() && preferences.read_preference(/datum/preference/choiced/breasts) != SPRITE_ACCESSORY_NONE
+/datum/preference/choiced/mutant/breasts_size/is_accessible(datum/preferences/preferences)
+	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/breasts) != SPRITE_ACCESSORY_NONE
 
-/datum/preference/choiced/breasts_size/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["breasts_size"] = value
-
-/datum/preference/choiced/breasts_size/create_default_value()
+/datum/preference/choiced/mutant/breasts_size/create_default_value()
 	return "2"
 
+/datum/preference/tri_color/mutant/breasts
+	savefile_key = "feature_breasts_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
+	relevant_feature = "breasts_color"
+
+/datum/preference/tri_color/mutant/breasts/is_accessible(datum/preferences/preferences)
+	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/breasts) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/breasts_uses_skintone)
 
 /datum/preference/toggle/breasts_uses_skintone
 	savefile_key = "feature_breasts_skintone"
@@ -52,7 +57,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
 
 /datum/preference/toggle/breasts_uses_skintone/is_accessible(datum/preferences/preferences)
-	return ..() && preferences.read_preference(/datum/preference/choiced/breasts) != SPRITE_ACCESSORY_NONE
+	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/breasts) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/toggle/breasts_uses_skintone/create_informed_default_value(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
@@ -66,15 +71,3 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = breasts?.bodypart_overlay
 	overlay.uses_skintone = value
-
-/datum/preference/tri_color/breasts
-	savefile_key = "feature_breasts_color"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
-
-/datum/preference/tri_color/breasts/is_accessible(datum/preferences/preferences)
-	return ..() && (preferences.read_preference(/datum/preference/choiced/breasts) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/breasts_uses_skintone)
-
-/datum/preference/tri_color/breasts/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["breasts_color"] = value
