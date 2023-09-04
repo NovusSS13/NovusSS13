@@ -85,6 +85,21 @@ export const feature_lizard_legs: FeatureChoiced = {
   },
 };
 
+export const feature_lizard_frills_color: FeatureChoiced = {
+  name: 'Frills color',
+  component: FeatureTriColorInput,
+};
+
+export const feature_lizard_horns_color: FeatureChoiced = {
+  name: 'Horns color',
+  component: FeatureTriColorInput,
+};
+
+export const feature_lizard_snout_color: FeatureChoiced = {
+  name: 'Snout color',
+  component: FeatureTriColorInput,
+};
+
 export const feature_lizard_spines: FeatureChoiced = {
   name: 'Spines',
   component: (
