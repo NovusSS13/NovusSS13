@@ -70,8 +70,9 @@
 /// Tail parent type (which is MONKEEEEEEEEEEE by default), with wagging functionality
 /datum/bodypart_overlay/mutant/tail
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
+	color_source = ORGAN_COLOR_DNA
 	feature_key = "tail"
-	feature_color_key = "tail_color" //not used unless it's a lizard tail
+	feature_color_key = "tail_color"
 	/// Whether or not the tail is wagging
 	var/wagging = FALSE
 
@@ -97,7 +98,6 @@
 
 /// Cat tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/cat
-	color_source = ORGAN_COLOR_HAIR
 
 /datum/bodypart_overlay/mutant/tail/cat/get_global_feature_list()
 	return GLOB.tails_list_human
@@ -157,7 +157,6 @@
 
 /// Lizard tail bodypart overlay datum
 /datum/bodypart_overlay/mutant/tail/lizard
-	color_source = ORGAN_COLOR_DNA
 
 /datum/bodypart_overlay/mutant/tail/lizard/get_global_feature_list()
 	return GLOB.tails_list_lizard

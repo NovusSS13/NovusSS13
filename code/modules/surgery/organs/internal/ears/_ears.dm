@@ -75,8 +75,9 @@
 
 /datum/bodypart_overlay/mutant/ears
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
-	color_source = ORGAN_COLOR_HAIR
+	color_source = ORGAN_COLOR_DNA
 	feature_key = "ears"
+	feature_color_key = "ears_color"
 
 /datum/bodypart_overlay/mutant/ears/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.head?.flags_inv & HIDEEARS))
@@ -88,11 +89,11 @@
 
 /datum/bodypart_overlay/mutant/ears/get_overlays(layer, obj/item/bodypart/limb)
 	. = ..()
-	//fucking lovely, we have to deal with the inners
-	layer = bitflag_to_layer(layer)
 	if(!sprite_datum.hasinner)
 		return
 
+	//fucking lovely, we have to deal with the inners
+	layer = bitflag_to_layer(layer)
 	var/gender = (limb?.limb_gender == FEMALE) ? "f" : "m"
 	var/list/icon_state_builder = list()
 	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender

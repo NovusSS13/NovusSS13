@@ -32,8 +32,8 @@
 
 ///Bodypart overlay for spines (wagging gets updated by tail)
 /datum/bodypart_overlay/mutant/spines
-	color_source = ORGAN_COLOR_DNA
 	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
+	color_source = ORGAN_COLOR_DNA
 	feature_key = "spines"
 	feature_color_key = "spines_color"
 	///Spines moth with the tail, so track it
