@@ -104,7 +104,7 @@
 	should_generate_icons = TRUE
 	relevant_cosmetic_organ = /obj/item/organ/horns
 	relevant_feature = "horns"
-	supplemental_feature_key = "horns_color"
+	supplemental_feature_key = "feature_lizard_horns_color"
 
 /datum/preference/choiced/mutant/lizard_horns/init_possible_values()
 	return generate_lizard_side_shots(GLOB.horns_list, "horns")
