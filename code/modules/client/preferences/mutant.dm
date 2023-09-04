@@ -44,7 +44,7 @@
 	// if this is not a normal color and there is no associated primary feature, i'm assuming you want to display all three colors
 	if(!primary_feature_key)
 		return ..()
-	var/datum/preference/choiced/primary_feature = GLOB.preference_entries[primary_feature_key]
+	var/datum/preference/choiced/primary_feature = GLOB.preference_entries_by_key[primary_feature_key]
 	//primary feature is invalid... somehow?
 	if(!istype(primary_feature))
 		return ..()
