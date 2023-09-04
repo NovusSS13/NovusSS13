@@ -17,6 +17,6 @@
 	target.dna.features[relevant_feature] = value
 
 /datum/preference/tri_color/mutant
-	abstract_type = /datum/preference/tri_color
+	abstract_type = /datum/preference/tri_color/mutant
 	/// Feature that will be changed on apply_on_human()
 	var/relevant_feature

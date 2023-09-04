@@ -94,7 +94,7 @@
 /datum/preference/tri_color/mutant/lizard_frills
 	savefile_key = "feature_lizard_frills_color"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/frills
 	relevant_feature = "frills_color"
 
@@ -120,7 +120,7 @@
 /datum/preference/tri_color/mutant/lizard_horns
 	savefile_key = "feature_lizard_horns_color"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/horns
 	relevant_feature = "horns_color"
 
@@ -146,7 +146,7 @@
 /datum/preference/tri_color/mutant/lizard_snout
 	savefile_key = "feature_lizard_snout_color"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/snout
 	relevant_feature = "snout_color"
 
