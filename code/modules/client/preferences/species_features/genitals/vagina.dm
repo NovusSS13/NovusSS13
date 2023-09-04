@@ -1,32 +1,40 @@
-/datum/preference/choiced/vagina
+/datum/preference/choiced/mutant/vagina
 	savefile_key = "feature_vagina"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
+	relevant_feature = "vagina"
 
-/datum/preference/choiced/vagina/init_possible_values()
+/datum/preference/choiced/mutant/vagina/init_possible_values()
 	return assoc_to_keys_features(GLOB.vagina_list)
 
-/datum/preference/choiced/vagina/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["vagina"] = value
-
-/datum/preference/choiced/vagina/create_informed_default_value(datum/preferences/preferences)
+/datum/preference/choiced/mutant/vagina/create_informed_default_value(datum/preferences/preferences)
 	if(preferences.read_preference(/datum/preference/choiced/gender) != FEMALE)
 		return SPRITE_ACCESSORY_NONE
 
 	var/datum/sprite_accessory/genital/vagina/boring_human_vagina = /datum/sprite_accessory/genital/vagina/human
 	return initial(boring_human_vagina.name)
 
+/datum/preference/tri_color/mutant/vagina
+	savefile_key = "feature_vagina_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
+	relevant_feature = "vagina_color"
+
+/datum/preference/tri_color/mutant/vagina/is_accessible(datum/preferences/preferences)
+	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/vagina) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone)
 
 /datum/preference/toggle/vagina_uses_skintone
 	savefile_key = "feature_vagina_skintone"
 	savefile_identifier = PREFERENCE_CHARACTER
 	priority = PREFERENCE_PRIORITY_BODYPARTS
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_inherent_trait = TRAIT_USES_SKINTONES
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
 
 /datum/preference/toggle/vagina_uses_skintone/is_accessible(datum/preferences/preferences)
-	return ..() && preferences.read_preference(/datum/preference/choiced/vagina) != SPRITE_ACCESSORY_NONE
+	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/vagina) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/toggle/vagina_uses_skintone/create_informed_default_value(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
@@ -40,15 +48,3 @@
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = vagina.bodypart_overlay
 	overlay.uses_skintone = value
-
-/datum/preference/tri_color/vagina
-	savefile_key = "feature_vagina_color"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
-
-/datum/preference/tri_color/vagina/is_accessible(datum/preferences/preferences)
-	return ..() && (preferences.read_preference(/datum/preference/choiced/vagina) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone)
-
-/datum/preference/tri_color/vagina/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["vagina_color"] = value

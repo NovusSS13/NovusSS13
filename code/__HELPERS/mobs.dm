@@ -110,9 +110,9 @@
 		"wings" = "None",
 		"snout" = pick(GLOB.snouts_list),
 		"horns" = pick(GLOB.horns_list),
-		"ears" = "Cat", //should_organ_apply_to() is being a fucking bitch, this is necessary
 		"frills" = pick(GLOB.frills_list),
 		"spines" = pick(GLOB.spines_list),
+		"ears" = "None",
 		"body_markings" = pick(GLOB.body_markings_list),
 		"legs" = "Normal Legs",
 		"caps" = pick(GLOB.caps_list),

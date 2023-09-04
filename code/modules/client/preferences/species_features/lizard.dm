@@ -26,15 +26,16 @@
 
 	return values
 
-/datum/preference/choiced/lizard_body_markings
+/datum/preference/choiced/mutant/lizard_body_markings
 	savefile_key = "feature_lizard_body_markings"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Body markings"
 	should_generate_icons = TRUE
 	relevant_mutant_bodypart = "body_markings"
+	relevant_feature = "body_markings"
 
-/datum/preference/choiced/lizard_body_markings/init_possible_values()
+/datum/preference/choiced/mutant/lizard_body_markings/init_possible_values()
 	var/list/values = list()
 
 	var/icon/lizard = icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_chest_m")
@@ -61,106 +62,146 @@
 
 	return values
 
-/datum/preference/choiced/lizard_body_markings/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["body_markings"] = value
+/datum/preference/choiced/mutant/lizard_legs
+	savefile_key = "feature_lizard_legs"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_mutant_bodypart = "legs"
+	relevant_feature = "legs"
 
-/datum/preference/choiced/lizard_frills
+/datum/preference/choiced/mutant/lizard_legs/init_possible_values()
+	return assoc_to_keys_features(GLOB.legs_list)
+
+/datum/preference/choiced/mutant/lizard_frills
 	savefile_key = "feature_lizard_frills"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Frills"
 	should_generate_icons = TRUE
+	relevant_cosmetic_organ = /obj/item/organ/frills
+	relevant_feature = "frills"
 
-/datum/preference/choiced/lizard_frills/init_possible_values()
+/datum/preference/choiced/mutant/lizard_frills/init_possible_values()
 	return generate_lizard_side_shots(GLOB.frills_list, "frills")
 
-/datum/preference/choiced/lizard_frills/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["frills"] = value
+/datum/preference/choiced/mutant/lizard_frills/compile_constant_data()
+	var/list/data = ..()
 
-/datum/preference/choiced/lizard_horns
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_frills_color"
+
+	return data
+
+/datum/preference/tri_color/mutant/lizard_frills
+	savefile_key = "feature_lizard_frills_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/frills
+	relevant_feature = "frills_color"
+
+/datum/preference/choiced/mutant/lizard_horns
 	savefile_key = "feature_lizard_horns"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Horns"
 	should_generate_icons = TRUE
+	relevant_cosmetic_organ = /obj/item/organ/horns
+	relevant_feature = "horns"
 
-/datum/preference/choiced/lizard_horns/init_possible_values()
+/datum/preference/choiced/mutant/lizard_horns/init_possible_values()
 	return generate_lizard_side_shots(GLOB.horns_list, "horns")
 
-/datum/preference/choiced/lizard_horns/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["horns"] = value
+/datum/preference/choiced/mutant/lizard_horns/compile_constant_data()
+	var/list/data = ..()
 
-/datum/preference/choiced/lizard_legs
-	savefile_key = "feature_lizard_legs"
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_horns_color"
+
+	return data
+
+/datum/preference/tri_color/mutant/lizard_horns
+	savefile_key = "feature_lizard_horns_color"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_mutant_bodypart = "legs"
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/horns
+	relevant_feature = "horns_color"
 
-/datum/preference/choiced/lizard_legs/init_possible_values()
-	return assoc_to_keys_features(GLOB.legs_list)
-
-/datum/preference/choiced/lizard_legs/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["legs"] = value
-
-/datum/preference/choiced/lizard_snout
+/datum/preference/choiced/mutant/lizard_snout
 	savefile_key = "feature_lizard_snout"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Snout"
 	should_generate_icons = TRUE
+	relevant_cosmetic_organ = /obj/item/organ/snout
+	relevant_feature = "snout"
 
-/datum/preference/choiced/lizard_snout/init_possible_values()
+/datum/preference/choiced/mutant/lizard_snout/init_possible_values()
 	return generate_lizard_side_shots(GLOB.snouts_list, "snout", include_snout = FALSE)
 
-/datum/preference/choiced/lizard_snout/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["snout"] = value
+/datum/preference/choiced/mutant/lizard_snout/compile_constant_data()
+	var/list/data = ..()
 
-/datum/preference/choiced/lizard_spines
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_snout_color"
+
+	return data
+
+/datum/preference/tri_color/mutant/lizard_snout
+	savefile_key = "feature_lizard_snout_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/snout
+	relevant_feature = "snout_color"
+
+/datum/preference/choiced/mutant/lizard_spines
 	savefile_key = "feature_lizard_spines"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/spines
+	relevant_feature = "spines"
 
-/datum/preference/choiced/lizard_spines/init_possible_values()
+/datum/preference/choiced/mutant/lizard_spines/init_possible_values()
 	return assoc_to_keys_features(GLOB.spines_list)
 
-/datum/preference/choiced/lizard_spines/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["spines"] = value
-
-/datum/preference/choiced/lizard_spines/create_default_value()
+/datum/preference/choiced/mutant/lizard_spines/create_default_value()
 	var/datum/sprite_accessory/spines/no_spines = /datum/sprite_accessory/spines/none
 	return initial(no_spines.name)
 
-/datum/preference/tri_color/lizard_spines
+/datum/preference/choiced/mutant/lizard_spines/compile_constant_data()
+	var/list/data = ..()
+
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_spines_color"
+
+	return data
+
+/datum/preference/tri_color/mutant/lizard_spines
 	savefile_key = "feature_lizard_spines_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/spines
+	relevant_feature = "spines_color"
 
-/datum/preference/tri_color/lizard_spines/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["spines_color"] = value
-
-/datum/preference/choiced/lizard_tail
+/datum/preference/choiced/mutant/lizard_tail
 	savefile_key = "feature_lizard_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/tail/lizard
+	relevant_feature = "tail"
 
-/datum/preference/choiced/lizard_tail/init_possible_values()
+/datum/preference/choiced/mutant/lizard_tail/init_possible_values()
 	return assoc_to_keys_features(GLOB.tails_list_lizard)
 
-/datum/preference/choiced/lizard_tail/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["tail"] = value
-
-/datum/preference/choiced/lizard_tail/create_default_value()
+/datum/preference/choiced/mutant/lizard_tail/create_default_value()
 	var/datum/sprite_accessory/tails/lizard/smooth/tail = /datum/sprite_accessory/tails/lizard/smooth
 	return initial(tail.name)
 
-/datum/preference/tri_color/lizard_tail
+/datum/preference/choiced/mutant/lizard_tail/compile_constant_data()
+	var/list/data = ..()
+
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_tail_color"
+
+	return data
+
+/datum/preference/tri_color/mutant/lizard_tail
 	savefile_key = "feature_lizard_tail_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/tail/lizard
-
-/datum/preference/tri_color/lizard_tail/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["tail_color"] = value
+	relevant_feature = "tail_color"

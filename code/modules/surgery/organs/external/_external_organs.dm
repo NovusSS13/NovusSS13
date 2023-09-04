@@ -19,7 +19,9 @@
 
 /datum/bodypart_overlay/mutant/horns
 	layers = EXTERNAL_ADJACENT
+	color_source = ORGAN_COLOR_DNA
 	feature_key = "horns"
+	feature_color_key = "horns_color"
 
 /datum/bodypart_overlay/mutant/horns/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
@@ -51,7 +53,9 @@
 
 /datum/bodypart_overlay/mutant/frills
 	layers = EXTERNAL_ADJACENT
+	color_source = ORGAN_COLOR_DNA
 	feature_key = "frills"
+	feature_color_key = "frills_color"
 
 /datum/bodypart_overlay/mutant/frills/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.head?.flags_inv & HIDEEARS))
@@ -83,7 +87,9 @@
 
 /datum/bodypart_overlay/mutant/snout
 	layers = EXTERNAL_ADJACENT
+	color_source = ORGAN_COLOR_DNA
 	feature_key = "snout"
+	feature_color_key = "snout_color"
 
 /datum/bodypart_overlay/mutant/snout/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))

@@ -1,11 +1,12 @@
-/datum/preference/choiced/ethereal_color
+/datum/preference/choiced/mutant/ethereal_color
 	savefile_key = "feature_ethcolor"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Ethereal color"
 	should_generate_icons = TRUE
+	relevant_feature = "ethcolor"
 
-/datum/preference/choiced/ethereal_color/init_possible_values()
+/datum/preference/choiced/mutant/ethereal_color/init_possible_values()
 	var/list/values = list()
 
 	var/icon/ethereal_base = icon('icons/mob/species/ethereal/bodyparts.dmi', "ethereal_head")
@@ -29,5 +30,5 @@
 
 	return values
 
-/datum/preference/choiced/ethereal_color/apply_to_human(mob/living/carbon/human/target, value)
+/datum/preference/choiced/mutant/ethereal_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["ethcolor"] = GLOB.color_list_ethereal[value]

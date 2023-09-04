@@ -87,11 +87,9 @@
 
 	var/list/feature_list = bodypart_overlay.get_global_feature_list()
 	var/say_my_name = feature_list[deconstruct_block(get_uni_feature_block(features, dna_block), feature_list.len)]
-	//the dna is fucking invalid for this organ if it has no associated sprite accessory, or it happens to be blank
-	if(!say_my_name || (say_my_name == SPRITE_ACCESSORY_NONE))
-		return FALSE
-
-	bodypart_overlay.set_appearance_from_name(say_my_name)
+	if(say_my_name && (say_my_name != SPRITE_ACCESSORY_NONE))
+		bodypart_overlay.set_appearance_from_name(say_my_name)
+	bodypart_overlay.inherit_color(ownerlimb, force = TRUE)
 	return TRUE
 
 /**
