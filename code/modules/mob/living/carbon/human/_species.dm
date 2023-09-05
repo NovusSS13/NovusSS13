@@ -730,10 +730,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 							else
 								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
 						if(HAIR_COLOR)
-							if(hair_color == "mutcolor")
-								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
-							else if(hair_color == "fixedmutcolor")
+							if(hair_color == "fixedmutcolor")
 								accessory_overlay.color = tricolor_to_hex(fixed_mut_color)
+							else if(hair_color == "mutcolor")
+								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
 							else
 								accessory_overlay.color = source.hair_color
 						if(FACIAL_HAIR_COLOR)

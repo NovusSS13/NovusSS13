@@ -82,7 +82,7 @@
 
 /// Update our features after something changed our appearance (if we have an attached DNA block)
 /obj/item/organ/proc/mutate_feature(features, mob/living/carbon/human/human)
-	if(!dna_block)
+	if(!dna_block || sprite_accessory_override)
 		return FALSE
 
 	var/list/feature_list = bodypart_overlay.get_global_feature_list()

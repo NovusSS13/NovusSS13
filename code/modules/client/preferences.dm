@@ -283,7 +283,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if (isnull(requested_preference))
 				return FALSE
 
-			if (!istype(requested_preference, /datum/preference/tri_color))
+			if (!istype(requested_preference, /datum/preference/tricolor))
 				return FALSE
 
 			var/list/color_list = read_preference(requested_preference.type)
@@ -303,7 +303,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE
 
 			color_list[requested_preference_index] = new_color
-			if (!update_preference(requested_preference, color_list))
+			if (!update_preference(requested_preference, color_list.Join(";")))
 				return FALSE
 
 			return TRUE
@@ -349,7 +349,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		LAZYINITLIST(preferences[preference.category])
 
 		var/value = read_preference(preference.type)
-		var/data = preference.compile_ui_data(user, value)
+		var/data = preference.compile_ui_data(user, value, src)
 
 		preferences[preference.category][preference.savefile_key] = data
 

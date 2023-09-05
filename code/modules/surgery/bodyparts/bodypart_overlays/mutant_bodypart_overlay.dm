@@ -171,22 +171,21 @@
 ///Returns a validated version of the given color in accordance with the sprite accessory in use
 /datum/bodypart_overlay/mutant/proc/validate_color(given_color)
 	//return a list if the sprite datum wants matrixed colors
-	if(sprite_datum.use_matrixed_colors)
+	if(sprite_datum.color_amount > 1)
 		//sanitize normally if it's already a matrix color
 		if(islist(given_color))
-			var/list/validated_color = list()
-			for(var/subcolor in given_color)
-				validated_color += sanitize_hexcolor(subcolor, include_crunch = TRUE)
-			return validated_color
+			var/list/validated_color = given_color
+			validated_color.len = 3
+			return sanitize_hexcolor_list(validated_color, 6, TRUE, "#FFFFFF")
 		//repeat the same color thrice otherwise
 		var/sanitized_color = sanitize_hexcolor(given_color, include_crunch = TRUE)
 		return list(sanitized_color, sanitized_color, sanitized_color)
 	//return a string otherwise
 	//take and sanitize only the first color if it's a matrix
 	if(islist(given_color))
-		return sanitize_hexcolor(given_color[1], include_crunch = TRUE)
+		return sanitize_hexcolor(given_color[1], 6, TRUE, "#FFFFFF")
 	//just sanitize normally otherwise
-	return sanitize_hexcolor(given_color, include_crunch = TRUE)
+	return sanitize_hexcolor(given_color, 6, TRUE, "#FFFFFF")
 
 ///Sprite accessories are singletons, stored list("Big Snout" = instance of /datum/sprite_accessory/snout/big), so here we get that singleton
 /datum/bodypart_overlay/mutant/proc/fetch_sprite_datum(datum/sprite_accessory/accessory_path)
