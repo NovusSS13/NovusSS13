@@ -15,7 +15,7 @@
 
 # Null/Lemons
 
-/code/modules/surgery/external/genitals.dm
+/code/modules/surgery/external/genitals.dm @NullDagaf
 /code/modules/reagents/ @NullDagaf
 /code/modules/liquids/ @NullDagaf
 
