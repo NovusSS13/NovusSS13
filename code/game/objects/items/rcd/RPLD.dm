@@ -289,6 +289,7 @@
 	inhand_icon_state = "plumberer_sci"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
+	ammo_sections = 0
 	has_ammobar = TRUE
 
 /obj/item/construction/plumbing/research/set_plumbing_designs()
@@ -315,6 +316,7 @@
 	name = "service plumbing constructor"
 	desc = "A type of plumbing constructor designed to rapidly deploy the machines needed to make a brewery."
 	icon_state = "plumberer_service"
+	ammo_sections = 0
 	has_ammobar = TRUE
 
 /obj/item/construction/plumbing/service/set_plumbing_designs()
@@ -349,6 +351,7 @@
 	name = "engineering plumbing constructor"
 	desc = "A type of plumbing constructor designed to rapidly deploy the machines needed for logistics regarding fluids."
 	icon_state = "plumberer_engi"
+	ammo_sections = 0
 	has_ammobar = TRUE
 
 /obj/item/construction/plumbing/engineering/set_plumbing_designs()
