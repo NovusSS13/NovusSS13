@@ -1752,13 +1752,19 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/preference = GLOB.preference_entries[preference_type]
 
+		var/no_relevancy = !preference.relevant_mutant_bodypart
+		no_relevancy &&= !preference.relevant_inherent_trait
+		no_relevancy &&= !preference.relevant_cosmetic_organ
+		no_relevancy &&= !preference.relevant_head_flag
 		if ( \
-			(preference.relevant_mutant_bodypart in mutant_bodyparts) \
-			|| (preference.relevant_inherent_trait in inherent_traits) \
-			|| (preference.relevant_cosmetic_organ in cosmetic_organs) \
-			|| (preference.relevant_head_flag && check_head_flags(preference.relevant_head_flag)) \
+			no_relevancy \
+			|| (preference.relevant_mutant_bodypart && !(preference.relevant_mutant_bodypart in mutant_bodyparts)) \
+			|| (preference.relevant_inherent_trait && !(preference.relevant_inherent_trait in inherent_traits)) \
+			|| (preference.relevant_cosmetic_organ && !(preference.relevant_cosmetic_organ in cosmetic_organs)) \
+			|| (preference.relevant_head_flag && !check_head_flags(preference.relevant_head_flag)) \
 		)
-			features += preference.savefile_key
+			continue
+		features += preference.savefile_key
 
 	GLOB.features_by_species[type] = features
 
