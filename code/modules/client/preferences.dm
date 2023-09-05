@@ -9,7 +9,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// Ensures that we always load the last used save, QOL
 	var/default_slot = 1
 	/// The maximum number of slots we're allowed to contain
-	var/max_save_slots = 3
+	var/max_save_slots = 10
 
 	/// Bitflags for communications that are muted
 	var/muted = NONE
@@ -107,7 +107,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			try_savefile_type_migration()
 		unlock_content = !!parent.IsByondMember()
 		if(unlock_content)
-			max_save_slots = 8
+			max_save_slots = 15
 	else
 		CRASH("attempted to create a preferences datum without a client or mock!")
 	load_savefile()
@@ -275,7 +275,25 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE
 
 			return TRUE
-		if("set_tricolor_preference")
+		if ("set_color_mutant_colors")
+			var/requested_preference_key = params["preference"]
+
+			var/datum/preference/requested_preference = GLOB.preference_entries_by_key[requested_preference_key]
+			if (isnull(requested_preference))
+				return FALSE
+
+			if (!istype(requested_preference, /datum/preference/color))
+				return FALSE
+
+			var/list/color_list = read_preference(/datum/preference/tricolor/mutant/mutant_color)
+			if (!islist(color_list))
+				return FALSE //wtf?
+
+			if (!update_preference(requested_preference, color_list[1]))
+				return FALSE
+
+			return TRUE
+		if ("set_tricolor_preference")
 			var/requested_preference_key = params["preference"]
 			var/requested_preference_index = params["value"]
 
@@ -303,6 +321,24 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE
 
 			color_list[requested_preference_index] = new_color
+			if (!update_preference(requested_preference, jointext(color_list, ";")))
+				return FALSE
+
+			return TRUE
+		if ("set_tricolor_mutant_colors")
+			var/requested_preference_key = params["preference"]
+
+			var/datum/preference/requested_preference = GLOB.preference_entries_by_key[requested_preference_key]
+			if (isnull(requested_preference))
+				return FALSE
+
+			if (!istype(requested_preference, /datum/preference/tricolor))
+				return FALSE
+
+			var/list/color_list = read_preference(/datum/preference/tricolor/mutant/mutant_color)
+			if (!islist(color_list))
+				return FALSE //wtf?
+
 			if (!update_preference(requested_preference, jointext(color_list, ";")))
 				return FALSE
 

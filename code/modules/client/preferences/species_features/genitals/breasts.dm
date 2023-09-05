@@ -71,7 +71,7 @@
 
 /datum/preference/toggle/breasts_uses_skintone/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	var/obj/item/organ/genital/breasts = target.get_organ_slot(ORGAN_SLOT_BREASTS)
-	if(isnull(breasts))
+	if(isnull(breasts) || !HAS_TRAIT_FROM(target, TRAIT_USES_SKINTONES, SPECIES_TRAIT))
 		return
 
 	var/datum/bodypart_overlay/mutant/genital/overlay = breasts?.bodypart_overlay
