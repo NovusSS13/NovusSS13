@@ -303,7 +303,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE
 
 			color_list[requested_preference_index] = new_color
-			if (!update_preference(requested_preference, color_list.Join(";")))
+			if (!update_preference(requested_preference, jointext(color_list, ";")))
 				return FALSE
 
 			return TRUE

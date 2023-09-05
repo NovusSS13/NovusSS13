@@ -21,6 +21,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
 	relevant_feature = "testicles_color"
+	primary_feature_key = "feature_testicles"
 
 /datum/preference/tricolor/mutant/testicles/is_accessible(datum/preferences/preferences)
 	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/testicles) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/testicles_uses_skintone)

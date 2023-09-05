@@ -44,6 +44,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
 	relevant_feature = "penis_color"
+	primary_feature_key = "feature_penis"
 
 /datum/preference/tricolor/mutant/penis/is_accessible(datum/preferences/preferences)
 	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/penis) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/penis_uses_skintone)

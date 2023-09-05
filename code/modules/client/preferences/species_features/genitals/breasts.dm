@@ -45,6 +45,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
 	relevant_feature = "breasts_color"
+	primary_feature_key = "feature_breasts"
 
 /datum/preference/tricolor/mutant/breasts/is_accessible(datum/preferences/preferences)
 	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/breasts) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/breasts_uses_skintone)

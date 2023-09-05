@@ -1,7 +1,7 @@
 import { CheckboxInput, FeatureChoiced, FeatureDropdownInput, FeatureToggle, FeatureTriColorInput } from '../base';
 
 export const feature_penis: FeatureChoiced = {
-  name: 'Penis Type',
+  name: 'Penis',
   component: FeatureDropdownInput,
 };
 
@@ -20,7 +20,7 @@ export const feature_penis_color: FeatureToggle = {
 };
 
 export const feature_testicles: FeatureChoiced = {
-  name: 'Testicle Type',
+  name: 'Testicles',
   component: FeatureDropdownInput,
 };
 export const feature_testicles_skintone: FeatureToggle = {
@@ -34,7 +34,7 @@ export const feature_testicles_color: FeatureToggle = {
 };
 
 export const feature_vagina: FeatureChoiced = {
-  name: 'Vagina Type',
+  name: 'Vagina',
   component: FeatureDropdownInput,
 };
 export const feature_vagina_skintone: FeatureToggle = {
@@ -48,7 +48,7 @@ export const feature_vagina_color: FeatureToggle = {
 };
 
 export const feature_breasts: FeatureChoiced = {
-  name: 'Breasts Type',
+  name: 'Breasts',
   component: FeatureDropdownInput,
 };
 

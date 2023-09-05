@@ -14,9 +14,12 @@
 	savefile_key = "feature_felinid_tail_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_cosmetic_organ = /obj/item/organ/tail/lizard
+	relevant_cosmetic_organ = /obj/item/organ/tail/cat
 	relevant_feature = "tail_color"
 	primary_feature_key = "feature_felinid_tail"
+
+/datum/preference/tricolor/mutant/felinid_tail/get_global_feature_list()
+	return GLOB.tails_list
 
 /datum/preference/choiced/mutant/felinid_ears
 	savefile_key = "feature_felinid_ears"
