@@ -4,6 +4,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
 	relevant_feature = "testicles"
+	supplemental_feature_key = "feature_testicles_color"
 
 /datum/preference/choiced/mutant/testicles/init_possible_values()
 	return assoc_to_keys_features(GLOB.testicles_list)

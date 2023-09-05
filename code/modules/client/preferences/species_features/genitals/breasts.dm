@@ -4,6 +4,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/breasts
 	relevant_feature = "breasts"
+	supplemental_feature_key = "feature_breasts_color"
 
 /datum/preference/choiced/mutant/breasts/init_possible_values()
 	return assoc_to_keys_features(GLOB.breasts_list)
@@ -14,7 +15,6 @@
 
 	var/datum/sprite_accessory/genital/breasts/boring_human_breasts = /datum/sprite_accessory/genital/breasts/pair
 	return initial(boring_human_breasts.name)
-
 
 /datum/preference/choiced/mutant/breasts_size
 	savefile_key = "feature_breasts_size"

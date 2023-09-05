@@ -4,6 +4,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
 	relevant_feature = "vagina"
+	supplemental_feature_key = "feature_vagina_color"
 
 /datum/preference/choiced/mutant/vagina/init_possible_values()
 	return assoc_to_keys_features(GLOB.vagina_list)

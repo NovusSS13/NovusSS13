@@ -4,6 +4,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
 	relevant_feature = "penis"
+	supplemental_feature_key = "feature_penis_color"
 
 /datum/preference/choiced/mutant/penis/init_possible_values()
 	return assoc_to_keys_features(GLOB.penis_list)
