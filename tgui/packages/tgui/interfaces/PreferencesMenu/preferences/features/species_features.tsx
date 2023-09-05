@@ -57,7 +57,7 @@ export const feature_felinid_ears: FeatureChoiced = {
   },
 };
 
-export const feature_ears_color: FeatureChoiced = {
+export const feature_felinid_ears_color: FeatureChoiced = {
   name: 'Ears color',
   component: FeatureTriColorInput,
 };

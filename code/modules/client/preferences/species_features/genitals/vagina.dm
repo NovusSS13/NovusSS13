@@ -4,6 +4,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
 	relevant_feature = "vagina"
+	supplemental_feature_key = "feature_vagina_color"
 
 /datum/preference/choiced/mutant/vagina/init_possible_values()
 	return assoc_to_keys_features(GLOB.vagina_list)
@@ -21,6 +22,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
 	relevant_feature = "vagina_color"
+	primary_feature_key = "feature_vagina"
 
 /datum/preference/tricolor/mutant/vagina/is_accessible(datum/preferences/preferences)
 	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/vagina) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone)

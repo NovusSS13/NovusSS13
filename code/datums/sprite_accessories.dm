@@ -1776,6 +1776,7 @@
 	icon = 'icons/mob/species/human/cat_features.dmi'
 	icon_state = "default"
 	color_src = HAIR_COLOR
+	feature_suffix = "cat"
 
 /datum/sprite_accessory/tails/monkey
 	feature_suffix = "monkey"

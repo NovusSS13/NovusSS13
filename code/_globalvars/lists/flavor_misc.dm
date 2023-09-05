@@ -41,7 +41,7 @@ GLOBAL_LIST_EMPTY(moth_markings_list)
 GLOBAL_LIST_EMPTY(caps_list)
 GLOBAL_LIST_EMPTY(pod_hair_list)
 
-	//Human bits bits
+//Human bits bits
 GLOBAL_LIST_EMPTY(penis_list)
 GLOBAL_LIST_EMPTY(testicles_list)
 GLOBAL_LIST_EMPTY(breasts_list)
