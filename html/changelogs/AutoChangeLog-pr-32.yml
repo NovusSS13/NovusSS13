@@ -1,0 +1,5 @@
+author: "NullDagaf"
+delete-after: True
+changes:
+  - rscadd: "client login/logout now displays to all players"
+  - rscdel: "removed login/out broadcast preference"
