@@ -583,13 +583,13 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/tricolor/deserialize(input, datum/preferences/preferences)
 	var/list/input_colors = splittext(input, ";")
 	input_colors.len = 3
-	return sanitize_hexcolor_list(input_colors, 6, TRUE, "#FFFFFF")
+	return sanitize_hexcolor_list(input_colors, 6, TRUE, "#[random_color()]")
 
 /datum/preference/tricolor/serialize(input)
 	return "[input[1]];[input[2]];[input[3]]"
 
 /datum/preference/tricolor/create_default_value()
-	return list("#FFFFFF", "#FFFFFF", "#FFFFFF")
+	return list("#[random_color()]", "#[random_color()]", "#[random_color()]")
 
 /datum/preference/tricolor/is_valid(value)
 	var/list/value_list = value
