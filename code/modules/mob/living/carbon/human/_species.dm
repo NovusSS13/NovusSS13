@@ -1760,11 +1760,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		)
 			features += preference.savefile_key
 
-	for (var/obj/item/organ/organ_type as anything in cosmetic_organs)
-		var/preference = initial(organ_type.preference)
-		if (!isnull(preference))
-			features += preference
-
 	GLOB.features_by_species[type] = features
 
 	return features
