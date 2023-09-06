@@ -1,18 +1,20 @@
 import { exhaustiveCheck } from 'common/exhaustive';
 import { useBackend, useLocalState } from '../../backend';
-import { Button, Stack } from '../../components';
+import { Stack, Flex, Dropdown } from '../../components';
 import { Window } from '../../layouts';
 import { PreferencesMenuData } from './data';
 import { PageButton } from './PageButton';
 import { AntagsPage } from './AntagsPage';
 import { JobsPage } from './JobsPage';
 import { MainPage } from './MainPage';
+import { BackgroundPage } from './BackgroundPage';
 import { SpeciesPage } from './SpeciesPage';
 import { QuirksPage } from './QuirksPage';
 
 enum Page {
   Antags,
   Main,
+  Background,
   Jobs,
   Species,
   Quirks,
@@ -23,23 +25,25 @@ const CharacterProfiles = (props: {
   onClick: (index: number) => void;
   profiles: (string | null)[];
 }) => {
-  const { profiles } = props;
+  const { profiles, activeSlot, onClick } = props;
 
   return (
-    <Stack justify="center" wrap>
-      {profiles.map((profile, slot) => (
-        <Stack.Item key={slot}>
-          <Button
-            selected={slot === props.activeSlot}
-            onClick={() => {
-              props.onClick(slot);
-            }}
-            fluid>
-            {profile ?? 'New Character'}
-          </Button>
-        </Stack.Item>
-      ))}
-    </Stack>
+    <Flex align="center" justify="center">
+      <Flex.Item width="35%">
+        <Dropdown
+          width="100%"
+          selected={activeSlot}
+          displayText={profiles[activeSlot]}
+          options={profiles.map((profile, slot) => ({
+            value: slot,
+            displayText: profile ?? 'New Character',
+          }))}
+          onSelected={(slot) => {
+            onClick(slot);
+          }}
+        />
+      </Flex.Item>
+    </Flex>
   );
 };
 
@@ -66,6 +70,11 @@ export const CharacterPreferenceWindow = (props, context) => {
         <MainPage openSpecies={() => setCurrentPage(Page.Species)} />
       );
 
+      break;
+    case Page.Background:
+      pageContents = (
+        <BackgroundPage openSpecies={() => setCurrentPage(Page.Species)} />
+      );
       break;
     case Page.Species:
       pageContents = (
@@ -113,6 +122,15 @@ export const CharacterPreferenceWindow = (props, context) => {
                   setPage={setCurrentPage}
                   otherActivePages={[Page.Species]}>
                   Character
+                </PageButton>
+              </Stack.Item>
+
+              <Stack.Item grow>
+                <PageButton
+                  currentPage={currentPage}
+                  page={Page.Background}
+                  setPage={setCurrentPage}>
+                  Background
                 </PageButton>
               </Stack.Item>
 

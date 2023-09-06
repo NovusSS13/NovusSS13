@@ -56,16 +56,20 @@
 /// designed to fail organs when left to decay for ~15 minutes
 #define STANDARD_ORGAN_DECAY (111 / 100000)
 
-/// Uses the parent limb's drawcolor value.
+/// Uses the parent limb's drawcolor value
 #define ORGAN_COLOR_LIMB (1<<0)
-/// Uses a DNA feature for coloring, if one is available.
-#define ORGAN_COLOR_DNA (1<<1)
 /// Uses /datum/bodypart_overlay/proc/override_color()'s return value
-#define ORGAN_COLOR_OVERRIDE (1<<2)
+#define ORGAN_COLOR_OVERRIDE (1<<1)
+/// Uses a DNA feature for coloring, if one is available
+#define ORGAN_COLOR_DNA (1<<2)
+/// Uses specifically the mcolor feature for coloring, if available
+#define ORGAN_COLOR_MUTANT (1<<3)
 /// Uses the parent's hair color
-#define ORGAN_COLOR_HAIR (1<<3)
+#define ORGAN_COLOR_HAIR (1<<4)
 /// Uses the parent's facial hair color
-#define ORGAN_COLOR_FACIAL_HAIR (1<<4)
+#define ORGAN_COLOR_FACIAL_HAIR (1<<5)
+/// Uses the parent's eye color
+#define ORGAN_COLOR_EYE (1<<6)
 
 // Tail wagging
 /// Tail is capable of wagging

@@ -1,7 +1,7 @@
 /// The cap of a mushroomperson
 /obj/item/organ/mushroom_cap
 	name = "mushroom cap"
-	desc = "It's hard to tell if it's poisonous to eat or not."
+	desc = "The cap of a suspiciously large mushroom. It's hard to tell if it's poisonous to eat or not."
 
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_MUSHROOM_CAP
