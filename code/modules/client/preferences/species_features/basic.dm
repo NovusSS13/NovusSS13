@@ -1,7 +1,7 @@
 /proc/generate_icon_with_head_accessory(datum/sprite_accessory/sprite_accessory)
 	var/static/icon/head_icon
 	if (isnull(head_icon))
-		head_icon = icon('icons/mob/human/bodyparts_greyscale.dmi', "human_head_m")
+		head_icon = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_head_m")
 		head_icon.Blend(skintone2hex("caucasian1"), ICON_MULTIPLY)
 
 	if (isnull(sprite_accessory))

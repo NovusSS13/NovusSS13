@@ -96,8 +96,8 @@
 
 	if (isnull(lower_half))
 		lower_half = icon('icons/blanks/32x32.dmi', "nothing")
-		lower_half.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_leg"), ICON_OVERLAY)
-		lower_half.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
+		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg"), ICON_OVERLAY)
+		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
 
 	return generate_underwear_icon(GLOB.socks_list[value], lower_half)
 
@@ -118,13 +118,13 @@
 /datum/preference/choiced/undershirt/icon_for(value)
 	var/static/icon/body
 	if (isnull(body))
-		body = icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_leg")
-		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_arm"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_arm"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_hand"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_hand"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_chest_m"), ICON_OVERLAY)
+		body = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg")
+		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_arm"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_arm"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_hand"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_hand"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_chest_m"), ICON_OVERLAY)
 
 	var/icon/icon_with_undershirt = icon(body)
 
@@ -155,9 +155,9 @@
 
 	if (isnull(lower_half))
 		lower_half = icon('icons/blanks/32x32.dmi', "nothing")
-		lower_half.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_chest_m"), ICON_OVERLAY)
-		lower_half.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_leg"), ICON_OVERLAY)
-		lower_half.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
+		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_chest_m"), ICON_OVERLAY)
+		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg"), ICON_OVERLAY)
+		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
 
 	return generate_underwear_icon(GLOB.underwear_list[value], lower_half, COLOR_ALMOST_BLACK)
 

@@ -389,7 +389,6 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/list/serialized_choices = list()
-	var/choices = get_choices()
 
 	for (var/choice in get_choices())
 		serialized_choices += serialize(choice)

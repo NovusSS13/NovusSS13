@@ -12,7 +12,7 @@
 /datum/preference/choiced/pod_hair/icon_for(value)
 	var/datum/sprite_accessory/pod_hair = GLOB.pod_hair_list[value]
 
-	var/icon/icon_with_hair = icon('icons/mob/human/bodyparts_greyscale.dmi', "pod_head_m")
+	var/icon/icon_with_hair = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "pod_head_m")
 
 	var/icon/icon_adj = icon(pod_hair.icon, "m_pod_hair_[pod_hair.icon_state]_ADJ")
 	var/icon/icon_front = icon(pod_hair.icon, "m_pod_hair_[pod_hair.icon_state]_FRONT")
