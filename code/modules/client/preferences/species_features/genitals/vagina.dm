@@ -25,7 +25,7 @@
 	primary_feature_key = "feature_vagina"
 
 /datum/preference/tricolor/mutant/vagina/is_accessible(datum/preferences/preferences)
-	return ..() && (preferences.read_preference(/datum/preference/choiced/mutant/vagina) != SPRITE_ACCESSORY_NONE) && !preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone)
+	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/vagina) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/tricolor/mutant/vagina/get_global_feature_list()
 	return GLOB.vagina_list
@@ -39,15 +39,7 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
 
 /datum/preference/toggle/vagina_uses_skintone/is_accessible(datum/preferences/preferences)
-	. = ..()
-	if(!.)
-		return
-	if(preferences.read_preference(/datum/preference/choiced/mutant/vagina) == SPRITE_ACCESSORY_NONE)
-		return FALSE
-	if(preferences.read_preference(/datum/preference/toggle/vagina_uses_skintone))
-		var/datum/preference/preference = GLOB.preference_entries[/datum/preference/toggle/vagina_uses_skintone]
-		if(preference.is_accessible(preferences))
-			return FALSE
+	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/vagina) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/toggle/vagina_uses_skintone/create_informed_default_value(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)

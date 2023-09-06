@@ -48,15 +48,7 @@
 	primary_feature_key = "feature_penis"
 
 /datum/preference/tricolor/mutant/penis/is_accessible(datum/preferences/preferences)
-	. = ..()
-	if(!.)
-		return
-	if(preferences.read_preference(/datum/preference/choiced/mutant/penis) == SPRITE_ACCESSORY_NONE)
-		return FALSE
-	if(preferences.read_preference(/datum/preference/toggle/penis_uses_skintone))
-		var/datum/preference/preference = GLOB.preference_entries[/datum/preference/toggle/penis_uses_skintone]
-		if(preference.is_accessible(preferences))
-			return FALSE
+	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/penis) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/tricolor/mutant/penis/get_global_feature_list()
 	return GLOB.penis_list
