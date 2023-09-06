@@ -1,10 +1,9 @@
 import { resolveAsset } from '../assets';
 import { useBackend, useLocalState } from '../backend';
-import { Box, ByondUi, Flex, Section, Stack, Tabs } from '../components';
+import { ByondUi, Flex, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
-import { CharacterPreview } from './common/CharacterPreview';
 
-export const HeadshotPanel = (props, context) => {
+export const ExaminePanel = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     mob_type,
@@ -29,7 +28,7 @@ export const HeadshotPanel = (props, context) => {
   const [tabIndex, setTab] = useLocalState(
     context,
     'tab-index',
-    flavor_text ? 0 : naked_flavor_text ? 1 : temporary_flavor_text ? 2 : 0 //this is ass
+    flavor_text ? 0 : naked_flavor_text ? 1 : temporary_flavor_text ? 2 : 0 // this is ass
   );
   const make_tabs =
     !!flavor_text + !!naked_flavor_text + !!temporary_flavor_text > 1;
