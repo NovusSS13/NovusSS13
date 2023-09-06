@@ -3,11 +3,12 @@
  */
 
 /datum/preference/choiced/mutant
-	abstract_type = /datum/preference/choiced/mutant
 	/// Feature that will be changed on apply_on_human()
 	var/modified_feature
 	/// Supplemental feature, generally used for coloring
 	var/supplemental_feature_key
+
+	abstract_type = /datum/preference/choiced/mutant
 
 /datum/preference/choiced/mutant/compile_constant_data()
 	var/list/data = ..()
@@ -34,11 +35,12 @@
 	target.dna.features[modified_feature] = value
 
 /datum/preference/tricolor/mutant
-	abstract_type = /datum/preference/tricolor/mutant
 	/// Feature that will be changed on apply_on_human()
 	var/modified_feature
 	/// What we use to display the right amount of colors, basically the feature that actually uses this color
 	var/primary_feature_key
+
+	abstract_type = /datum/preference/tricolor/mutant
 
 /datum/preference/tricolor/mutant/compile_ui_data(mob/user, value, datum/preferences/preferences)
 	// if this is not a normal color and there is no associated primary feature, i'm assuming you want to display all three colors
