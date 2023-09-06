@@ -132,7 +132,7 @@
 /datum/preference/choiced/mutant/lizard_snout/init_possible_values()
 	return assoc_to_keys_features(GLOB.snouts_list)
 
-/datum/preference/choiced/lizard_snout/icon_for(value)
+/datum/preference/choiced/mutant/lizard_snout/icon_for(value)
 	return generate_lizard_side_shot(GLOB.snouts_list[value], "snout", include_snout = FALSE)
 
 /datum/preference/tricolor/mutant/lizard_snout
