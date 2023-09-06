@@ -3,7 +3,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
-	relevant_feature = "testicles"
+	modified_feature = "testicles"
 	supplemental_feature_key = "feature_testicles_color"
 
 /datum/preference/choiced/mutant/testicles/init_possible_values()
@@ -21,7 +21,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
-	relevant_feature = "testicles_color"
+	modified_feature = "testicles_color"
 	primary_feature_key = "feature_testicles"
 
 /datum/preference/tricolor/mutant/testicles/is_accessible(datum/preferences/preferences)

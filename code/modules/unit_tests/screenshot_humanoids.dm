@@ -7,6 +7,8 @@
 	lizard.dna.features["mcolor"] = "#009999"
 	lizard.dna.features["tail"] = "Light Tiger"
 	lizard.dna.features["tail_color"] = "#009999"
+	lizard.dna.features["spines"] = "Long"
+	lizard.dna.features["spines_color"] = "#009999"
 	lizard.dna.features["snout"] = "Sharp + Light"
 	lizard.dna.features["snout_color"] = "#009999"
 	lizard.dna.features["horns"] = "Simple"

@@ -3,7 +3,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
-	relevant_feature = "vagina"
+	modified_feature = "vagina"
 	supplemental_feature_key = "feature_vagina_color"
 
 /datum/preference/choiced/mutant/vagina/init_possible_values()
@@ -21,7 +21,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/vagina
-	relevant_feature = "vagina_color"
+	modified_feature = "vagina_color"
 	primary_feature_key = "feature_vagina"
 
 /datum/preference/tricolor/mutant/vagina/is_accessible(datum/preferences/preferences)

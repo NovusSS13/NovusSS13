@@ -4,7 +4,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Antennae"
 	should_generate_icons = TRUE
-	relevant_feature = "moth_antennae"
+	modified_feature = "moth_antennae"
 
 /datum/preference/choiced/mutant/moth_antennae/init_possible_values()
 	var/list/values = list()
@@ -33,7 +33,7 @@
 	main_feature_name = "Body markings"
 	should_generate_icons = TRUE
 	relevant_mutant_bodypart = "moth_markings"
-	relevant_feature = "moth_markings"
+	modified_feature = "moth_markings"
 
 /datum/preference/choiced/mutant/moth_markings/init_possible_values()
 	var/list/values = list()
@@ -84,7 +84,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Moth wings"
 	should_generate_icons = TRUE
-	relevant_feature = "moth_wings"
+	modified_feature = "moth_wings"
 
 /datum/preference/choiced/mutant/moth_wings/init_possible_values()
 	return possible_values_for_sprite_accessory_list_for_body_part(

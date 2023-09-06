@@ -19,6 +19,8 @@
 	var/wag_flags = NONE
 	/// The original owner of this tail
 	var/original_owner //Yay, snowflake code!
+	/// A reference to the paired_spines, since for some fucking reason tail spines are tied to the spines themselves.
+	var/obj/item/organ/spines/paired_spines
 
 /obj/item/organ/tail/Insert(mob/living/carbon/receiver, special, drop_if_replaced)
 	. = ..()
@@ -31,17 +33,40 @@
 
 		if(IS_WEAKREF_OF(receiver, original_owner))
 			receiver.clear_mood_event("wrong_tail_regained")
-		else if(type in receiver.dna.species.cosmetic_organs)
+		else if(receiver.dna.species.cosmetic_organs && (receiver.dna.species.cosmetic_organs[type] != SPRITE_ACCESSORY_NONE))
 			receiver.add_mood_event("wrong_tail_regained", /datum/mood_event/tail_regained_wrong)
+
+		paired_spines = receiver.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
+		RegisterSignal(receiver, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_for_spines))
+		RegisterSignal(receiver, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_for_spines_loss))
 
 /obj/item/organ/tail/Remove(mob/living/carbon/organ_owner, special, moving)
 	if(wag_flags & WAG_WAGGING)
 		wag(FALSE)
 	. = ..()
+	if(paired_spines)
+		paired_spines = null
 	UnregisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL)
-	if(type in organ_owner.dna.species.cosmetic_organs)
+	UnregisterSignal(organ_owner, COMSIG_CARBON_GAIN_ORGAN)
+	UnregisterSignal(organ_owner, COMSIG_CARBON_LOSE_ORGAN)
+	if(organ_owner.dna.species.cosmetic_organs[type] && (organ_owner.dna.species.cosmetic_organs[type] != SPRITE_ACCESSORY_NONE))
 		organ_owner.add_mood_event("tail_lost", /datum/mood_event/tail_lost)
 		organ_owner.add_mood_event("tail_balance_lost", /datum/mood_event/tail_balance_lost)
+
+/// Checks if the tail gained spines so we can pair!
+/obj/item/organ/tail/proc/check_for_spines(mob/living/carbon/source, obj/item/organ/organ)
+	SIGNAL_HANDLER
+
+	if(!istype(organ, /obj/item/organ/tail))
+		return
+	paired_spines = organ
+
+/// Checks if the tail LOST the spines!
+/obj/item/organ/tail/proc/check_for_spines_loss(mob/living/carbon/source, obj/item/organ/organ)
+	SIGNAL_HANDLER
+
+	if(paired_spines == organ)
+		paired_spines = null
 
 /obj/item/organ/tail/proc/wag(mob/user, start = TRUE, stop_after = 0)
 	if(!(wag_flags & WAG_ABLE))
@@ -60,12 +85,18 @@
 	var/datum/bodypart_overlay/mutant/tail/accessory = bodypart_overlay
 	wag_flags |= WAG_WAGGING
 	accessory.wagging = TRUE
+	if(paired_spines)
+		var/datum/bodypart_overlay/mutant/spines/spines_accessory = paired_spines.bodypart_overlay
+		spines_accessory.wagging = TRUE
 
 /// We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
 /obj/item/organ/tail/proc/stop_wag()
 	var/datum/bodypart_overlay/mutant/tail/accessory = bodypart_overlay
 	wag_flags &= ~WAG_WAGGING
 	accessory.wagging = FALSE
+	if(paired_spines)
+		var/datum/bodypart_overlay/mutant/spines/spines_accessory = paired_spines.bodypart_overlay
+		spines_accessory.wagging = FALSE
 
 /// Tail parent type (which is MONKEEEEEEEEEEE by default), with wagging functionality
 /datum/bodypart_overlay/mutant/tail
@@ -127,33 +158,6 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/lizard
 
 	wag_flags = WAG_ABLE
-
-	/// A reference to the paired_spines, since for some fucking reason tail spines are tied to the spines themselves.
-	var/obj/item/organ/spines/paired_spines
-
-/obj/item/organ/tail/lizard/Insert(mob/living/carbon/receiver, special, drop_if_replaced)
-	. = ..()
-	if(.)
-		paired_spines = ownerlimb.owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
-		paired_spines?.paired_tail = src
-
-/obj/item/organ/tail/lizard/Remove(mob/living/carbon/organ_owner, special, moving)
-	. = ..()
-	if(paired_spines)
-		paired_spines.paired_tail = null
-		paired_spines = null
-
-/obj/item/organ/tail/lizard/start_wag()
-	. = ..()
-	if(paired_spines)
-		var/datum/bodypart_overlay/mutant/spines/accessory = paired_spines.bodypart_overlay
-		accessory.wagging = TRUE
-
-/obj/item/organ/tail/lizard/stop_wag()
-	. = ..()
-	if(paired_spines)
-		var/datum/bodypart_overlay/mutant/spines/accessory = paired_spines.bodypart_overlay
-		accessory.wagging = FALSE
 
 /// Lizard tail bodypart overlay datum
 /datum/bodypart_overlay/mutant/tail/lizard

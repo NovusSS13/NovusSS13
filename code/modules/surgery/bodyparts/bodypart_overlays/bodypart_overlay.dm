@@ -63,6 +63,7 @@
 
 ///Check whether we can draw the overlays. You generally don't want lizard snouts to draw over an EVA suit
 /datum/bodypart_overlay/proc/can_draw_on_bodypart(mob/living/carbon/human/human)
+	SHOULD_CALL_PARENT(TRUE)
 	return TRUE
 
 ///Colorizes the limb it's inserted to, if required.

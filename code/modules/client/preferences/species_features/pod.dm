@@ -4,7 +4,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Hairstyle"
 	should_generate_icons = TRUE
-	relevant_feature = "pod_hair"
+	modified_feature = "pod_hair"
 
 /datum/preference/choiced/mutant/pod_hair/init_possible_values()
 	var/list/values = list()

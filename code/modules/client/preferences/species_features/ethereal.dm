@@ -4,7 +4,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Ethereal color"
 	should_generate_icons = TRUE
-	relevant_feature = "ethcolor"
+	modified_feature = "ethcolor"
 
 /datum/preference/choiced/mutant/ethereal_color/init_possible_values()
 	var/list/values = list()

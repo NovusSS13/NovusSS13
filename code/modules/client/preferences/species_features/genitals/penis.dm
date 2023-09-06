@@ -3,7 +3,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
-	relevant_feature = "penis"
+	modified_feature = "penis"
 	supplemental_feature_key = "feature_penis_color"
 
 /datum/preference/choiced/mutant/penis/init_possible_values()
@@ -21,7 +21,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
-	relevant_feature = "penis_size"
+	modified_feature = "penis_size"
 
 /datum/preference/choiced/mutant/penis_size/init_possible_values()
 	return assoc_to_keys(GLOB.penis_size_names)
@@ -44,7 +44,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
-	relevant_feature = "penis_color"
+	modified_feature = "penis_color"
 	primary_feature_key = "feature_penis"
 
 /datum/preference/tricolor/mutant/penis/is_accessible(datum/preferences/preferences)

@@ -33,7 +33,7 @@
 	main_feature_name = "Body markings"
 	should_generate_icons = TRUE
 	relevant_mutant_bodypart = "body_markings"
-	relevant_feature = "body_markings"
+	modified_feature = "body_markings"
 
 /datum/preference/choiced/mutant/lizard_body_markings/init_possible_values()
 	var/list/values = list()
@@ -67,7 +67,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_mutant_bodypart = "legs"
-	relevant_feature = "legs"
+	modified_feature = "legs"
 
 /datum/preference/choiced/mutant/lizard_legs/init_possible_values()
 	return assoc_to_keys_features(GLOB.legs_list)
@@ -79,7 +79,7 @@
 	main_feature_name = "Frills"
 	should_generate_icons = TRUE
 	relevant_cosmetic_organ = /obj/item/organ/frills
-	relevant_feature = "frills"
+	modified_feature = "frills"
 	supplemental_feature_key = "feature_lizard_frills_color"
 
 /datum/preference/choiced/mutant/lizard_frills/init_possible_values()
@@ -90,7 +90,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/frills
-	relevant_feature = "frills_color"
+	modified_feature = "frills_color"
 	primary_feature_key = "feature_lizard_frills"
 
 /datum/preference/tricolor/mutant/lizard_frills/get_global_feature_list()
@@ -102,8 +102,8 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Horns"
 	should_generate_icons = TRUE
-	relevant_cosmetic_organ = /obj/item/organ/horns
-	relevant_feature = "horns"
+	relevant_cosmetic_organ = /obj/item/organ/horns/lizard
+	modified_feature = "horns"
 	supplemental_feature_key = "feature_lizard_horns_color"
 
 /datum/preference/choiced/mutant/lizard_horns/init_possible_values()
@@ -113,8 +113,8 @@
 	savefile_key = "feature_lizard_horns_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
-	relevant_cosmetic_organ = /obj/item/organ/horns
-	relevant_feature = "horns_color"
+	relevant_cosmetic_organ = /obj/item/organ/horns/lizard
+	modified_feature = "horns_color"
 	primary_feature_key = "feature_lizard_horns"
 
 /datum/preference/tricolor/mutant/lizard_horns/get_global_feature_list()
@@ -126,8 +126,8 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Snout"
 	should_generate_icons = TRUE
-	relevant_cosmetic_organ = /obj/item/organ/snout
-	relevant_feature = "snout"
+	relevant_cosmetic_organ = /obj/item/organ/snout/lizard
+	modified_feature = "snout"
 	supplemental_feature_key = "feature_lizard_snout_color"
 
 /datum/preference/choiced/mutant/lizard_snout/init_possible_values()
@@ -137,8 +137,8 @@
 	savefile_key = "feature_lizard_snout_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
-	relevant_cosmetic_organ = /obj/item/organ/snout
-	relevant_feature = "snout_color"
+	relevant_cosmetic_organ = /obj/item/organ/snout/lizard
+	modified_feature = "snout_color"
 	primary_feature_key = "feature_lizard_snout"
 
 /datum/preference/tricolor/mutant/lizard_snout/get_global_feature_list()
@@ -149,7 +149,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/spines
-	relevant_feature = "spines"
+	modified_feature = "spines"
 	supplemental_feature_key = "feature_lizard_spines_color"
 
 /datum/preference/choiced/mutant/lizard_spines/init_possible_values()
@@ -164,7 +164,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/spines
-	relevant_feature = "spines_color"
+	modified_feature = "spines_color"
 	primary_feature_key = "feature_lizard_spines"
 
 /datum/preference/tricolor/mutant/lizard_spines/get_global_feature_list()
@@ -175,7 +175,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/tail/lizard
-	relevant_feature = "tail"
+	modified_feature = "tail"
 	supplemental_feature_key = "feature_lizard_tail_color"
 
 /datum/preference/choiced/mutant/lizard_tail/init_possible_values()
@@ -190,7 +190,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/tail/lizard
-	relevant_feature = "tail_color"
+	modified_feature = "tail_color"
 	primary_feature_key = "feature_lizard_tail"
 
 /datum/preference/tricolor/mutant/lizard_tail/get_global_feature_list()

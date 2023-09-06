@@ -14,10 +14,10 @@
 		"legs" = "Normal Legs",
 	)
 	cosmetic_organs = list(
-		/obj/item/organ/horns = "None",
-		/obj/item/organ/frills = "None",
-		/obj/item/organ/snout = "Round",
-		/obj/item/organ/spines = "None",
+		/obj/item/organ/horns/lizard = "None",
+		/obj/item/organ/frills/lizard = "None",
+		/obj/item/organ/snout/lizard = "Round",
+		/obj/item/organ/spines/lizard = "None",
 		/obj/item/organ/tail/lizard = "Smooth",
 		//bob i will kill you //i will kill you too null, you fucking dolt
 		/obj/item/organ/genital/penis = "None",
