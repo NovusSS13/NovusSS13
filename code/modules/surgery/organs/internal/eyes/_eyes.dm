@@ -42,8 +42,8 @@
 	var/eye_color_left = "" //set to a hex code to override a mob's left eye color
 	var/eye_color_right = "" //set to a hex code to override a mob's right eye color
 	var/eye_icon_state = "eyes"
-	var/old_eye_color_left = "fff"
-	var/old_eye_color_right = "fff"
+	var/old_eye_color_left = "#ffffff"
+	var/old_eye_color_right = "#ffffff"
 
 	/// Glasses cannot be worn over these eyes. Currently unused
 	var/no_glasses = FALSE

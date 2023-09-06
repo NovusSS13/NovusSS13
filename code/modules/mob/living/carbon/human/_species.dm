@@ -727,21 +727,21 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			if(!(HAS_TRAIT(source, TRAIT_HUSK)))
 				if(!forced_colour)
 					switch(accessory.color_src)
-						if(MUTANT_COLOR)
+						if(ORGAN_COLOR_MUTANT)
 							if(fixed_mut_color)
 								accessory_overlay.color = tricolor_to_hex(fixed_mut_color)
 							else
 								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
-						if(HAIR_COLOR)
+						if(ORGAN_COLOR_HAIR)
 							if(hair_color == "fixedmutcolor")
 								accessory_overlay.color = tricolor_to_hex(fixed_mut_color)
 							else if(hair_color == "mutcolor")
 								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
 							else
 								accessory_overlay.color = source.hair_color
-						if(FACIAL_HAIR_COLOR)
+						if(ORGAN_COLOR_FACIAL_HAIR)
 							accessory_overlay.color = source.facial_hair_color
-						if(EYE_COLOR)
+						if(ORGAN_COLOR_EYE)
 							accessory_overlay.color = source.eye_color_left
 				else
 					accessory_overlay.color = forced_colour
