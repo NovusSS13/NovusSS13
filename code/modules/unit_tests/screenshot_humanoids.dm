@@ -6,9 +6,13 @@
 	var/mob/living/carbon/human/lizard = allocate(/mob/living/carbon/human/dummy/consistent)
 	lizard.dna.features["mcolor"] = "#009999"
 	lizard.dna.features["tail"] = "Light Tiger"
+	lizard.dna.features["tail_color"] = "#009999"
 	lizard.dna.features["snout"] = "Sharp + Light"
+	lizard.dna.features["snout_color"] = "#009999"
 	lizard.dna.features["horns"] = "Simple"
+	lizard.dna.features["horns_color"] = COLOR_WHITE
 	lizard.dna.features["frills"] = "Aquatic"
+	lizard.dna.features["frills_color"] = "#009999"
 	lizard.dna.features["legs"] = "Normal Legs"
 	lizard.set_species(/datum/species/lizard)
 	lizard.equipOutfit(/datum/outfit/job/engineer, visualsOnly = TRUE)
