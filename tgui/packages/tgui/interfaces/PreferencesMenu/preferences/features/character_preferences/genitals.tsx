@@ -6,16 +6,16 @@ export const feature_penis: FeatureChoiced = {
 };
 
 export const feature_penis_size: FeatureChoiced = {
-  name: 'Penis Size',
+  name: 'Penis size',
   component: FeatureDropdownInput,
 };
 export const feature_penis_skintone: FeatureToggle = {
-  name: 'Penis Uses Skintone',
+  name: 'Penis uses skintone',
   component: CheckboxInput,
 };
 
 export const feature_penis_color: FeatureToggle = {
-  name: 'Penis Color',
+  name: 'Penis color',
   component: FeatureTriColorInput,
 };
 
@@ -24,12 +24,12 @@ export const feature_testicles: FeatureChoiced = {
   component: FeatureDropdownInput,
 };
 export const feature_testicles_skintone: FeatureToggle = {
-  name: 'Testicles Uses Skintone',
+  name: 'Testicles uses skintone',
   component: CheckboxInput,
 };
 
 export const feature_testicles_color: FeatureToggle = {
-  name: 'Testicles Color',
+  name: 'Testicles color',
   component: FeatureTriColorInput,
 };
 
@@ -38,12 +38,12 @@ export const feature_vagina: FeatureChoiced = {
   component: FeatureDropdownInput,
 };
 export const feature_vagina_skintone: FeatureToggle = {
-  name: 'Vagina Uses Skintone',
+  name: 'Vagina uses skintone',
   component: CheckboxInput,
 };
 
 export const feature_vagina_color: FeatureToggle = {
-  name: 'Vagina Color',
+  name: 'Vagina color',
   component: FeatureTriColorInput,
 };
 
@@ -53,16 +53,16 @@ export const feature_breasts: FeatureChoiced = {
 };
 
 export const feature_breasts_size: FeatureChoiced = {
-  name: 'Breasts Size',
+  name: 'Breasts size',
   component: FeatureDropdownInput,
 };
 
 export const feature_breasts_skintone: FeatureToggle = {
-  name: 'Breasts Use Skintone',
+  name: 'Breasts use skintone',
   component: CheckboxInput,
 };
 
 export const feature_breasts_color: FeatureToggle = {
-  name: 'Breasts Color',
+  name: 'Breasts color',
   component: FeatureTriColorInput,
 };

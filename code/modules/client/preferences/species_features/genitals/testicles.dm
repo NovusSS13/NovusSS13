@@ -39,7 +39,15 @@
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
 
 /datum/preference/toggle/testicles_uses_skintone/is_accessible(datum/preferences/preferences)
-	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/testicles) != SPRITE_ACCESSORY_NONE
+	. = ..()
+	if(!.)
+		return
+	if(preferences.read_preference(/datum/preference/choiced/mutant/testicles) == SPRITE_ACCESSORY_NONE)
+		return FALSE
+	if(preferences.read_preference(/datum/preference/toggle/testicles_uses_skintone))
+		var/datum/preference/preference = GLOB.preference_entries[/datum/preference/toggle/testicles_uses_skintone]
+		if(preference.is_accessible(preferences))
+			return FALSE
 
 /datum/preference/toggle/testicles_uses_skintone/create_informed_default_value(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
