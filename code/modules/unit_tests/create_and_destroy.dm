@@ -35,6 +35,7 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		/obj/item/organ/wings,
 		/obj/item/organ/wings/functional,
 		/obj/item/organ/wings/functional/moth,
+		/obj/item/organ/genital
 	)
 	//Say it with me now, type template
 	ignore += typesof(/obj/effect/mapping_helpers)
@@ -106,6 +107,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	// Can't spawn openspace above nothing, it'll get pissy at me
 	ignore += typesof(/turf/open/space/openspace)
 	ignore += typesof(/turf/open/openspace)
+	// Stupid Destroy() override, skiiip
+	ignore += typesof(/atom/movable/turf_liquid/immutable)
 
 	var/list/cached_contents = spawn_at.contents.Copy()
 	var/original_turf_type = spawn_at.type
