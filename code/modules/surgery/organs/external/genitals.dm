@@ -3,8 +3,6 @@
 	name = "genital"
 	desc = "A reproductive organ which is completely invalid and which you should not be seeing. Make a bug report or bother the cooders."
 
-	bodypart_overlay = /datum/bodypart_overlay/mutant/genital
-
 	visual = TRUE
 	process_life = FALSE
 	process_death = FALSE
