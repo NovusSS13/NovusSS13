@@ -9,7 +9,7 @@
 /datum/preference/choiced/mutant/pod_hair/init_possible_values()
 	return assoc_to_keys_features(GLOB.pod_hair_list)
 
-/datum/preference/choiced/pod_hair/icon_for(value)
+/datum/preference/choiced/mutant/pod_hair/icon_for(value)
 	var/datum/sprite_accessory/pod_hair = GLOB.pod_hair_list[value]
 
 	var/icon/icon_with_hair = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "pod_head_m")
