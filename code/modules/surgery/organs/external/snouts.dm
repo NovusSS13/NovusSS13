@@ -24,9 +24,10 @@
 	feature_color_key = "snout_color"
 
 /datum/bodypart_overlay/mutant/snout/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))
-		return TRUE
-	return FALSE
+	if((human.wear_mask?.flags_inv & HIDESNOUT) || (human.head?.flags_inv & HIDESNOUT))
+		return FALSE
+
+	return TRUE
 
 /datum/bodypart_overlay/mutant/snout/get_global_feature_list()
 	return GLOB.snouts_list

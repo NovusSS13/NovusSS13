@@ -26,6 +26,7 @@
 /datum/bodypart_overlay/mutant/frills/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.head?.flags_inv & HIDEEARS))
 		return TRUE
+
 	return FALSE
 
 /datum/bodypart_overlay/mutant/frills/get_global_feature_list()

@@ -116,6 +116,7 @@
 /datum/bodypart_overlay/mutant/tail/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(human.wear_suit?.flags_inv & HIDEJUMPSUIT)
 		return FALSE
+
 	return TRUE
 
 /obj/item/organ/tail/cat

@@ -80,9 +80,10 @@
 	feature_color_key = "ears_color"
 
 /datum/bodypart_overlay/mutant/ears/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEEARS))
-		return TRUE
-	return FALSE
+	if(human.head?.flags_inv & HIDEEARS)
+		return FALSE
+
+	return TRUE
 
 /datum/bodypart_overlay/mutant/ears/get_global_feature_list()
 	return GLOB.ears_list
