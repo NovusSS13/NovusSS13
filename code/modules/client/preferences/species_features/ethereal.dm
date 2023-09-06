@@ -9,7 +9,7 @@
 /datum/preference/choiced/mutant/ethereal_color/init_possible_values()
 	return assoc_to_keys(GLOB.color_list_ethereal)
 
-/datum/preference/choiced/ethereal_color/icon_for(value)
+/datum/preference/choiced/mutant/ethereal_color/icon_for(value)
 	var/static/icon/ethereal_base
 	if (isnull(ethereal_base))
 		ethereal_base = icon('icons/mob/species/ethereal/bodyparts.dmi', "ethereal_head")
