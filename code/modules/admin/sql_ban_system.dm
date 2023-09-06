@@ -1056,6 +1056,7 @@
 			if(GLOB.admin_datums[other_player_client.ckey] || GLOB.deadmins[other_player_client.ckey])
 				is_admin = TRUE
 			if(kick_banned_players && (!is_admin || (is_admin && applies_to_admins)))
+				GLOB.last_banned_key = other_player_client.key
 				qdel(other_player_client)
 
 /**
