@@ -5,7 +5,7 @@ import { Window } from '../layouts';
 export const RoboticsControlConsole = (props, context) => {
   const { act, data } = useBackend(context);
   const [tab, setTab] = useSharedState(context, 'tab', 1);
-  const { can_hack, can_detonate, cyborgs = [], drones = [] } = data;
+  const { can_hack, cyborgs = [], drones = [] } = data;
   return (
     <Window width={500} height={460}>
       <Window.Content scrollable>
@@ -25,13 +25,7 @@ export const RoboticsControlConsole = (props, context) => {
             Drones ({drones.length})
           </Tabs.Tab>
         </Tabs>
-        {tab === 1 && (
-          <Cyborgs
-            cyborgs={cyborgs}
-            can_hack={can_hack}
-            can_detonate={can_detonate}
-          />
-        )}
+        {tab === 1 && <Cyborgs cyborgs={cyborgs} can_hack={can_hack} />}
         {tab === 2 && <Drones drones={drones} />}
       </Window.Content>
     </Window>
@@ -39,7 +33,7 @@ export const RoboticsControlConsole = (props, context) => {
 };
 
 const Cyborgs = (props, context) => {
-  const { cyborgs, can_hack, can_detonate } = props;
+  const { cyborgs, can_hack } = props;
   const { act, data } = useBackend(context);
   if (!cyborgs.length) {
     return (
@@ -75,18 +69,16 @@ const Cyborgs = (props, context) => {
                 })
               }
             />
-            {!!can_detonate && (
-              <Button.Confirm
-                icon="bomb"
-                content="Detonate"
-                color="bad"
-                onClick={() =>
-                  act('killbot', {
-                    ref: cyborg.ref,
-                  })
-                }
-              />
-            )}
+            <Button.Confirm
+              icon="bomb"
+              content="Detonate"
+              color="bad"
+              onClick={() =>
+                act('killbot', {
+                  ref: cyborg.ref,
+                })
+              }
+            />
           </>
         }>
         <LabeledList>
