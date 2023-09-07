@@ -87,3 +87,6 @@
 
 	/// Height of the mob
 	VAR_PROTECTED/mob_height = HUMAN_HEIGHT_MEDIUM
+
+	/// custom speech verb that the player can set
+	var/custom_say_mod // not using read_preference so players cant change this mid round
