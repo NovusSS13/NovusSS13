@@ -35,6 +35,11 @@ export const custom_species_desc: Feature<string> = {
   component: FeatureTextInput,
 };
 
+export const custom_say_mod: Feature<string> = {
+  name: 'Custom Speech Verb',
+  component: FeatureShortTextInput,
+};
+
 export const ooc_notes: Feature<string> = {
   name: 'OOC Notes',
   component: FeatureTextInput,
