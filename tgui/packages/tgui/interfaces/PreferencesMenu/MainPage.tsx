@@ -1,5 +1,5 @@
 import { classes } from 'common/react';
-import { sendAct, useBackend, useLocalState } from '../../backend';
+import { sendAct, useBackend, useLocalState, useSharedState } from '../../backend';
 import { Autofocus, Box, Button, Flex, LabeledList, Popper, Stack, TrackOutsideClicks } from '../../components';
 import { createSetPreference, PreferencesMenuData, RandomSetting } from './data';
 import { CharacterPreview } from '../common/CharacterPreview';
@@ -11,15 +11,16 @@ import features from './preferences/features';
 import { FeatureChoicedServerData, FeatureValueInput } from './preferences/features/base';
 import { filterMap, sortBy } from 'common/collections';
 import { useRandomToggleState } from './useRandomToggleState';
+import { SearchBar } from '../Fabrication/SearchBar';
 
-const CLOTHING_CELL_SIZE = 48;
-const CLOTHING_SIDEBAR_ROWS = 9;
+export const CLOTHING_CELL_SIZE = 48;
+export const CLOTHING_SIDEBAR_ROWS = 9;
 
 const CLOTHING_SELECTION_CELL_SIZE = 48;
-const CLOTHING_SELECTION_WIDTH = 5.4;
+const CLOTHING_SELECTION_WIDTH = 10.8;
 const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 
-const CharacterControls = (props: {
+export const CharacterControls = (props: {
   handleRotate: () => void;
   handleOpenSpecies: () => void;
   gender: Gender;
@@ -76,6 +77,12 @@ const ChoicedSelection = (
 
   const { catalog, supplementalFeature, supplementalValue } = props;
 
+  const [searchText, setSearchText] = useSharedState(
+    context,
+    'search_text',
+    ''
+  );
+
   if (!catalog.icons) {
     return <Box color="red">Provided catalog had no icons!</Box>;
   }
@@ -118,6 +125,10 @@ const ChoicedSelection = (
               </Box>
             </Stack.Item>
 
+            <Stack.Item grow>
+              <SearchBar onSearchTextChanged={setSearchText} />
+            </Stack.Item>
+
             <Stack.Item>
               <Button color="red" onClick={props.onClose}>
                 X
@@ -130,8 +141,15 @@ const ChoicedSelection = (
           <Autofocus>
             <Flex wrap>
               {Object.entries(catalog.icons).map(([name, image], index) => {
+                if (
+                  searchText &&
+                  name.toLowerCase().indexOf(searchText.toLowerCase()) === -1
+                ) {
+                  return null;
+                }
                 return (
                   <Flex.Item
+                    mx="10px"
                     key={index}
                     basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
                     style={{
@@ -156,6 +174,7 @@ const ChoicedSelection = (
                         ])}
                       />
                     </Button>
+                    <Box textAlign="center">{name}</Box>
                   </Flex.Item>
                 );
               })}
@@ -343,7 +362,7 @@ const sortPreferences = sortBy<[string, unknown]>(([featureId, _]) => {
   return feature?.name;
 });
 
-const PreferenceList = (props: {
+export const PreferenceList = (props: {
   act: typeof sendAct;
   preferences: Record<string, unknown>;
   randomizations: Record<string, RandomSetting>;
@@ -516,7 +535,8 @@ export const MainPage = (
               />
             )}
 
-            <Stack height={`${CLOTHING_SIDEBAR_ROWS * CLOTHING_CELL_SIZE}px`}>
+            <Stack
+              height={`${CLOTHING_SIDEBAR_ROWS * CLOTHING_CELL_SIZE * 1.25}px`}>
               <Stack.Item fill>
                 <Stack vertical fill>
                   <Stack.Item>
@@ -555,8 +575,8 @@ export const MainPage = (
                 </Stack>
               </Stack.Item>
 
-              <Stack.Item fill width={`${CLOTHING_CELL_SIZE * 2 + 15}px`}>
-                <Stack height="100%" vertical wrap>
+              <Stack.Item fill width={`${CLOTHING_CELL_SIZE * 1.515}px`}>
+                <Stack height="100%" vertical overflowY="scroll">
                   {mainFeatures.map(([clothingKey, clothing]) => {
                     const catalog =
                       serverData &&
@@ -566,7 +586,7 @@ export const MainPage = (
 
                     return (
                       catalog && (
-                        <Stack.Item key={clothingKey} mt={0.5} px={0.5}>
+                        <Stack.Item key={clothingKey}>
                           <MainFeature
                             catalog={catalog}
                             currentValue={clothing}
@@ -599,12 +619,6 @@ export const MainPage = (
                     act={act}
                     randomizations={getRandomization(contextualPreferences)}
                     preferences={contextualPreferences}
-                  />
-
-                  <PreferenceList
-                    act={act}
-                    randomizations={getRandomization(nonContextualPreferences)}
-                    preferences={nonContextualPreferences}
                   />
                 </Stack>
               </Stack.Item>

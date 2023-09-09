@@ -47,35 +47,50 @@ export type FeatureValueProps<
 
 export const FeatureColorInput = (props: FeatureValueProps<string>) => {
   return (
-    <Button
-      onClick={() => {
-        props.act('set_color_preference', {
-          preference: props.featureId,
-        });
-      }}>
-      <Stack align="center" fill>
-        <Stack.Item>
-          <Box
-            style={{
-              background: props.value.startsWith('#')
-                ? props.value
-                : `#${props.value}`,
-              border: '2px solid white',
-              'box-sizing': 'content-box',
-              height: '11px',
-              width: '11px',
-              ...(props.shrink
-                ? {
-                  'margin': '1px',
-                }
-                : {}),
-            }}
-          />
-        </Stack.Item>
-
-        {!props.shrink && <Stack.Item>Change</Stack.Item>}
-      </Stack>
-    </Button>
+    <Stack align="center" fill>
+      <Stack.Item>
+        <Button
+          onClick={() => {
+            props.act('set_color_preference', {
+              preference: props.featureId,
+            });
+          }}>
+          <Stack align="center" fill>
+            <Stack.Item>
+              <Box
+                style={{
+                  background: props.value.startsWith('#')
+                    ? props.value
+                    : `#${props.value}`,
+                  border: '2px solid white',
+                  'box-sizing': 'content-box',
+                  height: '11px',
+                  width: '11px',
+                  ...(props.shrink
+                    ? {
+                      'margin': '1px',
+                    }
+                    : {}),
+                }}
+              />
+            </Stack.Item>
+            {!props.shrink && <Stack.Item>Change</Stack.Item>}
+          </Stack>
+        </Button>
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          tooltipPosition="top"
+          tooltip="Set to mutant colors"
+          onClick={() => {
+            props.act('set_color_mutant_colors', {
+              preference: props.featureId,
+            });
+          }}>
+          {(!props.shrink && <Box>Mutant</Box>) || <Box>M</Box>}
+        </Button>
+      </Stack.Item>
+    </Stack>
   );
 };
 
@@ -429,6 +444,20 @@ export const FeatureTriColorInput = (props: FeatureValueProps<string>) => {
       {value.length > 0 && buttonFromValue(0)}
       {value.length > 1 && buttonFromValue(1)}
       {value.length > 2 && buttonFromValue(2)}
+      {props.featureId !== 'feature_mcolor' && (
+        <Stack.Item>
+          <Button
+            tooltipPosition="top"
+            tooltip="Set to mutant colors"
+            onClick={() => {
+              props.act('set_tricolor_mutant_colors', {
+                preference: props.featureId,
+              });
+            }}>
+            {(!props.shrink && <Box>Mutant</Box>) || <Box>M</Box>}
+          </Button>
+        </Stack.Item>
+      )}
     </Stack>
   );
 };

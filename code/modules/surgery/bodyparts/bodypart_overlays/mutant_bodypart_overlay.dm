@@ -127,6 +127,8 @@
 	switch(color_source)
 		if(ORGAN_COLOR_LIMB)
 			draw_color = ownerlimb.draw_color
+		if(ORGAN_COLOR_OVERRIDE)
+			draw_color = override_color(ownerlimb.draw_color)
 		if(ORGAN_COLOR_DNA)
 			if(!ishuman(ownerlimb.owner))
 				return FALSE
@@ -142,8 +144,16 @@
 			//otherwise, we are cool
 			else
 				draw_color = dna_color
-		if(ORGAN_COLOR_OVERRIDE)
-			draw_color = override_color(ownerlimb.draw_color)
+		if(ORGAN_COLOR_MUTANT)
+			if(!ishuman(ownerlimb.owner))
+				return FALSE
+			var/dna_color = LAZYACCESS(ownerlimb.owner.dna.features, "mcolor")
+			//DNA still didn't give us an answer SOMEHOW? Use the drawcolor...
+			if(!dna_color)
+				draw_color = ownerlimb.draw_color
+			//otherwise, we are cool
+			else
+				draw_color = dna_color
 		if(ORGAN_COLOR_HAIR)
 			if(!ishuman(ownerlimb.owner))
 				return FALSE
@@ -164,6 +174,16 @@
 				draw_color = my_head.facial_hair_color
 			else
 				draw_color = human_owner.facial_hair_color
+		if(ORGAN_COLOR_EYE)
+			if(!ishuman(ownerlimb.owner))
+				return FALSE
+			var/mob/living/carbon/human/human_owner = ownerlimb.owner
+			var/obj/item/organ/eyes/eyes = human_owner.get_organ_slot(ORGAN_SLOT_EYES)
+			//if we have eyes, source the eye color from them, use owner's eyecolor var as a backup
+			if(eyes)
+				draw_color = eyes.eye_color_left
+			else
+				draw_color = human_owner.eye_color_left
 	//convert to a matrix color (or deconvert) if necessary
 	draw_color = validate_color(draw_color)
 	return TRUE
@@ -178,7 +198,7 @@
 			validated_color.len = 3
 			return sanitize_hexcolor_list(validated_color, 6, TRUE, "#FFFFFF")
 		//repeat the same color thrice otherwise
-		var/sanitized_color = sanitize_hexcolor(given_color, include_crunch = TRUE)
+		var/sanitized_color = sanitize_hexcolor(given_color, 6, TRUE, "#FFFFFF")
 		return list(sanitized_color, sanitized_color, sanitized_color)
 	//return a string otherwise
 	//take and sanitize only the first color if it's a matrix

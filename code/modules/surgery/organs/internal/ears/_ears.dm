@@ -80,9 +80,10 @@
 	feature_color_key = "ears_color"
 
 /datum/bodypart_overlay/mutant/ears/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEEARS))
-		return TRUE
-	return FALSE
+	if(human.head?.flags_inv & HIDEEARS)
+		return FALSE
+
+	return TRUE
 
 /datum/bodypart_overlay/mutant/ears/get_global_feature_list()
 	return GLOB.ears_list
@@ -122,7 +123,9 @@
 
 	visual = TRUE
 	dna_block = DNA_EARS_BLOCK
-	bodypart_overlay = /datum/bodypart_overlay/mutant/ears
+	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/felinid
+
+/datum/bodypart_overlay/mutant/ears/felinid
 
 /obj/item/organ/ears/penguin
 	name = "penguin ears"

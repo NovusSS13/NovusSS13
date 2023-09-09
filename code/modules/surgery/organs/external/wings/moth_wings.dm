@@ -85,9 +85,10 @@
 	return GLOB.moth_wings_list
 
 /datum/bodypart_overlay/mutant/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
-		return TRUE
-	return FALSE
+	if(human.wear_suit?.flags_inv & HIDEMUTWINGS)
+		return FALSE
+
+	return TRUE
 
 /datum/bodypart_overlay/mutant/wings/moth/get_base_icon_state()
 	return burnt ? burn_datum.icon_state : sprite_datum.icon_state

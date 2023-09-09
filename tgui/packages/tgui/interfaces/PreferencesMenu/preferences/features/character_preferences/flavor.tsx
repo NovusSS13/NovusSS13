@@ -1,27 +1,27 @@
 import { Feature, FeatureTextInput, FeatureShortTextInput } from '../base';
 
-//i don't get why people have one of these per file
+// i don't get why people have one of these per file
 export const flavor_text: Feature<string> = {
   name: 'Flavor Text',
-  description: 'The flavor text of your character.',
+  description: 'The flavor text of your character that gets shown normally.',
   component: FeatureTextInput,
 };
 
 export const cyborg_flavor_text: Feature<string> = {
   name: 'Flavor Text (Cyborg)',
-  description: 'The flavor text of your character, when a cyborg.',
+  description: 'The flavor text of your character, when you are a cyborg.',
   component: FeatureTextInput,
 };
 
 export const ai_flavor_text: Feature<string> = {
   name: 'Flavor Text (AI)',
-  description: 'The flavor text of your character, when an AI.',
+  description: 'The flavor text of your character, when you are an AI.',
   component: FeatureTextInput,
 };
 
 export const naked_flavor_text: Feature<string> = {
-  name: 'Naked Flavor Text',
-  description: 'The flavor text of your character, shown when naked.',
+  name: 'Flavor Text (Naked)',
+  description: 'The flavor text of your character that gets shown when naked.',
   component: FeatureTextInput,
 };
 

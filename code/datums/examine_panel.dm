@@ -109,7 +109,7 @@
 	if(!ui)
 		examine_panel_screen.display_to(user)
 		user.client.register_map_obj(examine_panel_screen)
-		ui = new(user, src, "HeadshotPanel")
+		ui = new(user, src, "ExaminePanel")
 		ui.open()
 
 /datum/examine_panel/proc/on_qdel()

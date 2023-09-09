@@ -3,11 +3,12 @@
  */
 
 /datum/preference/choiced/mutant
-	abstract_type = /datum/preference/choiced/mutant
 	/// Feature that will be changed on apply_on_human()
-	var/relevant_feature
+	var/modified_feature
 	/// Supplemental feature, generally used for coloring
 	var/supplemental_feature_key
+
+	abstract_type = /datum/preference/choiced/mutant
 
 /datum/preference/choiced/mutant/compile_constant_data()
 	var/list/data = ..()
@@ -26,19 +27,20 @@
 
 /datum/preference/choiced/mutant/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	// Doesn't make sense
-	if(!relevant_feature)
+	if(!modified_feature)
 		return
 	// Mutant preferences do not apply if not accessible
 	else if(!is_accessible(prefs))
 		return
-	target.dna.features[relevant_feature] = value
+	target.dna.features[modified_feature] = value
 
 /datum/preference/tricolor/mutant
-	abstract_type = /datum/preference/tricolor/mutant
 	/// Feature that will be changed on apply_on_human()
-	var/relevant_feature
+	var/modified_feature
 	/// What we use to display the right amount of colors, basically the feature that actually uses this color
 	var/primary_feature_key
+
+	abstract_type = /datum/preference/tricolor/mutant
 
 /datum/preference/tricolor/mutant/compile_ui_data(mob/user, value, datum/preferences/preferences)
 	// if this is not a normal color and there is no associated primary feature, i'm assuming you want to display all three colors
@@ -65,12 +67,12 @@
 
 /datum/preference/tricolor/mutant/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	// Doesn't make sense
-	if(!relevant_feature)
+	if(!modified_feature)
 		return
 	// Mutant preferences do not apply if inaccessible
 	else if(!is_accessible(prefs))
 		return
-	target.dna.features[relevant_feature] = value
+	target.dna.features[modified_feature] = value
 
 /// Feature list we use to fetch a sprite accessory, should be overriden by subtypes
 /datum/preference/tricolor/mutant/proc/get_global_feature_list()

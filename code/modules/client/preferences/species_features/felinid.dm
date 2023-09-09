@@ -4,7 +4,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
 	relevant_cosmetic_organ = /obj/item/organ/tail/cat
-	relevant_feature = "tail"
+	modified_feature = "tail"
 	supplemental_feature_key = "feature_felinid_tail_color"
 
 /datum/preference/choiced/mutant/felinid_tail/init_possible_values()
@@ -15,7 +15,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/tail/cat
-	relevant_feature = "tail_color"
+	modified_feature = "tail_color"
 	primary_feature_key = "feature_felinid_tail"
 
 /datum/preference/tricolor/mutant/felinid_tail/get_global_feature_list()
@@ -27,7 +27,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
 	relevant_cosmetic_organ = /obj/item/organ/ears/cat
-	relevant_feature = "ears"
+	modified_feature = "ears"
 	supplemental_feature_key = "feature_felinid_ears_color"
 
 /datum/preference/choiced/mutant/felinid_ears/init_possible_values()
@@ -42,7 +42,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_cosmetic_organ = /obj/item/organ/ears/cat
-	relevant_feature = "ears_color"
+	modified_feature = "ears_color"
 	primary_feature_key = "feature_felinid_ears"
 
 /datum/preference/tricolor/mutant/felinid_ears/get_global_feature_list()

@@ -64,7 +64,7 @@
 	 * Currently only used by mutantparts so don't worry about hair and stuff.
 	 * This is the source that this accessory will get its color from. Default is MUTCOLOR, but can also be HAIR, FACEHAIR, EYECOLOR and 0 if none.
 	 */
-	var/color_src = MUTANT_COLOR
+	var/color_src = ORGAN_COLOR_MUTANT
 	/// Amount of colors we use actually use for coloring, from 1 to 3
 	var/color_amount = 1
 	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
@@ -1775,7 +1775,7 @@
 	name = "Cat"
 	icon = 'icons/mob/species/human/cat_features.dmi'
 	icon_state = "default"
-	color_src = HAIR_COLOR
+	color_src = ORGAN_COLOR_HAIR
 	feature_suffix = "cat"
 
 /datum/sprite_accessory/tails/monkey
@@ -1891,14 +1891,14 @@
 	name = "Cat"
 	icon_state = "cat"
 	hasinner = TRUE
-	color_src = HAIR_COLOR
+	color_src = ORGAN_COLOR_HAIR
 
 /datum/sprite_accessory/ears/fox
 	icon = 'icons/mob/species/human/fox_features.dmi'
 	name = "Fox"
 	icon_state = "fox"
 	hasinner = TRUE
-	color_src = HAIR_COLOR
+	color_src = ORGAN_COLOR_HAIR
 	locked = TRUE
 
 /datum/sprite_accessory/wings/none
@@ -2117,7 +2117,7 @@
 
 /datum/sprite_accessory/caps
 	icon = 'icons/mob/species/mush_cap.dmi'
-	color_src = HAIR_COLOR
+	color_src = ORGAN_COLOR_HAIR
 	em_block = TRUE
 
 /datum/sprite_accessory/caps/round

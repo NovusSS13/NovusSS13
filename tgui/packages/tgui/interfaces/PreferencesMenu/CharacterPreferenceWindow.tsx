@@ -1,22 +1,25 @@
 import { exhaustiveCheck } from 'common/exhaustive';
 import { useBackend, useLocalState } from '../../backend';
-import { Button, Stack } from '../../components';
+import { Stack, Flex, Dropdown } from '../../components';
 import { Window } from '../../layouts';
 import { PreferencesMenuData } from './data';
 import { PageButton } from './PageButton';
 import { AntagsPage } from './AntagsPage';
 import { JobsPage } from './JobsPage';
 import { MainPage } from './MainPage';
+import { BackgroundPage } from './BackgroundPage';
 import { SpeciesPage } from './SpeciesPage';
 import { QuirksPage } from './QuirksPage';
 
 enum Page {
   Antags,
   Main,
+  Background,
   Jobs,
   Species,
   Quirks,
 }
+
 
 export const CharacterPreferenceWindow = (props, context) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
@@ -41,6 +44,11 @@ export const CharacterPreferenceWindow = (props, context) => {
         <MainPage openSpecies={() => setCurrentPage(Page.Species)} />
       );
 
+      break;
+    case Page.Background:
+      pageContents = (
+        <BackgroundPage openSpecies={() => setCurrentPage(Page.Species)} />
+      );
       break;
     case Page.Species:
       pageContents = (
@@ -110,6 +118,15 @@ export const CharacterPreferenceWindow = (props, context) => {
                   setPage={setCurrentPage}
                   otherActivePages={[Page.Species]}>
                   Character
+                </PageButton>
+              </Stack.Item>
+
+              <Stack.Item grow>
+                <PageButton
+                  currentPage={currentPage}
+                  page={Page.Background}
+                  setPage={setCurrentPage}>
+                  Background
                 </PageButton>
               </Stack.Item>
 

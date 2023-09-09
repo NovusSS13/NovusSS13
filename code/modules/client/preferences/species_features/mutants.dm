@@ -2,8 +2,7 @@
 	savefile_key = "feature_mcolor"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_inherent_trait = TRAIT_MUTANT_COLORS
-	relevant_feature = "mcolor"
+	modified_feature = "mcolor"
 
 /datum/preference/tricolor/mutant/mutant_color/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
