@@ -87,6 +87,7 @@
 		if(tongue)
 			var/obj/item/organ/tongue/new_tongue = new H.dna.species.mutanttongue ()
 			new_tongue.Insert(H)
+			tongue.apply_custom_say_mod(H) // set custom say mod if we have to
 		var/obj/item/organ/eyes/eyes = locate(/obj/item/organ/eyes/snail) in H.organs
 		if(eyes)
 			var/obj/item/organ/eyes/new_eyes = new H.dna.species.mutanteyes ()

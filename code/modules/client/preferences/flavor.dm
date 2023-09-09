@@ -91,9 +91,7 @@
 	maximum_value_length = 32 // why TF would you need a speech verb longer than this
 
 /datum/preference/text/custom_say_mod/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
-	if(length(value) == 0)
-		return
-	target.custom_say_mod = value
+	return FALSE // trying to apply the tongue shit here just bugs out, we have to do it through apply_prefs_job
 
 /datum/preference/text/ooc_notes
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
