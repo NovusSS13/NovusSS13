@@ -189,20 +189,14 @@
 /obj/item/organ/tongue/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutanttongue
 
-/// helper for doing all the shit for applying custom say mods
-/obj/item/organ/tongue/proc/apply_custom_say_mod(mob/living/carbon/tongue_owner, client/carbon_client)
-	var/client/tongue_client = carbon_client
-
-	// if carbon_client isnt set, get the tongue_client from tongue_owner instead
-	if(!tongue_client)
-		if(!tongue_owner.client) // if not even tongue_owner has a client, shits hit the bed
-			return
-		tongue_client = tongue_owner.client
-
+/// helper for doing all the shit for applying custom say mods (for retarded edge cases where we want to generate a "default" tongue)
+/obj/item/organ/tongue/proc/apply_custom_say_mod_by_owner()
+	if(!owner.client)
+		return
 	// now we actually set the shit for the tongue
-	if(tongue_client.prefs.read_preference(/datum/preference/text/custom_say_mod))
-		name = "[tongue_owner.real_name]'s tongue"
-		say_mod = tongue_client.prefs.read_preference(/datum/preference/text/custom_say_mod)
+	if(owner.client.prefs.read_preference(/datum/preference/text/custom_say_mod))
+		name = "[owner.real_name]'s tongue"
+		say_mod = owner.client.prefs.read_preference(/datum/preference/text/custom_say_mod)
 
 /obj/item/organ/tongue/lizard
 	name = "forked tongue"

@@ -375,10 +375,6 @@
 			used_neworgan = TRUE
 			new_organ.set_organ_damage(new_organ.maxHealth * (1 - health_pct))
 			new_organ.Insert(organ_holder, special = TRUE, drop_if_replaced = FALSE)
-			// set a custom speech verb for the player
-			if(slot == (ORGAN_SLOT_TONGUE))
-				var/obj/item/organ/tongue/new_tongue = new_organ
-				new_tongue.apply_custom_say_mod(organ_holder)
 
 		if(!used_neworgan)
 			QDEL_NULL(new_organ)

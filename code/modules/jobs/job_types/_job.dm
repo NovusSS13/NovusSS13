@@ -502,12 +502,6 @@
 			real_name = species.random_name(gender, TRUE)
 	dna.update_dna_identity()
 
-	// set a custom speech verb for the spawning player
-	// really wish i could just only put this in regenerate_organs, but the mobs client hasnt been set yet when thats first called so i have to throw it here
-	if(get_organ_slot(ORGAN_SLOT_TONGUE))
-		var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
-		tongue.apply_custom_say_mod(src, player_client)
-
 
 /mob/living/silicon/ai/apply_prefs_job(client/player_client, datum/job/job)
 	if(GLOB.current_anonymous_theme)
