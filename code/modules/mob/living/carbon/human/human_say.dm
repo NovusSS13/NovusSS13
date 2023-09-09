@@ -17,7 +17,7 @@
 		else
 			verb_say = "gurgles"
 	else
-		verb_say = tongue.temp_say_mod || custom_say_mod || tongue.say_mod
+		verb_say = tongue.temp_say_mod || tongue.say_mod
 	return ..()
 
 /mob/living/carbon/human/GetVoice()
