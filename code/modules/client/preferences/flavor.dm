@@ -85,13 +85,16 @@
 
 /datum/preference/text/custom_say_mod
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	priority = PREFERENCE_PRIORITY_BODYPARTS
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "custom_say_mod"
 
-	maximum_value_length = 32 // why TF would you need a speech verb longer than this
+	maximum_value_length = 16 // why TF would you need a speech verb longer than this
 
 /datum/preference/text/custom_say_mod/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
-	return FALSE // trying to apply the tongue shit here just bugs out, we have to do it through apply_prefs_job
+	if(target.get_organ_slot(ORGAN_SLOT_TONGUE))
+		var/obj/item/organ/tongue/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)
+		tongue.say_mod = value
 
 /datum/preference/text/ooc_notes
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
