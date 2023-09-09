@@ -382,6 +382,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		return FALSE
 
 	save_character(char_key, ++used_slot_amount[char_key])
+	return TRUE
 
 /datum/preferences/proc/sanitize_be_special(list/input_be_special)
 	var/list/output = list()
