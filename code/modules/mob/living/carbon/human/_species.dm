@@ -1,10 +1,3 @@
-GLOBAL_LIST_EMPTY(roundstart_races)
-///List of all roundstart languages by path
-GLOBAL_LIST_EMPTY(roundstart_languages)
-
-/// An assoc list of species types to their features (from get_features())
-GLOBAL_LIST_EMPTY(features_by_species)
-
 /**
  * # species datum
  *

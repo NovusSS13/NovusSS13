@@ -11,7 +11,7 @@
 	/// Cooldown that tracks the time between attempts to download the savefile.
 	COOLDOWN_DECLARE(download_cooldown)
 
-GENERAL_PROTECT_DATUM(/datum/json_savefile)
+//GENERAL_PROTECT_DATUM(/datum/json_savefile)
 
 /datum/json_savefile/New(path)
 	src.path = path

@@ -18,31 +18,6 @@ enum Page {
   Quirks,
 }
 
-const CharacterProfiles = (props: {
-  activeSlot: number;
-  onClick: (index: number) => void;
-  profiles: (string | null)[];
-}) => {
-  const { profiles } = props;
-
-  return (
-    <Stack justify="center" wrap>
-      {profiles.map((profile, slot) => (
-        <Stack.Item key={slot}>
-          <Button
-            selected={slot === props.activeSlot}
-            onClick={() => {
-              props.onClick(slot);
-            }}
-            fluid>
-            {profile ?? 'New Character'}
-          </Button>
-        </Stack.Item>
-      ))}
-    </Stack>
-  );
-};
-
 export const CharacterPreferenceWindow = (props, context) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
 
@@ -85,15 +60,37 @@ export const CharacterPreferenceWindow = (props, context) => {
       <Window.Content scrollable>
         <Stack vertical fill>
           <Stack.Item>
-            <CharacterProfiles
-              activeSlot={data.active_slot - 1}
-              onClick={(slot) => {
-                act('change_slot', {
-                  slot: slot + 1,
-                });
-              }}
-              profiles={data.character_profiles}
-            />
+            <Stack justify="center" wrap>
+              {data.character_profiles['main'].map((profile, slot_id) => (
+                <Stack.Item key={slot_id}>
+                  <Button
+                    selected={slot_id === data.active_slot_id - 1}
+                    onClick={() => {
+                      act('change_slot', {
+                        slot_key: 'main',
+                        slot_id: slot_id + 1,
+                      });
+                    }}
+                    fluid>
+                    {profile ?? 'FUNKY CODE, FUCK.'}
+                  </Button>
+                </Stack.Item>
+              ))}
+              {data.character_profiles['main'].length < data.max_slots_main && (
+                <Stack.Item>
+                  <Button
+                    onClick={() => {
+                      act('new_slot', {
+                        slot_key: 'main',
+                      });
+                    }}
+                    content="+"
+                    fluid
+                  />
+                </Stack.Item>
+              )}
+              <Stack.Item></Stack.Item>
+            </Stack>
           </Stack.Item>
 
           {!data.content_unlocked && (

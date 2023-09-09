@@ -167,12 +167,8 @@
  * Makes a ghost into a spider based on the type of egg cluster.
  *
  * Allows a ghost to get a prompt to use the egg cluster to become a spider.
- *
- * Arguments:
- * * user - The ghost attempting to become a spider
- * * newname - If set, renames the mob to this name
  */
-/obj/effect/mob_spawn/ghost_role/spider/create(mob/user, newname)
+/obj/effect/mob_spawn/ghost_role/spider/create(mob/user, load_custom_char)
 	var/list/spider_list = list()
 	var/list/display_spiders = list()
 	for(var/choice in potentialspawns)

@@ -123,7 +123,7 @@ export enum Window {
 
 export type PreferencesMenuData = {
   character_preview_view: string;
-  character_profiles: (string | null)[];
+  character_profiles: Record<string, string[] | null>[];
 
   character_preferences: {
     clothing: Record<string, string>;
@@ -168,7 +168,11 @@ export type PreferencesMenuData = {
   antag_days_left?: Record<string, number>;
   selected_antags: string[];
 
-  active_slot: number;
+  active_slot_id: number;
+  active_slot_key: number;
+  max_slots_main: number;
+  max_slots_ghost: number;
+
   name_to_use: string;
 
   window: Window;

@@ -215,26 +215,6 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("`apply_to_human()` was not implemented for [type]!")
 
-/// Returns which savefile to use for a given savefile identifier
-/datum/preferences/proc/get_save_data_for_savefile_identifier(savefile_identifier)
-	RETURN_TYPE(/list)
-
-	if (!parent)
-		return null
-	if(!savefile)
-		CRASH("Attempted to get the savedata for [savefile_identifier] of [parent] without a savefile. This should have been handled by load_preferences()")
-
-	// Both of these will cache savefiles, but only for a tick.
-	// This is because storing a savefile will lock it, causing later issues down the line.
-	// Do not change them to addtimer, since the timer SS might not be running at this time.
-	switch (savefile_identifier)
-		if (PREFERENCE_CHARACTER)
-			return savefile.get_entry("character[default_slot]")
-		if (PREFERENCE_PLAYER)
-			return savefile.get_entry()
-		else
-			CRASH("Unknown savefile identifier [savefile_identifier]")
-
 /// Read a /datum/preference type and return its value.
 /// This will write to the savefile if a value was not found with the new value.
 /datum/preferences/proc/read_preference(preference_type)
@@ -254,7 +234,8 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	if (preference_type in value_cache)
 		return value_cache[preference_type]
 
-	var/value = preference_entry.read(get_save_data_for_savefile_identifier(preference_entry.savefile_identifier), src)
+	var/savefile_entry = savefile.get_entry(preference_entry.savefile_identifier == PREFERENCE_CHARACTER ? "character_main_[current_char_id]" : null)
+	var/value = preference_entry.read(savefile_entry, src)
 	if (isnull(value))
 		value = preference_entry.create_informed_default_value(src)
 		if (write_preference(preference_entry, value))
@@ -267,12 +248,12 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /// Set a /datum/preference entry.
 /// Returns TRUE for a successful preference application.
 /// Returns FALSE if it is invalid.
-/datum/preferences/proc/write_preference(datum/preference/preference, preference_value)
-	var/save_data = get_save_data_for_savefile_identifier(preference.savefile_identifier)
-	var/new_value = preference.deserialize(preference_value, src)
-	var/success = preference.write(save_data, new_value)
+/datum/preferences/proc/write_preference(datum/preference/preference_entry, preference_value)
+	var/save_data = savefile.get_entry(preference_entry.savefile_identifier == PREFERENCE_CHARACTER ? "character_main_[current_char_id]" : null)
+	var/new_value = preference_entry.deserialize(preference_value, src)
+	var/success = preference_entry.write(save_data, new_value)
 	if (success)
-		value_cache[preference.type] = new_value
+		value_cache[preference_entry.type] = new_value
 	return success
 
 /// Will perform an update on the preference, but not write to the savefile.

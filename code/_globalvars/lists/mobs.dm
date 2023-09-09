@@ -40,6 +40,26 @@ GLOBAL_LIST_EMPTY(bots_list)
 GLOBAL_LIST_EMPTY(aiEyes)
 GLOBAL_LIST_EMPTY(suit_sensors_list) //all people with suit sensors on
 
+GLOBAL_LIST_EMPTY(roundstart_races)
+///List of all roundstart languages by path
+GLOBAL_LIST_EMPTY(roundstart_languages)
+
+/// An assoc list of species types to their features (from get_features())
+GLOBAL_LIST_EMPTY(features_by_species)
+
+GLOBAL_LIST_INIT(offstation_customization_by_save_key, init_offstation_customization()) // i hate this name
+GLOBAL_LIST_INIT(valid_char_savekeys, init_valid_savekeys())
+
+/proc/init_offstation_customization()
+	. = list()
+	for(var/datum/offstation_customization/subtype as anything in subtypesof(/datum/offstation_customization))
+		.[initial(subtype.savefile_key)] = new subtype
+
+/proc/init_valid_savekeys()
+	. = list("main")
+	for(var/key in GLOB.offstation_customization_by_save_key)
+		. += key
+
 /// All alive mobs with clients.
 GLOBAL_LIST_EMPTY(alive_player_list)
 

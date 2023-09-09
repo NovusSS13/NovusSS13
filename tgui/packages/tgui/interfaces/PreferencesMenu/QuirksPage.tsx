@@ -131,7 +131,7 @@ export const QuirksPage = (props, context) => {
 
   const [selectedQuirks, setSelectedQuirks] = useLocalState(
     context,
-    `selectedQuirks_${data.active_slot}`,
+    `selectedQuirks_${data.active_slot_key}_${data.active_slot_id}`,
     data.selected_quirks
   );
 

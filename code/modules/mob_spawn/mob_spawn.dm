@@ -39,9 +39,9 @@
 		faction = string_list(faction)
 
 /// Creates whatever mob the spawner makes. Return FALSE if we want to exit from here without doing that, returning NULL will be logged to admins.
-/obj/effect/mob_spawn/proc/create(mob/mob_possessor, newname)
+/obj/effect/mob_spawn/proc/create(mob/mob_possessor, load_custom_char)
 	var/mob/living/spawned_mob = new mob_type(get_turf(src)) //living mobs only
-	name_mob(spawned_mob, newname)
+	name_mob(spawned_mob)
 	special(spawned_mob, mob_possessor)
 	equip(spawned_mob)
 	return spawned_mob
@@ -137,6 +137,8 @@
 	var/role_ban = ROLE_LAVALAND
 	/// Typepath indicating the kind of job datum this ghost role will have. PLEASE inherit this with a new job datum, it's not hard. jobs come with policy configs.
 	var/spawner_job_path = /datum/job/ghost_role
+	/// Typepath of the appropriate offstation_customization datum. Null if you can't use a custom character.
+	var/customization_type = null
 
 /obj/effect/mob_spawn/ghost_role/Initialize(mapload)
 	. = ..()
@@ -206,7 +208,7 @@
  * If you are manually forcing a player into this mob spawn,
  * you should be using this and not directly calling [proc/create].
  */
-/obj/effect/mob_spawn/ghost_role/proc/create_from_ghost(mob/dead/user)
+/obj/effect/mob_spawn/ghost_role/proc/create_from_ghost(mob/dead/user, load_custom_char = FALSE)
 	ASSERT(istype(user))
 	var/user_ckey = user.ckey // We need to do it before everything else, because after the create() the ckey will already have been transfered.
 
@@ -214,7 +216,7 @@
 	uses -= 1 // Remove a use before trying to spawn to prevent strangeness like the spawner trying to spawn more mobs than it should be able to
 	user.mind = null // dissassociate mind, don't let it follow us to the next life
 
-	var/created = create(user)
+	var/created = create(user, load_custom_char)
 	LAZYREMOVE(ckeys_trying_to_spawn, user_ckey) // We do this AFTER the create() so that we're basically sure that the user won't be in their ghost body anymore, so they can't click on the spawner again.
 
 	if(!created)
@@ -223,14 +225,17 @@
 		if(isnull(created)) // If we explicitly return FALSE instead of just not returning a mob, we don't want to spam the admins
 			CRASH("An instance of [type] didn't return anything when creating a mob, this might be broken!")
 
-	check_uses() // Now we check if the spawner should delete itself or not
+	if(!uses && deletes_on_zero_uses_left)
+		qdel(src)
 
 	return created
 
-/obj/effect/mob_spawn/ghost_role/create(mob/mob_possessor, newname)
+/obj/effect/mob_spawn/ghost_role/create(mob/mob_possessor, load_custom_char)
 	if(!mob_possessor.key) // This is in the scenario that the server is somehow lagging, or someone fucked up their code, and we try to spawn the same person in twice. We'll simply not spawn anything and CRASH(), so that we report what happened.
 		CRASH("Attempted to create an instance of [type] with a mob that had no ckey attached to it, which isn't supported by ghost role spawners!")
 
+	if(load_custom_char)
+		mob_possessor.client.prefs.apply_prefs_to()
 	return ..()
 
 
@@ -253,11 +258,6 @@
 		if(important_text != "")
 			output_message += "\n[span_userdanger("[important_text]")]"
 		to_chat(spawned_mob, output_message)
-
-/// Checks if the spawner has zero uses left, if so, delete yourself... NOW!
-/obj/effect/mob_spawn/ghost_role/proc/check_uses()
-	if(!uses && deletes_on_zero_uses_left)
-		qdel(src)
 
 ///override this to add special spawn conditions to a ghost role
 /obj/effect/mob_spawn/ghost_role/proc/allow_spawn(mob/user, silent = FALSE)
