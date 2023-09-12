@@ -24,10 +24,13 @@
 	 * (such as no accent, hissing, or whatever)
 	 */
 	var/list/languages_native
-	///changes the verbage of how you speak. (Permille -> says <-, "I just used a verb!")
-	///i hate to say it, but because of sign language, this may have to be a component. and we may have to do some insane shit like putting a component on a component
+	/**
+	 * changes the verbage of how you speak. (Permille -> says <-, "I just used a verb!")
+	 * i hate to say it, but because of sign language, this may have to be a component.
+	 * and we may have to do some insane shit like putting a component on a component.
+	 */
 	var/say_mod = "says"
-	///for temporary overrides of the above variable.
+	/// For temporary overrides of the above variable - This is fucking dumb.
 	var/temp_say_mod = ""
 
 	/// Whether the owner of this tongue can taste anything. Being set to FALSE will mean no taste feedback will be provided.
@@ -186,17 +189,23 @@
 /obj/item/organ/tongue/could_speak_language(datum/language/language_path)
 	return (language_path in languages_possible)
 
-/obj/item/organ/tongue/get_availability(datum/species/owner_species, mob/living/owner_mob)
-	return owner_species.mutanttongue
+// Ensures that prefs are kept properly when a tongue is replaced, if necessary
+/obj/item/organ/tongue/before_organ_replacement(obj/item/organ/replacement)
+	. = ..()
+	if(!istype(replacement, type))
+		return
 
-/**
- * Helper that resets some variables of the tongue to match the prefs of a given mob
- * Should be used whenever we want to restore the "original" tongue of a mob
- */
-/obj/item/organ/tongue/proc/apply_prefs(datum/preferences/preferences)
+	var/datum/preferences/preferences = owner.client?.prefs
+	if(!preferences)
+		return
+
+	var/obj/item/organ/tongue/speak_no_ill = replacement
 	var/custom_say_mod = preferences.read_preference(/datum/preference/text/custom_say_mod)
 	if(custom_say_mod)
-		say_mod = custom_say_mod
+		speak_no_ill.say_mod = custom_say_mod
+
+/obj/item/organ/tongue/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	return owner_species.mutanttongue
 
 /obj/item/organ/tongue/lizard
 	name = "forked tongue"
