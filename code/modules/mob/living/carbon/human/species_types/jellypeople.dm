@@ -17,10 +17,10 @@
 		TRAIT_NOBLOOD,
 	)
 	cosmetic_organs = list(
-		/obj/item/organ/genital/penis = "None",
-		/obj/item/organ/genital/testicles = "None",
-		/obj/item/organ/genital/breasts = "None",
-		/obj/item/organ/genital/vagina = "None",
+		/obj/item/organ/genital/penis = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/testicles = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
 	)
 	mutanttongue = /obj/item/organ/tongue/jelly
 	mutantlungs = /obj/item/organ/lungs/slime

@@ -43,15 +43,9 @@
 		CRASH("[type] had no available valid appearances on get_random_appearance()!")
 	return pick(valid_restyles)
 
-///Return the BASE icon state of the sprite datum (so not the gender, layer, feature_key)
-/datum/bodypart_overlay/mutant/proc/get_base_icon_state()
-	return sprite_datum.icon_state
-
-///Get the image we need to draw on the person. Called from get_overlay() which is called from _bodyparts.dm. Limb can be null
-/datum/bodypart_overlay/mutant/get_image(layer, obj/item/bodypart/limb)
-	if(!sprite_datum)
-		CRASH("Trying to call get_image() on [type] while it didn't have a sprite_datum. This shouldn't happen, report it as soon as possible.")
-
+///Returns a list of strings that gets used to build the icon_state for the image on get_image()
+/datum/bodypart_overlay/mutant/proc/get_icon_state(layer, obj/item/bodypart/limb)
+	RETURN_TYPE(/list)
 	var/gender = (limb?.limb_gender == FEMALE) ? "f" : "m"
 	var/list/icon_state_builder = list()
 	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
@@ -62,7 +56,18 @@
 	if(base_icon_state)
 		icon_state_builder += base_icon_state
 	icon_state_builder += mutant_bodyparts_layertext(layer)
+	return icon_state_builder
 
+///Return the BASE icon state of the sprite datum for use in get_icon_state (so no gender, layer nor feature_key)
+/datum/bodypart_overlay/mutant/proc/get_base_icon_state()
+	return sprite_datum.icon_state
+
+///Get the image we need to draw on the person. Called from get_overlay() which is called from _bodyparts.dm. Limb can be null
+/datum/bodypart_overlay/mutant/get_image(layer, obj/item/bodypart/limb)
+	if(!sprite_datum)
+		CRASH("Trying to call get_image() on [type] while it didn't have a sprite_datum. This shouldn't happen, report it as soon as possible.")
+
+	var/list/icon_state_builder = get_icon_state(layer, limb)
 	var/finished_icon_state = icon_state_builder.Join("_")
 
 	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
