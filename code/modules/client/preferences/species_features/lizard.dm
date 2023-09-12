@@ -23,16 +23,6 @@
 
 	return final_icon
 
-/datum/preference/choiced/mutant/lizard_legs
-	savefile_key = "feature_lizard_legs"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_mutant_bodypart = "legs"
-	modified_feature = "legs"
-
-/datum/preference/choiced/mutant/lizard_legs/init_possible_values()
-	return assoc_to_keys_features(GLOB.legs_list)
-
 /datum/preference/choiced/mutant/lizard_frills
 	savefile_key = "feature_lizard_frills"
 	savefile_identifier = PREFERENCE_CHARACTER
