@@ -10,7 +10,6 @@
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	mutant_bodyparts = list(
-		"body_markings" = "None",
 		"legs" = "Normal Legs",
 	)
 	cosmetic_organs = list(
@@ -84,7 +83,6 @@
 
 
 /datum/species/lizard/randomize_features(mob/living/carbon/human/human_mob)
-	human_mob.dna.features["body_markings"] = pick(GLOB.body_markings_list)
 	randomize_cosmetic_organs(human_mob)
 
 /datum/species/lizard/get_scream_sound(mob/living/carbon/human/lizard)

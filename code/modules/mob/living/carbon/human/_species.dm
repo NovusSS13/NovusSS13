@@ -608,7 +608,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /**
  * Handles the body of a human
  *
- * Handles lipstick, having no eyes, eye color, undergarnments like underwear, undershirts, and socks, and body layers.
+ * Basically deprecated, currently only handles eyesprites, and that will soon be reworked into a mutant bodypart overlay.
  * Calls [handle_mutant_bodyparts][/datum/species/proc/handle_mutant_bodyparts]
  * Arguments:
  * * species_human - Human, whoever we're handling the body for
@@ -633,43 +633,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					eye_overlay.pixel_y += height_offset
 					standing += eye_overlay
 
-		// organic body markings (oh my god this is terrible please rework this to be done on the limbs themselves i beg you)
-		if(HAS_TRAIT(species_human, TRAIT_HAS_MARKINGS))
-			var/obj/item/bodypart/chest/chest = species_human.get_bodypart(BODY_ZONE_CHEST)
-			var/obj/item/bodypart/arm/right/right_arm = species_human.get_bodypart(BODY_ZONE_R_ARM)
-			var/obj/item/bodypart/arm/left/left_arm = species_human.get_bodypart(BODY_ZONE_L_ARM)
-			var/obj/item/bodypart/leg/right/right_leg = species_human.get_bodypart(BODY_ZONE_R_LEG)
-			var/obj/item/bodypart/leg/left/left_leg = species_human.get_bodypart(BODY_ZONE_L_LEG)
-			var/datum/sprite_accessory/markings = GLOB.moth_markings_list[species_human.dna.features["moth_markings"]]
-			if(markings)
-				if(noggin && (IS_ORGANIC_LIMB(noggin)))
-					var/mutable_appearance/markings_head_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_head", -BODY_LAYER)
-					markings_head_overlay.pixel_y += height_offset
-					standing += markings_head_overlay
-
-				if(chest && (IS_ORGANIC_LIMB(chest)))
-					var/mutable_appearance/markings_chest_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_chest", -BODY_LAYER)
-					markings_chest_overlay.pixel_y += height_offset
-					standing += markings_chest_overlay
-
-				if(right_arm && (IS_ORGANIC_LIMB(right_arm)))
-					var/mutable_appearance/markings_r_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_arm", -BODY_LAYER)
-					markings_r_arm_overlay.pixel_y += height_offset
-					standing += markings_r_arm_overlay
-
-				if(left_arm && (IS_ORGANIC_LIMB(left_arm)))
-					var/mutable_appearance/markings_l_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_arm", -BODY_LAYER)
-					markings_l_arm_overlay.pixel_y += height_offset
-					standing += markings_l_arm_overlay
-
-				if(right_leg && (IS_ORGANIC_LIMB(right_leg)))
-					var/mutable_appearance/markings_r_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_leg", -BODY_LAYER)
-					standing += markings_r_leg_overlay
-
-				if(left_leg && (IS_ORGANIC_LIMB(left_leg)))
-					var/mutable_appearance/markings_l_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_leg", -BODY_LAYER)
-					standing += markings_l_leg_overlay
-
 	if(standing.len)
 		species_human.overlays_standing[BODY_LAYER] = standing
 
@@ -679,88 +642,18 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /**
  * Handles the mutant bodyparts of a human
  *
- * Handles the adding and displaying of, layers, colors, and overlays of mutant bodyparts and accessories.
- * Handles digitigrade leg displaying and squishing.
+ * Mostly deprecated and replaced by mutant bodypart overlays.
  * Arguments:
  * * H - Human, whoever we're handling the body for
  * * forced_colour - The forced color of an accessory. Leave null to use mutant color.
  */
 /datum/species/proc/handle_mutant_bodyparts(mob/living/carbon/human/source, forced_colour)
-
 	source.remove_overlay(BODY_BEHIND_LAYER)
 	source.remove_overlay(BODY_ADJ_LAYER)
 	source.remove_overlay(BODY_FRONT_LAYER)
 
 	if(!mutant_bodyparts || HAS_TRAIT(source, TRAIT_INVISIBLE_MAN))
 		return
-
-	var/list/bodyparts_to_add = mutant_bodyparts.Copy()
-	var/list/relevant_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER, BODY_FRONT_LAYER)
-	var/list/standing = list()
-	var/g = (source.physique == FEMALE) ? "f" : "m"
-
-	for(var/layer in relevant_layers)
-		var/layertext = mutant_bodyparts_layertext(layer)
-
-		for(var/bodypart in bodyparts_to_add)
-			var/datum/sprite_accessory/accessory
-			switch(bodypart)
-				if("body_markings")
-					accessory = GLOB.body_markings_list[source.dna.features["body_markings"]]
-
-			if(!accessory || accessory.icon_state == "none")
-				continue
-
-			var/mutable_appearance/accessory_overlay = mutable_appearance(accessory.icon, layer = -layer)
-
-			if(accessory.gender_specific)
-				accessory_overlay.icon_state = "[g]_[bodypart]_[accessory.icon_state]_[layertext]"
-			else
-				accessory_overlay.icon_state = "m_[bodypart]_[accessory.icon_state]_[layertext]"
-
-			if(accessory.em_block)
-				accessory_overlay.overlays += emissive_blocker(accessory_overlay.icon, accessory_overlay.icon_state, source, accessory_overlay.alpha)
-
-			if(accessory.center)
-				accessory_overlay = center_image(accessory_overlay, accessory.dimension_x, accessory.dimension_y)
-
-			if(!(HAS_TRAIT(source, TRAIT_HUSK)))
-				if(!forced_colour)
-					switch(accessory.color_src)
-						if(ORGAN_COLOR_MUTANT)
-							if(fixed_mut_color)
-								accessory_overlay.color = tricolor_to_hex(fixed_mut_color)
-							else
-								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
-						if(ORGAN_COLOR_HAIR)
-							if(hair_color == "fixedmutcolor")
-								accessory_overlay.color = tricolor_to_hex(fixed_mut_color)
-							else if(hair_color == "mutcolor")
-								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
-							else
-								accessory_overlay.color = source.hair_color
-						if(ORGAN_COLOR_FACIAL_HAIR)
-							accessory_overlay.color = source.facial_hair_color
-						if(ORGAN_COLOR_EYE)
-							accessory_overlay.color = source.eye_color_left
-				else
-					accessory_overlay.color = forced_colour
-			standing += accessory_overlay
-
-			if(accessory.hasinner)
-				var/mutable_appearance/inner_accessory_overlay = mutable_appearance(accessory.icon, layer = -layer)
-				if(accessory.gender_specific)
-					inner_accessory_overlay.icon_state = "[g]_[bodypart]inner_[accessory.icon_state]_[layertext]"
-				else
-					inner_accessory_overlay.icon_state = "m_[bodypart]inner_[accessory.icon_state]_[layertext]"
-
-				if(accessory.center)
-					inner_accessory_overlay = center_image(inner_accessory_overlay, accessory.dimension_x, accessory.dimension_y)
-
-				standing += inner_accessory_overlay
-
-		source.overlays_standing[layer] = standing.Copy()
-		standing = list()
 
 	source.apply_overlay(BODY_BEHIND_LAYER)
 	source.apply_overlay(BODY_ADJ_LAYER)

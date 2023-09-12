@@ -60,11 +60,6 @@
 	var/gender_specific
 	/// Determines if the accessory will be skipped by color preferences.
 	var/use_static
-	/**
-	 * Currently only used by mutantparts so don't worry about hair and stuff.
-	 * This is the source that this accessory will get its color from. Default is MUTCOLOR, but can also be HAIR, FACEHAIR, EYECOLOR and 0 if none.
-	 */
-	var/color_src = ORGAN_COLOR_MUTANT
 	/// Amount of colors we use actually use for coloring, from 1 to 3
 	var/color_amount = 1
 	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.

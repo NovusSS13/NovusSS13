@@ -79,16 +79,12 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
 	if(!length(GLOB.legs_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
-	if(!length(GLOB.body_markings_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, GLOB.body_markings_list)
 	if(!length(GLOB.wings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
 	if(!length(GLOB.moth_wings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	if(!length(GLOB.moth_antennae_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
-	if(!length(GLOB.moth_markings_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
 	if(!length(GLOB.caps_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
 	if(!length(GLOB.pod_hair_list))
@@ -113,12 +109,10 @@
 		"frills" = pick(GLOB.frills_list),
 		"spines" = pick(GLOB.spines_list),
 		"ears" = "None",
-		"body_markings" = pick(GLOB.body_markings_list),
 		"legs" = "Normal Legs",
 		"caps" = pick(GLOB.caps_list),
 		"moth_wings" = pick(GLOB.moth_wings_list),
 		"moth_antennae" = pick(GLOB.moth_antennae_list),
-		"moth_markings" = pick(GLOB.moth_markings_list),
 		"pod_hair" = pick(GLOB.pod_hair_list),
 	))
 
