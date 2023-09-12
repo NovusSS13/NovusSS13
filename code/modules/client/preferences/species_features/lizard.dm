@@ -29,7 +29,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Frills"
 	should_generate_icons = TRUE
-	relevant_cosmetic_organ = /obj/item/organ/frills
+	relevant_cosmetic_organ = /obj/item/organ/frills/lizard
 	modified_feature = "frills"
 	supplemental_feature_key = "feature_lizard_frills_color"
 
@@ -43,7 +43,7 @@
 	savefile_key = "feature_lizard_frills_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
-	relevant_cosmetic_organ = /obj/item/organ/frills
+	relevant_cosmetic_organ = /obj/item/organ/frills/lizard
 	modified_feature = "frills_color"
 	primary_feature_key = "feature_lizard_frills"
 
