@@ -193,13 +193,10 @@
  * Helper that resets some variables of the tongue to match the prefs of a given mob
  * Should be used whenever we want to restore the "original" tongue of a mob
  */
-/obj/item/organ/tongue/proc/apply_prefs(mob/living/carbon/naysayer)
-	if(!naysayer.client?.prefs)
-		return
-	var/datum/preferences/preferences = naysayer.client.prefs
-	// now we actually set the shit for the tongue
-	if(preferences.read_preference(/datum/preference/text/custom_say_mod))
-		say_mod = owner.client.prefs.read_preference(/datum/preference/text/custom_say_mod)
+/obj/item/organ/tongue/proc/apply_prefs(datum/preferences/preferences)
+	var/custom_say_mod = preferences.read_preference(/datum/preference/text/custom_say_mod)
+	if(custom_say_mod)
+		say_mod = custom_say_mod
 
 /obj/item/organ/tongue/lizard
 	name = "forked tongue"
