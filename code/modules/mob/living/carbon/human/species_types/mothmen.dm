@@ -9,9 +9,7 @@
 		TRAIT_ANTENNAE,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_BUG
-	mutant_bodyparts = list(
-		"moth_markings" = "None",
-	)
+
 	cosmetic_organs = list(
 		/obj/item/organ/wings/moth = "Plain",
 		/obj/item/organ/antennae = "Plain",
@@ -62,7 +60,6 @@
 	return 1
 
 /datum/species/moth/randomize_features(mob/living/carbon/human/human_mob)
-	human_mob.dna.features["moth_markings"] = pick(GLOB.moth_markings_list)
 	randomize_cosmetic_organs(human_mob)
 
 /datum/species/moth/get_scream_sound(mob/living/carbon/human/human)

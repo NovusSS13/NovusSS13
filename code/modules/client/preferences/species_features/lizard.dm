@@ -23,38 +23,6 @@
 
 	return final_icon
 
-/datum/preference/choiced/mutant/lizard_body_markings
-	savefile_key = "feature_lizard_body_markings"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
-	main_feature_name = "Body markings"
-	should_generate_icons = TRUE
-	relevant_mutant_bodypart = "body_markings"
-	modified_feature = "body_markings"
-
-/datum/preference/choiced/mutant/lizard_body_markings/init_possible_values()
-	return assoc_to_keys_features(GLOB.body_markings_list)
-
-/datum/preference/choiced/mutant/lizard_body_markings/icon_for(value)
-	var/datum/sprite_accessory/sprite_accessory = GLOB.body_markings_list[value]
-
-	var/icon/final_icon = icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_chest_m")
-
-	if (sprite_accessory.icon_state != "none")
-		var/icon/body_markings_icon = icon(
-			'icons/mob/species/lizard/lizard_misc.dmi',
-			"m_body_markings_[sprite_accessory.icon_state]_ADJ",
-		)
-
-		final_icon.Blend(body_markings_icon, ICON_OVERLAY)
-
-	final_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-	final_icon.Crop(10, 8, 22, 23)
-	final_icon.Scale(26, 32)
-	final_icon.Crop(-2, 1, 29, 32)
-
-	return final_icon
-
 /datum/preference/choiced/mutant/lizard_legs
 	savefile_key = "feature_lizard_legs"
 	savefile_identifier = PREFERENCE_CHARACTER
