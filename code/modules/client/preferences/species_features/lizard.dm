@@ -108,7 +108,7 @@
 	savefile_key = "feature_lizard_spines"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_cosmetic_organ = /obj/item/organ/spines
+	relevant_cosmetic_organ = /obj/item/organ/spines/lizard
 	modified_feature = "spines"
 	supplemental_feature_key = "feature_lizard_spines_color"
 
