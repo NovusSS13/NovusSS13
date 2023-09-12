@@ -76,8 +76,8 @@ export const feature_felinid_tail_color: FeatureChoiced = {
   component: FeatureTriColorInput,
 };
 
-export const feature_lizard_legs: FeatureChoiced = {
-  name: 'Legs',
+export const feature_leg_type: FeatureChoiced = {
+  name: 'Leg type',
   component: (
     props: FeatureValueProps<string, string, FeatureChoicedServerData>
   ) => {

@@ -44,16 +44,14 @@
 	. = ..()
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
-		if(!H.dna.features["caps"])
-			H.dna.features["caps"] = "Round"
-			handle_mutant_bodyparts(H)
 		mush = new(null)
 		mush.teach(H)
 
 /datum/species/mush/on_species_loss(mob/living/carbon/C)
 	. = ..()
-	mush.remove(C)
-	QDEL_NULL(mush)
+	if(mush)
+		mush.remove(C)
+		QDEL_NULL(mush)
 
 /datum/species/mush/handle_chemical(datum/reagent/chem, mob/living/carbon/human/affected, seconds_per_tick, times_fired)
 	. = ..()
@@ -61,7 +59,3 @@
 		return
 	if(chem.type == /datum/reagent/toxin/plantbgone/weedkiller)
 		affected.adjustToxLoss(3 * REM * seconds_per_tick)
-
-/datum/species/mush/handle_mutant_bodyparts(mob/living/carbon/human/H, forced_colour)
-	forced_colour = FALSE
-	return ..()

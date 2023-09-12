@@ -76,17 +76,20 @@
 #define BODYTYPE_MONKEY (1<<3)
 ///The limb is digitigrade.
 #define BODYTYPE_DIGITIGRADE (1<<4)
+///The limb is digitigrade, but is being compressed for the sake of icon rendering.
+#define BODYTYPE_COMPRESSED (1<<5)
 ///The limb is snouted.
-#define BODYTYPE_SNOUTED (1<<5)
+#define BODYTYPE_SNOUTED (1<<6)
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
-#define BODYTYPE_LARVA (1<<6)
+#define BODYTYPE_LARVA (1<<7)
 ///The limb is from a xenomorph.
-#define BODYTYPE_ALIEN (1<<7)
+#define BODYTYPE_ALIEN (1<<8)
 ///The limb is from a golem
-#define BODYTYPE_GOLEM (1<<8)
+#define BODYTYPE_GOLEM (1<<9)
 
+#define BODYTYPE_BIOSCRAMBLE_INCOMPATIBLE (BODYTYPE_ROBOTIC | BODYTYPE_GOLEM)
 #define BODYTYPE_BIOSCRAMBLE_COMPATIBLE (BODYTYPE_HUMANOID | BODYTYPE_MONKEY | BODYTYPE_ALIEN)
-#define BODYTYPE_CAN_BE_BIOSCRAMBLED(bodytype) (!(bodytype & BODYTYPE_ROBOTIC) && (bodytype & BODYTYPE_BIOSCRAMBLE_COMPATIBLE))
+#define BODYTYPE_CAN_BE_BIOSCRAMBLED(bodytype) (!(bodytype & BODYTYPE_BIOSCRAMBLE_INCOMPATIBLE) && (bodytype & BODYTYPE_BIOSCRAMBLE_COMPATIBLE))
 
 // Defines for Species IDs. Used to refer to the name of a species, for things like bodypart names or species preferences.
 #define SPECIES_ABDUCTOR "abductor"
@@ -121,24 +124,6 @@
 #define SPECIES_ZOMBIE "zombie"
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
 #define SPECIES_ZOMBIE_KROKODIL "krokodil_zombie"
-
-// Like species IDs, but not specifically attached a species.
-#define BODYPART_ID_ALIEN "alien"
-#define BODYPART_ID_ROBOTIC "robotic"
-#define BODYPART_ID_DIGITIGRADE "digitigrade"
-#define BODYPART_ID_LARVA "larva"
-#define BODYPART_ID_PSYKER "psyker"
-
-//See: datum/species/var/digitigrade_customization
-///The species does not have digitigrade legs in generation.
-#define DIGITIGRADE_NEVER 0
-///The species can have digitigrade legs in generation
-#define DIGITIGRADE_OPTIONAL 1
-///The species is forced to have digitigrade legs in generation.
-#define DIGITIGRADE_FORCED 2
-
-///Digitigrade's prefs, used in features for legs if you're meant to be a Digitigrade.
-#define DIGITIGRADE_LEGS "Digitigrade Legs"
 
 // Health/damage defines
 #define MAX_LIVING_HEALTH 100

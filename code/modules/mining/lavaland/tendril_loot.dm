@@ -551,7 +551,6 @@
 	var/obj/item/organ/wings/functional/wings = get_wing_choice(exposed_human)
 	wings = new wings()
 	wings.Insert(exposed_human)
-	exposed_human.dna.species.handle_mutant_bodyparts(exposed_human)
 	playsound(exposed_human.loc, 'sound/items/poster_ripped.ogg', 50, TRUE, -1)
 	exposed_human.adjustBruteLoss(20)
 	exposed_human.emote("scream")

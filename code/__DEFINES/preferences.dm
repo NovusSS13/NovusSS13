@@ -142,3 +142,13 @@
 
 /// The key used for sprite accessories that should never actually be applied to the player.
 #define SPRITE_ACCESSORY_NONE "None"
+/// Digitigrade pref, used in features for legs if you're meant to be a Digitigrade.
+#define DIGITIGRADE_LEGS "Digitigrade Legs"
+
+// See: datum/species/var/digitigrade_customization
+/// The species does not have digitigrade legs in generation.
+#define DIGITIGRADE_NEVER 0
+/// The species can have digitigrade legs in generation
+#define DIGITIGRADE_OPTIONAL 1
+/// The species is forced to have digitigrade legs in generation.
+#define DIGITIGRADE_FORCED 2

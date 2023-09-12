@@ -54,16 +54,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// Use a [language holder datum][/datum/language_holder] typepath in this var.
 	/// Should never be null.
 	var/datum/language_holder/species_language_holder = /datum/language_holder/human_basic
-	/**
-	  * Visible CURRENT bodyparts that are unique to a species.
-	  * DO NOT USE THIS AS A LIST OF ALL POSSIBLE BODYPARTS AS IT WILL FUCK
-	  * SHIT UP! Changes to this list for non-species specific bodyparts (ie
-	  * cat ears and tails) should be assigned at organ level if possible.
-	  * Assoc values are defaults for given bodyparts, also modified by aforementioned organs.
-	  * They also allow for faster '[]' list access versus 'in'. Other than that, they are useless right now.
-	  * Layer hiding is handled by [/datum/species/proc/handle_mutant_bodyparts] below.
-	  */
-	var/list/mutant_bodyparts = list()
 	///The bodyparts this species uses. assoc of bodypart string - bodypart type. Make sure all the fucking entries are in or I'll skin you alive.
 	var/list/bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left,
@@ -615,8 +605,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  */
 /datum/species/proc/handle_body(mob/living/carbon/human/species_human)
 	species_human.remove_overlay(BODY_LAYER)
+
 	if(HAS_TRAIT(species_human, TRAIT_INVISIBLE_MAN))
-		handle_mutant_bodyparts(species_human)
 		return
 
 	var/height_offset = species_human.get_top_offset() // From height changed by varying limb height
@@ -637,27 +627,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		species_human.overlays_standing[BODY_LAYER] = standing
 
 	species_human.apply_overlay(BODY_LAYER)
-	handle_mutant_bodyparts(species_human)
-
-/**
- * Handles the mutant bodyparts of a human
- *
- * Mostly deprecated and replaced by mutant bodypart overlays.
- * Arguments:
- * * H - Human, whoever we're handling the body for
- * * forced_colour - The forced color of an accessory. Leave null to use mutant color.
- */
-/datum/species/proc/handle_mutant_bodyparts(mob/living/carbon/human/source, forced_colour)
-	source.remove_overlay(BODY_BEHIND_LAYER)
-	source.remove_overlay(BODY_ADJ_LAYER)
-	source.remove_overlay(BODY_FRONT_LAYER)
-
-	if(!mutant_bodyparts || HAS_TRAIT(source, TRAIT_INVISIBLE_MAN))
-		return
-
-	source.apply_overlay(BODY_BEHIND_LAYER)
-	source.apply_overlay(BODY_ADJ_LAYER)
-	source.apply_overlay(BODY_FRONT_LAYER)
 
 //This exists so sprite accessories can still be per-layer without having to include that layer's
 //number in their sprite name, which causes issues when those numbers change.
@@ -1648,13 +1617,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/preference = GLOB.preference_entries[preference_type]
 
-		var/no_relevancy = !preference.relevant_mutant_bodypart
-		no_relevancy &&= !preference.relevant_inherent_trait
+		var/no_relevancy = !preference.relevant_inherent_trait
 		no_relevancy &&= !preference.relevant_cosmetic_organ
 		no_relevancy &&= !preference.relevant_head_flag
 		if ( \
 			no_relevancy \
-			|| (preference.relevant_mutant_bodypart && !(preference.relevant_mutant_bodypart in mutant_bodyparts)) \
 			|| (preference.relevant_inherent_trait && !(preference.relevant_inherent_trait in inherent_traits)) \
 			|| (preference.relevant_cosmetic_organ && !(preference.relevant_cosmetic_organ in cosmetic_organs)) \
 			|| (preference.relevant_head_flag && !check_head_flags(preference.relevant_head_flag)) \
@@ -2158,11 +2125,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/replace_body(mob/living/carbon/target, datum/species/new_species)
 	new_species ||= target.dna.species //If no new species is provided, assume its src.
 
+	var/is_digitard = (new_species.digitigrade_customization && (target.dna.features["legs"] == DIGITIGRADE_LEGS)) || (new_species.digitigrade_customization == DIGITIGRADE_FORCED)
 	var/list/final_bodypart_overrides = new_species.bodypart_overrides.Copy()
-	if((new_species.digitigrade_customization == DIGITIGRADE_OPTIONAL && target.dna.features["legs"] == DIGITIGRADE_LEGS) || new_species.digitigrade_customization == DIGITIGRADE_FORCED)
-		final_bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
-		final_bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
-
 	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
 		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
 			continue
@@ -2171,6 +2135,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/obj/item/bodypart/new_part
 		if(path)
 			new_part = new path()
+			if(is_digitard && istype(new_part, /obj/item/bodypart/leg))
+				new_part.bodytype |= BODYTYPE_DIGITIGRADE //THIS IS GOING TO CAUSE BADNESS!!!!
 			new_part.replace_limb(target, special = TRUE, keep_old_organs = TRUE)
 			new_part.update_limb(is_creating = TRUE)
 		qdel(old_part)
