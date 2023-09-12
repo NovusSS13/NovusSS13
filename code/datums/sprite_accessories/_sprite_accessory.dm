@@ -83,8 +83,8 @@
 	var/dimension_y = 32
 
 /datum/sprite_accessory/blank
-	name = "None"
-	icon_state = "None"
+	name = SPRITE_ACCESSORY_NONE
+	icon_state = "none"
 
 //////////////////////
 // Hair Definitions //
@@ -1826,11 +1826,13 @@
 	icon_state = "hibiscus"
 
 /datum/sprite_accessory/snouts
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
 
 /datum/sprite_accessory/snouts/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
+
+/datum/sprite_accessory/snouts/lizard
+	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
 
 /datum/sprite_accessory/snouts/lizard/sharp
 	name = "Sharp"
@@ -1894,15 +1896,19 @@
 	hasinner = TRUE
 	locked = TRUE
 
+/datum/sprite_accessory/wings
+	icon = 'icons/mob/species/wings.dmi'
+
 /datum/sprite_accessory/wings/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
 
-/datum/sprite_accessory/wings
-	icon = 'icons/mob/species/wings.dmi'
-
 /datum/sprite_accessory/wings_open
 	icon = 'icons/mob/species/wings.dmi'
+
+/datum/sprite_accessory/wings_open/none
+	name = SPRITE_ACCESSORY_NONE
+	icon_state = "none"
 
 /datum/sprite_accessory/wings/angel
 	name = "Angel"
@@ -2093,6 +2099,10 @@
 
 /datum/sprite_accessory/caps
 	icon = 'icons/mob/species/mush_cap.dmi'
+
+/datum/sprite_accessory/caps/none
+	name = SPRITE_ACCESSORY_NONE
+	icon_state = "none"
 
 /datum/sprite_accessory/caps/round
 	name = "Round"
