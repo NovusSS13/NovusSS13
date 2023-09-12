@@ -91,7 +91,6 @@
 	sprite_datum = valid_sprite_datum
 	if(draw_color)
 		draw_color = validate_color(draw_color)
-	cache_key = jointext(generate_icon_cache(), "_")
 	return TRUE
 
 ///In a lot of cases, appearances are stored in DNA as the Name, instead of the path. Use set_appearance instead of possible
@@ -102,7 +101,6 @@
 	sprite_datum = valid_sprite_datum
 	if(draw_color)
 		draw_color = validate_color(draw_color)
-	cache_key = jointext(generate_icon_cache(), "_")
 	return TRUE
 
 ///Generate a unique key based on our sprites. So that if we've aleady drawn these sprites, they can be found in the cache and wont have to be drawn again (blessing and curse, but mostly curse)

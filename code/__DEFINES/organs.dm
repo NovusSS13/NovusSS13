@@ -56,6 +56,36 @@
 /// designed to fail organs when left to decay for ~15 minutes
 #define STANDARD_ORGAN_DECAY (111 / 100000)
 
+// Flags for the organ_flags var on /obj/item/organ
+/// Organic organs, the default - Don't get affected by EMPs
+#define ORGAN_ORGANIC (1<<0)
+/// Synthetic organs, or cybernetic organs - React to EMPs and don't rot, nor heal naturally
+#define ORGAN_ROBOTIC (1<<1)
+/// Mineral organs - Snowflakey
+#define ORGAN_MINERAL (1<<2)
+/// Frozen organs, don't deteriorate
+#define ORGAN_FROZEN (1<<3)
+/// Failing organs perform damaging effects until replaced or fixed, and typically they don't function properly either
+#define ORGAN_FAILING (1<<4)
+/// Synthetic organ affected by an EMP - Deteriorates over time
+#define ORGAN_EMP (1<<5)
+/// Removing this organ KILLS the owner - Currently only the brain
+#define ORGAN_VITAL (1<<6)
+/// Can be eaten
+#define ORGAN_EDIBLE (1<<7)
+/// Can't be removed using surgery or other common means
+#define ORGAN_UNREMOVABLE (1<<8)
+/// Can't be seen by scanners, doesn't anger body purists
+#define ORGAN_HIDDEN (1<<7)
+/// Has been destroyed beyond any relief
+#define ORGAN_DESTROYED (1<<8)
+
+/// Helper to figure out if an organ is organic
+#define IS_ORGANIC_ORGAN(organ) (organ.organ_flags & ORGAN_ORGANIC)
+/// Helper to figure out if an organ is robotic
+#define IS_ROBOTIC_ORGAN(organ) (organ.organ_flags & ORGAN_ROBOTIC)
+
+// Flags for color sources on /datum/bodypart_overlay/mutant
 /// Uses the parent limb's drawcolor value
 #define ORGAN_COLOR_LIMB (1<<0)
 /// Uses /datum/bodypart_overlay/proc/override_color()'s return value
@@ -85,8 +115,10 @@
 /// Always visible
 #define GENITAL_VISIBILITY_ALWAYS 2
 
-/// Defines how a mob's organs_slot is ordered
-/// Exists so Life()'s organ process order is consistent
+/**
+ * Defines how a mob's organs_slot is ordered
+ * Exists so Life()'s organ process order is consistent
+ */
 GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_BRAIN,
 	ORGAN_SLOT_APPENDIX,

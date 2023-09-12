@@ -4,8 +4,14 @@
 		head_icon = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_head_m")
 		head_icon.Blend(skintone2hex("caucasian1"), ICON_MULTIPLY)
 
+	var/static/icon/head_icon_cropped //for baldies
+	if (isnull(head_icon_cropped))
+		head_icon_cropped = icon(head_icon)
+		head_icon_cropped.Crop(10, 19, 22, 31)
+		head_icon_cropped.Scale(32, 32)
+
 	if (isnull(sprite_accessory))
-		return head_icon
+		return head_icon_cropped
 
 	ASSERT(istype(sprite_accessory))
 

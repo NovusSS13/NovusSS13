@@ -299,7 +299,7 @@
 
 /obj/item/bodypart/leg/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
-	if(ishuman(owner))
+	if(ishuman(owner) && (bodytype & BODYTYPE_DIGITIGRADE))
 		var/mob/living/carbon/human/human_owner = owner
 		var/obj/item/clothing/shoes/worn_shoes = human_owner.get_item_by_slot(ITEM_SLOT_FEET)
 		var/uniform_compatible = FALSE

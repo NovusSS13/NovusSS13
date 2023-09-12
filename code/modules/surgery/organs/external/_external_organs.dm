@@ -122,8 +122,8 @@
 	else
 		overlay.color = null
 
-/datum/bodypart_overlay/mutant/pod_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+/datum/bodypart_overlay/mutant/pod_hair/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+	if((owner.head?.flags_inv & HIDEHAIR) || (owner.wear_mask?.flags_inv & HIDEHAIR))
 		return FALSE
 
 	return TRUE

@@ -84,8 +84,8 @@
 /datum/bodypart_overlay/mutant/wings/moth/get_global_feature_list()
 	return GLOB.moth_wings_list
 
-/datum/bodypart_overlay/mutant/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.wear_suit?.flags_inv & HIDEMUTWINGS)
+/datum/bodypart_overlay/mutant/wings/moth/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+	if(owner.wear_suit?.flags_inv & HIDEMUTWINGS)
 		return FALSE
 
 	return TRUE
