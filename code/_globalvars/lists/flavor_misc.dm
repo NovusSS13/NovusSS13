@@ -39,7 +39,7 @@ GLOBAL_LIST_EMPTY(moth_antennae_list)
 GLOBAL_LIST_EMPTY(caps_list)
 GLOBAL_LIST_EMPTY(pod_hair_list)
 
-//Human bits bits
+	//Human bits bits
 GLOBAL_LIST_EMPTY(penis_list)
 GLOBAL_LIST_EMPTY(testicles_list)
 GLOBAL_LIST_EMPTY(breasts_list)
@@ -75,6 +75,33 @@ GLOBAL_LIST_INIT(genital_visibility_list, list(
 	"Always hidden" = GENITAL_VISIBILITY_NEVER,
 	"Hidden behind clothing" = GENITAL_VISIBILITY_CLOTHING,
 	"Always visible" = GENITAL_VISIBILITY_ALWAYS,
+))
+
+	//Markings
+GLOBAL_LIST_EMPTY(body_markings)
+
+GLOBAL_LIST_EMPTY(body_markings_per_zone)
+
+GLOBAL_LIST_INIT(marking_zones, list(
+	BODY_ZONE_HEAD,
+	BODY_ZONE_CHEST,
+	BODY_ZONE_L_LEG,
+	BODY_ZONE_R_LEG,
+	BODY_ZONE_L_ARM,
+	BODY_ZONE_R_ARM,
+	BODY_ZONE_PRECISE_L_HAND,
+	BODY_ZONE_PRECISE_R_HAND,
+))
+
+GLOBAL_LIST_INIT(marking_zone_to_bitflag, list(
+	BODY_ZONE_HEAD = HEAD,
+	BODY_ZONE_CHEST = CHEST,
+	BODY_ZONE_L_LEG = LEG_LEFT,
+	BODY_ZONE_R_LEG = LEG_RIGHT,
+	BODY_ZONE_L_ARM = ARM_LEFT,
+	BODY_ZONE_R_ARM = ARM_RIGHT,
+	BODY_ZONE_PRECISE_L_HAND = HAND_LEFT,
+	BODY_ZONE_PRECISE_R_HAND = HAND_RIGHT
 ))
 
 GLOBAL_LIST_INIT(color_list_ethereal, list(

@@ -38,6 +38,15 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/breasts, GLOB.breasts_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/vagina, GLOB.vagina_list, add_blank = TRUE)
 
+	//markings are dumb
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, GLOB.body_markings)
+	for(var/marking_name in GLOB.body_markings)
+		var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
+		for(var/zone in GLOB.marking_zones)
+			var/bitflag = GLOB.marking_zone_to_bitflag[zone]
+			if(body_marking.allowed_bodyparts & bitflag)
+				LAZYADDASSOC(GLOB.body_markings_per_zone[zone], marking_name, body_marking)
+
 /// Inits GLOB.species_list. Not using GLOBAL_LIST_INIT b/c it depends on GLOB.string_lists
 /proc/init_species_list()
 	for(var/spath in subtypesof(/datum/species))

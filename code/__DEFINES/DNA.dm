@@ -1,4 +1,4 @@
-/*ALL DNA, SPECIES, AND GENETICS-RELATED DEFINES GO HERE*/
+/*ALL DNA AND GENETICS-RELATED DEFINES GO HERE*/
 
 #define CHECK_DNA_AND_SPECIES(C) if(!(C.dna?.species)) return
 
@@ -15,7 +15,6 @@
 #define NEGATIVE 2
 #define MINOR_NEGATIVE 4
 
-
 //Mutation classes. Normal being on them, extra being additional mutations with instability and other being stuff you dont want people to fuck with like wizard mutate
 /// A mutation that can be activated and deactived by completing a sequence
 #define MUT_NORMAL 1
@@ -24,9 +23,8 @@
 /// Cannot be interacted with by players through normal means. I.E. wizards mutate
 #define MUT_OTHER 3
 
-//DNA - Because fuck you and your magic numbers being all over the codebase.
+//DNA block size defines - Because fuck you and your magic numbers being all over the codebase.
 #define DNA_BLOCK_SIZE 3
-
 #define DNA_BLOCK_SIZE_COLOR DEFAULT_HEX_COLOR_LEN
 #define DNA_BLOCK_SIZE_TRICOLOR DEFAULT_HEX_COLOR_LEN * 3
 
@@ -73,8 +71,17 @@
 #define DNA_BREASTS_COLOR_BLOCK 27
 #define DNA_BREASTS_SIZE_BLOCK 28
 
-/// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 28
+/// Total amount of feature blocks, NOT COUNTING MARKINGS
+#define DNA_MAIN_FEATURE_BLOCKS 28
+
+/// Maximum amount of markings a limb can ever have
+#define MAXIMUM_MARKINGS_PER_LIMB 5
+
+/// Amount of DNA blocks a single marking takes up
+#define DNA_BLOCKS_PER_MARKING 2 //one name block, one color block
+
+/// Total amount of feature blocks, COUNTING MARKINGS
+#define DNA_FEATURE_BLOCKS (DNA_MAIN_FEATURE_BLOCKS + (GLOB.marking_zones.len * MAXIMUM_MARKINGS_PER_LIMB * DNA_BLOCKS_PER_MARKING))
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
