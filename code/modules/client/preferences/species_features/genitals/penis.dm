@@ -9,13 +9,6 @@
 /datum/preference/choiced/mutant/penis/init_possible_values()
 	return assoc_to_keys_features(GLOB.penis_list)
 
-/datum/preference/choiced/mutant/penis/create_informed_default_value(datum/preferences/preferences)
-	if(preferences.read_preference(/datum/preference/choiced/gender) != MALE)
-		return SPRITE_ACCESSORY_NONE
-
-	var/datum/sprite_accessory/genital/penis/boring_human_penis = /datum/sprite_accessory/genital/penis/human
-	return initial(boring_human_penis.name)
-
 /datum/preference/choiced/mutant/penis_size
 	savefile_key = "feature_penis_size"
 	savefile_identifier = PREFERENCE_CHARACTER

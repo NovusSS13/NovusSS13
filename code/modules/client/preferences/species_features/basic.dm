@@ -101,7 +101,7 @@
 	target.set_facial_hair_gradient_style(new_style = value, update = FALSE)
 
 /datum/preference/choiced/facial_hair_gradient/create_default_value()
-	return "None"
+	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/color/facial_hair_gradient
 	priority = PREFERENCE_PRIORITY_BODYPARTS
@@ -116,7 +116,7 @@
 /datum/preference/color/facial_hair_gradient/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
 		return FALSE
-	return preferences.read_preference(/datum/preference/choiced/facial_hair_gradient) != "None"
+	return preferences.read_preference(/datum/preference/choiced/facial_hair_gradient) != SPRITE_ACCESSORY_NONE
 
 /datum/preference/color/hair_color
 	priority = PREFERENCE_PRIORITY_BODYPARTS
@@ -167,7 +167,7 @@
 	target.set_hair_gradient_style(new_style = value, update = FALSE)
 
 /datum/preference/choiced/hair_gradient/create_default_value()
-	return "None"
+	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/color/hair_gradient
 	priority = PREFERENCE_PRIORITY_BODYPARTS
@@ -182,4 +182,4 @@
 /datum/preference/color/hair_gradient/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
 		return FALSE
-	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != "None"
+	return preferences.read_preference(/datum/preference/choiced/hair_gradient) != SPRITE_ACCESSORY_NONE

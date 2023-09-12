@@ -9,13 +9,6 @@
 /datum/preference/choiced/mutant/testicles/init_possible_values()
 	return assoc_to_keys_features(GLOB.testicles_list)
 
-/datum/preference/choiced/mutant/testicles/create_informed_default_value(datum/preferences/preferences)
-	if(preferences.read_preference(/datum/preference/choiced/gender) != MALE)
-		return SPRITE_ACCESSORY_NONE
-
-	var/datum/sprite_accessory/genital/testicles/testicles = /datum/sprite_accessory/genital/testicles/pair
-	return initial(testicles.name)
-
 /datum/preference/tricolor/mutant/testicles
 	savefile_key = "feature_testicles_color"
 	savefile_identifier = PREFERENCE_CHARACTER

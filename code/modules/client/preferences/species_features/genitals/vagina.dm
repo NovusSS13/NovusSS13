@@ -9,13 +9,6 @@
 /datum/preference/choiced/mutant/vagina/init_possible_values()
 	return assoc_to_keys_features(GLOB.vagina_list)
 
-/datum/preference/choiced/mutant/vagina/create_informed_default_value(datum/preferences/preferences)
-	if(preferences.read_preference(/datum/preference/choiced/gender) != FEMALE)
-		return SPRITE_ACCESSORY_NONE
-
-	var/datum/sprite_accessory/genital/vagina/boring_human_vagina = /datum/sprite_accessory/genital/vagina/human
-	return initial(boring_human_vagina.name)
-
 /datum/preference/tricolor/mutant/vagina
 	savefile_key = "feature_vagina_color"
 	savefile_identifier = PREFERENCE_CHARACTER

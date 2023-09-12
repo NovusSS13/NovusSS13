@@ -23,7 +23,7 @@
 		return ..()
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = new species_type
-	return species.cosmetic_organs[relevant_cosmetic_organ] ? species.cosmetic_organs[relevant_cosmetic_organ] : "None"
+	return species.cosmetic_organs[relevant_cosmetic_organ] ? species.cosmetic_organs[relevant_cosmetic_organ] : SPRITE_ACCESSORY_NONE
 
 /datum/preference/choiced/mutant/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	// Doesn't make sense

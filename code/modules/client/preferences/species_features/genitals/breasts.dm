@@ -9,13 +9,6 @@
 /datum/preference/choiced/mutant/breasts/init_possible_values()
 	return assoc_to_keys_features(GLOB.breasts_list)
 
-/datum/preference/choiced/mutant/breasts/create_informed_default_value(datum/preferences/preferences)
-	if(preferences.read_preference(/datum/preference/choiced/gender) != FEMALE)
-		return SPRITE_ACCESSORY_NONE
-
-	var/datum/sprite_accessory/genital/breasts/boring_human_breasts = /datum/sprite_accessory/genital/breasts/pair
-	return initial(boring_human_breasts.name)
-
 /datum/preference/choiced/mutant/breasts_size
 	savefile_key = "feature_breasts_size"
 	savefile_identifier = PREFERENCE_CHARACTER
