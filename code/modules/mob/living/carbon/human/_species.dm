@@ -623,7 +623,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					eye_overlay.pixel_y += height_offset
 					standing += eye_overlay
 
-	if(standing.len)
+	if(length(standing))
 		species_human.overlays_standing[BODY_LAYER] = standing
 
 	species_human.apply_overlay(BODY_LAYER)
