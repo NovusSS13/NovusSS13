@@ -23,8 +23,8 @@
 	feature_key = "frills"
 	feature_color_key = "frills_color"
 
-/datum/bodypart_overlay/mutant/frills/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEEARS))
+/datum/bodypart_overlay/mutant/frills/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+	if(!(owner.head?.flags_inv & HIDEEARS))
 		return TRUE
 
 	return FALSE

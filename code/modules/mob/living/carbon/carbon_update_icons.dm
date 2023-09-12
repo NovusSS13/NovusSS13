@@ -577,7 +577,7 @@
 		. += "-husk"
 	else
 		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
-			if(!overlay.can_draw_on_bodypart(owner))
+			if(!overlay.can_draw_on_bodypart(src) || !overlay.can_draw_on_body(src, owner))
 				continue
 			. += "-[jointext(overlay.generate_icon_cache(), "-")]"
 	. += "-[get_applicable_top_offset()]"

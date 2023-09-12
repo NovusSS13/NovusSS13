@@ -43,7 +43,7 @@
 	/// Arousal options that can be selected by the user
 	var/list/arousal_options
 
-/datum/bodypart_overlay/mutant/genital/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/mutant/genital/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	switch(genital_visibility)
 		if(GENITAL_VISIBILITY_NEVER)
 			return FALSE //duh
@@ -103,15 +103,15 @@
 	feature_color_key = "penis_color"
 	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
-/datum/bodypart_overlay/mutant/genital/penis/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/mutant/genital/penis/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(human.get_all_covered_flags() & GROIN)
+		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(human.underwear && (human.underwear != "Nude"))
+		if(owner.underwear && (owner.underwear != "Nude"))
 			return FALSE
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
@@ -152,15 +152,15 @@
 /datum/bodypart_overlay/mutant/genital/testicles/get_global_feature_list()
 	return GLOB.testicles_list
 
-/datum/bodypart_overlay/mutant/genital/testicles/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/mutant/genital/testicles/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(human.get_all_covered_flags() & GROIN)
+		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
-		//this is fucked
-		if(human.underwear && (human.underwear != "Nude"))
+		//this is fucked man
+		if(owner.underwear && (owner.underwear != "Nude"))
 			return FALSE
 
 
@@ -202,15 +202,15 @@
 /datum/bodypart_overlay/mutant/genital/vagina/get_global_feature_list()
 	return GLOB.vagina_list
 
-/datum/bodypart_overlay/mutant/genital/vagina/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/mutant/genital/vagina/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(human.get_all_covered_flags() & GROIN)
+		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
-		//this is fucked
-		if(human.underwear && (human.underwear != "Nude"))
+		//this is fucked man
+		if(owner.underwear && (owner.underwear != "Nude"))
 			return FALSE
 
 
@@ -263,13 +263,13 @@
 /datum/bodypart_overlay/mutant/genital/breasts/get_global_feature_list()
 	return GLOB.breasts_list
 
-/datum/bodypart_overlay/mutant/genital/breasts/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/mutant/genital/breasts/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(human.get_all_covered_flags() & CHEST)
+		if(owner.get_all_covered_flags() & CHEST)
 			return FALSE
-		//this is fucked
-		if(human.undershirt && (human.undershirt != "Nude"))
+		//this is fucked man
+		if(owner.undershirt && (owner.undershirt != "Nude"))
 			return FALSE
