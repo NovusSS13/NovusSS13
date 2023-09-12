@@ -189,6 +189,15 @@
 /obj/item/organ/tongue/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutanttongue
 
+/// helper for doing all the shit for applying custom say mods (for retarded edge cases where we want to generate a "default" tongue)
+/obj/item/organ/tongue/proc/apply_custom_say_mod_by_owner()
+	if(!owner.client)
+		return
+	// now we actually set the shit for the tongue
+	if(owner.client.prefs.read_preference(/datum/preference/text/custom_say_mod))
+		name = "[owner.real_name]'s tongue"
+		say_mod = owner.client.prefs.read_preference(/datum/preference/text/custom_say_mod)
+
 /obj/item/organ/tongue/lizard
 	name = "forked tongue"
 	desc = "A thin and long muscle typically found in reptilian races, apparently moonlights as a nose."
