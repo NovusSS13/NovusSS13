@@ -1,11 +1,10 @@
 import { useBackend } from '../../backend';
 import { Stack } from '../../components';
-import { CharacterPreview } from '../common/CharacterPreview';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 import { PreferencesMenuData, RandomSetting, ServerData, createSetPreference } from './data';
 import { filterMap } from 'common/collections';
 import { useRandomToggleState } from './useRandomToggleState';
-import { PreferenceList, CharacterControls, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
+import { PreferenceList, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
 
 export const BackgroundPage = (props, context) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
