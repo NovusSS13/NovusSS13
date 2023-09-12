@@ -1885,12 +1885,12 @@
 /datum/sprite_accessory/wings
 	icon = 'icons/mob/species/wings.dmi'
 
+/datum/sprite_accessory/wings_open
+	icon = 'icons/mob/species/wings.dmi'
+
 /datum/sprite_accessory/wings/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
-
-/datum/sprite_accessory/wings_open
-	icon = 'icons/mob/species/wings.dmi'
 
 /datum/sprite_accessory/wings_open/none
 	name = SPRITE_ACCESSORY_NONE
