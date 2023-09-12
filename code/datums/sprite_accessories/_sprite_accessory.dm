@@ -34,9 +34,13 @@
 	for(var/path in subtypesof(prototype))
 		var/datum/sprite_accessory/D = new path()
 
+		//valid accessories require a name
+		if(!D.name)
+			continue
+
 		if(D.icon_state)
 			L[D.name] = D
-		else
+		else if(D.name)
 			L += D.name
 
 		switch(D.gender)
@@ -1762,11 +1766,11 @@
 	icon_state = "spikes"
 
 /datum/sprite_accessory/tails/human
+	icon = 'icons/mob/species/human/cat_features.dmi'
 	feature_suffix = "human"
 
 /datum/sprite_accessory/tails/human/cat
 	name = "Cat"
-	icon = 'icons/mob/species/human/cat_features.dmi'
 	icon_state = "default"
 	feature_suffix = "cat"
 
