@@ -301,6 +301,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	job_preferences = save_data?["job_preferences"]
 	all_quirks = save_data?["all_quirks"]
 
+	//Markings
+	body_markings = save_data?["body_markings"]
+
 	//try to fix any outdated data if necessary
 	//preference updating will handle saving the updated data for us.
 	if(needs_update >= 0)
@@ -310,6 +313,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	randomise = SANITIZE_LIST(randomise)
 	job_preferences = SANITIZE_LIST(job_preferences)
 	all_quirks = SANITIZE_LIST(all_quirks)
+	body_markings = SANITIZE_LIST(body_markings)
 
 	//Validate job prefs
 	for(var/j in job_preferences)
@@ -337,6 +341,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	save_data["randomise"] = randomise
 	save_data["job_preferences"] = job_preferences
 	save_data["all_quirks"] = all_quirks
+
+	//Markings
+	save_data["body_markings"] = body_markings
 
 	return TRUE
 

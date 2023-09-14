@@ -59,6 +59,8 @@
 			return -BODY_ADJ_LAYER
 		if(EXTERNAL_FRONT)
 			return -BODY_FRONT_LAYER
+		else
+			return layer
 
 ///Check whether we can draw the overlays on a limb. Some oddball limbs are fundamentally incompatible with certain goofy overlays.
 /datum/bodypart_overlay/proc/can_draw_on_bodypart(obj/item/bodypart/ownerlimb)

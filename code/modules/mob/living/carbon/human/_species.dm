@@ -2119,17 +2119,33 @@
 	new_species ||= target.dna.species //If no new species is provided, assume its src.
 
 	var/is_digitard = (new_species.digitigrade_customization && (target.dna.features["legs"] == DIGITIGRADE_LEGS)) || (new_species.digitigrade_customization == DIGITIGRADE_FORCED)
-	var/list/final_bodypart_overrides = new_species.bodypart_overrides.Copy()
 	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
 		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
 			continue
 
-		var/path = final_bodypart_overrides?[old_part.body_zone]
+		var/path = new_species.bodypart_overrides?[old_part.body_zone]
 		var/obj/item/bodypart/new_part
 		if(path)
 			new_part = new path()
 			if(is_digitard && istype(new_part, /obj/item/bodypart/leg))
 				new_part.bodytype |= BODYTYPE_DIGITIGRADE //THIS IS GOING TO CAUSE BADNESS!!!!
+			//markings my behated
+			var/list/marking_zones = list(new_part.body_zone)
+			if(new_part.aux_zone)
+				marking_zones |= new_part.aux_zone
+			for(var/marking_zone in marking_zones)
+				for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+					var/marking_key = "marking_[marking_zone]_[marking_index]"
+					if(!target.dna.features[marking_key] || (target.dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
+						continue
+					var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][target.dna.features[marking_key]]
+					if(!markings) //invalid marking...
+						continue
+					if(!markings.compatible_species || is_path_in_list(new_species.type, markings.compatible_species))
+						var/marking_color_key = marking_key + "_color"
+						var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
+						marking.set_appearance(markings.type)
+						new_part.add_bodypart_overlay(marking)
 			new_part.replace_limb(target, special = TRUE, keep_old_organs = TRUE)
 			new_part.update_limb(is_creating = TRUE)
 		qdel(old_part)

@@ -242,6 +242,8 @@
 		stack_trace("[type] qdeleted with [length(organs)] uncleared organs")
 		organs.Cut()
 
+	bodypart_overlays?.Cut() // the datums will clear themselves by garbage collection
+
 	QDEL_LIST_ASSOC_VAL(feature_offsets)
 
 	return ..()
