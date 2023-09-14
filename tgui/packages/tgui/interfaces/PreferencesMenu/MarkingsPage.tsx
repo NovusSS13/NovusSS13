@@ -25,7 +25,13 @@ const MarkingInput = (
               marking_index: marking.marking_index,
             })
           }>
-          <ColorBox color={marking.color} />
+          <ColorBox
+            style={{
+              border: '2px solid white',
+              'box-sizing': 'content-box',
+            }}
+            color={marking.color}
+          />
         </Button>
       )) || <Button width="25%" />}
       <Button
