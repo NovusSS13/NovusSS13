@@ -1,6 +1,10 @@
-import { FeatureChoiced, FeatureDropdownInput } from '../base';
+import { FeatureChoiced, FeatureChoicedServerData, FeatureDropdownInput, FeatureValueProps } from '../base';
 
 export const body_type: FeatureChoiced = {
   name: 'Body type',
-  component: FeatureDropdownInput,
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
 };
