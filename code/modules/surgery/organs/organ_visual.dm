@@ -80,15 +80,14 @@
 		if(length(restyle_tools))
 			. += span_info("This organ can be restyled with <em>[english_list(restyle_tools)]</em>.")
 
-/// Update our features after something changed our appearance (if we have an attached DNA block)
-/obj/item/organ/proc/mutate_feature(features, mob/living/carbon/human/human)
+/// Update our appearance after something changed dna features (if we have an attached DNA block)
+/obj/item/organ/proc/mutate_features(list/features, mob/living/carbon/human/human)
 	if(!dna_block || sprite_accessory_override)
 		return FALSE
 
-	var/list/feature_list = bodypart_overlay.get_global_feature_list()
-	var/say_my_name = feature_list[deconstruct_block(get_uni_feature_block(features, dna_block), feature_list.len)]
-	if(say_my_name && (say_my_name != SPRITE_ACCESSORY_NONE))
-		bodypart_overlay.set_appearance_from_name(say_my_name)
+	var/feature_name = features[bodypart_overlay.feature_key]
+	if(feature_name && (feature_name != SPRITE_ACCESSORY_NONE))
+		bodypart_overlay.set_appearance_from_name(feature_name)
 	bodypart_overlay.inherit_color(ownerlimb, force = TRUE)
 	return TRUE
 

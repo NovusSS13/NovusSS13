@@ -46,23 +46,29 @@
 ///Returns a list of strings that gets used to build the icon_state for the image on get_image()
 /datum/bodypart_overlay/mutant/proc/get_icon_state(layer, obj/item/bodypart/limb)
 	RETURN_TYPE(/list)
-	var/gender = (limb?.limb_gender == FEMALE) ? "f" : "m"
 	var/list/icon_state_builder = list()
+	var/gender = limb?.limb_gender || "m"
 	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
-	icon_state_builder += feature_key
-	if(sprite_datum.feature_suffix)
-		icon_state_builder += sprite_datum.feature_suffix
+	var/actual_feature_key = get_icon_feature_key()
+	if(actual_feature_key)
+		icon_state_builder += actual_feature_key
+		if(sprite_datum.feature_suffix)
+			icon_state_builder += sprite_datum.feature_suffix
 	var/base_icon_state = get_base_icon_state() //MONKEYS. GOD DAMN MONKEYS.
 	if(base_icon_state)
 		icon_state_builder += base_icon_state
 	icon_state_builder += mutant_bodyparts_layertext(layer)
 	return icon_state_builder
 
+///Returns the feature_key we actually want to use for rendering the icon
+/datum/bodypart_overlay/mutant/proc/get_icon_feature_key()
+	return feature_key
+
 ///Return the BASE icon state of the sprite datum for use in get_icon_state (so no gender, layer nor feature_key)
 /datum/bodypart_overlay/mutant/proc/get_base_icon_state()
 	return sprite_datum.icon_state
 
-///Get the image we need to draw on the person. Called from get_overlay() which is called from _bodyparts.dm. Limb can be null
+///Get the image we need to draw on the person. Called from get_overlays() which is called from _bodyparts.dm. Limb can be null
 /datum/bodypart_overlay/mutant/get_image(layer, obj/item/bodypart/limb)
 	if(!sprite_datum)
 		CRASH("Trying to call get_image() on [type] while it didn't have a sprite_datum. This shouldn't happen, report it as soon as possible.")
@@ -106,8 +112,13 @@
 ///Generate a unique key based on our sprites. So that if we've aleady drawn these sprites, they can be found in the cache and wont have to be drawn again (blessing and curse, but mostly curse)
 /datum/bodypart_overlay/mutant/generate_icon_cache()
 	. = list()
-	. += "[get_base_icon_state()]"
-	. += "[feature_key]"
+	if(feature_key)
+		. += "[feature_key]"
+		if(sprite_datum.feature_suffix)
+			. += sprite_datum.feature_suffix
+	var/base_icon_state = get_base_icon_state()
+	if(base_icon_state)
+		. += "[get_base_icon_state()]"
 	if(islist(draw_color))
 		for(var/subcolor in draw_color)
 			. += "[subcolor]"
@@ -187,12 +198,17 @@
 				draw_color = eyes.eye_color_left
 			else
 				draw_color = human_owner.eye_color_left
+		else
+			CRASH("[type] had an invalid color_source! ([color_source])")
 	//convert to a matrix color (or deconvert) if necessary
 	draw_color = validate_color(draw_color)
 	return TRUE
 
 ///Returns a validated version of the given color in accordance with the sprite accessory in use
 /datum/bodypart_overlay/mutant/proc/validate_color(given_color)
+	//well, keep it null if it is null
+	if(isnull(given_color))
+		return given_color
 	//return a list if the sprite datum wants matrixed colors
 	if(sprite_datum.color_amount > 1)
 		//sanitize normally if it's already a matrix color
@@ -213,11 +229,49 @@
 ///Sprite accessories are singletons, stored list("Big Snout" = instance of /datum/sprite_accessory/snout/big), so here we get that singleton
 /datum/bodypart_overlay/mutant/proc/fetch_sprite_datum(datum/sprite_accessory/accessory_path)
 	var/list/feature_list = get_global_feature_list()
-
 	return feature_list[initial(accessory_path.name)]
 
 ///Get the singleton from the sprite name
 /datum/bodypart_overlay/mutant/proc/fetch_sprite_datum_from_name(accessory_name)
 	var/list/feature_list = get_global_feature_list()
-
 	return feature_list[accessory_name]
+
+/**
+ * Simple mutant bodypart overlay that doesn't rely on organs
+ * Requires feature_key and feature_key_color to be set on new, or manually
+ */
+/datum/bodypart_overlay/mutant/marking
+	layers = EXTERNAL_ADJACENT
+	color_source = ORGAN_COLOR_DNA
+	/// Body zone we are currently on, VERY IMPORTANT otherwise we won't get the proper markings list we want to use!
+	var/body_zone
+
+/datum/bodypart_overlay/mutant/marking/New(body_zone, feature_key, feature_color_key, color_source)
+	. = ..()
+	src.body_zone = body_zone
+	src.feature_key = feature_key
+	src.feature_color_key = feature_color_key
+	if(color_source)
+		src.color_source = color_source
+
+/datum/bodypart_overlay/mutant/marking/get_icon_feature_key()
+	return "markings"
+
+/datum/bodypart_overlay/mutant/marking/get_base_icon_state()
+	return  sprite_datum.icon_state + "[body_zone ? "_[body_zone]" : null]"
+
+/datum/bodypart_overlay/mutant/marking/get_global_feature_list()
+	if(body_zone)
+		return GLOB.body_markings_by_zone[body_zone]
+	return GLOB.body_markings
+
+/// Update our features after something changed our appearance (if we have an actual feature key)
+/datum/bodypart_overlay/mutant/marking/proc/mutate_features(list/features, obj/item/bodypart/bodypart, mob/living/carbon/human/human)
+	if(!feature_key && !feature_color_key)
+		return FALSE
+
+	var/marking_name = features[feature_key]
+	if(marking_name && (marking_name != SPRITE_ACCESSORY_NONE))
+		set_appearance_from_name(marking_name)
+	inherit_color(bodypart, TRUE)
+	return TRUE

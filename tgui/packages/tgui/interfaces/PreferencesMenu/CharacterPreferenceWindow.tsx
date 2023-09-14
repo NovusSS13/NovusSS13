@@ -7,6 +7,7 @@ import { PageButton } from './PageButton';
 import { AntagsPage } from './AntagsPage';
 import { JobsPage } from './JobsPage';
 import { MainPage } from './MainPage';
+import { MarkingsPage } from './MarkingsPage';
 import { BackgroundPage } from './BackgroundPage';
 import { SpeciesPage } from './SpeciesPage';
 import { QuirksPage } from './QuirksPage';
@@ -14,6 +15,7 @@ import { QuirksPage } from './QuirksPage';
 enum Page {
   Antags,
   Main,
+  Markings,
   Background,
   Jobs,
   Species,
@@ -71,6 +73,11 @@ export const CharacterPreferenceWindow = (props, context) => {
       );
 
       break;
+    case Page.Markings:
+      pageContents = (
+        <MarkingsPage openSpecies={() => setCurrentPage(Page.Species)} />
+      );
+      break;
     case Page.Background:
       pageContents = (
         <BackgroundPage openSpecies={() => setCurrentPage(Page.Species)} />
@@ -122,6 +129,15 @@ export const CharacterPreferenceWindow = (props, context) => {
                   setPage={setCurrentPage}
                   otherActivePages={[Page.Species]}>
                   Character
+                </PageButton>
+              </Stack.Item>
+
+              <Stack.Item grow>
+                <PageButton
+                  currentPage={currentPage}
+                  page={Page.Markings}
+                  setPage={setCurrentPage}>
+                  Markings
                 </PageButton>
               </Stack.Item>
 

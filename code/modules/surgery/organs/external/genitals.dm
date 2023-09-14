@@ -71,11 +71,11 @@
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_PENIS
 
-/obj/item/organ/genital/penis/mutate_feature(features, mob/living/carbon/human/human)
+/obj/item/organ/genital/penis/mutate_features(list/features, mob/living/carbon/human/human)
 	. = ..()
 	if(!.)
 		return
-	var/size = deconstruct_block(get_uni_feature_block(features, DNA_PENIS_SIZE_BLOCK), length(GLOB.penis_size_names))
+	var/size = features["penis_size"]
 	if(size)
 		set_genital_size(size)
 
@@ -226,11 +226,11 @@
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_BREASTS
 
-/obj/item/organ/genital/breasts/mutate_feature(features, mob/living/carbon/human/human)
+/obj/item/organ/genital/breasts/mutate_features(list/features, mob/living/carbon/human/human)
 	. = ..()
 	if(!.)
 		return
-	var/size = deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SIZE_BLOCK), length(GLOB.breasts_size_names))
+	var/size = features["breasts_size"]
 	if(size)
 		set_genital_size(size)
 

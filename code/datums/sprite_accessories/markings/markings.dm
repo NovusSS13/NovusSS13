@@ -1,34 +1,36 @@
 /datum/sprite_accessory/body_markings
 	color_amount = 1 //DNA code can only handle 1 color per marking, changes to the code will be necessary if you want more, swine
 	/// Bitflags for bodyparts we are allowed on
-	var/allowed_bodyparts = NONE
+	var/allowed_bodyparts = FULL_BODY
+	/// Species this set is compatible with - Set to null for no species restrictions
+	var/compatible_species = null
 
 /datum/sprite_accessory/body_markings/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
-	allowed_bodyparts = FULL_BODY
 
 /datum/sprite_accessory/body_markings/lizard
 	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
+	gender_specific = TRUE
 	allowed_bodyparts = CHEST
+	compatible_species = list(/datum/species/lizard)
 
 /datum/sprite_accessory/body_markings/lizard/dtiger
 	name = "Dark Tiger Body"
 	icon_state = "dtiger"
-	gender_specific = TRUE
 
 /datum/sprite_accessory/body_markings/lizard/ltiger
 	name = "Light Tiger Body"
 	icon_state = "ltiger"
-	gender_specific = TRUE
 
 /datum/sprite_accessory/body_markings/lizard/lbelly
 	name = "Light Belly"
 	icon_state = "lbelly"
-	gender_specific = TRUE
 
 /datum/sprite_accessory/body_markings/moth // the markings that moths can have. finally something other than the boring tan
 	icon = 'icons/mob/species/moth/moth_markings.dmi'
+	compatible_species = list(/datum/species/moth)
+	color_amount = 0
 
 /datum/sprite_accessory/body_markings/moth/reddish
 	name = "Reddish"

@@ -74,6 +74,54 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			. += total_block_len
 			total_block_len += DNA_BLOCK_SIZE_COLOR
 
+/**
+ * An associative list of feature key -> dna block
+ */
+GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
+
+/proc/init_features_to_dna_blocks()
+	var/list/features_to_blocks = list(
+		"mcolor" = DNA_MUTANT_COLOR_BLOCK,
+		"ethcolor" = DNA_ETHEREAL_COLOR_BLOCK,
+		"tail" = DNA_TAIL_BLOCK,
+		"tail_color" = DNA_TAIL_COLOR_BLOCK,
+		"snout" = DNA_SNOUT_BLOCK,
+		"snout_color" = DNA_SNOUT_COLOR_BLOCK,
+		"horns" = DNA_HORNS_BLOCK,
+		"horns_color" = DNA_HORNS_COLOR_BLOCK,
+		"frills" = DNA_FRILLS_BLOCK,
+		"frills_color" = DNA_FRILLS_COLOR_BLOCK,
+		"spines" = DNA_SPINES_BLOCK,
+		"spines_color" = DNA_SPINES_COLOR_BLOCK,
+		"ears" = DNA_EARS_BLOCK,
+		"ears_color" = DNA_EARS_COLOR_BLOCK,
+		"moth_wings" = DNA_MOTH_WINGS_BLOCK,
+		"moth_antennae" = DNA_MOTH_ANTENNAE_BLOCK,
+		"caps" = DNA_CAPS_BLOCK,
+		"pod_hair" = DNA_POD_HAIR_BLOCK,
+		"penis" = DNA_PENIS_BLOCK,
+		"penis_color" = DNA_PENIS_COLOR_BLOCK,
+		"penis_size" = DNA_PENIS_SIZE_BLOCK,
+		"testicles" = DNA_TESTICLES_BLOCK,
+		"testicles_color" = DNA_TESTICLES_COLOR_BLOCK,
+		"vagina" = DNA_VAGINA_BLOCK,
+		"vagina_color" = DNA_VAGINA_COLOR_BLOCK,
+		"breasts" = DNA_BREASTS_BLOCK,
+		"breasts_color" = DNA_BREASTS_COLOR_BLOCK,
+		"breasts_size" = DNA_BREASTS_SIZE_BLOCK,
+	)
+	var/marking_block = DNA_MAIN_FEATURE_BLOCKS
+	for(var/zone in GLOB.marking_zones)
+		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+			var/marking_key = "marking_[zone]_[marking]"
+			var/marking_color_key = marking_key + "_color"
+			marking_block++
+			features_to_blocks[marking_key] = marking_block
+			marking_block++
+			features_to_blocks[marking_color_key] = marking_block
+	features_to_blocks.len = DNA_FEATURE_BLOCKS
+	return features_to_blocks
+
 /////////////////////////// DNA DATUM
 /datum/dna
 	///An md5 hash of the dna holder's real name
@@ -253,7 +301,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(features["moth_antennae"] != "Burnt Off")
 		L[DNA_MOTH_ANTENNAE_BLOCK] = construct_block(GLOB.moth_antennae_list.Find(features["moth_antennae"]), GLOB.moth_antennae_list.len)
 	if(features["caps"])
-		L[DNA_MUSHROOM_CAP_BLOCK] = construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len)
+		L[DNA_CAPS_BLOCK] = construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len)
 	if(features["pod_hair"])
 		L[DNA_POD_HAIR_BLOCK] = construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len)
 
@@ -285,10 +333,10 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 	//now that we handled the main DNA blocks, it's time to do markings
 	for(var/zone in GLOB.marking_zones)
-		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
-			var/marking_key = "marking_[zone]_[marking]"
+		for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+			var/marking_key = "marking_[zone]_[marking_index]"
 			var/marking_color_key = marking_key + "_color"
-			var/list/markings_list = GLOB.body_markings_per_zone[zone]
+			var/list/markings_list = GLOB.body_markings_by_zone[zone]
 			if(features[marking_key])
 				. += construct_block(markings_list.Find(features[marking_key]), markings_list.len)
 			else
@@ -430,7 +478,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.moth_wings_list.Find(features["moth_wings"]), GLOB.moth_wings_list.len))
 		if(DNA_MOTH_ANTENNAE_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.moth_antennae_list.Find(features["moth_antennae"]), GLOB.moth_antennae_list.len))
-		if(DNA_MUSHROOM_CAP_BLOCK)
+		if(DNA_CAPS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len))
 		if(DNA_POD_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len))
@@ -457,22 +505,23 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len))
 
 		else
-			if(blocknumber <= DNA_FEATURE_BLOCKS)
-				var/markingblocknumber = DNA_FEATURE_BLOCKS - blocknumber
+			//it's a marking, we have to do shady shit to get this working
+			if((blocknumber > DNA_MAIN_FEATURE_BLOCKS) && (blocknumber <= DNA_FEATURE_BLOCKS))
+				var/markingblock = DNA_FEATURE_BLOCKS - blocknumber
 				var/counter = 0
 				for(var/zone in GLOB.marking_zones)
 					for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
 						counter++
-						if(counter != markingblocknumber)
+						if(counter != markingblock)
 							counter++
-						if(counter != markingblocknumber)
+						if(counter != markingblock)
 							continue
 						var/marking_key = "marking_[zone]_[marking]"
 						var/marking_color_key = marking_key + "_color"
 						switch(DNA_BLOCKS_PER_MARKING - (counter % DNA_BLOCKS_PER_MARKING))
 							//marking name block
 							if(1)
-								var/list/markings_list = GLOB.body_markings_per_zone[zone]
+								var/list/markings_list = GLOB.body_markings_by_zone[zone]
 								set_uni_feature_block(blocknumber, construct_block(markings_list.Find(features[marking_key]), markings_list.len))
 							//marking color block
 							if(2)
@@ -755,7 +804,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["original_moth_antennae"] = genetic_value
 		dna.features["moth_antennae"] = genetic_value
 	if(dna.features["caps"])
-		dna.features["caps"] = GLOB.caps_list[deconstruct_block(get_uni_feature_block(features, DNA_MUSHROOM_CAP_BLOCK), GLOB.caps_list.len)]
+		dna.features["caps"] = GLOB.caps_list[deconstruct_block(get_uni_feature_block(features, DNA_CAPS_BLOCK), GLOB.caps_list.len)]
 	if(dna.features["pod_hair"])
 		dna.features["pod_hair"] = GLOB.pod_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_POD_HAIR_BLOCK), GLOB.pod_hair_list.len)]
 
@@ -786,7 +835,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
 			var/marking_key = "marking_[zone]_[marking]"
 			var/marking_color_key = marking_key + "_color"
-			var/list/markings_list = GLOB.body_markings_per_zone[zone]
+			var/list/markings_list = GLOB.body_markings_by_zone[zone]
 
 			dna_block++
 			dna.features[marking_key] = GLOB.body_markings[deconstruct_block(get_uni_feature_block(features, dna_block), markings_list.len)]
@@ -795,12 +844,15 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			dna.features[marking_color_key] = sanitize_hexcolor(get_uni_feature_block(features, dna_block))
 
 	for(var/obj/item/organ/organ as anything in organs)
-		organ.mutate_feature(features, src)
+		organ.mutate_features(dna.features, src)
+	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+		for(var/datum/bodypart_overlay/mutant/marking/marking in bodypart.bodypart_overlays)
+			marking.mutate_features(dna.features, bodypart, src)
 
 	if(icon_update)
 		update_body(is_creating = mutcolor_update)
-		if(mutations_overlay_update)
-			update_mutations_overlay()
+	if(mutations_overlay_update)
+		update_mutations_overlay()
 
 /mob/proc/domutcheck()
 	return

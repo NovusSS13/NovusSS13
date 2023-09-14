@@ -56,7 +56,7 @@
 #define DNA_EARS_COLOR_BLOCK 14
 #define DNA_MOTH_WINGS_BLOCK 15
 #define DNA_MOTH_ANTENNAE_BLOCK 16
-#define DNA_MUSHROOM_CAP_BLOCK 17
+#define DNA_CAPS_BLOCK 17
 #define DNA_POD_HAIR_BLOCK 18
 
 //dumb genital crap ugh

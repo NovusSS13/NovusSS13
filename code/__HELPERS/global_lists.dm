@@ -45,7 +45,17 @@
 		for(var/zone in GLOB.marking_zones)
 			var/bitflag = GLOB.marking_zone_to_bitflag[zone]
 			if(body_marking.allowed_bodyparts & bitflag)
-				LAZYADDASSOC(GLOB.body_markings_per_zone[zone], marking_name, body_marking)
+				LAZYADDASSOC(GLOB.body_markings_by_zone[zone], marking_name, body_marking)
+	init_body_marking_sets()
+
+/// Inits GLOB.body_marking_sets
+/proc/init_body_marking_sets()
+	// Here we build the global list for all body markings sets
+	for(var/path in subtypesof(/datum/body_marking_set))
+		var/datum/body_marking_set/BM = path
+		if(initial(BM.name))
+			BM = new path()
+			GLOB.body_marking_sets[BM.name] = BM
 
 /// Inits GLOB.species_list. Not using GLOBAL_LIST_INIT b/c it depends on GLOB.string_lists
 /proc/init_species_list()

@@ -4,6 +4,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Antennae"
 	should_generate_icons = TRUE
+	relevant_cosmetic_organ = /obj/item/organ/antennae
 	modified_feature = "moth_antennae"
 
 /datum/preference/choiced/mutant/moth_antennae/init_possible_values()
@@ -33,6 +34,7 @@
 	main_feature_name = "Moth wings"
 	should_generate_icons = TRUE
 	modified_feature = "moth_wings"
+	relevant_cosmetic_organ = /obj/item/organ/wings/moth
 
 /datum/preference/choiced/mutant/moth_wings/init_possible_values()
 	return assoc_to_keys_features(GLOB.moth_wings_list)

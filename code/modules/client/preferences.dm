@@ -45,6 +45,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//Quirk list
 	var/list/all_quirks = list()
 
+	/// A list of every marking zone and it's associated body markings
+	var/list/list/body_markings = list()
+
 	//Job preferences 2.0 - indexed by job title , no key or value implies never
 	var/list/job_preferences = list()
 
@@ -246,6 +249,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 			if (istype(requested_preference, /datum/preference/name))
 				tainted_character_profiles = TRUE
+
+			for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+				if (preference_middleware.post_set_preference(usr, requested_preference_key, value))
+					return TRUE
 
 			return TRUE
 		if ("set_color_preference")
@@ -507,6 +514,32 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if(GetQuirkBalance() < 0)
 		all_quirks = list()
 
+/// Returns a list of our middlewares that should be applied BEFORE normal prefs, in priority order
+/datum/preferences/proc/get_middlewares_before_prefs_in_priority_order()
+	var/list/preferences_before[MIDDLEWARE_PRIORITY_BEFORE]
+
+	for (var/datum/preference_middleware/pref_middleware in middleware)
+		if(pref_middleware.priority <= MIDDLEWARE_PRIORITY_BEFORE)
+			LAZYADD(preferences_before[pref_middleware.priority], pref_middleware)
+
+	var/list/flattened = list()
+	for (var/index in 1 to MIDDLEWARE_PRIORITY_BEFORE)
+		flattened += preferences_before[index]
+	return flattened
+
+/// Returns a list of our middlewares that should be applied AFTER normal prefs, in priority order
+/datum/preferences/proc/get_middlewares_after_prefs_in_priority_order()
+	var/list/preferences_after[MIDDLEWARE_PRIORITY_AFTER - MIDDLEWARE_PRIORITY_BEFORE]
+
+	for (var/datum/preference_middleware/pref_middleware in middleware)
+		if(pref_middleware.priority > MIDDLEWARE_PRIORITY_BEFORE)
+			LAZYADD(preferences_after[pref_middleware.priority - MIDDLEWARE_PRIORITY_BEFORE], pref_middleware)
+
+	var/list/flattened = list()
+	for (var/index in 1 to MIDDLEWARE_PRIORITY_AFTER - MIDDLEWARE_PRIORITY_BEFORE)
+		flattened += preferences_after[index]
+	return flattened
+
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
 /datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE)
 	apply_character_randomization_prefs(is_antag)
@@ -516,18 +549,25 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE)
 	character.dna.features = list()
 
+	//Apply markings before normal prefs are done
+	for (var/datum/preference_middleware/preference_middleware as anything in get_middlewares_before_prefs_in_priority_order())
+		preference_middleware.apply_to_human(character, src)
+
+	//Normal preference datums with no snowflake handling
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
 
 		preference.apply_to_human(character, read_preference(preference.type), src)
 
-	character.dna.real_name = character.real_name
+	//Apply augments/etc after normal prefs are done
+	for (var/datum/preference_middleware/preference_middleware as anything in get_middlewares_after_prefs_in_priority_order())
+		preference_middleware.apply_to_human(character, src)
 
+	character.dna.real_name = character.real_name
 	if(icon_updates)
 		character.icon_render_keys = list()
 		character.update_body(is_creating = TRUE)
-
 
 /// Returns whether the parent mob should have the random hardcore settings enabled. Assumes it has a mind.
 /datum/preferences/proc/should_be_random_hardcore(datum/job/job, datum/mind/mind)
