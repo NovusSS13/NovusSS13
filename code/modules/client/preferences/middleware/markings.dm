@@ -14,10 +14,6 @@
 /datum/preference_middleware/markings/get_ui_data(mob/user)
 	var/list/data = list()
 
-	// How?
-	if(!islist(preferences.body_markings))
-		preferences.body_markings = list()
-
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 
 	var/list/presets = list()

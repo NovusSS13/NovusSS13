@@ -111,6 +111,10 @@
 	var/finished_icon_state = icon_state_builder.Join("_")
 
 	var/mutable_appearance/inner_appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
+
+	if(sprite_datum.center)
+		center_image(inner_appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
+
 	return inner_appearance
 
 /obj/item/organ/ears/invincible
