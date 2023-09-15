@@ -499,27 +499,41 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /datum/preferences/proc/GetQuirkBalance()
 	var/bal = 0
-	for(var/V in all_quirks)
-		var/datum/quirk/T = SSquirks.quirks[V]
-		bal -= initial(T.value)
+	for(var/quirk_name in all_quirks)
+		var/datum/quirk/quirk = SSquirks.quirks[quirk_name]
+		bal -= initial(quirk.value)
 	return bal
 
 /datum/preferences/proc/GetPositiveQuirkCount()
 	. = 0
-	for(var/q in all_quirks)
-		if(SSquirks.quirk_points[q] > 0)
+	for(var/quirk_name in all_quirks)
+		if(SSquirks.quirk_points[quirk_name] > 0)
 			.++
 
 /datum/preferences/proc/validate_quirks()
 	if(GetQuirkBalance() < 0)
 		all_quirks = list()
 
+/datum/preferences/proc/validate_markings()
+	var/species_type = read_preference(/datum/preference/choiced/species)
+	var/list/current_markings = body_markings.Copy()
+	var/list/final_markings = list()
+	for(var/zone in current_markings)
+		for(var/marking_name in current_markings)
+			var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
+			if(!body_marking || (body_marking.name == SPRITE_ACCESSORY_NONE)) //invalid marking...
+				continue
+			if(!body_marking.compatible_species || is_path_in_list(species_type, body_marking.compatible_species))
+				LAZYADDASSOC(final_markings[zone], marking_name, current_markings[zone][marking_name])
+	body_markings = final_markings
+	return final_markings
+
 /// Returns a list of our middlewares that should be applied BEFORE normal prefs, in priority order
 /datum/preferences/proc/get_middlewares_before_prefs_in_priority_order()
 	var/list/preferences_before[MIDDLEWARE_PRIORITY_BEFORE]
 
 	for (var/datum/preference_middleware/pref_middleware in middleware)
-		if(pref_middleware.priority <= MIDDLEWARE_PRIORITY_BEFORE)
+		if (pref_middleware.priority <= MIDDLEWARE_PRIORITY_BEFORE)
 			LAZYADD(preferences_before[pref_middleware.priority], pref_middleware)
 
 	var/list/flattened = list()
@@ -532,7 +546,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/list/preferences_after[MIDDLEWARE_PRIORITY_AFTER - MIDDLEWARE_PRIORITY_BEFORE]
 
 	for (var/datum/preference_middleware/pref_middleware in middleware)
-		if(pref_middleware.priority > MIDDLEWARE_PRIORITY_BEFORE)
+		if (pref_middleware.priority > MIDDLEWARE_PRIORITY_BEFORE)
 			LAZYADD(preferences_after[pref_middleware.priority - MIDDLEWARE_PRIORITY_BEFORE], pref_middleware)
 
 	var/list/flattened = list()

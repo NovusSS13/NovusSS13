@@ -366,10 +366,11 @@ export const PreferenceList = (props: {
   act: typeof sendAct;
   preferences: Record<string, unknown>;
   randomizations: Record<string, RandomSetting>;
+  basis?: string;
 }) => {
   return (
     <Stack.Item
-      basis="50%"
+      basis={props.basis || '50%'}
       grow
       style={{
         background: 'rgba(0, 0, 0, 0.5)',
@@ -619,6 +620,12 @@ export const MainPage = (
                     act={act}
                     randomizations={getRandomization(contextualPreferences)}
                     preferences={contextualPreferences}
+                  />
+                  <PreferenceList
+                    basis="15%"
+                    act={act}
+                    randomizations={getRandomization(nonContextualPreferences)}
+                    preferences={nonContextualPreferences}
                   />
                 </Stack>
               </Stack.Item>
