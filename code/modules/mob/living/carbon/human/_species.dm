@@ -67,6 +67,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/mutant_organs = list()
 	///List of cosmetic organs to generate like horns, frills, wings, etc. list(typepath of organ = "Round Beautiful BDSM Snout").
 	var/list/cosmetic_organs = list()
+	///List of body marking sets we can use for randomization. We use sets to avoid creating fugly abominations.
+	var/list/body_marking_sets = list()
 	///Replaces default brain with a different organ
 	var/obj/item/organ/brain/mutantbrain = /obj/item/organ/brain
 	///Replaces default heart with a different organ
@@ -657,12 +659,34 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 ///Proc that will randomize all the external organs (i.e. horns, frills, tails etc.) of a species' associated mob
 /datum/species/proc/randomize_cosmetic_organs(mob/living/carbon/human/human_mob)
+	var/mutant_color = sanitize_hexcolor(human_mob.dna.features["mcolor"], DEFAULT_HEX_COLOR_LEN, TRUE, "#" + random_color())
 	for(var/obj/item/organ/organ_path as anything in cosmetic_organs)
 		var/obj/item/organ/randomized_organ = human_mob.get_organ_by_type(organ_path)
 		if(randomized_organ)
 			var/datum/bodypart_overlay/mutant/overlay = randomized_organ.bodypart_overlay
+			if(!overlay?.feature_key)
+				continue
 			var/datum/sprite_accessory/new_accessory = overlay.get_random_sprite_accessory()
 			human_mob.dna.features["[overlay.feature_key]"] = new_accessory.name
+
+///Proc that will randomize all the markings of a species' associated mob
+/datum/species/proc/randomize_markings(mob/living/carbon/human/human_mob)
+	if(!length(body_marking_sets))
+		return
+	var/chosen_marking_set = pick(body_marking_sets)
+	var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[chosen_marking_set]
+	if(!body_marking_set)
+		CRASH("[type] has an invalid body marking set ([chosen_marking_set]) in body_marking_sets!")
+	var/mutant_color = sanitize_hexcolor(human_mob.dna.features["mcolor"], DEFAULT_HEX_COLOR_LEN, TRUE, "#" + random_color())
+	var/list/markings = body_marking_set.assemble_body_markings_list(mutant_color)
+	for(var/zone in markings)
+		for(var/marking_index in 1 to length(markings[zone]))
+			var/marking_key = "marking_[zone]_[marking_index]"
+			var/marking_color_key = marking_key + "_color"
+			var/marking_name = markings[zone][marking_index]
+			var/marking_color = markings[zone][marking_name]
+			human_mob.dna.features[marking_key] = marking_name
+			human_mob.dna.features[marking_color_key] = marking_color
 
 ///Proc that randomizes all the appearance elements (external organs, markings, hair etc.) of a species' associated mob. Function set by child procs
 /datum/species/proc/randomize_features(mob/living/carbon/human/human_mob)
@@ -1791,11 +1815,26 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_damage_perks()
-	// We use the chest to figure out brute and burn mod perks
-	var/obj/item/bodypart/chest/fake_chest = bodypart_overrides[BODY_ZONE_CHEST]
-
 	var/list/to_add = list()
 
+	//General damage
+	if(damage_modifier > 0)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "shield-alt",
+			SPECIES_PERK_NAME = "General Resilience",
+			SPECIES_PERK_DESC = "[plural_form] are more resilient to most types of damage.",
+		))
+	else if(damage_modifier < 0)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = "shield-alt",
+			SPECIES_PERK_NAME = "General Weakness",
+			SPECIES_PERK_DESC = "[plural_form] are weaker to most types of damage.",
+		))
+
+	// We use the chest to figure out brute and burn perks
+	var/obj/item/bodypart/chest/fake_chest = bodypart_overrides[BODY_ZONE_CHEST]
 	// Brute related
 	if(initial(fake_chest.brute_modifier) > 1)
 		to_add += list(list(
@@ -1804,8 +1843,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Brutal Weakness",
 			SPECIES_PERK_DESC = "[plural_form] are weak to brute damage.",
 		))
-
-	if(initial(fake_chest.brute_modifier) < 1)
+	else if(initial(fake_chest.brute_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
@@ -1821,8 +1859,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Burn Weakness",
 			SPECIES_PERK_DESC = "[plural_form] are weak to burn damage.",
 		))
-
-	if(initial(fake_chest.burn_modifier) < 1)
+	else if(initial(fake_chest.burn_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
@@ -1838,8 +1875,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Shock Vulnerability",
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to being shocked.",
 		))
-
-	if(siemens_coeff < 1)
+	else if(siemens_coeff < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
@@ -1865,8 +1901,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Heat Vulnerability",
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to high temperatures.",
 		))
-
-	if(heatmod < 1 || bodytemp_heat_damage_limit > BODYTEMP_HEAT_DAMAGE_LIMIT)
+	else if(heatmod < 1 || bodytemp_heat_damage_limit > BODYTEMP_HEAT_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
@@ -1882,8 +1917,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Cold Vulnerability",
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to cold temperatures.",
 		))
-
-	if(coldmod < 1 || bodytemp_cold_damage_limit < BODYTEMP_COLD_DAMAGE_LIMIT)
+	else if(coldmod < 1 || bodytemp_cold_damage_limit < BODYTEMP_COLD_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
@@ -1915,8 +1949,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = initial(exotic_blood.name),
-			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_blood.name)], which can make recieving medical treatment harder.",
+			SPECIES_PERK_NAME = "[initial(exotic_blood.name)] Blood",
+			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_blood.name)], which can make receiving medical treatment harder.",
 		))
 
 	// Otherwise otherwise, see if they have an exotic bloodtype set
@@ -1925,7 +1959,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "tint",
 			SPECIES_PERK_NAME = "Exotic Blood",
-			SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make recieving medical treatment harder.",
+			SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make receiving medical treatment harder.",
 		))
 
 	return to_add
@@ -1942,7 +1976,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "user-plus",
-			SPECIES_PERK_NAME = "Limbs Easily Reattached",
+			SPECIES_PERK_NAME = "Easily Reattached",
 			SPECIES_PERK_DESC = "[plural_form] limbs are easily readded, and as such do not \
 				require surgery to restore. Simply pick it up and pop it back in, champ!",
 		))
@@ -1951,7 +1985,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "user-times",
-			SPECIES_PERK_NAME = "Limbs Easily Dismembered",
+			SPECIES_PERK_NAME = "Easily Dismembered",
 			SPECIES_PERK_DESC = "[plural_form] limbs are not secured well, and as such they are easily dismembered.",
 		))
 
@@ -1972,7 +2006,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				causing toxins will instead cause healing. Be careful around purging chemicals!",
 		))
 
-	if (TRAIT_GENELESS in inherent_traits)
+	if(TRAIT_GENELESS in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "dna",
@@ -1980,7 +2014,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "[plural_form] have no genes, making genetic scrambling a useless weapon, but also locking them out from getting genetic powers.",
 		))
 
-	if (TRAIT_NOBREATH in inherent_traits)
+	if(TRAIT_NOBREATH in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "wind",

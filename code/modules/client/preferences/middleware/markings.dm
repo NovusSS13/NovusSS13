@@ -189,7 +189,7 @@
 		var/mcolor = preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color)
 		mcolor = mcolor[1]
 		preferences.body_markings = list()
-		var/list/assembled_markings = body_marking_set.assemble_body_markings_list()
+		var/list/assembled_markings = body_marking_set.assemble_body_markings_list(mcolor)
 		for(var/zone in assembled_markings)
 			for(var/marking_name in assembled_markings[zone])
 				var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]

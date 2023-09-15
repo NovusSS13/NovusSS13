@@ -54,7 +54,9 @@
 	return 1
 
 /datum/species/moth/randomize_features(mob/living/carbon/human/human_mob)
+	. = ..()
 	randomize_cosmetic_organs(human_mob)
+	randomize_markings(human_mob)
 
 /datum/species/moth/get_scream_sound(mob/living/carbon/human/human)
 	return 'sound/voice/moth/scream_moth.ogg'
