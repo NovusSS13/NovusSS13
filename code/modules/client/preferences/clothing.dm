@@ -22,35 +22,35 @@
 
 /datum/preference/choiced/backpack/init_possible_values()
 	return list(
-		GBACKPACK,
-		GSATCHEL,
-		LSATCHEL,
-		GDUFFELBAG,
-		DBACKPACK,
-		DSATCHEL,
-		DDUFFELBAG,
+		PREF_GREY_BACKPACK,
+		PREF_GREY_SATCHEL,
+		PREF_LEATHER_SATCHEL,
+		PREF_GREY_DUFFELBAG,
+		PREF_DEP_BACKPACK,
+		PREF_DEP_SATCHEL,
+		PREF_DEP_DUFFELBAG,
 	)
 
 /datum/preference/choiced/backpack/icon_for(value)
 	switch (value)
-		if (GBACKPACK)
+		if (PREF_GREY_BACKPACK)
 			return /obj/item/storage/backpack
-		if (GSATCHEL)
+		if (PREF_GREY_SATCHEL)
 			return /obj/item/storage/backpack/satchel
-		if (LSATCHEL)
+		if (PREF_LEATHER_SATCHEL)
 			return /obj/item/storage/backpack/satchel/leather
-		if (GDUFFELBAG)
+		if (PREF_GREY_DUFFELBAG)
 			return /obj/item/storage/backpack/duffelbag
 
 		// In a perfect world, these would be your department's backpack.
 		// However, this doesn't factor in assistants, or no high slot, and would
 		// also increase the spritesheet size a lot.
 		// I play medical doctor, and so medical doctor you get.
-		if (DBACKPACK)
+		if (PREF_DEP_BACKPACK)
 			return /obj/item/storage/backpack/medic
-		if (DSATCHEL)
+		if (PREF_DEP_SATCHEL)
 			return /obj/item/storage/backpack/satchel/med
-		if (DDUFFELBAG)
+		if (PREF_DEP_DUFFELBAG)
 			return /obj/item/storage/backpack/duffelbag/med
 
 /datum/preference/choiced/backpack/apply_to_human(mob/living/carbon/human/target, value)

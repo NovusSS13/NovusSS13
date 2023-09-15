@@ -41,7 +41,6 @@ GLOBAL_LIST_INIT(features_block_lengths, init_features_block_lengths())
 		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
 			var/marking_key = "marking_[zone]_[marking]"
 			var/marking_color_key = marking_key + "_color"
-			lengths[marking_key] = DNA_BLOCK_SIZE
 			lengths[marking_color_key] = DNA_BLOCK_SIZE_COLOR
 	return lengths
 
@@ -64,15 +63,9 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /proc/populate_total_uf_len_by_block()
 	. = list()
 	var/total_block_len = 1
-	for(var/blocknumber in 1 to DNA_MAIN_FEATURE_BLOCKS)
+	for(var/blocknumber in 1 to DNA_FEATURE_BLOCKS)
 		. += total_block_len
 		total_block_len += GET_UF_BLOCK_LEN(blocknumber)
-	for(var/zone in GLOB.marking_zones)
-		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
-			. += total_block_len
-			total_block_len += DNA_BLOCK_SIZE
-			. += total_block_len
-			total_block_len += DNA_BLOCK_SIZE_COLOR
 
 /**
  * An associative list of feature key -> dna block
@@ -241,26 +234,22 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 	var/list/L = new /list(DNA_UNI_IDENTITY_BLOCKS)
 
 	//ignores TRAIT_AGENDER so that a "real" gender can be stored in the DNA if later use is needed
-	switch(holder.gender)
-		if(MALE)
-			L[DNA_GENDER_BLOCK] = construct_block(G_MALE, 3)
-		if(FEMALE)
-			L[DNA_GENDER_BLOCK] = construct_block(G_FEMALE, 3)
-		else
-			L[DNA_GENDER_BLOCK] = construct_block(G_PLURAL, 3)
+	L[DNA_GENDER_BLOCK] = construct_block(GLOB.genders.Find(holder.gender), GLOB.genders.len)
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
 		if(!GLOB.hairstyles_list.len)
 			init_sprite_accessory_subtypes(/datum/sprite_accessory/hair,GLOB.hairstyles_list, GLOB.hairstyles_male_list, GLOB.hairstyles_female_list)
+		L[DNA_BODY_TYPE_BLOCK] = construct_block(GLOB.body_types.Find(H.physique), GLOB.body_types.len)
+		L[DNA_SKIN_TONE_BLOCK] = construct_block(GLOB.skin_tones.Find(H.skin_tone), GLOB.skin_tones.len)
+		L[DNA_HEIGHT_BLOCK] = construct_block(GLOB.mob_heights.Find(H.mob_height), GLOB.mob_heights.len)
+		L[DNA_EYE_COLOR_LEFT_BLOCK] = sanitize_hexcolor(H.eye_color_left, include_crunch = FALSE)
+		L[DNA_EYE_COLOR_RIGHT_BLOCK] = sanitize_hexcolor(H.eye_color_right, include_crunch = FALSE)
 		L[DNA_HAIRSTYLE_BLOCK] = construct_block(GLOB.hairstyles_list.Find(H.hairstyle), GLOB.hairstyles_list.len)
 		L[DNA_HAIR_COLOR_BLOCK] = sanitize_hexcolor(H.hair_color, include_crunch = FALSE)
 		if(!GLOB.facial_hairstyles_list.len)
 			init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_hair, GLOB.facial_hairstyles_list, GLOB.facial_hairstyles_male_list, GLOB.facial_hairstyles_female_list)
 		L[DNA_FACIAL_HAIRSTYLE_BLOCK] = construct_block(GLOB.facial_hairstyles_list.Find(H.facial_hairstyle), GLOB.facial_hairstyles_list.len)
 		L[DNA_FACIAL_HAIR_COLOR_BLOCK] = sanitize_hexcolor(H.facial_hair_color, include_crunch = FALSE)
-		L[DNA_SKIN_TONE_BLOCK] = construct_block(GLOB.skin_tones.Find(H.skin_tone), GLOB.skin_tones.len)
-		L[DNA_EYE_COLOR_LEFT_BLOCK] = sanitize_hexcolor(H.eye_color_left, include_crunch = FALSE)
-		L[DNA_EYE_COLOR_RIGHT_BLOCK] = sanitize_hexcolor(H.eye_color_right, include_crunch = FALSE)
 
 	for(var/blocknum in 1 to DNA_UNI_IDENTITY_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -417,28 +406,26 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		CRASH("Non-human mobs shouldn't have DNA")
 	var/mob/living/carbon/human/H = holder
 	switch(blocknumber)
-		if(DNA_HAIR_COLOR_BLOCK)
-			set_uni_identity_block(blocknumber, sanitize_hexcolor(H.hair_color, include_crunch = FALSE))
-		if(DNA_FACIAL_HAIR_COLOR_BLOCK)
-			set_uni_identity_block(blocknumber, sanitize_hexcolor(H.facial_hair_color, include_crunch = FALSE))
+		if(DNA_GENDER_BLOCK)
+			set_uni_identity_block(blocknumber, construct_block(GLOB.genders.Find(H.gender), GLOB.genders.len))
+		if(DNA_BODY_TYPE_BLOCK)
+			set_uni_identity_block(blocknumber, construct_block(GLOB.body_types.Find(H.gender), GLOB.body_types.len))
 		if(DNA_SKIN_TONE_BLOCK)
 			set_uni_identity_block(blocknumber, construct_block(GLOB.skin_tones.Find(H.skin_tone), GLOB.skin_tones.len))
+		if(DNA_HEIGHT_BLOCK)
+			set_uni_identity_block(blocknumber, construct_block(GLOB.mob_heights.Find(H.mob_height), GLOB.mob_heights.len))
 		if(DNA_EYE_COLOR_LEFT_BLOCK)
 			set_uni_identity_block(blocknumber, sanitize_hexcolor(H.eye_color_left, include_crunch = FALSE))
 		if(DNA_EYE_COLOR_RIGHT_BLOCK)
 			set_uni_identity_block(blocknumber, sanitize_hexcolor(H.eye_color_right, include_crunch = FALSE))
-		if(DNA_GENDER_BLOCK)
-			switch(H.gender)
-				if(MALE)
-					set_uni_identity_block(blocknumber, construct_block(G_MALE, 3))
-				if(FEMALE)
-					set_uni_identity_block(blocknumber, construct_block(G_FEMALE, 3))
-				else
-					set_uni_identity_block(blocknumber, construct_block(G_PLURAL, 3))
-		if(DNA_FACIAL_HAIRSTYLE_BLOCK)
-			set_uni_identity_block(blocknumber, construct_block(GLOB.facial_hairstyles_list.Find(H.facial_hairstyle), GLOB.facial_hairstyles_list.len))
 		if(DNA_HAIRSTYLE_BLOCK)
 			set_uni_identity_block(blocknumber, construct_block(GLOB.hairstyles_list.Find(H.hairstyle), GLOB.hairstyles_list.len))
+		if(DNA_HAIR_COLOR_BLOCK)
+			set_uni_identity_block(blocknumber, sanitize_hexcolor(H.hair_color, include_crunch = FALSE))
+		if(DNA_FACIAL_HAIRSTYLE_BLOCK)
+			set_uni_identity_block(blocknumber, construct_block(GLOB.facial_hairstyles_list.Find(H.facial_hairstyle), GLOB.facial_hairstyles_list.len))
+		if(DNA_FACIAL_HAIR_COLOR_BLOCK)
+			set_uni_identity_block(blocknumber, sanitize_hexcolor(H.facial_hair_color, include_crunch = FALSE))
 
 /datum/dna/proc/update_uf_block(blocknumber)
 	if(!blocknumber)
@@ -740,22 +727,16 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		gender = PLURAL
 		return
 
-	switch(deconstruct_block(get_uni_identity_block(dna.unique_identity, DNA_GENDER_BLOCK), 3))
-		if(G_MALE)
-			gender = MALE
-		if(G_FEMALE)
-			gender = FEMALE
-		else
-			gender = PLURAL
+	gender = deconstruct_block(get_uni_identity_block(dna.unique_identity, DNA_GENDER_BLOCK), GLOB.genders.len)
 
 /mob/living/carbon/human/updateappearance(icon_update = TRUE, mutcolor_update = FALSE, mutations_overlay_update = FALSE)
-	..()
+	. = ..()
 	var/structure = dna.unique_identity
+	physique = GLOB.body_types[deconstruct_block(get_uni_identity_block(structure, DNA_BODY_TYPE_BLOCK), GLOB.body_types.len)]
+	set_mob_height(GLOB.mob_heights[deconstruct_block(get_uni_identity_block(structure, DNA_HEIGHT_BLOCK), GLOB.mob_heights.len)])
 	skin_tone = GLOB.skin_tones[deconstruct_block(get_uni_identity_block(structure, DNA_SKIN_TONE_BLOCK), GLOB.skin_tones.len)]
 	eye_color_left = sanitize_hexcolor(get_uni_identity_block(structure, DNA_EYE_COLOR_LEFT_BLOCK))
 	eye_color_right = sanitize_hexcolor(get_uni_identity_block(structure, DNA_EYE_COLOR_RIGHT_BLOCK))
-	set_haircolor(sanitize_hexcolor(get_uni_identity_block(structure, DNA_HAIR_COLOR_BLOCK)), update = FALSE)
-	set_facial_haircolor(sanitize_hexcolor(get_uni_identity_block(structure, DNA_FACIAL_HAIR_COLOR_BLOCK)), update = FALSE)
 	if(HAS_TRAIT(src, TRAIT_SHAVED))
 		set_facial_hairstyle("Shaved", update = FALSE)
 	else
@@ -766,6 +747,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 	else
 		var/style = GLOB.hairstyles_list[deconstruct_block(get_uni_identity_block(structure, DNA_HAIRSTYLE_BLOCK), GLOB.hairstyles_list.len)]
 		set_hairstyle(style, update = FALSE)
+	set_haircolor(sanitize_hexcolor(get_uni_identity_block(structure, DNA_HAIR_COLOR_BLOCK)), update = FALSE)
+	set_facial_haircolor(sanitize_hexcolor(get_uni_identity_block(structure, DNA_FACIAL_HAIR_COLOR_BLOCK)), update = FALSE)
 	var/features = dna.unique_features
 	if(dna.features["mcolor"])
 		dna.features["mcolor"] = unserialize_dna_tricolor(get_uni_feature_block(features, DNA_MUTANT_COLOR_BLOCK))

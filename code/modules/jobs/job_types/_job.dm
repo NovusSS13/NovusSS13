@@ -285,17 +285,17 @@
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(ispath(back, /obj/item/storage/backpack))
 		switch(H.backpack)
-			if(GBACKPACK)
+			if(PREF_GREY_BACKPACK)
 				back = /obj/item/storage/backpack //Grey backpack
-			if(GSATCHEL)
+			if(PREF_GREY_SATCHEL)
 				back = /obj/item/storage/backpack/satchel //Grey satchel
-			if(GDUFFELBAG)
+			if(PREF_GREY_DUFFELBAG)
 				back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
-			if(LSATCHEL)
+			if(PREF_LEATHER_SATCHEL)
 				back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
-			if(DSATCHEL)
+			if(PREF_DEP_SATCHEL)
 				back = satchel //Department satchel
-			if(DDUFFELBAG)
+			if(PREF_DEP_DUFFELBAG)
 				back = duffelbag //Department duffel bag
 			else
 				back = backpack //Department backpack

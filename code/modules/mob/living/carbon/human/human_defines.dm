@@ -48,7 +48,7 @@
 	var/underwear_color = "#000000"
 	var/undershirt = SPRITE_ACCESSORY_NONE //Which undershirt the player wants
 	var/socks = SPRITE_ACCESSORY_NONE //Which socks the player wants
-	var/backpack = DBACKPACK //Which backpack type the player has chosen.
+	var/backpack = PREF_DEP_BACKPACK //Which backpack type the player has chosen.
 	var/jumpsuit_style = PREF_SUIT //suit/skirt
 
 	//Equipment slots
