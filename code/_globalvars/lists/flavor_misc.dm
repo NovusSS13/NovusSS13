@@ -36,7 +36,7 @@ GLOBAL_LIST_EMPTY(wings_list)
 GLOBAL_LIST_EMPTY(wings_open_list)
 GLOBAL_LIST_EMPTY(moth_wings_list)
 GLOBAL_LIST_EMPTY(moth_antennae_list)
-GLOBAL_LIST_EMPTY(caps_list)
+GLOBAL_LIST_EMPTY(mushroom_caps_list)
 GLOBAL_LIST_EMPTY(pod_hair_list)
 
 	//Human bits bits

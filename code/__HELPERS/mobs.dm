@@ -85,8 +85,8 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	if(!length(GLOB.moth_antennae_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
-	if(!length(GLOB.caps_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
+	if(!length(GLOB.mushroom_caps_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/mushroom_caps, GLOB.mushroom_caps_list)
 	if(!length(GLOB.pod_hair_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 	if(!length(GLOB.penis_list))
@@ -110,7 +110,7 @@
 		"spines" = pick(GLOB.spines_list),
 		"ears" = SPRITE_ACCESSORY_NONE,
 		"legs" = "Normal Legs",
-		"caps" = pick(GLOB.caps_list),
+		"mushroom_caps" = pick(GLOB.mushroom_caps_list),
 		"moth_wings" = pick(GLOB.moth_wings_list),
 		"moth_antennae" = pick(GLOB.moth_antennae_list),
 		"pod_hair" = pick(GLOB.pod_hair_list),
