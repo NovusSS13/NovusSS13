@@ -7,6 +7,7 @@
 	var/compatible_species = null
 
 /datum/body_marking_set/proc/assemble_body_markings_list(default_color = "#FFFFFF")
+	RETURN_TYPE(/list)
 	var/list/final_markings = list()
 	for(var/zone in body_marking_list)
 		for(var/marking_name in body_marking_list[zone])
