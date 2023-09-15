@@ -731,7 +731,7 @@
 			consumer.dna.features["wings"] = "None"
 			consumer.dna.features["frills"] = "None"
 			consumer.dna.features["spines"] = "Long"
-			consumer.dna.features["legs"] = DIGITIGRADE_LEGS
+			consumer.dna.features["legs"] = LEGS_DIGITIGRADE
 			consumer.eye_color_left = "#FEE5A3"
 			consumer.eye_color_right = "#FEE5A3"
 			consumer.set_species(/datum/species/lizard)

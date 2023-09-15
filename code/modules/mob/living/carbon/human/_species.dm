@@ -2182,7 +2182,7 @@
 /datum/species/proc/replace_body(mob/living/carbon/target, datum/species/new_species)
 	new_species ||= target.dna.species //If no new species is provided, assume its src.
 
-	var/is_digitigrade = (new_species.digitigrade_customization && (target.dna.features["legs"] == DIGITIGRADE_LEGS)) || (new_species.digitigrade_customization == DIGITIGRADE_FORCED)
+	var/is_digitigrade = (new_species.digitigrade_customization && (target.dna.features["legs"] == LEGS_DIGITIGRADE)) || (new_species.digitigrade_customization == DIGITIGRADE_FORCED)
 	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
 		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
 			continue

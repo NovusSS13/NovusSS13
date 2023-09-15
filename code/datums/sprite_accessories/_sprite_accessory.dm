@@ -2058,7 +2058,7 @@
 	name = "Normal Legs"
 
 /datum/sprite_accessory/legs/digitigrade_lizard
-	name = DIGITIGRADE_LEGS
+	name = LEGS_DIGITIGRADE
 
 /datum/sprite_accessory/mushroom_caps
 	icon = 'icons/mob/species/mush_cap.dmi'

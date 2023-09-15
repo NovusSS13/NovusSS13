@@ -109,7 +109,7 @@
 		"frills" = pick(GLOB.frills_list),
 		"spines" = pick(GLOB.spines_list),
 		"ears" = SPRITE_ACCESSORY_NONE,
-		"legs" = "Normal Legs",
+		"legs" = LEGS_NORMAL,
 		"mushroom_caps" = pick(GLOB.mushroom_caps_list),
 		"moth_wings" = pick(GLOB.moth_wings_list),
 		"moth_antennae" = pick(GLOB.moth_antennae_list),
