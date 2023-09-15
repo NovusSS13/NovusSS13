@@ -14,7 +14,7 @@
 
 /datum/preference/choiced/body_type/apply_to_human(mob/living/carbon/human/target, value)
 	if (value == USE_GENDER)
-		target.physique = target.gender
+		target.physique = ((value in GLOB.body_types) ? target.gender : MALE)
 	else
 		target.physique = value
 

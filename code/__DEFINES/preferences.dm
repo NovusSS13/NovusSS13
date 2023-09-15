@@ -147,8 +147,7 @@
 /// The priority at which gender is determined, needed for proper randomization.
 #define PREFERENCE_PRIORITY_GENDER 3
 
-/// The priority at which body type is decided, applied after gender so we can
-/// support the "use gender" option.
+/// The priority at which body type is decided, applied after gender so we can support the "use gender" option.
 #define PREFERENCE_PRIORITY_BODY_TYPE 4
 
 /**
@@ -194,3 +193,22 @@
 #define DIGITIGRADE_OPTIONAL 1
 /// The species is forced to have digitigrade legs in generation.
 #define DIGITIGRADE_FORCED 2
+
+// Uniform prefs
+#define PREF_SUIT "Jumpsuit"
+#define PREF_SKIRT "Jumpskirt"
+
+// Backpack prefs
+#define PREF_DEP_BACKPACK "Department Backpack"
+#define PREF_DEP_DUFFELBAG "Department Duffel Bag"
+#define PREF_DEP_SATCHEL "Department Satchel"
+#define PREF_GREY_BACKPACK "Grey Backpack"
+#define PREF_GREY_DUFFELBAG "Grey Duffel Bag"
+#define PREF_GREY_SATCHEL "Grey Satchel"
+#define PREF_LEATHER_SATCHEL "Leather Satchel"
+
+// Uplink spawn loc prefs
+#define UPLINK_PDA "PDA"
+#define UPLINK_RADIO "Radio"
+#define UPLINK_PEN "Pen" //like a real spy!
+#define UPLINK_IMPLANT "Implant"

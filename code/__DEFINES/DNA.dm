@@ -29,15 +29,17 @@
 #define DNA_BLOCK_SIZE_TRICOLOR DEFAULT_HEX_COLOR_LEN * 3
 
 #define DNA_GENDER_BLOCK 1
-#define DNA_SKIN_TONE_BLOCK 2
-#define DNA_EYE_COLOR_LEFT_BLOCK 3
-#define DNA_EYE_COLOR_RIGHT_BLOCK 4
-#define DNA_HAIRSTYLE_BLOCK 5
-#define DNA_HAIR_COLOR_BLOCK 6
-#define DNA_FACIAL_HAIRSTYLE_BLOCK 7
-#define DNA_FACIAL_HAIR_COLOR_BLOCK 8
+#define DNA_BODY_TYPE_BLOCK 2
+#define DNA_SKIN_TONE_BLOCK 3
+#define DNA_HEIGHT_BLOCK 4
+#define DNA_EYE_COLOR_LEFT_BLOCK 5
+#define DNA_EYE_COLOR_RIGHT_BLOCK 6
+#define DNA_HAIRSTYLE_BLOCK 7
+#define DNA_HAIR_COLOR_BLOCK 8
+#define DNA_FACIAL_HAIRSTYLE_BLOCK 9
+#define DNA_FACIAL_HAIR_COLOR_BLOCK 10
 
-#define DNA_UNI_IDENTITY_BLOCKS 8
+#define DNA_UNI_IDENTITY_BLOCKS DNA_FACIAL_HAIR_COLOR_BLOCK
 
 /// This number needs to equal the total number of DNA blocks
 #define DNA_MUTANT_COLOR_BLOCK 1
@@ -91,11 +93,6 @@
 #define CHROMOSOME_NEVER 0
 #define CHROMOSOME_NONE 1
 #define CHROMOSOME_USED 2
-
-//used for mob's genetic gender (mainly just for pronouns, members of sexed species with plural gender refer to their physique for the actual sprites, which is not genetic)
-#define G_MALE 1
-#define G_FEMALE 2
-#define G_PLURAL 3
 
 // Defines for used in creating "perks" for the species preference pages.
 /// A key that designates UI icon displayed on the perk.
