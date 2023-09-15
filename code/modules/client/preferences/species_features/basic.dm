@@ -10,12 +10,12 @@
 		head_icon_cropped.Crop(10, 19, 22, 31)
 		head_icon_cropped.Scale(32, 32)
 
-	if (isnull(sprite_accessory))
+	if (isnull(sprite_accessory) || !sprite_accessory.icon_state)
 		return head_icon_cropped
 
 	ASSERT(istype(sprite_accessory))
 
-	var/icon/final_icon = new(head_icon)
+	var/icon/final_icon = icon(head_icon)
 
 	var/icon/head_accessory_icon = icon(sprite_accessory.icon, sprite_accessory.icon_state)
 	head_accessory_icon.Blend(COLOR_DARK_BROWN, ICON_MULTIPLY)

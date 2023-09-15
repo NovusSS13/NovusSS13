@@ -1744,7 +1744,6 @@
 
 /datum/sprite_accessory/tails/human
 	icon = 'icons/mob/species/human/cat_features.dmi'
-	feature_suffix = "human"
 
 /datum/sprite_accessory/tails/human/cat
 	name = "Cat"
@@ -1753,6 +1752,7 @@
 
 /datum/sprite_accessory/tails/monkey
 	feature_suffix = "monkey"
+	color_amount = 0
 
 /datum/sprite_accessory/tails/monkey/monkey
 	name = "Monkey"
@@ -2074,14 +2074,14 @@
 /datum/sprite_accessory/legs/digitigrade_lizard
 	name = DIGITIGRADE_LEGS
 
-/datum/sprite_accessory/caps
+/datum/sprite_accessory/mushroom_caps
 	icon = 'icons/mob/species/mush_cap.dmi'
 
-/datum/sprite_accessory/caps/none
+/datum/sprite_accessory/mushroom_caps/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
 
-/datum/sprite_accessory/caps/round
+/datum/sprite_accessory/mushroom_caps/round
 	name = "Round"
 	icon_state = "round"
 

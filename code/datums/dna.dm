@@ -90,7 +90,7 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		"ears_color" = DNA_EARS_COLOR_BLOCK,
 		"moth_wings" = DNA_MOTH_WINGS_BLOCK,
 		"moth_antennae" = DNA_MOTH_ANTENNAE_BLOCK,
-		"caps" = DNA_CAPS_BLOCK,
+		"mushroom_caps" = DNA_MUSHROOM_CAPS_BLOCK,
 		"pod_hair" = DNA_POD_HAIR_BLOCK,
 		"penis" = DNA_PENIS_BLOCK,
 		"penis_color" = DNA_PENIS_COLOR_BLOCK,
@@ -290,8 +290,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		L[DNA_MOTH_WINGS_BLOCK] = construct_block(GLOB.moth_wings_list.Find(features["moth_wings"]), GLOB.moth_wings_list.len)
 	if(features["moth_antennae"] != "Burnt Off")
 		L[DNA_MOTH_ANTENNAE_BLOCK] = construct_block(GLOB.moth_antennae_list.Find(features["moth_antennae"]), GLOB.moth_antennae_list.len)
-	if(features["caps"])
-		L[DNA_CAPS_BLOCK] = construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len)
+	if(features["mushroom_caps"])
+		L[DNA_MUSHROOM_CAPS_BLOCK] = construct_block(GLOB.mushroom_caps_list.Find(features["mushroom_caps"]), GLOB.mushroom_caps_list.len)
 	if(features["pod_hair"])
 		L[DNA_POD_HAIR_BLOCK] = construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len)
 
@@ -468,8 +468,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.moth_wings_list.Find(features["moth_wings"]), GLOB.moth_wings_list.len))
 		if(DNA_MOTH_ANTENNAE_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.moth_antennae_list.Find(features["moth_antennae"]), GLOB.moth_antennae_list.len))
-		if(DNA_CAPS_BLOCK)
-			set_uni_feature_block(blocknumber, construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len))
+		if(DNA_MUSHROOM_CAPS_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.mushroom_caps_list.Find(features["mushroom_caps"]), GLOB.mushroom_caps_list.len))
 		if(DNA_POD_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len))
 
@@ -790,8 +790,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		var/genetic_value = GLOB.moth_antennae_list[deconstruct_block(get_uni_feature_block(features, DNA_MOTH_ANTENNAE_BLOCK), GLOB.moth_antennae_list.len)]
 		dna.features["original_moth_antennae"] = genetic_value
 		dna.features["moth_antennae"] = genetic_value
-	if(dna.features["caps"])
-		dna.features["caps"] = GLOB.caps_list[deconstruct_block(get_uni_feature_block(features, DNA_CAPS_BLOCK), GLOB.caps_list.len)]
+	if(dna.features["mushroom_caps"])
+		dna.features["mushroom_caps"] = GLOB.mushroom_caps_list[deconstruct_block(get_uni_feature_block(features, DNA_MUSHROOM_CAPS_BLOCK), GLOB.mushroom_caps_list.len)]
 	if(dna.features["pod_hair"])
 		dna.features["pod_hair"] = GLOB.pod_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_POD_HAIR_BLOCK), GLOB.pod_hair_list.len)]
 
