@@ -29,7 +29,7 @@
 	var/static/icon/groin_cropped
 	if (isnull(groin_cropped))
 		groin_cropped = icon(groin)
-		groin_cropped.Crop(1, 1, 15, 13)
+		groin_cropped.Crop(1, 10, 15, 26)
 		groin_cropped.Scale(32, 32)
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.tails_list[value]
