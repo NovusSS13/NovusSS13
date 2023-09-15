@@ -8,7 +8,7 @@
 			write_preference(preference, preference.create_random_value(src))
 
 /// Randomizes the character according to preferences.
-/datum/preferences/proc/apply_character_randomization_prefs(antag_override = FALSE)
+/datum/preferences/proc/apply_character_randomization_prefs(antag_override = FALSE, char_id = current_ids[current_char_key], char_key = current_char_key)
 	switch (read_preference(/datum/preference/choiced/random_body))
 		if (RANDOM_ANTAG_ONLY)
 			if (!antag_override)
@@ -19,7 +19,7 @@
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (should_randomize(preference, antag_override))
-			write_preference(preference, preference.create_random_value(src))
+			write_preference(preference, preference.create_random_value(src), char_id, char_key)
 
 ///Setup the random hardcore quirks and give the character the new score prize.
 /datum/preferences/proc/hardcore_random_setup(mob/living/carbon/human/character)
@@ -102,7 +102,7 @@
 			return image('icons/mob/silicon/robots.dmi', icon_state = "robot", dir = SOUTH)
 
 	// Set up the dummy for its photoshoot
-	apply_prefs_to(mannequin, TRUE)
+	apply_prefs_to(mannequin, icon_updates = TRUE)
 
 	if(preview_job)
 		mannequin.job = preview_job.title

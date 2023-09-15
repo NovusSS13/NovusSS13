@@ -90,6 +90,11 @@ export type QuirkInfo = {
   quirk_blacklist: string[][];
 };
 
+export type GhostRole = {
+  slot_name: string;
+  forced_species: string;
+};
+
 export enum RandomSetting {
   AntagOnly = 1,
   Disabled = 2,
@@ -123,7 +128,7 @@ export enum Window {
 
 export type PreferencesMenuData = {
   character_preview_view: string;
-  character_profiles: Record<string, string[] | null>[];
+  character_profiles: Record<string, string[]>;
 
   character_preferences: {
     clothing: Record<string, string>;
@@ -147,6 +152,7 @@ export type PreferencesMenuData = {
     randomization: Record<string, RandomSetting>;
   };
 
+  is_guest: BooleanLike;
   content_unlocked: BooleanLike;
 
   job_bans?: string[];
@@ -168,8 +174,8 @@ export type PreferencesMenuData = {
   antag_days_left?: Record<string, number>;
   selected_antags: string[];
 
-  active_slot_id: number;
-  active_slot_key: number;
+  active_slot_ids: Record<string, number>;
+  active_slot_key: string;
   max_slots_main: number;
   max_slots_ghost: number;
 
@@ -191,5 +197,7 @@ export type ServerData = {
     randomizable: string[];
   };
   species: Record<string, Species>;
+  ghost_role_data: Record<string, GhostRole>;
+
   [otheyKey: string]: unknown;
 };

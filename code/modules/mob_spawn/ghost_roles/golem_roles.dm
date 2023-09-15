@@ -33,7 +33,7 @@
 	forced_name = golem_species.random_name()
 	return ..()
 
-/obj/effect/mob_spawn/ghost_role/human/golem/special(mob/living/new_spawn, mob/mob_possessor)
+/obj/effect/mob_spawn/ghost_role/human/golem/special(mob/living/new_spawn)
 	. = ..()
 	if(is_path_in_list(initial_type, GLOB.golem_stack_food_directory))
 		var/datum/golem_food_buff/initial_buff = GLOB.golem_stack_food_directory[initial_type]
@@ -67,7 +67,7 @@
 	desc = "A humanoid shape, empty, lifeless, and full of potential."
 	prompt_name = "a free golem"
 
-/obj/effect/mob_spawn/ghost_role/human/golem/adamantine/special(mob/living/new_spawn, mob/mob_possessor)
+/obj/effect/mob_spawn/ghost_role/human/golem/adamantine/special(mob/living/new_spawn)
 	. = ..()
 	if(!ishuman(new_spawn))
 		return

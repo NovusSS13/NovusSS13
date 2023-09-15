@@ -124,7 +124,7 @@
 		to_chat(user, span_boldwarning("You have already used up your chance to roll as Battlecruiser."))
 	return FALSE
 
-/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/special(mob/living/spawned_mob, mob/possesser)
+/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/special(mob/living/spawned_mob)
 	. = ..()
 	if(!spawned_mob.mind)
 		spawned_mob.mind_initialize()

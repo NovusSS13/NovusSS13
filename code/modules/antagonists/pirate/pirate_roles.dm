@@ -35,7 +35,7 @@
 	var/endings = strings(PIRATE_NAMES_FILE, name_endings)
 	return "[rank ? rank + " " : ""][pick(beggings)][pick(endings)]"
 
-/obj/effect/mob_spawn/ghost_role/human/pirate/create(mob/mob_possessor, newname)
+/obj/effect/mob_spawn/ghost_role/human/pirate/create_mob(mob/mob_possessor, load_custom_char)
 	if(fluff_spawn)
 		new fluff_spawn(drop_location())
 	return ..()

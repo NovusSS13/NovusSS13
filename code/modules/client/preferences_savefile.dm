@@ -174,8 +174,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//general preferences
 	lastchangelog = savefile.get_entry("lastchangelog", lastchangelog)
 	be_special = savefile.get_entry("be_special", be_special)
-	current_char_id = savefile.get_entry("current_char_id", current_char_id)
-	current_char_key = savefile.get_entry("current_char_key", current_char_key)
+	current_ids = savefile.get_entry("current_ids", current_ids)
 	used_slot_amount = savefile.get_entry("used_slot_amount", used_slot_amount)
 	chat_toggles = savefile.get_entry("chat_toggles", chat_toggles)
 	toggles = savefile.get_entry("toggles", toggles)
@@ -212,13 +211,17 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//Sanitize
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
 	used_slot_amount = SANITIZE_LIST(used_slot_amount)
-	for(var/slot in used_slot_amount)
+	for(var/slot in GLOB.valid_char_savekeys)
 		//IMPORTANT: 0, not 1. This is because we can sometimes not have a ghost role slot.
 		//Main gets sanitized down the line.
-		used_slot_amount[slot] = sanitize_integer(current_char_id, 0, slot == "main" ? max_save_slots : max_ghost_role_slots, 0)
+		used_slot_amount[slot] = sanitize_integer(used_slot_amount[slot], 0, slot == "main" ? max_save_slots : max_ghost_role_slots, 0)
 
 	current_char_key = "main"
-	current_char_id = sanitize_integer(current_char_id, 1, used_slot_amount[current_char_key], 1)
+	current_ids = SANITIZE_LIST(current_ids)
+	for(var/id in current_ids)
+		// if a ghost role slot wasnt added, the correspoinding key wont be in current_ids
+		current_ids[id] = sanitize_integer(current_ids[id], 1, used_slot_amount[id], 1)
+
 	toggles = sanitize_integer(toggles, 0, (2**24)-1, initial(toggles))
 	be_special = sanitize_be_special(SANITIZE_LIST(be_special))
 	key_bindings = sanitize_keybindings(key_bindings)
@@ -228,7 +231,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		add_character_slot("main")
 
 	if(needs_update >= 0) //save the updated version
-		var/old_char_id = current_char_id
+		var/list/old_char_ids = current_ids.Copy()
 		var/old_max_save_slots = max_save_slots
 		var/old_max_ghost_role_slots = max_ghost_role_slots
 
@@ -245,10 +248,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			var/slot_id = text2num(slot_data[3])
 
 			max_save_slots = max(max_save_slots, slot_id) //so we can still update byond member slots after they lose memeber status
-			if(load_character(slot_key, slot_id))
-				save_character(slot_key, slot_id)
 
-		current_char_id = old_char_id
+			current_ids[slot_key] = slot_id
+			if(load_character(slot_id, slot_key))
+				save_character(slot_id, slot_key)
+
+		current_ids = old_char_ids
 		max_save_slots = old_max_save_slots
 		max_ghost_role_slots = old_max_ghost_role_slots
 		save_preferences()
@@ -275,7 +280,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	savefile.set_entry("lastchangelog", lastchangelog)
 	savefile.set_entry("be_special", be_special)
-	savefile.set_entry("current_char_id", current_char_id)
+	savefile.set_entry("current_ids", current_ids)
 	savefile.set_entry("current_char_key", current_char_key)
 	savefile.set_entry("used_slot_amount", used_slot_amount)
 	savefile.set_entry("toggles", toggles)
@@ -287,19 +292,19 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	savefile.save()
 	return TRUE
 
-/datum/preferences/proc/load_character(char_savekey = "main", char_id = current_char_id)
+/datum/preferences/proc/load_character(char_id = current_ids["main"], char_savekey = "main")
 	SHOULD_NOT_SLEEP(TRUE)
 
 	char_savekey = sanitize_inlist(char_savekey, GLOB.valid_char_savekeys, "main")
 	char_id = sanitize_integer(char_id, 1, max(used_slot_amount[char_savekey], 1), 1) //used_slot_amount[] COULD return null, and therefore 0
 
+	if(char_savekey != current_char_key || char_id != current_ids[char_savekey])
+		current_ids[char_savekey] = char_id
+		savefile.set_entry("current_ids", char_id)
+
 	if(char_savekey != current_char_key)
 		current_char_key = char_savekey
 		savefile.set_entry("current_char_key", char_savekey)
-
-	if(char_id != current_char_id)
-		current_char_id = char_id
-		savefile.set_entry("current_char_id", char_id)
 
 	var/list/save_data = savefile.get_entry("character_[char_savekey]_[char_id]")
 	var/needs_update = save_data_needs_update(save_data)
@@ -313,7 +318,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			continue
 
 		value_cache -= preference_type
-		read_preference(preference_type)
+		read_preference(preference_type, char_id, char_savekey)
 
 	randomise = save_data?["randomise"]
 	job_preferences = save_data?["job_preferences"]
@@ -339,7 +344,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return TRUE
 
-/datum/preferences/proc/save_character(char_savekey = current_char_key, char_id = current_char_id)
+/datum/preferences/proc/save_character(char_id = current_ids["main"], char_savekey = current_char_key)
 	SHOULD_NOT_SLEEP(TRUE)
 	if(!path)
 		return FALSE
@@ -359,7 +364,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		recently_updated_keys -= preference.type
 
 		if (preference.type in value_cache)
-			write_preference(preference, preference.serialize(value_cache[preference.type]))
+			write_preference(preference, preference.serialize(value_cache[preference.type]), char_id, char_savekey)
 
 	save_data["version"] = SAVEFILE_VERSION_MAX //load_character will sanitize any bad data, so assume up-to-date.
 
@@ -381,7 +386,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(used_slot_amount[char_key] >= (char_key == "main" ? max_save_slots : max_ghost_role_slots))
 		return FALSE
 
-	save_character(char_key, ++used_slot_amount[char_key])
+	save_character(++used_slot_amount[char_key], char_key)
 	return TRUE
 
 /datum/preferences/proc/sanitize_be_special(list/input_be_special)

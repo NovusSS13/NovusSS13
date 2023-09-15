@@ -2,7 +2,7 @@ import { useBackend } from '../../backend';
 import { Stack } from '../../components';
 import { CharacterPreview } from '../common/CharacterPreview';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
-import { PreferencesMenuData, RandomSetting, createSetPreference } from './data';
+import { PreferencesMenuData, RandomSetting, ServerData, createSetPreference } from './data';
 import { filterMap } from 'common/collections';
 import { useRandomToggleState } from './useRandomToggleState';
 import { PreferenceList, CharacterControls, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
@@ -14,10 +14,9 @@ export const BackgroundPage = (props, context) => {
 
   return (
     <ServerPreferencesFetcher
-      render={(serverData) => {
+      render={(serverData: ServerData | null) => {
         const currentSpeciesData =
-          serverData &&
-          serverData.species[data.character_preferences.misc.species];
+          serverData?.species[data.character_preferences.misc.species];
 
         const contextualPreferences =
           data.character_preferences.secondary_features || [];
@@ -101,6 +100,10 @@ export const BackgroundPage = (props, context) => {
                     setGender={createSetPreference(act, 'gender')}
                     showGender={
                       currentSpeciesData ? !!currentSpeciesData.sexes : true
+                    }
+                    showSpecies={
+                      !serverData?.ghost_role_data[data.active_slot_key]
+                        ?.forced_species
                     }
                   />
                 </Stack.Item>

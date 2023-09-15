@@ -86,7 +86,7 @@
 	name = "lifeguard sleeper"
 	outfit = /datum/outfit/beachbum/lifeguard
 
-/obj/effect/mob_spawn/ghost_role/human/beach/lifeguard/special(mob/living/carbon/human/lifeguard, mob/mob_possessor)
+/obj/effect/mob_spawn/ghost_role/human/beach/lifeguard/special(mob/living/carbon/human/lifeguard)
 	. = ..()
 	lifeguard.gender = FEMALE
 	lifeguard.update_body()

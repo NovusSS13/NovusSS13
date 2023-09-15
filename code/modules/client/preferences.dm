@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// Whether or not we allow saving/loading. Used for guests, if they're enabled
 	var/load_and_save = TRUE
 	/// Ensures that we always load the last used save, QOL
-	var/current_char_id = 1
+	var/list/current_ids = list()
 	/// The current charset we're editing. "main" for station characters, everything else in GLOB.valid_char_savekeys
 	var/current_char_key = "main"
 
@@ -175,7 +175,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	data["character_preferences"] = compile_character_preferences(user)
 
-	data["active_slot_id"] = current_char_id
+	data["active_slot_ids"] = current_ids
 	data["active_slot_key"] = current_char_key
 
 	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
@@ -195,6 +195,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	data["max_slots_main"] = max_save_slots
 	data["max_slots_ghost"] = max_ghost_role_slots
 
+	data["is_guest"] = is_guest_key(user.key)
 	data["content_unlocked"] = unlock_content
 
 	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
@@ -224,7 +225,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			save_character()
 
 			// SAFETY: `load_character` performs sanitization the slot number
-			if(!load_character(params["slot_key"], params["slot_id"]))
+			if(!load_character(params["slot_id"], params["slot_key"]))
 				tainted_character_profiles = TRUE
 				//randomise_appearance_prefs()
 				save_character()
@@ -233,13 +234,20 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				preference_middleware.on_new_character(usr)
 
 			character_preview_view.update_body()
+			SStgui.update_uis(usr)
 
 			return TRUE
 
 		if("new_slot")
+			// Save existing character
+			save_character()
+
 			tainted_character_profiles = TRUE
 			if(add_character_slot(params["slot_key"]))
-				load_character("main", used_slot_amount["main"]) //load the new char
+				load_character(used_slot_amount[params["slot_key"]], params["slot_key"]) //load the new char
+
+			character_preview_view.update_body()
+			SStgui.update_uis(src)
 			return TRUE
 
 		if("rotate")
@@ -470,22 +478,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /datum/preferences/proc/create_character_profiles()
 	var/list/profiles = list("main" = list())
 
-	for(var/index in 1 to used_slot_amount["main"])
-		var/save_data = savefile.get_entry("character_main_[index]")
-		var/name = save_data?["real_name"]
-
-		profiles["main"] += name
-
-	for(var/save_key in GLOB.valid_char_savekeys - "main")
-		profiles[save_key] = null //insert blank data
-		for(var/index in 1 to max_ghost_role_slots)
+	for(var/save_key in GLOB.valid_char_savekeys)
+		profiles[save_key] = list() //insert blank data
+		for(var/index in 1 to used_slot_amount[save_key] || 0)
 			var/save_data = savefile.get_entry("character_[save_key]_[index]")
 			var/name = save_data?["real_name"]
 
-			if(isnull(name))
-				break
-
-			LAZYADD(profiles[save_key], name)
+			profiles[save_key] += name
 
 	return profiles
 
@@ -530,19 +529,19 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		all_quirks = list()
 
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
-/datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE)
+/datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE, char_id = current_ids[current_char_key], char_key = current_char_key)
 	apply_character_randomization_prefs(is_antag)
-	apply_prefs_to(character, icon_updates)
+	apply_prefs_to(character, char_id, char_key, icon_updates)
 
 /// Applies the given preferences to a human mob.
-/datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE)
+/datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, char_id = current_ids[current_char_key], char_key = current_char_key, icon_updates = TRUE)
 	character.dna.features = list()
 
 	for(var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if(preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
 
-		preference.apply_to_human(character, read_preference(preference.type), src)
+		preference.apply_to_human(character, read_preference(preference.type, char_id, char_key), src)
 
 	character.dna.real_name = character.real_name
 

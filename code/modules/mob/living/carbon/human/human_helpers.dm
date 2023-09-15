@@ -183,7 +183,7 @@
 		return
 
 	var/path = "data/player_saves/[ckey[1]]/[ckey]/scars.sav"
-	var/loaded_char_slot = client.prefs.current_char_id
+	var/loaded_char_slot = client.prefs.current_ids["main"]
 
 	if(!loaded_char_slot || !fexists(path))
 		return FALSE

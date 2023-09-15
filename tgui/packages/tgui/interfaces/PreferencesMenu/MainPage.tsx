@@ -21,6 +21,7 @@ const CLOTHING_SELECTION_WIDTH = 10.8;
 const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 
 export const CharacterControls = (props: {
+  showSpecies: Boolean;
   handleRotate: () => void;
   handleOpenSpecies: () => void;
   gender: Gender;
@@ -39,15 +40,17 @@ export const CharacterControls = (props: {
         />
       </Stack.Item>
 
-      <Stack.Item>
-        <Button
-          onClick={props.handleOpenSpecies}
-          fontSize="22px"
-          icon="paw"
-          tooltip="Species"
-          tooltipPosition="top"
-        />
-      </Stack.Item>
+      {props.showSpecies && (
+        <Stack.Item>
+          <Button
+            onClick={props.handleOpenSpecies}
+            fontSize="22px"
+            icon="paw"
+            tooltip="Species"
+            tooltipPosition="top"
+          />
+        </Stack.Item>
+      )}
 
       {props.showGender && (
         <Stack.Item>
@@ -549,6 +552,10 @@ export const MainPage = (
                       setGender={createSetPreference(act, 'gender')}
                       showGender={
                         currentSpeciesData ? !!currentSpeciesData.sexes : true
+                      }
+                      showSpecies={
+                        !serverData?.ghost_role_data[data.active_slot_key]
+                          ?.forced_species
                       }
                     />
                   </Stack.Item>

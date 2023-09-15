@@ -6,11 +6,27 @@
 	randomize_by_default = FALSE
 
 /datum/preference/choiced/species/deserialize(input, datum/preferences/preferences)
+	var/datum/offstation_customization/ghost_role_data = GLOB.offstation_customization_by_save_key[preferences.current_char_key]
+	var/datum/species/species_type = ghost_role_data?.forced_species
+	if(species_type)
+		return GLOB.species_list[initial(species_type.id)]
+
 	return GLOB.species_list[sanitize_inlist(input, get_choices_serialized(), SPECIES_HUMAN)]
 
 /datum/preference/choiced/species/serialize(input)
 	var/datum/species/species = input
 	return initial(species.id)
+
+/datum/preference/choiced/species/create_informed_default_value(datum/preferences/preferences)
+	var/datum/offstation_customization/ghost_role_data = GLOB.offstation_customization_by_save_key[preferences.current_char_key]
+	return ghost_role_data?.forced_species || ..()
+
+/datum/preference/choiced/species/is_valid(value)
+	for(var/slot in GLOB.offstation_customization_by_save_key)
+		var/datum/offstation_customization/ghost_role_data = GLOB.offstation_customization_by_save_key[slot]
+		if(ghost_role_data.forced_species && ghost_role_data.forced_species == value)
+			return TRUE //this sucks ass, i hate it, but its late and im tired.
+	return ..()
 
 /datum/preference/choiced/species/create_default_value()
 	return /datum/species/human

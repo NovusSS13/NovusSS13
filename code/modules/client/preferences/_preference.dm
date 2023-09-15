@@ -217,7 +217,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /// Read a /datum/preference type and return its value.
 /// This will write to the savefile if a value was not found with the new value.
-/datum/preferences/proc/read_preference(preference_type)
+/datum/preferences/proc/read_preference(preference_type, char_id = current_ids[current_char_key], char_key = current_char_key)
 	var/datum/preference/preference_entry = GLOB.preference_entries[preference_type]
 	if (isnull(preference_entry))
 		var/extra_info = ""
@@ -234,11 +234,21 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	if (preference_type in value_cache)
 		return value_cache[preference_type]
 
-	var/savefile_entry = savefile.get_entry(preference_entry.savefile_identifier == PREFERENCE_CHARACTER ? "character_main_[current_char_id]" : null)
+	var/savefile_entry = savefile.get_entry(preference_entry.savefile_identifier == PREFERENCE_CHARACTER ? "character_[char_key]_[char_id]" : null)
 	var/value = preference_entry.read(savefile_entry, src)
 	if (isnull(value))
+		var/old_id = current_ids[char_key]
+		var/old_key = current_char_key
+
+		current_char_key = char_key
+		current_ids[char_key] = char_id
+
 		value = preference_entry.create_informed_default_value(src)
-		if (write_preference(preference_entry, value))
+
+		current_ids[char_key] = old_id
+		current_char_key = old_key
+
+		if (write_preference(preference_entry, value, char_id, char_key))
 			return value
 		else
 			CRASH("Couldn't write the default value for [preference_type] (received [value])")
@@ -248,8 +258,8 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /// Set a /datum/preference entry.
 /// Returns TRUE for a successful preference application.
 /// Returns FALSE if it is invalid.
-/datum/preferences/proc/write_preference(datum/preference/preference_entry, preference_value)
-	var/save_data = savefile.get_entry(preference_entry.savefile_identifier == PREFERENCE_CHARACTER ? "character_main_[current_char_id]" : null)
+/datum/preferences/proc/write_preference(datum/preference/preference_entry, preference_value, char_id = current_ids[current_char_key], char_key = current_char_key)
+	var/save_data = savefile.get_entry(preference_entry.savefile_identifier == PREFERENCE_CHARACTER ? "character_[char_key]_[char_id]" : null)
 	var/new_value = preference_entry.deserialize(preference_value, src)
 	var/success = preference_entry.write(save_data, new_value)
 	if (success)
