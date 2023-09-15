@@ -6,12 +6,12 @@ import { CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
 
 const MarkingInput = (
   props: {
-    our_zone: MarkingZone;
+    zone: MarkingZone;
     marking: Marking;
   },
   context
 ) => {
-  const { our_zone, marking } = props;
+  const { zone, marking } = props;
   const { act, data } = useBackend<PreferencesMenuData>(context);
   return (
     <Box textAlign="center" verticalAlign="middle" width="100%">
@@ -20,7 +20,7 @@ const MarkingInput = (
           width="25%"
           onClick={() =>
             act('color_marking', {
-              body_zone: our_zone.body_zone,
+              body_zone: zone.body_zone,
               marking_name: marking.name,
               marking_index: marking.marking_index,
             })
@@ -39,7 +39,7 @@ const MarkingInput = (
         icon="sort-up"
         onClick={() =>
           act('move_marking_up', {
-            body_zone: our_zone.body_zone,
+            body_zone: zone.body_zone,
             marking_name: props.marking.name,
             marking_index: props.marking.marking_index,
           })
@@ -50,7 +50,7 @@ const MarkingInput = (
         icon="sort-down"
         onClick={() =>
           act('move_marking_down', {
-            body_zone: our_zone.body_zone,
+            body_zone: zone.body_zone,
             marking_name: props.marking.name,
             marking_index: props.marking.marking_index,
           })
@@ -61,7 +61,7 @@ const MarkingInput = (
         color="bad"
         onClick={() =>
           act('remove_marking', {
-            body_zone: our_zone.body_zone,
+            body_zone: zone.body_zone,
             marking_name: props.marking.name,
             marking_index: props.marking.marking_index,
           })
@@ -74,36 +74,31 @@ const MarkingInput = (
 const ZoneItem = (
   props: {
     key: string;
-    our_zone: MarkingZone;
+    zone: MarkingZone;
   },
   context
 ) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
-  const { our_zone } = props;
+  const { zone } = props;
   const maxmarkings = data.maximum_markings_per_limb;
   return (
     <Stack.Item key={props.key}>
       <Section
         title={
-          our_zone.name +
-          ' (' +
-          our_zone.markings.length +
-          '/' +
-          maxmarkings +
-          ')'
+          zone.name + ' (' + zone.markings.length + '/' + maxmarkings + ')'
         }>
         <Stack vertical>
           <Stack.Item>
-            {our_zone.markings.map((marking) => (
+            {zone.markings.map((marking) => (
               <Stack key={marking.marking_index}>
                 <Stack.Item width="50%" mb={1}>
                   <Dropdown
                     width="100%"
-                    options={our_zone.markings_choices}
+                    options={zone.markings_choices}
                     displayText={marking.name}
                     onSelected={(new_marking) =>
                       act('change_marking', {
-                        body_zone: our_zone.body_zone,
+                        body_zone: zone.body_zone,
                         marking_index: marking.marking_index,
                         new_marking: new_marking,
                       })
@@ -111,23 +106,23 @@ const ZoneItem = (
                   />
                 </Stack.Item>
                 <Stack.Item width="50%">
-                  <MarkingInput our_zone={our_zone} marking={marking} />
+                  <MarkingInput zone={zone} marking={marking} />
                 </Stack.Item>
               </Stack>
             ))}
           </Stack.Item>
           <Stack.Item>
-            {(!our_zone.cant_add_markings && (
+            {(!zone.cant_add_markings && (
               <Button
                 icon="plus"
                 color="good"
                 onClick={() =>
                   act('add_marking', {
-                    body_zone: our_zone.body_zone,
+                    body_zone: zone.body_zone,
                   })
                 }
               />
-            )) || <Box>{our_zone.cant_add_markings}</Box>}
+            )) || <Box>{zone.cant_add_markings}</Box>}
           </Stack.Item>
         </Stack>
       </Section>
@@ -168,7 +163,7 @@ export const MarkingsPage = (props, context, markingslist: MarkingZone[]) => {
                 <Section overflowX="hidden" overflowY="auto" fill>
                   <Stack vertical>
                     {firststack.map((zone) => (
-                      <ZoneItem key={zone.body_zone} our_zone={zone} />
+                      <ZoneItem key={zone.body_zone} zone={zone} />
                     ))}
                   </Stack>
                 </Section>
@@ -177,7 +172,7 @@ export const MarkingsPage = (props, context, markingslist: MarkingZone[]) => {
                 <Section overflowX="hidden" overflowY="auto" fill>
                   <Stack vertical>
                     {secondstack.map((zone) => (
-                      <ZoneItem key={zone.body_zone} our_zone={zone} />
+                      <ZoneItem key={zone.body_zone} zone={zone} />
                     ))}
                   </Stack>
                 </Section>
