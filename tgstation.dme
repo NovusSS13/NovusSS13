@@ -3111,6 +3111,7 @@
 #include "code\modules\client\preferences\ambient_occlusion.dm"
 #include "code\modules\client\preferences\assets.dm"
 #include "code\modules\client\preferences\auto_fit_viewport.dm"
+#include "code\modules\client\preferences\body_size.dm"
 #include "code\modules\client\preferences\body_type.dm"
 #include "code\modules\client\preferences\clothing.dm"
 #include "code\modules\client\preferences\darkened_flash.dm"

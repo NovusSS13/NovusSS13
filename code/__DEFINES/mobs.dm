@@ -562,11 +562,12 @@
 #define GRADIENT_APPLIES_TO_HAIR (1<<0)
 #define GRADIENT_APPLIES_TO_FACIAL_HAIR (1<<1)
 
-// Height defines
-// - They are numbers so you can compare height values (x height < y height)
-// - They do not start at 0 for futureproofing
-// - They skip numbers for futureproofing as well
-// Otherwise they are completely arbitrary
+/**  Height defines
+ * - They are numbers so you can compare height values (x height < y height)
+ * - They do not start at 0 for futureproofing
+ * - They skip numbers for futureproofing as well
+ * Otherwise they are completely arbitrary
+ */
 #define HUMAN_HEIGHT_DWARF 2
 #define HUMAN_HEIGHT_SHORTER 4
 #define HUMAN_HEIGHT_SHORT 6
@@ -587,6 +588,13 @@ GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 	"[HUMAN_HEIGHT_TALLER]" = list(2, 1),
 	"[HUMAN_HEIGHT_MANMORE]" = list(3, 2),
 ))
+
+// Body size defines, body size works simpler than height
+#define BODY_SIZE_MINIMUM 75
+#define BODY_SIZE_PREF_MINIMUM 80
+#define BODY_SIZE_STANDARD 100
+#define BODY_SIZE_PREF_MAXIMUM 125
+#define BODY_SIZE_MAXIMUM 200
 
 // Mob Overlays Indexes
 /// Total number of layers for mob overlays

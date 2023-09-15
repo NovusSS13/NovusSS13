@@ -98,9 +98,10 @@
 					bodypart.add_bodypart_overlay(marking)
 
 /datum/preference_middleware/markings/proc/add_marking(list/params, mob/user)
+	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/zone = params["body_zone"]
 	LAZYINITLIST(preferences.body_markings[zone])
-	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
+
 	var/list/marking_list = preferences.body_markings[zone]
 	var/list/available_markings = list()
 	for(var/marking_name in GLOB.body_markings_by_zone[zone])

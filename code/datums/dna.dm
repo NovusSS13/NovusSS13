@@ -242,6 +242,7 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		L[DNA_BODY_TYPE_BLOCK] = construct_block(GLOB.body_types.Find(H.physique), GLOB.body_types.len)
 		L[DNA_SKIN_TONE_BLOCK] = construct_block(GLOB.skin_tones.Find(H.skin_tone), GLOB.skin_tones.len)
 		L[DNA_HEIGHT_BLOCK] = construct_block(GLOB.mob_heights.Find(H.mob_height), GLOB.mob_heights.len)
+		L[DNA_BODY_SIZE_BLOCK] = construct_block(H.body_size, BODY_SIZE_MAXIMUM)
 		L[DNA_EYE_COLOR_LEFT_BLOCK] = sanitize_hexcolor(H.eye_color_left, include_crunch = FALSE)
 		L[DNA_EYE_COLOR_RIGHT_BLOCK] = sanitize_hexcolor(H.eye_color_right, include_crunch = FALSE)
 		L[DNA_HAIRSTYLE_BLOCK] = construct_block(GLOB.hairstyles_list.Find(H.hairstyle), GLOB.hairstyles_list.len)
@@ -414,6 +415,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 			set_uni_identity_block(blocknumber, construct_block(GLOB.skin_tones.Find(H.skin_tone), GLOB.skin_tones.len))
 		if(DNA_HEIGHT_BLOCK)
 			set_uni_identity_block(blocknumber, construct_block(GLOB.mob_heights.Find(H.mob_height), GLOB.mob_heights.len))
+		if(DNA_BODY_SIZE_BLOCK)
+			set_uni_identity_block(blocknumber, construct_block(H.body_size, BODY_SIZE_MAXIMUM))
 		if(DNA_EYE_COLOR_LEFT_BLOCK)
 			set_uni_identity_block(blocknumber, sanitize_hexcolor(H.eye_color_left, include_crunch = FALSE))
 		if(DNA_EYE_COLOR_RIGHT_BLOCK)
@@ -727,13 +730,14 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		gender = PLURAL
 		return
 
-	gender = deconstruct_block(get_uni_identity_block(dna.unique_identity, DNA_GENDER_BLOCK), GLOB.genders.len)
+	gender = GLOB.genders[deconstruct_block(get_uni_identity_block(dna.unique_identity, DNA_GENDER_BLOCK), GLOB.genders.len)]
 
 /mob/living/carbon/human/updateappearance(icon_update = TRUE, mutcolor_update = FALSE, mutations_overlay_update = FALSE)
 	. = ..()
 	var/structure = dna.unique_identity
 	physique = GLOB.body_types[deconstruct_block(get_uni_identity_block(structure, DNA_BODY_TYPE_BLOCK), GLOB.body_types.len)]
 	set_mob_height(GLOB.mob_heights[deconstruct_block(get_uni_identity_block(structure, DNA_HEIGHT_BLOCK), GLOB.mob_heights.len)])
+	set_body_size(deconstruct_block(get_uni_identity_block(structure, DNA_BODY_SIZE_BLOCK), BODY_SIZE_MAXIMUM))
 	skin_tone = GLOB.skin_tones[deconstruct_block(get_uni_identity_block(structure, DNA_SKIN_TONE_BLOCK), GLOB.skin_tones.len)]
 	eye_color_left = sanitize_hexcolor(get_uni_identity_block(structure, DNA_EYE_COLOR_LEFT_BLOCK))
 	eye_color_right = sanitize_hexcolor(get_uni_identity_block(structure, DNA_EYE_COLOR_RIGHT_BLOCK))
@@ -1013,9 +1017,9 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		colors = colors.Copy()
 		colors.len = 3
 		for(var/subcolor in given_color)
-			return_string += sanitize_hexcolor(subcolor, DEFAULT_HEX_COLOR_LEN, include_crunch = FALSE, "FFFFFF")
+			return_string += sanitize_hexcolor(subcolor, DEFAULT_HEX_COLOR_LEN, FALSE, "FFFFFF")
 	else
-		var/sanitized_color = sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, include_crunch = FALSE, "FFFFFF")
+		var/sanitized_color = sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, FALSE, "FFFFFF")
 		return_string = sanitized_color + sanitized_color + sanitized_color
 	return return_string
 
