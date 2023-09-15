@@ -661,6 +661,8 @@
 				continue
 			var/datum/sprite_accessory/new_accessory = overlay.get_random_sprite_accessory()
 			human_mob.dna.features["[overlay.feature_key]"] = new_accessory.name
+			if(overlay.feature_color_key)
+				human_mob.dna.features["[overlay.feature_color_key]"] = mutant_color
 
 ///Proc that will randomize all the markings of a species' associated mob
 /datum/species/proc/randomize_markings(mob/living/carbon/human/human_mob)
