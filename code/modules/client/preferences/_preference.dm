@@ -383,11 +383,8 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/color/deserialize(input, datum/preferences/preferences)
 	return sanitize_hexcolor(input)
 
-/datum/preference/color/create_default_value(datum/preferences/preferences)
-	return "#FFFFFF"
-
-/datum/preference/color/create_random_value(datum/preferences/preferences)
-	return random_color()
+/datum/preference/color/create_default_value()
+	return "#[random_color()]"
 
 /datum/preference/color/serialize(input)
 	return sanitize_hexcolor(input)

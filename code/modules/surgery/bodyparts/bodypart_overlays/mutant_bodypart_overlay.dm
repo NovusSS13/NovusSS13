@@ -24,7 +24,7 @@
 /datum/bodypart_overlay/mutant/proc/randomize_sprite()
 	sprite_datum = get_random_sprite_accessory()
 
-///Grab a random sprite accessory datum (thats not locked)
+///Grab a random sprite accessory datum (that is not locked)
 /datum/bodypart_overlay/mutant/proc/get_random_sprite_accessory()
 	var/list/valid_restyles = list()
 	var/list/feature_list = get_global_feature_list()
@@ -216,6 +216,7 @@
 		//sanitize normally if it's already a matrix color
 		if(islist(given_color))
 			var/list/validated_color = given_color
+			validated_color = validated_color.Copy()
 			var/last_color_element = sanitize_hexcolor(validated_color[length(validated_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 			validated_color.len = sprite_datum.color_amount
 			return sanitize_hexcolor_list(validated_color, DEFAULT_HEX_COLOR_LEN, TRUE, last_color_element)

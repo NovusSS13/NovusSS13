@@ -81,7 +81,9 @@
 
 
 /datum/species/lizard/randomize_features(mob/living/carbon/human/human_mob)
+	. = ..()
 	randomize_cosmetic_organs(human_mob)
+	randomize_markings(human_mob)
 
 /datum/species/lizard/get_scream_sound(mob/living/carbon/human/lizard)
 	return pick(

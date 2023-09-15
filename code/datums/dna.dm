@@ -1013,9 +1013,9 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		colors = colors.Copy()
 		colors.len = 3
 		for(var/subcolor in given_color)
-			return_string += sanitize_hexcolor(subcolor, DEFAULT_HEX_COLOR_LEN, include_crunch = FALSE)
+			return_string += sanitize_hexcolor(subcolor, DEFAULT_HEX_COLOR_LEN, include_crunch = FALSE, "FFFFFF")
 	else
-		var/sanitized_color = sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, include_crunch = FALSE)
+		var/sanitized_color = sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, include_crunch = FALSE, "FFFFFF")
 		return_string = sanitized_color + sanitized_color + sanitized_color
 	return return_string
 
