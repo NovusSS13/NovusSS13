@@ -591,9 +591,9 @@ GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 
 // Body size defines, body size works simpler than height
 #define BODY_SIZE_MINIMUM 75
-#define BODY_SIZE_PREF_MINIMUM 80
+#define BODY_SIZE_PREF_MINIMUM 90
 #define BODY_SIZE_STANDARD 100
-#define BODY_SIZE_PREF_MAXIMUM 125
+#define BODY_SIZE_PREF_MAXIMUM 150
 #define BODY_SIZE_MAXIMUM 200
 
 // Mob Overlays Indexes
