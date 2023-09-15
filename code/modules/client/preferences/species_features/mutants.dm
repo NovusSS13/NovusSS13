@@ -9,9 +9,8 @@
 	if(!.)
 		return FALSE
 
-	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
-	var/datum/species/species = new species_type
-	return (species.digitigrade_customization == DIGITIGRADE_OPTIONAL)
+	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	return (initial(species_type.digitigrade_customization) == DIGITIGRADE_OPTIONAL)
 
 /datum/preference/choiced/mutant/leg_type/init_possible_values()
 	return assoc_to_keys_features(GLOB.legs_list)

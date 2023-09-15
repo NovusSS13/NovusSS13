@@ -53,14 +53,10 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_inherent_trait = TRAIT_USES_SKINTONES
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
+	default_value = TRUE
 
 /datum/preference/toggle/penis_uses_skintone/is_accessible(datum/preferences/preferences)
 	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/penis) != SPRITE_ACCESSORY_NONE
-
-/datum/preference/toggle/penis_uses_skintone/create_informed_default_value(datum/preferences/preferences)
-	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
-	var/datum/species/species = new species_type
-	return (TRAIT_USES_SKINTONES in species.inherent_traits)
 
 /datum/preference/toggle/penis_uses_skintone/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	var/obj/item/organ/genital/penis = target.get_organ_slot(ORGAN_SLOT_PENIS)

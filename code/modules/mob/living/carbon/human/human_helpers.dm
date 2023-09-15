@@ -270,11 +270,11 @@
 	if(mob_height == new_height)
 		return FALSE
 	if(new_height == HUMAN_HEIGHT_DWARF)
-		CRASH("Don't set height to dwarf height directly, use dwarf trait")
+		CRASH("Don't set height to dwarf height directly, use dwarf trait.")
 
 	mob_height = new_height
 	if(update_body)
-		update_body()
+		regenerate_icons()
 	return TRUE
 
 /**
@@ -287,8 +287,36 @@
 /mob/living/carbon/human/proc/get_mob_height()
 	if(HAS_TRAIT(src, TRAIT_DWARF))
 		return HUMAN_HEIGHT_DWARF
+	if(HAS_TRAIT(src, TRAIT_GIANT))
+		return HUMAN_HEIGHT_MANMORE
 
 	return mob_height
+
+/**
+ * Setter for body size
+ *
+ * Exists so that the update is done immediately
+ *
+ * Returns TRUE if changed, FALSE otherwise
+ */
+/mob/living/carbon/human/proc/set_body_size(new_size)
+	if(body_size == new_size)
+		return FALSE
+	if(!new_size)
+		CRASH("Tried to set body size to 0 or null. This should never happen.")
+
+	var/old_size = body_size
+	body_size = clamp(new_size, BODY_SIZE_MINIMUM, BODY_SIZE_MAXIMUM)
+	update_transform(body_size/old_size)
+	return TRUE
+
+/**
+ * Getter for body size
+ *
+ * Mainly for futureproofing
+ */
+/mob/living/carbon/human/proc/get_body_size()
+	return body_size
 
 /**
  * Makes a full copy of src and returns it.

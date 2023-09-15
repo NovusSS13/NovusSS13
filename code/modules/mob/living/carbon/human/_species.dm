@@ -1649,7 +1649,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if ( \
 			no_relevancy \
 			|| (preference.relevant_inherent_trait && !(preference.relevant_inherent_trait in inherent_traits)) \
-			|| (preference.relevant_cosmetic_organ && !(preference.relevant_cosmetic_organ in cosmetic_organs)) \
+			|| (preference.relevant_cosmetic_organ && !is_path_in_list(preference.relevant_cosmetic_organ, cosmetic_organs)) \
 			|| (preference.relevant_head_flag && !check_head_flags(preference.relevant_head_flag)) \
 		)
 			continue
@@ -1778,6 +1778,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	species_perks += create_pref_biotypes_perks()
 	species_perks += create_pref_organs_perks()
 	species_perks += create_pref_language_perk()
+	species_perks += create_pref_payday_perk()
 
 	// Some overrides may return `null`, prevent those from jamming up the list.
 	list_clear_nulls(species_perks)
@@ -2123,7 +2124,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_language_perk()
-
 	// Grab galactic common as a path, for comparisons
 	var/datum/language/common_language = /datum/language/common
 
@@ -2146,7 +2146,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Native Speaker",
 			SPECIES_PERK_DESC = "Alongside [initial(common_language.name)], [plural_form] gain the ability to speak [english_list(bonus_languages)].",
 		))
-
 	else
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
@@ -2157,11 +2156,40 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	return to_add
 
-///Handles replacing all of the bodyparts with their species version during set_species()
+/**
+ * Adds in a payday perk based on the species' pay modifier.
+ *
+ * Returns a list containing perks, or an empty list.
+ */
+/datum/species/proc/create_pref_payday_perk()
+	RETURN_TYPE(/list)
+	var/list/to_add = list()
+	if(payday_modifier > 1)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "sack-dollar",
+			SPECIES_PERK_NAME = "High Income",
+			SPECIES_PERK_DESC = "[plural_form] earn [(1 - payday_modifier) * 100]% more than the average crewmember.",
+		))
+	else if(payday_modifier < 1)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = "sack-xmark",
+			SPECIES_PERK_NAME = "Low Income",
+			SPECIES_PERK_DESC = "[plural_form] earn [(payday_modifier - 1) * 100]% less than the average crewmember.",
+		))
+
+	return to_add
+
+/// Creates body parts for the target completely from scratch based on the species
+/datum/species/proc/create_fresh_body(mob/living/carbon/target)
+	target.create_bodyparts(bodypart_overrides)
+
+/// Handles replacing all of the bodyparts with their species version during set_species()
 /datum/species/proc/replace_body(mob/living/carbon/target, datum/species/new_species)
 	new_species ||= target.dna.species //If no new species is provided, assume its src.
 
-	var/is_digitard = (new_species.digitigrade_customization && (target.dna.features["legs"] == DIGITIGRADE_LEGS)) || (new_species.digitigrade_customization == DIGITIGRADE_FORCED)
+	var/is_digitigrade = (new_species.digitigrade_customization && (target.dna.features["legs"] == DIGITIGRADE_LEGS)) || (new_species.digitigrade_customization == DIGITIGRADE_FORCED)
 	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
 		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
 			continue
@@ -2170,7 +2198,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/obj/item/bodypart/new_part
 		if(path)
 			new_part = new path()
-			if(is_digitard && istype(new_part, /obj/item/bodypart/leg))
+			if(is_digitigrade && istype(new_part, /obj/item/bodypart/leg))
 				new_part.bodytype |= BODYTYPE_DIGITIGRADE //THIS IS GOING TO CAUSE BADNESS!!!!
 			//markings my behated
 			var/list/marking_zones = list(new_part.body_zone)
@@ -2192,10 +2220,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			new_part.replace_limb(target, special = TRUE, keep_old_organs = TRUE)
 			new_part.update_limb(is_creating = TRUE)
 		qdel(old_part)
-
-/// Creates body parts for the target completely from scratch based on the species
-/datum/species/proc/create_fresh_body(mob/living/carbon/target)
-	target.create_bodyparts(bodypart_overrides)
 
 /**
  * Checks if the species has a head with these head flags, by default.
