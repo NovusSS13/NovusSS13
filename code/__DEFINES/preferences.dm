@@ -125,6 +125,9 @@
 /// Preferences that will be put into the 3rd list, and are not contextual.
 #define PREFERENCE_CATEGORY_NON_CONTEXTUAL "non_contextual"
 
+/// Preferences that will be put into the background list, which is on a separate tab.
+#define PREFERENCE_CATEGORY_BACKGROUND "background"
+
 /// Will be put under the game preferences window.
 #define PREFERENCE_CATEGORY_GAME_PREFERENCES "game_preferences"
 

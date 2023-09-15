@@ -73,18 +73,9 @@ export const BackgroundPage = (props, context) => {
           Object.fromEntries(mainFeatures)
         );
 
-        const nonContextualPreferences = {
-          ...data.character_preferences.non_contextual,
+        const backgroundPreferences = {
+          ...data.character_preferences.background,
         };
-
-        if (randomBodyEnabled) {
-          nonContextualPreferences['random_species'] =
-            data.character_preferences.randomization['species'];
-        } else {
-          // We can't use random_name/is_accessible because the
-          // server doesn't know whether the random toggle is on.
-          delete nonContextualPreferences['random_name'];
-        }
 
         return (
           <Stack
@@ -119,8 +110,8 @@ export const BackgroundPage = (props, context) => {
             </Stack.Item>
             <PreferenceList
               act={act}
-              randomizations={getRandomization(nonContextualPreferences)}
-              preferences={nonContextualPreferences}
+              randomizations={getRandomization(backgroundPreferences)}
+              preferences={backgroundPreferences}
             />
           </Stack>
         );

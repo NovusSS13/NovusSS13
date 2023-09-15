@@ -37,6 +37,10 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/vagina, GLOB.vagina_list, add_blank = TRUE)
 
 	//markings are dumb
+	init_body_markings()
+
+/// Inits GLOB.body_marking_sets
+/proc/init_body_markings()
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, GLOB.body_markings)
 	for(var/marking_name in GLOB.body_markings)
 		var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
@@ -44,16 +48,12 @@
 			var/bitflag = GLOB.marking_zone_to_bitflag[zone]
 			if(body_marking.allowed_bodyparts & bitflag)
 				LAZYADDASSOC(GLOB.body_markings_by_zone[zone], marking_name, body_marking)
-	init_body_marking_sets()
-
-/// Inits GLOB.body_marking_sets
-/proc/init_body_marking_sets()
 	// Here we build the global list for all body markings sets
 	for(var/path in subtypesof(/datum/body_marking_set))
-		var/datum/body_marking_set/BM = path
-		if(initial(BM.name))
-			BM = new path()
-			GLOB.body_marking_sets[BM.name] = BM
+		var/datum/body_marking_set/marking_set = path
+		if(initial(marking_set.name))
+			marking_set = new path()
+			GLOB.body_marking_sets[marking_set.name] = marking_set
 
 /// Inits GLOB.species_list. Not using GLOBAL_LIST_INIT b/c it depends on GLOB.string_lists
 /proc/init_species_list()
