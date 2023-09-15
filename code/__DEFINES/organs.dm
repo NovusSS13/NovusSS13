@@ -86,6 +86,8 @@
 #define IS_ROBOTIC_ORGAN(organ) (organ.organ_flags & ORGAN_ROBOTIC)
 
 // Flags for color sources on /datum/bodypart_overlay/mutant
+/// Doesn't have coloring, really!
+#define ORGAN_COLOR_NONE NONE
 /// Uses the parent limb's drawcolor value
 #define ORGAN_COLOR_LIMB (1<<0)
 /// Uses /datum/bodypart_overlay/proc/override_color()'s return value

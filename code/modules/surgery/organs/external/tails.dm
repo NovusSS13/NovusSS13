@@ -143,7 +143,6 @@
 
 /// Monkey tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/monkey
-	color_source = NONE
 
 /datum/bodypart_overlay/mutant/tail/monkey/get_base_icon_state() // WE DON'T HAVE ONE MOTHERFUCKER
 	return
