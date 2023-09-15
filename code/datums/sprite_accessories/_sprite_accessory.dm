@@ -69,7 +69,7 @@
 	var/gender_specific
 	/// Determines if the accessory will be skipped by color preferences.
 	var/use_static
-	/// Amount of colors we use actually use for coloring, from 1 to 3
+	/// Amount of colors we use actually use for coloring, from 0 to 3
 	var/color_amount = 1
 	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
 	var/hasinner = FALSE

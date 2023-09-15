@@ -139,6 +139,8 @@
 		return FALSE
 
 	switch(color_source)
+		if(ORGAN_COLOR_NONE)
+			draw_color = null
 		if(ORGAN_COLOR_LIMB)
 			draw_color = ownerlimb.draw_color
 		if(ORGAN_COLOR_OVERRIDE)
@@ -200,25 +202,29 @@
 				draw_color = human_owner.eye_color_left
 		else
 			CRASH("[type] had an invalid color_source! ([color_source])")
-	//convert to a matrix color (or deconvert) if necessary
+	//convert to a matrix color (or deconverts) if necessary
 	draw_color = validate_color(draw_color)
 	return TRUE
 
 ///Returns a validated version of the given color in accordance with the sprite accessory in use
 /datum/bodypart_overlay/mutant/proc/validate_color(given_color)
-	//well, keep it null if it is null
-	if(isnull(given_color))
-		return given_color
+	//well, keep it null if it is null or if the sprite_datum has no color amount
+	if(isnull(given_color) || !sprite_datum.color_amount)
+		return null
 	//return a list if the sprite datum wants matrixed colors
 	if(sprite_datum.color_amount > 1)
 		//sanitize normally if it's already a matrix color
 		if(islist(given_color))
 			var/list/validated_color = given_color
-			validated_color.len = 3
-			return sanitize_hexcolor_list(validated_color, 6, TRUE, "#FFFFFF")
-		//repeat the same color thrice otherwise
-		var/sanitized_color = sanitize_hexcolor(given_color, 6, TRUE, "#FFFFFF")
-		return list(sanitized_color, sanitized_color, sanitized_color)
+			var/last_color_element = sanitize_hexcolor(validated_color[length(validated_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+			validated_color.len = sprite_datum.color_amount
+			return sanitize_hexcolor_list(validated_color, DEFAULT_HEX_COLOR_LEN, TRUE, last_color_element)
+		//repeat the same color as needed otherwise
+		var/sanitized_color = sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+		var/list/sanitized_colors = list()
+		for(var/color in 1 to sprite_datum.color_amount)
+			sanitized_colors += sanitized_color
+		return sanitized_colors
 	//return a string otherwise
 	//take and sanitize only the first color if it's a matrix
 	if(islist(given_color))
