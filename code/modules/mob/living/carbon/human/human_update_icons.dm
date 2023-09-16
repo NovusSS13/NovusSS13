@@ -767,7 +767,7 @@ generate/load female uniform sprites matching all previously decided variables
 	if(!istype(my_head))
 		return
 
-	my_head.update_limb(is_creating)
+	my_head.update_limb(is_creating = is_creating)
 
 	add_overlay(my_head.get_limb_icon())
 	update_worn_head()
