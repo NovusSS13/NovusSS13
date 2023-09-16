@@ -499,7 +499,7 @@
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
-		limb.update_limb(is_creating) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
+		limb.update_limb(is_creating = is_creating) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
 
 		var/old_key = icon_render_keys?[limb.body_zone] //Checks the mob's icon render key list for the bodypart
 		icon_render_keys[limb.body_zone] = (limb.is_husked) ? limb.generate_husk_key().Join() : limb.generate_icon_key().Join() //Generates a key for the current bodypart

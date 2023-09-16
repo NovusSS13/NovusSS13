@@ -129,39 +129,6 @@
 	if(call_update)
 		affected_human.update_body()
 
-#define OFFSET_X 1
-#define OFFSET_Y 2
-
-/// This proc generates a list of overlays that the eye should be displayed using for the given parent
-/obj/item/organ/eyes/proc/generate_body_overlay(mob/living/carbon/human/parent)
-	if(!istype(parent) || parent.get_organ_by_type(/obj/item/organ/eyes) != src)
-		CRASH("Generating a body overlay for [src] targeting an invalid parent '[parent]'.")
-
-	if(isnull(eye_icon_state))
-		return list()
-
-	var/mutable_appearance/eye_left = mutable_appearance('icons/mob/species/human/human_face.dmi', "[eye_icon_state]_l", -BODY_LAYER)
-	var/mutable_appearance/eye_right = mutable_appearance('icons/mob/species/human/human_face.dmi', "[eye_icon_state]_r", -BODY_LAYER)
-
-	var/obscured = parent.check_obscured_slots(TRUE)
-	if(overlay_ignore_lighting && !(obscured & ITEM_SLOT_EYES))
-		eye_left.overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, parent, alpha = eye_left.alpha)
-		eye_right.overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, parent, alpha = eye_right.alpha)
-
-	var/obj/item/bodypart/head/my_head = parent.get_bodypart(BODY_ZONE_HEAD)
-	if(my_head)
-		if(my_head.head_flags & HEAD_EYECOLOR)
-			eye_right.color = eye_color_right
-			eye_left.color = eye_color_left
-		if(my_head.worn_face_offset)
-			my_head.worn_face_offset.apply_offset(eye_left)
-			my_head.worn_face_offset.apply_offset(eye_right)
-
-	return list(eye_left, eye_right)
-
-#undef OFFSET_X
-#undef OFFSET_Y
-
 //Gotta reset the eye color, because that persists
 /obj/item/organ/eyes/enter_wardrobe()
 	. = ..()
