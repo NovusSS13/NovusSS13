@@ -58,87 +58,6 @@
 #define RESPIRATION_OXYGEN (1 << 0)
 #define RESPIRATION_N2 (1 << 1)
 #define RESPIRATION_PLASMA (1 << 2)
-#define DEFAULT_BODYPART_ICON_ORGANIC 'icons/mob/species/human/bodyparts_greyscale.dmi'
-#define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augmentation/augments.dmi'
-
-#define MONKEY_BODYPART "monkey"
-#define ALIEN_BODYPART "alien"
-#define LARVA_BODYPART "larva"
-
-//Bodytype defines for how things can be worn, surgery, and other misc things.
-///The limb is organic.
-#define BODYTYPE_ORGANIC (1<<0)
-///The limb is robotic.
-#define BODYTYPE_ROBOTIC (1<<1)
-///The limb fits the human mold. This is not meant to be literal, if the sprite "fits" on a human, it is "humanoid", regardless of origin.
-#define BODYTYPE_HUMANOID (1<<2)
-///The limb fits the monkey mold.
-#define BODYTYPE_MONKEY (1<<3)
-///The limb is digitigrade.
-#define BODYTYPE_DIGITIGRADE (1<<4)
-///The limb is snouted.
-#define BODYTYPE_SNOUTED (1<<5)
-///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
-#define BODYTYPE_LARVA (1<<6)
-///The limb is from a xenomorph.
-#define BODYTYPE_ALIEN (1<<7)
-///The limb is from a golem
-#define BODYTYPE_GOLEM (1<<8)
-
-#define BODYTYPE_BIOSCRAMBLE_COMPATIBLE (BODYTYPE_HUMANOID | BODYTYPE_MONKEY | BODYTYPE_ALIEN)
-#define BODYTYPE_CAN_BE_BIOSCRAMBLED(bodytype) (!(bodytype & BODYTYPE_ROBOTIC) && (bodytype & BODYTYPE_BIOSCRAMBLE_COMPATIBLE))
-
-// Defines for Species IDs. Used to refer to the name of a species, for things like bodypart names or species preferences.
-#define SPECIES_ABDUCTOR "abductor"
-#define SPECIES_ANDROID "android"
-#define SPECIES_DULLAHAN "dullahan"
-#define SPECIES_ETHEREAL "ethereal"
-#define SPECIES_ETHEREAL_LUSTROUS "lustrous"
-#define SPECIES_FELINE "felinid"
-#define SPECIES_FLYPERSON "fly"
-#define SPECIES_GOLEM "golem"
-#define SPECIES_HUMAN "human"
-#define SPECIES_JELLYPERSON "jelly"
-#define SPECIES_SLIMEPERSON "slime"
-#define SPECIES_LUMINESCENT "luminescent"
-#define SPECIES_STARGAZER "stargazer"
-#define SPECIES_LIZARD "lizard"
-#define SPECIES_LIZARD_ASH "ashwalker"
-#define SPECIES_LIZARD_SILVER "silverscale"
-#define SPECIES_NIGHTMARE "nightmare"
-#define SPECIES_MONKEY "monkey"
-#define SPECIES_MONKEY_FREAK "monkey_freak"
-#define SPECIES_MONKEY_HUMAN_LEGGED "monkey_human_legged"
-#define SPECIES_MOTH "moth"
-#define SPECIES_MUSHROOM "mush"
-#define SPECIES_PLASMAMAN "plasmaman"
-#define SPECIES_PODPERSON "pod"
-#define SPECIES_SHADOW "shadow"
-#define SPECIES_SKELETON "skeleton"
-#define SPECIES_SNAIL "snail"
-#define SPECIES_TALLBOY "tallboy"
-#define SPECIES_VAMPIRE "vampire"
-#define SPECIES_ZOMBIE "zombie"
-#define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
-#define SPECIES_ZOMBIE_KROKODIL "krokodil_zombie"
-
-// Like species IDs, but not specifically attached a species.
-#define BODYPART_ID_ALIEN "alien"
-#define BODYPART_ID_ROBOTIC "robotic"
-#define BODYPART_ID_DIGITIGRADE "digitigrade"
-#define BODYPART_ID_LARVA "larva"
-#define BODYPART_ID_PSYKER "psyker"
-
-//See: datum/species/var/digitigrade_customization
-///The species does not have digitigrade legs in generation.
-#define DIGITIGRADE_NEVER 0
-///The species can have digitigrade legs in generation
-#define DIGITIGRADE_OPTIONAL 1
-///The species is forced to have digitigrade legs in generation.
-#define DIGITIGRADE_FORCED 2
-
-///Digitigrade's prefs, used in features for legs if you're meant to be a Digitigrade.
-#define DIGITIGRADE_LEGS "Digitigrade Legs"
 
 // Health/damage defines
 #define MAX_LIVING_HEALTH 100
@@ -427,7 +346,7 @@
 #define OFFSET_HELD "held"
 
 //MINOR TWEAKS/MISC
-#define AGE_MIN 17 //youngest a character can be
+#define AGE_MIN 18 //youngest a character can be
 #define AGE_MAX 85 //oldest a character can be
 #define AGE_MINOR 20 //legal age of space drinking and smoking
 #define WIZARD_AGE_MIN 30 //youngest a wizard can be
@@ -643,31 +562,39 @@
 #define GRADIENT_APPLIES_TO_HAIR (1<<0)
 #define GRADIENT_APPLIES_TO_FACIAL_HAIR (1<<1)
 
-// Height defines
-// - They are numbers so you can compare height values (x height < y height)
-// - They do not start at 0 for futureproofing
-// - They skip numbers for futureproofing as well
-// Otherwise they are completely arbitrary
+/**  Height defines
+ * - They are numbers so you can compare height values (x height < y height)
+ * - They do not start at 0 for futureproofing
+ * - They skip numbers for futureproofing as well
+ * Otherwise they are completely arbitrary
+ */
 #define HUMAN_HEIGHT_DWARF 2
-#define HUMAN_HEIGHT_SHORTEST 4
+#define HUMAN_HEIGHT_SHORTER 4
 #define HUMAN_HEIGHT_SHORT 6
 #define HUMAN_HEIGHT_MEDIUM 8
 #define HUMAN_HEIGHT_TALL 10
 #define HUMAN_HEIGHT_TALLER 12
-#define HUMAN_HEIGHT_TALLEST 14
+#define HUMAN_HEIGHT_MANMORE 14
 
 /// Assoc list of all heights, cast to strings, to """"tuples"""""
 /// The first """tuple""" index is the upper body offset
 /// The second """tuple""" index is the lower body offset
 GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 	"[HUMAN_HEIGHT_DWARF]" = list(-5, -4),
-	"[HUMAN_HEIGHT_SHORTEST]" = list(-2, -1),
+	"[HUMAN_HEIGHT_SHORTER]" = list(-2, -1),
 	"[HUMAN_HEIGHT_SHORT]" = list(-1, -1),
 	"[HUMAN_HEIGHT_MEDIUM]" = list(0, 0),
 	"[HUMAN_HEIGHT_TALL]" = list(1, 1),
 	"[HUMAN_HEIGHT_TALLER]" = list(2, 1),
-	"[HUMAN_HEIGHT_TALLEST]" = list(3, 2),
+	"[HUMAN_HEIGHT_MANMORE]" = list(3, 2),
 ))
+
+// Body size defines, body size works simpler than height
+#define BODY_SIZE_MINIMUM 75
+#define BODY_SIZE_PREF_MINIMUM 85
+#define BODY_SIZE_STANDARD 100
+#define BODY_SIZE_PREF_MAXIMUM 150
+#define BODY_SIZE_MAXIMUM 200
 
 // Mob Overlays Indexes
 /// Total number of layers for mob overlays

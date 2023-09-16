@@ -7,6 +7,9 @@
 	/// If null, will use the typepath minus /datum/preference_middleware.
 	var/key = null
 
+	/// Like preference priority, but for middleware.
+	var/priority = MIDDLEWARE_PRIORITY_DEFAULT
+
 	/// Map of ui_act actions -> proc paths to call.
 	/// Signature is `(list/params, mob/user) -> TRUE/FALSE.
 	/// Return output is the same as ui_act--TRUE if it should update, FALSE if it should not
@@ -49,4 +52,14 @@
 
 /// Called when a character is changed.
 /datum/preference_middleware/proc/on_new_character(mob/user)
+	return
+
+/// Called after every update_preference, returns TRUE if this handled it
+/datum/preference_middleware/proc/post_set_preference(mob/user, preference, value)
+	return FALSE
+
+/// Called when applying preferences to the mob
+/datum/preference_middleware/proc/apply_to_human(mob/living/carbon/human/target, datum/preferences/preferences)
+	SHOULD_NOT_SLEEP(TRUE)
+	SHOULD_CALL_PARENT(FALSE)
 	return

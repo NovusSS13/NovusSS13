@@ -16,7 +16,6 @@
 
 /datum/bodypart_overlay/simple/generate_icon_cache()
 	. = ..()
-
 	. += "[icon_state]"
 
 ///A sixpack drawn on the chest

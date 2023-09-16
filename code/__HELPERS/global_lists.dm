@@ -14,7 +14,6 @@
 	//socks
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, GLOB.socks_list)
 	//bodypart accessories (blizzard intensifies)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, GLOB.body_markings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey, add_blank = TRUE)
@@ -30,8 +29,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/mushroom_caps, GLOB.mushroom_caps_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 
 	//genitals
@@ -39,6 +37,25 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/testicles, GLOB.testicles_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/breasts, GLOB.breasts_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/vagina, GLOB.vagina_list, add_blank = TRUE)
+
+	//markings are dumb
+	init_body_markings()
+
+/// Inits GLOB.body_marking_sets
+/proc/init_body_markings()
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, GLOB.body_markings)
+	for(var/marking_name in GLOB.body_markings)
+		var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
+		for(var/zone in GLOB.marking_zones)
+			var/bitflag = GLOB.marking_zone_to_bitflag[zone]
+			if(body_marking.allowed_bodyparts & bitflag)
+				LAZYADDASSOC(GLOB.body_markings_by_zone[zone], marking_name, body_marking)
+	// Here we build the global list for all body markings sets
+	for(var/path in subtypesof(/datum/body_marking_set))
+		var/datum/body_marking_set/marking_set = path
+		if(initial(marking_set.name))
+			marking_set = new path()
+			GLOB.body_marking_sets[marking_set.name] = marking_set
 
 /// Inits GLOB.species_list. Not using GLOBAL_LIST_INIT b/c it depends on GLOB.string_lists
 /proc/init_species_list()

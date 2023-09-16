@@ -177,7 +177,6 @@
 		debrain_icon_state = "debrained_larva"
 	else if(bodytype & BODYTYPE_GOLEM)
 		debrain_icon = 'icons/mob/species/golems.dmi'
-		debrain_icon_state = "debrained"
 
 	var/image/debrain_overlay
 	if(can_rotate)

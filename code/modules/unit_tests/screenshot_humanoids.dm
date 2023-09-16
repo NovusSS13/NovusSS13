@@ -23,7 +23,6 @@
 	// let me have this
 	var/mob/living/carbon/human/moth = allocate(/mob/living/carbon/human/dummy/consistent)
 	moth.dna.features["moth_antennae"] = "Firewatch"
-	moth.dna.features["moth_markings"] = "None"
 	moth.dna.features["moth_wings"] = "Firewatch"
 	moth.set_species(/datum/species/moth)
 	moth.equipOutfit(/datum/outfit/job/cmo, visualsOnly = TRUE)

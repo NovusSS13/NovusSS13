@@ -613,6 +613,36 @@
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#000000")
 	cut_overlay(MA)
 
+/// Humans are weird when it comes to bodyparts
+/mob/living/carbon/human/create_bodyparts(list/overrides)
+	var/list/bodyparts_paths = bodyparts.Copy()
+	bodyparts = list()
+	var/is_digitigrade = (dna.species.digitigrade_customization && (dna.features["legs"] == LEGS_DIGITIGRADE)) || (dna.species.digitigrade_customization == DIGITIGRADE_FORCED)
+	for(var/obj/item/bodypart/bodypart_path as anything in bodyparts_paths)
+		var/real_body_part_path = overrides?[initial(bodypart_path.body_zone)] || bodypart_path
+		var/obj/item/bodypart/bodypart_instance = new real_body_part_path()
+		if(is_digitigrade && istype(bodypart_instance, /obj/item/bodypart/leg))
+			bodypart_instance.bodytype |= BODYTYPE_DIGITIGRADE //THIS IS GOING TO CAUSE BADNESS!!!!
+		//markings my behated
+		var/list/marking_zones = list(bodypart_instance.body_zone)
+		if(bodypart_instance.aux_zone)
+			marking_zones |= bodypart_instance.aux_zone
+		for(var/marking_zone in marking_zones)
+			for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+				var/marking_key = "marking_[marking_zone]_[marking_index]"
+				if(!dna.features[marking_key] || (dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
+					continue
+				var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][dna.features[marking_key]]
+				if(!markings) //invalid marking...
+					continue
+				if(!markings.compatible_species || is_path_in_list(dna.species.type, markings.compatible_species))
+					var/marking_color_key = marking_key + "_color"
+					var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
+					marking.set_appearance(markings.type)
+					bodypart_instance.add_bodypart_overlay(marking)
+		bodypart_instance.set_owner(src)
+		add_bodypart(bodypart_instance)
+
 /mob/living/carbon/human/resist_restraints()
 	if(wear_suit?.breakouttime)
 		changeNext_move(CLICK_CD_BREAKOUT)
@@ -710,12 +740,12 @@
 /mob/living/carbon/human/vv_edit_var(var_name, var_value)
 	if(var_name == NAMEOF(src, mob_height))
 		var/static/list/heights = list(
-			HUMAN_HEIGHT_SHORTEST,
+			HUMAN_HEIGHT_SHORTER,
 			HUMAN_HEIGHT_SHORT,
 			HUMAN_HEIGHT_MEDIUM,
 			HUMAN_HEIGHT_TALL,
 			HUMAN_HEIGHT_TALLER,
-			HUMAN_HEIGHT_TALLEST
+			HUMAN_HEIGHT_MANMORE
 		)
 		if(!(var_value in heights))
 			return

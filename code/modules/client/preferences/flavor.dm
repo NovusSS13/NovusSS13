@@ -1,5 +1,5 @@
 /datum/preference/text/flavor_text
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_key = "flavor_text"
 	savefile_identifier = PREFERENCE_CHARACTER
 
@@ -15,7 +15,7 @@
 
 
 /datum/preference/text/naked_flavor_text
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_key = "naked_flavor_text"
 	savefile_identifier = PREFERENCE_CHARACTER
 
@@ -32,7 +32,7 @@
 
 
 /datum/preference/text/cyborg_flavor_text
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "cyborg_flavor_text"
 
@@ -43,7 +43,7 @@
 
 
 /datum/preference/text/ai_flavor_text
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "ai_flavor_text"
 
@@ -54,7 +54,7 @@
 
 
 /datum/preference/text/custom_species_name
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "custom_species_name"
 
@@ -69,7 +69,7 @@
 	target.examine_panel.custom_species_name = value
 
 /datum/preference/text/custom_species_desc
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "custom_species_desc"
 
@@ -85,7 +85,7 @@
 
 /datum/preference/text/custom_say_mod
 	priority = PREFERENCE_PRIORITY_BODYPARTS // needs to be done after organs are created!
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_key = "custom_say_mod"
 	savefile_identifier = PREFERENCE_CHARACTER
 
@@ -97,7 +97,7 @@
 		tongue.say_mod = value
 
 /datum/preference/text/ooc_notes
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_key = "ooc_notes"
 	savefile_identifier = PREFERENCE_CHARACTER
 
@@ -113,7 +113,7 @@
 
 
 /datum/preference/text/headshot_link
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_key = "headshot_link"
 	savefile_identifier = PREFERENCE_CHARACTER
 

@@ -54,16 +54,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// Use a [language holder datum][/datum/language_holder] typepath in this var.
 	/// Should never be null.
 	var/datum/language_holder/species_language_holder = /datum/language_holder/human_basic
-	/**
-	  * Visible CURRENT bodyparts that are unique to a species.
-	  * DO NOT USE THIS AS A LIST OF ALL POSSIBLE BODYPARTS AS IT WILL FUCK
-	  * SHIT UP! Changes to this list for non-species specific bodyparts (ie
-	  * cat ears and tails) should be assigned at organ level if possible.
-	  * Assoc values are defaults for given bodyparts, also modified by aforementioned organs.
-	  * They also allow for faster '[]' list access versus 'in'. Other than that, they are useless right now.
-	  * Layer hiding is handled by [/datum/species/proc/handle_mutant_bodyparts] below.
-	  */
-	var/list/mutant_bodyparts = list()
 	///The bodyparts this species uses. assoc of bodypart string - bodypart type. Make sure all the fucking entries are in or I'll skin you alive.
 	var/list/bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left,
@@ -77,6 +67,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/mutant_organs = list()
 	///List of cosmetic organs to generate like horns, frills, wings, etc. list(typepath of organ = "Round Beautiful BDSM Snout").
 	var/list/cosmetic_organs = list()
+	///List of body marking sets we can use for randomization. We use sets to avoid creating fugly abominations.
+	var/list/body_marking_sets = list()
 	///Replaces default brain with a different organ
 	var/obj/item/organ/brain/mutantbrain = /obj/item/organ/brain
 	///Replaces default heart with a different organ
@@ -608,15 +600,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /**
  * Handles the body of a human
  *
- * Handles lipstick, having no eyes, eye color, undergarnments like underwear, undershirts, and socks, and body layers.
+ * Basically deprecated, currently only handles eyesprites, and that will soon be reworked into a mutant bodypart overlay.
  * Calls [handle_mutant_bodyparts][/datum/species/proc/handle_mutant_bodyparts]
  * Arguments:
  * * species_human - Human, whoever we're handling the body for
  */
 /datum/species/proc/handle_body(mob/living/carbon/human/species_human)
 	species_human.remove_overlay(BODY_LAYER)
+
 	if(HAS_TRAIT(species_human, TRAIT_INVISIBLE_MAN))
-		handle_mutant_bodyparts(species_human)
 		return
 
 	var/height_offset = species_human.get_top_offset() // From height changed by varying limb height
@@ -633,138 +625,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					eye_overlay.pixel_y += height_offset
 					standing += eye_overlay
 
-		// organic body markings (oh my god this is terrible please rework this to be done on the limbs themselves i beg you)
-		if(HAS_TRAIT(species_human, TRAIT_HAS_MARKINGS))
-			var/obj/item/bodypart/chest/chest = species_human.get_bodypart(BODY_ZONE_CHEST)
-			var/obj/item/bodypart/arm/right/right_arm = species_human.get_bodypart(BODY_ZONE_R_ARM)
-			var/obj/item/bodypart/arm/left/left_arm = species_human.get_bodypart(BODY_ZONE_L_ARM)
-			var/obj/item/bodypart/leg/right/right_leg = species_human.get_bodypart(BODY_ZONE_R_LEG)
-			var/obj/item/bodypart/leg/left/left_leg = species_human.get_bodypart(BODY_ZONE_L_LEG)
-			var/datum/sprite_accessory/markings = GLOB.moth_markings_list[species_human.dna.features["moth_markings"]]
-			if(markings)
-				if(noggin && (IS_ORGANIC_LIMB(noggin)))
-					var/mutable_appearance/markings_head_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_head", -BODY_LAYER)
-					markings_head_overlay.pixel_y += height_offset
-					standing += markings_head_overlay
-
-				if(chest && (IS_ORGANIC_LIMB(chest)))
-					var/mutable_appearance/markings_chest_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_chest", -BODY_LAYER)
-					markings_chest_overlay.pixel_y += height_offset
-					standing += markings_chest_overlay
-
-				if(right_arm && (IS_ORGANIC_LIMB(right_arm)))
-					var/mutable_appearance/markings_r_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_arm", -BODY_LAYER)
-					markings_r_arm_overlay.pixel_y += height_offset
-					standing += markings_r_arm_overlay
-
-				if(left_arm && (IS_ORGANIC_LIMB(left_arm)))
-					var/mutable_appearance/markings_l_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_arm", -BODY_LAYER)
-					markings_l_arm_overlay.pixel_y += height_offset
-					standing += markings_l_arm_overlay
-
-				if(right_leg && (IS_ORGANIC_LIMB(right_leg)))
-					var/mutable_appearance/markings_r_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_leg", -BODY_LAYER)
-					standing += markings_r_leg_overlay
-
-				if(left_leg && (IS_ORGANIC_LIMB(left_leg)))
-					var/mutable_appearance/markings_l_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_leg", -BODY_LAYER)
-					standing += markings_l_leg_overlay
-
-	if(standing.len)
+	if(length(standing))
 		species_human.overlays_standing[BODY_LAYER] = standing
 
 	species_human.apply_overlay(BODY_LAYER)
-	handle_mutant_bodyparts(species_human)
-
-/**
- * Handles the mutant bodyparts of a human
- *
- * Handles the adding and displaying of, layers, colors, and overlays of mutant bodyparts and accessories.
- * Handles digitigrade leg displaying and squishing.
- * Arguments:
- * * H - Human, whoever we're handling the body for
- * * forced_colour - The forced color of an accessory. Leave null to use mutant color.
- */
-/datum/species/proc/handle_mutant_bodyparts(mob/living/carbon/human/source, forced_colour)
-
-	source.remove_overlay(BODY_BEHIND_LAYER)
-	source.remove_overlay(BODY_ADJ_LAYER)
-	source.remove_overlay(BODY_FRONT_LAYER)
-
-	if(!mutant_bodyparts || HAS_TRAIT(source, TRAIT_INVISIBLE_MAN))
-		return
-
-	var/list/bodyparts_to_add = mutant_bodyparts.Copy()
-	var/list/relevant_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER, BODY_FRONT_LAYER)
-	var/list/standing = list()
-	var/g = (source.physique == FEMALE) ? "f" : "m"
-
-	for(var/layer in relevant_layers)
-		var/layertext = mutant_bodyparts_layertext(layer)
-
-		for(var/bodypart in bodyparts_to_add)
-			var/datum/sprite_accessory/accessory
-			switch(bodypart)
-				if("body_markings")
-					accessory = GLOB.body_markings_list[source.dna.features["body_markings"]]
-
-			if(!accessory || accessory.icon_state == "none")
-				continue
-
-			var/mutable_appearance/accessory_overlay = mutable_appearance(accessory.icon, layer = -layer)
-
-			if(accessory.gender_specific)
-				accessory_overlay.icon_state = "[g]_[bodypart]_[accessory.icon_state]_[layertext]"
-			else
-				accessory_overlay.icon_state = "m_[bodypart]_[accessory.icon_state]_[layertext]"
-
-			if(accessory.em_block)
-				accessory_overlay.overlays += emissive_blocker(accessory_overlay.icon, accessory_overlay.icon_state, source, accessory_overlay.alpha)
-
-			if(accessory.center)
-				accessory_overlay = center_image(accessory_overlay, accessory.dimension_x, accessory.dimension_y)
-
-			if(!(HAS_TRAIT(source, TRAIT_HUSK)))
-				if(!forced_colour)
-					switch(accessory.color_src)
-						if(ORGAN_COLOR_MUTANT)
-							if(fixed_mut_color)
-								accessory_overlay.color = tricolor_to_hex(fixed_mut_color)
-							else
-								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
-						if(ORGAN_COLOR_HAIR)
-							if(hair_color == "fixedmutcolor")
-								accessory_overlay.color = tricolor_to_hex(fixed_mut_color)
-							else if(hair_color == "mutcolor")
-								accessory_overlay.color = tricolor_to_hex(source.dna.features["mcolor"])
-							else
-								accessory_overlay.color = source.hair_color
-						if(ORGAN_COLOR_FACIAL_HAIR)
-							accessory_overlay.color = source.facial_hair_color
-						if(ORGAN_COLOR_EYE)
-							accessory_overlay.color = source.eye_color_left
-				else
-					accessory_overlay.color = forced_colour
-			standing += accessory_overlay
-
-			if(accessory.hasinner)
-				var/mutable_appearance/inner_accessory_overlay = mutable_appearance(accessory.icon, layer = -layer)
-				if(accessory.gender_specific)
-					inner_accessory_overlay.icon_state = "[g]_[bodypart]inner_[accessory.icon_state]_[layertext]"
-				else
-					inner_accessory_overlay.icon_state = "m_[bodypart]inner_[accessory.icon_state]_[layertext]"
-
-				if(accessory.center)
-					inner_accessory_overlay = center_image(inner_accessory_overlay, accessory.dimension_x, accessory.dimension_y)
-
-				standing += inner_accessory_overlay
-
-		source.overlays_standing[layer] = standing.Copy()
-		standing = list()
-
-	source.apply_overlay(BODY_BEHIND_LAYER)
-	source.apply_overlay(BODY_ADJ_LAYER)
-	source.apply_overlay(BODY_FRONT_LAYER)
 
 //This exists so sprite accessories can still be per-layer without having to include that layer's
 //number in their sprite name, which causes issues when those numbers change.
@@ -795,12 +659,36 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 ///Proc that will randomize all the external organs (i.e. horns, frills, tails etc.) of a species' associated mob
 /datum/species/proc/randomize_cosmetic_organs(mob/living/carbon/human/human_mob)
+	var/mutant_color = sanitize_hexcolor(human_mob.dna.features["mcolor"], DEFAULT_HEX_COLOR_LEN, TRUE, "#" + random_color())
 	for(var/obj/item/organ/organ_path as anything in cosmetic_organs)
 		var/obj/item/organ/randomized_organ = human_mob.get_organ_by_type(organ_path)
 		if(randomized_organ)
 			var/datum/bodypart_overlay/mutant/overlay = randomized_organ.bodypart_overlay
+			if(!overlay?.feature_key)
+				continue
 			var/datum/sprite_accessory/new_accessory = overlay.get_random_sprite_accessory()
 			human_mob.dna.features["[overlay.feature_key]"] = new_accessory.name
+			if(overlay.feature_color_key)
+				human_mob.dna.features["[overlay.feature_color_key]"] = mutant_color
+
+///Proc that will randomize all the markings of a species' associated mob
+/datum/species/proc/randomize_markings(mob/living/carbon/human/human_mob)
+	if(!length(body_marking_sets))
+		return
+	var/chosen_marking_set = pick(body_marking_sets)
+	var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[chosen_marking_set]
+	if(!body_marking_set)
+		CRASH("[type] has an invalid body marking set ([chosen_marking_set]) in body_marking_sets!")
+	var/mutant_color = sanitize_hexcolor(human_mob.dna.features["mcolor"], DEFAULT_HEX_COLOR_LEN, TRUE, "#" + random_color())
+	var/list/markings = body_marking_set.assemble_body_markings_list(mutant_color)
+	for(var/zone in markings)
+		for(var/marking_index in 1 to length(markings[zone]))
+			var/marking_key = "marking_[zone]_[marking_index]"
+			var/marking_color_key = marking_key + "_color"
+			var/marking_name = markings[zone][marking_index]
+			var/marking_color = markings[zone][marking_name]
+			human_mob.dna.features[marking_key] = marking_name
+			human_mob.dna.features[marking_color_key] = marking_color
 
 ///Proc that randomizes all the appearance elements (external organs, markings, hair etc.) of a species' associated mob. Function set by child procs
 /datum/species/proc/randomize_features(mob/living/carbon/human/human_mob)
@@ -1755,15 +1643,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/preference = GLOB.preference_entries[preference_type]
 
-		var/no_relevancy = !preference.relevant_mutant_bodypart
-		no_relevancy &&= !preference.relevant_inherent_trait
+		var/no_relevancy = !preference.relevant_inherent_trait
 		no_relevancy &&= !preference.relevant_cosmetic_organ
 		no_relevancy &&= !preference.relevant_head_flag
 		if ( \
 			no_relevancy \
-			|| (preference.relevant_mutant_bodypart && !(preference.relevant_mutant_bodypart in mutant_bodyparts)) \
 			|| (preference.relevant_inherent_trait && !(preference.relevant_inherent_trait in inherent_traits)) \
-			|| (preference.relevant_cosmetic_organ && !(preference.relevant_cosmetic_organ in cosmetic_organs)) \
+			|| (preference.relevant_cosmetic_organ && !is_path_in_list(preference.relevant_cosmetic_organ, cosmetic_organs)) \
 			|| (preference.relevant_head_flag && !check_head_flags(preference.relevant_head_flag)) \
 		)
 			continue
@@ -1892,6 +1778,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	species_perks += create_pref_biotypes_perks()
 	species_perks += create_pref_organs_perks()
 	species_perks += create_pref_language_perk()
+	species_perks += create_pref_payday_perk()
 
 	// Some overrides may return `null`, prevent those from jamming up the list.
 	list_clear_nulls(species_perks)
@@ -1931,11 +1818,26 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_damage_perks()
-	// We use the chest to figure out brute and burn mod perks
-	var/obj/item/bodypart/chest/fake_chest = bodypart_overrides[BODY_ZONE_CHEST]
-
 	var/list/to_add = list()
 
+	//General damage
+	if(damage_modifier > 0)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "shield-alt",
+			SPECIES_PERK_NAME = "General Resilience",
+			SPECIES_PERK_DESC = "[plural_form] are more resilient to most types of damage.",
+		))
+	else if(damage_modifier < 0)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = "shield-alt",
+			SPECIES_PERK_NAME = "General Weakness",
+			SPECIES_PERK_DESC = "[plural_form] are weaker to most types of damage.",
+		))
+
+	// We use the chest to figure out brute and burn perks
+	var/obj/item/bodypart/chest/fake_chest = bodypart_overrides[BODY_ZONE_CHEST]
 	// Brute related
 	if(initial(fake_chest.brute_modifier) > 1)
 		to_add += list(list(
@@ -1944,8 +1846,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Brutal Weakness",
 			SPECIES_PERK_DESC = "[plural_form] are weak to brute damage.",
 		))
-
-	if(initial(fake_chest.brute_modifier) < 1)
+	else if(initial(fake_chest.brute_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
@@ -1961,8 +1862,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Burn Weakness",
 			SPECIES_PERK_DESC = "[plural_form] are weak to burn damage.",
 		))
-
-	if(initial(fake_chest.burn_modifier) < 1)
+	else if(initial(fake_chest.burn_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
@@ -1978,8 +1878,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Shock Vulnerability",
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to being shocked.",
 		))
-
-	if(siemens_coeff < 1)
+	else if(siemens_coeff < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
@@ -2005,8 +1904,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Heat Vulnerability",
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to high temperatures.",
 		))
-
-	if(heatmod < 1 || bodytemp_heat_damage_limit > BODYTEMP_HEAT_DAMAGE_LIMIT)
+	else if(heatmod < 1 || bodytemp_heat_damage_limit > BODYTEMP_HEAT_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
@@ -2022,8 +1920,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Cold Vulnerability",
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to cold temperatures.",
 		))
-
-	if(coldmod < 1 || bodytemp_cold_damage_limit < BODYTEMP_COLD_DAMAGE_LIMIT)
+	else if(coldmod < 1 || bodytemp_cold_damage_limit < BODYTEMP_COLD_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
@@ -2055,8 +1952,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = initial(exotic_blood.name),
-			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_blood.name)], which can make recieving medical treatment harder.",
+			SPECIES_PERK_NAME = "[initial(exotic_blood.name)] Blood",
+			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_blood.name)], which can make receiving medical treatment harder.",
 		))
 
 	// Otherwise otherwise, see if they have an exotic bloodtype set
@@ -2065,7 +1962,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "tint",
 			SPECIES_PERK_NAME = "Exotic Blood",
-			SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make recieving medical treatment harder.",
+			SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make receiving medical treatment harder.",
 		))
 
 	return to_add
@@ -2082,7 +1979,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "user-plus",
-			SPECIES_PERK_NAME = "Limbs Easily Reattached",
+			SPECIES_PERK_NAME = "Easily Reattached",
 			SPECIES_PERK_DESC = "[plural_form] limbs are easily readded, and as such do not \
 				require surgery to restore. Simply pick it up and pop it back in, champ!",
 		))
@@ -2091,7 +1988,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "user-times",
-			SPECIES_PERK_NAME = "Limbs Easily Dismembered",
+			SPECIES_PERK_NAME = "Easily Dismembered",
 			SPECIES_PERK_DESC = "[plural_form] limbs are not secured well, and as such they are easily dismembered.",
 		))
 
@@ -2112,7 +2009,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				causing toxins will instead cause healing. Be careful around purging chemicals!",
 		))
 
-	if (TRAIT_GENELESS in inherent_traits)
+	if(TRAIT_GENELESS in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "dna",
@@ -2120,7 +2017,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "[plural_form] have no genes, making genetic scrambling a useless weapon, but also locking them out from getting genetic powers.",
 		))
 
-	if (TRAIT_NOBREATH in inherent_traits)
+	if(TRAIT_NOBREATH in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "wind",
@@ -2227,7 +2124,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list containing perks, or an empty list.
  */
 /datum/species/proc/create_pref_language_perk()
-
 	// Grab galactic common as a path, for comparisons
 	var/datum/language/common_language = /datum/language/common
 
@@ -2250,7 +2146,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_NAME = "Native Speaker",
 			SPECIES_PERK_DESC = "Alongside [initial(common_language.name)], [plural_form] gain the ability to speak [english_list(bonus_languages)].",
 		))
-
 	else
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
@@ -2261,30 +2156,70 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	return to_add
 
-///Handles replacing all of the bodyparts with their species version during set_species()
-/datum/species/proc/replace_body(mob/living/carbon/target, datum/species/new_species)
-	new_species ||= target.dna.species //If no new species is provided, assume its src.
+/**
+ * Adds in a payday perk based on the species' pay modifier.
+ *
+ * Returns a list containing perks, or an empty list.
+ */
+/datum/species/proc/create_pref_payday_perk()
+	RETURN_TYPE(/list)
+	var/list/to_add = list()
+	if(payday_modifier > 1)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "sack-dollar",
+			SPECIES_PERK_NAME = "High Income",
+			SPECIES_PERK_DESC = "[plural_form] earn [(1 - payday_modifier) * 100]% more than the average crewmember.",
+		))
+	else if(payday_modifier < 1)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = "sack-xmark",
+			SPECIES_PERK_NAME = "Low Income",
+			SPECIES_PERK_DESC = "[plural_form] earn [(payday_modifier - 1) * 100]% less than the average crewmember.",
+		))
 
-	var/list/final_bodypart_overrides = new_species.bodypart_overrides.Copy()
-	if((new_species.digitigrade_customization == DIGITIGRADE_OPTIONAL && target.dna.features["legs"] == DIGITIGRADE_LEGS) || new_species.digitigrade_customization == DIGITIGRADE_FORCED)
-		final_bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
-		final_bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
-
-	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
-		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
-			continue
-
-		var/path = final_bodypart_overrides?[old_part.body_zone]
-		var/obj/item/bodypart/new_part
-		if(path)
-			new_part = new path()
-			new_part.replace_limb(target, special = TRUE, keep_old_organs = TRUE)
-			new_part.update_limb(is_creating = TRUE)
-		qdel(old_part)
+	return to_add
 
 /// Creates body parts for the target completely from scratch based on the species
 /datum/species/proc/create_fresh_body(mob/living/carbon/target)
 	target.create_bodyparts(bodypart_overrides)
+
+/// Handles replacing all of the bodyparts with their species version during set_species()
+/datum/species/proc/replace_body(mob/living/carbon/target, datum/species/new_species)
+	new_species ||= target.dna.species //If no new species is provided, assume its src.
+
+	var/is_digitigrade = (new_species.digitigrade_customization && (target.dna.features["legs"] == LEGS_DIGITIGRADE)) || (new_species.digitigrade_customization == DIGITIGRADE_FORCED)
+	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
+		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
+			continue
+
+		var/path = new_species.bodypart_overrides?[old_part.body_zone]
+		var/obj/item/bodypart/new_part
+		if(path)
+			new_part = new path()
+			if(is_digitigrade && istype(new_part, /obj/item/bodypart/leg))
+				new_part.bodytype |= BODYTYPE_DIGITIGRADE //THIS IS GOING TO CAUSE BADNESS!!!!
+			//markings my behated
+			var/list/marking_zones = list(new_part.body_zone)
+			if(new_part.aux_zone)
+				marking_zones |= new_part.aux_zone
+			for(var/marking_zone in marking_zones)
+				for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+					var/marking_key = "marking_[marking_zone]_[marking_index]"
+					if(!target.dna.features[marking_key] || (target.dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
+						continue
+					var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][target.dna.features[marking_key]]
+					if(!markings) //invalid marking...
+						continue
+					if(!markings.compatible_species || is_path_in_list(new_species.type, markings.compatible_species))
+						var/marking_color_key = marking_key + "_color"
+						var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
+						marking.set_appearance(markings.type)
+						new_part.add_bodypart_overlay(marking)
+			new_part.replace_limb(target, special = TRUE, keep_old_organs = TRUE)
+			new_part.update_limb(is_creating = TRUE)
+		qdel(old_part)
 
 /**
  * Checks if the species has a head with these head flags, by default.

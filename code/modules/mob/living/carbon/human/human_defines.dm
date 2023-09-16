@@ -48,7 +48,7 @@
 	var/underwear_color = "#000000"
 	var/undershirt = "Nude" //Which undershirt the player wants
 	var/socks = "Nude" //Which socks the player wants
-	var/backpack = DBACKPACK //Which backpack type the player has chosen.
+	var/backpack = PREF_DEP_BACKPACK //Which backpack type the player has chosen.
 	var/jumpsuit_style = PREF_SUIT //suit/skirt
 
 	//Equipment slots
@@ -86,4 +86,7 @@
 	var/list/afk_thefts
 
 	/// Height of the mob
-	VAR_PROTECTED/mob_height = HUMAN_HEIGHT_MEDIUM
+	var/mob_height = HUMAN_HEIGHT_MEDIUM
+
+	/// Body size of the mob
+	var/body_size = BODY_SIZE_STANDARD

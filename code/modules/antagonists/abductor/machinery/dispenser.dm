@@ -8,10 +8,6 @@
 	var/list/gland_colors
 	var/list/amounts
 
-/obj/machinery/abductor/gland_dispenser/proc/random_color()
-	//TODO : replace with presets or spectrum
-	return rgb(rand(0,255),rand(0,255),rand(0,255))
-
 /obj/machinery/abductor/gland_dispenser/Initialize(mapload)
 	. = ..()
 	gland_types = subtypesof(/obj/item/organ/heart/gland)
@@ -19,7 +15,7 @@
 	gland_colors = new/list(gland_types.len)
 	amounts = new/list(gland_types.len)
 	for(var/i in 1 to gland_types.len)
-		gland_colors[i] = random_color()
+		gland_colors[i] = "#" + random_color()
 		amounts[i] = rand(1,5)
 
 /obj/machinery/abductor/gland_dispenser/ui_status(mob/user)

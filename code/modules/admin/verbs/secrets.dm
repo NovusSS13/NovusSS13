@@ -500,7 +500,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 				SEND_SOUND(H, sound(SSstation.announcer.event_sounds[ANNOUNCER_ANIMES]))
 
 				if(H.dna.species.id == SPECIES_HUMAN)
-					if(H.dna.features["tail_human"] == "None" || H.dna.features["ears"] == "None")
+					if(H.dna.features["tail"] == SPRITE_ACCESSORY_NONE || H.dna.features["ears"] == SPRITE_ACCESSORY_NONE)
 						var/obj/item/organ/ears/cat/ears = new
 						var/obj/item/organ/tail/cat/tail = new
 						ears.Insert(H, drop_if_replaced=FALSE)

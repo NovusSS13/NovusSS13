@@ -1,13 +1,12 @@
 ///Bodypart ovarlay datum. These can be added to any limb to give them a proper overlay, that'll even stay if the limb gets removed
 ///This is the abstract parent, don't use it!!
 /datum/bodypart_overlay
+	///Required bodytypes for this overlay to actually draw on a given limb
+	var/required_bodytypes = BODYTYPE_HUMANOID
 	///Sometimes we need multiple layers, for like the back, middle and front of the person (EXTERNAL_FRONT, EXTERNAL_ADJACENT, EXTERNAL_BEHIND)
 	var/layers
 	///List of all possible layers. Used for looping through in drawing
 	var/static/list/all_layers = list(EXTERNAL_FRONT, EXTERNAL_ADJACENT, EXTERNAL_BEHIND)
-
-	///Key of the icon states of all the sprite_datums for easy caching
-	var/cache_key = ""
 
 ///Wrapper for getting the proper overlays, colored and everything
 /datum/bodypart_overlay/proc/get_overlays(layer, obj/item/bodypart/limb)
@@ -60,9 +59,15 @@
 			return -BODY_ADJ_LAYER
 		if(EXTERNAL_FRONT)
 			return -BODY_FRONT_LAYER
+		else
+			return layer
 
-///Check whether we can draw the overlays. You generally don't want lizard snouts to draw over an EVA suit
-/datum/bodypart_overlay/proc/can_draw_on_bodypart(mob/living/carbon/human/human)
+///Check whether we can draw the overlays on a limb. Some oddball limbs are fundamentally incompatible with certain goofy overlays.
+/datum/bodypart_overlay/proc/can_draw_on_bodypart(obj/item/bodypart/ownerlimb)
+	return (ownerlimb.bodytype & required_bodytypes)
+
+///Check whether we can draw the overlays on a human. You generally don't want lizard snouts to draw over an EVA suit.
+/datum/bodypart_overlay/proc/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	return TRUE
 
 ///Colorizes the limb it's inserted to, if required.

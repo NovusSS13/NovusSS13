@@ -1,11 +1,10 @@
 import { useBackend } from '../../backend';
 import { Stack } from '../../components';
-import { CharacterPreview } from '../common/CharacterPreview';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
-import { PreferencesMenuData, RandomSetting, createSetPreference } from './data';
+import { PreferencesMenuData, RandomSetting } from './data';
 import { filterMap } from 'common/collections';
 import { useRandomToggleState } from './useRandomToggleState';
-import { PreferenceList, CharacterControls, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
+import { PreferenceList, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
 
 export const BackgroundPage = (props, context) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
@@ -73,50 +72,17 @@ export const BackgroundPage = (props, context) => {
           Object.fromEntries(mainFeatures)
         );
 
-        const nonContextualPreferences = {
-          ...data.character_preferences.non_contextual,
+        const backgroundPreferences = {
+          ...data.character_preferences.background,
         };
-
-        if (randomBodyEnabled) {
-          nonContextualPreferences['random_species'] =
-            data.character_preferences.randomization['species'];
-        } else {
-          // We can't use random_name/is_accessible because the
-          // server doesn't know whether the random toggle is on.
-          delete nonContextualPreferences['random_name'];
-        }
 
         return (
           <Stack
             height={`${CLOTHING_SIDEBAR_ROWS * CLOTHING_CELL_SIZE * 1.25}px`}>
-            <Stack.Item fill>
-              <Stack vertical fill>
-                <Stack.Item>
-                  <CharacterControls
-                    gender={data.character_preferences.misc.gender}
-                    handleOpenSpecies={props.openSpecies}
-                    handleRotate={() => {
-                      act('rotate');
-                    }}
-                    setGender={createSetPreference(act, 'gender')}
-                    showGender={
-                      currentSpeciesData ? !!currentSpeciesData.sexes : true
-                    }
-                  />
-                </Stack.Item>
-
-                <Stack.Item grow>
-                  <CharacterPreview
-                    height="100%"
-                    id={data.character_preview_view}
-                  />
-                </Stack.Item>
-              </Stack>
-            </Stack.Item>
             <PreferenceList
               act={act}
-              randomizations={getRandomization(nonContextualPreferences)}
-              preferences={nonContextualPreferences}
+              randomizations={getRandomization(backgroundPreferences)}
+              preferences={backgroundPreferences}
             />
           </Stack>
         );

@@ -9,17 +9,15 @@
 		TRAIT_ANTENNAE,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_BUG
-	mutant_bodyparts = list(
-		"moth_markings" = "None",
-	)
+
 	cosmetic_organs = list(
 		/obj/item/organ/wings/moth = "Plain",
 		/obj/item/organ/antennae = "Plain",
 
-		/obj/item/organ/genital/penis = "None",
-		/obj/item/organ/genital/testicles = "None",
-		/obj/item/organ/genital/breasts = "None",
-		/obj/item/organ/genital/vagina = "None",
+		/obj/item/organ/genital/penis = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/testicles = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
 	)
 	meat = /obj/item/food/meat/slab/human/mutant/moth
 	mutanttongue = /obj/item/organ/tongue/moth
@@ -39,12 +37,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/moth,
 	)
 
-/datum/species/moth/regenerate_organs(mob/living/carbon/C, datum/species/old_species, replace_current= TRUE, list/excluded_zones, visual_only)
-	. = ..()
-	if(ishuman(C))
-		var/mob/living/carbon/human/H = C
-		handle_mutant_bodyparts(H)
-
 /datum/species/moth/random_name(gender,unique,lastname)
 	if(unique)
 		return random_unique_moth_name()
@@ -62,8 +54,9 @@
 	return 1
 
 /datum/species/moth/randomize_features(mob/living/carbon/human/human_mob)
-	human_mob.dna.features["moth_markings"] = pick(GLOB.moth_markings_list)
+	. = ..()
 	randomize_cosmetic_organs(human_mob)
+	randomize_markings(human_mob)
 
 /datum/species/moth/get_scream_sound(mob/living/carbon/human/human)
 	return 'sound/voice/moth/scream_moth.ogg'

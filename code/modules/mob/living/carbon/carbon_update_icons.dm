@@ -108,12 +108,11 @@
 
 //used when putting/removing clothes that hide certain mutant body parts to just update those and not update the whole body.
 /mob/living/carbon/human/proc/update_mutant_bodyparts()
-	dna?.species.handle_mutant_bodyparts(src)
 	update_body_parts()
 
 /mob/living/carbon/update_body(is_creating = FALSE)
-	dna?.species.handle_body(src) //This calls `handle_mutant_bodyparts` which calls `update_mutant_bodyparts()`. Don't double call!
 	update_body_parts(is_creating)
+	dna?.species.handle_body(src)
 
 /mob/living/carbon/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
 	. = ..()
@@ -569,6 +568,8 @@
 	if(is_dimorphic)
 		. += "[limb_gender]-"
 	. += "[limb_id]"
+	if((bodytype & BODYTYPE_DIGITIGRADE) && !(bodytype & BODYTYPE_COMPRESSED))
+		. += "-compressed"
 	. += "-[body_zone]"
 	if(should_draw_greyscale && draw_color)
 		. += "-[draw_color]"
@@ -578,7 +579,7 @@
 		. += "-husk"
 	else
 		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
-			if(!overlay.can_draw_on_bodypart(owner))
+			if(!overlay.can_draw_on_bodypart(src) || !overlay.can_draw_on_body(src, owner))
 				continue
 			. += "-[jointext(overlay.generate_icon_cache(), "-")]"
 	. += "-[get_applicable_top_offset()]"

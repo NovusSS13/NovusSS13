@@ -1,33 +1,3 @@
-// Priorities must be in order!
-/// The default priority level
-#define PREFERENCE_PRIORITY_DEFAULT 1
-
-/// The priority at which species runs, needed for external organs to apply properly.
-#define PREFERENCE_PRIORITY_SPECIES 2
-
-/// The priority at which gender is determined, needed for proper randomization.
-#define PREFERENCE_PRIORITY_GENDER 3
-
-/// The priority at which body type is decided, applied after gender so we can
-/// support the "use gender" option.
-#define PREFERENCE_PRIORITY_BODY_TYPE 4
-
-/**
- * Some preferences get applied directly to bodyparts (anything head_flags related right now).
- * These must apply after species, as species gaining might replace the bodyparts of the human.
- * These also should apply after gender and body type, as those might change the bodyparts.
- */
-#define PREFERENCE_PRIORITY_BODYPARTS 5
-
-/// The priority at which names are decided, needed for proper randomization.
-#define PREFERENCE_PRIORITY_NAMES 6
-
-/// Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.
-#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 7
-
-/// The maximum preference priority, keep this updated, but don't use it for `priority`.
-#define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_NAME_MODIFICATIONS
-
 /// For choiced preferences, this key will be used to set display names in constant data.
 #define CHOICED_PREFERENCE_DISPLAY_NAMES "display_names"
 
@@ -221,7 +191,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 	if (!parent)
 		return null
-	if(!savefile)
+	if (!savefile)
 		CRASH("Attempted to get the savedata for [savefile_identifier] of [parent] without a savefile. This should have been handled by load_preferences()")
 
 	// Both of these will cache savefiles, but only for a tick.
@@ -450,7 +420,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	return sanitize_hexcolor(input)
 
 /datum/preference/color/create_default_value()
-	return random_color()
+	return "#" + random_color()
 
 /datum/preference/color/serialize(input)
 	return sanitize_hexcolor(input)

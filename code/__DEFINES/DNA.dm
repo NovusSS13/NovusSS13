@@ -1,4 +1,4 @@
-/*ALL DNA, SPECIES, AND GENETICS-RELATED DEFINES GO HERE*/
+/*ALL DNA AND GENETICS-RELATED DEFINES GO HERE*/
 
 #define CHECK_DNA_AND_SPECIES(C) if(!(C.dna?.species)) return
 
@@ -15,7 +15,6 @@
 #define NEGATIVE 2
 #define MINOR_NEGATIVE 4
 
-
 //Mutation classes. Normal being on them, extra being additional mutations with instability and other being stuff you dont want people to fuck with like wizard mutate
 /// A mutation that can be activated and deactived by completing a sequence
 #define MUT_NORMAL 1
@@ -24,59 +23,68 @@
 /// Cannot be interacted with by players through normal means. I.E. wizards mutate
 #define MUT_OTHER 3
 
-//DNA - Because fuck you and your magic numbers being all over the codebase.
+//DNA block size defines - Because fuck you and your magic numbers being all over the codebase.
 #define DNA_BLOCK_SIZE 3
-
 #define DNA_BLOCK_SIZE_COLOR DEFAULT_HEX_COLOR_LEN
 #define DNA_BLOCK_SIZE_TRICOLOR DEFAULT_HEX_COLOR_LEN * 3
 
 #define DNA_GENDER_BLOCK 1
-#define DNA_SKIN_TONE_BLOCK 2
-#define DNA_EYE_COLOR_LEFT_BLOCK 3
-#define DNA_EYE_COLOR_RIGHT_BLOCK 4
-#define DNA_HAIRSTYLE_BLOCK 5
-#define DNA_HAIR_COLOR_BLOCK 6
-#define DNA_FACIAL_HAIRSTYLE_BLOCK 7
-#define DNA_FACIAL_HAIR_COLOR_BLOCK 8
+#define DNA_BODY_TYPE_BLOCK 2
+#define DNA_SKIN_TONE_BLOCK 3
+#define DNA_HEIGHT_BLOCK 4
+#define DNA_BODY_SIZE_BLOCK 5
+#define DNA_EYE_COLOR_LEFT_BLOCK 6
+#define DNA_EYE_COLOR_RIGHT_BLOCK 7
+#define DNA_HAIRSTYLE_BLOCK 8
+#define DNA_HAIR_COLOR_BLOCK 9
+#define DNA_FACIAL_HAIRSTYLE_BLOCK 10
+#define DNA_FACIAL_HAIR_COLOR_BLOCK 11
 
-#define DNA_UNI_IDENTITY_BLOCKS 8
+#define DNA_UNI_IDENTITY_BLOCKS DNA_FACIAL_HAIR_COLOR_BLOCK
 
 /// This number needs to equal the total number of DNA blocks
 #define DNA_MUTANT_COLOR_BLOCK 1
 #define DNA_ETHEREAL_COLOR_BLOCK 2
-#define DNA_LIZARD_MARKINGS_BLOCK 3
-#define DNA_TAIL_BLOCK 4
-#define DNA_TAIL_COLOR_BLOCK 5
-#define DNA_SNOUT_BLOCK 6
-#define DNA_SNOUT_COLOR_BLOCK 7
-#define DNA_HORNS_BLOCK 8
-#define DNA_HORNS_COLOR_BLOCK 9
-#define DNA_FRILLS_BLOCK 10
-#define DNA_FRILLS_COLOR_BLOCK 11
-#define DNA_SPINES_BLOCK 12
-#define DNA_SPINES_COLOR_BLOCK 13
-#define DNA_EARS_BLOCK 14
-#define DNA_EARS_COLOR_BLOCK 15
-#define DNA_MOTH_WINGS_BLOCK 16
-#define DNA_MOTH_ANTENNAE_BLOCK 17
-#define DNA_MOTH_MARKINGS_BLOCK 18
-#define DNA_MUSHROOM_CAP_BLOCK 19
-#define DNA_POD_HAIR_BLOCK 20
+#define DNA_TAIL_BLOCK 3
+#define DNA_TAIL_COLOR_BLOCK 4
+#define DNA_SNOUT_BLOCK 5
+#define DNA_SNOUT_COLOR_BLOCK 6
+#define DNA_HORNS_BLOCK 7
+#define DNA_HORNS_COLOR_BLOCK 8
+#define DNA_FRILLS_BLOCK 9
+#define DNA_FRILLS_COLOR_BLOCK 10
+#define DNA_SPINES_BLOCK 11
+#define DNA_SPINES_COLOR_BLOCK 12
+#define DNA_EARS_BLOCK 13
+#define DNA_EARS_COLOR_BLOCK 14
+#define DNA_MOTH_WINGS_BLOCK 15
+#define DNA_MOTH_ANTENNAE_BLOCK 16
+#define DNA_MUSHROOM_CAPS_BLOCK 17
+#define DNA_POD_HAIR_BLOCK 18
 
 //dumb genital crap ugh
-#define DNA_PENIS_BLOCK 21
-#define DNA_PENIS_COLOR_BLOCK 22
-#define DNA_PENIS_SIZE_BLOCK 23
-#define DNA_TESTICLES_BLOCK 24
-#define DNA_TESTICLES_COLOR_BLOCK 25
-#define DNA_VAGINA_BLOCK 26
-#define DNA_VAGINA_COLOR_BLOCK 27
-#define DNA_BREASTS_BLOCK 28
-#define DNA_BREASTS_COLOR_BLOCK 29
-#define DNA_BREASTS_SIZE_BLOCK 30
+#define DNA_PENIS_BLOCK 19
+#define DNA_PENIS_COLOR_BLOCK 20
+#define DNA_PENIS_SIZE_BLOCK 21
+#define DNA_TESTICLES_BLOCK 22
+#define DNA_TESTICLES_COLOR_BLOCK 23
+#define DNA_VAGINA_BLOCK 24
+#define DNA_VAGINA_COLOR_BLOCK 25
+#define DNA_BREASTS_BLOCK 26
+#define DNA_BREASTS_COLOR_BLOCK 27
+#define DNA_BREASTS_SIZE_BLOCK 28
 
-/// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 30
+/// Total amount of feature blocks, NOT COUNTING MARKINGS
+#define DNA_MAIN_FEATURE_BLOCKS DNA_BREASTS_SIZE_BLOCK
+
+/// Maximum amount of markings a limb can ever have
+#define MAXIMUM_MARKINGS_PER_LIMB 5
+
+/// Amount of DNA blocks a single marking takes up
+#define DNA_BLOCKS_PER_MARKING 2 //one name block, one color block
+
+/// Total amount of feature blocks, COUNTING MARKINGS
+#define DNA_FEATURE_BLOCKS (DNA_MAIN_FEATURE_BLOCKS + (GLOB.marking_zones.len * MAXIMUM_MARKINGS_PER_LIMB * DNA_BLOCKS_PER_MARKING))
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -86,84 +94,3 @@
 #define CHROMOSOME_NEVER 0
 #define CHROMOSOME_NONE 1
 #define CHROMOSOME_USED 2
-
-//used for mob's genetic gender (mainly just for pronouns, members of sexed species with plural gender refer to their physique for the actual sprites, which is not genetic)
-#define G_MALE 1
-#define G_FEMALE 2
-#define G_PLURAL 3
-
-// Defines for used in creating "perks" for the species preference pages.
-/// A key that designates UI icon displayed on the perk.
-#define SPECIES_PERK_ICON "ui_icon"
-/// A key that designates the name of the perk.
-#define SPECIES_PERK_NAME "name"
-/// A key that designates the description of the perk.
-#define SPECIES_PERK_DESC "description"
-/// A key that designates what type of perk it is (see below).
-#define SPECIES_PERK_TYPE "perk_type"
-
-// The possible types each perk can be.
-// Positive perks are shown in green, negative in red, and neutral in grey.
-#define SPECIES_POSITIVE_PERK "positive"
-#define SPECIES_NEGATIVE_PERK "negative"
-#define SPECIES_NEUTRAL_PERK "neutral"
-
-/// Golem food defines
-#define GOLEM_FOOD_IRON "golem_food_iron"
-#define GOLEM_FOOD_GLASS "golem_food_glass"
-#define GOLEM_FOOD_URANIUM "golem_food_uranium"
-#define GOLEM_FOOD_SILVER "golem_food_silver"
-#define GOLEM_FOOD_PLASMA "golem_food_plasma"
-#define GOLEM_FOOD_GOLD "golem_food_gold"
-#define GOLEM_FOOD_DIAMOND "golem_food_diamond"
-#define GOLEM_FOOD_TITANIUM "golem_food_titanium"
-#define GOLEM_FOOD_PLASTEEL "golem_food_plasteel"
-#define GOLEM_FOOD_BANANIUM "golem_food_bananium"
-#define GOLEM_FOOD_BLUESPACE "golem_food_bluespace"
-#define GOLEM_FOOD_GIBTONITE "golem_food_gibtonite"
-#define GOLEM_FOOD_LIGHTBULB "golem_food_lightbulb"
-
-/// Golem food datum singletons
-GLOBAL_LIST_INIT(golem_stack_food_types, list(
-	GOLEM_FOOD_IRON = new /datum/golem_food_buff/iron(),
-	GOLEM_FOOD_GLASS = new /datum/golem_food_buff/glass(),
-	GOLEM_FOOD_URANIUM = new /datum/golem_food_buff/uranium(),
-	GOLEM_FOOD_SILVER = new /datum/golem_food_buff/silver(),
-	GOLEM_FOOD_PLASMA = new /datum/golem_food_buff/plasma(),
-	GOLEM_FOOD_GOLD = new /datum/golem_food_buff/gold(),
-	GOLEM_FOOD_DIAMOND = new /datum/golem_food_buff/diamond(),
-	GOLEM_FOOD_TITANIUM = new /datum/golem_food_buff/titanium(),
-	GOLEM_FOOD_PLASTEEL = new /datum/golem_food_buff/plasteel(),
-	GOLEM_FOOD_BANANIUM = new /datum/golem_food_buff/bananium(),
-	GOLEM_FOOD_BLUESPACE = new /datum/golem_food_buff/bluespace(),
-	GOLEM_FOOD_GIBTONITE = new /datum/golem_food_buff/gibtonite(),
-	GOLEM_FOOD_LIGHTBULB = new /datum/golem_food_buff/lightbulb(),
-))
-
-/// Associated list of stack types to a golem food
-GLOBAL_LIST_INIT(golem_stack_food_directory, list(
-	/obj/item/gibtonite = GLOB.golem_stack_food_types[GOLEM_FOOD_GIBTONITE],
-	/obj/item/light = GLOB.golem_stack_food_types[GOLEM_FOOD_LIGHTBULB],
-	/obj/item/stack/sheet/iron = GLOB.golem_stack_food_types[GOLEM_FOOD_IRON],
-	/obj/item/stack/ore/iron = GLOB.golem_stack_food_types[GOLEM_FOOD_IRON],
-	/obj/item/stack/sheet/glass = GLOB.golem_stack_food_types[GOLEM_FOOD_GLASS],
-	/obj/item/stack/sheet/mineral/uranium = GLOB.golem_stack_food_types[GOLEM_FOOD_URANIUM],
-	/obj/item/stack/ore/uranium = GLOB.golem_stack_food_types[GOLEM_FOOD_URANIUM],
-	/obj/item/stack/sheet/mineral/silver = GLOB.golem_stack_food_types[GOLEM_FOOD_SILVER],
-	/obj/item/stack/ore/silver = GLOB.golem_stack_food_types[GOLEM_FOOD_SILVER],
-	/obj/item/stack/sheet/mineral/plasma = GLOB.golem_stack_food_types[GOLEM_FOOD_PLASMA],
-	/obj/item/stack/ore/plasma = GLOB.golem_stack_food_types[GOLEM_FOOD_PLASMA],
-	/obj/item/stack/sheet/mineral/gold = GLOB.golem_stack_food_types[GOLEM_FOOD_GOLD],
-	/obj/item/stack/ore/gold = GLOB.golem_stack_food_types[GOLEM_FOOD_GOLD],
-	/obj/item/stack/sheet/mineral/diamond = GLOB.golem_stack_food_types[GOLEM_FOOD_DIAMOND],
-	/obj/item/stack/ore/diamond = GLOB.golem_stack_food_types[GOLEM_FOOD_DIAMOND],
-	/obj/item/stack/sheet/mineral/titanium = GLOB.golem_stack_food_types[GOLEM_FOOD_TITANIUM],
-	/obj/item/stack/ore/titanium = GLOB.golem_stack_food_types[GOLEM_FOOD_TITANIUM],
-	/obj/item/stack/sheet/plasteel = GLOB.golem_stack_food_types[GOLEM_FOOD_PLASTEEL],
-	/obj/item/stack/ore/bananium = GLOB.golem_stack_food_types[GOLEM_FOOD_BANANIUM],
-	/obj/item/stack/sheet/mineral/bananium = GLOB.golem_stack_food_types[GOLEM_FOOD_BANANIUM],
-	/obj/item/stack/ore/bluespace_crystal = GLOB.golem_stack_food_types[GOLEM_FOOD_BLUESPACE],
-	/obj/item/stack/ore/bluespace_crystal/refined = GLOB.golem_stack_food_types[GOLEM_FOOD_BLUESPACE],
-	/obj/item/stack/ore/bluespace_crystal/artificial = GLOB.golem_stack_food_types[GOLEM_FOOD_BLUESPACE],
-	/obj/item/stack/sheet/bluespace_crystal = GLOB.golem_stack_food_types[GOLEM_FOOD_BLUESPACE],
-))

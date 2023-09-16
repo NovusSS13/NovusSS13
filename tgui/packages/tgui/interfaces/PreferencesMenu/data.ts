@@ -90,6 +90,21 @@ export type QuirkInfo = {
   quirk_blacklist: string[][];
 };
 
+export type Marking = {
+  name: string;
+  color: string;
+  marking_index: string;
+  color_amount: number;
+};
+
+export type MarkingZone = {
+  body_zone: string;
+  name: string;
+  markings_choices: string[];
+  markings: Marking[];
+  cant_add_markings: boolean;
+};
+
 export enum RandomSetting {
   AntagOnly = 1,
   Disabled = 2,
@@ -133,6 +148,7 @@ export type PreferencesMenuData = {
       random_body: RandomSetting;
       [otherKey: string]: unknown;
     };
+    background: Record<string, unknown>;
     secondary_features: Record<string, unknown>;
     supplemental_features: Record<string, unknown>;
 
@@ -163,6 +179,10 @@ export type PreferencesMenuData = {
   keybindings: Record<string, string[]>;
   overflow_role: string;
   selected_quirks: string[];
+
+  marking_parts: MarkingZone[];
+  maximum_markings_per_limb: number;
+  body_marking_sets: string[];
 
   antag_bans?: string[];
   antag_days_left?: Record<string, number>;

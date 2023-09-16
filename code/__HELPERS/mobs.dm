@@ -79,18 +79,14 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
 	if(!length(GLOB.legs_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
-	if(!length(GLOB.body_markings_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, GLOB.body_markings_list)
 	if(!length(GLOB.wings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
 	if(!length(GLOB.moth_wings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	if(!length(GLOB.moth_antennae_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
-	if(!length(GLOB.moth_markings_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
-	if(!length(GLOB.caps_list))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
+	if(!length(GLOB.mushroom_caps_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/mushroom_caps, GLOB.mushroom_caps_list)
 	if(!length(GLOB.pod_hair_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 	if(!length(GLOB.penis_list))
@@ -106,19 +102,17 @@
 	return(list(
 		"mcolor" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
 		"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)],
-		"tail" = "None",
-		"wings" = "None",
+		"tail" = SPRITE_ACCESSORY_NONE,
+		"wings" = SPRITE_ACCESSORY_NONE,
 		"snout" = pick(GLOB.snouts_list),
 		"horns" = pick(GLOB.horns_list),
 		"frills" = pick(GLOB.frills_list),
 		"spines" = pick(GLOB.spines_list),
-		"ears" = "None",
-		"body_markings" = pick(GLOB.body_markings_list),
-		"legs" = "Normal Legs",
-		"caps" = pick(GLOB.caps_list),
+		"ears" = SPRITE_ACCESSORY_NONE,
+		"legs" = LEGS_NORMAL,
+		"mushroom_caps" = pick(GLOB.mushroom_caps_list),
 		"moth_wings" = pick(GLOB.moth_wings_list),
 		"moth_antennae" = pick(GLOB.moth_antennae_list),
-		"moth_markings" = pick(GLOB.moth_markings_list),
 		"pod_hair" = pick(GLOB.pod_hair_list),
 	))
 

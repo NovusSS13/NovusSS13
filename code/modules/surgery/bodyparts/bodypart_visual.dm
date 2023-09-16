@@ -63,7 +63,7 @@
 	// No, xenos don't actually use bodyparts. Don't ask.
 	var/mob/living/carbon/human/human_owner = owner
 	var/datum/species/owner_species = human_owner.dna.species
-	limb_gender = (human_owner.physique == MALE) ? "m" : "f"
+	limb_gender = (HAS_TRAIT(human_owner, TRAIT_AGENDER) || (human_owner.physique != FEMALE)) ? "m" : "f"
 
 	if(HAS_TRAIT(human_owner, TRAIT_USES_SKINTONES))
 		skin_tone = human_owner.skin_tone
@@ -139,6 +139,9 @@
 			. += aux
 
 	// Normal non-husk handling
+	var/effective_limb_id = limb_id
+	if((bodytype & BODYTYPE_DIGITIGRADE) && !(bodytype & BODYTYPE_COMPRESSED)) //this is a bit evil imma be real bro
+		effective_limb_id += "_digitigrade"
 	if(!is_husked && !is_invisible)
 		// This is the MEAT of limb icon code
 		limb.icon = icon_greyscale
@@ -146,16 +149,16 @@
 			limb.icon = icon_static
 
 		if(is_dimorphic) //Does this type of limb have sexual dimorphism?
-			limb.icon_state = "[limb_id]_[body_zone]_[limb_gender]"
+			limb.icon_state = "[effective_limb_id]_[body_zone]_[limb_gender]"
 		else
-			limb.icon_state = "[limb_id]_[body_zone]"
+			limb.icon_state = "[effective_limb_id]_[body_zone]"
 
 		icon_exists(limb.icon, limb.icon_state, TRUE) //Prints a stack trace on the first failure of a given iconstate.
 
 		. += limb
 
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "[limb_id]_[aux_zone]", -aux_layer, image_dir)
+			aux = image(limb.icon, "[effective_limb_id]_[aux_zone]", -aux_layer, image_dir)
 			. += aux
 
 		draw_color = variable_color
@@ -197,7 +200,7 @@
 	if(!is_husked && !is_invisible)
 		//Draw external organs like horns and frills
 		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
-			if(!dropped && !overlay.can_draw_on_bodypart(owner))
+			if(!overlay.can_draw_on_bodypart(src) || (!dropped && !overlay.can_draw_on_body(src, owner)))
 				continue
 			//Some externals have multiple layers for background, foreground and between
 			for(var/external_layer in overlay.all_layers)

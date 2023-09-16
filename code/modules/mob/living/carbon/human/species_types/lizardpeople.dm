@@ -9,21 +9,18 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	mutant_bodyparts = list(
-		"body_markings" = "None",
-		"legs" = "Normal Legs",
-	)
 	cosmetic_organs = list(
-		/obj/item/organ/horns/lizard = "None",
-		/obj/item/organ/frills/lizard = "None",
+		/obj/item/organ/horns/lizard = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/frills/lizard = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/snout/lizard = "Round",
-		/obj/item/organ/spines/lizard = "None",
+		/obj/item/organ/spines/lizard = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/tail/lizard = "Smooth",
+
 		//bob i will kill you //i will kill you too null, you fucking dolt
-		/obj/item/organ/genital/penis = "None",
-		/obj/item/organ/genital/testicles = "None",
-		/obj/item/organ/genital/breasts = "None",
-		/obj/item/organ/genital/vagina = "None",
+		/obj/item/organ/genital/penis = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/testicles = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
 	)
 	mutanttongue = /obj/item/organ/tongue/lizard
 	coldmod = 1.5
@@ -84,8 +81,9 @@
 
 
 /datum/species/lizard/randomize_features(mob/living/carbon/human/human_mob)
-	human_mob.dna.features["body_markings"] = pick(GLOB.body_markings_list)
+	. = ..()
 	randomize_cosmetic_organs(human_mob)
+	randomize_markings(human_mob)
 
 /datum/species/lizard/get_scream_sound(mob/living/carbon/human/lizard)
 	return pick(

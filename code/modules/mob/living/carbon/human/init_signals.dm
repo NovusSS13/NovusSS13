@@ -3,6 +3,7 @@
 
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_UNKNOWN), SIGNAL_REMOVETRAIT(TRAIT_UNKNOWN)), PROC_REF(on_unknown_trait))
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_DWARF), SIGNAL_REMOVETRAIT(TRAIT_DWARF)), PROC_REF(on_dwarf_trait))
+	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_GIANT), SIGNAL_REMOVETRAIT(TRAIT_GIANT)), PROC_REF(on_dwarf_trait))
 	RegisterSignal(src, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, PROC_REF(get_name_part))
 
 /// Gaining or losing [TRAIT_UNKNOWN] updates our name and our sechud
@@ -23,6 +24,13 @@
 		passtable_on(src, TRAIT_DWARF)
 	else
 		passtable_off(src, TRAIT_DWARF)
+
+/// Gaining or losing [TRAIT_GIANT] updates our height
+/mob/living/carbon/human/proc/on_giant_trait(datum/source)
+	SIGNAL_HANDLER
+
+	// We need to regenerate everything for height
+	regenerate_icons()
 
 ///From compose_message(). Snowflake code converted into its own signal proc
 /mob/living/carbon/human/proc/get_name_part(datum/source, list/stored_name, visible_name)

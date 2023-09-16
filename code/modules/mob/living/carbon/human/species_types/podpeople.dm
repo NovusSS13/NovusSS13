@@ -8,7 +8,7 @@
 		TRAIT_PLANT_SAFE,
 	)
 	cosmetic_organs = list(
-		/obj/item/organ/pod_hair = "None",
+		/obj/item/organ/pod_hair = SPRITE_ACCESSORY_NONE,
 	)
 	inherent_biotypes = MOB_ORGANIC | MOB_HUMANOID | MOB_PLANT
 	inherent_factions = list(FACTION_PLANTS, FACTION_VINES)
@@ -100,4 +100,5 @@
 	return to_add
 
 /datum/species/pod/randomize_features(mob/living/carbon/human_mob)
+	. = ..()
 	randomize_cosmetic_organs(human_mob)

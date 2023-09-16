@@ -19,13 +19,12 @@ GLOBAL_LIST_EMPTY(undershirt_f)  //stores only undershirt name
 	//Socks
 GLOBAL_LIST_EMPTY(socks_list) //stores /datum/sprite_accessory/socks indexed by name
 	//Lizard Bits (all datum lists indexed by name)
-GLOBAL_LIST_EMPTY(body_markings_list)
 GLOBAL_LIST_EMPTY(snouts_list)
 GLOBAL_LIST_EMPTY(horns_list)
 GLOBAL_LIST_EMPTY(frills_list)
 GLOBAL_LIST_EMPTY(spines_list)
-GLOBAL_LIST_EMPTY(legs_list)
 GLOBAL_LIST_EMPTY(animated_spines_list)
+GLOBAL_LIST_EMPTY(legs_list)
 
 	//Mutant Human bits
 GLOBAL_LIST_EMPTY(tails_list)
@@ -37,11 +36,10 @@ GLOBAL_LIST_EMPTY(wings_list)
 GLOBAL_LIST_EMPTY(wings_open_list)
 GLOBAL_LIST_EMPTY(moth_wings_list)
 GLOBAL_LIST_EMPTY(moth_antennae_list)
-GLOBAL_LIST_EMPTY(moth_markings_list)
-GLOBAL_LIST_EMPTY(caps_list)
+GLOBAL_LIST_EMPTY(mushroom_caps_list)
 GLOBAL_LIST_EMPTY(pod_hair_list)
 
-//Human bits bits
+	//Human bits bits
 GLOBAL_LIST_EMPTY(penis_list)
 GLOBAL_LIST_EMPTY(testicles_list)
 GLOBAL_LIST_EMPTY(breasts_list)
@@ -79,6 +77,81 @@ GLOBAL_LIST_INIT(genital_visibility_list, list(
 	"Always visible" = GENITAL_VISIBILITY_ALWAYS,
 ))
 
+	//Markings
+GLOBAL_LIST_EMPTY(body_markings)
+
+GLOBAL_LIST_EMPTY(body_markings_by_zone)
+
+GLOBAL_LIST_EMPTY(body_marking_sets)
+
+GLOBAL_LIST_INIT(marking_zones, list(
+	BODY_ZONE_HEAD,
+	BODY_ZONE_CHEST,
+	BODY_ZONE_L_ARM,
+	BODY_ZONE_R_ARM,
+	BODY_ZONE_PRECISE_L_HAND,
+	BODY_ZONE_PRECISE_R_HAND,
+	BODY_ZONE_L_LEG,
+	BODY_ZONE_R_LEG,
+))
+
+GLOBAL_LIST_INIT(marking_zone_to_bitflag, list(
+	BODY_ZONE_HEAD = HEAD,
+	BODY_ZONE_CHEST = CHEST,
+	BODY_ZONE_L_ARM = ARM_LEFT,
+	BODY_ZONE_R_ARM = ARM_RIGHT,
+	BODY_ZONE_PRECISE_L_HAND = HAND_LEFT,
+	BODY_ZONE_PRECISE_R_HAND = HAND_RIGHT,
+	BODY_ZONE_L_LEG = LEG_LEFT,
+	BODY_ZONE_R_LEG = LEG_RIGHT,
+	BODY_ZONE_PRECISE_L_FOOT = FOOT_LEFT,
+	BODY_ZONE_PRECISE_R_FOOT = FOOT_RIGHT,
+))
+
+	//Heights
+GLOBAL_LIST_INIT(height_names, list(
+	"Dwarf" = HUMAN_HEIGHT_DWARF,
+	"Shorter" = HUMAN_HEIGHT_SHORTER,
+	"Short" = HUMAN_HEIGHT_SHORT,
+	"Medium" = HUMAN_HEIGHT_MEDIUM,
+	"Tall" = HUMAN_HEIGHT_TALL,
+	"Taller" = HUMAN_HEIGHT_TALLER,
+	"Manmore" = HUMAN_HEIGHT_MANMORE,
+))
+
+GLOBAL_LIST_INIT(mob_heights, list(
+	HUMAN_HEIGHT_DWARF,
+	HUMAN_HEIGHT_SHORTER,
+	HUMAN_HEIGHT_SHORT,
+	HUMAN_HEIGHT_MEDIUM,
+	HUMAN_HEIGHT_TALL,
+	HUMAN_HEIGHT_TALLER,
+	HUMAN_HEIGHT_MANMORE,
+))
+
+GLOBAL_LIST_INIT(mob_height_to_name, list(
+	"[HUMAN_HEIGHT_DWARF]" = "Dwarf",
+	"[HUMAN_HEIGHT_SHORTER]" = "Shorter",
+	"[HUMAN_HEIGHT_SHORT]" = "Short",
+	"[HUMAN_HEIGHT_MEDIUM]" = "Medium",
+	"[HUMAN_HEIGHT_TALL]" = "Tall",
+	"[HUMAN_HEIGHT_TALLER]" = "Taller",
+	"[HUMAN_HEIGHT_MANMORE]" = "Manmore",
+))
+
+	//Gender
+GLOBAL_LIST_INIT(genders, list(
+	MALE,
+	FEMALE,
+	PLURAL,
+))
+
+GLOBAL_LIST_INIT(body_types, list(
+	MALE,
+	FEMALE,
+))
+
+	//Colors
 GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"Blue" = "#3399ff",
 	"Bright Yellow" = "#ffff99",
@@ -178,32 +251,15 @@ GLOBAL_LIST_INIT(security_depts_prefs, sort_list(list(
 )))
 
 	//Backpacks
-#define DBACKPACK "Department Backpack"
-#define DDUFFELBAG "Department Duffel Bag"
-#define DSATCHEL "Department Satchel"
-#define GBACKPACK "Grey Backpack"
-#define GDUFFELBAG "Grey Duffel Bag"
-#define GSATCHEL "Grey Satchel"
-#define LSATCHEL "Leather Satchel"
 GLOBAL_LIST_INIT(backpacklist, list(
-	DBACKPACK,
-	DDUFFELBAG,
-	DSATCHEL,
-	GBACKPACK,
-	GDUFFELBAG,
-	GSATCHEL,
-	LSATCHEL,
+	PREF_DEP_BACKPACK,
+	PREF_DEP_DUFFELBAG,
+	PREF_DEP_SATCHEL,
+	PREF_GREY_BACKPACK,
+	PREF_GREY_DUFFELBAG,
+	PREF_GREY_SATCHEL,
+	PREF_LEATHER_SATCHEL,
 ))
-
-	//Suit/Skirt
-#define PREF_SUIT "Jumpsuit"
-#define PREF_SKIRT "Jumpskirt"
-
-//Uplink spawn loc
-#define UPLINK_PDA "PDA"
-#define UPLINK_RADIO "Radio"
-#define UPLINK_PEN "Pen" //like a real spy!
-#define UPLINK_IMPLANT "Implant"
 
 	//Female Uniforms
 GLOBAL_LIST_EMPTY(female_clothing_icons)

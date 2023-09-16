@@ -124,15 +124,55 @@
 /// Preferences that will be put into the 3rd list, and are not contextual.
 #define PREFERENCE_CATEGORY_NON_CONTEXTUAL "non_contextual"
 
+/// Preferences that will be put into the background list, which is on a separate tab.
+#define PREFERENCE_CATEGORY_BACKGROUND "background"
+
 /// Will be put under the game preferences window.
 #define PREFERENCE_CATEGORY_GAME_PREFERENCES "game_preferences"
 
 /// These will show in the list to the right of the character preview.
 #define PREFERENCE_CATEGORY_SECONDARY_FEATURES "secondary_features"
 
-/// These are preferences that are supplementary for main features,
-/// such as hair color being affixed to hair.
+/// These are preferences that are supplementary for main features, such as hair color being affixed to hair.
 #define PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES "supplemental_features"
+
+// Priorities must be in order!
+/// The default priority level
+#define PREFERENCE_PRIORITY_DEFAULT 1
+
+/// The priority at which species runs, needed for external organs to apply properly.
+#define PREFERENCE_PRIORITY_SPECIES 2
+
+/// The priority at which gender is determined, needed for proper randomization.
+#define PREFERENCE_PRIORITY_GENDER 3
+
+/// The priority at which body type is decided, applied after gender so we can support the "use gender" option.
+#define PREFERENCE_PRIORITY_BODY_TYPE 4
+
+/**
+ * Some preferences get applied directly to bodyparts (anything head_flags dependent right now).
+ * These must apply after species, as species gaining might replace the bodyparts of the human.
+ * These also should apply after gender and body type, as those might change the bodyparts.
+ */
+#define PREFERENCE_PRIORITY_BODYPARTS 5
+
+/// The priority at which names are decided, needed for proper randomization.
+#define PREFERENCE_PRIORITY_NAMES 6
+
+/// Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.
+#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 7
+
+/// The maximum preference priority, keep this updated, but don't use it for `priority`.
+#define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_NAME_MODIFICATIONS
+
+// Priorities must be in order here too!
+/// Middleware that comes before normal prefs
+#define MIDDLEWARE_PRIORITY_BEFORE 1
+/// Middleware that comes after normal prefs
+#define MIDDLEWARE_PRIORITY_AFTER 2
+
+/// Default middleware priority
+#define MIDDLEWARE_PRIORITY_DEFAULT MIDDLEWARE_PRIORITY_AFTER
 
 // Playtime is tracked in minutes
 /// The time needed to unlock hardcore random mode in preferences
@@ -142,3 +182,35 @@
 
 /// The key used for sprite accessories that should never actually be applied to the player.
 #define SPRITE_ACCESSORY_NONE "None"
+
+/// Normal legs, the default for everyone
+#define LEGS_NORMAL "Normal"
+/// Digitigrade pref, used in feature if you're meant to be a Digitigrade.
+#define LEGS_DIGITIGRADE "Digitigrade Legs"
+
+// See: datum/species/var/digitigrade_customization
+/// The species does not have digitigrade legs in generation.
+#define DIGITIGRADE_NEVER 0
+/// The species can have digitigrade legs in generation
+#define DIGITIGRADE_OPTIONAL 1
+/// The species is forced to have digitigrade legs in generation.
+#define DIGITIGRADE_FORCED 2
+
+// Uniform prefs
+#define PREF_SUIT "Jumpsuit"
+#define PREF_SKIRT "Jumpskirt"
+
+// Backpack prefs
+#define PREF_DEP_BACKPACK "Department Backpack"
+#define PREF_DEP_DUFFELBAG "Department Duffel Bag"
+#define PREF_DEP_SATCHEL "Department Satchel"
+#define PREF_GREY_BACKPACK "Grey Backpack"
+#define PREF_GREY_DUFFELBAG "Grey Duffel Bag"
+#define PREF_GREY_SATCHEL "Grey Satchel"
+#define PREF_LEATHER_SATCHEL "Leather Satchel"
+
+// Uplink spawn loc prefs
+#define UPLINK_PDA "PDA"
+#define UPLINK_RADIO "Radio"
+#define UPLINK_PEN "Pen" //like a real spy!
+#define UPLINK_IMPLANT "Implant"

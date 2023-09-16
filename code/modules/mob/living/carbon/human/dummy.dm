@@ -92,7 +92,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.initialize_dna(skip_index = TRUE)
 	target.dna.features["mcolor"] = COLOR_VIBRANT_LIME
 	target.dna.features["ethcolor"] = GLOB.color_list_ethereal["White"]
-	target.dna.features["body_markings"] = get_consistent_feature_entry(GLOB.body_markings_list)
 	target.dna.features["ears"] = get_consistent_feature_entry(GLOB.ears_list)
 	target.dna.features["ears_color"] = COLOR_VIBRANT_LIME
 	target.dna.features["frills"] = get_consistent_feature_entry(GLOB.frills_list)
@@ -106,9 +105,14 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["tail"] = get_consistent_feature_entry(GLOB.tails_list_human) // it's a lie
 	target.dna.features["tail_color"] = COLOR_VIBRANT_LIME
 	target.dna.features["moth_antennae"] = get_consistent_feature_entry(GLOB.moth_antennae_list)
-	target.dna.features["moth_markings"] = get_consistent_feature_entry(GLOB.moth_markings_list)
 	target.dna.features["moth_wings"] = get_consistent_feature_entry(GLOB.moth_wings_list)
 	target.dna.features["pod_hair"] = get_consistent_feature_entry(GLOB.pod_hair_list)
+	for(var/zone in GLOB.marking_zones)
+		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+			var/marking_key = "marking_[zone]_[marking]"
+			var/marking_color_key = marking_key + "_color"
+			target.dna.features[marking_key] = SPRITE_ACCESSORY_NONE
+			target.dna.features[marking_color_key] = COLOR_VIBRANT_LIME
 
 /// Provides a dummy that is consistently bald, white, naked, etc.
 /mob/living/carbon/human/dummy/consistent

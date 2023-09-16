@@ -45,6 +45,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//Quirk list
 	var/list/all_quirks = list()
 
+	/// A list of every marking zone and it's associated body markings
+	var/list/list/body_markings = list()
+
 	//Job preferences 2.0 - indexed by job title , no key or value implies never
 	var/list/job_preferences = list()
 
@@ -247,6 +250,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if (istype(requested_preference, /datum/preference/name))
 				tainted_character_profiles = TRUE
 
+			for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+				if (preference_middleware.post_set_preference(usr, requested_preference_key, value))
+					return TRUE
+
 			return TRUE
 		if ("set_color_preference")
 			var/requested_preference_key = params["preference"]
@@ -414,7 +421,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /// A preview of a character for use in the preferences menu
 /atom/movable/screen/map_view/char_preview
 	name = "character_preview"
-
 	/// The body that is displayed
 	var/mob/living/carbon/human/dummy/body
 	/// The preferences this refers to
@@ -442,9 +448,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	QDEL_NULL(body)
 
 	body = new
-
-	// Without this, it doesn't show up in the menu
-	body.appearance_flags &= ~KEEP_TOGETHER
 
 /datum/preferences/proc/create_character_profiles()
 	var/list/profiles = list()
@@ -492,20 +495,61 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /datum/preferences/proc/GetQuirkBalance()
 	var/bal = 0
-	for(var/V in all_quirks)
-		var/datum/quirk/T = SSquirks.quirks[V]
-		bal -= initial(T.value)
+	for(var/quirk_name in all_quirks)
+		var/datum/quirk/quirk = SSquirks.quirks[quirk_name]
+		bal -= initial(quirk.value)
 	return bal
 
 /datum/preferences/proc/GetPositiveQuirkCount()
 	. = 0
-	for(var/q in all_quirks)
-		if(SSquirks.quirk_points[q] > 0)
+	for(var/quirk_name in all_quirks)
+		if(SSquirks.quirk_points[quirk_name] > 0)
 			.++
 
 /datum/preferences/proc/validate_quirks()
+	all_quirks = SSquirks.filter_invalid_quirks(all_quirks)
 	if(GetQuirkBalance() < 0)
 		all_quirks = list()
+
+/datum/preferences/proc/validate_markings()
+	var/species_type = read_preference(/datum/preference/choiced/species)
+	var/list/current_markings = body_markings.Copy()
+	var/list/final_markings = list()
+	for(var/zone in current_markings)
+		for(var/marking_name in current_markings)
+			var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
+			if(!body_marking || (body_marking.name == SPRITE_ACCESSORY_NONE)) //invalid marking...
+				continue
+			if(!body_marking.compatible_species || is_path_in_list(species_type, body_marking.compatible_species))
+				LAZYADDASSOC(final_markings[zone], marking_name, current_markings[zone][marking_name])
+	body_markings = final_markings
+	return final_markings
+
+/// Returns a list of our middlewares that should be applied BEFORE normal prefs, in priority order
+/datum/preferences/proc/get_middlewares_before_prefs_in_priority_order()
+	var/list/preferences_before[MIDDLEWARE_PRIORITY_BEFORE]
+
+	for (var/datum/preference_middleware/pref_middleware in middleware)
+		if (pref_middleware.priority <= MIDDLEWARE_PRIORITY_BEFORE)
+			LAZYADD(preferences_before[pref_middleware.priority], pref_middleware)
+
+	var/list/flattened = list()
+	for (var/index in 1 to MIDDLEWARE_PRIORITY_BEFORE)
+		flattened += preferences_before[index]
+	return flattened
+
+/// Returns a list of our middlewares that should be applied AFTER normal prefs, in priority order
+/datum/preferences/proc/get_middlewares_after_prefs_in_priority_order()
+	var/list/preferences_after[MIDDLEWARE_PRIORITY_AFTER - MIDDLEWARE_PRIORITY_BEFORE]
+
+	for (var/datum/preference_middleware/pref_middleware in middleware)
+		if (pref_middleware.priority > MIDDLEWARE_PRIORITY_BEFORE)
+			LAZYADD(preferences_after[pref_middleware.priority - MIDDLEWARE_PRIORITY_BEFORE], pref_middleware)
+
+	var/list/flattened = list()
+	for (var/index in 1 to MIDDLEWARE_PRIORITY_AFTER - MIDDLEWARE_PRIORITY_BEFORE)
+		flattened += preferences_after[index]
+	return flattened
 
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
 /datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE)
@@ -516,18 +560,25 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE)
 	character.dna.features = list()
 
+	//Apply markings before normal prefs are done
+	for (var/datum/preference_middleware/preference_middleware as anything in get_middlewares_before_prefs_in_priority_order())
+		preference_middleware.apply_to_human(character, src)
+
+	//Normal preference datums with no snowflake handling
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
 
 		preference.apply_to_human(character, read_preference(preference.type), src)
 
-	character.dna.real_name = character.real_name
+	//Apply augments/etc after normal prefs are done
+	for (var/datum/preference_middleware/preference_middleware as anything in get_middlewares_after_prefs_in_priority_order())
+		preference_middleware.apply_to_human(character, src)
 
+	character.dna.real_name = character.real_name
 	if(icon_updates)
 		character.icon_render_keys = list()
 		character.update_body(is_creating = TRUE)
-
 
 /// Returns whether the parent mob should have the random hardcore settings enabled. Assumes it has a mind.
 /datum/preferences/proc/should_be_random_hardcore(datum/job/job, datum/mind/mind)

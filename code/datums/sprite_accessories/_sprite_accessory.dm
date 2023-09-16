@@ -24,12 +24,23 @@
 	if(!istype(female))
 		female = list()
 
+	//fuck you add_blank, FUCK YOU!
+	if(add_blank)
+		var/blank = new /datum/sprite_accessory/blank
+		L[SPRITE_ACCESSORY_NONE] = blank
+		male[SPRITE_ACCESSORY_NONE] = blank
+		female[SPRITE_ACCESSORY_NONE] = blank
+
 	for(var/path in subtypesof(prototype))
 		var/datum/sprite_accessory/D = new path()
 
+		//valid accessories require a name
+		if(!D.name)
+			continue
+
 		if(D.icon_state)
 			L[D.name] = D
-		else
+		else if(D.name)
 			L += D.name
 
 		switch(D.gender)
@@ -40,8 +51,6 @@
 			else
 				male += D.name
 				female += D.name
-	if(add_blank && !L[SPRITE_ACCESSORY_NONE])
-		L[SPRITE_ACCESSORY_NONE] = new /datum/sprite_accessory/blank
 
 	return L
 
@@ -60,12 +69,7 @@
 	var/gender_specific
 	/// Determines if the accessory will be skipped by color preferences.
 	var/use_static
-	/**
-	 * Currently only used by mutantparts so don't worry about hair and stuff.
-	 * This is the source that this accessory will get its color from. Default is MUTCOLOR, but can also be HAIR, FACEHAIR, EYECOLOR and 0 if none.
-	 */
-	var/color_src = ORGAN_COLOR_MUTANT
-	/// Amount of colors we use actually use for coloring, from 1 to 3
+	/// Amount of colors we use actually use for coloring, from 0 to 3
 	var/color_amount = 1
 	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
 	var/hasinner = FALSE
@@ -77,12 +81,10 @@
 	var/dimension_x = 32
 	/// The height of the sprite in pixels. Used to center it if necessary.
 	var/dimension_y = 32
-	/// Should this sprite block emissives?
-	var/em_block = FALSE
 
 /datum/sprite_accessory/blank
-	name = "None"
-	icon_state = "None"
+	name = SPRITE_ACCESSORY_NONE
+	icon_state = "none"
 
 //////////////////////
 // Hair Definitions //
@@ -929,7 +931,6 @@
 /datum/sprite_accessory/facial_hair
 	icon = 'icons/mob/species/human/human_face.dmi'
 	gender = MALE // barf (unless you're a dorf, dorfs dig chix w/ beards :P)
-	em_block = TRUE
 
 // please make sure they're sorted alphabetically and categorized
 
@@ -1093,7 +1094,6 @@
 /datum/sprite_accessory/underwear
 	icon = 'icons/mob/clothing/underwear.dmi'
 	use_static = FALSE
-	em_block = TRUE
 
 
 //MALE UNDERWEAR
@@ -1270,7 +1270,6 @@
 
 /datum/sprite_accessory/undershirt
 	icon = 'icons/mob/clothing/underwear.dmi'
-	em_block = TRUE
 
 /datum/sprite_accessory/undershirt/nude
 	name = "Nude"
@@ -1555,7 +1554,6 @@
 
 /datum/sprite_accessory/socks
 	icon = 'icons/mob/clothing/underwear.dmi'
-	em_block = TRUE
 
 /datum/sprite_accessory/socks/nude
 	name = "Nude"
@@ -1722,31 +1720,7 @@
 //////////.//////////////////
 // MutantParts Definitions //
 /////////////////////////////
-
-/datum/sprite_accessory/body_markings
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
-
-/datum/sprite_accessory/body_markings/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/body_markings/dtiger
-	name = "Dark Tiger Body"
-	icon_state = "dtiger"
-	gender_specific = 1
-
-/datum/sprite_accessory/body_markings/ltiger
-	name = "Light Tiger Body"
-	icon_state = "ltiger"
-	gender_specific = 1
-
-/datum/sprite_accessory/body_markings/lbelly
-	name = "Light Belly"
-	icon_state = "lbelly"
-	gender_specific = 1
-
 /datum/sprite_accessory/tails
-	em_block = TRUE
 
 /datum/sprite_accessory/tails/lizard
 	icon = 'icons/mob/species/lizard/lizard_tails.dmi'
@@ -1769,27 +1743,24 @@
 	icon_state = "spikes"
 
 /datum/sprite_accessory/tails/human
-	feature_suffix = "human"
+	icon = 'icons/mob/species/human/cat_features.dmi'
 
 /datum/sprite_accessory/tails/human/cat
 	name = "Cat"
-	icon = 'icons/mob/species/human/cat_features.dmi'
 	icon_state = "default"
-	color_src = ORGAN_COLOR_HAIR
 	feature_suffix = "cat"
 
 /datum/sprite_accessory/tails/monkey
 	feature_suffix = "monkey"
+	color_amount = 0
 
 /datum/sprite_accessory/tails/monkey/monkey
 	name = "Monkey"
 	icon = 'icons/mob/species/monkey/monkey_tail.dmi'
 	icon_state = "monkey"
-	color_src = FALSE
 
 /datum/sprite_accessory/pod_hair
 	icon = 'icons/mob/species/podperson_hair.dmi'
-	em_block = TRUE
 
 /datum/sprite_accessory/pod_hair/ivy
 	name = "Ivy"
@@ -1832,28 +1803,32 @@
 	icon_state = "hibiscus"
 
 /datum/sprite_accessory/snouts
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
-	em_block = TRUE
 
-/datum/sprite_accessory/snouts/sharp
+/datum/sprite_accessory/snouts/none
+	name = SPRITE_ACCESSORY_NONE
+	icon_state = "none"
+
+/datum/sprite_accessory/snouts/lizard
+	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
+
+/datum/sprite_accessory/snouts/lizard/sharp
 	name = "Sharp"
 	icon_state = "sharp"
 
-/datum/sprite_accessory/snouts/round
+/datum/sprite_accessory/snouts/lizard/round
 	name = "Round"
 	icon_state = "round"
 
-/datum/sprite_accessory/snouts/sharplight
+/datum/sprite_accessory/snouts/lizard/sharplight
 	name = "Sharp + Light"
 	icon_state = "sharplight"
 
-/datum/sprite_accessory/snouts/roundlight
+/datum/sprite_accessory/snouts/lizard/roundlight
 	name = "Round + Light"
 	icon_state = "roundlight"
 
 /datum/sprite_accessory/horns
 	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
-	em_block = TRUE
 
 /datum/sprite_accessory/horns/none
 	name = SPRITE_ACCESSORY_NONE
@@ -1881,7 +1856,6 @@
 
 /datum/sprite_accessory/ears
 	icon = 'icons/mob/species/human/cat_features.dmi'
-	em_block = TRUE
 
 /datum/sprite_accessory/ears/none
 	name = SPRITE_ACCESSORY_NONE
@@ -1891,32 +1865,31 @@
 	name = "Cat"
 	icon_state = "cat"
 	hasinner = TRUE
-	color_src = ORGAN_COLOR_HAIR
 
 /datum/sprite_accessory/ears/fox
 	icon = 'icons/mob/species/human/fox_features.dmi'
 	name = "Fox"
 	icon_state = "fox"
 	hasinner = TRUE
-	color_src = ORGAN_COLOR_HAIR
 	locked = TRUE
+
+/datum/sprite_accessory/wings
+	icon = 'icons/mob/species/wings.dmi'
+
+/datum/sprite_accessory/wings_open
+	icon = 'icons/mob/species/wings.dmi'
 
 /datum/sprite_accessory/wings/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
 
-/datum/sprite_accessory/wings
-	icon = 'icons/mob/species/wings.dmi'
-	em_block = TRUE
-
-/datum/sprite_accessory/wings_open
-	icon = 'icons/mob/species/wings.dmi'
-	em_block = TRUE
+/datum/sprite_accessory/wings_open/none
+	name = SPRITE_ACCESSORY_NONE
+	icon_state = "none"
 
 /datum/sprite_accessory/wings/angel
 	name = "Angel"
 	icon_state = "angel"
-	color_src = FALSE
 	dimension_x = 46
 	center = TRUE
 	dimension_y = 34
@@ -1925,7 +1898,6 @@
 /datum/sprite_accessory/wings_open/angel
 	name = "Angel"
 	icon_state = "angel"
-	color_src = FALSE
 	dimension_x = 46
 	center = TRUE
 	dimension_y = 34
@@ -1948,7 +1920,6 @@
 /datum/sprite_accessory/wings/megamoth
 	name = "Megamoth"
 	icon_state = "megamoth"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -1957,7 +1928,6 @@
 /datum/sprite_accessory/wings_open/megamoth
 	name = "Megamoth"
 	icon_state = "megamoth"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -1965,7 +1935,6 @@
 /datum/sprite_accessory/wings/mothra
 	name = "Mothra"
 	icon_state = "mothra"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -1974,7 +1943,6 @@
 /datum/sprite_accessory/wings_open/mothra
 	name = "Mothra"
 	icon_state = "mothra"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -1982,7 +1950,6 @@
 /datum/sprite_accessory/wings/skeleton
 	name = "Skeleton"
 	icon_state = "skele"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -1991,7 +1958,6 @@
 /datum/sprite_accessory/wings_open/skeleton
 	name = "Skeleton"
 	icon_state = "skele"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -1999,7 +1965,6 @@
 /datum/sprite_accessory/wings/robotic
 	name = "Robotic"
 	icon_state = "robotic"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -2008,7 +1973,6 @@
 /datum/sprite_accessory/wings_open/robotic
 	name = "Robotic"
 	icon_state = "robotic"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -2016,7 +1980,6 @@
 /datum/sprite_accessory/wings/fly
 	name = "Fly"
 	icon_state = "fly"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -2025,7 +1988,6 @@
 /datum/sprite_accessory/wings_open/fly
 	name = "Fly"
 	icon_state = "fly"
-	color_src = FALSE
 	dimension_x = 96
 	center = TRUE
 	dimension_y = 32
@@ -2051,11 +2013,9 @@
 
 /datum/sprite_accessory/spines
 	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
-	em_block = TRUE
 
 /datum/sprite_accessory/spines_animated
 	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
-	em_block = TRUE
 
 /datum/sprite_accessory/spines/none
 	name = SPRITE_ACCESSORY_NONE
@@ -2097,37 +2057,36 @@
 	name = "Long + Membrane"
 	icon_state = "longmeme"
 
-/datum/sprite_accessory/spines/aqautic
+/datum/sprite_accessory/spines/aquatic
 	name = "Aquatic"
 	icon_state = "aqua"
 
-/datum/sprite_accessory/spines_animated/aqautic
+/datum/sprite_accessory/spines_animated/aquatic
 	name = "Aquatic"
 	icon_state = "aqua"
 
 /datum/sprite_accessory/legs //legs are a special case, they aren't actually sprite_accessories but are updated with them.
 	icon = null //These datums exist for selecting legs on preference, and little else
-	em_block = TRUE
 
 /datum/sprite_accessory/legs/none
 	name = "Normal Legs"
 
 /datum/sprite_accessory/legs/digitigrade_lizard
-	name = DIGITIGRADE_LEGS
+	name = LEGS_DIGITIGRADE
 
-/datum/sprite_accessory/caps
+/datum/sprite_accessory/mushroom_caps
 	icon = 'icons/mob/species/mush_cap.dmi'
-	color_src = ORGAN_COLOR_HAIR
-	em_block = TRUE
 
-/datum/sprite_accessory/caps/round
+/datum/sprite_accessory/mushroom_caps/none
+	name = SPRITE_ACCESSORY_NONE
+	icon_state = "none"
+
+/datum/sprite_accessory/mushroom_caps/round
 	name = "Round"
 	icon_state = "round"
 
 /datum/sprite_accessory/moth_wings
 	icon = 'icons/mob/species/moth/moth_wings.dmi'
-	color_src = null
-	em_block = TRUE
 
 /datum/sprite_accessory/moth_wings/plain
 	name = "Plain"
@@ -2228,7 +2187,6 @@
 
 /datum/sprite_accessory/moth_antennae //Finally splitting the sprite
 	icon = 'icons/mob/species/moth/moth_antennae.dmi'
-	color_src = null
 
 /datum/sprite_accessory/moth_antennae/plain
 	name = "Plain"
@@ -2312,67 +2270,3 @@
 /datum/sprite_accessory/moth_antennae/moffra
 	name = "Moffra"
 	icon_state = "moffra"
-
-/datum/sprite_accessory/moth_markings // the markings that moths can have. finally something other than the boring tan
-	icon = 'icons/mob/species/moth/moth_markings.dmi'
-	color_src = null
-
-/datum/sprite_accessory/moth_markings/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/moth_markings/reddish
-	name = "Reddish"
-	icon_state = "reddish"
-
-/datum/sprite_accessory/moth_markings/royal
-	name = "Royal"
-	icon_state = "royal"
-
-/datum/sprite_accessory/moth_markings/gothic
-	name = "Gothic"
-	icon_state = "gothic"
-
-/datum/sprite_accessory/moth_markings/whitefly
-	name = "White Fly"
-	icon_state = "whitefly"
-
-/datum/sprite_accessory/moth_markings/lovers
-	name = "Lovers"
-	icon_state = "lovers"
-
-/datum/sprite_accessory/moth_markings/burnt_off
-	name = "Burnt Off"
-	icon_state = "burnt_off"
-
-/datum/sprite_accessory/moth_markings/firewatch
-	name = "Firewatch"
-	icon_state = "firewatch"
-
-/datum/sprite_accessory/moth_markings/deathhead
-	name = "Deathshead"
-	icon_state = "deathhead"
-
-/datum/sprite_accessory/moth_markings/poison
-	name = "Poison"
-	icon_state = "poison"
-
-/datum/sprite_accessory/moth_markings/ragged
-	name = "Ragged"
-	icon_state = "ragged"
-
-/datum/sprite_accessory/moth_markings/moonfly
-	name = "Moon Fly"
-	icon_state = "moonfly"
-
-/datum/sprite_accessory/moth_markings/oakworm
-	name = "Oak Worm"
-	icon_state = "oakworm"
-
-/datum/sprite_accessory/moth_markings/jungle
-	name = "Jungle"
-	icon_state = "jungle"
-
-/datum/sprite_accessory/moth_markings/witchwing
-	name = "Witch Wing"
-	icon_state = "witchwing"

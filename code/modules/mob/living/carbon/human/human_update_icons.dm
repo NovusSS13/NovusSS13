@@ -101,13 +101,17 @@ There are several things that need to be remembered:
 		var/handled_by_bodytype = TRUE
 		var/icon_file
 		var/woman
+
+		var/obj/item/bodypart/chest = get_bodypart(BODY_ZONE_CHEST)
+		var/chest_bodytype = chest?.bodytype
+
 		//BEGIN SPECIES HANDLING
-		if((bodytype & BODYTYPE_MONKEY) && (uniform.supports_variations_flags & CLOTHING_MONKEY_VARIATION))
+		if((chest_bodytype & BODYTYPE_MONKEY) && (uniform.supports_variations_flags & CLOTHING_MONKEY_VARIATION))
 			icon_file = MONKEY_UNIFORM_FILE
 		else if((bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			icon_file = DIGITIGRADE_UNIFORM_FILE
-		//Female sprites have lower priority than digitigrade sprites
-		else if(!HAS_TRAIT(src, TRAIT_AGENDER) && (bodytype & BODYTYPE_HUMANOID) && physique == FEMALE && !(uniform.female_sprite_flags & NO_FEMALE_UNIFORM)) //Agggggggghhhhh
+		//Female sprites have lower priority than digitigrade sprites - Agggggggghhhhh!!!!!
+		else if(!HAS_TRAIT(src, TRAIT_AGENDER) && (chest_bodytype & BODYTYPE_HUMANOID) && (physique == FEMALE) && !(uniform.female_sprite_flags & NO_FEMALE_UNIFORM))
 			woman = TRUE
 
 		if(!icon_exists(icon_file, RESOLVE_ICON_STATE(uniform)))
@@ -842,7 +846,7 @@ generate/load female uniform sprites matching all previously decided variables
 		if(HUMAN_HEIGHT_DWARF)
 			appearance.add_filter("Gnome_Cut_Torso", 1, displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 2))
 			appearance.add_filter("Gnome_Cut_Legs", 1, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 3))
-		if(HUMAN_HEIGHT_SHORTEST)
+		if(HUMAN_HEIGHT_SHORTER)
 			appearance.add_filter("Cut_Torso", 1, displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 1))
 			appearance.add_filter("Cut_Legs", 1, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 1))
 		if(HUMAN_HEIGHT_SHORT)
@@ -852,7 +856,7 @@ generate/load female uniform sprites matching all previously decided variables
 		if(HUMAN_HEIGHT_TALLER)
 			appearance.add_filter("Lenghten_Torso", 1, displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1))
 			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 1))
-		if(HUMAN_HEIGHT_TALLEST)
+		if(HUMAN_HEIGHT_MANMORE)
 			appearance.add_filter("Lenghten_Torso", 1, displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1))
 			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 2))
 

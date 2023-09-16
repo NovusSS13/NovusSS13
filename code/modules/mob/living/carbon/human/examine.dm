@@ -132,7 +132,7 @@
 	var/list/genital_strings = list()
 	for(var/slot in genital_examines)
 		var/obj/item/organ/genital/genital = get_organ_slot(slot)
-		if(!genital?.bodypart_overlay.can_draw_on_bodypart(src))
+		if(!genital?.bodypart_overlay?.can_draw_on_body(get_bodypart(genital.zone), src))
 			continue
 
 		genital_strings += genital.get_genital_examine()
