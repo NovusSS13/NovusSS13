@@ -25,4 +25,4 @@
 	user.facial_hairstyle = "Beard (Full)"
 	user.hair_color = "#FFFFFF"
 	user.facial_hair_color = "#FFFFFF"
-	user.update_body_parts(update_limb_data = TRUE)
+	user.update_body_parts(is_creating = TRUE)

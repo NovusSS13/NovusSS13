@@ -39,9 +39,9 @@
 	/// Are these eyes immune to pepperspray?
 	var/pepperspray_protect = FALSE
 
+	var/eye_icon_state = "eyes"
 	var/eye_color_left = "" //set to a hex code to override a mob's left eye color
 	var/eye_color_right = "" //set to a hex code to override a mob's right eye color
-	var/eye_icon_state = "eyes"
 	var/old_eye_color_left = "#ffffff"
 	var/old_eye_color_right = "#ffffff"
 
@@ -647,7 +647,7 @@
 	if(QDELETED(eye_owner) || !ishuman(eye_owner)) //Other carbon mobs don't have eye color.
 		return
 
-	eye_owner.dna.species.handle_body(eye_owner)
+	eye_owner.update_body()
 	update_mob_eyes_overlay()
 
 /**

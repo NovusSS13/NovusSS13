@@ -590,39 +590,6 @@
 	qdel(readable_quirk) // We have to do it this way because initial will not work on lists in this version of DM
 	return
 
-/**
- * Handles the body of a human
- *
- * Basically deprecated, currently only handles eyesprites, and that will soon be reworked into a mutant bodypart overlay.
- * Calls [handle_mutant_bodyparts][/datum/species/proc/handle_mutant_bodyparts]
- * Arguments:
- * * species_human - Human, whoever we're handling the body for
- */
-/datum/species/proc/handle_body(mob/living/carbon/human/species_human)
-	species_human.remove_overlay(BODY_LAYER)
-
-	if(HAS_TRAIT(species_human, TRAIT_INVISIBLE_MAN))
-		return
-
-	var/height_offset = species_human.get_top_offset() // From height changed by varying limb height
-	var/list/standing = list()
-	if(!HAS_TRAIT(species_human, TRAIT_HUSK))
-		var/obj/item/bodypart/head/noggin = species_human.get_bodypart(BODY_ZONE_HEAD)
-		// Rework this to be handled by the eye organ as a bodypart overlay... thank you!
-		if(noggin?.head_flags & HEAD_EYESPRITES)
-			// eyes (missing eye sprites get handled by the head itself, but sadly we have to do this stupid shit here, for now)
-			var/obj/item/organ/eyes/eye_organ = species_human.get_organ_slot(ORGAN_SLOT_EYES)
-			if(eye_organ)
-				eye_organ.refresh(call_update = FALSE)
-				for(var/mutable_appearance/eye_overlay in eye_organ.generate_body_overlay(species_human))
-					eye_overlay.pixel_y += height_offset
-					standing += eye_overlay
-
-	if(length(standing))
-		species_human.overlays_standing[BODY_LAYER] = standing
-
-	species_human.apply_overlay(BODY_LAYER)
-
 //This exists so sprite accessories can still be per-layer without having to include that layer's
 //number in their sprite name, which causes issues when those numbers change.
 /datum/species/proc/mutant_bodyparts_layertext(layer)
