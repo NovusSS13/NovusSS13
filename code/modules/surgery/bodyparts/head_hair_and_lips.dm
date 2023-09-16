@@ -150,7 +150,7 @@
 	if(show_eyeless && (head_flags & HEAD_EYEHOLES))
 		. += get_eyeless_overlay(can_rotate = !dropped)
 	else if(!is_husked && (head_flags & HEAD_EYESPRITES) && (owner?.get_organ_slot(ORGAN_SLOT_EYES) || eyes))
-		. += get_eyes_overlay(can_rotate = !dropped)
+		. += get_eyes_overlays(can_rotate = !dropped)
 
 	//HAIR COLOR START
 	if(override_hair_color)
@@ -169,19 +169,20 @@
 #undef SET_OVERLAY_VALUE
 
 /// Returns an appropriate eyes overlay
-/obj/item/bodypart/head/proc/get_eyes_overlay(can_rotate = TRUE)
-	RETURN_TYPE(/image)
+/obj/item/bodypart/head/proc/get_eyes_overlays(can_rotate = TRUE)
+	RETURN_TYPE(/list)
 	var/obj/item/organ/eyes/eyeballs = owner ? owner.get_organ_slot(ORGAN_SLOT_EYES) : src.eyes
 	if(!eyeballs)
-		CRASH("[type] called get_eyes_overlay() while having no eyes!")
+		CRASH("[type] called get_eyes_overlays() while having no eyes!")
 
-	var/image/eyes_overlay
+	var/image/left_eye
+	var/image/right_eye
 	if(can_rotate)
-		eyes_overlay = mutable_appearance('icons/mob/species/eyes.dmi', "blank", -BODY_LAYER)
+		left_eye = mutable_appearance('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER)
+		right_eye = mutable_appearance('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER)
 	else
-		eyes_overlay = image('icons/mob/species/eyes.dmi', "blank", -BODY_LAYER, SOUTH)
-	var/image/left_eye = mutable_appearance('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_l")
-	var/image/right_eye = mutable_appearance('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_r")
+		left_eye = image('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
+		right_eye = image('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
 	var/atom/location = loc || owner || src
 	if(head_flags & HEAD_EYECOLOR)
 		left_eye.color = eyeballs.eye_color_left
@@ -192,10 +193,10 @@
 	if(eyeballs.overlay_ignore_lighting)
 		left_eye.overlays += emissive_appearance(left_eye.icon, left_eye.icon_state, location, alpha = left_eye.alpha)
 		right_eye.overlays += emissive_appearance(right_eye.icon, right_eye.icon_state, location, alpha = right_eye.alpha)
-	eyes_overlay.overlays += left_eye
-	eyes_overlay.overlays += right_eye
-	worn_face_offset?.apply_offset(eyes_overlay)
-	return eyes_overlay
+	if(worn_face_offset)
+		worn_face_offset.apply_offset(left_eye)
+		worn_face_offset.apply_offset(right_eye)
+	return list(left_eye, right_eye)
 
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
