@@ -903,6 +903,47 @@ em {
   margin-left: 3em;
 }
 
+.balloon_block {
+  background: #1b1c1e;
+  border: 1px solid #a4bad6;
+  margin: 0.5em;
+  padding: 0.25em 0.75em;
+  border-radius: 10px;
+}
+
+.balloon {
+  color: #85ace0;
+  font-style: italic;
+  animation: balloonopacity 0.8s linear forwards;
+}
+
+@keyframes balloonopacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.balloontitle {
+  color: #a4bad6;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 85%;
+  opacity: 0.3;
+  animation: balloontitleopacity 0.5s linear forwards;
+}
+
+@keyframes balloontitleopacity {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .examine_block {
   background: #1b1c1e;
   border: 1px solid #a4bad6;
