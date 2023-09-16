@@ -507,6 +507,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			.++
 
 /datum/preferences/proc/validate_quirks()
+	all_quirks = SSquirks.filter_invalid_quirks(all_quirks)
 	if(GetQuirkBalance() < 0)
 		all_quirks = list()
 
