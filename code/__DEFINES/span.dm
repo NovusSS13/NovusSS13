@@ -123,3 +123,12 @@
 // Spans that use embedded tgui components:
 // Sorted alphabetically
 #define span_tooltip(tip, main_text) ("<span data-component=\"Tooltip\" data-content=\"" + tip + "\" class=\"tooltip\">" + main_text + "</span>")
+
+/// Adds a generic box around whatever message you're sending in chat. Really makes things stand out.
+#define examine_block(str) ("<div class='examine_block'>" + str + "</div>")
+/// Adds a cute bubble around whatever message you're sending in chat. Used by balloon alerts.
+#define balloon_block(str) ("<div class='balloon_block'>" + str + "</div>")
+/// Used to encase balloon block contents so we can apply an animation to them.
+#define span_balloon(str) ("<span class='balloon'>" + str + "</span>")
+/// Used inside balloon blocks to make the name of the atom emitting stand out.
+#define span_balloontitle(str) ("<span class='balloontitle'>" + str + "</span>")

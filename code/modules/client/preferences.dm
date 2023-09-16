@@ -510,18 +510,18 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	all_quirks = SSquirks.filter_invalid_quirks(all_quirks)
 	if(GetQuirkBalance() < 0)
 		all_quirks = list()
+	return all_quirks
 
 /datum/preferences/proc/validate_markings()
 	var/species_type = read_preference(/datum/preference/choiced/species)
-	var/list/current_markings = body_markings.Copy()
 	var/list/final_markings = list()
-	for(var/zone in current_markings)
-		for(var/marking_name in current_markings)
-			var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
+	for(var/zone in body_markings)
+		for(var/marking_name in body_markings[zone])
+			var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings_by_zone[zone][marking_name]
 			if(!body_marking || (body_marking.name == SPRITE_ACCESSORY_NONE)) //invalid marking...
 				continue
 			if(!body_marking.compatible_species || is_path_in_list(species_type, body_marking.compatible_species))
-				LAZYADDASSOC(final_markings[zone], marking_name, current_markings[zone][marking_name])
+				LAZYADDASSOC(final_markings[zone], marking_name, sanitize_hexcolor(body_markings[zone][marking_name], DEFAULT_HEX_COLOR_LEN, TRUE))
 	body_markings = final_markings
 	return final_markings
 
