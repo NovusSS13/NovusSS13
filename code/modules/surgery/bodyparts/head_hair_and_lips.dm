@@ -149,7 +149,7 @@
 
 	if(show_eyeless && (head_flags & HEAD_EYEHOLES))
 		. += get_eyeless_overlay(can_rotate = !dropped)
-	else if(!is_husked && (head_flags & HEAD_EYESPRITES))
+	else if(!is_husked && (head_flags & HEAD_EYESPRITES) && (owner?.get_organ_slot(ORGAN_SLOT_EYES) || eyes))
 		. += get_eyes_overlay(can_rotate = !dropped)
 
 	//HAIR COLOR START
