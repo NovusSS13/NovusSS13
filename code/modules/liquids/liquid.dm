@@ -581,8 +581,6 @@
 	examine_list += "<hr>"
 
 	if(examiner.can_see_reagents())
-		examine_list += "<hr>"
-
 		if(length(reagent_list) == 1)
 			// Single reagent text.
 			var/datum/reagent/reagent_type = reagent_list[1]
@@ -605,6 +603,7 @@
 
 	// Otherwise, just show the total volume
 	examine_list += span_notice("There is [replacetext(liquid_state_template, "$", "liquid")] here.")
+	examine_list += "<hr>"
 
 /obj/effect/temp_visual/liquid_splash
 	icon = 'icons/effects/liquid.dmi'
