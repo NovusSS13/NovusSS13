@@ -54,7 +54,6 @@
 		if(OFFSET_HEAD)
 			update_worn_head()
 		if(OFFSET_FACE)
-			dna?.species?.handle_body(src) // updates eye icon
 			update_worn_mask()
 		if(OFFSET_BELT)
 			update_worn_belt()
@@ -112,7 +111,6 @@
 
 /mob/living/carbon/update_body(is_creating = FALSE)
 	update_body_parts(is_creating)
-	dna?.species.handle_body(src)
 
 /mob/living/carbon/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
 	. = ..()
@@ -493,15 +491,15 @@
 
 /**
  * Checks to see if any bodyparts need to be redrawn, then does so.
- * update_limb_data = TRUE redraws the limbs to conform to the owner.
+ * is_creating = TRUE redraws the limbs to conform to the owner.
  */
-/mob/living/carbon/proc/update_body_parts(update_limb_data)
+/mob/living/carbon/proc/update_body_parts(is_creating)
 	update_damage_overlays()
 	update_wound_overlays()
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
-		limb.update_limb(is_creating = update_limb_data) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
+		limb.update_limb(is_creating) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
 
 		var/old_key = icon_render_keys?[limb.body_zone] //Checks the mob's icon render key list for the bodypart
 		icon_render_keys[limb.body_zone] = (limb.is_husked) ? limb.generate_husk_key().Join() : limb.generate_icon_key().Join() //Generates a key for the current bodypart

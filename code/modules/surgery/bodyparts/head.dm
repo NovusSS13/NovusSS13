@@ -182,9 +182,6 @@
 
 /obj/item/bodypart/head/get_limb_icon(dropped)
 	. = ..()
-	// husks don't get any of the fancy stuff
-	if(is_invisible || is_husked)
-		return .
 	. += get_hair_and_lips_icon(dropped)
 	// We need to get the eyes if we are dropped (ugh)
 	if(dropped)
@@ -209,10 +206,6 @@
 				worn_face_offset.apply_offset(eye_right)
 			. += eye_left
 			. += eye_right
-		else if(!eyes && (head_flags & HEAD_EYEHOLES))
-			var/image/no_eyes = image('icons/mob/species/human/human_face.dmi', "eyes_missing", -BODY_LAYER, SOUTH)
-			worn_face_offset?.apply_offset(no_eyes)
-			. += no_eyes
 
 	return .
 
