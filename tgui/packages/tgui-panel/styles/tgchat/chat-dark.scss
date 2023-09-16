@@ -907,12 +907,12 @@ em {
   background: #1b1c1e;
   border: 1px solid #a4bad6;
   margin: 0.5em;
-  padding: 0.5em 0.75em;
+  padding: 0.25em 0.75em;
   border-radius: 10px;
 }
 
 .balloon {
-  overflow: hidden;
+  color: #85ace0;
   font-style: italic;
   animation: balloonopacity 0.8s linear forwards;
 }
@@ -927,11 +927,16 @@ em {
 }
 
 .balloontitle {
+  color: #a4bad6;
   font-weight: bold;
   font-style: normal;
   font-size: 85%;
   opacity: 0.3;
   animation: balloontitleopacity 0.5s linear forwards;
+}
+
+.balloontitle::after {
+  content: ' ';
 }
 
 @keyframes balloontitleopacity {
