@@ -568,6 +568,8 @@
 	if(is_dimorphic)
 		. += "[limb_gender]-"
 	. += "[limb_id]"
+	if((bodytype & BODYTYPE_DIGITIGRADE) && !(bodytype & BODYTYPE_COMPRESSED))
+		. += "-compressed"
 	. += "-[body_zone]"
 	if(should_draw_greyscale && draw_color)
 		. += "-[draw_color]"
