@@ -502,7 +502,7 @@
 		limb.update_limb(is_creating = is_creating) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
 
 		var/old_key = icon_render_keys?[limb.body_zone] //Checks the mob's icon render key list for the bodypart
-		icon_render_keys[limb.body_zone] = (limb.is_husked) ? limb.generate_husk_key().Join() : limb.generate_icon_key().Join() //Generates a key for the current bodypart
+		icon_render_keys[limb.body_zone] = limb.generate_icon_key().Join() //Generates a key for the current bodypart
 
 		if(icon_render_keys[limb.body_zone] != old_key) //If the keys match, that means the limb doesn't need to be redrawn
 			needs_update += limb
@@ -586,19 +586,6 @@
 		. += "-[human_owner.get_mob_height()]"
 	return .
 
-///Generates a cache key specifically for husks
-/obj/item/bodypart/proc/generate_husk_key()
-	RETURN_TYPE(/list)
-	. = list()
-	. += "[husk_type]"
-	. += "-husk"
-	. += "-[body_zone]"
-	. += "-[get_applicable_top_offset()]"
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		. += "-[human_owner.get_mob_height()]"
-	return .
-
 /obj/item/bodypart/head/generate_icon_key()
 	. = ..()
 	if(lip_style)
@@ -615,12 +602,6 @@
 			. += "-[gradient_styles[GRADIENT_FACIAL_HAIR_KEY]]"
 			. += "-[gradient_colors[GRADIENT_FACIAL_HAIR_KEY]]"
 
-	if(show_eyeless)
-		. += "-show_eyeless"
-	if(show_debrained)
-		. += "-show_debrained"
-		return .
-
 	if(hair_hidden)
 		. += "-hair_hidden"
 	else
@@ -631,11 +612,24 @@
 			. += "-[gradient_styles[GRADIENT_HAIR_KEY]]"
 			. += "-[gradient_colors[GRADIENT_HAIR_KEY]]"
 
+	if(show_eyeless)
+		. += "-show_eyeless"
+	else
+		var/obj/item/organ/eyes/eyeballs = owner ? owner.get_organ_slot(ORGAN_SLOT_EYES) : src.eyes
+		if(eyeballs)
+			. += "-[eyeballs.eye_icon_state]"
+			. += "-[eyeballs.eye_color_left]"
+			. += "-[eyeballs.eye_color_right]"
+			. += "-[eyeballs.overlay_ignore_lighting]"
+
+	if(show_debrained)
+		. += "-show_debrained"
+
 	return .
 
 /obj/item/bodypart/chest/generate_icon_key()
 	. = ..()
-	if(!(bodytype & BODYTYPE_HUMANOID) || !ishuman(owner) || HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+	if(!ishuman(owner))
 		return .
 
 	var/mob/living/carbon/human/human_owner = owner
