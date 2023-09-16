@@ -935,10 +935,6 @@ em {
   animation: balloontitleopacity 0.5s linear forwards;
 }
 
-.balloontitle::after {
-  content: ' ';
-}
-
 @keyframes balloontitleopacity {
   0% {
     opacity: 0.3;
