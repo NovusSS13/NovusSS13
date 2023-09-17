@@ -52,10 +52,10 @@
 	supplemental_feature_key = "feature_lizard_frills_color"
 
 /datum/preference/choiced/mutant/lizard_frills/init_possible_values()
-	return assoc_to_keys_features(GLOB.frills_list)
+	return assoc_to_keys_features(GLOB.frills_list_lizard)
 
 /datum/preference/choiced/mutant/lizard_frills/icon_for(value)
-	return generate_lizard_side_shot(GLOB.frills_list[value], "frills")
+	return generate_lizard_side_shot(GLOB.frills_list_lizard[value], "frills")
 
 /datum/preference/tricolor/mutant/lizard_frills
 	savefile_key = "feature_lizard_frills_color"
@@ -79,7 +79,7 @@
 	supplemental_feature_key = "feature_lizard_horns_color"
 
 /datum/preference/choiced/mutant/lizard_horns/init_possible_values()
-	return assoc_to_keys_features(GLOB.horns_list)
+	return assoc_to_keys_features(GLOB.horns_list_lizard)
 
 /datum/preference/choiced/mutant/lizard_horns/icon_for(value)
 	return generate_lizard_side_shot(GLOB.horns_list[value], "horns", color_accessory = FALSE)
@@ -93,7 +93,7 @@
 	primary_feature_key = "feature_lizard_horns"
 
 /datum/preference/tricolor/mutant/lizard_horns/get_global_feature_list()
-	return GLOB.horns_list
+	return GLOB.horns_list_lizard
 
 /datum/preference/choiced/mutant/lizard_snout
 	savefile_key = "feature_lizard_snout"
@@ -106,7 +106,7 @@
 	supplemental_feature_key = "feature_lizard_snout_color"
 
 /datum/preference/choiced/mutant/lizard_snout/init_possible_values()
-	return assoc_to_keys_features(GLOB.snouts_list)
+	return assoc_to_keys_features(GLOB.snouts_list_lizard)
 
 /datum/preference/choiced/mutant/lizard_snout/create_default_value()
 	var/datum/sprite_accessory/snouts/round = /datum/sprite_accessory/snouts/lizard/round
@@ -124,7 +124,7 @@
 	primary_feature_key = "feature_lizard_snout"
 
 /datum/preference/tricolor/mutant/lizard_snout/get_global_feature_list()
-	return GLOB.snouts_list
+	return GLOB.snouts_list_lizard
 
 /datum/preference/choiced/mutant/lizard_tail
 	savefile_key = "feature_lizard_tail"
@@ -183,7 +183,7 @@
 	primary_feature_key = "feature_lizard_tail"
 
 /datum/preference/tricolor/mutant/lizard_tail/get_global_feature_list()
-	return GLOB.tails_list
+	return GLOB.tails_list_lizard
 
 /datum/preference/choiced/mutant/lizard_spines
 	savefile_key = "feature_lizard_spines"
@@ -196,7 +196,7 @@
 	supplemental_feature_key = "feature_lizard_spines_color"
 
 /datum/preference/choiced/mutant/lizard_spines/init_possible_values()
-	return assoc_to_keys_features(GLOB.spines_list)
+	return assoc_to_keys_features(GLOB.spines_list_lizard)
 
 /datum/preference/choiced/mutant/lizard_spines/create_default_value()
 	var/datum/sprite_accessory/spines/no_spines = /datum/sprite_accessory/spines/none
@@ -246,4 +246,4 @@
 	primary_feature_key = "feature_lizard_spines"
 
 /datum/preference/tricolor/mutant/lizard_spines/get_global_feature_list()
-	return GLOB.spines_list
+	return GLOB.spines_list_lizard

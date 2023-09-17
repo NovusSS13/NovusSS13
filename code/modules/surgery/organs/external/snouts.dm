@@ -37,6 +37,9 @@
 	name = "lizard snout"
 	preference = "feature_lizard_snout"
 
-	bodypart_overlay = /datum/bodypart_overlay/mutant/snout
+	bodypart_overlay = /datum/bodypart_overlay/mutant/snout/lizard
 
-/datum/bodypart_overlay/mutant/snout
+/datum/bodypart_overlay/mutant/snout/lizard
+
+/datum/bodypart_overlay/mutant/snout/lizard/get_global_feature_list()
+	return GLOB.snouts_list_lizard

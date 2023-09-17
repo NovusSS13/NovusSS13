@@ -37,3 +37,6 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/frills/lizard
 
 /datum/bodypart_overlay/mutant/frills/lizard
+
+/datum/bodypart_overlay/mutant/frills/lizard/get_global_feature_list()
+	return GLOB.frills_list

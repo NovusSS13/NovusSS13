@@ -133,6 +133,9 @@
 
 /datum/bodypart_overlay/mutant/ears/felinid
 
+/datum/bodypart_overlay/mutant/ears/felinid/get_global_feature_list()
+	return GLOB.ears_list_human
+
 /obj/item/organ/ears/penguin
 	name = "penguin ears"
 	desc = "The source of a penguin's happy feet."

@@ -16,7 +16,6 @@
 		/obj/item/organ/spines/lizard = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/tail/lizard = "Smooth",
 
-		//bob i will kill you //i will kill you too null, you fucking dolt
 		/obj/item/organ/genital/penis = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/testicles = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,

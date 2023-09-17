@@ -39,3 +39,6 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/horns/lizard
 
 /datum/bodypart_overlay/mutant/horns/lizard
+
+/datum/bodypart_overlay/mutant/horns/lizard/get_global_feature_list()
+	return GLOB.horns_list_lizard

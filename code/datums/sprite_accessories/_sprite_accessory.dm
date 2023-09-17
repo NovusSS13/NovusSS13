@@ -1855,18 +1855,20 @@
 	icon_state = "angler"
 
 /datum/sprite_accessory/ears
-	icon = 'icons/mob/species/human/cat_features.dmi'
 
 /datum/sprite_accessory/ears/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
 
-/datum/sprite_accessory/ears/cat
+/datum/sprite_accessory/ears/human
+	icon = 'icons/mob/species/human/cat_features.dmi'
+
+/datum/sprite_accessory/ears/human/cat
 	name = "Cat"
 	icon_state = "cat"
 	hasinner = TRUE
 
-/datum/sprite_accessory/ears/fox
+/datum/sprite_accessory/ears/human/fox
 	icon = 'icons/mob/species/human/fox_features.dmi'
 	name = "Fox"
 	icon_state = "fox"
@@ -1993,75 +1995,52 @@
 	dimension_y = 32
 
 /datum/sprite_accessory/frills
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
 
 /datum/sprite_accessory/frills/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
 
-/datum/sprite_accessory/frills/simple
+/datum/sprite_accessory/frills/lizard
+	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
+
+/datum/sprite_accessory/frills/lizard/simple
 	name = "Simple"
 	icon_state = "simple"
 
-/datum/sprite_accessory/frills/short
+/datum/sprite_accessory/frills/lizard/short
 	name = "Short"
 	icon_state = "short"
 
-/datum/sprite_accessory/frills/aquatic
+/datum/sprite_accessory/frills/lizard/aquatic
 	name = "Aquatic"
 	icon_state = "aqua"
 
 /datum/sprite_accessory/spines
-	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
-
-/datum/sprite_accessory/spines_animated
-	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
 
 /datum/sprite_accessory/spines/none
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
 
-/datum/sprite_accessory/spines_animated/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
+/datum/sprite_accessory/spines/lizard
+	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
 
-/datum/sprite_accessory/spines/short
+/datum/sprite_accessory/spines/lizard/short
 	name = "Short"
 	icon_state = "short"
 
-/datum/sprite_accessory/spines_animated/short
-	name = "Short"
-	icon_state = "short"
-
-/datum/sprite_accessory/spines/shortmeme
+/datum/sprite_accessory/spines/lizard/shortmeme
 	name = "Short + Membrane"
 	icon_state = "shortmeme"
 
-/datum/sprite_accessory/spines_animated/shortmeme
-	name = "Short + Membrane"
-	icon_state = "shortmeme"
-
-/datum/sprite_accessory/spines/long
+/datum/sprite_accessory/spines/lizard/long
 	name = "Long"
 	icon_state = "long"
 
-/datum/sprite_accessory/spines_animated/long
-	name = "Long"
-	icon_state = "long"
-
-/datum/sprite_accessory/spines/longmeme
+/datum/sprite_accessory/spines/lizard/longmeme
 	name = "Long + Membrane"
 	icon_state = "longmeme"
 
-/datum/sprite_accessory/spines_animated/longmeme
-	name = "Long + Membrane"
-	icon_state = "longmeme"
-
-/datum/sprite_accessory/spines/aquatic
-	name = "Aquatic"
-	icon_state = "aqua"
-
-/datum/sprite_accessory/spines_animated/aquatic
+/datum/sprite_accessory/spines/lizard/aquatic
 	name = "Aquatic"
 	icon_state = "aqua"
 

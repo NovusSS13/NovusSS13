@@ -79,3 +79,10 @@
 /// Subtype used exclusively by lizards
 /obj/item/organ/spines/lizard
 	name = "lizard spines"
+	preference = "feature_lizard_spines"
+	bodypart_overlay = /datum/bodypart_overlay/mutant/spines/lizard
+
+/datum/bodypart_overlay/mutant/spines/lizard
+
+/datum/bodypart_overlay/mutant/spines/lizard/get_global_feature_list()
+	return GLOB.spines_list_lizard
