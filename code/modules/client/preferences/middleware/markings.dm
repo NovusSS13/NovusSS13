@@ -211,7 +211,7 @@
 /datum/asset/spritesheet/markings
 	name = "markings"
 	early = TRUE
-	cross_round_cachable = FALSE
+	cross_round_cachable = TRUE
 
 /datum/asset/spritesheet/markings/create_spritesheets()
 	var/list/to_insert = list()
