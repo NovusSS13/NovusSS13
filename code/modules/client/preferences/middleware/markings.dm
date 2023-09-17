@@ -227,6 +227,8 @@
 				// set species for species specific markings
 				if(body_marking.compatible_species)
 					dummy.set_species(body_marking.compatible_species[1])
+				else
+					dummy.set_species(/datum/species/lizard)
 
 				var/icon/dummy_icon = getFlatIcon(dummy)
 
