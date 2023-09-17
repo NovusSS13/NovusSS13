@@ -54,7 +54,6 @@
 		if(OFFSET_HEAD)
 			update_worn_head()
 		if(OFFSET_FACE)
-			dna?.species?.handle_body(src) // updates eye icon
 			update_worn_mask()
 		if(OFFSET_BELT)
 			update_worn_belt()
@@ -112,7 +111,6 @@
 
 /mob/living/carbon/update_body(is_creating = FALSE)
 	update_body_parts(is_creating)
-	dna?.species.handle_body(src)
 
 /mob/living/carbon/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
 	. = ..()
@@ -493,18 +491,18 @@
 
 /**
  * Checks to see if any bodyparts need to be redrawn, then does so.
- * update_limb_data = TRUE redraws the limbs to conform to the owner.
+ * is_creating = TRUE redraws the limbs to conform to the owner.
  */
-/mob/living/carbon/proc/update_body_parts(update_limb_data)
+/mob/living/carbon/proc/update_body_parts(is_creating)
 	update_damage_overlays()
 	update_wound_overlays()
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
-		limb.update_limb(is_creating = update_limb_data) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
+		limb.update_limb(is_creating = is_creating) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
 
 		var/old_key = icon_render_keys?[limb.body_zone] //Checks the mob's icon render key list for the bodypart
-		icon_render_keys[limb.body_zone] = (limb.is_husked) ? limb.generate_husk_key().Join() : limb.generate_icon_key().Join() //Generates a key for the current bodypart
+		icon_render_keys[limb.body_zone] = limb.generate_icon_key().Join() //Generates a key for the current bodypart
 
 		if(icon_render_keys[limb.body_zone] != old_key) //If the keys match, that means the limb doesn't need to be redrawn
 			needs_update += limb
@@ -588,19 +586,6 @@
 		. += "-[human_owner.get_mob_height()]"
 	return .
 
-///Generates a cache key specifically for husks
-/obj/item/bodypart/proc/generate_husk_key()
-	RETURN_TYPE(/list)
-	. = list()
-	. += "[husk_type]"
-	. += "-husk"
-	. += "-[body_zone]"
-	. += "-[get_applicable_top_offset()]"
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		. += "-[human_owner.get_mob_height()]"
-	return .
-
 /obj/item/bodypart/head/generate_icon_key()
 	. = ..()
 	if(lip_style)
@@ -617,12 +602,6 @@
 			. += "-[gradient_styles[GRADIENT_FACIAL_HAIR_KEY]]"
 			. += "-[gradient_colors[GRADIENT_FACIAL_HAIR_KEY]]"
 
-	if(show_eyeless)
-		. += "-show_eyeless"
-	if(show_debrained)
-		. += "-show_debrained"
-		return .
-
 	if(hair_hidden)
 		. += "-hair_hidden"
 	else
@@ -633,11 +612,24 @@
 			. += "-[gradient_styles[GRADIENT_HAIR_KEY]]"
 			. += "-[gradient_colors[GRADIENT_HAIR_KEY]]"
 
+	if(show_eyeless)
+		. += "-show_eyeless"
+	else
+		var/obj/item/organ/eyes/eyeballs = owner ? owner.get_organ_slot(ORGAN_SLOT_EYES) : src.eyes
+		if(eyeballs)
+			. += "-[eyeballs.eye_icon_state]"
+			. += "-[eyeballs.eye_color_left]"
+			. += "-[eyeballs.eye_color_right]"
+			. += "-[eyeballs.overlay_ignore_lighting]"
+
+	if(show_debrained)
+		. += "-show_debrained"
+
 	return .
 
 /obj/item/bodypart/chest/generate_icon_key()
 	. = ..()
-	if(!(bodytype & BODYTYPE_HUMANOID) || !ishuman(owner) || HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+	if(!ishuman(owner))
 		return .
 
 	var/mob/living/carbon/human/human_owner = owner

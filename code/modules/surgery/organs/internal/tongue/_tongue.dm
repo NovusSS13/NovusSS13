@@ -621,7 +621,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	return ..() + /datum/language/voltaic
 
 /obj/item/organ/tongue/cat
-	name = "felinid tongue"
+	name = "fluffy tongue"
 	desc = "A fleshy muscle mostly used for meowing."
 	say_mod = "meows"
 	liked_foodtypes = SEAFOOD | ORANGES | BUGS | GORE
@@ -662,7 +662,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	say_mod = "moans"
 
 /obj/item/organ/tongue/mush
-	name = "mush-tongue-room"
+	name = "mushroom tongue"
 	desc = "You poof with this. Got it?"
 	icon = 'icons/obj/hydroponics/seeds.dmi'
 	icon_state = "mycelium-angel"

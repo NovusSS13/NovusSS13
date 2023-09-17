@@ -81,17 +81,19 @@
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 	. = list()
-	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible || is_husked)
+	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible)
 		return .
 
 	var/atom/location = loc || owner || src
 	var/image_dir = (dropped ? SOUTH : NONE)
 
 	var/datum/sprite_accessory/sprite_accessory
-	if(lip_style && (head_flags & HEAD_LIPS))
+
+	var/image/lip_overlay
+	if(!is_husked && lip_style && (head_flags & HEAD_LIPS))
 		//not a sprite accessory, don't ask
 		//Overlay
-		var/image/lip_overlay = image('icons/mob/species/human/human_face.dmi', "lips_[lip_style]", -BODY_LAYER, image_dir)
+		lip_overlay = image('icons/mob/species/human/human_face.dmi', "lips_[lip_style]", -BODY_LAYER, image_dir)
 		lip_overlay.color = lip_color
 		//Emissive blocker
 		if(blocks_emissive)
@@ -147,6 +149,8 @@
 
 	if(show_eyeless && (head_flags & HEAD_EYEHOLES))
 		. += get_eyeless_overlay(can_rotate = !dropped)
+	else if(!is_husked && (head_flags & HEAD_EYESPRITES) && (owner?.get_organ_slot(ORGAN_SLOT_EYES) || eyes))
+		. += get_eyes_overlays(can_rotate = !dropped)
 
 	//HAIR COLOR START
 	if(override_hair_color)
@@ -163,6 +167,50 @@
 	return .
 
 #undef SET_OVERLAY_VALUE
+
+/// Returns an appropriate eyes overlay
+/obj/item/bodypart/head/proc/get_eyes_overlays(can_rotate = TRUE)
+	RETURN_TYPE(/list)
+	var/obj/item/organ/eyes/eyeballs = owner ? owner.get_organ_slot(ORGAN_SLOT_EYES) : src.eyes
+	if(!eyeballs)
+		CRASH("[type] called get_eyes_overlays() while having no eyes!")
+
+	var/image/left_eye
+	var/image/right_eye
+	if(can_rotate)
+		left_eye = mutable_appearance('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER)
+		right_eye = mutable_appearance('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER)
+	else
+		left_eye = image('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
+		right_eye = image('icons/mob/species/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
+	var/atom/location = loc || owner || src
+	if(head_flags & HEAD_EYECOLOR)
+		left_eye.color = eyeballs.eye_color_left
+		right_eye.color = eyeballs.eye_color_right
+	if(blocks_emissive)
+		left_eye.overlays += emissive_blocker(left_eye.icon, left_eye.icon_state, location)
+		right_eye.overlays += emissive_blocker(right_eye.icon, right_eye.icon_state, location)
+	if(eyeballs.overlay_ignore_lighting)
+		left_eye.overlays += emissive_appearance(left_eye.icon, left_eye.icon_state, location, alpha = left_eye.alpha)
+		right_eye.overlays += emissive_appearance(right_eye.icon, right_eye.icon_state, location, alpha = right_eye.alpha)
+	if(worn_face_offset)
+		worn_face_offset.apply_offset(left_eye)
+		worn_face_offset.apply_offset(right_eye)
+	return list(left_eye, right_eye)
+
+/// Returns an appropriate missing eyes overlay
+/obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
+	RETURN_TYPE(/image)
+	var/eyeless_icon = 'icons/mob/species/human/human_face.dmi'
+	var/eyeless_icon_state = "eyes_missing"
+
+	var/image/eyeless_overlay
+	if(can_rotate)
+		eyeless_overlay = mutable_appearance(eyeless_icon, eyeless_icon_state, HAIR_LAYER)
+	else
+		eyeless_overlay = image(eyeless_icon, eyeless_icon_state, -HAIR_LAYER, SOUTH)
+	worn_face_offset?.apply_offset(eyeless_overlay)
+	return eyeless_overlay
 
 /// Returns an appropriate debrained overlay
 /obj/item/bodypart/head/proc/get_debrain_overlay(can_rotate = TRUE)
@@ -186,23 +234,9 @@
 	worn_face_offset?.apply_offset(debrain_overlay)
 	return debrain_overlay
 
-/// Returns an appropriate missing eyes overlay
-/obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
-	RETURN_TYPE(/image)
-	var/eyeless_icon = 'icons/mob/species/human/human_face.dmi'
-	var/eyeless_icon_state = "eyes_missing"
-
-	var/image/eyeless_overlay
-	if(can_rotate)
-		eyeless_overlay = mutable_appearance(eyeless_icon, eyeless_icon_state, HAIR_LAYER)
-	else
-		eyeless_overlay = image(eyeless_icon, eyeless_icon_state, -HAIR_LAYER, SOUTH)
-	worn_face_offset?.apply_offset(eyeless_overlay)
-	return eyeless_overlay
-
 /// Returns an appropriate hair/facial hair gradient overlay
 /obj/item/bodypart/head/proc/get_gradient_overlay(file, icon, layer, datum/sprite_accessory/gradient, grad_color)
-	RETURN_TYPE(/mutable_appearance)
+	RETURN_TYPE(/image)
 
 	var/mutable_appearance/gradient_overlay = mutable_appearance(layer = layer)
 	var/icon/temp = icon(gradient.icon, gradient.icon_state)

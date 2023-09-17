@@ -163,9 +163,11 @@
 
 	var/icon/final_icon = icon(groin_icon)
 
-	var/icon/accessory_icon = icon(sprite_accessory.icon, "m_tail_lizard_[sprite_accessory.icon_state]_BEHIND", EAST)
-	accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-	final_icon.Blend(accessory_icon, ICON_UNDERLAY)
+	var/static/layers = list("BEHIND", "FRONT") //futureproofing...
+	for(var/layer in layers)
+		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_tail_lizard_[sprite_accessory.icon_state]_[layer]", EAST)
+		accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
+		final_icon.Blend(accessory_icon, ICON_UNDERLAY)
 
 	final_icon.Crop(1, 1, 15, 13)
 	final_icon.Scale(32, 32)
@@ -224,9 +226,11 @@
 
 	var/icon/final_icon = icon(groin_with_tail)
 
-	var/icon/accessory_icon = icon(sprite_accessory.icon, "m_spines_[sprite_accessory.icon_state]_ADJ", EAST)
-	accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-	final_icon.Blend(accessory_icon, ICON_UNDERLAY)
+	var/static/layers = list("ADJ") //futureproofing...
+	for(var/layer in layers)
+		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_spines_[sprite_accessory.icon_state]_[layer]", EAST)
+		accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
+		final_icon.Blend(accessory_icon, ICON_UNDERLAY)
 
 	final_icon.Crop(1, 1, 15, 13)
 	final_icon.Scale(32, 32)

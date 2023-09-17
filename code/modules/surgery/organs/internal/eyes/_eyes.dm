@@ -39,9 +39,9 @@
 	/// Are these eyes immune to pepperspray?
 	var/pepperspray_protect = FALSE
 
+	var/eye_icon_state = "eyes"
 	var/eye_color_left = "" //set to a hex code to override a mob's left eye color
 	var/eye_color_right = "" //set to a hex code to override a mob's right eye color
-	var/eye_icon_state = "eyes"
 	var/old_eye_color_left = "#ffffff"
 	var/old_eye_color_right = "#ffffff"
 
@@ -128,39 +128,6 @@
 
 	if(call_update)
 		affected_human.update_body()
-
-#define OFFSET_X 1
-#define OFFSET_Y 2
-
-/// This proc generates a list of overlays that the eye should be displayed using for the given parent
-/obj/item/organ/eyes/proc/generate_body_overlay(mob/living/carbon/human/parent)
-	if(!istype(parent) || parent.get_organ_by_type(/obj/item/organ/eyes) != src)
-		CRASH("Generating a body overlay for [src] targeting an invalid parent '[parent]'.")
-
-	if(isnull(eye_icon_state))
-		return list()
-
-	var/mutable_appearance/eye_left = mutable_appearance('icons/mob/species/human/human_face.dmi', "[eye_icon_state]_l", -BODY_LAYER)
-	var/mutable_appearance/eye_right = mutable_appearance('icons/mob/species/human/human_face.dmi', "[eye_icon_state]_r", -BODY_LAYER)
-
-	var/obscured = parent.check_obscured_slots(TRUE)
-	if(overlay_ignore_lighting && !(obscured & ITEM_SLOT_EYES))
-		eye_left.overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, parent, alpha = eye_left.alpha)
-		eye_right.overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, parent, alpha = eye_right.alpha)
-
-	var/obj/item/bodypart/head/my_head = parent.get_bodypart(BODY_ZONE_HEAD)
-	if(my_head)
-		if(my_head.head_flags & HEAD_EYECOLOR)
-			eye_right.color = eye_color_right
-			eye_left.color = eye_color_left
-		if(my_head.worn_face_offset)
-			my_head.worn_face_offset.apply_offset(eye_left)
-			my_head.worn_face_offset.apply_offset(eye_right)
-
-	return list(eye_left, eye_right)
-
-#undef OFFSET_X
-#undef OFFSET_Y
 
 //Gotta reset the eye color, because that persists
 /obj/item/organ/eyes/enter_wardrobe()
@@ -315,8 +282,8 @@
 /obj/item/organ/eyes/robotic/basic
 	name = "basic robotic eyes"
 	desc = "A pair of basic cybernetic eyes that restore vision, but at some vulnerability to light."
-	eye_color_left = "5500ff"
-	eye_color_right = "5500ff"
+	eye_color_left = "#5500ff"
+	eye_color_right = "#5500ff"
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 
 /obj/item/organ/eyes/robotic/basic/emp_act(severity)
@@ -332,8 +299,8 @@
 /obj/item/organ/eyes/robotic/xray
 	name = "\improper X-ray eyes"
 	desc = "These cybernetic eyes will give you X-ray vision. Blinking is futile."
-	eye_color_left = "000"
-	eye_color_right = "000"
+	eye_color_left = "#000000"
+	eye_color_right = "#000000"
 	sight_flags = SEE_MOBS | SEE_OBJS | SEE_TURFS
 
 /obj/item/organ/eyes/robotic/xray/on_insert(mob/living/carbon/eye_owner)
@@ -347,8 +314,8 @@
 /obj/item/organ/eyes/robotic/thermals
 	name = "thermal eyes"
 	desc = "These cybernetic eye implants will give you thermal vision. Vertical slit pupil included."
-	eye_color_left = "FC0"
-	eye_color_right = "FC0"
+	eye_color_left = "#FFCC00"
+	eye_color_right = "#FFCC00"
 	// We're gonna downshift green and blue a bit so darkness looks yellow
 	color_cutoffs = list(25, 8, 5)
 	sight_flags = SEE_MOBS
@@ -357,8 +324,8 @@
 /obj/item/organ/eyes/robotic/flashlight
 	name = "flashlight eyes"
 	desc = "It's two flashlights rigged together with some wire. Why would you put these in someone's head?"
-	eye_color_left ="fee5a3"
-	eye_color_right ="fee5a3"
+	eye_color_left = "#fee5a3"
+	eye_color_right = "#fee5a3"
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "flashlight_eyes"
 	flash_protect = FLASH_PROTECTION_WELDER
@@ -402,8 +369,8 @@
 /obj/item/organ/eyes/robotic/glow
 	name = "High Luminosity Eyes"
 	desc = "Special glowing eyes, used by snowflakes who want to be special."
-	eye_color_left = "000"
-	eye_color_right = "000"
+	eye_color_left = "#000000"
+	eye_color_right = "#000000"
 	actions_types = list(/datum/action/item_action/organ_action/use, /datum/action/item_action/organ_action/toggle)
 	var/max_light_beam_distance = 5
 	var/obj/item/flashlight/eyelight/glow/eye
@@ -647,7 +614,7 @@
 	if(QDELETED(eye_owner) || !ishuman(eye_owner)) //Other carbon mobs don't have eye color.
 		return
 
-	eye_owner.dna.species.handle_body(eye_owner)
+	eye_owner.update_body()
 	update_mob_eyes_overlay()
 
 /**
@@ -714,8 +681,8 @@
 	name = "adapted eyes"
 	desc = "These red eyes look like two foggy marbles. They give off a particularly worrying glow in the dark."
 	flash_protect = FLASH_PROTECTION_HYPER_SENSITIVE
-	eye_color_left = "f00"
-	eye_color_right = "f00"
+	eye_color_left = "#ff0000"
+	eye_color_right = "#ff0000"
 	icon_state = "adapted_eyes"
 	eye_icon_state = "eyes_glow"
 	overlay_ignore_lighting = TRUE
