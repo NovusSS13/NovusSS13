@@ -1,8 +1,152 @@
-import { Section, Button, Box, ColorBox, Dropdown, Stack } from '../../components';
-import { useBackend } from '../../backend';
+import { Autofocus, Section, Button, Box, ColorBox, Dropdown, Flex, Popper, Stack, TrackOutsideClicks } from '../../components';
+import { useBackend, useLocalState, useSharedState } from '../../backend';
 import { Marking, MarkingZone, PreferencesMenuData } from './data';
 import { CharacterPreview } from '../common/CharacterPreview';
-import { CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
+import { CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS, CLOTHING_SELECTION_CELL_SIZE, CLOTHING_SELECTION_WIDTH, CLOTHING_SELECTION_MULTIPLIER } from './MainPage';
+import { SearchBar } from '../Fabrication/SearchBar';
+
+const MarkingButton = (
+  props: {
+    key: string;
+    zone: MarkingZone;
+    marking: Marking;
+    isOpen: boolean;
+    handleClose: () => void;
+    handleOpen: () => void;
+  },
+  context
+) => {
+  const { zone, marking, isOpen, handleClose, handleOpen } = props;
+  const { act, data } = useBackend<PreferencesMenuData>(context);
+  const [searchText, setSearchText] = useSharedState(
+    context,
+    'search_text',
+    ''
+  );
+  return (
+    <Popper
+      options={{
+        placement: 'bottom-start',
+      }}
+      popperContent={
+        isOpen && (
+          <TrackOutsideClicks onOutsideClick={() => {handleClose();}}>
+            <Box
+              style={{
+                background: 'white',
+                padding: '5px',
+
+                height: `${
+                  CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_MULTIPLIER
+                }px`,
+                width: `${CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_WIDTH}px`,
+              }}>
+              <Stack vertical fill>
+                <Stack.Item>
+                  <Stack fill>
+                    <Stack.Item grow>
+                      <Box
+                        style={{
+                          'border-bottom': '1px solid #888',
+                          'font-weight': 'bold',
+                          'font-size': '14px',
+                          'text-align': 'center',
+                        }}>
+                        Select marking
+                      </Box>
+                    </Stack.Item>
+
+                    <Stack.Item grow>
+                      <SearchBar onSearchTextChanged={setSearchText} />
+                    </Stack.Item>
+
+                    <Stack.Item>
+                      <Button color="red" onClick={() => {handleClose();}}>
+                        X
+                      </Button>
+                    </Stack.Item>
+                  </Stack>
+                </Stack.Item>
+
+                <Stack.Item overflowX="hidden" overflowY="scroll">
+                  <Autofocus>
+                    <Flex wrap>
+                    {(zone.markings_choices.concat([marking.name]).sort()).map((availableMarking) => {
+                      if (
+                        searchText &&
+                        availableMarking.toLowerCase().indexOf(searchText.toLowerCase()) === -1
+                      ) {
+                        return null;
+                      }
+                      return (
+                        <Flex.Item
+                          mx="10px"
+                          basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
+                          style={{
+                            padding: '5px',
+                          }}>
+                          <Button
+                            onClick={() => {
+                              act('change_marking', {
+                                body_zone: zone.body_zone,
+                                marking_index: marking.marking_index,
+                                new_marking: availableMarking,
+                              });
+                            }}
+                            selected={availableMarking === marking.name}
+                            tooltip={availableMarking}
+                            tooltipPosition="right"
+                            style={{
+                              height: `${CLOTHING_SELECTION_CELL_SIZE}px`,
+                              width: `${CLOTHING_SELECTION_CELL_SIZE}px`,
+                            }}>
+                            <Box/>
+                          </Button>
+                          <Box textAlign="center">{availableMarking}</Box>
+                        </Flex.Item>
+                      )
+                    })}
+                    </Flex>
+                  </Autofocus>
+                </Stack.Item>
+
+              </Stack>
+            </Box>
+            {/*
+            <Stack backgroundColor="white" ml={0.5} p={0.3}>
+              {(zone.markings_choices.concat([marking.name]).sort()).map( // oh my fucking god this is so fucking ugly i hate this piece of shit language
+                (availableMarking) => {
+                  return (
+                    <Stack.Item key={props.key}>
+                      <Button
+                        selected={availableMarking === marking.name}
+                        onClick={() => {
+                          act('change_marking', {
+                            body_zone: zone.body_zone,
+                            marking_index: marking.marking_index,
+                            new_marking: availableMarking,
+                          });
+                        }}
+                        //fontSize="22px"
+                        content={availableMarking}
+                      />
+                    </Stack.Item>
+                  );
+                }
+              )}
+            </Stack>
+            */}
+          </TrackOutsideClicks>
+        )
+      }>
+      <Button
+        width="100%"
+        content={marking.name}
+        onClick={() => {handleOpen();}}
+      />
+    </Popper>
+  );
+};
 
 const MarkingInput = (
   props: {
@@ -79,6 +223,9 @@ const ZoneItem = (
   context
 ) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
+  const [currentMarkingMenu, setCurrentMarkingMenu] = useLocalState<
+    string | null
+  >(context, 'currentMarkingMenu', null);
   const { zone } = props;
   const maxmarkings = data.maximum_markings_per_limb;
   return (
@@ -92,6 +239,19 @@ const ZoneItem = (
             {zone.markings.map((marking) => (
               <Stack key={marking.marking_index}>
                 <Stack.Item width="50%" mb={1}>
+                  <MarkingButton
+                    key={props.key}
+                    zone={zone}
+                    marking={marking}
+                    isOpen={currentMarkingMenu === marking.marking_index}
+                    handleClose={() => {
+                      setCurrentMarkingMenu(null);
+                    }}
+                    handleOpen={() => {
+                      setCurrentMarkingMenu(marking.marking_index);
+                    }}
+                  />
+                  {/*
                   <Dropdown
                     width="100%"
                     options={zone.markings_choices}
@@ -104,6 +264,7 @@ const ZoneItem = (
                       })
                     }
                   />
+                  */}
                 </Stack.Item>
                 <Stack.Item width="50%">
                   <MarkingInput zone={zone} marking={marking} />

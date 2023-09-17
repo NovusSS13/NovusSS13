@@ -16,9 +16,9 @@ import { SearchBar } from '../Fabrication/SearchBar';
 export const CLOTHING_CELL_SIZE = 48;
 export const CLOTHING_SIDEBAR_ROWS = 9;
 
-const CLOTHING_SELECTION_CELL_SIZE = 48;
-const CLOTHING_SELECTION_WIDTH = 10.8;
-const CLOTHING_SELECTION_MULTIPLIER = 5.2;
+export const CLOTHING_SELECTION_CELL_SIZE = 48;
+export const CLOTHING_SELECTION_WIDTH = 10.8;
+export const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 
 export const CharacterControls = (props: {
   showSpecies: Boolean;
