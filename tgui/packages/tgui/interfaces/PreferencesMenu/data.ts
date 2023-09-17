@@ -101,6 +101,7 @@ export type MarkingZone = {
   body_zone: string;
   name: string;
   markings_choices: string[];
+  markings_icons: string[];
   markings: Marking[];
   cant_add_markings: boolean;
 };
