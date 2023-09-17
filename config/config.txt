@@ -20,6 +20,12 @@ $include auxtools.txt
 ## Server name: This appears at the top of the screen in-game and in the BYOND hub. Uncomment and replace 'tgstation' with the name of your choice.
 # SERVERNAME tgstation
 
+## Server tagline: This will appear right below the server's title.
+# SERVERTAGLINE A generic TG-based server.
+
+## Server roleplay level: Merely appears on the hub as a world feature.
+# ROLEPLAYLEVEL Medium
+
 ## Server SQL name: This is the name used to identify the server to the SQL DB, distinct from SERVERNAME as it must be at most 32 characters.
 # SERVERSQLNAME tgstation
 
@@ -177,6 +183,9 @@ GUEST_BAN
 
 ## Github address
 # GITHUBURL https://www.github.com/tgstation/tgstation
+
+## Discord invite
+# DISCORDURL https://discord.com/invite/goon
 
 ## Discord bot command prefix, if the discord bot is used
 # DISCORDBOTCOMMANDPREFIX ?

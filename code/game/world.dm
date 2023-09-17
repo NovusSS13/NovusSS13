@@ -49,8 +49,8 @@ GLOBAL_VAR(restart_counter)
  * - Dominion/Cyberboss
  *
  * Where to put init shit quick guide:
- * If you need it to happen before the mc is created: world/Genesis. 
- * If you need it to happen last: world/New(), 
+ * If you need it to happen before the mc is created: world/Genesis.
+ * If you need it to happen last: world/New(),
  * Otherwise, in a subsystem preinit or init. Subsystems can set an init priority.
  */
 
@@ -356,18 +356,28 @@ GLOBAL_VAR(restart_counter)
 
 	var/new_status = ""
 	var/hostedby
-	if(config)
-		var/server_name = CONFIG_GET(string/servername)
-		if (server_name)
-			new_status += "<b>[server_name]</b> "
-		if(!CONFIG_GET(flag/norespawn))
-			features += "respawn"
-		if(!CONFIG_GET(flag/allow_ai))
-			features += "AI disabled"
-		hostedby = CONFIG_GET(string/hostedby)
+	var/server_name = CONFIG_GET(string/servername)
+	if (server_name)
+		new_status += "<b>[server_name]</b> "
+	if(CONFIG_GET(flag/norespawn))
+		features += "No respawn"
+	else
+		features += "Respawn"
+	if(!CONFIG_GET(flag/allow_ai))
+		features += "AI disabled"
+	hostedby = CONFIG_GET(string/hostedby)
 
 	if (CONFIG_GET(flag/station_name_in_hub_entry))
 		new_status += " &#8212; <b>[station_name()]</b>"
+	var/discordurl = CONFIG_GET(string/discordurl)
+	if(discordurl)
+		new_status += " (<a href=\"[discordurl]\">Discord</a>)"
+	var/githuburl = CONFIG_GET(string/githuburl)
+	if(githuburl)
+		new_status += " (<a href=\"[githuburl]\">Github</a>)"
+	var/age_gate = CONFIG_GET(number/age_gate)
+	if(age_gate)
+		new_status += " (18+)"
 
 	var/players = GLOB.clients.len
 
@@ -376,9 +386,17 @@ GLOBAL_VAR(restart_counter)
 	if (!host && hostedby)
 		features += "hosted by <b>[hostedby]</b>"
 
-	if(length(features))
-		new_status += ": [jointext(features, ", ")]"
+	var/tagline = CONFIG_GET(string/tagline)
+	if(tagline)
+		new_status += "<br>[tagline]"
 
+	if(length(features))
+		new_status += "<br>[jointext(features, ", ")]"
+
+	new_status += "<br>"
+	var/roleplaylevel = CONFIG_GET(string/roleplaylevel)
+	if(roleplaylevel)
+		new_status += "<br>Roleplay: <b>[roleplaylevel]</b>"
 	new_status += "<br>Time: <b>[gameTimestamp("hh:mm")]</b>"
 	if(SSmapping.config)
 		new_status += "<br>Map: <b>[SSmapping.config.map_path == CUSTOM_MAP_PATH ? "Uncharted Territory" : SSmapping.config.map_name]</b>"
