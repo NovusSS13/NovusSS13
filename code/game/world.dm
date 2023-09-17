@@ -391,9 +391,7 @@ GLOBAL_VAR(restart_counter)
 		new_status += "<br>[tagline]"
 
 	if(length(features))
-		new_status += "<br>[jointext(features, ", ")]"
-
-	new_status += "<br>"
+		new_status += "<br>\[[jointext(features, ", ")]\]"
 	var/roleplaylevel = CONFIG_GET(string/roleplaylevel)
 	if(roleplaylevel)
 		new_status += "<br>Roleplay: <b>[roleplaylevel]</b>"
