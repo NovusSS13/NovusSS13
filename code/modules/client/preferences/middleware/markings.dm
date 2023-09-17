@@ -26,21 +26,21 @@
 	data["body_marking_sets"] = presets
 
 	var/list/marking_parts = list()
-	var/list/this_zone_marking_icons = list()
 	for(var/zone in GLOB.marking_zones)
 		var/list/this_zone = list()
 
 		this_zone["body_zone"] = zone
 		this_zone["name"] = capitalize(parse_zone(zone))
 		var/list/this_zone_marking_choices = list()
+		var/list/this_zone_marking_icons = list()
 		if(LAZYACCESS(GLOB.body_markings_by_zone, zone))
 			for(var/marking_name in GLOB.body_markings_by_zone[zone])
 				if(marking_name == SPRITE_ACCESSORY_NONE)
 					continue
 				var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
-				this_zone_marking_icons[marking_name] = sanitize_css_class_name("[zone][marking_name]")
 				if(!body_markings.compatible_species || is_path_in_list(species_type, body_markings.compatible_species))
 					this_zone_marking_choices += marking_name
+					this_zone_marking_icons[marking_name] = sanitize_css_class_name("[zone][marking_name]")
 		var/list/this_zone_markings = list()
 		for(var/marking_name in preferences.body_markings[zone])
 			this_zone_marking_choices -= marking_name
