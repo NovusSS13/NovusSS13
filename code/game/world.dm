@@ -360,9 +360,9 @@ GLOBAL_VAR(restart_counter)
 	if (server_name)
 		new_status += "<b>[server_name]</b> "
 	if(CONFIG_GET(flag/norespawn))
-		features += "No respawn"
+		features += "Respawn disabled"
 	else
-		features += "Respawn"
+		features += "Respawn enabled"
 	if(!CONFIG_GET(flag/allow_ai))
 		features += "AI disabled"
 	hostedby = CONFIG_GET(string/hostedby)
@@ -384,7 +384,7 @@ GLOBAL_VAR(restart_counter)
 	game_state = (CONFIG_GET(number/extreme_popcap) && players >= CONFIG_GET(number/extreme_popcap)) //tells the hub if we are full
 
 	if (!host && hostedby)
-		features += "hosted by <b>[hostedby]</b>"
+		features += "Hosted by <b>[hostedby]</b>"
 
 	var/tagline = CONFIG_GET(string/tagline)
 	if(tagline)
