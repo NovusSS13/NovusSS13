@@ -375,7 +375,7 @@ GLOBAL_VAR(restart_counter)
 	var/githuburl = CONFIG_GET(string/githuburl)
 	if(githuburl)
 		new_status += " (<a href=\"[githuburl]\">Github</a>)"
-	var/age_gate = CONFIG_GET(number/age_gate)
+	var/age_gate = CONFIG_GET(flag/age_gate)
 	if(age_gate)
 		new_status += " (18+)"
 
@@ -386,7 +386,7 @@ GLOBAL_VAR(restart_counter)
 	if (!host && hostedby)
 		features += "Hosted by <b>[hostedby]</b>"
 
-	var/tagline = CONFIG_GET(string/tagline)
+	var/tagline = CONFIG_GET(string/servertagline)
 	if(tagline)
 		new_status += "<br>[tagline]"
 
