@@ -1,3 +1,4 @@
+import { classes } from 'common/react';
 import { Autofocus, Section, Button, Box, ColorBox, Dropdown, Flex, Popper, Stack, TrackOutsideClicks } from '../../components';
 import { useBackend, useLocalState, useSharedState } from '../../backend';
 import { Marking, MarkingZone, PreferencesMenuData } from './data';
@@ -100,7 +101,13 @@ const MarkingButton = (
                               height: `${CLOTHING_SELECTION_CELL_SIZE}px`,
                               width: `${CLOTHING_SELECTION_CELL_SIZE}px`,
                             }}>
-                            <Box/>
+                            <Box
+                              className={classes([
+                                'markings32x32',
+                                zone.markings_icons[availableMarking],
+                                'centered-image',
+                              ])}
+                            />
                           </Button>
                           <Box textAlign="center">{availableMarking}</Box>
                         </Flex.Item>
@@ -112,30 +119,6 @@ const MarkingButton = (
 
               </Stack>
             </Box>
-            {/*
-            <Stack backgroundColor="white" ml={0.5} p={0.3}>
-              {(zone.markings_choices.concat([marking.name]).sort()).map( // oh my fucking god this is so fucking ugly i hate this piece of shit language
-                (availableMarking) => {
-                  return (
-                    <Stack.Item key={props.key}>
-                      <Button
-                        selected={availableMarking === marking.name}
-                        onClick={() => {
-                          act('change_marking', {
-                            body_zone: zone.body_zone,
-                            marking_index: marking.marking_index,
-                            new_marking: availableMarking,
-                          });
-                        }}
-                        //fontSize="22px"
-                        content={availableMarking}
-                      />
-                    </Stack.Item>
-                  );
-                }
-              )}
-            </Stack>
-            */}
           </TrackOutsideClicks>
         )
       }>
@@ -243,12 +226,12 @@ const ZoneItem = (
                     key={props.key}
                     zone={zone}
                     marking={marking}
-                    isOpen={currentMarkingMenu === marking.marking_index}
+                    isOpen={currentMarkingMenu ===  zone.name + marking.marking_index}
                     handleClose={() => {
                       setCurrentMarkingMenu(null);
                     }}
                     handleOpen={() => {
-                      setCurrentMarkingMenu(marking.marking_index);
+                      setCurrentMarkingMenu(zone.name + marking.marking_index);
                     }}
                   />
                   {/*
