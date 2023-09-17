@@ -30,6 +30,13 @@
 /// server name (the name of the game window)
 /datum/config_entry/string/servername
 
+/// server tagline (description that appears below server name on the hub)
+/datum/config_entry/string/servertagline
+
+/// server roleplay level
+/datum/config_entry/string/roleplaylevel
+	default = "Medium"
+
 /// short form server name used for the DB
 /datum/config_entry/string/serversqlname
 
@@ -308,6 +315,8 @@
 
 /datum/config_entry/string/githuburl
 	default = "https://www.github.com/tgstation/tgstation"
+
+/datum/config_entry/string/discordurl
 
 /datum/config_entry/string/discordbotcommandprefix
 	default = "?"
@@ -700,4 +709,8 @@
 /datum/config_entry/flag/toast_notification_on_init
 
 /datum/config_entry/flag/config_errors_runtime
+	default = FALSE
+
+/// automated age gate that only accepts users that confirm they are 18+
+/datum/config_entry/flag/age_gate
 	default = FALSE
