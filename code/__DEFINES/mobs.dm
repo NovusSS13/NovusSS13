@@ -715,14 +715,14 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 ))
 
 //Bitflags for the layers a bodypart overlay can draw on (can be drawn on multiple layers)
-/// Draws overlay on the BODY_FRONT_LAYER
-#define EXTERNAL_FRONT (1 << 0)
-/// Draws overlay on the BODY_ADJ_LAYER
-#define EXTERNAL_ADJACENT (1 << 1)
 /// Draws overlay on the BODY_BEHIND_LAYER
-#define EXTERNAL_BEHIND (1 << 2)
+#define EXTERNAL_BEHIND (1 << 1)
+/// Draws overlay on the BODY_ADJ_LAYER
+#define EXTERNAL_ADJACENT (1 << 2)
+/// Draws overlay on the BODY_FRONT_LAYER
+#define EXTERNAL_FRONT (1 << 3)
 /// Draws organ on all EXTERNAL layers
-#define ALL_EXTERNAL_OVERLAYS EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
+#define EXTERNAL_ALL_LAYERS EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
 
 // Bitflags for external organs restylability
 /// This organ allows restyle through plant restyling (like secateurs)

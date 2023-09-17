@@ -24,10 +24,12 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/horns/lizard, GLOB.horns_list_lizard, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/human, GLOB.ears_list_human, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills/lizard, GLOB.frills_list_lizard, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines/lizard, GLOB.spines_list_lizard, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings_open, GLOB.wings_open_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
@@ -53,10 +55,10 @@
 			if(body_marking.allowed_bodyparts & bitflag)
 				LAZYADDASSOC(GLOB.body_markings_by_zone[zone], marking_name, body_marking)
 	// Here we build the global list for all body markings sets
-	for(var/path in subtypesof(/datum/body_marking_set))
-		var/datum/body_marking_set/marking_set = path
+	for(var/marking_path in subtypesof(/datum/body_marking_set))
+		var/datum/body_marking_set/marking_set = marking_path
 		if(initial(marking_set.name))
-			marking_set = new path()
+			marking_set = new marking_path()
 			GLOB.body_marking_sets[marking_set.name] = marking_set
 
 /// Inits GLOB.species_list. Not using GLOBAL_LIST_INIT b/c it depends on GLOB.string_lists

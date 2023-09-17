@@ -22,7 +22,7 @@
 		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg", EAST), ICON_UNDERLAY)
 		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg", EAST), ICON_OVERLAY)
 		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_head_m", EAST), ICON_OVERLAY)
-		var/icon/hair = icon('icons/mob/species/human/human_face.dmi', "hair_long", SOUTH)
+		var/icon/hair = icon('icons/mob/species/sprite_accessory/human_face.dmi', "hair_long", SOUTH)
 		hair.Blend(COLOR_PINK, ICON_MULTIPLY)
 		groin.Blend(hair, ICON_OVERLAY)
 
@@ -41,7 +41,8 @@
 	var/static/layers = list("BEHIND", "FRONT") //futureproofing...
 	for(var/layer in layers)
 		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_tail_cat_[sprite_accessory.icon_state]_[layer]", EAST)
-		accessory_icon.Blend(COLOR_PINK, ICON_MULTIPLY)
+		if(sprite_accessory.color_amount == 1) //matrixed colors and uncolored don't need to be blended
+			accessory_icon.Blend(COLOR_PINK, ICON_MULTIPLY)
 		final_icon.Blend(accessory_icon, ICON_UNDERLAY)
 
 	final_icon.Crop(1, 10, 15, 26)
@@ -74,17 +75,17 @@
 	return assoc_to_keys_features(GLOB.ears_list_human)
 
 /datum/preference/choiced/mutant/felinid_ears/create_default_value()
-	var/datum/sprite_accessory/ears/cat/ears = /datum/sprite_accessory/ears/cat
+	var/datum/sprite_accessory/ears/ears = /datum/sprite_accessory/ears/human/cat
 	return initial(ears.name)
 
 /datum/preference/choiced/mutant/felinid_ears/icon_for(value)
 	var/static/icon/head_icon
 	if (isnull(head_icon))
 		head_icon = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_head_f", SOUTH)
-		var/icon/eyes = icon('icons/mob/species/human/human_face.dmi', "eyes", SOUTH)
+		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", SOUTH)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		head_icon.Blend(eyes, ICON_OVERLAY)
-		var/icon/hair = icon('icons/mob/species/human/human_face.dmi', "hair_long", SOUTH)
+		var/icon/hair = icon('icons/mob/species/sprite_accessory/human_face.dmi', "hair_long", SOUTH)
 		hair.Blend(COLOR_PINK, ICON_MULTIPLY)
 		head_icon.Blend(hair, ICON_OVERLAY)
 
@@ -100,11 +101,14 @@
 
 	var/icon/final_icon = icon(head_icon)
 
-	var/icon/accessory_icon = icon(sprite_accessory.icon, "m_ears_[sprite_accessory.icon_state]_FRONT", SOUTH)
-	accessory_icon.Blend(COLOR_PINK, ICON_MULTIPLY)
-	final_icon.Blend(accessory_icon, ICON_OVERLAY)
-	if (sprite_accessory.hasinner)
-		final_icon.Blend(icon(sprite_accessory.icon, "m_earsinner_[sprite_accessory.icon_state]_FRONT", SOUTH), ICON_OVERLAY)
+	var/static/layers = list("BEHIND", "ADJ", "FRONT") //futureproofing...
+	for(var/layer in layers)
+		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_ears_[sprite_accessory.icon_state]_[layer]", SOUTH)
+		if(sprite_accessory.color_amount == 1) //matrixed colors and uncolored don't need to be blended
+			accessory_icon.Blend(COLOR_PINK, ICON_MULTIPLY)
+		final_icon.Blend(accessory_icon, ICON_OVERLAY)
+		if(sprite_accessory.hasinner)
+			final_icon.Blend(icon(sprite_accessory.icon, "m_earsinner_[sprite_accessory.icon_state]_[layer]", SOUTH), ICON_OVERLAY)
 
 	final_icon.Crop(10, 19, 22, 31)
 	final_icon.Scale(32, 32)

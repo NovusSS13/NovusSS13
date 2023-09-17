@@ -41,16 +41,16 @@
 	)
 
 /datum/body_marking_set/moth/whitefly
-	name = "Whitefly"
+	name = "White Fly"
 	body_marking_list = list(
-		BODY_ZONE_HEAD = list("Whitefly"),
-		BODY_ZONE_CHEST = list("Whitefly"),
-		BODY_ZONE_L_ARM = list("Whitefly"),
-		BODY_ZONE_R_ARM = list("Whitefly"),
-		BODY_ZONE_PRECISE_L_HAND = list("Whitefly"),
-		BODY_ZONE_PRECISE_R_HAND = list("Whitefly"),
-		BODY_ZONE_L_LEG = list("Whitefly"),
-		BODY_ZONE_R_LEG = list("Whitefly"),
+		BODY_ZONE_HEAD = list("White Fly"),
+		BODY_ZONE_CHEST = list("White Fly"),
+		BODY_ZONE_L_ARM = list("White Fly"),
+		BODY_ZONE_R_ARM = list("White Fly"),
+		BODY_ZONE_PRECISE_L_HAND = list("White Fly"),
+		BODY_ZONE_PRECISE_R_HAND = list("White Fly"),
+		BODY_ZONE_L_LEG = list("White Fly"),
+		BODY_ZONE_R_LEG = list("White Fly"),
 	)
 
 /datum/body_marking_set/moth/lovers

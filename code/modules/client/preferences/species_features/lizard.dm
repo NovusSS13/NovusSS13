@@ -3,7 +3,7 @@
 	if (isnull(lizard))
 		lizard = icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_head", EAST)
 		lizard.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-		var/icon/eyes = icon('icons/mob/species/human/human_face.dmi', "eyes", EAST)
+		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", EAST)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		lizard.Blend(eyes, ICON_OVERLAY)
 
@@ -31,10 +31,12 @@
 
 	var/icon/final_icon = include_snout ? icon(lizard_with_snout) : icon(lizard)
 
-	var/icon/accessory_icon = icon(sprite_accessory.icon, "m_[key]_[sprite_accessory.icon_state]_ADJ", EAST)
-	if(color_accessory)
-		accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-	final_icon.Blend(accessory_icon, ICON_OVERLAY)
+	var/static/layers = list("BEHIND", "ADJ", "FRONT") //futureproofing...
+	for(var/layer in layers)
+		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_[key]_[sprite_accessory.icon_state]_[layer]", EAST)
+		if(color_accessory && sprite_accessory.color_amount == 1) //matrixed colors and uncolored don't need to be blended
+			accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
+		final_icon.Blend(accessory_icon, ICON_OVERLAY)
 
 	final_icon.Crop(11, 20, 23, 32)
 	final_icon.Scale(32, 32)
@@ -166,8 +168,7 @@
 	var/static/layers = list("BEHIND", "FRONT") //futureproofing...
 	for(var/layer in layers)
 		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_tail_lizard_[sprite_accessory.icon_state]_[layer]", EAST)
-		accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-		final_icon.Blend(accessory_icon, ICON_UNDERLAY)
+		final_icon.Blend(accessory_icon, ICON_OVERLAY)
 
 	final_icon.Crop(1, 1, 15, 13)
 	final_icon.Scale(32, 32)
@@ -212,7 +213,7 @@
 
 		var/icon/tail = icon('icons/mob/species/lizard/lizard_tails.dmi', "m_tail_lizard_smooth_BEHIND", EAST)
 		tail.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-		groin_with_tail.Blend(tail, ICON_UNDERLAY)
+		groin_with_tail.Blend(tail, ICON_OVERLAY)
 
 	var/static/icon/groin_icon_cropped
 	if (isnull(groin_icon_cropped))
@@ -229,8 +230,9 @@
 	var/static/layers = list("ADJ") //futureproofing...
 	for(var/layer in layers)
 		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_spines_[sprite_accessory.icon_state]_[layer]", EAST)
-		accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-		final_icon.Blend(accessory_icon, ICON_UNDERLAY)
+		if(sprite_accessory.color_amount == 1) //matrixed colors and uncolored don't need to be blended
+			accessory_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
+		final_icon.Blend(accessory_icon, ICON_OVERLAY)
 
 	final_icon.Crop(1, 1, 15, 13)
 	final_icon.Scale(32, 32)

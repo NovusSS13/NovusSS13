@@ -133,6 +133,34 @@ export const feature_mcolor: Feature<string> = {
   component: FeatureTriColorInput,
 };
 
+export const feature_mutant_ears: FeatureChoiced = {
+  name: 'Ears',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
+export const feature_mutant_ears_color: FeatureChoiced = {
+  name: 'Ears color',
+  component: FeatureTriColorInput,
+};
+
+export const feature_mutant_tail: FeatureChoiced = {
+  name: 'Tail',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
+export const feature_mutant_tail_color: FeatureChoiced = {
+  name: 'Tail color',
+  component: FeatureTriColorInput,
+};
+
 export const underwear_color: Feature<string> = {
   name: 'Underwear color',
   component: FeatureColorInput,

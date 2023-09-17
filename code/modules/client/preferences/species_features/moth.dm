@@ -15,8 +15,8 @@
 
 	if (isnull(moth_head))
 		moth_head = icon('icons/mob/species/moth/bodyparts.dmi', "moth_head")
-		moth_head.Blend(icon('icons/mob/species/human/human_face.dmi', "motheyes_l"), ICON_OVERLAY)
-		moth_head.Blend(icon('icons/mob/species/human/human_face.dmi', "motheyes_r"), ICON_OVERLAY)
+		moth_head.Blend(icon('icons/mob/species/sprite_accessory/human_face.dmi', "motheyes_l"), ICON_OVERLAY)
+		moth_head.Blend(icon('icons/mob/species/sprite_accessory/human_face.dmi', "motheyes_r"), ICON_OVERLAY)
 
 	var/datum/sprite_accessory/antennae = GLOB.moth_antennae_list[value]
 

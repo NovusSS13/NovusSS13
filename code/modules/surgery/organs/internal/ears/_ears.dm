@@ -74,7 +74,7 @@
 	deaf = max(deaf + (ddeaf * damage_multiplier), 0)
 
 /datum/bodypart_overlay/mutant/ears
-	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
+	layers = EXTERNAL_ALL_LAYERS
 	color_source = ORGAN_COLOR_DNA
 	feature_key = "ears"
 	feature_color_key = "ears_color"
@@ -116,6 +116,10 @@
 		center_image(inner_appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
 
 	return inner_appearance
+
+/obj/item/organ/ears/mutant
+	name = "mutant ears"
+	bodypart_overlay = /datum/bodypart_overlay/mutant/ears
 
 /obj/item/organ/ears/invincible
 	damage_multiplier = 0

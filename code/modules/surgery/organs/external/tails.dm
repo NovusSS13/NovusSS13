@@ -111,13 +111,18 @@
 	return GLOB.tails_list
 
 /datum/bodypart_overlay/mutant/tail/get_base_icon_state()
-	return (wagging ? "wagging_" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
+	var/datum/sprite_accessory/tails/wagger = sprite_datum
+	return ((wagging && wagger.can_wag) ? "wagging_" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
 
 /datum/bodypart_overlay/mutant/tail/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	if(owner.wear_suit?.flags_inv & HIDEJUMPSUIT)
 		return FALSE
 
 	return TRUE
+
+/obj/item/organ/tail/mutant
+	name = "mutant tail"
+	bodypart_overlay = /datum/bodypart_overlay/mutant/tail
 
 /obj/item/organ/tail/cat
 	name = "cat tail"

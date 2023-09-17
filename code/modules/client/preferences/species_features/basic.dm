@@ -18,7 +18,8 @@
 	var/icon/final_icon = icon(head_icon)
 
 	var/icon/head_accessory_icon = icon(sprite_accessory.icon, sprite_accessory.icon_state)
-	head_accessory_icon.Blend(COLOR_DARK_BROWN, ICON_MULTIPLY)
+	if(sprite_accessory.color_amount == 1) //matrixed colors and uncolored don't need to be blended
+		head_accessory_icon.Blend(COLOR_DARK_BROWN, ICON_MULTIPLY)
 	final_icon.Blend(head_accessory_icon, ICON_OVERLAY)
 
 	final_icon.Crop(10, 19, 22, 31)

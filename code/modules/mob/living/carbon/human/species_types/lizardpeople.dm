@@ -21,6 +21,11 @@
 		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
 	)
+	body_marking_sets = list(
+		"Dark Tiger Body",
+		"Light Belly",
+		"Light Tiger Body",
+	)
 	mutanttongue = /obj/item/organ/tongue/lizard
 	coldmod = 1.5
 	heatmod = 0.67
