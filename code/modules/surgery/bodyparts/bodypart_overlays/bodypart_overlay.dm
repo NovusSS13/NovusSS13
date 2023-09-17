@@ -49,6 +49,7 @@
 			return "ADJ"
 		if(-BODY_FRONT_LAYER)
 			return "FRONT"
+	return layer
 
 ///Converts a bitflag to the right layer. I'd love to make this a static index list, but byond made an attempt on my life when i did
 /datum/bodypart_overlay/proc/bitflag_to_layer(layer)
@@ -59,8 +60,7 @@
 			return -BODY_ADJ_LAYER
 		if(EXTERNAL_FRONT)
 			return -BODY_FRONT_LAYER
-		else
-			return layer
+	return layer
 
 ///Check whether we can draw the overlays on a limb. Some oddball limbs are fundamentally incompatible with certain goofy overlays.
 /datum/bodypart_overlay/proc/can_draw_on_bodypart(obj/item/bodypart/ownerlimb)

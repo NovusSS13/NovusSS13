@@ -38,9 +38,11 @@
 
 	var/icon/final_icon = icon(groin)
 
-	var/icon/accessory_icon = icon(sprite_accessory.icon, "m_tail_cat_[sprite_accessory.icon_state]_FRONT", EAST)
-	accessory_icon.Blend(COLOR_PINK, ICON_MULTIPLY)
-	final_icon.Blend(accessory_icon, ICON_UNDERLAY)
+	var/static/layers = list("BEHIND", "FRONT") //futureproofing...
+	for(var/layer in layers)
+		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_tail_cat_[sprite_accessory.icon_state]_[layer]", EAST)
+		accessory_icon.Blend(COLOR_PINK, ICON_MULTIPLY)
+		final_icon.Blend(accessory_icon, ICON_UNDERLAY)
 
 	final_icon.Crop(1, 10, 15, 26)
 	final_icon.Scale(32, 32)
