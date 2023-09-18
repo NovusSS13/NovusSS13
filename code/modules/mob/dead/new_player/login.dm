@@ -2,9 +2,9 @@
 	if(!client)
 		return
 
+	client?.set_db_player_flags()
 	if(CONFIG_GET(flag/use_exp_tracking))
 		client?.set_exp_from_db()
-		client?.set_db_player_flags()
 		if(!client)
 			// client disconnected during one of the db queries
 			return FALSE
@@ -25,6 +25,8 @@
 		// Perform automated age verification if necessary
 		if(!client.passed_age_check())
 			client.perform_age_check()
+		else if(length(config.rules.rules_list) && !(client.prefs?.db_flags & DB_FLAG_READ_RULES))
+			addtimer(CALLBACK(client, TYPE_PROC_REF(/client,delayed_rules_message)), 5 SECONDS)
 
 	. = ..()
 	if(!. || !client)

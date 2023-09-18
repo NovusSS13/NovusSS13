@@ -1,0 +1,157 @@
+{
+	"Rules": {
+		"Pedophiles or minors are not welcome on this server.": [
+			"Pedophiles or minors are not welcome on this server. ",
+			"Players proven to be either of these, beyond a reasonable doubt, will be banned permanently. ",
+			"Keeping around either of these groups is a massive liability to the server, so this is a zero tolerance rule. ",
+			"Additionally, knowing about a player that is either a minor or a pedophile, ",
+			"and not reporting it to staff, means you will get the same punishment as said player."
+		],
+		"Pedophilia, zoophilia and necrophilia are not allowed to be roleplayed in the server.": [
+			"Pedophilia, zoophilia and necrophilia are not allowed to be roleplayed in the server. ",
+			"There will be no exceptions to this rule. ",
+			"Anything that looks like an animal, or looks like a minor, to a reasonable viewer, ",
+			"may not be used in a sexual manner. "
+		],
+		"Metacommunications will not be allowed.": [
+			"Unless given explicit permission by the server staff in advance, metacommunications will not be allowed."
+		],
+		"Do not abuse metaknowledge.": [
+			"Do not abuse metaknowledge. ",
+			"The insight you gained as a ghost is not in-character knowledge, and different characters know different things."
+		],
+		"You must do your best to roleplay.": [
+			"Spouting zoomerspeak/slang or netspeak in-character are not acceptable. ",
+			"Exceptions are made: Using netspeak with your PDA, using it creatively, etc - Are allowed."
+		],
+		"Do not play meme characters.": [
+			"Playing a character made specifically for a 'meme' isn't allowed. ",
+			"Pop-culture characters, IRL people, etc. ",
+			"Be creative, not idiotic."
+		],
+		"Metagangs are punished more severely.": [
+			"Meta/persistent relationships are acceptable, ",
+			"but rule infractions committed by metagangs will generally ",
+			"be punished more harshly than they otherwise would if committed by a single individual."
+		],
+		"Multikeying is not allowed.": [
+			"Multikeying is not allowed. ",
+			"You are not allowed to use multiple byond accounts on the same round."
+		],
+		"Ban evasion is not allowed.": [
+			"Ban evasion is not allowed. ",
+			"Attempting to evade a ban will invariably result in escalation to a permanent ban. ",
+			"Instead, please try to get your ban resolved or reduced by talking with staff."
+		],
+		"Non-consensual ERP may only be performed if given OOC consent.": [
+			"Non-consensual ERP may only be performed if given Out-Of-Character consent. ",
+			"No exceptions."
+		],
+		"Sabotaging the server is not allowed.": [
+			"Sabotaging the server, ",
+			"by ddosing, exploiting a security vulnerability, ",
+			"abusing a bug to lag and crash the servers, ",
+			"or other such means ",
+			"will result in a permaban."
+		],
+		"Do not commit unreasonable violence.": [
+			"Do not commit unreasonable violence. ",
+			"You play a character who has the decency and the ability to ",
+			"be employed in a space station, your character should not be running around stabbing people."
+		],
+		"Self defense is, generally, okay.": [
+			"Self defense exists, and it's definition isn't set in stone. ",
+			"You can defend yourself from someone hurting you, harassing you, stalking, et cetera. ",
+			"But do not retaliate hard enough to kill, unless your own life or that of others is threatened. ",
+			"Do not prevent people from receiving medical care after you've harmed them unless you have a very, very good reason."
+		],
+		"Do not grief.": [
+			"Do not sabotage station infrastructure in major ways, AKA - Do not grief. ",
+			"Sabotaging the supermatter, bombing the hallways, destroying atmos - ",
+			"All of these are things make the the station uninhabitable and cause indirect harm."
+		],
+		"Self antagonism is acceptable to a certain extent.": [
+			"Self antagonism is acceptable to a certain extent, ",
+			"as long as you follow the stated rules. ",
+			"Killing a security officer because he is trying to arrest you after you commit extensive vandalism, for example, ",
+			"is not reasonable violence and infringes on that rule."
+		],
+		"Powergaming is acceptable to a certain extent.": [
+			"Powergaming is acceptable to a certain extent, however, ",
+			"do not powergame in a way which would seem absurd, or out of character, for your character to do."
+		],
+		"Antagonist hogging": [
+			"You shouldn't play the game only hoping to roll an antagonist status. ",
+			"If we catch on that you only play here to be an antagonist, we will ",
+			"ban you from antagonist roles, and possibly ban you from the server altogether. "
+		],
+		"Permabrigging and executing someone are, effectively, the same.": [
+			"Permabrigging and executing someone are, effectively, the same. ",
+			"Do not permabrig someone that you cannot justify executing. ",
+			"Imprisoning someone for an hour or more, invariably will count as permabrigging."
+		]
+	},
+	"Clarifications": {
+		"Principle of civil law.": [
+			"This server follows the principle of civil law. ",
+			"If something is not forbidden by the rules, it is assumed to be allowed ingame. ",
+			"No bans shall be enacted without valid backing by the rules written here. ",
+			"Rules may not be enforced retroactively, either."
+		],
+		"Rules written here are not ordered in any way.": [
+			"The rules written here are not ordered in any particular way. ",
+			"Rules are not more or less important based on their position in the list."
+		],
+		"Admin discretion.": [
+			"Punishments for infringing on the rules will be applied based on the enforcing admin's discretion. ",
+			"You may consult us about an admin in particular, if you believe any punishment was unjust."
+		],
+		"The discord server does not run under the same rules.": [
+			"That which is written here does not entirely apply to the Discord - ",
+			"Admins are allowed to be generally more tyrannical in that space, among other differences."
+		],
+		"Off server behavior is not punished.": [
+			"Off server behaviour will not be punished, your actions within this server are judged independently.",
+			"This applies to all rules, except the golden rule: No pedophiles or minors."
+		]
+	},
+	"Staff Principles": {
+		"Staff are not better than players.": [
+			"Staff are not better than players. ",
+			"We are fallible humans just like you, ",
+			"so feel free to judge us harshly in how we run this community. ",
+			"You will not be punished for criticism alone."
+		],
+		"Everyone is entitled to their opinions.": [
+			"Everyone is entitled to their opinions, no matter how absurdly shitty. ",
+			"Avoid proselytizing and trying to wrangle staff into censoring those you disagree with!"
+		],
+		"We are here to help everyone, not just you.": [
+			"We're here to help! ",
+			"However, If you're asking for us to buff you, revive you, and adhere to you, ",
+			"it won't be in our nature to give advantages in bad spirit. ",
+			"We wish to provide players with a fair playing ground. ",
+			"However: We still would love to see what you come up with! ",
+			"If your idea is in good spirit, and is fun for more than just one person, ask staff for help."
+		]
+	},
+	"Player Principles": {
+		"Don't be an asshole!": [
+			"Don't be an asshole! ",
+			"Put in effort to provide not just yourself, but other players, with a fun experience."
+		],
+		"Don't go out of your way to harass players ingame.": [
+			"Don't go out of your way to harass players ingame. You're both here for the same reason. ",
+			"Try to be nice to each other, and worst case scenario, just try to avoid each other."
+		],
+		"You are not the main character.": [
+			"You're not the main character. ",
+			"You're here alongside all of us. ",
+			"If you want to do something unique, we encourage that! Just don't assume you have priority over others."
+		],
+		"Most important of all...": [
+			"Most important of all: We are together in this community for the sake of having fun. ",
+			"Do not get unreasonably upset over silly things, in the end, it's all a game."
+		]
+	}
+}
