@@ -20,6 +20,7 @@
 
 	var/motd
 	var/policy
+	var/datum/rules/rules
 
 	/// If the configuration is loaded
 	var/loaded = FALSE
@@ -95,6 +96,7 @@
 	loadmaplist(CONFIG_MAPS_FILE)
 	LoadMOTD()
 	LoadPolicy()
+	LoadRules()
 	LoadChatFilter()
 	if(CONFIG_GET(flag/load_jobs_from_txt))
 		validate_job_config()
@@ -342,6 +344,18 @@ Example config:
 			DelayedMessageAdmins("JSON parsing failure for policy.json")
 		else
 			policy = parsed
+
+/datum/controller/configuration/proc/LoadRules()
+	rules = new()
+	rules.rules_list = list()
+	var/rawrules = file2text("[directory]/rules.json")
+	if(rawrules)
+		var/parsed = safe_json_decode(rawrules)
+		if(!parsed)
+			log_config("JSON parsing failure for rules.json")
+			DelayedMessageAdmins("JSON parsing failure for rules.json")
+		else
+			rules.rules_list = parsed
 
 /datum/controller/configuration/proc/loadmaplist(filename)
 	log_config("Loading config file [filename]...")
