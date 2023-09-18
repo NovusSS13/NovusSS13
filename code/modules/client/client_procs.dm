@@ -114,6 +114,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		no_tgui_adminhelp(input(src, "Enter your ahelp", "Ahelp") as null|message)
 		return
 
+	// Rules UI
+	if(href_list["read_rules"])
+		config.rules?.ui_interact(src.mob)
+		return
+
 	switch(href_list["_src_"])
 		if("holder")
 			hsrc = holder

@@ -31,13 +31,17 @@
 	set name = "rules"
 	set desc = "Show Server Rules."
 	set hidden = TRUE
-	var/rulesurl = CONFIG_GET(string/rulesurl)
-	if(rulesurl)
-		if(tgui_alert(src, "This will open the rules in your browser. Are you sure?",, list("Yes","No"))!="Yes")
-			return
-		src << link(rulesurl)
+
+	if(length(config.rules?.rules_list))
+		config.rules.ui_interact(src.mob)
 	else
-		to_chat(src, span_danger("The rules URL is not set in the server configuration."))
+		var/rulesurl = CONFIG_GET(string/rulesurl)
+		if(rulesurl)
+			if(tgui_alert(src, "This will open the rules in your browser. Are you sure?",, list("Yes","No"))!="Yes")
+				return
+			src << link(rulesurl)
+		else
+			to_chat(src, span_danger("The rules URL is not set in the server configuration."))
 	return
 
 /client/verb/github()
