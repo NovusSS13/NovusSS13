@@ -1,8 +1,8 @@
-/proc/generate_mutant_face_shot(datum/sprite_accessory/sprite_accessory, key, include_snout = TRUE, color_accessory = TRUE)
+/proc/generate_mutant_face_shot(datum/sprite_accessory/sprite_accessory, bodypart_overlay_type = /datum/bodypart_overlay/mutant, include_snout = TRUE, color_accessory = TRUE)
 	var/static/icon/head_icon
 	if (isnull(head_icon))
 		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head_m", SOUTH)
-		head_icon.Blend(COLOR_TAN_ORANGE, ICON_MULTIPLY)
+		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
 		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", SOUTH)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		head_icon.Blend(eyes, ICON_OVERLAY)
@@ -16,8 +16,8 @@
 	var/static/icon/head_icon_with_snout
 	if (isnull(head_icon_with_snout))
 		head_icon_with_snout = icon(head_icon)
-		var/icon/snout = icon('icons/mob/species/lizard/lizard_misc.dmi', "m_snout_round_ADJ", SOUTH)
-		snout.Blend(COLOR_TAN_ORANGE, ICON_MULTIPLY)
+		var/icon/snout = icon('icons/mob/species/lizard/lizard_misc.dmi', "m_snout_sharplight_ADJ", SOUTH)
+		snout.Blend(COLOR_ORANGE, ICON_MULTIPLY)
 		head_icon_with_snout.Blend(snout, ICON_OVERLAY)
 
 	var/static/icon/head_icon_with_snout_cropped
@@ -26,19 +26,12 @@
 		head_icon_with_snout_cropped.Crop(11, 20, 23, 32)
 		head_icon_with_snout_cropped.Scale(32, 32)
 
-	if (isnull(sprite_accessory) || !sprite_accessory.icon_state)
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
 		return include_snout ? head_icon_with_snout_cropped : head_icon_cropped
 
-	var/icon/final_icon = icon(head_icon)
-
-	var/static/layers = list("BEHIND", "ADJ", "FRONT") //futureproofing...
-	for(var/layer in layers)
-		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_ears_[sprite_accessory.icon_state]_[layer]", SOUTH)
-		if(color_accessory && sprite_accessory.color_amount == 1) //matrixed colored and uncolored don't need to be blended
-			accessory_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		final_icon.Blend(accessory_icon, ICON_OVERLAY)
-		if(sprite_accessory.hasinner)
-			final_icon.Blend(icon(sprite_accessory.icon, "m_earsinner_[sprite_accessory.icon_state]_[layer]", SOUTH), ICON_OVERLAY)
+	var/icon/final_icon = include_snout ? icon(head_icon_with_snout) : icon(head_icon)
+	var/static/list/colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
+	blend_bodypart_overlay(final_icon, new bodypart_overlay_type(), sprite_accessory, color_accessory ? colors : null, dir = SOUTH)
 
 	final_icon.Crop(10, 19, 22, 31)
 	final_icon.Scale(32, 32)
@@ -101,7 +94,7 @@
 	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/choiced/mutant/ears/icon_for(value)
-	return generate_mutant_face_shot(GLOB.ears_list[value])
+	return generate_mutant_face_shot(GLOB.ears_list[value], /datum/bodypart_overlay/mutant/ears/mutant)
 
 /datum/preference/tricolor/mutant/ears
 	savefile_key = "feature_mutant_ears_color"
@@ -136,7 +129,7 @@
 		groin_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_chest_m", EAST)
 		groin_icon.Blend(icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_l_leg", EAST), ICON_UNDERLAY)
 		groin_icon.Blend(icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_r_leg", EAST), ICON_OVERLAY)
-		groin_icon.Blend(COLOR_TAN_ORANGE, ICON_MULTIPLY)
+		groin_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
 
 	var/static/icon/groin_icon_cropped
 	if (isnull(groin_icon_cropped))
@@ -145,17 +138,12 @@
 		groin_icon_cropped.Scale(32, 32)
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.tails_list[value]
-	if (isnull(sprite_accessory) || !sprite_accessory.icon_state)
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
 		return groin_icon_cropped
 
 	var/icon/final_icon = icon(groin_icon)
-
-	var/static/layers = list("BEHIND", "ADJ", "FRONT") //futureproofing...
-	for(var/layer in layers)
-		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_tail[sprite_accessory.feature_suffix ? "_[sprite_accessory.feature_suffix]" : null]_[sprite_accessory.icon_state]_[layer]", EAST)
-		if(sprite_accessory.color_amount == 1) //matrixed colors and uncolored don't need to be blended
-			accessory_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		final_icon.Blend(accessory_icon, ICON_OVERLAY)
+	var/static/list/colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/mutant(), sprite_accessory, colors, dir = EAST)
 
 	final_icon.Crop(1, 1, 15, 13)
 	final_icon.Scale(32, 32)

@@ -34,7 +34,6 @@
 	feature_suffix = "cat"
 
 /datum/sprite_accessory/tails/monkey
-	feature_suffix = "monkey"
 	color_amount = 0
 
 /datum/sprite_accessory/tails/monkey/monkey

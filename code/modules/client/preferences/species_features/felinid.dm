@@ -22,7 +22,7 @@
 		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg", EAST), ICON_UNDERLAY)
 		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg", EAST), ICON_OVERLAY)
 		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_head_m", EAST), ICON_OVERLAY)
-		var/icon/hair = icon('icons/mob/species/sprite_accessory/human_face.dmi', "hair_long", SOUTH)
+		var/icon/hair = icon('icons/mob/species/sprite_accessory/human_face.dmi', "hair_long", EAST)
 		hair.Blend(COLOR_PINK, ICON_MULTIPLY)
 		groin.Blend(hair, ICON_OVERLAY)
 
@@ -33,17 +33,11 @@
 		groin_cropped.Scale(32, 32)
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.tails_list[value]
-	if (isnull(sprite_accessory) || !sprite_accessory.icon_state)
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
 		return groin_cropped
 
 	var/icon/final_icon = icon(groin)
-
-	var/static/layers = list("BEHIND", "FRONT") //futureproofing...
-	for(var/layer in layers)
-		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_tail_cat_[sprite_accessory.icon_state]_[layer]", EAST)
-		if(sprite_accessory.color_amount == 1) //matrixed colors and uncolored don't need to be blended
-			accessory_icon.Blend(COLOR_PINK, ICON_MULTIPLY)
-		final_icon.Blend(accessory_icon, ICON_UNDERLAY)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/cat(), sprite_accessory, COLOR_PINK, dir = EAST)
 
 	final_icon.Crop(1, 10, 15, 26)
 	final_icon.Scale(32, 32)
@@ -96,19 +90,11 @@
 		head_icon_cropped.Scale(32, 32)
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.ears_list[value]
-	if (isnull(sprite_accessory) || !sprite_accessory.icon_state)
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
 		return head_icon_cropped
 
 	var/icon/final_icon = icon(head_icon)
-
-	var/static/layers = list("BEHIND", "ADJ", "FRONT") //futureproofing...
-	for(var/layer in layers)
-		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_ears_[sprite_accessory.icon_state]_[layer]", SOUTH)
-		if(sprite_accessory.color_amount == 1) //matrixed colors and uncolored don't need to be blended
-			accessory_icon.Blend(COLOR_PINK, ICON_MULTIPLY)
-		final_icon.Blend(accessory_icon, ICON_OVERLAY)
-		if(sprite_accessory.hasinner)
-			final_icon.Blend(icon(sprite_accessory.icon, "m_earsinner_[sprite_accessory.icon_state]_[layer]", SOUTH), ICON_OVERLAY)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/ears/cat(), sprite_accessory, COLOR_PINK, dir = SOUTH)
 
 	final_icon.Crop(10, 19, 22, 31)
 	final_icon.Scale(32, 32)

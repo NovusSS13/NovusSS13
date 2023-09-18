@@ -12,7 +12,7 @@
 /datum/bodypart_overlay/proc/get_overlays(layer, obj/item/bodypart/limb)
 	RETURN_TYPE(/list)
 	. = list()
-	layer = bitflag_to_layer(layer)
+	layer = external_bitflag_to_layer(layer)
 	var/image/primary_image = get_image(layer, limb)
 	color_image(primary_image, layer, limb)
 	. += primary_image
@@ -37,30 +37,6 @@
 ///Use this to change the appearance (and yes you must overwrite hahahahahah) (or dont use this, I just dont want people directly changing the image)
 /datum/bodypart_overlay/proc/set_appearance()
 	CRASH("Update appearance needs to be overridden")
-
-/**This exists so sprite accessories can still be per-layer without having to include that layer's
-*  number in their sprite name, which causes issues when those numbers change.
-*/
-/datum/bodypart_overlay/proc/mutant_bodyparts_layertext(layer)
-	switch(layer)
-		if(-BODY_BEHIND_LAYER)
-			return "BEHIND"
-		if(-BODY_ADJ_LAYER)
-			return "ADJ"
-		if(-BODY_FRONT_LAYER)
-			return "FRONT"
-	return layer
-
-///Converts a bitflag to the right layer. I'd love to make this a static index list, but byond made an attempt on my life when i did
-/datum/bodypart_overlay/proc/bitflag_to_layer(layer)
-	switch(layer)
-		if(EXTERNAL_BEHIND)
-			return -BODY_BEHIND_LAYER
-		if(EXTERNAL_ADJACENT)
-			return -BODY_ADJ_LAYER
-		if(EXTERNAL_FRONT)
-			return -BODY_FRONT_LAYER
-	return layer
 
 ///Check whether we can draw the overlays on a limb. Some oddball limbs are fundamentally incompatible with certain goofy overlays.
 /datum/bodypart_overlay/proc/can_draw_on_bodypart(obj/item/bodypart/ownerlimb)

@@ -78,3 +78,4 @@
 /datum/sprite_accessory/blank
 	name = SPRITE_ACCESSORY_NONE
 	icon_state = "none"
+	color_amount = 0

@@ -91,7 +91,7 @@
 /datum/bodypart_overlay/mutant/ears/get_overlays(layer, obj/item/bodypart/limb)
 	. = ..()
 	//fucking lovely, we have to deal with the inners
-	layer = bitflag_to_layer(layer)
+	layer = external_bitflag_to_layer(layer)
 	var/inner_image = get_inner_image(layer, limb)
 	if(inner_image)
 		. += inner_image
@@ -119,7 +119,9 @@
 
 /obj/item/organ/ears/mutant
 	name = "mutant ears"
-	bodypart_overlay = /datum/bodypart_overlay/mutant/ears
+	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/mutant
+
+/datum/bodypart_overlay/mutant/ears/mutant
 
 /obj/item/organ/ears/invincible
 	damage_multiplier = 0
@@ -133,11 +135,11 @@
 
 	visual = TRUE
 	dna_block = DNA_EARS_BLOCK
-	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/felinid
+	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/cat
 
-/datum/bodypart_overlay/mutant/ears/felinid
+/datum/bodypart_overlay/mutant/ears/cat
 
-/datum/bodypart_overlay/mutant/ears/felinid/get_global_feature_list()
+/datum/bodypart_overlay/mutant/ears/cat/get_global_feature_list()
 	return GLOB.ears_list_human
 
 /obj/item/organ/ears/penguin

@@ -112,12 +112,17 @@
 /datum/bodypart_overlay/mutant/pod_hair/get_global_feature_list()
 	return GLOB.pod_hair_list
 
-/datum/bodypart_overlay/mutant/pod_hair/color_image(image/overlay, draw_layer, obj/item/bodypart/limb)
-	if(draw_layer != bitflag_to_layer(color_swapped_layer))
+/datum/bodypart_overlay/mutant/pod_hair/color_image(image/overlay, layer, obj/item/bodypart/limb)
+	if(layer != external_bitflag_to_layer(color_swapped_layer))
 		return ..()
 
-	if(draw_color) // can someone explain to me why draw_color is allowed to EVER BE AN EMPTY STRING
-		var/list/rgb_list = rgb2num(draw_color)
+	if(draw_color)
+		var/sane_draw_color
+		if(islist(draw_color))
+			sane_draw_color = sanitize_hexcolor(draw_color[length(draw_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+		else
+			sane_draw_color = draw_color
+		var/list/rgb_list = rgb2num(sane_draw_color)
 		overlay.color = rgb(color_inverse_base - rgb_list[1], color_inverse_base - rgb_list[2], color_inverse_base - rgb_list[3]) //inversa da color
 	else
 		overlay.color = null

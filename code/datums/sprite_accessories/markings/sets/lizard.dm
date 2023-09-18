@@ -1,5 +1,5 @@
 /datum/body_marking_set/lizard
-	compatible_species = list(/datum/species/lizard)
+	compatible_species = list(/datum/species/lizard, /datum/species/mutant)
 
 /datum/body_marking_set/lizard/dtiger
 	name = "Dark Tiger Body"

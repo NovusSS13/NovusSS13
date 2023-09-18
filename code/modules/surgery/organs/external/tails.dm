@@ -122,7 +122,9 @@
 
 /obj/item/organ/tail/mutant
 	name = "mutant tail"
-	bodypart_overlay = /datum/bodypart_overlay/mutant/tail
+	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/mutant
+
+/datum/bodypart_overlay/mutant/tail/mutant
 
 /obj/item/organ/tail/cat
 	name = "cat tail"

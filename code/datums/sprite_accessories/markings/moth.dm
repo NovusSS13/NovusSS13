@@ -1,6 +1,6 @@
 /datum/sprite_accessory/body_markings/moth // the markings that moths can have. finally something other than the boring tan
 	icon = 'icons/mob/species/moth/moth_markings.dmi'
-	compatible_species = list(/datum/species/moth)
+	compatible_species = list(/datum/species/moth, /datum/species/mutant)
 	color_amount = 0
 
 /datum/sprite_accessory/body_markings/moth/reddish

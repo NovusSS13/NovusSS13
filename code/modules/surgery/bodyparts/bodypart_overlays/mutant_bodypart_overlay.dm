@@ -76,15 +76,48 @@
 	var/list/icon_state_builder = get_icon_state(layer, limb)
 	var/finished_icon_state = icon_state_builder.Join("_")
 
-	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
+	var/list/appearances = list()
+	///here comes some truly bullshit coloring code
+	if(sprite_datum.color_amount <= 1)
+		var/mutable_appearance/final_appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
+		if(sprite_datum.center)
+			center_image(final_appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
+		appearances += final_appearance
+	else
+		for(var/index in 1 to sprite_datum.color_amount)
+			var/suffix = LAZYACCESS(GLOB.external_color_suffixes, index)
+			if(!suffix)
+				stack_trace("[sprite_datum.type] had a color amount bigger than GLOB.external_color_suffixes! ([sprite_datum.color_amount])]")
+				break
+			var/mutable_appearance/overlay = mutable_appearance(sprite_datum.icon, "[finished_icon_state]_[suffix]")
+			if(sprite_datum.center)
+				center_image(overlay, sprite_datum.dimension_x, sprite_datum.dimension_y)
+			appearances += overlay
 
-	if(sprite_datum.center)
-		center_image(appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
-
-	return appearance
+	return appearances
 
 /datum/bodypart_overlay/mutant/color_image(image/overlay, layer, obj/item/bodypart/limb)
-	overlay.color = sprite_datum.color_amount ? draw_color : null
+	//nothing to be colored
+	if(!draw_color || !sprite_datum.color_amount)
+		return
+	//its an actual image
+	if(istype(overlay))
+		overlay.color = draw_color
+		return
+	//its a list of images
+	var/list/sane_draw_color = list()
+	var/default
+	if(islist(draw_color))
+		default = sanitize_hexcolor(draw_color[length(draw_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+		sane_draw_color = draw_color
+	else
+		default = sanitize_hexcolor(draw_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+		sane_draw_color = list(draw_color)
+	sane_draw_color.len = 3
+	sane_draw_color = sanitize_hexcolor_list(sane_draw_color, DEFAULT_HEX_COLOR_LEN, TRUE, default)
+	for(var/index in 1 to min(sprite_datum.color_amount, length(overlay)))
+		var/image/appearance = overlay[index]
+		appearance.color = sane_draw_color[index]
 
 /datum/bodypart_overlay/mutant/added_to_limb(obj/item/bodypart/limb)
 	inherit_color(limb)
@@ -229,9 +262,9 @@
 	//return a string otherwise
 	//take and sanitize only the first color if it's a matrix
 	if(islist(given_color))
-		return sanitize_hexcolor(given_color[1], 6, TRUE, "#FFFFFF")
+		return sanitize_hexcolor(given_color[1], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 	//just sanitize normally otherwise
-	return sanitize_hexcolor(given_color, 6, TRUE, "#FFFFFF")
+	return sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 
 ///Sprite accessories are singletons, stored list("Big Snout" = instance of /datum/sprite_accessory/snout/big), so here we get that singleton
 /datum/bodypart_overlay/mutant/proc/fetch_sprite_datum(datum/sprite_accessory/accessory_path)

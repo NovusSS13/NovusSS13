@@ -1,5 +1,5 @@
 /datum/body_marking_set/moth
-	compatible_species = list(/datum/species/moth)
+	compatible_species = list(/datum/species/moth, /datum/species/mutant)
 
 /datum/body_marking_set/moth/reddish
 	name = "Reddish"

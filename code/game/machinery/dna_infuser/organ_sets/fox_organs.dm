@@ -7,4 +7,4 @@
 
 	visual = TRUE
 	dna_block = DNA_EARS_BLOCK
-	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/felinid
+	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/cat

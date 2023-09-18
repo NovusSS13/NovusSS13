@@ -59,8 +59,12 @@
 	if(!istype(accessory))
 		return ..()
 
+	//return null i guess
+	if(!accessory.color_amount)
+		return ""
+
 	var/return_value = list()
-	for(var/index = 1, index <= clamp(accessory.color_amount, 1, 3), index++)
+	for(var/index = 1, index <= min(accessory.color_amount, 3), index++)
 		return_value += value[index]
 
 	return jointext(return_value, ";")

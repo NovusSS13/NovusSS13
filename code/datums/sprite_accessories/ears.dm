@@ -49,6 +49,7 @@
 /datum/sprite_accessory/ears/mutant/bigwolfinner
 	name = "Big Wolf (Alt)"
 	icon_state = "bigwolfinner"
+	color_amount = 1
 	hasinner = TRUE
 
 /datum/sprite_accessory/ears/mutant/bigwolfdark //alphabetical sort ignored here for ease-of-use
@@ -58,18 +59,19 @@
 /datum/sprite_accessory/ears/mutant/bigwolfinnerdark
 	name = "Dark Big Wolf (Alt)"
 	icon_state = "bigwolfinnerdark"
+	color_amount = 1
 	hasinner = TRUE
 
 /datum/sprite_accessory/ears/mutant/bunny
 	name = "Bunny"
 	icon_state = "bunny"
 
-/datum/sprite_accessory/ears/mutant/tajaran/catbig
+/datum/sprite_accessory/ears/mutant/catbig
 	name = "Cat, Big"
 	icon_state = "catbig"
 
-/datum/sprite_accessory/ears/mutant/tajaran/catnormal
-	name = "Cat, normal"
+/datum/sprite_accessory/ears/mutant/catnormal
+	name = "Cat, Normal"
 	icon_state = "catnormal"
 
 /datum/sprite_accessory/ears/mutant/cow
@@ -83,7 +85,7 @@
 	color_amount = 1
 
 /datum/sprite_accessory/ears/mutant/deer
-	name = "Deer (Antler)"
+	name = "Deer, Antler"
 	icon_state = "deer"
 	color_amount = 1
 
@@ -92,7 +94,7 @@
 	icon_state = "eevee"
 
 /datum/sprite_accessory/ears/mutant/eevee_alt
-	name = "Eevee ALT"
+	name = "Eevee (Alt)"
 	icon_state = "eevee_alt"
 	color_amount = 3
 
@@ -127,7 +129,7 @@
 	icon_state = "fish"
 	color_amount = 1
 
-/datum/sprite_accessory/ears/mutant/vulpkanin/fox
+/datum/sprite_accessory/ears/mutant/fox
 	name = "Fox"
 	icon_state = "fox"
 
@@ -157,7 +159,7 @@
 	name = "Murid"
 	icon_state = "murid"
 
-/datum/sprite_accessory/ears/mutant/vulpkanin/otie
+/datum/sprite_accessory/ears/mutant/otie
 	name = "Otusian"
 	icon_state = "otie"
 
@@ -190,18 +192,18 @@
 	icon_state = "sergal"
 
 /datum/sprite_accessory/ears/mutant/skunk
-	name = "skunk"
+	name = "Skunk"
 	icon_state = "skunk"
 
 /datum/sprite_accessory/ears/mutant/squirrel
 	name = "Squirrel"
 	icon_state = "squirrel"
 
-/datum/sprite_accessory/ears/mutant/vulpkanin/wolf
+/datum/sprite_accessory/ears/mutant/wolf
 	name = "Wolf"
 	icon_state = "wolf"
 
-/datum/sprite_accessory/ears/mutant/vulpkanin/perky
+/datum/sprite_accessory/ears/mutant/perky
 	name = "Perky"
 	icon_state = "perky"
 
@@ -234,7 +236,7 @@
 	icon_state = "cobrahood"
 
 /datum/sprite_accessory/ears/mutant/cobrahoodears
-	name = "Cobra Hood (Ears)"
+	name = "Cobra Hood, Ears"
 	icon_state = "cobraears"
 
 /datum/sprite_accessory/ears/mutant/miqote
@@ -246,11 +248,11 @@
 	icon_state = "rabbitalt"
 
 /datum/sprite_accessory/ears/mutant/bunnyalt
-	name = "Curved Rabbit Ears"
+	name = "Rabbit Ears, Curved"
 	icon_state = "bunnyalt"
 
 /datum/sprite_accessory/ears/mutant/deerear
-	name = "Deer (ear)"
+	name = "Deer, Ear"
 	icon_state = "deerear"
 
 /datum/sprite_accessory/ears/mutant/deer2
@@ -263,7 +265,7 @@
 	icon_state = "mouse"
 
 /datum/sprite_accessory/ears/mutant/mouse_two
-	name = "Mouse II"
+	name = "Mouse 2"
 	icon_state = "mouse_two"
 
 /datum/sprite_accessory/ears/mutant/big/fourears1
@@ -278,14 +280,13 @@
 	name = "Four Ears 3"
 	icon_state = "four_ears_3"
 
-/datum/sprite_accessory/ears/acrador
-	icon = 'icons/mob/species/sprite_accessory/ears_mutant_big.dmi'
+/datum/sprite_accessory/ears/mutant/big/acrador
 	color_amount = 3
 
-/datum/sprite_accessory/ears/acrador/long
+/datum/sprite_accessory/ears/mutant/big/acrador/long
+	name = "Acrador, Long (Large)"
 	icon_state = "acrador_long"
-	name = "Acrador (Long)"
 
-/datum/sprite_accessory/ears/acrador/short
+/datum/sprite_accessory/ears/mutant/big/acrador/short
+	name = "Acrador, Short (Large)"
 	icon_state = "acrador_short"
-	name = "Acrador (Short)"

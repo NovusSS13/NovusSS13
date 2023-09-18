@@ -724,6 +724,19 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 /// Draws organ on all EXTERNAL layers
 #define EXTERNAL_ALL_LAYERS EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
 
+/// A list of every possible mutant bodypart layer bitflag, for iterating over when necessary
+GLOBAL_LIST_INIT(external_layer_bitflags, list(
+	EXTERNAL_BEHIND,
+	EXTERNAL_ADJACENT,
+	EXTERNAL_FRONT,
+))
+/// A list of every possible color suffix for mutant bodyparts that use matrixes
+GLOBAL_LIST_INIT(external_color_suffixes, list(
+	"primary" = "#FF0000",
+	"secondary" = "#00FF00",
+	"tertiary" = "#0000FF",
+))
+
 // Bitflags for external organs restylability
 /// This organ allows restyle through plant restyling (like secateurs)
 #define EXTERNAL_RESTYLE_PLANT (1 << 1)
