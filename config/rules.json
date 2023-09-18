@@ -4,7 +4,7 @@
 			"Pedophiles or minors are not welcome on this server. ",
 			"Players proven to be either of these, beyond a reasonable doubt, will be banned permanently. ",
 			"Keeping around either of these groups is a massive liability to the server, so this is a zero tolerance rule. ",
-			"Additionally, Knowing about a player that is either a minor or a pedophile, ",
+			"Additionally, knowing about a player that is either a minor or a pedophile, ",
 			"and not reporting it to staff, means you will get the same punishment as said player."
 		],
 		"Pedophilia, zoophilia and necrophilia are not allowed to be roleplayed in the server.": [
@@ -49,12 +49,14 @@
 		],
 		"Sabotaging the server is not allowed.": [
 			"Sabotaging the server, ",
-			"by ddosing, exploiting a security vulnerability, abusing a bug to lag and crash the servers, or other such means",
+			"by ddosing, exploiting a security vulnerability, ",
+			"abusing a bug to lag and crash the servers, ",
+			"or other such means ",
 			"will result in a permaban."
 		],
 		"Do not commit unreasonable violence.": [
 			"Do not commit unreasonable violence. ",
-			"You're a character who has the decency and the ability to ",
+			"You play a character who has the decency and the ability to ",
 			"be employed in a space station, your character should not be running around stabbing people."
 		],
 		"Self defense is, generally, okay.": [
@@ -64,7 +66,7 @@
 			"Do not prevent people from receiving medical care after you've harmed them unless you have a very, very good reason."
 		],
 		"Do not grief.": [
-			"Do not sabotage station infrastructure in major ways, AKA: do not grief. ",
+			"Do not sabotage station infrastructure in major ways, AKA - Do not grief. ",
 			"Sabotaging the supermatter, bombing the hallways, destroying atmos - ",
 			"All of these are things make the the station uninhabitable and cause indirect harm."
 		],

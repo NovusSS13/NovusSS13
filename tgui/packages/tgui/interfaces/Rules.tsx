@@ -27,9 +27,11 @@ export const Rules = (props, context) => {
             <Stack.Item fill key={category.name}>
               <Collapsible title={category.name}>
                 <Stack vertical>
-                  {category.rules.map((rule: Rule) => (
+                  {category.rules.map((rule: Rule, index: number) => (
                     <Stack.Item key={rule.name}>
-                      <Section title={rule.name}>{rule.content}</Section>
+                      <Section title={index + 1 + '. ' + rule.name}>
+                        {rule.content}
+                      </Section>
                     </Stack.Item>
                   ))}
                 </Stack>
