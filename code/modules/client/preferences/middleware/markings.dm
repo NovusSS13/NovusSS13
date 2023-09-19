@@ -243,7 +243,9 @@
 			marking_overlay.set_appearance(body_marking.type)
 			bodypart.add_bodypart_overlay(marking_overlay)
 
-			var/icon/bodypart_icon = getFlatIcon(bodypart.get_limb_icon(TRUE))
+			var/image/bodypart_image = new()
+			bodypart_image.add_overlay(bodypart.get_limb_icon())
+			var/icon/bodypart_icon = getFlatIcon(bodypart_image)
 			switch(zone)
 				if(BODY_ZONE_HEAD)
 					bodypart_icon.Crop(10, 19, 22, 31)

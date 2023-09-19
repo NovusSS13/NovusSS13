@@ -23,7 +23,7 @@
 	var/static/icon/head_icon_with_snout_cropped
 	if (isnull(head_icon_with_snout_cropped))
 		head_icon_with_snout_cropped = icon(head_icon_with_snout)
-		head_icon_with_snout_cropped.Crop(11, 20, 23, 32)
+		head_icon_with_snout_cropped.Crop(10, 19, 22, 31)
 		head_icon_with_snout_cropped.Scale(32, 32)
 
 	if (!is_valid_rendering_sprite_accessory(sprite_accessory))

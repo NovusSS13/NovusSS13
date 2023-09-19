@@ -93,9 +93,9 @@
 	if(!standing.len)
 		icon_state = initial(icon_state)//no overlays found, we default back to initial icon.
 		return
-	for(var/image/img as anything in standing)
-		img.pixel_x = px_x
-		img.pixel_y = px_y
+	for(var/image/image in standing)
+		image.pixel_x = px_x
+		image.pixel_y = px_y
 	add_overlay(standing)
 
 /// Generates an /image for the limb to be used as an overlay
