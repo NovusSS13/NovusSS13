@@ -80,7 +80,7 @@
 			"Powergaming is acceptable to a certain extent, however, ",
 			"do not powergame in a way which would seem absurd, or out of character, for your character to do."
 		],
-		"Antagonist hogging": [
+		"Antagonist hogging is not allowed.": [
 			"You shouldn't play the game only hoping to roll an antagonist status. ",
 			"If we catch on that you only play here to be an antagonist, we will ",
 			"ban you from antagonist roles, and possibly ban you from the server altogether. "
@@ -105,6 +105,10 @@
 		"Admin discretion.": [
 			"Punishments for infringing on the rules will be applied based on the enforcing admin's discretion. ",
 			"You may consult us about an admin in particular, if you believe any punishment was unjust."
+		],
+		"The rules are open for all.": [
+			"If you want to contribute changes to the rules, ",
+			"you may do so by making a pull request on our github repository."
 		],
 		"The discord server does not run under the same rules.": [
 			"That which is written here does not entirely apply to the Discord - ",
