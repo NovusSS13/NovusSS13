@@ -95,9 +95,9 @@
 		human_attacker.set_species(/datum/species/plasmaman)
 		human_attacker.add_traits(list(TRAIT_FORCED_STANDING, TRAIT_BOMBIMMUNE), type)
 		human_attacker.unequip_everything()
-		human_attacker.underwear = "Nude"
-		human_attacker.undershirt = "Nude"
-		human_attacker.socks = "Nude"
+		human_attacker.underwear = SPRITE_ACCESSORY_NONE
+		human_attacker.undershirt = SPRITE_ACCESSORY_NONE
+		human_attacker.socks = SPRITE_ACCESSORY_NONE
 		human_attacker.update_body()
 
 	var/turf/boomspot = get_turf(user)

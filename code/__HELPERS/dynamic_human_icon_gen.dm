@@ -11,9 +11,9 @@ GLOBAL_LIST_EMPTY(dynamic_human_appearances)
 	var/mob/living/carbon/human/dummy/consistent/dummy = new()
 	dummy.set_species(species_path)
 	dummy.stat = DEAD //this is to avoid side effects of mob spawners
-	dummy.underwear = "Nude"
-	dummy.undershirt = "Nude"
-	dummy.socks = "Nude"
+	dummy.underwear = SPRITE_ACCESSORY_NONE
+	dummy.undershirt = SPRITE_ACCESSORY_NONE
+	dummy.socks = SPRITE_ACCESSORY_NONE
 	if(outfit_path)
 		var/datum/outfit/outfit = new outfit_path()
 		if(r_hand != NO_REPLACE) //we can still override to be null, no replace means just use outfit's

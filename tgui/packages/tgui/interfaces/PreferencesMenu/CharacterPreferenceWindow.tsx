@@ -130,8 +130,6 @@ export const CharacterPreferenceWindow = (props, context) => {
                           activeKey={data.active_slot_key}
                           maxSlots={data.max_slots_main}
                           onClick={(action, object) => {
-                            if (currentPage == Page.Species)
-                              setCurrentPage(Page.Main);
                             act(action, object);
                           }}
                         />
@@ -166,7 +164,11 @@ export const CharacterPreferenceWindow = (props, context) => {
                                     </Stack.Item>
                                     <CharSlots
                                       onClick={(action, payload) => {
-                                        if (currentPage == Page.Species)
+                                        if (
+                                          currentPage == Page.Species ||
+                                          currentPage == Page.Antags ||
+                                          currentPage == Page.Jobs
+                                        )
                                           setCurrentPage(Page.Main);
                                         act(action, payload);
                                       }}
@@ -215,27 +217,31 @@ export const CharacterPreferenceWindow = (props, context) => {
                 </PageButton>
               </Stack.Item>
 
-              <Stack.Item grow>
-                <PageButton
-                  currentPage={currentPage}
-                  page={Page.Jobs}
-                  setPage={setCurrentPage}>
-                  {/*
+              {data.active_slot_key == 'main' && (
+                <>
+                  <Stack.Item grow>
+                    <PageButton
+                      currentPage={currentPage}
+                      page={Page.Jobs}
+                      setPage={setCurrentPage}>
+                      {/*
                     Fun fact: This isn't "Jobs" so that it intentionally
                     catches your eyes, because it's really important!
                   */}
-                  Occupations
-                </PageButton>
-              </Stack.Item>
+                      Occupations
+                    </PageButton>
+                  </Stack.Item>
 
-              <Stack.Item grow>
-                <PageButton
-                  currentPage={currentPage}
-                  page={Page.Antags}
-                  setPage={setCurrentPage}>
-                  Antagonists
-                </PageButton>
-              </Stack.Item>
+                  <Stack.Item grow>
+                    <PageButton
+                      currentPage={currentPage}
+                      page={Page.Antags}
+                      setPage={setCurrentPage}>
+                      Antagonists
+                    </PageButton>
+                  </Stack.Item>
+                </>
+              )}
 
               <Stack.Item grow>
                 <PageButton

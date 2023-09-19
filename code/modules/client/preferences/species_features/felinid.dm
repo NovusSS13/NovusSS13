@@ -33,7 +33,7 @@
 /datum/preference/choiced/mutant/felinid_ears/init_possible_values()
 	return assoc_to_keys_features(GLOB.ears_list)
 
-/datum/preference/choiced/mutant/felinid_ears/create_default_value()
+/datum/preference/choiced/mutant/felinid_ears/create_default_value(datum/preferences/preferences)
 	var/datum/sprite_accessory/ears/cat/ears = /datum/sprite_accessory/ears/cat
 	return initial(ears.name)
 

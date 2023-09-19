@@ -426,7 +426,7 @@
 	else
 		set_facial_hairstyle("Shaved", update = FALSE)
 	set_hairstyle(pick("Bedhead", "Bedhead 2", "Bedhead 3"), update = FALSE)
-	underwear = "Nude"
+	underwear = SPRITE_ACCESSORY_NONE
 	update_body(is_creating = TRUE)
 
 /mob/living/carbon/human/singularity_pull(S, current_size)

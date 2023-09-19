@@ -11,7 +11,7 @@
 /datum/preference/choiced/security_department/apply_to_human(mob/living/carbon/human/target, value)
 	return
 
-/datum/preference/choiced/security_department/create_default_value()
+/datum/preference/choiced/security_department/create_default_value(datum/preferences/preferences)
 	return SEC_DEPT_NONE
 
 /datum/preference/choiced/security_department/is_accessible(datum/preferences/preferences)
@@ -19,3 +19,8 @@
 		return FALSE
 
 	return !CONFIG_GET(flag/sec_start_brig)
+
+/datum/preference/choiced/security_department/is_accessible(datum/preferences/preferences)
+	if(preferences.current_char_key != "main")
+		return FALSE
+	return ..()

@@ -4,7 +4,7 @@
 	savefile_key = "scaling_method"
 	savefile_identifier = PREFERENCE_PLAYER
 
-/datum/preference/choiced/scaling_method/create_default_value()
+/datum/preference/choiced/scaling_method/create_default_value(datum/preferences/preferences)
 	return SCALING_METHOD_DISTORT
 
 /datum/preference/choiced/scaling_method/init_possible_values()

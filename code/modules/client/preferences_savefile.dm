@@ -24,7 +24,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	initial() values if necessary.
 */
 /datum/preferences/proc/save_data_needs_update(list/save_data)
-	if(!save_data) // empty list, either savefile isnt loaded or its a new char
+	if(!length(save_data)) // empty list, either savefile isnt loaded or its a new char
 		return -1
 	if(save_data["version"] < SAVEFILE_VERSION_MIN)
 		return -2
@@ -249,7 +249,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 			max_save_slots = max(max_save_slots, slot_id) //so we can still update byond member slots after they lose memeber status
 
-			current_ids[slot_key] = slot_id
 			if(load_character(slot_id, slot_key))
 				save_character(slot_id, slot_key)
 
@@ -263,21 +262,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 /datum/preferences/proc/save_preferences()
 	if(!savefile)
 		CRASH("Attempted to save the preferences of [parent] without a savefile. This should have been handled by load_preferences()")
+
 	savefile.set_entry("version", SAVEFILE_VERSION_MAX) //updates (or failing that the sanity checks) will ensure data is not invalid at load. Assume up-to-date
-
-	for (var/preference_type in GLOB.preference_entries)
-		var/datum/preference/preference = GLOB.preference_entries[preference_type]
-		if (preference.savefile_identifier != PREFERENCE_PLAYER)
-			continue
-
-		if (!(preference.type in recently_updated_keys))
-			continue
-
-		recently_updated_keys -= preference.type
-
-		if (preference_type in value_cache)
-			write_preference(preference, preference.serialize(value_cache[preference_type]))
-
 	savefile.set_entry("lastchangelog", lastchangelog)
 	savefile.set_entry("be_special", be_special)
 	savefile.set_entry("current_ids", current_ids)
@@ -292,7 +278,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	savefile.save()
 	return TRUE
 
-/datum/preferences/proc/load_character(char_id = current_ids["main"], char_savekey = "main")
+/datum/preferences/proc/load_character(char_id = current_ids[current_char_key], char_savekey = current_char_key)
 	SHOULD_NOT_SLEEP(TRUE)
 
 	char_savekey = sanitize_inlist(char_savekey, GLOB.valid_char_savekeys, "main")
@@ -310,15 +296,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	var/needs_update = save_data_needs_update(save_data)
 	if(needs_update == -2) //fatal, can't load any data
 		return FALSE
-
-	// Read everything into cache
-	for (var/preference_type in GLOB.preference_entries)
-		var/datum/preference/preference = GLOB.preference_entries[preference_type]
-		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
-			continue
-
-		value_cache -= preference_type
-		read_preference(preference_type, char_id, char_savekey)
 
 	randomise = save_data?["randomise"]
 	job_preferences = save_data?["job_preferences"]
@@ -344,7 +321,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return TRUE
 
-/datum/preferences/proc/save_character(char_id = current_ids["main"], char_savekey = current_char_key)
+/datum/preferences/proc/save_character(char_id = current_ids[current_char_key], char_savekey = current_char_key)
 	SHOULD_NOT_SLEEP(TRUE)
 	if(!path)
 		return FALSE
@@ -354,27 +331,11 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		savefile.set_entry(tree_key, list())
 
 	var/save_data = savefile.get_entry(tree_key)
-	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
-		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
-			continue
 
-		if (!(preference.type in recently_updated_keys))
-			continue
-
-		recently_updated_keys -= preference.type
-
-		if (preference.type in value_cache)
-			write_preference(preference, preference.serialize(value_cache[preference.type]), char_id, char_savekey)
-
+	//lets write some data that write_preference didnt handle
 	save_data["version"] = SAVEFILE_VERSION_MAX //load_character will sanitize any bad data, so assume up-to-date.
-
-	//Character
 	save_data["randomise"] = randomise
-
-	//Write prefs
 	save_data["job_preferences"] = job_preferences
-
-	//Quirks
 	save_data["all_quirks"] = all_quirks
 
 	return TRUE
@@ -386,7 +347,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(used_slot_amount[char_key] >= (char_key == "main" ? max_save_slots : max_ghost_role_slots))
 		return FALSE
 
-	save_character(++used_slot_amount[char_key], char_key)
+	save_character(++used_slot_amount[char_key], char_key) //init new char slot
+	load_character(used_slot_amount[char_key], char_key) //load it in
+	randomise_appearance_prefs() //randomize
 	return TRUE
 
 /datum/preferences/proc/sanitize_be_special(list/input_be_special)

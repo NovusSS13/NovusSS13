@@ -8,13 +8,16 @@
 	/// The savefile key we'll be using. MUST use dashes for spaces (i.e "very-epic-ghostrole")
 	var/savefile_key = ""
 	/// What species are we restricted to? Leave as null if you want to inherit GLOB.roundstart_races.
-	var/forced_species = null
+	var/datum/species/forced_species = null
+	/// If set to TRUE, preferences regarding underwear and loadout will not be shown.
+	var/barebones_spawn = FALSE
 
 
 /datum/offstation_customization/ashwalker
 	slot_name = "Ashwalkers"
 	savefile_key = "ashwalker"
 	forced_species = /datum/species/lizard/ashwalker
+	barebones_spawn = TRUE
 
 /datum/offstation_customization/syndicate_outpost
 	slot_name = "Syndicate Outpost"
@@ -25,6 +28,7 @@
 	slot_name = "Free Golems"
 	savefile_key = "golem"
 	forced_species = /datum/species/golem
+	barebones_spawn = TRUE
 
 /datum/offstation_customization/hermit
 	slot_name = "Stranded Hermit"

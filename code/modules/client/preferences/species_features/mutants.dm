@@ -12,9 +12,8 @@
 	var/datum/species/species = new species_type
 	return !(TRAIT_FIXED_MUTANT_COLORS in species.inherent_traits)
 
-/datum/preference/tricolor/mutant/mutant_color/create_default_value()
-	var/random_color = sanitize_hexcolor("[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]", include_crunch = TRUE)
-	return list(random_color, random_color, random_color)
+/datum/preference/tricolor/mutant/mutant_color/create_default_value(datum/preferences/preferences)
+	return list(COLOR_VIBRANT_LIME, COLOR_VIBRANT_LIME, COLOR_VIBRANT_LIME)
 
 /datum/preference/tricolor/mutant/mutant_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["mcolor"] = value

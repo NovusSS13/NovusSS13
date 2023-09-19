@@ -85,20 +85,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// The savefile relating to character preferences, PREFERENCE_CHARACTER
 	var/list/character_data
 
-	/// A list of keys that have been updated since the last save.
-	var/list/recently_updated_keys = list()
-
-	/// A cache of preference entries to values.
-	/// Used to avoid expensive READ_FILE every time a preference is retrieved.
-	var/value_cache = list()
-
 	/// If set to TRUE, will update character_profiles on the next ui_data tick.
 	var/tainted_character_profiles = FALSE
 
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	QDEL_LIST(middleware)
-	value_cache = null
 	return ..()
 
 /datum/preferences/New(client/parent)
@@ -128,8 +120,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if(loaded_preferences_successfully)
 		if(load_character())
 			return
-	//we couldn't load character data so just randomize the character appearance + name
-	//randomise_appearance_prefs() //let's create a random character then - rather than a fat, bald and naked man.
+
 	if(parent)
 		apply_all_client_preferences()
 		parent.set_macros()
@@ -227,14 +218,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			// SAFETY: `load_character` performs sanitization the slot number
 			if(!load_character(params["slot_id"], params["slot_key"]))
 				tainted_character_profiles = TRUE
-				//randomise_appearance_prefs()
 				save_character()
 
 			for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 				preference_middleware.on_new_character(usr)
 
 			character_preview_view.update_body()
-			SStgui.update_uis(usr)
 
 			return TRUE
 
@@ -243,11 +232,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			save_character()
 
 			tainted_character_profiles = TRUE
-			if(add_character_slot(params["slot_key"]))
-				load_character(used_slot_amount[params["slot_key"]], params["slot_key"]) //load the new char
+			if(!add_character_slot(params["slot_key"]))
+				return FALSE
 
 			character_preview_view.update_body()
-			SStgui.update_uis(src)
 			return TRUE
 
 		if("rotate")
@@ -299,10 +287,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if(!new_color)
 				return FALSE
 
-			if(!update_preference(requested_preference, new_color))
-				return FALSE
-
-			return TRUE
+			return update_preference(requested_preference, new_color)
 
 		if ("set_color_mutant_colors")
 			var/requested_preference_key = params["preference"]
@@ -318,10 +303,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if (!islist(color_list))
 				return FALSE //wtf?
 
-			if (!update_preference(requested_preference, color_list[1]))
-				return FALSE
+			return update_preference(requested_preference, color_list[1])
 
-			return TRUE
 		if ("set_tricolor_preference")
 			var/requested_preference_key = params["preference"]
 			var/requested_preference_index = params["value"]
@@ -350,10 +333,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE
 
 			color_list[requested_preference_index] = new_color
-			if(!update_preference(requested_preference, jointext(color_list, ";")))
-				return FALSE
+			return update_preference(requested_preference, jointext(color_list, ";"))
 
-			return TRUE
 		if ("set_tricolor_mutant_colors")
 			var/requested_preference_key = params["preference"]
 
@@ -368,10 +349,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if (!islist(color_list))
 				return FALSE //wtf?
 
-			if (!update_preference(requested_preference, jointext(color_list, ";")))
-				return FALSE
-
-			return TRUE
+			return update_preference(requested_preference, jointext(color_list, ";"))
 
 	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 		var/delegation = preference_middleware.action_delegations[action]
@@ -437,7 +415,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		if(preference.savefile_identifier != PREFERENCE_PLAYER)
 			continue
 
-		value_cache -= preference.type
 		preference.apply_to_client(parent, read_preference(preference.type))
 
 /// A preview of a character for use in the preferences menu
@@ -529,19 +506,20 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		all_quirks = list()
 
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
-/datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE, char_id = current_ids[current_char_key], char_key = current_char_key)
+/datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE, char_id = current_ids["main"], char_key = "main")
+	load_character(char_id, char_key) //we MUST do this because ASS
 	apply_character_randomization_prefs(is_antag)
-	apply_prefs_to(character, char_id, char_key, icon_updates)
+	apply_prefs_to(character, icon_updates)
 
 /// Applies the given preferences to a human mob.
-/datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, char_id = current_ids[current_char_key], char_key = current_char_key, icon_updates = TRUE)
+/datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE)
 	character.dna.features = list()
 
 	for(var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if(preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
 
-		preference.apply_to_human(character, read_preference(preference.type, char_id, char_key), src)
+		preference.apply_to_human(character, read_preference(preference.type), src)
 
 	character.dna.real_name = character.real_name
 

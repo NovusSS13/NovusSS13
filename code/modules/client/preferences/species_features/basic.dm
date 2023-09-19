@@ -49,7 +49,10 @@
 	eyes_organ.old_eye_color_right = value
 	eyes_organ.refresh()
 
-/datum/preference/color/eye_color/create_default_value()
+/datum/preference/color/eye_color/create_default_value(datum/preferences/preferences)
+	return "#000000"
+
+/datum/preference/color/eye_color/create_random_value(datum/preferences/preferences)
 	return random_eye_color()
 
 /datum/preference/choiced/facial_hairstyle
@@ -100,8 +103,9 @@
 /datum/preference/choiced/facial_hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_facial_hair_gradient_style(new_style = value, update = FALSE)
 
-/datum/preference/choiced/facial_hair_gradient/create_default_value()
-	return "None"
+/datum/preference/choiced/facial_hair_gradient/create_default_value(datum/preferences/preferences)
+	return SPRITE_ACCESSORY_NONE
+
 
 /datum/preference/color/facial_hair_gradient
 	priority = PREFERENCE_PRIORITY_BODYPARTS
@@ -118,6 +122,7 @@
 		return FALSE
 	return preferences.read_preference(/datum/preference/choiced/facial_hair_gradient) != "None"
 
+
 /datum/preference/color/hair_color
 	priority = PREFERENCE_PRIORITY_BODYPARTS
 	savefile_key = "hair_color"
@@ -127,6 +132,7 @@
 
 /datum/preference/color/hair_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_haircolor(value, update = FALSE)
+
 
 /datum/preference/choiced/hairstyle
 	priority = PREFERENCE_PRIORITY_BODYPARTS
@@ -143,6 +149,9 @@
 /datum/preference/choiced/hairstyle/icon_for(value)
 	return generate_icon_with_head_accessory(GLOB.hairstyles_list[value])
 
+/datum/preference/choiced/hairstyle/create_default_value(datum/preferences/preferences)
+	return "Bald"
+
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_hairstyle(value, update = FALSE)
 
@@ -152,6 +161,7 @@
 	data[SUPPLEMENTAL_FEATURE_KEY] = "hair_color"
 
 	return data
+
 
 /datum/preference/choiced/hair_gradient
 	priority = PREFERENCE_PRIORITY_BODYPARTS
@@ -166,8 +176,8 @@
 /datum/preference/choiced/hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_hair_gradient_style(new_style = value, update = FALSE)
 
-/datum/preference/choiced/hair_gradient/create_default_value()
-	return "None"
+/datum/preference/choiced/hair_gradient/create_default_value(datum/preferences/preferences)
+	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/color/hair_gradient
 	priority = PREFERENCE_PRIORITY_BODYPARTS

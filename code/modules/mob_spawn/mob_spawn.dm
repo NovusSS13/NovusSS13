@@ -68,35 +68,26 @@
 	SHOULD_CALL_PARENT(TRUE)
 	if(faction)
 		spawned_mob.faction = faction
-	if(ishuman(spawned_mob))
-		var/mob/living/carbon/human/spawned_human = spawned_mob
-		if(mob_species)
-			spawned_human.set_species(mob_species)
-		spawned_human.dna.species.give_important_for_life(spawned_human) // for preventing plasmamen from combusting immediately upon spawning
-		spawned_human.underwear = "Nude"
-		spawned_human.undershirt = "Nude"
-		spawned_human.socks = "Nude"
-		if(hairstyle)
-			spawned_human.hairstyle = hairstyle
-		else
-			spawned_human.hairstyle = random_hairstyle(spawned_human.gender)
-		if(facial_hairstyle)
-			spawned_human.facial_hairstyle = facial_hairstyle
-		else
-			spawned_human.facial_hairstyle = random_facial_hairstyle(spawned_human.gender)
-		if(haircolor)
-			spawned_human.hair_color = haircolor
-		else
-			spawned_human.hair_color = "#[random_color()]"
-		if(facial_haircolor)
-			spawned_human.facial_hair_color = facial_haircolor
-		else
-			spawned_human.facial_hair_color = "#[random_color()]"
-		if(skin_tone)
-			spawned_human.skin_tone = skin_tone
-		else
-			spawned_human.skin_tone = random_skin_tone()
-		spawned_human.update_body(is_creating = TRUE)
+
+	var/mob/living/carbon/human/spawned_human = spawned_mob
+	if(!istype(spawned_human))
+		return
+
+	if(mob_species)
+		spawned_human.set_species(mob_species)
+
+	spawned_human.dna.species.give_important_for_life(spawned_human) // for preventing plasmamen from combusting immediately upon spawning
+	spawned_human.underwear = SPRITE_ACCESSORY_NONE
+	spawned_human.undershirt = SPRITE_ACCESSORY_NONE
+	spawned_human.socks = SPRITE_ACCESSORY_NONE
+
+	spawned_human.hairstyle = hairstyle || random_hairstyle(spawned_human.gender)
+	spawned_human.facial_hairstyle = facial_hairstyle || random_facial_hairstyle(spawned_human.gender)
+	spawned_human.hair_color = haircolor || "#[random_color()]"
+	spawned_human.facial_hair_color = facial_haircolor || "#[random_color()]"
+	spawned_human.skin_tone = skin_tone || random_skin_tone()
+
+	spawned_human.update_body(is_creating = TRUE)
 
 /obj/effect/mob_spawn/proc/equip(mob/living/spawned_mob)
 	if(outfit)
@@ -165,6 +156,11 @@
 	if(LAZYFIND(ckeys_trying_to_spawn, user.ckey))
 		return
 
+	if(uses <= 0 && !infinite_use) // Just in case something took longer than it should've and we got here after the uses went below zero.
+		to_chat(user, span_warning("This spawner is out of charges!"))
+		LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
+		return
+
 	var/user_ckey = user.ckey // Just in case shenanigans happen, we always want to remove it from the list.
 	var/load_custom_char = FALSE
 	LAZYADD(ckeys_trying_to_spawn, user_ckey)
@@ -182,11 +178,11 @@
 			break input_handling
 
 		var/customization_key = initial(customization_type.savefile_key)
-		var/custom_char_id = user.client.prefs.used_slot_amount[customization_key]
+		var/custom_char_id = user.client.prefs.current_ids[customization_key]
 		if(!custom_char_id)
 			break input_handling
 
-		var/custom_char_name = user.client.prefs.read_preference(/datum/preference/name, custom_char_id, customization_key)
+		var/custom_char_name = user.client.prefs.read_preference(/datum/preference/name/real_name, custom_char_id, customization_key)
 
 		input = tgui_alert(usr, "Load your custom character? ([custom_char_name])", buttons = list("Yes", "No", "Cancel"), timeout = 10 SECONDS)
 
@@ -264,7 +260,7 @@
 /obj/effect/mob_spawn/ghost_role/create_mob(mob/mob_possessor, load_custom_char)
 	var/mob/living/carbon/human/spawned_mob = ..()
 	if(load_custom_char)
-		if(istype(spawned_mob))
+		if(!istype(spawned_mob))
 			stack_trace("create_mob() called with load_custom_char set to true, but our spawned mob doesnt support custom characters!")
 			return spawned_mob
 
@@ -283,6 +279,7 @@
 			mob_possessor.mind.transfer_to(spawned_mob, force_key_move = TRUE)
 		else
 			spawned_mob.key = mob_possessor.key
+
 	var/datum/mind/spawned_mind = spawned_mob.mind
 	if(spawned_mind)
 		spawned_mob.mind.set_assigned_role_with_greeting(SSjob.GetJobType(spawner_job_path))

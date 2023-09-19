@@ -14,6 +14,7 @@
 	the hostile creatures, and the ash drakes swooping down from the cloudless skies, all you can wish for is the feel of soft grass between your toes and \
 	the fresh air of Earth. These thoughts are dispelled by yet another recollection of how you got here... "
 	spawner_job_path = /datum/job/hermit
+	customization_type = /datum/offstation_customization/hermit
 
 /obj/effect/mob_spawn/ghost_role/human/hermit/Initialize(mapload)
 	. = ..()
@@ -196,7 +197,6 @@
 	var/mob/living/carbon/human/yolk = new /mob/living/carbon/human/(get_turf(src))
 	yolk.fully_replace_character_name(null,random_unique_lizard_name(gender))
 	yolk.set_species(/datum/species/lizard/ashwalker)
-	yolk.underwear = "Nude"
 	yolk.equipOutfit(/datum/outfit/ashwalker)//this is an authentic mess we're making
 	yolk.update_body()
 	yolk.gib()
@@ -218,6 +218,7 @@
 	You have seen lights in the distance... they foreshadow the arrival of outsiders that seek to tear apart the Necropolis and its domain. \
 	Fresh sacrifices for your nest."
 	spawner_job_path = /datum/job/ash_walker
+	customization_type = /datum/offstation_customization/ashwalker
 	var/datum/team/ashwalkers/team
 	var/obj/structure/ash_walker_eggshell/eggshell
 
@@ -232,9 +233,11 @@
 		to_chat(user, span_warning("You have exhausted your usefulness to the Necropolis."))
 	return FALSE
 
+/obj/effect/mob_spawn/ghost_role/human/ash_walker/name_mob(mob/living/spawned_mob, forced_name)
+	spawned_human.fully_replace_character_name(null, random_unique_lizard_name(gender))
+
 /obj/effect/mob_spawn/ghost_role/human/ash_walker/special(mob/living/carbon/human/spawned_human)
 	. = ..()
-	spawned_human.fully_replace_character_name(null,random_unique_lizard_name(gender))
 	to_chat(spawned_human, "<b>Drag the corpses of men and beasts to your nest. It will absorb them to create more of your kind. Invade the strange structure of the outsiders if you must. Do not cause unnecessary destruction, as littering the wastes with ugly wreckage is certain to not gain you favor. Glory to the Necropolis!</b>")
 
 	spawned_human.mind.add_antag_datum(/datum/antagonist/ashwalker, team)
@@ -275,6 +278,7 @@
 	important_text = "The base is rigged with explosives, DO NOT abandon it or let it fall into enemy hands!"
 	outfit = /datum/outfit/lavaland_syndicate
 	spawner_job_path = /datum/job/lavaland_syndicate
+	customization_type = /datum/offstation_customization/syndicate_outpost
 
 /obj/effect/mob_spawn/ghost_role/human/lavaland_syndicate/special(mob/living/new_spawn)
 	. = ..()

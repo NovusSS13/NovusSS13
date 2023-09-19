@@ -157,9 +157,8 @@
 /datum/preference/choiced/mutant/lizard_spines/init_possible_values()
 	return assoc_to_keys_features(GLOB.spines_list)
 
-/datum/preference/choiced/mutant/lizard_spines/create_default_value()
-	var/datum/sprite_accessory/spines/no_spines = /datum/sprite_accessory/spines/none
-	return initial(no_spines.name)
+/datum/preference/choiced/mutant/lizard_spines/create_default_value(datum/preferences/preferences)
+	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/tricolor/mutant/lizard_spines
 	savefile_key = "feature_lizard_spines_color"
@@ -183,7 +182,7 @@
 /datum/preference/choiced/mutant/lizard_tail/init_possible_values()
 	return assoc_to_keys_features(GLOB.tails_list_lizard)
 
-/datum/preference/choiced/mutant/lizard_tail/create_default_value()
+/datum/preference/choiced/mutant/lizard_tail/create_default_value(datum/preferences/preferences)
 	var/datum/sprite_accessory/tails/lizard/smooth/tail = /datum/sprite_accessory/tails/lizard/smooth
 	return initial(tail.name)
 

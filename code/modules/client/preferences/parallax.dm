@@ -13,7 +13,7 @@
 		PARALLAX_DISABLE,
 	)
 
-/datum/preference/choiced/parallax/create_default_value()
+/datum/preference/choiced/parallax/create_default_value(datum/preferences/preferences)
 	return PARALLAX_HIGH
 
 /datum/preference/choiced/parallax/apply_to_client(client/client, value)

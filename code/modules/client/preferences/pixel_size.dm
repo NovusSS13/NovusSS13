@@ -8,7 +8,7 @@
 
 	step = 0.5
 
-/datum/preference/numeric/pixel_size/create_default_value()
+/datum/preference/numeric/pixel_size/create_default_value(datum/preferences/preferences)
 	return 0
 
 /datum/preference/numeric/pixel_size/apply_to_client(client/client, value)

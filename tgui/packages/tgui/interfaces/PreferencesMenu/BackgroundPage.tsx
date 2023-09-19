@@ -22,7 +22,9 @@ export const BackgroundPage = (props, context) => {
           data.character_preferences.secondary_features || [];
 
         const mainFeatures = [
-          ...Object.entries(data.character_preferences.clothing),
+          ...((data.character_preferences.clothing &&
+            Object.entries(data.character_preferences.clothing)) ||
+            []),
           ...Object.entries(data.character_preferences.features).filter(
             ([featureName]) => {
               if (!currentSpeciesData) {

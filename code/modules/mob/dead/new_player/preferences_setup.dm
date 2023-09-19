@@ -1,6 +1,9 @@
 /// Fully randomizes everything in the character.
-/datum/preferences/proc/randomise_appearance_prefs(randomize_flags = ALL)
+/datum/preferences/proc/randomise_appearance_prefs(randomize_flags = (~RANDOMIZE_GENITALS))
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
+		if(!preference.is_accessible(src))
+			continue
+
 		if (!preference.included_in_randomization_flags(randomize_flags))
 			continue
 

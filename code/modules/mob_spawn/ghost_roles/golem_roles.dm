@@ -15,6 +15,7 @@
 	you_are_text = "You are a Free Golem. Your family worships The Liberator."
 	flavour_text = "In his infinite and divine wisdom, he set your clan free to travel the stars with a single declaration: \"Yeah go do whatever.\""
 	spawner_job_path = /datum/job/free_golem
+	customization_type = /datum/offstation_customization/golem
 	/// Typepath to a material to feed to the golem as soon as it is built
 	var/initial_type
 

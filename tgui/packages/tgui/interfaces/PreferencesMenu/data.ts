@@ -48,6 +48,7 @@ export type Species = {
   sexes: BooleanLike;
 
   enabled_features: string[];
+  is_selectable: BooleanLike;
 
   perks: {
     positive: Perk[];
@@ -93,6 +94,7 @@ export type QuirkInfo = {
 export type GhostRole = {
   slot_name: string;
   forced_species: string;
+  barebones_spawn: BooleanLike;
 };
 
 export enum RandomSetting {
@@ -131,7 +133,7 @@ export type PreferencesMenuData = {
   character_profiles: Record<string, string[]>;
 
   character_preferences: {
-    clothing: Record<string, string>;
+    clothing: Record<string, string> | null;
     features: Record<string, string>;
     game_preferences: Record<string, unknown>;
     non_contextual: {

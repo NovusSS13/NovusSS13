@@ -4,7 +4,7 @@
 	savefile_key = "ooccolor"
 	savefile_identifier = PREFERENCE_PLAYER
 
-/datum/preference/color/ooc_color/create_default_value()
+/datum/preference/color/ooc_color/create_default_value(datum/preferences/preferences)
 	return "#c43b23"
 
 /datum/preference/color/ooc_color/is_accessible(datum/preferences/preferences)

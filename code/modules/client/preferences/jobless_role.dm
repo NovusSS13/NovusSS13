@@ -2,7 +2,7 @@
 	savefile_key = "joblessrole"
 	savefile_identifier = PREFERENCE_PLAYER
 
-/datum/preference/choiced/jobless_role/create_default_value()
+/datum/preference/choiced/jobless_role/create_default_value(datum/preferences/preferences)
 	return BEOVERFLOW
 
 /datum/preference/choiced/jobless_role/init_possible_values()

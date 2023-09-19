@@ -7,7 +7,7 @@
 	should_generate_icons = TRUE
 	relevant_inherent_trait = TRAIT_BLOOD_CLANS
 
-/datum/preference/choiced/vampire_status/create_default_value()
+/datum/preference/choiced/vampire_status/create_default_value(datum/preferences/preferences)
 	return "Inoculated" //eh, have em try out the mechanic first
 
 /datum/preference/choiced/vampire_status/init_possible_values()
