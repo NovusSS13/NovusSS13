@@ -32,6 +32,7 @@
 		this_zone["body_zone"] = zone
 		this_zone["name"] = capitalize(parse_zone(zone))
 		var/list/this_zone_marking_choices = list()
+		var/list/this_zone_marking_icons = list()
 		if(LAZYACCESS(GLOB.body_markings_by_zone, zone))
 			for(var/marking_name in GLOB.body_markings_by_zone[zone])
 				if(marking_name == SPRITE_ACCESSORY_NONE)
@@ -39,6 +40,7 @@
 				var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
 				if(!body_markings.compatible_species || is_path_in_list(species_type, body_markings.compatible_species))
 					this_zone_marking_choices += marking_name
+					this_zone_marking_icons[marking_name] = sanitize_css_class_name("[zone][marking_name]")
 		var/list/this_zone_markings = list()
 		for(var/marking_name in preferences.body_markings[zone])
 			this_zone_marking_choices -= marking_name
@@ -53,6 +55,7 @@
 			this_zone_markings += list(this_marking)
 		this_zone["markings"] = this_zone_markings
 		this_zone["markings_choices"] = this_zone_marking_choices
+		this_zone["markings_icons"] = this_zone_marking_icons
 		this_zone["cant_add_markings"] = (LAZYLEN(this_zone_markings) >= MAXIMUM_MARKINGS_PER_LIMB ? "Marking limit reached!" : \
 										(!LAZYLEN(this_zone_marking_choices) ? (LAZYLEN(this_zone_markings) ? "No more options found!" : "No options found!") : null))
 
@@ -199,3 +202,59 @@
 		preferences.character_preview_view.update_body()
 		return TRUE
 	return FALSE
+
+/datum/preference_middleware/markings/get_ui_assets()
+	return list(
+		get_asset_datum(/datum/asset/spritesheet/markings),
+	)
+
+/datum/asset/spritesheet/markings
+	name = "markings"
+	early = TRUE
+	cross_round_cachable = TRUE
+
+/datum/asset/spritesheet/markings/create_spritesheets()
+	var/list/to_insert = list()
+
+	for(var/zone in GLOB.marking_zones)
+		if(LAZYACCESS(GLOB.body_markings_by_zone, zone))
+			for(var/marking_name in GLOB.body_markings_by_zone[zone])
+				if(marking_name == SPRITE_ACCESSORY_NONE)
+					continue
+				var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
+				var/mob/living/carbon/human/dummy/consistent/dummy = new
+
+				// set species for species specific markings
+				if(body_marking.compatible_species)
+					dummy.set_species(body_marking.compatible_species[1])
+				else
+					dummy.set_species(/datum/species/lizard)
+
+				var/icon/dummy_icon = getFlatIcon(dummy)
+
+				var/icon/marking_icon = icon(body_marking.icon, "m_markings_[body_marking.icon_state]_[zone]_ADJ", SOUTH)
+				if(body_marking.color_amount)
+					marking_icon.Blend(COLOR_MAGENTA, ICON_MULTIPLY)
+				dummy_icon.Blend(marking_icon, ICON_OVERLAY)
+
+				switch(zone)
+					if(BODY_ZONE_HEAD)
+						dummy_icon.Crop(10, 19, 22, 31)
+					if(BODY_ZONE_CHEST)
+						dummy_icon.Crop(9, 9, 23, 23)
+					if(BODY_ZONE_L_ARM, BODY_ZONE_PRECISE_L_HAND)
+						dummy_icon.Crop(17, 10, 28, 21)
+					if(BODY_ZONE_R_ARM, BODY_ZONE_PRECISE_R_HAND)
+						dummy_icon.Crop(4, 10, 15, 21)
+					if(BODY_ZONE_L_LEG)
+						dummy_icon.Crop(9, 1, 23, 15)
+					if(BODY_ZONE_R_LEG)
+						dummy_icon.Crop(9, 1, 23, 15)
+				dummy_icon.Scale(32, 32)
+
+				to_insert[sanitize_css_class_name("[zone][marking_name]")] = dummy_icon
+
+				SSatoms.prepare_deletion(dummy)
+
+	for (var/spritesheet_key in to_insert)
+		Insert(spritesheet_key, to_insert[spritesheet_key])

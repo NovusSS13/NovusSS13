@@ -78,6 +78,8 @@
 #define DB_FLAG_EXEMPT (1<<0)
 /// Did the user pass the automated age gate?
 #define DB_FLAG_AGE_VETTED (1<<1)
+/// Has the user read the rules yet?
+#define DB_FLAG_READ_RULES (1<<2)
 
 #define DEFAULT_CYBORG_NAME "Default Cyborg Name"
 
