@@ -1,4 +1,43 @@
 {
+	"Player Principles": {
+		"Don't be an asshole!": [
+			"Don't be an asshole! ",
+			"Put in effort to provide not just yourself, but other players, with a fun experience."
+		],
+		"Don't go out of your way to harass players ingame.": [
+			"Don't go out of your way to harass players ingame. You're both here for the same reason. ",
+			"Try to be nice to each other, and worst case scenario, just try to avoid each other."
+		],
+		"You are not the main character.": [
+			"You're not the main character. ",
+			"You're here alongside all of us. ",
+			"If you want to do something unique, we encourage that! Just don't assume you have priority over others."
+		],
+		"Most important of all...": [
+			"Most important of all: We are together in this community for the sake of having fun. ",
+			"Do not get unreasonably upset over silly things, in the end, it's all a game."
+		]
+	},
+	"Staff Principles": {
+		"Staff are not better than players.": [
+			"Staff are not better than players. ",
+			"We are fallible humans just like you, ",
+			"so feel free to judge us harshly in how we run this community. ",
+			"You will not be punished for criticism alone."
+		],
+		"Everyone is entitled to their opinions.": [
+			"Everyone is entitled to their opinions, no matter how absurdly shitty. ",
+			"Avoid proselytizing and trying to wrangle staff into censoring those you disagree with!"
+		],
+		"We are here to help everyone, not just you.": [
+			"We're here to help! ",
+			"However, If you're asking for us to buff you, revive you, and adhere to you, ",
+			"it won't be in our nature to give advantages in bad spirit. ",
+			"We wish to provide players with a fair playing ground. ",
+			"However: We still would love to see what you come up with! ",
+			"If your idea is in good spirit, and is fun for more than just one person, ask staff for help."
+		]
+	},
 	"Rules": {
 		"Pedophiles or minors are not welcome on this server.": [
 			"Pedophiles or minors are not welcome on this server. ",
@@ -117,45 +156,6 @@
 		"Off server behavior is not punished.": [
 			"Off server behaviour will not be punished, your actions within this server are judged independently.",
 			"This applies to all rules, except the golden rule: No pedophiles or minors."
-		]
-	},
-	"Staff Principles": {
-		"Staff are not better than players.": [
-			"Staff are not better than players. ",
-			"We are fallible humans just like you, ",
-			"so feel free to judge us harshly in how we run this community. ",
-			"You will not be punished for criticism alone."
-		],
-		"Everyone is entitled to their opinions.": [
-			"Everyone is entitled to their opinions, no matter how absurdly shitty. ",
-			"Avoid proselytizing and trying to wrangle staff into censoring those you disagree with!"
-		],
-		"We are here to help everyone, not just you.": [
-			"We're here to help! ",
-			"However, If you're asking for us to buff you, revive you, and adhere to you, ",
-			"it won't be in our nature to give advantages in bad spirit. ",
-			"We wish to provide players with a fair playing ground. ",
-			"However: We still would love to see what you come up with! ",
-			"If your idea is in good spirit, and is fun for more than just one person, ask staff for help."
-		]
-	},
-	"Player Principles": {
-		"Don't be an asshole!": [
-			"Don't be an asshole! ",
-			"Put in effort to provide not just yourself, but other players, with a fun experience."
-		],
-		"Don't go out of your way to harass players ingame.": [
-			"Don't go out of your way to harass players ingame. You're both here for the same reason. ",
-			"Try to be nice to each other, and worst case scenario, just try to avoid each other."
-		],
-		"You are not the main character.": [
-			"You're not the main character. ",
-			"You're here alongside all of us. ",
-			"If you want to do something unique, we encourage that! Just don't assume you have priority over others."
-		],
-		"Most important of all...": [
-			"Most important of all: We are together in this community for the sake of having fun. ",
-			"Do not get unreasonably upset over silly things, in the end, it's all a game."
 		]
 	}
 }
