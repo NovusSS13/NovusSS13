@@ -11,9 +11,9 @@
 	var/list/final_markings = list()
 	for(var/zone in body_marking_list)
 		for(var/marking_name in body_marking_list[zone])
-			var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
-			if(!body_marking || (marking_name == SPRITE_ACCESSORY_NONE)) //invalid marking...
-				stack_trace("[type] had an invalid marking ([marking_name]) in it's body_marking_list!")
+			var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings[marking_name]
+			if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
+				stack_trace("[type] had an invalid body_markings accessory ([marking_name]) in it's body_marking_list!")
 				continue
 			LAZYADDASSOC(final_markings[zone], marking_name, default_color)
 	return final_markings

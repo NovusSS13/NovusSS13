@@ -633,7 +633,7 @@
 				if(!dna.features[marking_key] || (dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
 					continue
 				var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][dna.features[marking_key]]
-				if(!markings) //invalid marking...
+				if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
 					continue
 				if(!markings.compatible_species || is_path_in_list(dna.species.type, markings.compatible_species))
 					var/marking_color_key = marking_key + "_color"

@@ -190,7 +190,7 @@
 	if(!dropped && ((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG)))
 		//Legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that
 		var/obj/item/bodypart/leg/leg_source = src
-		for(var/image/limb_image in .)
+		for(var/image/limb_image in .) //yes we do need to typecheck for images
 			//remove the old, unmasked image
 			. -= limb_image
 			//add two masked images based on the old one

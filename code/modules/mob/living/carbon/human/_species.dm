@@ -2166,7 +2166,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					if(!target.dna.features[marking_key] || (target.dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
 						continue
 					var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][target.dna.features[marking_key]]
-					if(!markings) //invalid marking...
+					if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
 						continue
 					if(!markings.compatible_species || is_path_in_list(new_species.type, markings.compatible_species))
 						var/marking_color_key = marking_key + "_color"
