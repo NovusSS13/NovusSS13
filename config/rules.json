@@ -106,6 +106,10 @@
 			"Punishments for infringing on the rules will be applied based on the enforcing admin's discretion. ",
 			"You may consult us about an admin in particular, if you believe any punishment was unjust."
 		],
+		"The rules are open for all.": [
+			"If you want to contribute changes to the rules, ",
+			"you may do so by making a pull request on our github repository."
+		],
 		"The discord server does not run under the same rules.": [
 			"That which is written here does not entirely apply to the Discord - ",
 			"Admins are allowed to be generally more tyrannical in that space, among other differences."
