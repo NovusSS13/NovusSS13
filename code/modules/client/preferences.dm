@@ -511,10 +511,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/list/final_markings = list()
 	for(var/zone in body_markings)
 		for(var/marking_name in body_markings[zone])
-			var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings_by_zone[zone][marking_name]
-			if(!body_marking || (body_marking.name == SPRITE_ACCESSORY_NONE)) //invalid marking...
+			var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[zone][marking_name]
+			if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
 				continue
-			if(!body_marking.compatible_species || is_path_in_list(species_type, body_marking.compatible_species))
+			if(!markings.compatible_species || is_path_in_list(species_type, markings.compatible_species))
 				LAZYADDASSOC(final_markings[zone], marking_name, sanitize_hexcolor(body_markings[zone][marking_name], DEFAULT_HEX_COLOR_LEN, TRUE))
 	body_markings = final_markings
 	return final_markings

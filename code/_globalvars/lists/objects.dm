@@ -104,4 +104,4 @@ GLOBAL_LIST_EMPTY(roundstart_station_borgcharger_areas)
 GLOBAL_LIST_EMPTY(roundstart_station_mechcharger_areas)
 
 /// Associative list of alcoholic container typepath to instances, currently used by the alcoholic quirk
-GLOBAL_LIST_INIT(alcohol_containers, init_alcohol_containers())
+GLOBAL_LIST_INIT(bottles_list, init_bottles_list())

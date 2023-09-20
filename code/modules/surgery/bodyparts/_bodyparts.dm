@@ -4,17 +4,6 @@
 	force = 3
 	throwforce = 3
 	w_class = WEIGHT_CLASS_SMALL
-	icon = 'icons/mob/species/human/bodyparts.dmi'
-	icon_state = "" //Leave this blank! Bodyparts are built using overlays
-	/// The icon for limbs using greyscale
-	VAR_PROTECTED/icon_greyscale = DEFAULT_BODYPART_ICON_ORGANIC
-	/// The icon for non-greyscale limbs
-	VAR_PROTECTED/icon_static = 'icons/mob/species/human/bodyparts.dmi'
-	/// The icon for husked limbs
-	VAR_PROTECTED/icon_husk = 'icons/mob/species/human/bodyparts.dmi'
-	/// The icon for invisible limbs
-	VAR_PROTECTED/icon_invisible = 'icons/mob/species/human/bodyparts.dmi'
-	layer = BELOW_MOB_LAYER //so it isn't hidden behind objects when on the floor
 	grind_results = list(
 		/datum/reagent/bone_dust = 10,
 		/datum/reagent/consumable/liquidgibs = 5,

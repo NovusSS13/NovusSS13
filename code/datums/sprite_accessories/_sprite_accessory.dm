@@ -1,20 +1,13 @@
 /*
-
 	Hello and welcome to sprite_accessories: For sprite accessories, such as hair,
 	facial hair, and possibly tattoos and stuff somewhere along the line. This file is
 	intended to be friendly for people with little to no actual coding experience.
 	The process of adding in new hairstyles has been made pain-free and easy to do.
 	Enjoy! - Doohl
 
-
 	Notice: This all gets automatically compiled in a list in dna.dm, so you do not
 	have to define any UI values for sprite accessories manually for hair and facial
 	hair. Just add in new hair types and the game will naturally adapt.
-
-	!!WARNING!!: changing existing hair information can be VERY hazardous to savefiles,
-	to the point where you may completely corrupt a server's savefiles. Please refrain
-	from doing this unless you absolutely know what you are doing, and have defined a
-	conversion in savefile.dm
 */
 /proc/init_sprite_accessory_subtypes(prototype, list/L, list/male, list/female, add_blank)//Roundstart argument builds a specific list for roundstart parts where some parts may be locked
 	if(!istype(L))
@@ -934,11 +927,6 @@
 
 // please make sure they're sorted alphabetically and categorized
 
-/datum/sprite_accessory/facial_hair/shaved
-	name = "Shaved"
-	icon_state = null
-	gender = NEUTER
-
 /datum/sprite_accessory/facial_hair/abe
 	name = "Beard (Abraham Lincoln)"
 	icon_state = "facial_abe"
@@ -1087,6 +1075,11 @@
 	name = "Sideburns"
 	icon_state = "facial_sideburn"
 
+/datum/sprite_accessory/facial_hair/shaved
+	name = "Shaved"
+	icon_state = null
+	gender = NEUTER
+
 ///////////////////////////
 // Underwear Definitions //
 ///////////////////////////
@@ -1097,6 +1090,11 @@
 
 
 //MALE UNDERWEAR
+/datum/sprite_accessory/underwear/nude
+	name = "Nude"
+	icon_state = null
+	gender = NEUTER
+
 /datum/sprite_accessory/underwear/male_briefs
 	name = "Briefs"
 	icon_state = "male_briefs"
@@ -1265,6 +1263,11 @@
 
 /datum/sprite_accessory/undershirt
 	icon = 'icons/mob/clothing/underwear.dmi'
+
+/datum/sprite_accessory/undershirt/nude
+	name = "Nude"
+	icon_state = null
+	gender = NEUTER
 
 // please make sure they're sorted alphabetically and categorized
 
@@ -1545,6 +1548,10 @@
 /datum/sprite_accessory/socks
 	icon = 'icons/mob/clothing/underwear.dmi'
 
+/datum/sprite_accessory/socks/nude
+	name = "Nude"
+	icon_state = null
+
 // please make sure they're sorted alphabetically and categorized
 
 /datum/sprite_accessory/socks/ace_knee
@@ -1739,520 +1746,3 @@
 /datum/sprite_accessory/tails/monkey
 	feature_suffix = "monkey"
 	color_amount = 0
-
-/datum/sprite_accessory/tails/monkey/monkey
-	name = "Monkey"
-	icon = 'icons/mob/species/monkey/monkey_tail.dmi'
-	icon_state = "monkey"
-
-/datum/sprite_accessory/pod_hair
-	icon = 'icons/mob/species/podperson_hair.dmi'
-
-/datum/sprite_accessory/pod_hair/ivy
-	name = "Ivy"
-	icon_state = "ivy"
-
-/datum/sprite_accessory/pod_hair/cabbage
-	name = "Cabbage"
-	icon_state = "cabbage"
-
-/datum/sprite_accessory/pod_hair/spinach
-	name = "Spinach"
-	icon_state = "spinach"
-
-/datum/sprite_accessory/pod_hair/prayer
-	name = "Prayer"
-	icon_state = "prayer"
-
-/datum/sprite_accessory/pod_hair/vine
-	name = "Vine"
-	icon_state = "vine"
-
-/datum/sprite_accessory/pod_hair/shrub
-	name = "Shrub"
-	icon_state = "shrub"
-
-/datum/sprite_accessory/pod_hair/rose
-	name = "Rose"
-	icon_state = "rose"
-
-/datum/sprite_accessory/pod_hair/orchid
-	name = "Orchid"
-	icon_state = "orchid"
-
-/datum/sprite_accessory/pod_hair/fig
-	name = "Fig"
-	icon_state = "fig"
-
-/datum/sprite_accessory/pod_hair/hibiscus
-	name = "Hibiscus"
-	icon_state = "hibiscus"
-
-/datum/sprite_accessory/snouts
-
-/datum/sprite_accessory/snouts/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/snouts/lizard
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
-
-/datum/sprite_accessory/snouts/lizard/sharp
-	name = "Sharp"
-	icon_state = "sharp"
-
-/datum/sprite_accessory/snouts/lizard/round
-	name = "Round"
-	icon_state = "round"
-
-/datum/sprite_accessory/snouts/lizard/sharplight
-	name = "Sharp + Light"
-	icon_state = "sharplight"
-
-/datum/sprite_accessory/snouts/lizard/roundlight
-	name = "Round + Light"
-	icon_state = "roundlight"
-
-/datum/sprite_accessory/horns
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
-
-/datum/sprite_accessory/horns/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/horns/simple
-	name = "Simple"
-	icon_state = "simple"
-
-/datum/sprite_accessory/horns/short
-	name = "Short"
-	icon_state = "short"
-
-/datum/sprite_accessory/horns/curled
-	name = "Curled"
-	icon_state = "curled"
-
-/datum/sprite_accessory/horns/ram
-	name = "Ram"
-	icon_state = "ram"
-
-/datum/sprite_accessory/horns/angler
-	name = "Angeler"
-	icon_state = "angler"
-
-/datum/sprite_accessory/ears
-	icon = 'icons/mob/species/human/cat_features.dmi'
-
-/datum/sprite_accessory/ears/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/ears/cat
-	name = "Cat"
-	icon_state = "cat"
-	hasinner = TRUE
-
-/datum/sprite_accessory/ears/fox
-	icon = 'icons/mob/species/human/fox_features.dmi'
-	name = "Fox"
-	icon_state = "fox"
-	hasinner = TRUE
-	locked = TRUE
-
-/datum/sprite_accessory/wings
-	icon = 'icons/mob/species/wings.dmi'
-
-/datum/sprite_accessory/wings_open
-	icon = 'icons/mob/species/wings.dmi'
-
-/datum/sprite_accessory/wings/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/wings_open/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/wings/angel
-	name = "Angel"
-	icon_state = "angel"
-	dimension_x = 46
-	center = TRUE
-	dimension_y = 34
-	locked = TRUE
-
-/datum/sprite_accessory/wings_open/angel
-	name = "Angel"
-	icon_state = "angel"
-	dimension_x = 46
-	center = TRUE
-	dimension_y = 34
-
-/datum/sprite_accessory/wings/dragon
-	name = "Dragon"
-	icon_state = "dragon"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-	locked = TRUE
-
-/datum/sprite_accessory/wings_open/dragon
-	name = "Dragon"
-	icon_state = "dragon"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-
-/datum/sprite_accessory/wings/megamoth
-	name = "Megamoth"
-	icon_state = "megamoth"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-	locked = TRUE
-
-/datum/sprite_accessory/wings_open/megamoth
-	name = "Megamoth"
-	icon_state = "megamoth"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-
-/datum/sprite_accessory/wings/mothra
-	name = "Mothra"
-	icon_state = "mothra"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-	locked = TRUE
-
-/datum/sprite_accessory/wings_open/mothra
-	name = "Mothra"
-	icon_state = "mothra"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-
-/datum/sprite_accessory/wings/skeleton
-	name = "Skeleton"
-	icon_state = "skele"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-	locked = TRUE
-
-/datum/sprite_accessory/wings_open/skeleton
-	name = "Skeleton"
-	icon_state = "skele"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-
-/datum/sprite_accessory/wings/robotic
-	name = "Robotic"
-	icon_state = "robotic"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-	locked = TRUE
-
-/datum/sprite_accessory/wings_open/robotic
-	name = "Robotic"
-	icon_state = "robotic"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-
-/datum/sprite_accessory/wings/fly
-	name = "Fly"
-	icon_state = "fly"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-	locked = TRUE
-
-/datum/sprite_accessory/wings_open/fly
-	name = "Fly"
-	icon_state = "fly"
-	dimension_x = 96
-	center = TRUE
-	dimension_y = 32
-
-/datum/sprite_accessory/frills
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
-
-/datum/sprite_accessory/frills/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/frills/simple
-	name = "Simple"
-	icon_state = "simple"
-
-/datum/sprite_accessory/frills/short
-	name = "Short"
-	icon_state = "short"
-
-/datum/sprite_accessory/frills/aquatic
-	name = "Aquatic"
-	icon_state = "aqua"
-
-/datum/sprite_accessory/spines
-	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
-
-/datum/sprite_accessory/spines_animated
-	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
-
-/datum/sprite_accessory/spines/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/spines_animated/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/spines/short
-	name = "Short"
-	icon_state = "short"
-
-/datum/sprite_accessory/spines_animated/short
-	name = "Short"
-	icon_state = "short"
-
-/datum/sprite_accessory/spines/shortmeme
-	name = "Short + Membrane"
-	icon_state = "shortmeme"
-
-/datum/sprite_accessory/spines_animated/shortmeme
-	name = "Short + Membrane"
-	icon_state = "shortmeme"
-
-/datum/sprite_accessory/spines/long
-	name = "Long"
-	icon_state = "long"
-
-/datum/sprite_accessory/spines_animated/long
-	name = "Long"
-	icon_state = "long"
-
-/datum/sprite_accessory/spines/longmeme
-	name = "Long + Membrane"
-	icon_state = "longmeme"
-
-/datum/sprite_accessory/spines_animated/longmeme
-	name = "Long + Membrane"
-	icon_state = "longmeme"
-
-/datum/sprite_accessory/spines/aquatic
-	name = "Aquatic"
-	icon_state = "aqua"
-
-/datum/sprite_accessory/spines_animated/aquatic
-	name = "Aquatic"
-	icon_state = "aqua"
-
-/datum/sprite_accessory/legs //legs are a special case, they aren't actually sprite_accessories but are updated with them.
-	icon = null //These datums exist for selecting legs on preference, and little else
-
-/datum/sprite_accessory/legs/none
-	name = "Normal Legs"
-
-/datum/sprite_accessory/legs/digitigrade_lizard
-	name = LEGS_DIGITIGRADE
-
-/datum/sprite_accessory/mushroom_caps
-	icon = 'icons/mob/species/mush_cap.dmi'
-
-/datum/sprite_accessory/mushroom_caps/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
-/datum/sprite_accessory/mushroom_caps/round
-	name = "Round"
-	icon_state = "round"
-
-/datum/sprite_accessory/moth_wings
-	icon = 'icons/mob/species/moth/moth_wings.dmi'
-
-/datum/sprite_accessory/moth_wings/plain
-	name = "Plain"
-	icon_state = "plain"
-
-/datum/sprite_accessory/moth_wings/monarch
-	name = "Monarch"
-	icon_state = "monarch"
-
-/datum/sprite_accessory/moth_wings/luna
-	name = "Luna"
-	icon_state = "luna"
-
-/datum/sprite_accessory/moth_wings/atlas
-	name = "Atlas"
-	icon_state = "atlas"
-
-/datum/sprite_accessory/moth_wings/reddish
-	name = "Reddish"
-	icon_state = "redish"
-
-/datum/sprite_accessory/moth_wings/royal
-	name = "Royal"
-	icon_state = "royal"
-
-/datum/sprite_accessory/moth_wings/gothic
-	name = "Gothic"
-	icon_state = "gothic"
-
-/datum/sprite_accessory/moth_wings/lovers
-	name = "Lovers"
-	icon_state = "lovers"
-
-/datum/sprite_accessory/moth_wings/whitefly
-	name = "White Fly"
-	icon_state = "whitefly"
-
-/datum/sprite_accessory/moth_wings/burnt_off
-	name = "Burnt Off"
-	icon_state = "burnt_off"
-	locked = TRUE
-
-/datum/sprite_accessory/moth_wings/firewatch
-	name = "Firewatch"
-	icon_state = "firewatch"
-
-/datum/sprite_accessory/moth_wings/deathhead
-	name = "Deathshead"
-	icon_state = "deathhead"
-
-/datum/sprite_accessory/moth_wings/poison
-	name = "Poison"
-	icon_state = "poison"
-
-/datum/sprite_accessory/moth_wings/ragged
-	name = "Ragged"
-	icon_state = "ragged"
-
-/datum/sprite_accessory/moth_wings/moonfly
-	name = "Moon Fly"
-	icon_state = "moonfly"
-
-/datum/sprite_accessory/moth_wings/snow
-	name = "Snow"
-	icon_state = "snow"
-
-/datum/sprite_accessory/moth_wings/oakworm
-	name = "Oak Worm"
-	icon_state = "oakworm"
-
-/datum/sprite_accessory/moth_wings/jungle
-	name = "Jungle"
-	icon_state = "jungle"
-
-/datum/sprite_accessory/moth_wings/witchwing
-	name = "Witch Wing"
-	icon_state = "witchwing"
-
-/datum/sprite_accessory/moth_wings/rosy
-	name = "Rosy"
-	icon_state = "rosy"
-
-/datum/sprite_accessory/moth_wings/feathery
-	name = "Feathery"
-	icon_state = "feathery"
-
-/datum/sprite_accessory/moth_wings/brown
-	name = "Brown"
-	icon_state = "brown"
-
-/datum/sprite_accessory/moth_wings/plasmafire
-	name = "Plasmafire"
-	icon_state = "plasmafire"
-
-/datum/sprite_accessory/moth_wings/moffra
-	name = "Moffra"
-	icon_state = "moffra"
-
-/datum/sprite_accessory/moth_antennae //Finally splitting the sprite
-	icon = 'icons/mob/species/moth/moth_antennae.dmi'
-
-/datum/sprite_accessory/moth_antennae/plain
-	name = "Plain"
-	icon_state = "plain"
-
-/datum/sprite_accessory/moth_antennae/reddish
-	name = "Reddish"
-	icon_state = "reddish"
-
-/datum/sprite_accessory/moth_antennae/royal
-	name = "Royal"
-	icon_state = "royal"
-
-/datum/sprite_accessory/moth_antennae/gothic
-	name = "Gothic"
-	icon_state = "gothic"
-
-/datum/sprite_accessory/moth_antennae/whitefly
-	name = "White Fly"
-	icon_state = "whitefly"
-
-/datum/sprite_accessory/moth_antennae/lovers
-	name = "Lovers"
-	icon_state = "lovers"
-
-/datum/sprite_accessory/moth_antennae/burnt_off
-	name = "Burnt Off"
-	icon_state = "burnt_off"
-
-/datum/sprite_accessory/moth_antennae/firewatch
-	name = "Firewatch"
-	icon_state = "firewatch"
-
-/datum/sprite_accessory/moth_antennae/deathhead
-	name = "Deathshead"
-	icon_state = "deathhead"
-
-/datum/sprite_accessory/moth_antennae/poison
-	name = "Poison"
-	icon_state = "poison"
-
-/datum/sprite_accessory/moth_antennae/ragged
-	name = "Ragged"
-	icon_state = "ragged"
-
-/datum/sprite_accessory/moth_antennae/moonfly
-	name = "Moon Fly"
-	icon_state = "moonfly"
-
-/datum/sprite_accessory/moth_antennae/oakworm
-	name = "Oak Worm"
-	icon_state = "oakworm"
-
-/datum/sprite_accessory/moth_antennae/jungle
-	name = "Jungle"
-	icon_state = "jungle"
-
-/datum/sprite_accessory/moth_antennae/witchwing
-	name = "Witch Wing"
-	icon_state = "witchwing"
-
-/datum/sprite_accessory/moth_antennae/regal
-	name = "Regal"
-	icon_state = "regal"
-/datum/sprite_accessory/moth_antennae/rosy
-	name = "Rosy"
-	icon_state = "rosy"
-
-/datum/sprite_accessory/moth_antennae/feathery
-	name = "Feathery"
-	icon_state = "feathery"
-
-/datum/sprite_accessory/moth_antennae/brown
-	name = "Brown"
-	icon_state = "brown"
-
-/datum/sprite_accessory/moth_antennae/plasmafire
-	name = "Plasmafire"
-	icon_state = "plasmafire"
-
-/datum/sprite_accessory/moth_antennae/moffra
-	name = "Moffra"
-	icon_state = "moffra"

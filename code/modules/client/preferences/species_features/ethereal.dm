@@ -17,7 +17,7 @@
 		ethereal_base.Blend(icon('icons/mob/species/ethereal/bodyparts.dmi', "ethereal_l_arm"), ICON_OVERLAY)
 		ethereal_base.Blend(icon('icons/mob/species/ethereal/bodyparts.dmi', "ethereal_r_arm"), ICON_OVERLAY)
 
-		var/icon/eyes = icon('icons/mob/species/human/human_face.dmi', "eyes")
+		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes")
 		eyes.Blend(COLOR_BLACK, ICON_MULTIPLY)
 		ethereal_base.Blend(eyes, ICON_OVERLAY)
 

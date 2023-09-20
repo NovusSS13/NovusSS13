@@ -7,7 +7,7 @@
 		var/mob/Buckled = buckled
 		. = Buckled.lowest_buckled_mob()
 
-///Convert a PRECISE ZONE into the BODY_ZONE
+/// Convert a PRECISE ZONE into the actual, existing BODY_ZONE
 /proc/check_zone(zone)
 	if(!zone)
 		return BODY_ZONE_CHEST

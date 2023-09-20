@@ -1100,9 +1100,9 @@
 	. = ..()
 	RegisterSignal(quirk_holder, COMSIG_MOB_REAGENT_CHECK, PROC_REF(check_brandy))
 
-	var/obj/item/reagent_containers/brandy_container = GLOB.alcohol_containers[drug_container_type]
+	var/obj/item/reagent_containers/brandy_container = GLOB.bottles_list[drug_container_type]
 	if(isnull(brandy_container))
-		stack_trace("Alcoholic quirk added while the GLOB.alcohol_containers is (somehow) not initialized!")
+		stack_trace("[type] added while GLOB.bottles_list is (somehow) not initialized!")
 		brandy_container = new drug_container_type
 		favorite_alcohol = brandy_container.list_reagents[1]
 		qdel(brandy_container)

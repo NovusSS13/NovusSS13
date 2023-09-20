@@ -124,6 +124,9 @@
 /proc/cmp_reagents_asc(datum/reagent/a, datum/reagent/b)
 	return sorttext(initial(b.name),initial(a.name))
 
+/proc/cmp_types_asc(datum/A, datum/B)
+	return sorttext("[B]","[A]")
+
 /proc/cmp_typepaths_asc(A, B)
 	return sorttext("[B]","[A]")
 

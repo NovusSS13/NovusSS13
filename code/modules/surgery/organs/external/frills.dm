@@ -2,6 +2,7 @@
 /obj/item/organ/frills
 	name = "frills"
 	desc = "Ear-like external organs often seen on aquatic reptillians."
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "frills"
 
 	zone = BODY_ZONE_HEAD
@@ -11,7 +12,6 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	preference = "feature_lizard_frills"
 	dna_block = DNA_FRILLS_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 
@@ -32,8 +32,20 @@
 /datum/bodypart_overlay/mutant/frills/get_global_feature_list()
 	return GLOB.frills_list
 
+/obj/item/organ/frills/mutant
+	name = "mutant frills"
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/frills/mutant
+
+/datum/bodypart_overlay/mutant/frills/mutant
+
 /// Actual subtype used by lizards
 /obj/item/organ/frills/lizard
+	name = "lizard frills"
+
 	bodypart_overlay = /datum/bodypart_overlay/mutant/frills/lizard
 
 /datum/bodypart_overlay/mutant/frills/lizard
+
+/datum/bodypart_overlay/mutant/frills/lizard/get_global_feature_list()
+	return GLOB.frills_list_lizard

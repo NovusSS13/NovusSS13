@@ -9,8 +9,6 @@
 	/// If not null, overrides the appearance with this sprite accessory datum
 	var/sprite_accessory_override
 
-	/// The savefile_key of the preference this relates to. Used for the preferences UI.
-	var/preference
 	/// With what DNA block do we mutate in mutate_feature() ? For genetics
 	var/dna_block
 
@@ -31,8 +29,9 @@
 		return
 
 	// Build the mob sprite and use it as our overlay
-	for(var/external_layer in bodypart_overlay.all_layers)
+	for(var/external_layer in GLOB.external_layer_bitflags)
 		if(bodypart_overlay.layers & external_layer)
+			//yes, absolutely no checks whatsoever
 			. += bodypart_overlay.get_overlays(external_layer, ownerlimb)
 
 /// Initializes visual elements of an organ
