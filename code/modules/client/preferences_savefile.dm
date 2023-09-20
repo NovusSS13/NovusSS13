@@ -341,8 +341,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	save_data["randomise"] = randomise
 	save_data["job_preferences"] = job_preferences
 	save_data["all_quirks"] = all_quirks
-
-	//Markings
 	save_data["body_markings"] = body_markings
 
 	return TRUE
@@ -357,6 +355,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	save_character(++used_slot_amount[char_key], char_key) //init new char slot
 	load_character(used_slot_amount[char_key], char_key) //load it in
 	randomise_appearance_prefs() //randomize
+
 	return TRUE
 
 /datum/preferences/proc/sanitize_be_special(list/input_be_special)
