@@ -4,7 +4,7 @@
 	name = "necropolis tendril nest"
 	desc = "A vile tendril of corruption. It's surrounded by a nest of rapidly growing eggs..."
 	icon = 'icons/mob/simple/lavaland/nest.dmi'
-	icon_state = "ashwalker_nest"
+	icon_state = "ash_walker_nest"
 
 	move_resist=INFINITY // just killing it tears a massive hole in the ground, let's not move it
 	anchored = TRUE
@@ -126,4 +126,4 @@
 	resistance_flags = FIRE_PROOF | LAVA_PROOF
 	max_integrity = 200
 
-#undef ashwalker_SPAWN_THRESHOLD
+#undef ASHWALKER_SPAWN_THRESHOLD

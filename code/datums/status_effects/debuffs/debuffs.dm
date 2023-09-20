@@ -934,7 +934,7 @@
 	RegisterSignal(owner, COMSIG_ON_SACRIFICE, PROC_REF(on_sacrifice))
 
 /datum/status_effect/ashwalker_freshborn/on_remove()
-	UnregisterSignal(owner, list(COMSIG_MOB_AFTER_APPLY_DAMAGE))
+	UnregisterSignal(owner, list(COMSIG_MOB_AFTER_APPLY_DAMAGE, COMSIG_ON_SACRIFICE))
 	return ..()
 
 /datum/status_effect/ashwalker_freshborn/proc/on_apply_damage(mob/living/source, damage, damagetype, def_zone)
@@ -942,7 +942,7 @@
 
 	UnregisterSignal(owner, COMSIG_MOB_AFTER_APPLY_DAMAGE) //infinite loop funnies
 	owner.apply_damage(damage * 0.20) //you take 20% more damage until you do two sacrifices
-	RegisterSignal(owner, PROC_REF(on_apply_damage))
+	RegisterSignal(owner, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(on_apply_damage))
 
 /datum/status_effect/ashwalker_freshborn/proc/on_sacrifice(datum/source, obj/structure/lavaland/ashwalker/tendril, sacrifice_amount)
 	sacrifices_left -= sacrifice_amount
