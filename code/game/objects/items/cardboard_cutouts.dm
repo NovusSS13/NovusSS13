@@ -299,14 +299,14 @@
 /datum/cardboard_cutout/xenomorph_maid/get_name()
 	return applied_name + " ([rand(1, 999)])"
 
-/datum/cardboard_cutout/ash_walker
+/datum/cardboard_cutout/ashwalker
 	name = "Ash Walker"
 	applied_name = "lizard"
 	applied_desc = "A cardboard cutout of an ash walker."
 	species = /datum/species/lizard/ashwalker
 	outfit = /datum/outfit/ashwalker/spear
 
-/datum/cardboard_cutout/ash_walker/get_name()
+/datum/cardboard_cutout/ashwalker/get_name()
 	return lizard_name(pick(MALE, FEMALE))
 
 /datum/cardboard_cutout/death_squad

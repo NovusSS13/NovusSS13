@@ -396,8 +396,8 @@
 	name = "Ash Man"
 	real_name = "Ashy"
 	desc = "An incomprehensible abomination. As it moves, a thin trail of ash follows, appearing from seemingly nowhere."
-	icon_state = "ash_walker"
-	icon_living = "ash_walker"
+	icon_state = "ashwalker"
+	icon_living = "ashwalker"
 	status_flags = CANPUSH
 	maxHealth = 75
 	health = 75

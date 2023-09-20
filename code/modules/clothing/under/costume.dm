@@ -103,7 +103,7 @@
 	can_adjust = FALSE
 	resistance_flags = NONE
 
-/obj/item/clothing/under/costume/gladiator/ash_walker
+/obj/item/clothing/under/costume/gladiator/ashwalker
 	desc = "This gladiator uniform appears to be covered in ash and fairly dated."
 	has_sensor = NO_SENSORS
 

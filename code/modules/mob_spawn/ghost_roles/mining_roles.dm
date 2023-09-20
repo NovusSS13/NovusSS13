@@ -165,16 +165,16 @@
 
 //Ash walker eggs: Spawns in ash walker dens in lavaland. Ghosts become unbreathing lizards that worship the Necropolis and are advised to retrieve corpses to create more ash walkers.
 
-/obj/structure/ash_walker_eggshell
+/obj/structure/ashwalker_eggshell
 	name = "ash walker egg"
 	desc = "A man-sized yellow egg, spawned from some unfathomable creature. A humanoid silhouette lurks within. The egg shell looks resistant to temperature but otherwise rather brittle."
 	icon = 'icons/mob/simple/lavaland/lavaland_monsters.dmi'
 	icon_state = "large_egg"
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | FREEZE_PROOF
 	max_integrity = 80
-	var/obj/effect/mob_spawn/ghost_role/human/ash_walker/egg
+	var/obj/effect/mob_spawn/ghost_role/human/ashwalker/egg
 
-/obj/structure/ash_walker_eggshell/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0) //lifted from xeno eggs
+/obj/structure/ashwalker_eggshell/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0) //lifted from xeno eggs
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -185,12 +185,12 @@
 			if(damage_amount)
 				playsound(loc, 'sound/items/welder.ogg', 100, TRUE)
 
-/obj/structure/ash_walker_eggshell/attack_ghost(mob/user) //Pass on ghost clicks to the mob spawner
+/obj/structure/ashwalker_eggshell/attack_ghost(mob/user) //Pass on ghost clicks to the mob spawner
 	if(egg)
 		egg.attack_ghost(user)
 	. = ..()
 
-/obj/structure/ash_walker_eggshell/Destroy()
+/obj/structure/ashwalker_eggshell/Destroy()
 	if(!egg)
 		return ..()
 	var/mob/living/carbon/human/yolk = new /mob/living/carbon/human/(get_turf(src))
@@ -203,7 +203,7 @@
 	QDEL_NULL(egg)
 	return ..()
 
-/obj/effect/mob_spawn/ghost_role/human/ash_walker
+/obj/effect/mob_spawn/ghost_role/human/ashwalker
 	name = "ash walker egg"
 	desc = "A man-sized yellow egg, spawned from some unfathomable creature. A humanoid silhouette lurks within."
 	prompt_name = "necropolis ash walker"
@@ -217,47 +217,40 @@
 	flavour_text = "The wastes are sacred ground, its monsters a blessed bounty. \
 	You have seen lights in the distance... they foreshadow the arrival of outsiders that seek to tear apart the Necropolis and its domain. \
 	Fresh sacrifices for your nest."
-	spawner_job_path = /datum/job/ash_walker
+	spawner_job_path = /datum/job/ashwalker
 	var/datum/team/ashwalkers/team
-	var/obj/structure/ash_walker_eggshell/eggshell
+	var/obj/structure/ashwalker_eggshell/eggshell
 
-/obj/effect/mob_spawn/ghost_role/human/ash_walker/Destroy()
+/obj/effect/mob_spawn/ghost_role/human/ashwalker/Initialize(mapload, datum/team/ashwalkers/ashteam)
+	. = ..()
+	var/area/spawner_area = get_area(src)
+	team = ashteam
+	eggshell = new /obj/structure/ashwalker_eggshell(get_turf(loc))
+	eggshell.egg = src
+	src.forceMove(eggshell)
+	if(spawner_area)
+		notify_ghosts("An ash walker egg is ready to hatch in \the [spawner_area.name].", source = src, action=NOTIFY_ATTACK, flashwindow = FALSE, ignore_key = POLL_IGNORE_ASHWALKER)
+
+/obj/effect/mob_spawn/ghost_role/human/ashwalker/Destroy()
 	eggshell = null
 	return ..()
 
-/obj/effect/mob_spawn/ghost_role/human/ash_walker/allow_spawn(mob/user, silent = FALSE)
-	if(!(user.key in team.players_spawned))//one per person unless you get a bonus spawn
-		return TRUE
-	if(!silent)
-		to_chat(user, span_warning("You have exhausted your usefulness to the Necropolis."))
-	return FALSE
-
-/obj/effect/mob_spawn/ghost_role/human/ash_walker/special(mob/living/carbon/human/spawned_human)
+/obj/effect/mob_spawn/ghost_role/human/ashwalker/special(mob/living/carbon/human/spawned_human)
 	. = ..()
 	spawned_human.fully_replace_character_name(null,random_unique_lizard_name(gender))
 	to_chat(spawned_human, "<b>Drag the corpses of men and beasts to your nest. It will absorb them to create more of your kind. Invade the strange structure of the outsiders if you must. Do not cause unnecessary destruction, as littering the wastes with ugly wreckage is certain to not gain you favor. Glory to the Necropolis!</b>")
 
 	spawned_human.mind.add_antag_datum(/datum/antagonist/ashwalker, team)
 
+	spawned_human.apply_status_effect(/datum/status_effect/ashwalker_freshborn)
 	spawned_human.remove_language(/datum/language/common)
-	team.players_spawned += (spawned_human.key)
 	eggshell.egg = null
 	QDEL_NULL(eggshell)
-
-/obj/effect/mob_spawn/ghost_role/human/ash_walker/Initialize(mapload, datum/team/ashwalkers/ashteam)
-	. = ..()
-	var/area/spawner_area = get_area(src)
-	team = ashteam
-	eggshell = new /obj/structure/ash_walker_eggshell(get_turf(loc))
-	eggshell.egg = src
-	src.forceMove(eggshell)
-	if(spawner_area)
-		notify_ghosts("An ash walker egg is ready to hatch in \the [spawner_area.name].", source = src, action=NOTIFY_ATTACK, flashwindow = FALSE, ignore_key = POLL_IGNORE_ASHWALKER)
 
 /datum/outfit/ashwalker
 	name = "Ash Walker"
 	head = /obj/item/clothing/head/helmet/gladiator
-	uniform = /obj/item/clothing/under/costume/gladiator/ash_walker
+	uniform = /obj/item/clothing/under/costume/gladiator/ashwalker
 
 /datum/outfit/ashwalker/spear
 	name = "Ash Walker - Spear"
