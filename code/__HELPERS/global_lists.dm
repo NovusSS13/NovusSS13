@@ -30,11 +30,11 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines/lizard, GLOB.spines_list_lizard, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings_open, GLOB.wings_open_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list) //DO NOT ADD BLANK HERE YOU DUMB FUCK
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/mushroom_caps, GLOB.mushroom_caps_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/mushroom_caps, GLOB.mushroom_caps_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list, add_blank = TRUE)
 
 	//genitals
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/penis, GLOB.penis_list, add_blank = TRUE)

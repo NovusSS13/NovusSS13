@@ -2,6 +2,7 @@
 /obj/item/organ/horns
 	name = "horns"
 	desc = "Someone was a little too horny."
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "horns"
 
 	zone = BODY_ZONE_HEAD
@@ -11,7 +12,6 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	preference = "feature_lizard_horns"
 	dna_block = DNA_HORNS_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_ENAMEL
 
@@ -32,10 +32,18 @@
 /datum/bodypart_overlay/mutant/horns/get_global_feature_list()
 	return GLOB.horns_list
 
+/obj/item/organ/horns/mutant
+	name = "mutant horns"
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/horns/mutant
+
+/datum/bodypart_overlay/mutant/horns/mutant
+
 /// The horns of a lizard
 /obj/item/organ/horns/lizard
 	name = "lizard horns"
-	desc = "Why do lizards even have horns? Well, this one obviously doesn't."
+	desc = "Why do lizards even have horns? Well, one of them obviously doesn't."
+
 	bodypart_overlay = /datum/bodypart_overlay/mutant/horns/lizard
 
 /datum/bodypart_overlay/mutant/horns/lizard

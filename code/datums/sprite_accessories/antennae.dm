@@ -1,5 +1,6 @@
 /datum/sprite_accessory/moth_antennae //Finally splitting the sprite
 	icon = 'icons/mob/species/moth/moth_antennae.dmi'
+	color_amount = 0
 
 /datum/sprite_accessory/moth_antennae/plain
 	name = "Plain"

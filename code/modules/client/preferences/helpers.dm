@@ -10,10 +10,10 @@
 		return to_blend
 	bodypart_overlay.draw_color = draw_color
 	bodypart_overlay.set_appearance(sprite_accessory.type)
-	for(var/layer in GLOB.external_layer_bitflags)
-		if(!(bodypart_overlay.layers & layer))
+	for(var/bitflag_layer in GLOB.external_layer_bitflags)
+		if(!(bodypart_overlay.layers & bitflag_layer))
 			continue
-		for(var/mutable_appearance/appearance in bodypart_overlay.get_overlays(layer))
+		for(var/mutable_appearance/appearance in bodypart_overlay.get_overlays(bitflag_layer))
 			if(isnull(appearance))
 				continue
 			var/icon/accessory_icon = getFlatIcon(appearance, dir)

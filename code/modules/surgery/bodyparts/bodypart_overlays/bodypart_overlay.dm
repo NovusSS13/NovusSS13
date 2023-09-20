@@ -1,18 +1,16 @@
 ///Bodypart ovarlay datum. These can be added to any limb to give them a proper overlay, that'll even stay if the limb gets removed
 ///This is the abstract parent, don't use it!!
 /datum/bodypart_overlay
-	///Required bodytypes for this overlay to actually draw on a given limb
+	/// Required bodytypes for this overlay to actually draw on a given limb
 	var/required_bodytypes = BODYTYPE_HUMANOID
-	///Sometimes we need multiple layers, for like the back, middle and front of the person (EXTERNAL_FRONT, EXTERNAL_ADJACENT, EXTERNAL_BEHIND)
+	/// Sometimes we need multiple layers, for like the back, middle and front of the person (EXTERNAL_FRONT, EXTERNAL_ADJACENT, EXTERNAL_BEHIND)
 	var/layers
-	///List of all possible layers. Used for looping through in drawing
-	var/static/list/all_layers = list(EXTERNAL_FRONT, EXTERNAL_ADJACENT, EXTERNAL_BEHIND)
 
 ///Wrapper for getting the proper overlays, colored and everything
-/datum/bodypart_overlay/proc/get_overlays(layer, obj/item/bodypart/limb)
+/datum/bodypart_overlay/proc/get_overlays(bitflag_layer, obj/item/bodypart/limb)
 	RETURN_TYPE(/list)
 	. = list()
-	layer = external_bitflag_to_layer(layer)
+	var/layer = external_bitflag_to_layer(bitflag_layer)
 	var/image/primary_image = get_image(layer, limb)
 	color_image(primary_image, layer, limb)
 	. += primary_image

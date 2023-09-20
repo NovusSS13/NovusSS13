@@ -1,9 +1,5 @@
 /datum/sprite_accessory/ears
 
-/datum/sprite_accessory/ears/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
 /datum/sprite_accessory/ears/human
 	icon = 'icons/mob/species/human/cat_features.dmi'
 	color_amount = 1
@@ -208,27 +204,27 @@
 	icon_state = "perky"
 
 /datum/sprite_accessory/ears/mutant/antenna_simple1
-	name = "Insect antenna (coloring 2)"
+	name = "Insect antenna (Coloring 2)"
 	icon_state = "antenna_simple1"
 
 /datum/sprite_accessory/ears/mutant/antenna_simple1_v2
-	name = "Insect antenna (coloring 3)"
+	name = "Insect antenna (Coloring 3)"
 	icon_state = "antenna_simple1v2"
 
 /datum/sprite_accessory/ears/mutant/antenna_simple2
-	name = "Insect antenna 2 (coloring 2)"
+	name = "Insect antenna 2 (Coloring 2)"
 	icon_state = "antenna_simple2"
 
 /datum/sprite_accessory/ears/mutant/antenna_simple2_v2
-	name = "Insect antenna 2 (coloring 3)"
+	name = "Insect antenna 2 (Coloring 3)"
 	icon_state = "antenna_simple2v2"
 
 /datum/sprite_accessory/ears/mutant/antenna_fuzzball
-	name = "Fuzzball antenna (coloring 2+3)"
+	name = "Fuzzball antenna (Coloring 2+3)"
 	icon_state = "antenna_fuzzball"
 
 /datum/sprite_accessory/ears/mutant/antenna_fuzzball_v2
-	name = "Fuzzball antenna (coloring 3+1)"
+	name = "Fuzzball antenna (Coloring 3+1)"
 	icon_state = "antenna_fuzzballv2"
 
 /datum/sprite_accessory/ears/mutant/cobrahood

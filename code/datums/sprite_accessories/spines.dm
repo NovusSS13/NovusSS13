@@ -1,11 +1,14 @@
 /datum/sprite_accessory/spines
-
-/datum/sprite_accessory/spines/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
+	/**
+	 * Whether or not we can wag
+	 * Not about actually preventing the emote, it's just for sprite updates
+	 */
+	var/can_wag = FALSE
 
 /datum/sprite_accessory/spines/lizard
 	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
+	color_amount = 1
+	can_wag = TRUE
 
 /datum/sprite_accessory/spines/lizard/short
 	name = "Short"

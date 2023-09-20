@@ -43,7 +43,10 @@
 	return assoc_to_keys_features(GLOB.moth_wings_list)
 
 /datum/preference/choiced/mutant/moth_wings/icon_for(value)
-	var/static/icon/moth_chest = icon('icons/mob/species/moth/bodyparts.dmi', "moth_chest_m", NORTH)
+	var/static/icon/moth_chest
+
+	if (isnull(moth_chest))
+		moth_chest = icon('icons/mob/species/moth/bodyparts.dmi', "moth_chest_m", NORTH)
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.moth_wings_list[value]
 	if (!is_valid_rendering_sprite_accessory(sprite_accessory))

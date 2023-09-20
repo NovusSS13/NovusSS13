@@ -638,7 +638,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[chosen_marking_set]
 	if(!body_marking_set)
 		CRASH("[type] has an invalid body marking set ([chosen_marking_set]) in body_marking_sets!")
-	var/mutant_color = sanitize_hexcolor(human_mob.dna.features["mcolor"], DEFAULT_HEX_COLOR_LEN, TRUE, "#" + random_color())
+	var/mutant_color = human_mob.dna.features["mcolor"]
 	var/list/markings = body_marking_set.assemble_body_markings_list(mutant_color)
 	for(var/zone in markings)
 		for(var/marking_index in 1 to length(markings[zone]))
@@ -2122,6 +2122,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
  */
 /datum/species/proc/create_pref_payday_perk()
 	RETURN_TYPE(/list)
+
 	var/list/to_add = list()
 	if(payday_modifier > 1)
 		to_add += list(list(

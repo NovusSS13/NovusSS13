@@ -2,6 +2,7 @@
 /obj/item/organ/antennae
 	name = "moth antennae"
 	desc = "A moths antennae. What is it telling them? What are they sensing?"
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "antennae"
 
 	zone = BODY_ZONE_HEAD
@@ -11,7 +12,6 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	preference = "feature_moth_antennae"
 	dna_block = DNA_MOTH_ANTENNAE_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 
@@ -83,7 +83,7 @@
 /// The leafy hair of a podperson
 /obj/item/organ/pod_hair
 	name = "podperson hair"
-	desc = "Base for many-o-salads."
+	desc = "Base for many salads."
 
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_POD_HAIR
@@ -92,7 +92,6 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	preference = "feature_pod_hair"
 	use_mob_sprite_as_obj_sprite = TRUE
 	dna_block = DNA_POD_HAIR_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_PLANT
@@ -101,7 +100,7 @@
 
 /// Podperson bodypart overlay, with special coloring functionality to render the flowers in the inverse color
 /datum/bodypart_overlay/mutant/pod_hair
-	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
+	layers = EXTERNAL_ADJACENT | EXTERNAL_FRONT
 	feature_key = "pod_hair"
 
 	/// This layer will be colored differently than the rest of the organ. So we can get differently colored flowers or something

@@ -15,17 +15,19 @@
 	now_fixed = "<span class='info'>Noise slowly begins filling your ears once more.</span>"
 	low_threshold_cleared = "<span class='info'>The ringing in your ears has died down.</span>"
 
-	// `deaf` measures "ticks" of deafness. While > 0, the person is unable
-	// to hear anything.
+	/**
+	 * `deaf` measures "ticks" of deafness. While > 0, the person is unable
+	 *  hear anything.
+	 */
 	var/deaf = 0
 
 	// `damage` in this case measures long term damage to the ears, if too high,
 	// the person will not have either `deaf` or `ear_damage` decrease
 	// without external aid (earmuffs, drugs)
 
-	//Resistance against loud noises
+	/// Resistance against loud noises (flashbangs basically)
 	var/bang_protect = 0
-	// Multiplier for both long term and short term ear damage
+	/// Multiplier for both long term and short term ear damage
 	var/damage_multiplier = 1
 
 /obj/item/organ/ears/transfer_to_limb(obj/item/bodypart/new_bodypart, special = FALSE)
@@ -74,7 +76,7 @@
 	deaf = max(deaf + (ddeaf * damage_multiplier), 0)
 
 /datum/bodypart_overlay/mutant/ears
-	layers = EXTERNAL_ALL_LAYERS
+	layers = EXTERNAL_BEHIND | EXTERNAL_ADJACENT | EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_DNA
 	feature_key = "ears"
 	feature_color_key = "ears_color"
@@ -88,10 +90,10 @@
 /datum/bodypart_overlay/mutant/ears/get_global_feature_list()
 	return GLOB.ears_list
 
-/datum/bodypart_overlay/mutant/ears/get_overlays(layer, obj/item/bodypart/limb)
+/datum/bodypart_overlay/mutant/ears/get_overlays(bitflag_layer, obj/item/bodypart/limb)
 	. = ..()
 	//fucking lovely, we have to deal with the inners
-	layer = external_bitflag_to_layer(layer)
+	var/layer = external_bitflag_to_layer(bitflag_layer)
 	var/inner_image = get_inner_image(layer, limb)
 	if(inner_image)
 		. += inner_image
@@ -119,6 +121,12 @@
 
 /obj/item/organ/ears/mutant
 	name = "mutant ears"
+	desc = "OKAY BUT LIKE HEAR ME OUT."
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
+	icon_state = "ears-fluffy"
+
+	visual = TRUE
+	dna_block = DNA_EARS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/mutant
 
 /datum/bodypart_overlay/mutant/ears/mutant
@@ -128,9 +136,8 @@
 
 /obj/item/organ/ears/cat
 	name = "cat ears"
-	icon = 'icons/obj/clothing/head/costume.dmi'
-	worn_icon = 'icons/mob/clothing/head/costume.dmi'
-	icon_state = "kitty"
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
+	icon_state = "ears-fluffy"
 	damage_multiplier = 2
 
 	visual = TRUE

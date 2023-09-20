@@ -142,6 +142,34 @@ export const feature_mcolor: Feature<string> = {
   component: FeatureTriColorInput,
 };
 
+export const feature_mutant_frills: FeatureChoiced = {
+  name: 'Frills',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
+export const feature_mutant_frills_color: FeatureChoiced = {
+  name: 'Frills color',
+  component: FeatureTriColorInput,
+};
+
+export const feature_mutant_horns: FeatureChoiced = {
+  name: 'Horns',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
+export const feature_mutant_horns_color: FeatureChoiced = {
+  name: 'Horns color',
+  component: FeatureTriColorInput,
+};
+
 export const feature_mutant_ears: FeatureChoiced = {
   name: 'Ears',
   component: (
@@ -156,6 +184,20 @@ export const feature_mutant_ears_color: FeatureChoiced = {
   component: FeatureTriColorInput,
 };
 
+export const feature_mutant_snout: FeatureChoiced = {
+  name: 'Snout',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
+export const feature_mutant_snout_color: FeatureChoiced = {
+  name: 'Snout color',
+  component: FeatureTriColorInput,
+};
+
 export const feature_mutant_tail: FeatureChoiced = {
   name: 'Tail',
   component: (
@@ -167,6 +209,20 @@ export const feature_mutant_tail: FeatureChoiced = {
 
 export const feature_mutant_tail_color: FeatureChoiced = {
   name: 'Tail color',
+  component: FeatureTriColorInput,
+};
+
+export const feature_mutant_spines: FeatureChoiced = {
+  name: 'Spines',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
+export const feature_mutant_spines_color: FeatureChoiced = {
+  name: 'Spines color',
   component: FeatureTriColorInput,
 };
 

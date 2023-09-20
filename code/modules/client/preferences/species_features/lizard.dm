@@ -78,7 +78,7 @@
 	return assoc_to_keys_features(GLOB.horns_list_lizard)
 
 /datum/preference/choiced/mutant/lizard_horns/icon_for(value)
-	return generate_lizard_side_shot(GLOB.horns_list[value], /datum/bodypart_overlay/mutant/horns/lizard, color_accessory = FALSE)
+	return generate_lizard_side_shot(GLOB.horns_list_lizard[value], /datum/bodypart_overlay/mutant/horns/lizard, color_accessory = FALSE)
 
 /datum/preference/tricolor/mutant/lizard_horns
 	savefile_key = "feature_lizard_horns_color"
@@ -109,7 +109,7 @@
 	return initial(round.name)
 
 /datum/preference/choiced/mutant/lizard_snout/icon_for(value)
-	return generate_lizard_side_shot(GLOB.snouts_list[value], /datum/bodypart_overlay/mutant/snout/lizard, include_snout = FALSE)
+	return generate_lizard_side_shot(GLOB.snouts_list_lizard[value], /datum/bodypart_overlay/mutant/snout/lizard, include_snout = FALSE)
 
 /datum/preference/tricolor/mutant/lizard_snout
 	savefile_key = "feature_lizard_snout_color"
@@ -190,8 +190,7 @@
 	return assoc_to_keys_features(GLOB.spines_list_lizard)
 
 /datum/preference/choiced/mutant/lizard_spines/create_default_value()
-	var/datum/sprite_accessory/spines/no_spines = /datum/sprite_accessory/spines/none
-	return initial(no_spines.name)
+	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/choiced/mutant/lizard_spines/icon_for(value)
 	var/static/icon/groin_with_tail

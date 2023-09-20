@@ -15,6 +15,10 @@
 	///Take on the dna/preference from whoever we're gonna be inserted in
 	var/imprint_on_next_insertion = TRUE
 
+///Can't draw shit without a sprite accessory
+/datum/bodypart_overlay/mutant/can_draw_on_bodypart(obj/item/bodypart/ownerlimb)
+	return ..() && sprite_datum
+
 ///Completely random image and color generation (obeys what a player can choose from)
 /datum/bodypart_overlay/mutant/proc/randomize_appearance()
 	randomize_sprite()
@@ -89,7 +93,7 @@
 			if(!suffix)
 				stack_trace("[sprite_datum.type] had a color amount bigger than GLOB.external_color_suffixes! ([sprite_datum.color_amount])]")
 				break
-			var/mutable_appearance/overlay = mutable_appearance(sprite_datum.icon, "[finished_icon_state]_[suffix]")
+			var/mutable_appearance/overlay = mutable_appearance(sprite_datum.icon, "[finished_icon_state]_[suffix]", layer = layer)
 			if(sprite_datum.center)
 				center_image(overlay, sprite_datum.dimension_x, sprite_datum.dimension_y)
 			appearances += overlay

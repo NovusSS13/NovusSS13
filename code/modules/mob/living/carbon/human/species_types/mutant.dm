@@ -10,7 +10,11 @@
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	mutantears = /obj/item/organ/ears/mutant
 	cosmetic_organs = list(
+		/obj/item/organ/horns/mutant = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/frills/mutant = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/ears/mutant = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/snout/mutant = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/spines/mutant = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/tail/mutant = SPRITE_ACCESSORY_NONE,
 
 		/obj/item/organ/genital/penis = SPRITE_ACCESSORY_NONE,
@@ -42,8 +46,15 @@
 		"Some of them are human derived, others are alien derived, and some are a mix of both.",
 	)
 
+/datum/species/mutant/randomize_features(mob/living/carbon/human/human_mob)
+	. = ..()
+	randomize_cosmetic_organs(human_mob)
+	randomize_markings(human_mob)
+
 /datum/species/mutant/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = COLOR_LIME
+	human.dna.features["mcolor"] = COLOR_ORANGE
+	human.dna.features["ears"] = "Big Wolf (Alt)"
+	human.dna.features["snout"] = "Mammal, Short"
 	human.hairstyle = "Bedhead"
 	human.set_haircolor(COLOR_RED, update = FALSE)
 	human.update_body(is_creating = TRUE)

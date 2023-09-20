@@ -1,4 +1,4 @@
-/// Rips off all the limbs of the target
+/// Rips off all the limbs off the target
 /datum/smite/nugget
 	name = "Nugget"
 

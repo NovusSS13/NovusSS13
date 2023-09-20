@@ -3,6 +3,7 @@
 	name = "spines"
 	desc = "Not THE spine, spines."
 	gender = PLURAL
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "spines"
 
 	zone = BODY_ZONE_CHEST
@@ -12,7 +13,6 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	preference = "feature_lizard_spines"
 	dna_block = DNA_SPINES_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 	bodypart_overlay = /datum/bodypart_overlay/mutant/spines
@@ -57,7 +57,7 @@
 
 /// Bodypart overlay for spines (wagging gets updated by tail)
 /datum/bodypart_overlay/mutant/spines
-	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
+	layers = EXTERNAL_BEHIND | EXTERNAL_ADJACENT
 	color_source = ORGAN_COLOR_DNA
 	feature_key = "spines"
 	feature_color_key = "spines_color"
@@ -68,7 +68,8 @@
 	return GLOB.spines_list
 
 /datum/bodypart_overlay/mutant/spines/get_base_icon_state()
-	return (wagging ? "wagging" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
+	var/datum/sprite_accessory/spines/wagger = sprite_datum
+	return ((wagging && wagger.can_wag) ? "wagging" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
 
 /datum/bodypart_overlay/mutant/spines/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	if(owner.wear_suit?.flags_inv & HIDEJUMPSUIT)
@@ -76,10 +77,20 @@
 
 	return TRUE
 
+/obj/item/organ/spines/mutant
+	name = "mutant spines"
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/spines/mutant
+
+/datum/bodypart_overlay/mutant/spines/mutant
+
+/datum/bodypart_overlay/mutant/spines/lizard/get_global_feature_list()
+	return GLOB.spines_list_lizard
+
 /// Subtype used exclusively by lizards
 /obj/item/organ/spines/lizard
 	name = "lizard spines"
-	preference = "feature_lizard_spines"
+
 	bodypart_overlay = /datum/bodypart_overlay/mutant/spines/lizard
 
 /datum/bodypart_overlay/mutant/spines/lizard

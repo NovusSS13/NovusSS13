@@ -92,8 +92,6 @@ GLOBAL_LIST_INIT(pref_bodypart_id_to_icon, list(
 	SPECIES_LIZARD = 'icons/mob/species/lizard/bodyparts.dmi',
 ))
 
-GLOBAL_LIST_EMPTY(bodypart_id_to_zone_to_dimorphic)
-
 	//Markings
 GLOBAL_LIST_EMPTY(body_markings)
 

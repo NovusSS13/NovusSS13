@@ -1,9 +1,5 @@
 /datum/sprite_accessory/horns
 
-/datum/sprite_accessory/horns/none
-	name = SPRITE_ACCESSORY_NONE
-	icon_state = "none"
-
 /datum/sprite_accessory/horns/lizard
 	icon = 'icons/mob/species/lizard/lizard_features.dmi'
 

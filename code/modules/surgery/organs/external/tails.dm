@@ -2,7 +2,8 @@
 /obj/item/organ/tail
 	name = "tail"
 	desc = "A severed tail. What did you cut this off of?"
-	icon_state = "severedtail"
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
+	icon_state = "tail"
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_EXTERNAL_TAIL
@@ -100,7 +101,7 @@
 
 /// Tail parent type (which is MONKEEEEEEEEEEE by default), with wagging functionality
 /datum/bodypart_overlay/mutant/tail
-	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
+	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
 	color_source = ORGAN_COLOR_DNA
 	feature_key = "tail"
 	feature_color_key = "tail_color"
@@ -122,6 +123,8 @@
 
 /obj/item/organ/tail/mutant
 	name = "mutant tail"
+	icon_state = "tail-fluffy"
+
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/mutant
 
 /datum/bodypart_overlay/mutant/tail/mutant
@@ -129,10 +132,8 @@
 /obj/item/organ/tail/cat
 	name = "cat tail"
 	desc = "A severed cat tail. It doesn't seem to come from an actual cat..."
-	preference = "feature_human_tail"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat
-
 	wag_flags = WAG_ABLE
 
 /// Cat tail bodypart overlay
@@ -144,7 +145,6 @@
 /obj/item/organ/tail/monkey
 	name = "monkey tail"
 	desc = "A severed monkey tail. Animal cruelty is a serious crime, you know."
-	preference = "feature_monkey_tail"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/monkey
 
@@ -160,10 +160,8 @@
 /obj/item/organ/tail/lizard
 	name = "lizard tail"
 	desc = "A severed lizard tail. Somewhere, no doubt, a lizard hater is very pleased with themselves."
-	preference = "feature_lizard_tail"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/lizard
-
 	wag_flags = WAG_ABLE
 
 /// Lizard tail bodypart overlay datum
