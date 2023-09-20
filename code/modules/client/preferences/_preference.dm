@@ -116,7 +116,6 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	CRASH("`create_default_value()` was not implemented on [type]!")
 
 /// Produce a random value for the purposes of character randomization.
-/// Will just create a default value by default.
 /datum/preference/proc/create_random_value(datum/preferences/preferences)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(FALSE)
