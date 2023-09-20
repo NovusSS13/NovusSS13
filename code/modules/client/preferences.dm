@@ -453,8 +453,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	body = new
 
 /datum/preferences/proc/create_character_profiles()
-	var/list/profiles = list("main" = list())
-
+	var/list/profiles = list()
 	for(var/save_key in GLOB.valid_char_savekeys)
 		profiles[save_key] = list() //insert blank data
 		for(var/index in 1 to used_slot_amount[save_key] || 0)
