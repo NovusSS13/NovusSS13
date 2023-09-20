@@ -212,13 +212,16 @@
 	// And finally put bodypart_overlays on if not husked nor invisible
 	if(!is_husked && !is_invisible)
 		//Draw external organs like horns and frills
-		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
-			if(!overlay.can_draw_on_bodypart(src) || (!dropped && !overlay.can_draw_on_body(src, owner)))
+		for(var/datum/bodypart_overlay/bodypart_overlay as anything in bodypart_overlays)
+			if(!bodypart_overlay.can_draw_on_bodypart(src) || (!dropped && !bodypart_overlay.can_draw_on_body(src, owner)))
 				continue
 			//Some externals have multiple layers for background, foreground and between
-			for(var/external_layer in overlay.all_layers)
-				if(overlay.layers & external_layer)
-					. += overlay.get_overlays(external_layer, src)
+			for(var/external_layer in GLOB.external_layer_bitflags)
+				if(bodypart_overlay.layers & external_layer)
+					for(var/image/overlay in bodypart_overlay.get_overlays(external_layer, src))
+						if(dropped)
+							overlay.dir = SOUTH
+						. += overlay
 
 	return .
 

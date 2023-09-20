@@ -730,6 +730,7 @@ GLOBAL_LIST_INIT(external_layer_bitflags, list(
 	EXTERNAL_ADJACENT,
 	EXTERNAL_FRONT,
 ))
+
 /// A list of every possible color suffix for mutant bodyparts that use matrixes
 GLOBAL_LIST_INIT(external_color_suffixes, list(
 	"primary" = "#FF0000",
