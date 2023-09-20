@@ -384,7 +384,7 @@ GLOBAL_VAR(restart_counter)
 	game_state = (CONFIG_GET(number/extreme_popcap) && players >= CONFIG_GET(number/extreme_popcap)) //tells the hub if we are full
 
 	if (!host && hostedby)
-		features += "Hosted by <b>[hostedby]</b>"
+		features += "Brought to you by <b>[hostedby]</b>"
 
 	var/tagline = CONFIG_GET(string/servertagline)
 	if(tagline)
