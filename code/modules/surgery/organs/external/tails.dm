@@ -2,7 +2,8 @@
 /obj/item/organ/tail
 	name = "tail"
 	desc = "A severed tail. What did you cut this off of?"
-	icon_state = "severedtail"
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
+	icon_state = "tail"
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_EXTERNAL_TAIL
@@ -100,7 +101,7 @@
 
 /// Tail parent type (which is MONKEEEEEEEEEEE by default), with wagging functionality
 /datum/bodypart_overlay/mutant/tail
-	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
+	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
 	color_source = ORGAN_COLOR_DNA
 	feature_key = "tail"
 	feature_color_key = "tail_color"
@@ -111,7 +112,8 @@
 	return GLOB.tails_list
 
 /datum/bodypart_overlay/mutant/tail/get_base_icon_state()
-	return (wagging ? "wagging_" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
+	var/datum/sprite_accessory/tails/wagger = sprite_datum
+	return ((wagging && wagger.can_wag) ? "wagging_" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
 
 /datum/bodypart_overlay/mutant/tail/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	if(owner.wear_suit?.flags_inv & HIDEJUMPSUIT)
@@ -119,13 +121,19 @@
 
 	return TRUE
 
+/obj/item/organ/tail/mutant
+	name = "mutant tail"
+	icon_state = "tail-fluffy"
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/mutant
+
+/datum/bodypart_overlay/mutant/tail/mutant
+
 /obj/item/organ/tail/cat
 	name = "cat tail"
 	desc = "A severed cat tail. It doesn't seem to come from an actual cat..."
-	preference = "feature_human_tail"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat
-
 	wag_flags = WAG_ABLE
 
 /// Cat tail bodypart overlay
@@ -137,7 +145,6 @@
 /obj/item/organ/tail/monkey
 	name = "monkey tail"
 	desc = "A severed monkey tail. Animal cruelty is a serious crime, you know."
-	preference = "feature_monkey_tail"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/monkey
 
@@ -153,10 +160,8 @@
 /obj/item/organ/tail/lizard
 	name = "lizard tail"
 	desc = "A severed lizard tail. Somewhere, no doubt, a lizard hater is very pleased with themselves."
-	preference = "feature_lizard_tail"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/lizard
-
 	wag_flags = WAG_ABLE
 
 /// Lizard tail bodypart overlay datum

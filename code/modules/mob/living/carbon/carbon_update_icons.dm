@@ -682,7 +682,7 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 	var/mutable_appearance/new_leg_appearance = new(limb_overlay)
 	new_leg_appearance.icon = new_leg_icon
 	new_leg_appearance.layer = -BODYPARTS_LAYER
-	new_leg_appearance.dir = image_dir //for some reason, things do not work properly otherwise
+	new_leg_appearance.dir = image_dir //for some reason, things do not work properly unless we set dir
 	. += new_leg_appearance
 	var/mutable_appearance/new_leg_appearance_lower = new(limb_overlay)
 	new_leg_appearance_lower.icon = new_leg_icon_lower

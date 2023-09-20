@@ -20,6 +20,7 @@
 #define SPECIES_MONKEY_FREAK "monkey_freak"
 #define SPECIES_MONKEY_HUMAN_LEGGED "monkey_human_legged"
 #define SPECIES_MOTH "moth"
+#define SPECIES_MUTANT "mutant"
 #define SPECIES_MUSHROOM "mush"
 #define SPECIES_PLASMAMAN "plasmaman"
 #define SPECIES_PODPERSON "pod"

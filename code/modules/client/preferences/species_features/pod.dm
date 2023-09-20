@@ -10,12 +10,16 @@
 	return assoc_to_keys_features(GLOB.pod_hair_list)
 
 /datum/preference/choiced/mutant/pod_hair/icon_for(value)
-	var/datum/sprite_accessory/pod_hair = GLOB.pod_hair_list[value]
+	var/static/icon/icon_with_hair
+	if (isnull(icon_with_hair))
+		icon_with_hair = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "pod_head_m")
 
-	var/icon/icon_with_hair = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "pod_head_m")
+	var/datum/sprite_accessory/sprite_accessory = GLOB.pod_hair_list[value]
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
+		return icon_with_hair
 
-	var/icon/icon_adj = icon(pod_hair.icon, "m_pod_hair_[pod_hair.icon_state]_ADJ")
-	var/icon/icon_front = icon(pod_hair.icon, "m_pod_hair_[pod_hair.icon_state]_FRONT")
+	var/icon/icon_adj = icon(sprite_accessory.icon, "m_pod_hair_[sprite_accessory.icon_state]_ADJ")
+	var/icon/icon_front = icon(sprite_accessory.icon, "m_pod_hair_[sprite_accessory.icon_state]_FRONT")
 	icon_adj.Blend(icon_front, ICON_OVERLAY)
 	icon_with_hair.Blend(icon_adj, ICON_OVERLAY)
 	icon_with_hair.Scale(64, 64)

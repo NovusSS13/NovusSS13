@@ -441,22 +441,26 @@ export const FeatureTriColorInput = (props: FeatureValueProps<string>) => {
   };
   return (
     <Stack align="center" fill>
-      {value.length > 0 && buttonFromValue(0)}
-      {value.length > 1 && buttonFromValue(1)}
-      {value.length > 2 && buttonFromValue(2)}
-      {props.featureId !== 'feature_mcolor' && (
-        <Stack.Item>
-          <Button
-            tooltipPosition="top"
-            tooltip="Set to mutant colors"
-            onClick={() => {
-              props.act('set_tricolor_mutant_colors', {
-                preference: props.featureId,
-              });
-            }}>
-            {(!props.shrink && <Box>Mutant</Box>) || <Box>M</Box>}
-          </Button>
-        </Stack.Item>
+      {(!props.value && <Stack.Item>No Color</Stack.Item>) || (
+        <>
+          {value.length > 0 && buttonFromValue(0)}
+          {value.length > 1 && buttonFromValue(1)}
+          {value.length > 2 && buttonFromValue(2)}
+          {props.featureId !== 'feature_mcolor' && (
+            <Stack.Item>
+              <Button
+                tooltipPosition="top"
+                tooltip="Set to mutant colors"
+                onClick={() => {
+                  props.act('set_tricolor_mutant_colors', {
+                    preference: props.featureId,
+                  });
+                }}>
+                {(!props.shrink && <Box>Mutant</Box>) || <Box>M</Box>}
+              </Button>
+            </Stack.Item>
+          )}
+        </>
       )}
     </Stack>
   );

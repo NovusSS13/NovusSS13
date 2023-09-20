@@ -1,4 +1,17 @@
 /obj/item/bodypart
+	icon = 'icons/mob/species/human/bodyparts.dmi'
+	icon_state = "" //Leave this blank! Bodyparts are built using overlays
+	/// The icon for limbs using greyscale
+	VAR_PROTECTED/icon_greyscale = DEFAULT_BODYPART_ICON_ORGANIC
+	/// The icon for non-greyscale limbs
+	VAR_PROTECTED/icon_static = 'icons/mob/species/human/bodyparts.dmi'
+	/// The icon for husked limbs
+	VAR_PROTECTED/icon_husk = 'icons/mob/species/human/bodyparts.dmi'
+	/// The icon for invisible limbs
+	VAR_PROTECTED/icon_invisible = 'icons/mob/species/human/bodyparts.dmi'
+
+	layer = BELOW_MOB_LAYER //so it isn't hidden behind objects when on the floor
+
 	// States used in determining overlays for limb damage states. As the mob receives more burn/brute damage, their limbs update to reflect.
 	/// Current brute damage state, from 0 (intact) to 3 (max damage)
 	var/brutestate = 0
@@ -93,9 +106,9 @@
 	if(!standing.len)
 		icon_state = initial(icon_state)//no overlays found, we default back to initial icon.
 		return
-	for(var/image/img as anything in standing)
-		img.pixel_x = px_x
-		img.pixel_y = px_y
+	for(var/image/image in standing)
+		image.pixel_x = px_x
+		image.pixel_y = px_y
 	add_overlay(standing)
 
 /// Generates an /image for the limb to be used as an overlay
@@ -190,7 +203,7 @@
 	if(!dropped && ((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG)))
 		//Legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that
 		var/obj/item/bodypart/leg/leg_source = src
-		for(var/image/limb_image in .)
+		for(var/image/limb_image in .) //yes we do need to typecheck for images
 			//remove the old, unmasked image
 			. -= limb_image
 			//add two masked images based on the old one
@@ -199,13 +212,17 @@
 	// And finally put bodypart_overlays on if not husked nor invisible
 	if(!is_husked && !is_invisible)
 		//Draw external organs like horns and frills
-		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
-			if(!overlay.can_draw_on_bodypart(src) || (!dropped && !overlay.can_draw_on_body(src, owner)))
+		for(var/datum/bodypart_overlay/bodypart_overlay as anything in bodypart_overlays)
+			if(!bodypart_overlay.can_draw_on_bodypart(src) || (!dropped && !bodypart_overlay.can_draw_on_body(src, owner)))
 				continue
 			//Some externals have multiple layers for background, foreground and between
-			for(var/external_layer in overlay.all_layers)
-				if(overlay.layers & external_layer)
-					. += overlay.get_overlays(external_layer, src)
+			for(var/external_layer in GLOB.external_layer_bitflags)
+				if(!(bodypart_overlay.layers & external_layer))
+					continue
+				for(var/image/overlay in bodypart_overlay.get_overlays(external_layer, src))
+					if(dropped)
+						overlay.dir = SOUTH
+					. += overlay
 
 	return .
 
@@ -281,7 +298,7 @@
 		overlay.inherit_color(src, force = TRUE)
 
 /// A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
-/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)
+/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic, update = TRUE)
 	var/icon_holder
 	if(greyscale)
 		icon_greyscale = icon
@@ -298,25 +315,26 @@
 	if(!isnull(dimorphic))
 		is_dimorphic = dimorphic
 
-	if(owner)
-		owner.update_body_parts()
-	else
-		update_icon_dropped()
-
 	// This foot gun needs a safety
 	if(!icon_exists(icon_holder, "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"))
-		reset_appearance()
+		reset_appearance(update)
 		stack_trace("change_appearance([icon], [id], [greyscale], [dimorphic]) generated null icon")
+	else if(update)
+		if(owner)
+			owner.update_body_parts()
+		else
+			update_icon_dropped()
 
 /// Resets the base appearance of a limb to it's default values.
-/obj/item/bodypart/proc/reset_appearance()
+/obj/item/bodypart/proc/reset_appearance(update = TRUE)
 	icon_static = initial(icon_static)
 	icon_greyscale = initial(icon_greyscale)
 	limb_id = initial(limb_id)
 	is_dimorphic = initial(is_dimorphic)
 	should_draw_greyscale = initial(should_draw_greyscale)
 
-	if(owner)
-		owner.update_body_parts()
-	else
-		update_icon_dropped()
+	if(update)
+		if(owner)
+			owner.update_body_parts()
+		else
+			update_icon_dropped()

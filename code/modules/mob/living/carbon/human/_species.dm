@@ -88,6 +88,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///Replaces default appendix with a different organ.
 	var/obj/item/organ/appendix/mutantappendix = /obj/item/organ/appendix
 
+	/// Whether or not this species can use custom bodypart icons, basically only important for character setup preferences
+	var/custom_bodyparts = FALSE
+
 	/**
 	 * Percentage modifier for overall defense of the race, or less defense, if it's negative
 	 * THIS MODIFIES ALL DAMAGE TYPES.
@@ -635,7 +638,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[chosen_marking_set]
 	if(!body_marking_set)
 		CRASH("[type] has an invalid body marking set ([chosen_marking_set]) in body_marking_sets!")
-	var/mutant_color = sanitize_hexcolor(human_mob.dna.features["mcolor"], DEFAULT_HEX_COLOR_LEN, TRUE, "#" + random_color())
+	var/mutant_color = human_mob.dna.features["mcolor"]
 	var/list/markings = body_marking_set.assemble_body_markings_list(mutant_color)
 	for(var/zone in markings)
 		for(var/marking_index in 1 to length(markings[zone]))
@@ -2119,6 +2122,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
  */
 /datum/species/proc/create_pref_payday_perk()
 	RETURN_TYPE(/list)
+
 	var/list/to_add = list()
 	if(payday_modifier > 1)
 		to_add += list(list(
@@ -2166,7 +2170,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					if(!target.dna.features[marking_key] || (target.dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
 						continue
 					var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][target.dna.features[marking_key]]
-					if(!markings) //invalid marking...
+					if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
 						continue
 					if(!markings.compatible_species || is_path_in_list(new_species.type, markings.compatible_species))
 						var/marking_color_key = marking_key + "_color"

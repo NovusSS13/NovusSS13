@@ -112,7 +112,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			var/marking_key = "marking_[zone]_[marking]"
 			var/marking_color_key = marking_key + "_color"
 			target.dna.features[marking_key] = SPRITE_ACCESSORY_NONE
-			target.dna.features[marking_color_key] = COLOR_VIBRANT_LIME
+			target.dna.features[marking_color_key] = COLOR_MAGENTA
 
 /// Provides a dummy that is consistently bald, white, naked, etc.
 /mob/living/carbon/human/dummy/consistent
