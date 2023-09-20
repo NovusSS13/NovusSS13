@@ -64,7 +64,7 @@
 		return FALSE
 
 	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
-	return !(ITEM_SLOT_BACK in initial(species_type.no_equip_flags))
+	return !(initial(species_type.no_equip_flags) & ITEM_SLOT_BACK)
 
 /// Jumpsuit preference
 /datum/preference/choiced/jumpsuit
@@ -98,7 +98,7 @@
 		return FALSE
 
 	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
-	return !(ITEM_SLOT_ICLOTHING in initial(species_type.no_equip_flags))
+	return !(initial(species_type.no_equip_flags) & ITEM_SLOT_ICLOTHING)
 
 /// Socks preference
 /datum/preference/choiced/socks
