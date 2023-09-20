@@ -30,6 +30,9 @@
 /datum/client_interface/proc/IsByondMember()
 	return FALSE
 
+/datum/client_interface/proc/is_veteran()
+	return FALSE
+
 /datum/client_interface/New(key)
 	..()
 	if(key)

@@ -353,8 +353,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		return FALSE
 
 	save_character(++used_slot_amount[char_key], char_key) //init new char slot
-	load_character(used_slot_amount[char_key], char_key) //load it in
-	randomise_appearance_prefs() //randomize
+	if(load_character(used_slot_amount[char_key], char_key)) //load it in
+		randomise_appearance_prefs() //randomize
 
 	return TRUE
 
