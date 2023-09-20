@@ -195,7 +195,7 @@
 	if (!GLOB.roundstart_races.len)
 		GLOB.roundstart_races = generate_selectable_species_and_languages()
 
-	return GLOB.roundstart_races
+	return GLOB.roundstart_races.Copy()
 /**
  * Generates species available to choose in character setup at roundstart
  *
