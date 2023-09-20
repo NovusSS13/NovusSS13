@@ -1,0 +1,4 @@
+author: "NullDagaf"
+delete-after: True
+changes:
+  - balance: "skeleton keys have been removed"
