@@ -219,14 +219,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 			// SAFETY: `load_character` performs sanitization the slot number
 			if(!load_character(params["slot_id"], params["slot_key"]))
-				tainted_character_profiles = TRUE
-				save_character()
+				return FALSE //guest?
 
 			for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 				preference_middleware.on_new_character(usr)
 
 			character_preview_view.update_body()
-
 			return TRUE
 
 		if("new_slot")
