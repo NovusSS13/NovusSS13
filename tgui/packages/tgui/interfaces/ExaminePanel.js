@@ -20,9 +20,12 @@ export const ExaminePanel = (props, context) => {
   } = data;
 
   const tab_data = [
-    ['Flavor Text', flavor_text],
-    ['Naked Flavor Text', naked_flavor_text],
-    ['Temporary Flavor Text', temporary_flavor_text],
+    ['Flavor Text', flavor_text || 'No flavor text.'],
+    ['Naked Flavor Text', naked_flavor_text || 'No naked flavor text.'],
+    [
+      'Temporary Flavor Text',
+      temporary_flavor_text || 'No temporary flavor text.',
+    ],
   ];
 
   const [tabIndex, setTab] = useLocalState(
@@ -101,16 +104,16 @@ export const ExaminePanel = (props, context) => {
                       fill
                       title="OOC Notes"
                       preserveWhitespace>
-                      {ooc_notes}
+                      {ooc_notes || 'No notes.'}
                     </Section>
                   </Stack.Item>
                   <Stack.Item grow basis={0}>
                     <Section
                       scrollable
                       fill
-                      title={'Species: ' + cs_name}
+                      title={'Species: ' + (cs_name || 'Unknown')}
                       preserveWhitespace>
-                      {cs_desc}
+                      {cs_desc || 'No description.'}
                     </Section>
                   </Stack.Item>
                 </Stack>
