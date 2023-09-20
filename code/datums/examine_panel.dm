@@ -122,7 +122,5 @@
 
 	if(temporary_flavor_text)
 		examine_list += span_info(temporary_flavor_text)
-
-	examine_list += "\n"
 	examine_list += "<a class='info bold' href='?src=[REF(src)];open_examine_panel=1'>You could probably take a closer look..</a>"
 
