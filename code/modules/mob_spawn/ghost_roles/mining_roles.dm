@@ -154,11 +154,17 @@
 	and eventually bring life to this desolate planet while waiting for contact from your creators. \
 	Estimated time of last contact: Deployment, 5000 millennia ago."
 	spawner_job_path = /datum/job/lifebringer
+	customization_type = /datum/offstation_customization/lifebringer
 
-/obj/effect/mob_spawn/ghost_role/human/seed_vault/Initialize(mapload)
-	. = ..()
-	mob_name = pick("Tomato", "Potato", "Broccoli", "Carrot", "Ambrosia", "Pumpkin", "Ivy", "Kudzu", "Banana", "Moss", "Flower", "Bloom", "Root", "Bark", "Glowshroom", "Petal", "Leaf", \
-	"Venus", "Sprout","Cocoa", "Strawberry", "Citrus", "Oak", "Cactus", "Pepper", "Juniper")
+/obj/effect/mob_spawn/ghost_role/human/seed_vault/name_mob(mob/living/spawned_mob, forced_name)
+	var/list/names = list(
+		"Tomato", "Potato", "Broccoli", "Carrot", "Ambrosia",
+		"Pumpkin", "Ivy", "Kudzu", "Banana", "Moss",
+		"Flower", "Bloom", "Root", "Bark", "Glowshroom",
+		"Petal", "Leaf", "Venus", "Sprout","Cocoa",
+		"Strawberry", "Citrus", "Oak", "Cactus", "Pepper", "Juniper"
+	)
+	spawned_mob.fully_replace_character_name(null, pick(names))
 
 /obj/effect/mob_spawn/ghost_role/human/seed_vault/Destroy()
 	new/obj/structure/fluff/empty_terrarium(get_turf(src))

@@ -38,3 +38,8 @@
 	slot_name = "Syndicate Battlecruiser Crew"
 	savefile_key = "cybersun"
 	//forced_species = /datum/species/human
+
+/datum/offstation_customization/lifebringer
+	slot_name = "Lifebringers"
+	savefile_key = "lifebringer"
+	forced_species = /datum/species/pod
