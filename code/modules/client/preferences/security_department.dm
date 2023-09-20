@@ -15,12 +15,8 @@
 	return SEC_DEPT_NONE
 
 /datum/preference/choiced/security_department/is_accessible(datum/preferences/preferences)
-	if (!..(preferences))
+	if (!..() || preferences.current_char_key != "main")
 		return FALSE
 
 	return !CONFIG_GET(flag/sec_start_brig)
 
-/datum/preference/choiced/security_department/is_accessible(datum/preferences/preferences)
-	if(preferences.current_char_key != "main")
-		return FALSE
-	return ..()
