@@ -1097,11 +1097,6 @@
 
 
 //MALE UNDERWEAR
-/datum/sprite_accessory/underwear/nude
-	name = "Nude"
-	icon_state = null
-	gender = NEUTER
-
 /datum/sprite_accessory/underwear/male_briefs
 	name = "Briefs"
 	icon_state = "male_briefs"
@@ -1270,11 +1265,6 @@
 
 /datum/sprite_accessory/undershirt
 	icon = 'icons/mob/clothing/underwear.dmi'
-
-/datum/sprite_accessory/undershirt/nude
-	name = "Nude"
-	icon_state = null
-	gender = NEUTER
 
 // please make sure they're sorted alphabetically and categorized
 
@@ -1554,10 +1544,6 @@
 
 /datum/sprite_accessory/socks
 	icon = 'icons/mob/clothing/underwear.dmi'
-
-/datum/sprite_accessory/socks/nude
-	name = "Nude"
-	icon_state = null
 
 // please make sure they're sorted alphabetically and categorized
 
