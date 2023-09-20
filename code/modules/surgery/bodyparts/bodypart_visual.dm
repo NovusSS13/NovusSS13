@@ -217,11 +217,12 @@
 				continue
 			//Some externals have multiple layers for background, foreground and between
 			for(var/external_layer in GLOB.external_layer_bitflags)
-				if(bodypart_overlay.layers & external_layer)
-					for(var/image/overlay in bodypart_overlay.get_overlays(external_layer, src))
-						if(dropped)
-							overlay.dir = SOUTH
-						. += overlay
+				if(!(bodypart_overlay.layers & external_layer))
+					continue
+				for(var/image/overlay in bodypart_overlay.get_overlays(external_layer, src))
+					if(dropped)
+						overlay.dir = SOUTH
+					. += overlay
 
 	return .
 
