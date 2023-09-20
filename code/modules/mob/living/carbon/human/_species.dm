@@ -88,6 +88,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///Replaces default appendix with a different organ.
 	var/obj/item/organ/appendix/mutantappendix = /obj/item/organ/appendix
 
+	/// Whether or not this species can use custom bodypart icons, basically only important for character setup preferences
+	var/custom_bodyparts = FALSE
+
 	/**
 	 * Percentage modifier for overall defense of the race, or less defense, if it's negative
 	 * THIS MODIFIES ALL DAMAGE TYPES.

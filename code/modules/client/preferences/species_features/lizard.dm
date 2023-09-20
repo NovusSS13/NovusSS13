@@ -16,7 +16,7 @@
 	var/static/icon/lizard_with_snout
 	if (isnull(lizard_with_snout))
 		lizard_with_snout = icon(lizard)
-		var/icon/snout = icon('icons/mob/species/lizard/lizard_misc.dmi', "m_snout_round_ADJ", EAST)
+		var/icon/snout = icon('icons/mob/species/lizard/lizard_features.dmi', "m_snout_round_ADJ", EAST)
 		snout.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
 		lizard_with_snout.Blend(snout, ICON_OVERLAY)
 

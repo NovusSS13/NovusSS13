@@ -100,10 +100,6 @@
 	//nothing to be colored
 	if(!draw_color || !sprite_datum.color_amount)
 		return
-	//its an actual image
-	if(istype(overlay))
-		overlay.color = draw_color
-		return
 	//its a list of images
 	var/list/sane_draw_color = list()
 	var/default

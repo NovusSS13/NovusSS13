@@ -1,6 +1,7 @@
 /obj/item/bodypart/head/mutant
 	icon_greyscale = 'icons/mob/species/mutant/mutant_bodyparts.dmi'
 	limb_id = SPECIES_MUTANT
+	is_dimorphic = FALSE
 
 /obj/item/bodypart/chest/mutant
 	icon_greyscale = 'icons/mob/species/mutant/mutant_bodyparts.dmi'

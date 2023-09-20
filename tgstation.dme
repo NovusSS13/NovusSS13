@@ -462,6 +462,7 @@
 #include "code\_globalvars\traits.dm"
 #include "code\_globalvars\lists\achievements.dm"
 #include "code\_globalvars\lists\ambience.dm"
+#include "code\_globalvars\lists\bodyparts.dm"
 #include "code\_globalvars\lists\client.dm"
 #include "code\_globalvars\lists\color.dm"
 #include "code\_globalvars\lists\flavor_misc.dm"

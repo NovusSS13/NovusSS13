@@ -16,7 +16,7 @@
 	var/static/icon/head_icon_with_snout
 	if (isnull(head_icon_with_snout))
 		head_icon_with_snout = icon(head_icon)
-		var/icon/snout = icon('icons/mob/species/lizard/lizard_misc.dmi', "m_snout_sharplight_ADJ", SOUTH)
+		var/icon/snout = icon('icons/mob/species/lizard/lizard_features.dmi', "m_snout_sharplight_ADJ", SOUTH)
 		snout.Blend(COLOR_ORANGE, ICON_MULTIPLY)
 		head_icon_with_snout.Blend(snout, ICON_OVERLAY)
 
@@ -59,6 +59,51 @@
 
 /datum/preference/tricolor/mutant/mutant_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["mcolor"] = value
+
+/datum/preference/choiced/mutant/bodypart_type
+	priority = PREFERENCE_PRIORITY_BODYPARTS //kinda obvious, isn't it?
+	savefile_key = "feature_bodypart_type"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+
+/datum/preference/choiced/mutant/bodypart_type/is_accessible(datum/preferences/preferences)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	return (initial(species_type.custom_bodyparts))
+
+/datum/preference/choiced/mutant/bodypart_type/init_possible_values()
+	return GLOB.pref_bodypart_names
+
+/datum/preference/choiced/mutant/bodypart_type/create_default_value()
+	return GLOB.pref_bodypart_names[1] //should be "Mutant"
+
+/datum/preference/choiced/mutant/bodypart_type/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
+	if(!is_accessible(prefs))
+		return
+	/*
+	//this is such a niche thing that I don't think it's worth it to make it a global
+	var/static/list/bodypart_id_to_zone_to_dimorphic
+	*/
+	if(!length(GLOB.bodypart_id_to_zone_to_dimorphic))
+		GLOB.bodypart_id_to_zone_to_dimorphic = list()
+		for(var/pref_name in GLOB.pref_bodypart_names)
+			var/limb_id = GLOB.pref_bodypart_names[pref_name]
+			for(var/path in GLOB.bodyparts_by_limb_id[limb_id])
+				var/obj/item/bodypart/bodypart = GLOB.bodyparts_by_limb_id[limb_id][path]
+				if(!bodypart.body_zone)
+					continue
+				LAZYSET(GLOB.bodypart_id_to_zone_to_dimorphic[limb_id], bodypart.body_zone, bodypart.is_dimorphic)
+	var/limb_id = GLOB.pref_bodypart_names[value]
+	for(var/obj/item/bodypart/bodypart as anything in target.bodyparts)
+		bodypart.change_appearance(GLOB.pref_bodypart_id_to_icon[limb_id], \
+								limb_id, \
+								TRUE,
+								GLOB.bodypart_id_to_zone_to_dimorphic[limb_id][bodypart.body_zone], \
+								update = FALSE)
+	target.update_body(is_creating = TRUE)
 
 /datum/preference/choiced/mutant/leg_type
 	savefile_key = "feature_leg_type"

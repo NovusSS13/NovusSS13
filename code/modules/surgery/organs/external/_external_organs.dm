@@ -116,16 +116,17 @@
 	if(layer != external_bitflag_to_layer(color_swapped_layer))
 		return ..()
 
-	if(draw_color)
-		var/sane_draw_color
-		if(islist(draw_color))
-			sane_draw_color = sanitize_hexcolor(draw_color[length(draw_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+	for(var/image/real_overlay in overlay)
+		if(draw_color)
+			var/sane_draw_color
+			if(islist(draw_color))
+				sane_draw_color = sanitize_hexcolor(draw_color[length(draw_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+			else
+				sane_draw_color = draw_color
+			var/list/rgb_list = rgb2num(sane_draw_color)
+			real_overlay.color = rgb(color_inverse_base - rgb_list[1], color_inverse_base - rgb_list[2], color_inverse_base - rgb_list[3]) //inversa da color
 		else
-			sane_draw_color = draw_color
-		var/list/rgb_list = rgb2num(sane_draw_color)
-		overlay.color = rgb(color_inverse_base - rgb_list[1], color_inverse_base - rgb_list[2], color_inverse_base - rgb_list[3]) //inversa da color
-	else
-		overlay.color = null
+			real_overlay.color = null
 
 /datum/bodypart_overlay/mutant/pod_hair/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	if((owner.head?.flags_inv & HIDEHAIR) || (owner.wear_mask?.flags_inv & HIDEHAIR))

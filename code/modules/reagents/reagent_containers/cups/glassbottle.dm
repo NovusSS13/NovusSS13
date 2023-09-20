@@ -4,8 +4,8 @@
 //Functionally identical to regular drinks. The only difference is that the default bottle size is 100. - Darem
 //Bottles now knockdown and break when smashed on people's heads. - Giacom
 
-/// Initializes GLOB.alcohol_containers, only containers that actually have reagents are added to the list.
-/proc/init_alcohol_containers()
+/// Initializes GLOB.bottles, only containers that actually have reagents are added to the list.
+/proc/init_bottles_list()
 	var/list/containers = subtypesof(/obj/item/reagent_containers/cup/glass/bottle)
 	for(var/typepath in containers)
 		containers -= typepath

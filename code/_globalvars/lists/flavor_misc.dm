@@ -81,6 +81,19 @@ GLOBAL_LIST_INIT(genital_visibility_list, list(
 	"Always visible" = GENITAL_VISIBILITY_ALWAYS,
 ))
 
+	//Custom bodypart icon selection
+GLOBAL_LIST_INIT(pref_bodypart_names, list(
+	"Mutant" = SPECIES_MUTANT,
+	"Lizard" = SPECIES_LIZARD,
+))
+
+GLOBAL_LIST_INIT(pref_bodypart_id_to_icon, list(
+	SPECIES_MUTANT = 'icons/mob/species/mutant/mutant_bodyparts.dmi',
+	SPECIES_LIZARD = 'icons/mob/species/lizard/bodyparts.dmi',
+))
+
+GLOBAL_LIST_EMPTY(bodypart_id_to_zone_to_dimorphic)
+
 	//Markings
 GLOBAL_LIST_EMPTY(body_markings)
 

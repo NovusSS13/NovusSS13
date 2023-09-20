@@ -5,7 +5,7 @@
 	icon_state = "none"
 
 /datum/sprite_accessory/horns/lizard
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
+	icon = 'icons/mob/species/lizard/lizard_features.dmi'
 
 /datum/sprite_accessory/horns/lizard/simple
 	name = "Simple"
