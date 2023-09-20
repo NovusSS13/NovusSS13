@@ -10,17 +10,10 @@
 	paint_jobs = null
 
 /obj/structure/closet/crate/necropolis/tendril
-	desc = "It's watching you suspiciously. You need a skeleton key to open it."
-	integrity_failure = 0 //prevents bust_open from firing
-	/// var to check if it got opened by a key
-	var/spawned_loot = FALSE
+	desc = "It's watching you suspiciously."
 
-/obj/structure/closet/crate/necropolis/tendril/attackby(obj/item/item, mob/user, params)
-	if(!istype(item, /obj/item/skeleton_key) || spawned_loot)
-		return ..()
-	var/loot = rand(1,20)
-	var/mod
-	switch(loot)
+/obj/structure/closet/crate/necropolis/tendril/PopulateContents()
+	switch(rand(1,20))
 		if(1)
 			new /obj/item/shared_storage/red(src)
 		if(2)
@@ -34,8 +27,7 @@
 		if(6)
 			new /obj/item/clothing/gloves/gauntlets(src)
 		if(7)
-			mod = rand(1,4)
-			switch(mod)
+			switch(rand(1,4))
 				if(1)
 					new /obj/item/disk/design_disk/modkit_disc/resonator_blast(src)
 				if(2)
@@ -71,23 +63,6 @@
 			new /obj/item/bedsheet/cult(src)
 		if(20)
 			new /obj/item/clothing/neck/necklace/memento_mori(src)
-	if(!contents.len)
-		to_chat(user, span_warning("[src] makes a clunking sound as you try to open it. You feel compelled to let the gods know! (Please open an adminhelp and try again!)"))
-		CRASH("Failed to generate loot. loot number: [loot][mod ? "subloot: [mod]" : null]")
-	spawned_loot = TRUE
-	qdel(item)
-	to_chat(user, span_notice("You disable the magic lock, revealing the loot."))
-
-/obj/structure/closet/crate/necropolis/tendril/before_open(mob/living/user, force)
-	. = ..()
-	if(!.)
-		return FALSE
-
-	if(!broken && !force && !spawned_loot)
-		balloon_alert(user, "its locked!")
-		return FALSE
-
-	return TRUE
 
 //Megafauna chests
 
@@ -173,10 +148,3 @@
 			new /obj/item/wisp_lantern(src)
 		if(3)
 			new /obj/item/prisoncube(src)
-
-/obj/item/skeleton_key
-	name = "skeleton key"
-	desc = "An artifact usually found in the hands of the natives of lavaland, which NT now holds a monopoly on."
-	icon = 'icons/obj/lavaland/artefacts.dmi'
-	icon_state = "skeleton_key"
-	w_class = WEIGHT_CLASS_SMALL
