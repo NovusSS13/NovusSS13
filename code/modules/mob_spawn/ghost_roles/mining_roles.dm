@@ -168,7 +168,7 @@
 
 /obj/structure/ash_walker_eggshell
 	name = "ash walker egg"
-	desc = "A man-sized yellow egg, spawned from some unfathomable creature. A humanoid silhouette lurks within. The egg shell looks resistant to temperature but otherwise rather brittle."
+	desc = "A man-sized yellow egg, spawned from some unfathomable creature. A humanoid silhouette lurks within."
 	icon = 'icons/mob/simple/lavaland/lavaland_monsters.dmi'
 	icon_state = "large_egg"
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | FREEZE_PROOF
@@ -234,7 +234,7 @@
 	return FALSE
 
 /obj/effect/mob_spawn/ghost_role/human/ash_walker/name_mob(mob/living/spawned_mob, forced_name)
-	spawned_human.fully_replace_character_name(null, random_unique_lizard_name(gender))
+	spawned_mob.fully_replace_character_name(null, random_unique_lizard_name(spawned_mob.gender))
 
 /obj/effect/mob_spawn/ghost_role/human/ash_walker/special(mob/living/carbon/human/spawned_human)
 	. = ..()

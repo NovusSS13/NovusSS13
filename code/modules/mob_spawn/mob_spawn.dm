@@ -43,7 +43,7 @@
 	var/mob/living/spawned_mob = create_mob(mob_possessor, load_custom_char)
 	if(!load_custom_char)
 		name_mob(spawned_mob)
-	special(spawned_mob)
+	special(spawned_mob, mob_possessor)
 	equip(spawned_mob)
 	return spawned_mob
 
@@ -158,7 +158,6 @@
 
 	if(uses <= 0 && !infinite_use) // Just in case something took longer than it should've and we got here after the uses went below zero.
 		to_chat(user, span_warning("This spawner is out of charges!"))
-		LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 		return
 
 	var/user_ckey = user.ckey // Just in case shenanigans happen, we always want to remove it from the list.
