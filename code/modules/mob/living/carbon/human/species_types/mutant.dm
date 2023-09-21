@@ -1,6 +1,6 @@
 /datum/species/mutant
 	name = "Custom"
-	plural_form = "Custom" //there is no plural i guess? i can't call them customers can i
+	plural_form = "Custom species" //there is no plural i guess? i can't call them customers can i //honestly that'd be p funny
 	id = SPECIES_MUTANT
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,

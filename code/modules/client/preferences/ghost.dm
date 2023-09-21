@@ -7,7 +7,7 @@
 /datum/preference/choiced/ghost_accessories/init_possible_values()
 	return list(GHOST_ACCS_NONE, GHOST_ACCS_DIR, GHOST_ACCS_FULL)
 
-/datum/preference/choiced/ghost_accessories/create_default_value()
+/datum/preference/choiced/ghost_accessories/create_default_value(datum/preferences/preferences)
 	return GHOST_ACCS_DEFAULT_OPTION
 
 /datum/preference/choiced/ghost_accessories/apply_to_client(client/client, value)
@@ -76,7 +76,7 @@
 /datum/preference/choiced/ghost_form/icon_for(value)
 	return icon('icons/mob/simple/mob.dmi', value)
 
-/datum/preference/choiced/ghost_form/create_default_value()
+/datum/preference/choiced/ghost_form/create_default_value(datum/preferences/preferences)
 	return "ghost"
 
 /datum/preference/choiced/ghost_form/apply_to_client(client/client, value)
@@ -144,7 +144,7 @@
 		GHOST_OTHERS_THEIR_SETTING,
 	)
 
-/datum/preference/choiced/ghost_others/create_default_value()
+/datum/preference/choiced/ghost_others/create_default_value(datum/preferences/preferences)
 	return GHOST_OTHERS_DEFAULT_OPTION
 
 /datum/preference/choiced/ghost_others/apply_to_client(client/client, value)

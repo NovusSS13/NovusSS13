@@ -122,6 +122,7 @@
 /datum/preference/tricolor/mutant/lizard_snout/get_global_feature_list()
 	return GLOB.snouts_list_lizard
 
+
 /datum/preference/choiced/mutant/lizard_tail
 	savefile_key = "feature_lizard_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -189,7 +190,7 @@
 /datum/preference/choiced/mutant/lizard_spines/init_possible_values()
 	return assoc_to_keys_features(GLOB.spines_list_lizard)
 
-/datum/preference/choiced/mutant/lizard_spines/create_default_value()
+/datum/preference/choiced/mutant/lizard_spines/create_default_value(datum/preferences/preferences)
 	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/choiced/mutant/lizard_spines/icon_for(value)

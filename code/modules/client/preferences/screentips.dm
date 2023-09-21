@@ -6,7 +6,7 @@
 /datum/preference/choiced/enable_screentips/init_possible_values()
 	return list(SCREENTIP_PREFERENCE_ENABLED, SCREENTIP_PREFERENCE_CONTEXT_ONLY, SCREENTIP_PREFERENCE_DISABLED)
 
-/datum/preference/choiced/enable_screentips/create_default_value()
+/datum/preference/choiced/enable_screentips/create_default_value(datum/preferences/preferences)
 	return SCREENTIP_PREFERENCE_ENABLED
 
 /datum/preference/choiced/enable_screentips/apply_to_client(client/client, value)
@@ -34,5 +34,5 @@
 /datum/preference/color/screentip_color/apply_to_client(client/client, value)
 	client.mob?.hud_used?.screentip_color = value
 
-/datum/preference/color/screentip_color/create_default_value()
+/datum/preference/color/screentip_color/create_default_value(datum/preferences/preferences)
 	return LIGHT_COLOR_FAINT_BLUE

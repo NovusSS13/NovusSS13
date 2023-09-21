@@ -15,6 +15,7 @@
 	you_are_text = "You are a Free Golem. Your family worships The Liberator."
 	flavour_text = "In his infinite and divine wisdom, he set your clan free to travel the stars with a single declaration: \"Yeah go do whatever.\""
 	spawner_job_path = /datum/job/free_golem
+	customization_type = /datum/offstation_customization/golem
 	/// Typepath to a material to feed to the golem as soon as it is built
 	var/initial_type
 
@@ -33,7 +34,7 @@
 	forced_name = golem_species.random_name()
 	return ..()
 
-/obj/effect/mob_spawn/ghost_role/human/golem/special(mob/living/new_spawn, mob/mob_possessor)
+/obj/effect/mob_spawn/ghost_role/human/golem/special(mob/living/new_spawn)
 	. = ..()
 	if(is_path_in_list(initial_type, GLOB.golem_stack_food_directory))
 		var/datum/golem_food_buff/initial_buff = GLOB.golem_stack_food_directory[initial_type]
@@ -67,7 +68,7 @@
 	desc = "A humanoid shape, empty, lifeless, and full of potential."
 	prompt_name = "a free golem"
 
-/obj/effect/mob_spawn/ghost_role/human/golem/adamantine/special(mob/living/new_spawn, mob/mob_possessor)
+/obj/effect/mob_spawn/ghost_role/human/golem/adamantine/special(mob/living/new_spawn)
 	. = ..()
 	if(!ishuman(new_spawn))
 		return

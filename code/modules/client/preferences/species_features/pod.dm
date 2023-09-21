@@ -27,6 +27,3 @@
 	icon_with_hair.Blend(COLOR_GREEN, ICON_MULTIPLY)
 
 	return icon_with_hair
-
-/datum/preference/choiced/mutant/pod_hair/create_default_value()
-	return pick(assoc_to_keys_features(GLOB.pod_hair_list))

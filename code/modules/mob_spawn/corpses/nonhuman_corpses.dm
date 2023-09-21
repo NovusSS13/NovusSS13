@@ -5,12 +5,6 @@
 /obj/effect/mob_spawn/corpse/ai
 	mob_type = /mob/living/silicon/ai/spawned
 
-/obj/effect/mob_spawn/corpse/ai/create(mob/user, newname)
-	var/ai_already_present = locate(/mob/living/silicon/ai) in loc
-	if(ai_already_present)
-		return
-	. = ..()
-
 /obj/effect/mob_spawn/corpse/ai/special(mob/living/silicon/ai/spawned/dead_ai)
 	. = ..()
 	dead_ai.name = src.name
@@ -33,10 +27,11 @@
 	//mostly for unit tests to not get alarmed (which by all means it should because this is a mess)
 	mob_type = /obj/item/clothing/mask/facehugger
 
-/obj/effect/mob_spawn/corpse/facehugger/create(mob/user)
+/obj/effect/mob_spawn/corpse/facehugger/spawn_mob(mob/user)
 	var/obj/item/clothing/mask/facehugger/spawned_facehugger = new mob_type(loc)
 	spawned_facehugger.Die()
 	qdel(src)
+	return FALSE
 
 ///dead goliath spawner
 /obj/effect/mob_spawn/corpse/goliath

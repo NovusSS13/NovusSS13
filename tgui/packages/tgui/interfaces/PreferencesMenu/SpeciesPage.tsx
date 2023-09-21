@@ -339,17 +339,22 @@ const SpeciesPageInner = (
 export const SpeciesPage = (props: { closeSpecies: () => void }) => {
   return (
     <ServerPreferencesFetcher
-      render={(serverData) => {
-        if (serverData) {
-          return (
-            <SpeciesPageInner
-              handleClose={props.closeSpecies}
-              species={serverData.species}
-            />
-          );
-        } else {
-          return <Box>Loading species...</Box>;
-        }
+      render={(serverData: ServerData | null) => {
+        if (!serverData) return <Box>Loading species...</Box>;
+
+        const filtered_species: Record<string, Species> = {};
+
+        Object.keys(serverData.species).forEach((x) => {
+          if (serverData.species[x].is_selectable)
+            filtered_species[x] = serverData.species[x];
+        });
+
+        return (
+          <SpeciesPageInner
+            handleClose={props.closeSpecies}
+            species={filtered_species}
+          />
+        );
       }}
     />
   );

@@ -111,7 +111,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != "Nude"))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
 			return FALSE
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
@@ -160,7 +160,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != "Nude"))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
 			return FALSE
 
 
@@ -210,7 +210,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != "Nude"))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
 			return FALSE
 
 
@@ -272,5 +272,5 @@
 		if(owner.get_all_covered_flags() & CHEST)
 			return FALSE
 		//this is fucked man
-		if(owner.undershirt && (owner.undershirt != "Nude"))
+		if(owner.undershirt && (owner.undershirt != SPRITE_ACCESSORY_NONE))
 			return FALSE

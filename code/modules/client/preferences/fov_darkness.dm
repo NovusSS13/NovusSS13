@@ -6,7 +6,7 @@
 	minimum = 0
 	maximum = 255
 
-/datum/preference/numeric/fov_darkness/create_default_value()
+/datum/preference/numeric/fov_darkness/create_default_value(datum/preferences/preferences)
 	return 255
 
 /datum/preference/numeric/fov_darkness/apply_to_client_updated(client/client, value)

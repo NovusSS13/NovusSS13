@@ -56,6 +56,16 @@
 /datum/preference/choiced/backpack/apply_to_human(mob/living/carbon/human/target, value)
 	target.backpack = value
 
+/datum/preference/choiced/backpack/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+
+	if(preferences.current_char_key != "main")
+		return FALSE
+
+	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	return !(initial(species_type.no_equip_flags) & ITEM_SLOT_BACK)
+
 /// Jumpsuit preference
 /datum/preference/choiced/jumpsuit
 	savefile_key = "jumpsuit_style"
@@ -80,6 +90,16 @@
 /datum/preference/choiced/jumpsuit/apply_to_human(mob/living/carbon/human/target, value)
 	target.jumpsuit_style = value
 
+/datum/preference/choiced/jumpsuit/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+
+	if(preferences.current_char_key != "main")
+		return FALSE
+
+	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	return !(initial(species_type.no_equip_flags) & ITEM_SLOT_ICLOTHING)
+
 /// Socks preference
 /datum/preference/choiced/socks
 	savefile_key = "socks"
@@ -91,6 +111,9 @@
 /datum/preference/choiced/socks/init_possible_values()
 	return assoc_to_keys_features(GLOB.socks_list)
 
+/datum/preference/choiced/socks/create_default_value(datum/preferences/preferences)
+	return SPRITE_ACCESSORY_NONE
+
 /datum/preference/choiced/socks/icon_for(value)
 	var/static/icon/lower_half
 
@@ -99,10 +122,26 @@
 		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg"), ICON_OVERLAY)
 		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
 
+	//stupid byond goof, icon(icon_file, nonexistent_icon_state) == icon_file
+	if(value == SPRITE_ACCESSORY_NONE)
+		return generate_underwear_icon(null, lower_half)
 	return generate_underwear_icon(GLOB.socks_list[value], lower_half)
 
 /datum/preference/choiced/socks/apply_to_human(mob/living/carbon/human/target, value)
 	target.socks = value
+
+/datum/preference/choiced/socks/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+
+	if(preferences.current_char_key != "main")
+		var/datum/offstation_customization/ghost_role_data = GLOB.offstation_customization_by_save_key[preferences.current_char_key]
+		if(ghost_role_data.barebones_spawn)
+			return FALSE
+
+	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	var/datum/species/species = new species_type
+	return !(TRAIT_NO_UNDERWEAR in species.inherent_traits)
 
 /// Undershirt preference
 /datum/preference/choiced/undershirt
@@ -114,6 +153,9 @@
 
 /datum/preference/choiced/undershirt/init_possible_values()
 	return assoc_to_keys_features(GLOB.undershirt_list)
+
+/datum/preference/choiced/undershirt/create_default_value(datum/preferences/preferences)
+	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/choiced/undershirt/icon_for(value)
 	var/static/icon/body
@@ -128,7 +170,7 @@
 
 	var/icon/icon_with_undershirt = icon(body)
 
-	if (value != "Nude")
+	if (value != SPRITE_ACCESSORY_NONE)
 		var/datum/sprite_accessory/accessory = GLOB.undershirt_list[value]
 		icon_with_undershirt.Blend(icon('icons/mob/clothing/underwear.dmi', accessory.icon_state), ICON_OVERLAY)
 
@@ -138,6 +180,19 @@
 
 /datum/preference/choiced/undershirt/apply_to_human(mob/living/carbon/human/target, value)
 	target.undershirt = value
+
+/datum/preference/choiced/undershirt/is_accessible(datum/preferences/preferences)
+	if (!..(preferences))
+		return FALSE
+
+	if(preferences.current_char_key != "main")
+		var/datum/offstation_customization/ghost_role_data = GLOB.offstation_customization_by_save_key[preferences.current_char_key]
+		if(ghost_role_data.barebones_spawn)
+			return FALSE
+
+	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	var/datum/species/species = new species_type
+	return !(TRAIT_NO_UNDERWEAR in species.inherent_traits)
 
 /// Underwear preference
 /datum/preference/choiced/underwear
@@ -150,6 +205,9 @@
 /datum/preference/choiced/underwear/init_possible_values()
 	return assoc_to_keys_features(GLOB.underwear_list)
 
+/datum/preference/choiced/underwear/create_default_value(datum/preferences/preferences)
+	return SPRITE_ACCESSORY_NONE
+
 /datum/preference/choiced/underwear/icon_for(value)
 	var/static/icon/lower_half
 
@@ -159,6 +217,10 @@
 		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg"), ICON_OVERLAY)
 		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
 
+
+	//stupid byond goof, icon(icon_file, nonexistent_icon_state) == icon_file
+	if(value == SPRITE_ACCESSORY_NONE)
+		return generate_underwear_icon(null, lower_half)
 	return generate_underwear_icon(GLOB.underwear_list[value], lower_half, COLOR_ALMOST_BLACK)
 
 /datum/preference/choiced/underwear/apply_to_human(mob/living/carbon/human/target, value)
@@ -167,6 +229,11 @@
 /datum/preference/choiced/underwear/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))
 		return FALSE
+
+	if(preferences.current_char_key != "main")
+		var/datum/offstation_customization/ghost_role_data = GLOB.offstation_customization_by_save_key[preferences.current_char_key]
+		if(ghost_role_data.barebones_spawn)
+			return FALSE
 
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = new species_type

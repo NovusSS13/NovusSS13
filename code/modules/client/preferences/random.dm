@@ -14,7 +14,7 @@
 		RANDOM_ENABLED,
 	)
 
-/datum/preference/choiced/random_body/create_default_value()
+/datum/preference/choiced/random_body/create_default_value(datum/preferences/preferences)
 	return RANDOM_DISABLED
 
 /datum/preference/toggle/random_hardcore
@@ -49,5 +49,5 @@
 		RANDOM_ENABLED,
 	)
 
-/datum/preference/choiced/random_name/create_default_value()
+/datum/preference/choiced/random_name/create_default_value(datum/preferences/preferences)
 	return RANDOM_DISABLED

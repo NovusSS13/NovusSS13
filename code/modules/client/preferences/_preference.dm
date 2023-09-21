@@ -109,26 +109,17 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	SHOULD_NOT_SLEEP(TRUE)
 	return input
 
-/// Produce a default, potentially random value for when no value for this
-/// preference is found in the savefile.
-/// Either this or create_informed_default_value must be overriden by subtypes.
-/datum/preference/proc/create_default_value()
+/// Produce a default value for when no value for this preference is found in the savefile.
+/datum/preference/proc/create_default_value(datum/preferences/preferences)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("`create_default_value()` was not implemented on [type]!")
 
-/// Produce a default, potentially random value for when no value for this
-/// preference is found in the savefile.
-/// Unlike create_default_value(), will provide the preferences object if you
-/// need to use it.
-/// If not overriden, will call create_default_value() instead.
-/datum/preference/proc/create_informed_default_value(datum/preferences/preferences)
-	return create_default_value()
-
 /// Produce a random value for the purposes of character randomization.
-/// Will just create a default value by default.
 /datum/preference/proc/create_random_value(datum/preferences/preferences)
-	return create_informed_default_value(preferences)
+	SHOULD_NOT_SLEEP(TRUE)
+	SHOULD_CALL_PARENT(FALSE)
+	CRASH("`create_random_value()` was not implemented on [type]!")
 
 /// Returns whether or not a preference can be randomized.
 /datum/preference/proc/is_randomizable()
@@ -149,20 +140,6 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 		return null
 	else
 		return deserialize(value, preferences)
-
-/// Given a savefile, writes the inputted value.
-/// Returns TRUE for a successful application.
-/// Return FALSE if it is invalid.
-/datum/preference/proc/write(list/save_data, value)
-	SHOULD_NOT_OVERRIDE(TRUE)
-
-	if (!is_valid(value))
-		return FALSE
-
-	if (!isnull(save_data))
-		save_data[savefile_key] = serialize(value)
-
-	return TRUE
 
 /// Apply this preference onto the given client.
 /// Called when the savefile_identifier == PREFERENCE_PLAYER.
@@ -185,29 +162,9 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("`apply_to_human()` was not implemented for [type]!")
 
-/// Returns which savefile to use for a given savefile identifier
-/datum/preferences/proc/get_save_data_for_savefile_identifier(savefile_identifier)
-	RETURN_TYPE(/list)
-
-	if (!parent)
-		return null
-	if (!savefile)
-		CRASH("Attempted to get the savedata for [savefile_identifier] of [parent] without a savefile. This should have been handled by load_preferences()")
-
-	// Both of these will cache savefiles, but only for a tick.
-	// This is because storing a savefile will lock it, causing later issues down the line.
-	// Do not change them to addtimer, since the timer SS might not be running at this time.
-	switch (savefile_identifier)
-		if (PREFERENCE_CHARACTER)
-			return savefile.get_entry("character[default_slot]")
-		if (PREFERENCE_PLAYER)
-			return savefile.get_entry()
-		else
-			CRASH("Unknown savefile identifier [savefile_identifier]")
-
 /// Read a /datum/preference type and return its value.
 /// This will write to the savefile if a value was not found with the new value.
-/datum/preferences/proc/read_preference(preference_type)
+/datum/preferences/proc/read_preference(preference_type, char_id = current_ids[current_char_key], char_key = current_char_key)
 	var/datum/preference/preference_entry = GLOB.preference_entries[preference_type]
 	if (isnull(preference_entry))
 		var/extra_info = ""
@@ -221,45 +178,48 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 		CRASH("Preference type `[preference_type]` is invalid! [extra_info]")
 
-	if (preference_type in value_cache)
-		return value_cache[preference_type]
-
-	var/value = preference_entry.read(get_save_data_for_savefile_identifier(preference_entry.savefile_identifier), src)
+	var/savefile_entry = savefile.get_entry(preference_entry.savefile_identifier == PREFERENCE_CHARACTER ? "character_[char_key]_[char_id]" : null)
+	var/value = preference_entry.read(savefile_entry, src)
 	if (isnull(value))
-		value = preference_entry.create_informed_default_value(src)
-		if (write_preference(preference_entry, value))
-			return value
-		else
+		var/old_id = current_ids[char_key]
+		var/old_key = current_char_key
+
+		current_char_key = char_key
+		current_ids[char_key] = char_id
+
+		value = preference_entry.create_default_value(src)
+
+		current_ids[char_key] = old_id
+		current_char_key = old_key
+
+		if (!write_preference(preference_entry, value, char_id, char_key))
 			CRASH("Couldn't write the default value for [preference_type] (received [value])")
-	value_cache[preference_type] = value
+
 	return value
 
 /// Set a /datum/preference entry.
 /// Returns TRUE for a successful preference application.
 /// Returns FALSE if it is invalid.
-/datum/preferences/proc/write_preference(datum/preference/preference, preference_value)
-	var/save_data = get_save_data_for_savefile_identifier(preference.savefile_identifier)
-	var/new_value = preference.deserialize(preference_value, src)
-	var/success = preference.write(save_data, new_value)
-	if (success)
-		value_cache[preference.type] = new_value
-	return success
+/datum/preferences/proc/write_preference(datum/preference/preference_entry, preference_value, char_id = current_ids[current_char_key], char_key = current_char_key)
+	var/save_data = savefile.get_entry(preference_entry.savefile_identifier == PREFERENCE_CHARACTER ? "character_[char_key]_[char_id]" : null)
+	if(isnull(save_data))
+		return TRUE
 
-/// Will perform an update on the preference, but not write to the savefile.
+	if(!preference_entry.is_valid(preference_value))
+		return FALSE
+
+	save_data[preference_entry.savefile_key] = preference_entry.serialize(preference_value, src)
+	return TRUE
+
+/// Will perform an update on the preference, as well as all the appropriate sanity checks and updates.
 /// This will, for instance, update the character preference view.
-/// Performs sanity checks.
 /datum/preferences/proc/update_preference(datum/preference/preference, preference_value)
 	if (!preference.is_accessible(src))
 		return FALSE
 
-	var/new_value = preference.deserialize(preference_value, src)
-	var/success = preference.write(null, new_value)
-
+	var/success = write_preference(preference, preference.deserialize(preference_value, src))
 	if (!success)
 		return FALSE
-
-	recently_updated_keys |= preference.type
-	value_cache[preference.type] = new_value
 
 	if (preference.savefile_identifier == PREFERENCE_PLAYER)
 		preference.apply_to_client_updated(parent, read_preference(preference.type))
@@ -383,9 +343,12 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	return value in get_choices()
 
 /datum/preference/choiced/deserialize(input, datum/preferences/preferences)
-	return sanitize_inlist(input, get_choices(), create_default_value())
+	return sanitize_inlist(input, get_choices(), create_default_value(preferences))
 
-/datum/preference/choiced/create_default_value()
+/datum/preference/choiced/create_default_value(datum/preferences/preferences)
+	return get_choices()[1]
+
+/datum/preference/choiced/create_random_value(datum/preferences/preferences)
 	return pick(get_choices())
 
 /datum/preference/choiced/compile_constant_data()
@@ -420,7 +383,10 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	return sanitize_hexcolor(input)
 
 /datum/preference/color/create_default_value()
-	return "#" + random_color()
+	return "#FFFFFF"
+
+/datum/preference/color/create_random_value()
+	return "#[random_color()]"
 
 /datum/preference/color/serialize(input)
 	return sanitize_hexcolor(input)
@@ -444,12 +410,15 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/numeric/deserialize(input, datum/preferences/preferences)
 	if(istext(input)) // Sometimes TGUI will return a string instead of a number, so we take that into account.
 		input = text2num(input) // Worst case, it's null, it'll just use create_default_value()
-	return sanitize_float(input, minimum, maximum, step, create_default_value())
+	return sanitize_float(input, minimum, maximum, step, create_default_value(preferences))
 
 /datum/preference/numeric/serialize(input)
 	return sanitize_float(input, minimum, maximum, step, create_default_value())
 
-/datum/preference/numeric/create_default_value()
+/datum/preference/numeric/create_default_value(datum/preferences/preferences)
+	return (minimum + maximum) / 2
+
+/datum/preference/numeric/create_random_value(datum/preferences/preferences)
 	return rand(minimum, maximum)
 
 /datum/preference/numeric/is_valid(value)
@@ -469,8 +438,11 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// The default value of the toggle, if create_default_value is not specified
 	var/default_value = TRUE
 
-/datum/preference/toggle/create_default_value()
+/datum/preference/toggle/create_default_value(datum/preferences/preferences)
 	return default_value
+
+/datum/preference/toggle/create_random_value(datum/preferences/preferences)
+	return rand(0, 1)
 
 /datum/preference/toggle/deserialize(input, datum/preferences/preferences)
 	return !!input
@@ -493,8 +465,11 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/text/deserialize(input, datum/preferences/preferences)
 	return should_strip_html ? STRIP_HTML_SIMPLE(input, maximum_value_length) : copytext(input, 1, maximum_value_length)
 
-/datum/preference/text/create_default_value()
+/datum/preference/text/create_default_value(datum/preferences/preferences)
 	return ""
+
+/datum/preference/text/create_random_value(datum/preferences/preferences)
+	return create_default_value(preferences)
 
 /datum/preference/text/is_valid(value)
 	return istext(value) && length(value) < maximum_value_length
@@ -509,12 +484,17 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/tricolor/deserialize(input, datum/preferences/preferences)
 	var/list/input_colors = splittext(input, ";")
 	input_colors.len = 3
-	return sanitize_hexcolor_list(input_colors, 6, TRUE, "#[random_color()]")
+	return sanitize_hexcolor_list(input_colors, 6, TRUE, COLOR_VIBRANT_LIME)
 
 /datum/preference/tricolor/serialize(input)
 	return "[input[1]];[input[2]];[input[3]]"
 
-/datum/preference/tricolor/create_default_value()
+/datum/preference/tricolor/create_default_value(datum/preferences/preferences)
+	if(preferences)
+		return preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color)
+	return list("#FFFFFF", "#FFFFFF", "#FFFFFF")
+
+/datum/preference/tricolor/create_random_value(datum/preferences/preferences)
 	return list("#[random_color()]", "#[random_color()]", "#[random_color()]")
 
 /datum/preference/tricolor/is_valid(value)

@@ -96,7 +96,7 @@
 	var/mob/living/carbon/human/M = new /mob/living/carbon/human(get_step(loc, pick(GLOB.alldirs)))
 	M.set_species(/datum/species/lizard/ashwalker)
 	M.real_name = oldname
-	M.underwear = "Nude"
+	M.underwear = SPRITE_ACCESSORY_NONE
 	M.update_body()
 	M.remove_language(/datum/language/common)
 	oldmind.transfer_to(M)

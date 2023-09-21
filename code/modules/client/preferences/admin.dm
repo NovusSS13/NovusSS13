@@ -3,7 +3,7 @@
 	savefile_key = "asaycolor"
 	savefile_identifier = PREFERENCE_PLAYER
 
-/datum/preference/color/asay_color/create_default_value()
+/datum/preference/color/asay_color/create_default_value(datum/preferences/preferences)
 	return DEFAULT_ASAY_COLOR
 
 /datum/preference/color/asay_color/is_accessible(datum/preferences/preferences)
@@ -21,14 +21,14 @@
 /datum/preference/choiced/brief_outfit/deserialize(input, datum/preferences/preferences)
 	var/path = text2path(input)
 	if (!ispath(path, /datum/outfit))
-		return create_default_value()
+		return create_default_value(preferences)
 
 	return path
 
 /datum/preference/choiced/brief_outfit/serialize(input)
 	return "[input]"
 
-/datum/preference/choiced/brief_outfit/create_default_value()
+/datum/preference/choiced/brief_outfit/create_default_value(datum/preferences/preferences)
 	return /datum/outfit/centcom/commander
 
 /datum/preference/choiced/brief_outfit/init_possible_values()

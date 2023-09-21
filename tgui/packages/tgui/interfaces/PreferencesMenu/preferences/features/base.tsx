@@ -334,7 +334,9 @@ export const FeatureValueInput = (
 
   const [predictedValue, setPredictedValue] = useLocalState(
     context,
-    `${props.featureId}_predictedValue_${data.active_slot}`,
+    `${props.featureId}_predictedValue_${data.active_slot_key}_${
+      data.active_slot_ids[data.active_slot_key]
+    }`,
     props.value
   );
 

@@ -17,7 +17,7 @@
 
 	return maps
 
-/datum/preference/choiced/preferred_map/create_default_value()
+/datum/preference/choiced/preferred_map/create_default_value(datum/preferences/preferences)
 	return ""
 
 /datum/preference/choiced/preferred_map/compile_constant_data()

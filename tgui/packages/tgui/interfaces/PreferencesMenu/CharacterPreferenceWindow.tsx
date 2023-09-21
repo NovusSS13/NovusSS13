@@ -1,8 +1,8 @@
 import { exhaustiveCheck } from 'common/exhaustive';
 import { useBackend, useLocalState } from '../../backend';
-import { Stack, Flex, Dropdown } from '../../components';
+import { Stack, Button, Flex, Dropdown, Box } from '../../components';
 import { Window } from '../../layouts';
-import { PreferencesMenuData } from './data';
+import { GhostRole, PreferencesMenuData, ServerData } from './data';
 import { PageButton } from './PageButton';
 import { AntagsPage } from './AntagsPage';
 import { JobsPage } from './JobsPage';
@@ -11,6 +11,8 @@ import { MarkingsPage } from './MarkingsPage';
 import { BackgroundPage } from './BackgroundPage';
 import { SpeciesPage } from './SpeciesPage';
 import { QuirksPage } from './QuirksPage';
+import { Cargo } from '../Cargo';
+import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 enum Page {
   Antags,
@@ -22,30 +24,47 @@ enum Page {
   Quirks,
 }
 
-const CharacterProfiles = (props: {
+const CharSlots = (props: {
+  onClick: (action: string, payload?: object) => void;
+  profiles: string[];
+  slotKey: string;
+  activeKey: string;
+  maxSlots: number;
   activeSlot: number;
-  onClick: (index: number) => void;
-  profiles: (string | null)[];
 }) => {
-  const { profiles, activeSlot, onClick } = props;
-
+  const activeSlotKeyCheck = props.slotKey == props.activeKey;
+  //i cant make this wrap. fix htiws.
   return (
-    <Flex align="center" justify="center">
-      <Flex.Item width="35%">
-        <Dropdown
-          width="100%"
-          selected={activeSlot}
-          displayText={profiles[activeSlot]}
-          options={profiles.map((profile, slot) => ({
-            value: slot,
-            displayText: profile ?? 'New Character',
-          }))}
-          onSelected={(slot) => {
-            onClick(slot);
-          }}
-        />
-      </Flex.Item>
-    </Flex>
+    <>
+      {props.profiles.map((profile, slot_id) => (
+        <Stack.Item key={slot_id}>
+          <Button
+            selected={slot_id === props.activeSlot - 1 && activeSlotKeyCheck}
+            onClick={() => {
+              props.onClick('change_slot', {
+                slot_key: props.slotKey,
+                slot_id: slot_id + 1,
+              });
+            }}
+            fluid>
+            {profile ?? 'FUNKY CODE, FUCK.'}
+          </Button>
+        </Stack.Item>
+      ))}
+      {Number(props.profiles?.length) < props.maxSlots && (
+        <Stack.Item>
+          <Button
+            onClick={() => {
+              props.onClick('new_slot', {
+                slot_key: props.slotKey,
+              });
+            }}
+            content="+"
+            fluid
+          />
+        </Stack.Item>
+      )}
+    </>
   );
 };
 
@@ -87,8 +106,8 @@ export const CharacterPreferenceWindow = (props, context) => {
       pageContents = (
         <SpeciesPage closeSpecies={() => setCurrentPage(Page.Main)} />
       );
-
       break;
+
     case Page.Quirks:
       pageContents = <QuirksPage />;
       break;
@@ -100,24 +119,88 @@ export const CharacterPreferenceWindow = (props, context) => {
     <Window title="Character Preferences" width={920} height={770}>
       <Window.Content scrollable>
         <Stack vertical fill>
-          <Stack.Item>
-            <CharacterProfiles
-              activeSlot={data.active_slot - 1}
-              onClick={(slot) => {
-                act('change_slot', {
-                  slot: slot + 1,
-                });
-              }}
-              profiles={data.character_profiles}
-            />
-          </Stack.Item>
-
-          {!data.content_unlocked && (
+          {data.is_guest ? (
             <Stack.Item align="center">
-              Buy BYOND premium for more slots!
+              Create an account to save your character!
+            </Stack.Item>
+          ) : (
+            <Stack.Item>
+              <Stack justify="center" fill>
+                <Stack.Item>
+                  <Stack vertical fill fluid>
+                    <Stack.Item>
+                      <Stack justify="center" wrap>
+                        <CharSlots
+                          profiles={data.character_profiles['main']}
+                          activeSlot={data.active_slot_ids['main']}
+                          slotKey="main"
+                          activeKey={data.active_slot_key}
+                          maxSlots={data.max_slots_main}
+                          onClick={(action, object) => {
+                            act(action, object);
+                          }}
+                        />
+                      </Stack>
+                    </Stack.Item>
+                    {!data.content_unlocked && (
+                      <Stack.Item align="center">
+                        Buy BYOND premium for more slots!
+                      </Stack.Item>
+                    )}
+                  </Stack>
+                </Stack.Item>
+                <Stack.Item>
+                  <ServerPreferencesFetcher
+                    render={(render_data: ServerData | null) => {
+                      if (!render_data) {
+                        return <Box>Loading ghost roles..</Box>;
+                      }
+
+                      const ghost_role_data: Record<string, GhostRole> =
+                        render_data.ghost_role_data;
+
+                      return (
+                        <Stack vertical fill>
+                          {Object.keys(data.character_profiles).map(
+                            (slot_key) =>
+                              slot_key != 'main' && (
+                                <Stack.Item>
+                                  <Stack>
+                                    <Stack.Item>
+                                      {ghost_role_data[slot_key].slot_name}
+                                    </Stack.Item>
+                                    <CharSlots
+                                      onClick={(action, payload) => {
+                                        if (
+                                          currentPage == Page.Species ||
+                                          currentPage == Page.Antags ||
+                                          currentPage == Page.Jobs
+                                        )
+                                          setCurrentPage(Page.Main);
+                                        act(action, payload);
+                                      }}
+                                      profiles={
+                                        data.character_profiles[slot_key]
+                                      }
+                                      maxSlots={data.max_slots_ghost}
+                                      activeSlot={
+                                        data.active_slot_ids[slot_key]
+                                      }
+                                      slotKey={slot_key}
+                                      activeKey={data.active_slot_key}
+                                    />
+                                  </Stack>
+                                </Stack.Item>
+                              )
+                          )}
+                        </Stack>
+                      );
+                    }}
+                  />
+                </Stack.Item>
+              </Stack>
             </Stack.Item>
           )}
-
           <Stack.Divider />
 
           <Stack.Item>
@@ -150,27 +233,31 @@ export const CharacterPreferenceWindow = (props, context) => {
                 </PageButton>
               </Stack.Item>
 
-              <Stack.Item grow>
-                <PageButton
-                  currentPage={currentPage}
-                  page={Page.Jobs}
-                  setPage={setCurrentPage}>
-                  {/*
+              {data.active_slot_key == 'main' && (
+                <>
+                  <Stack.Item grow>
+                    <PageButton
+                      currentPage={currentPage}
+                      page={Page.Jobs}
+                      setPage={setCurrentPage}>
+                      {/*
                     Fun fact: This isn't "Jobs" so that it intentionally
                     catches your eyes, because it's really important!
                   */}
-                  Occupations
-                </PageButton>
-              </Stack.Item>
+                      Occupations
+                    </PageButton>
+                  </Stack.Item>
 
-              <Stack.Item grow>
-                <PageButton
-                  currentPage={currentPage}
-                  page={Page.Antags}
-                  setPage={setCurrentPage}>
-                  Antagonists
-                </PageButton>
-              </Stack.Item>
+                  <Stack.Item grow>
+                    <PageButton
+                      currentPage={currentPage}
+                      page={Page.Antags}
+                      setPage={setCurrentPage}>
+                      Antagonists
+                    </PageButton>
+                  </Stack.Item>
+                </>
+              )}
 
               <Stack.Item grow>
                 <PageButton

@@ -6,7 +6,7 @@
 	minimum = -1
 	maximum = 240
 
-/datum/preference/numeric/fps/create_default_value()
+/datum/preference/numeric/fps/create_default_value(datum/preferences/preferences)
 	return -1
 
 /datum/preference/numeric/fps/apply_to_client(client/client, value)

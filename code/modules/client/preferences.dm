@@ -7,9 +7,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// Whether or not we allow saving/loading. Used for guests, if they're enabled
 	var/load_and_save = TRUE
 	/// Ensures that we always load the last used save, QOL
-	var/default_slot = 1
-	/// The maximum number of slots we're allowed to contain
+	var/list/current_ids = list()
+	/// The current charset we're editing. "main" for station characters, everything else in GLOB.valid_char_savekeys
+	var/current_char_key = "main"
+
 	var/max_save_slots = 10
+	/// Above, but for ghost roles.
+	var/max_ghost_role_slots = 2
+	/// The amount of main slots we're actually using. Assoc list of character savekeys to the amount of slots used.
+	var/list/used_slot_amount = list()
 
 	/// Bitflags for communications that are muted
 	var/muted = NONE
@@ -81,26 +87,18 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// The savefile relating to character preferences, PREFERENCE_CHARACTER
 	var/list/character_data
 
-	/// A list of keys that have been updated since the last save.
-	var/list/recently_updated_keys = list()
-
-	/// A cache of preference entries to values.
-	/// Used to avoid expensive READ_FILE every time a preference is retrieved.
-	var/value_cache = list()
-
 	/// If set to TRUE, will update character_profiles on the next ui_data tick.
 	var/tainted_character_profiles = FALSE
 
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	QDEL_LIST(middleware)
-	value_cache = null
 	return ..()
 
 /datum/preferences/New(client/parent)
 	src.parent = parent
 
-	for (var/middleware_type in subtypesof(/datum/preference_middleware))
+	for(var/middleware_type in subtypesof(/datum/preference_middleware))
 		middleware += new middleware_type(src)
 
 	if(IS_CLIENT_OR_MOCK(parent))
@@ -124,8 +122,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if(loaded_preferences_successfully)
 		if(load_character())
 			return
-	//we couldn't load character data so just randomize the character appearance + name
-	randomise_appearance_prefs() //let's create a random character then - rather than a fat, bald and naked man.
+
 	if(parent)
 		apply_all_client_preferences()
 		parent.set_macros()
@@ -165,15 +162,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /datum/preferences/ui_data(mob/user)
 	var/list/data = list()
 
-	if (tainted_character_profiles)
+	if(tainted_character_profiles)
 		data["character_profiles"] = create_character_profiles()
 		tainted_character_profiles = FALSE
 
 	data["character_preferences"] = compile_character_preferences(user)
 
-	data["active_slot"] = default_slot
+	data["active_slot_ids"] = current_ids
+	data["active_slot_key"] = current_char_key
 
-	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 		data += preference_middleware.get_ui_data(user)
 
 	return data
@@ -187,9 +185,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	data["overflow_role"] = SSjob.GetJobType(SSjob.overflow_role).title
 	data["window"] = current_window
 
+	data["max_slots_main"] = max_save_slots
+	data["max_slots_ghost"] = max_ghost_role_slots
+
+	data["is_guest"] = is_guest_key(user.key)
 	data["content_unlocked"] = unlock_content
 
-	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 		data += preference_middleware.get_ui_static_data(user)
 
 	return data
@@ -200,54 +202,64 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		get_asset_datum(/datum/asset/json/preferences),
 	)
 
-	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 		assets += preference_middleware.get_ui_assets()
 
 	return assets
 
 /datum/preferences/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
-	if (.)
+	if(.)
 		return
 
 	switch (action)
-		if ("change_slot")
+		if("change_slot")
 			// Save existing character
 			save_character()
 
 			// SAFETY: `load_character` performs sanitization the slot number
-			if (!load_character(params["slot"]))
-				tainted_character_profiles = TRUE
-				randomise_appearance_prefs()
-				save_character()
+			if(!load_character(params["slot_id"], params["slot_key"]))
+				return FALSE //guest?
 
-			for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+			for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 				preference_middleware.on_new_character(usr)
 
 			character_preview_view.update_body()
-
 			return TRUE
-		if ("rotate")
+
+		if("new_slot")
+			// Save existing character
+			save_character()
+
+			tainted_character_profiles = TRUE
+			if(!add_character_slot(params["slot_key"]))
+				return FALSE
+
+			character_preview_view.update_body()
+			return TRUE
+
+		if("rotate")
 			character_preview_view.dir = turn(character_preview_view.dir, -90)
 
 			return TRUE
-		if ("set_preference")
+
+		if("set_preference")
 			var/requested_preference_key = params["preference"]
 			var/value = params["value"]
 
-			for (var/datum/preference_middleware/preference_middleware as anything in middleware)
-				if (preference_middleware.pre_set_preference(usr, requested_preference_key, value))
+			for(var/datum/preference_middleware/preference_middleware as anything in middleware)
+				if(preference_middleware.pre_set_preference(usr, requested_preference_key, value))
 					return TRUE
 
 			var/datum/preference/requested_preference = GLOB.preference_entries_by_key[requested_preference_key]
-			if (isnull(requested_preference))
+			if(isnull(requested_preference))
 				return FALSE
 
 			// SAFETY: `update_preference` performs validation checks
-			if (!update_preference(requested_preference, value))
+			if(!update_preference(requested_preference, value))
 				return FALSE
 
-			if (istype(requested_preference, /datum/preference/name))
+			if(istype(requested_preference, /datum/preference/name))
 				tainted_character_profiles = TRUE
 
 			for (var/datum/preference_middleware/preference_middleware as anything in middleware)
@@ -255,14 +267,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					return TRUE
 
 			return TRUE
-		if ("set_color_preference")
+
+		if("set_color_preference")
 			var/requested_preference_key = params["preference"]
 
 			var/datum/preference/requested_preference = GLOB.preference_entries_by_key[requested_preference_key]
-			if (isnull(requested_preference))
+			if(isnull(requested_preference))
 				return FALSE
 
-			if (!istype(requested_preference, /datum/preference/color))
+			if(!istype(requested_preference, /datum/preference/color))
 				return FALSE
 
 			var/default_value = read_preference(requested_preference.type)
@@ -275,13 +288,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				default_value || COLOR_WHITE,
 			) as color | null
 
-			if (!new_color)
+			if(!new_color)
 				return FALSE
 
-			if (!update_preference(requested_preference, new_color))
-				return FALSE
+			return update_preference(requested_preference, new_color)
 
-			return TRUE
 		if ("set_color_mutant_colors")
 			var/requested_preference_key = params["preference"]
 
@@ -296,23 +307,21 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if (!islist(color_list))
 				return FALSE //wtf?
 
-			if (!update_preference(requested_preference, color_list[1]))
-				return FALSE
+			return update_preference(requested_preference, color_list[1])
 
-			return TRUE
 		if ("set_tricolor_preference")
 			var/requested_preference_key = params["preference"]
 			var/requested_preference_index = params["value"]
 
 			var/datum/preference/requested_preference = GLOB.preference_entries_by_key[requested_preference_key]
-			if (isnull(requested_preference))
+			if(isnull(requested_preference))
 				return FALSE
 
-			if (!istype(requested_preference, /datum/preference/tricolor))
+			if(!istype(requested_preference, /datum/preference/tricolor))
 				return FALSE
 
 			var/list/color_list = read_preference(requested_preference.type)
-			if (!islist(color_list))
+			if(!islist(color_list))
 				return FALSE //wtf?
 
 			var/default_value = sanitize_hexcolor(color_list[requested_preference_index], DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
@@ -324,14 +333,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				null,
 				default_value || COLOR_WHITE,
 			) as color | null
-			if (!new_color)
+			if(!new_color)
 				return FALSE
 
 			color_list[requested_preference_index] = new_color
-			if (!update_preference(requested_preference, jointext(color_list, ";")))
-				return FALSE
+			return update_preference(requested_preference, jointext(color_list, ";"))
 
-			return TRUE
 		if ("set_tricolor_mutant_colors")
 			var/requested_preference_key = params["preference"]
 
@@ -346,14 +353,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if (!islist(color_list))
 				return FALSE //wtf?
 
-			if (!update_preference(requested_preference, jointext(color_list, ";")))
-				return FALSE
+			return update_preference(requested_preference, jointext(color_list, ";"))
 
-			return TRUE
-
-	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 		var/delegation = preference_middleware.action_delegations[action]
-		if (!isnull(delegation))
+		if(!isnull(delegation))
 			return call(preference_middleware, delegation)(params, usr)
 
 	return FALSE
@@ -365,10 +369,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /datum/preferences/Topic(href, list/href_list)
 	. = ..()
-	if (.)
+	if(.)
 		return
 
-	if (href_list["open_keybindings"])
+	if(href_list["open_keybindings"])
 		current_window = PREFERENCE_TAB_KEYBINDINGS
 		update_static_data(usr)
 		ui_interact(usr)
@@ -385,8 +389,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /datum/preferences/proc/compile_character_preferences(mob/user)
 	var/list/preferences = list()
 
-	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
-		if (!preference.is_accessible(src))
+	for(var/datum/preference/preference as anything in get_preferences_in_priority_order())
+		if(!preference.is_accessible(src))
 			continue
 
 		LAZYINITLIST(preferences[preference.category])
@@ -396,13 +400,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 		preferences[preference.category][preference.savefile_key] = data
 
-	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
 		var/list/append_character_preferences = preference_middleware.get_character_preferences(user)
-		if (isnull(append_character_preferences))
+		if(isnull(append_character_preferences))
 			continue
 
-		for (var/category in append_character_preferences)
-			if (category in preferences)
+		for(var/category in append_character_preferences)
+			if(category in preferences)
 				preferences[category] += append_character_preferences[category]
 			else
 				preferences[category] = append_character_preferences[category]
@@ -411,11 +415,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /// Applies all PREFERENCE_PLAYER preferences
 /datum/preferences/proc/apply_all_client_preferences()
-	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
-		if (preference.savefile_identifier != PREFERENCE_PLAYER)
+	for(var/datum/preference/preference as anything in get_preferences_in_priority_order())
+		if(preference.savefile_identifier != PREFERENCE_PLAYER)
 			continue
 
-		value_cache -= preference.type
 		preference.apply_to_client(parent, read_preference(preference.type))
 
 /// A preview of a character for use in the preferences menu
@@ -438,7 +441,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /// Updates the currently displayed body
 /atom/movable/screen/map_view/char_preview/proc/update_body()
-	if (isnull(body))
+	if(isnull(body))
 		create_body()
 	else
 		body.wipe_state()
@@ -451,30 +454,21 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /datum/preferences/proc/create_character_profiles()
 	var/list/profiles = list()
+	for(var/save_key in GLOB.valid_char_savekeys)
+		profiles[save_key] = list() //insert blank data
+		for(var/index in 1 to used_slot_amount[save_key] || 0)
+			var/save_data = savefile.get_entry("character_[save_key]_[index]")
+			var/name = save_data?["real_name"]
 
-	for (var/index in 1 to max_save_slots)
-		// It won't be updated in the savefile yet, so just read the name directly
-		if (index == default_slot)
-			profiles += read_preference(/datum/preference/name/real_name)
-			continue
-
-		var/tree_key = "character[index]"
-		var/save_data = savefile.get_entry(tree_key)
-		var/name = save_data?["real_name"]
-
-		if (isnull(name))
-			profiles += null
-			continue
-
-		profiles += name
+			profiles[save_key] += name
 
 	return profiles
 
 /datum/preferences/proc/set_job_preference_level(datum/job/job, level)
-	if (!job)
+	if(!job)
 		return FALSE
 
-	if (level == JP_HIGH)
+	if(level == JP_HIGH)
 		var/datum/job/overflow_role = SSjob.overflow_role
 		var/overflow_role_title = initial(overflow_role.title)
 
@@ -552,7 +546,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return flattened
 
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
-/datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE)
+/datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE, char_id = current_ids["main"], char_key = "main")
+	load_character(char_id, char_key) //we MUST do this because ASS
 	apply_character_randomization_prefs(is_antag)
 	apply_prefs_to(character, icon_updates)
 
@@ -595,8 +590,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /datum/preferences/proc/get_key_bindings_by_key(list/key_bindings)
 	var/list/output = list()
 
-	for (var/action in key_bindings)
-		for (var/key in key_bindings[action])
+	for(var/action in key_bindings)
+		for(var/key in key_bindings[action])
 			LAZYADD(output[key], action)
 
 	return output
@@ -605,9 +600,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /datum/preferences/proc/get_default_randomization()
 	var/list/default_randomization = list()
 
-	for (var/preference_key in GLOB.preference_entries_by_key)
+	for(var/preference_key in GLOB.preference_entries_by_key)
 		var/datum/preference/preference = GLOB.preference_entries_by_key[preference_key]
-		if (preference.is_randomizable() && preference.randomize_by_default)
+		if(preference.is_randomizable() && preference.randomize_by_default)
 			default_randomization[preference_key] = RANDOM_ENABLED
 
 	return default_randomization

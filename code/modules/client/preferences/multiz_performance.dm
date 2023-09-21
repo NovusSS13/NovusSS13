@@ -7,7 +7,7 @@
 	minimum = MULTIZ_PERFORMANCE_DISABLE
 	maximum = MAX_EXPECTED_Z_DEPTH - 1
 
-/datum/preference/numeric/multiz_performance/create_default_value()
+/datum/preference/numeric/multiz_performance/create_default_value(datum/preferences/preferences)
 	return -1
 
 /datum/preference/numeric/multiz_performance/apply_to_client(client/client, value)

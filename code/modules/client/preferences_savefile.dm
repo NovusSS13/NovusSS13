@@ -24,7 +24,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	initial() values if necessary.
 */
 /datum/preferences/proc/save_data_needs_update(list/save_data)
-	if(!save_data) // empty list, either savefile isnt loaded or its a new char
+	if(!length(save_data)) // empty list, either savefile isnt loaded or its a new char
 		return -1
 	if(save_data["version"] < SAVEFILE_VERSION_MIN)
 		return -2
@@ -174,7 +174,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//general preferences
 	lastchangelog = savefile.get_entry("lastchangelog", lastchangelog)
 	be_special = savefile.get_entry("be_special", be_special)
-	default_slot = savefile.get_entry("default_slot", default_slot)
+	current_ids = savefile.get_entry("current_ids", current_ids)
+	used_slot_amount = savefile.get_entry("used_slot_amount", used_slot_amount)
 	chat_toggles = savefile.get_entry("chat_toggles", chat_toggles)
 	toggles = savefile.get_entry("toggles", toggles)
 	ignoring = savefile.get_entry("ignoring", ignoring)
@@ -209,28 +210,51 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//Sanitize
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
-	default_slot = sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
+	used_slot_amount = SANITIZE_LIST(used_slot_amount)
+	for(var/slot in GLOB.valid_char_savekeys)
+		//IMPORTANT: 0, not 1. This is because we can sometimes not have a ghost role slot.
+		//Main gets sanitized down the line.
+		used_slot_amount[slot] = sanitize_integer(used_slot_amount[slot], 0, slot == "main" ? max_save_slots : max_ghost_role_slots, 0)
+
+	current_char_key = "main"
+	current_ids = SANITIZE_LIST(current_ids)
+	for(var/id in current_ids)
+		// if a ghost role slot wasnt added, the correspoinding key wont be in current_ids
+		current_ids[id] = sanitize_integer(current_ids[id], 1, used_slot_amount[id], 1)
+
 	toggles = sanitize_integer(toggles, 0, (2**24)-1, initial(toggles))
 	be_special = sanitize_be_special(SANITIZE_LIST(be_special))
 	key_bindings = sanitize_keybindings(key_bindings)
 	favorite_outfits = SANITIZE_LIST(favorite_outfits)
 
+	if(used_slot_amount["main"] <= 0)
+		add_character_slot("main")
+
 	if(needs_update >= 0) //save the updated version
-		var/old_default_slot = default_slot
+		var/list/old_char_ids = current_ids.Copy()
 		var/old_max_save_slots = max_save_slots
+		var/old_max_ghost_role_slots = max_ghost_role_slots
 
 		for (var/slot in savefile.get_entry()) //but first, update all current character slots.
-			if (copytext(slot, 1, 10) != "character")
+			var/list/slot_data = splittext(slot, "_")
+			if(slot_data[1] != "character")
 				continue
-			var/slotnum = text2num(copytext(slot, 10))
-			if (!slotnum)
-				continue
-			max_save_slots = max(max_save_slots, slotnum) //so we can still update byond member slots after they lose memeber status
-			default_slot = slotnum
-			if (load_character())
-				save_character()
-		default_slot = old_default_slot
+
+			if(length(slot_data) != 3) //someone didnt follow the formatting
+				stack_trace("Invalid character savefile data, expected len == 3 but got [length(slot_data)]! ([slot])")
+				return FALSE
+
+			var/slot_key = slot_data[2]
+			var/slot_id = text2num(slot_data[3])
+
+			max_save_slots = max(max_save_slots, slot_id) //so we can still update byond member slots after they lose memeber status
+
+			if(load_character(slot_id, slot_key))
+				save_character(slot_id, slot_key)
+
+		current_ids = old_char_ids
 		max_save_slots = old_max_save_slots
+		max_ghost_role_slots = old_max_ghost_role_slots
 		save_preferences()
 
 	return TRUE
@@ -238,24 +262,13 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 /datum/preferences/proc/save_preferences()
 	if(!savefile)
 		CRASH("Attempted to save the preferences of [parent] without a savefile. This should have been handled by load_preferences()")
+
 	savefile.set_entry("version", SAVEFILE_VERSION_MAX) //updates (or failing that the sanity checks) will ensure data is not invalid at load. Assume up-to-date
-
-	for (var/preference_type in GLOB.preference_entries)
-		var/datum/preference/preference = GLOB.preference_entries[preference_type]
-		if (preference.savefile_identifier != PREFERENCE_PLAYER)
-			continue
-
-		if (!(preference.type in recently_updated_keys))
-			continue
-
-		recently_updated_keys -= preference.type
-
-		if (preference_type in value_cache)
-			write_preference(preference, preference.serialize(value_cache[preference_type]))
-
 	savefile.set_entry("lastchangelog", lastchangelog)
 	savefile.set_entry("be_special", be_special)
-	savefile.set_entry("default_slot", default_slot)
+	savefile.set_entry("current_ids", current_ids)
+	savefile.set_entry("current_char_key", current_char_key)
+	savefile.set_entry("used_slot_amount", used_slot_amount)
 	savefile.set_entry("toggles", toggles)
 	savefile.set_entry("chat_toggles", chat_toggles)
 	savefile.set_entry("ignoring", ignoring)
@@ -265,37 +278,27 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	savefile.save()
 	return TRUE
 
-/datum/preferences/proc/load_character(slot)
+/datum/preferences/proc/load_character(char_id = current_ids[current_char_key], char_savekey = current_char_key)
 	SHOULD_NOT_SLEEP(TRUE)
-	if(!slot)
-		slot = default_slot
-	slot = sanitize_integer(slot, 1, max_save_slots, initial(default_slot))
-	if(slot != default_slot)
-		default_slot = slot
-		savefile.set_entry("default_slot", slot)
 
-	var/tree_key = "character[slot]"
-	var/list/save_data = savefile.get_entry(tree_key)
+	char_savekey = sanitize_inlist(char_savekey, GLOB.valid_char_savekeys, "main")
+	char_id = sanitize_integer(char_id, 1, max(used_slot_amount[char_savekey], 1), 1) //used_slot_amount[] COULD return null, and therefore 0
+
+	if(char_savekey != current_char_key || char_id != current_ids[char_savekey])
+		current_ids[char_savekey] = char_id
+		savefile.set_entry("current_ids", char_id)
+
+	if(char_savekey != current_char_key)
+		current_char_key = char_savekey
+		savefile.set_entry("current_char_key", char_savekey)
+
+	var/list/save_data = savefile.get_entry("character_[char_savekey]_[char_id]")
 	var/needs_update = save_data_needs_update(save_data)
 	if(needs_update == -2) //fatal, can't load any data
 		return FALSE
 
-	// Read everything into cache
-	for (var/preference_type in GLOB.preference_entries)
-		var/datum/preference/preference = GLOB.preference_entries[preference_type]
-		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
-			continue
-
-		value_cache -= preference_type
-		read_preference(preference_type)
-
-	//Character
 	randomise = save_data?["randomise"]
-
-	//Load prefs
 	job_preferences = save_data?["job_preferences"]
-
-	//Quirks
 	all_quirks = save_data?["all_quirks"]
 
 	//Markings
@@ -322,46 +325,36 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return TRUE
 
-/datum/preferences/proc/save_character()
+/datum/preferences/proc/save_character(char_id = current_ids[current_char_key], char_savekey = current_char_key)
 	SHOULD_NOT_SLEEP(TRUE)
 	if(!path)
 		return FALSE
-	var/tree_key = "character[default_slot]"
+
+	var/tree_key = "character_[char_savekey]_[char_id]"
 	if(!(tree_key in savefile.get_entry()))
 		savefile.set_entry(tree_key, list())
+
 	var/save_data = savefile.get_entry(tree_key)
 
-	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
-		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
-			continue
-
-		if (!(preference.type in recently_updated_keys))
-			continue
-
-		recently_updated_keys -= preference.type
-
-		if (preference.type in value_cache)
-			write_preference(preference, preference.serialize(value_cache[preference.type]))
-
+	//lets write some data that write_preference didnt handle
 	save_data["version"] = SAVEFILE_VERSION_MAX //load_character will sanitize any bad data, so assume up-to-date.
-
-	// This is the version when the random security department was removed.
-	// When the minimum is higher than that version, it's impossible for someone to have the "Random" department.
-	#if SAVEFILE_VERSION_MIN > 40
-	#warn The prefered_security_department check in code/modules/client/preferences/security_department.dm is no longer necessary.
-	#endif
-
-	//Character
 	save_data["randomise"] = randomise
-
-	//Write prefs
 	save_data["job_preferences"] = job_preferences
-
-	//Quirks
 	save_data["all_quirks"] = all_quirks
-
-	//Markings
 	save_data["body_markings"] = body_markings
+
+	return TRUE
+
+/datum/preferences/proc/add_character_slot(char_key)
+	if(!(char_key in GLOB.valid_char_savekeys))
+		return FALSE
+
+	if(used_slot_amount[char_key] >= (char_key == "main" ? max_save_slots : max_ghost_role_slots))
+		return FALSE
+
+	save_character(++used_slot_amount[char_key], char_key) //init new char slot
+	if(load_character(used_slot_amount[char_key], char_key)) //load it in
+		randomise_appearance_prefs() //randomize
 
 	return TRUE
 
