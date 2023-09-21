@@ -6,8 +6,9 @@
 	var/t_him = p_them()
 	var/t_has = p_have()
 	var/t_is = p_are()
-	var/obscure_name
-	var/obscure_examine
+	var/obscure_name = FALSE
+	var/obscure_examine = FALSE
+	var/obscure_species = FALSE
 
 	if(isliving(user))
 		var/mob/living/L = user
@@ -16,9 +17,11 @@
 		if(HAS_TRAIT(src, TRAIT_UNKNOWN))
 			obscure_name = TRUE
 			obscure_examine = TRUE
+			obscure_species = TRUE
 
-	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM>!")
-
+	var/species_name = examine_panel?.custom_species_name || dna.species.name
+	species_name = span_color(species_name, colorize_string(species_name))
+	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"], a [obscure_species ? species_name : "Human?"]</EM>!")
 	if(obscure_examine)
 		return list("<span class='warning'>You're struggling to make out any details...")
 

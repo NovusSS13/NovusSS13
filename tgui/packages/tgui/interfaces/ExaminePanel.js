@@ -38,11 +38,13 @@ export const ExaminePanel = (props, context) => {
   const cs_name =
     (mob_type === 'ai' && 'AI Core') ||
     (mob_type === 'cyborg' && 'Cyborg') ||
-    custom_species_name;
+    custom_species_name ||
+    'Unknown';
   const cs_desc =
     (mob_type === 'ai' && 'An AI unit.') ||
     (mob_type === 'cyborg' && 'A cyborg unit.') ||
-    custom_species_desc;
+    custom_species_desc ||
+    'No species description.';
 
   return (
     <Window title="Examine Panel" width={900} height={670} theme="admin">
@@ -76,13 +78,13 @@ export const ExaminePanel = (props, context) => {
                 {make_tabs && (
                   <Tabs>
                     {tab_data.map(
-                      (arr, i) =>
-                        arr[1] && (
+                      (tab, i) =>
+                        tab[1] && (
                           <Tabs.Tab
                             lineHeight="23px"
                             selected={tabIndex === i}
                             onClick={() => setTab(i)}>
-                            {arr[0]}
+                            {tab[0]}
                           </Tabs.Tab>
                         )
                     )}
@@ -93,7 +95,7 @@ export const ExaminePanel = (props, context) => {
                   fill
                   title={character_name + `s ${tab_data[tabIndex][0]}:`}
                   preserveWhitespace>
-                  {tab_data[tabIndex][1]}
+                  {unobscured ? tab_data[tabIndex][1] : 'Obscured.'}
                 </Section>
               </Stack.Item>
               <Stack.Item grow>
@@ -104,16 +106,16 @@ export const ExaminePanel = (props, context) => {
                       fill
                       title="OOC Notes"
                       preserveWhitespace>
-                      {ooc_notes || 'No notes.'}
+                      {unobscured ? ooc_notes : 'Obscured.'}
                     </Section>
                   </Stack.Item>
                   <Stack.Item grow basis={0}>
                     <Section
                       scrollable
                       fill
-                      title={'Species: ' + (cs_name || 'Unknown')}
+                      title={'Species: ' + (unobscured ? cs_name : 'Obscured')}
                       preserveWhitespace>
-                      {cs_desc || 'No description.'}
+                      {unobscured ? cs_desc : 'Obscured.'}
                     </Section>
                   </Stack.Item>
                 </Stack>

@@ -99,6 +99,7 @@
 	update_movespeed(TRUE)
 	become_hearing_sensitive()
 	log_mob_tag("TAG: [tag] CREATED: [key_name(src)] \[[type]\]")
+	update_chat_color() //do this at least once for babyproofing
 
 /**
  * Generate the tag for this mob
@@ -119,6 +120,11 @@
 
 	SET_SERIALIZATION_SEMVER(semvers, "1.0.0")
 	return .
+
+// Mobs should always keep their chat color updated
+/mob/update_name(updates)
+	. = ..()
+	update_chat_color()
 
 /**
  * set every hud image in the given category active so other people with the given hud can see it.
@@ -281,7 +287,7 @@
 
 	var/raw_msg = message
 	if(visible_message_flags & EMOTE_MESSAGE)
-		message = "<span class='emote'><b>[src]</b> [message]</span>"
+		message = "<span class='emote'><b>[span_color(src, src.chat_color)]</b> [message]</span>"
 
 	for(var/mob/M in hearers)
 		if(!M.client)
@@ -306,7 +312,6 @@
 
 		if(visible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, visible_message_flags) && !M.is_blind())
 			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = visible_message_flags)
-
 		M.show_message(msg, msg_type, blind_message, MSG_AUDIBLE)
 
 
@@ -332,7 +337,7 @@
 		hearers -= src
 	var/raw_msg = message
 	if(audible_message_flags & EMOTE_MESSAGE)
-		message = "<span class='emote'><b>[src]</b> [message]</span>"
+		message = "<span class='emote'><b>[span_color(src, src.chat_color)]</b> [message]</span>"
 	for(var/mob/M in hearers)
 		if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())
 			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = audible_message_flags)

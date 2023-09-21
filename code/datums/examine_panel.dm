@@ -14,13 +14,13 @@
 	var/ooc_notes //also ooc notes will be an epic meme
 	var/headshot_link
 
-/datum/examine_panel/New(mob/living/_owner, datum/preferences/prefs)
-	if(isnull(_owner))
+/datum/examine_panel/New(mob/living/owner, datum/preferences/prefs)
+	if(isnull(owner))
 		stack_trace("/datum/examine_panel got initialized without an owner.")
 		qdel(src)
 		return
 
-	owner = _owner
+	src.owner = owner
 	flavor_text = prefs.read_preference(/datum/preference/text/flavor_text)
 	naked_flavor_text = prefs.read_preference(/datum/preference/text/naked_flavor_text)
 	cyborg_flavor_text = prefs.read_preference(/datum/preference/text/cyborg_flavor_text)
@@ -59,7 +59,7 @@
 
 	if(ishuman(owner))
 		.["mob_type"] = "human"
-		if(!owner.is_face_visible())
+		if(!owner.is_face_visible() || !owner.get_visible_name(""))
 			.["unobscured"] = FALSE
 			return
 
@@ -69,7 +69,7 @@
 		.["custom_species_name"] = custom_species_name || human.dna.species.name //also no custom species for cyborgs. ew.
 		.["custom_species_desc"] = custom_species_desc || (!custom_species_name && jointext(human.dna.species.get_species_lore(), "\n\n"))
 
-		if((~(human.get_all_covered_flags()) & (GROIN|CHEST)) == (GROIN|CHEST)) //is naked check. arbitrary but w/e
+		if(!(human.get_all_covered_flags() & (GROIN|CHEST))) //is naked check. arbitrary but w/e
 			.["naked_flavor_text"] = naked_flavor_text || null
 
 	else if(iscyborg(owner))

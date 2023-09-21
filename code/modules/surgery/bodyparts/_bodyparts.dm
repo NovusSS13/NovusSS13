@@ -39,8 +39,6 @@
 	var/plaintext_zone
 	/// Auxiliary zone, used for rendering only and doesn't actually exist as an object
 	var/aux_zone
-	/// Layer of the auxiliary zone image, if any
-	var/aux_layer
 	/// Bitflag used to check which clothes cover this bodypart
 	var/body_part
 	/// Are we a hand? if so, which one!

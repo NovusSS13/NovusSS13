@@ -355,15 +355,22 @@
 /mob/living/carbon/update_damage_overlays()
 	remove_overlay(DAMAGE_LAYER)
 
-	var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "blank", -DAMAGE_LAYER)
-	overlays_standing[DAMAGE_LAYER] = damage_overlay
-
+	var/list/damage_overlays
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		if(iter_part.dmg_overlay_type)
 			if(iter_part.brutestate)
-				damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0") //we're adding icon_states of the base image as overlays
+				var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0")
+				damage_overlay.layer = -DAMAGE_LAYER
+				if((iter_part.body_zone == BODY_ZONE_PRECISE_L_HAND) || (iter_part.body_zone == BODY_ZONE_PRECISE_R_HAND))
+					damage_overlay.layer = -DAMAGE_HIGH_LAYER
+				damage_overlays += damage_overlay
 			if(iter_part.burnstate)
-				damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
+				var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
+				damage_overlay.layer = -DAMAGE_LAYER
+				if((iter_part.body_zone == BODY_ZONE_PRECISE_L_HAND) || (iter_part.body_zone == BODY_ZONE_PRECISE_R_HAND))
+					damage_overlay.layer = -DAMAGE_HIGH_LAYER
+				damage_overlays += damage_overlay
+	overlays_standing[DAMAGE_LAYER] = damage_overlays
 
 	apply_overlay(DAMAGE_LAYER)
 
@@ -665,8 +672,8 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 
 	//in case we do not have a cached version of the two cropped icons for this key, we have to create it
 	if(!GLOB.masked_leg_icons_cache[icon_cache_key])
-		var/icon/leg_crop_mask = (body_zone == BODY_ZONE_R_LEG ? icon('icons/mob/leg_masks.dmi', "right_leg") : icon('icons/mob/leg_masks.dmi', "left_leg"))
-		var/icon/leg_crop_mask_lower = (body_zone == BODY_ZONE_R_LEG ? icon('icons/mob/leg_masks.dmi', "right_leg_lower") : icon('icons/mob/leg_masks.dmi', "left_leg_lower"))
+		var/icon/leg_crop_mask = icon('icons/mob/leg_masks.dmi', body_zone == BODY_ZONE_R_LEG ? "right_leg" : "left_leg")
+		var/icon/leg_crop_mask_lower = icon('icons/mob/leg_masks.dmi', body_zone == BODY_ZONE_R_LEG ? "right_leg_lower" : "left_leg_lower")
 
 		new_leg_icon = icon(limb_overlay.icon, limb_overlay.icon_state)
 		new_leg_icon.Blend(leg_crop_mask, ICON_MULTIPLY)

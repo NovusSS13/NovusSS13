@@ -305,6 +305,14 @@
 		return GLOB.body_markings_by_zone[body_zone]
 	return GLOB.body_markings
 
+// We need to update our layer for hands, because hands are fucking stupid
+/datum/bodypart_overlay/mutant/marking/get_image(layer, obj/item/bodypart/limb)
+	. = ..()
+	if((body_zone == BODY_ZONE_PRECISE_R_HAND) || (body_zone == BODY_ZONE_PRECISE_L_HAND))
+		for(var/image/overlay in .)
+			if(overlay.layer == -BODY_ADJ_LAYER)
+				overlay.layer =BODY_HIGH_LAYER
+
 /// Update our features after something changed our appearance (if we have an actual feature key)
 /datum/bodypart_overlay/mutant/marking/proc/mutate_features(list/features, obj/item/bodypart/bodypart, mob/living/carbon/human/human)
 	if(!feature_key && !feature_color_key)
