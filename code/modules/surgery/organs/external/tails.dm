@@ -123,7 +123,7 @@
 
 /obj/item/organ/tail/mutant
 	name = "mutant tail"
-	icon_state = "tail-fluffy"
+	icon_state = "tail-furry"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/mutant
 
