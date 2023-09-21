@@ -1337,7 +1337,7 @@
 	if(isidcard(target))
 		theft_target = WEAKREF(target)
 		ui_interact(user)
-		return AFTERATTACK_PROCESSED_ITEM
+		return
 
 	return ..()
 

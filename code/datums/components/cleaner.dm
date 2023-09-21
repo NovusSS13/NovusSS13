@@ -69,7 +69,7 @@
 	SIGNAL_HANDLER
 	if(!proximity_flag)
 		return
-	. |= COMPONENT_AFTERATTACK_PROCESSED_ITEM
+
 	var/clean_target
 	if(pre_clean_callback)
 		clean_target = pre_clean_callback?.Invoke(source, target, user)

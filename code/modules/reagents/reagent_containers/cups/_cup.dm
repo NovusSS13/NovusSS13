@@ -106,8 +106,6 @@
 	if(!proximity_flag)
 		return
 
-	. |= AFTERATTACK_PROCESSED_ITEM
-
 	if(!check_allowed_items(target, target_self = TRUE))
 		return
 

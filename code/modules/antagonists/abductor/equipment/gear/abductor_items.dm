@@ -127,7 +127,6 @@
 	. = ..()
 	if(flag)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(!AbductorCheck(user))
 		return .
 	radio_off(target, user)
@@ -176,7 +175,6 @@
 
 /obj/item/abductor/mind_device/afterattack(atom/target, mob/living/user, flag, params)
 	. = ..()
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(!ScientistCheck(user))
 		return
 

@@ -485,7 +485,6 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 /obj/item/analyzer/hilbertsanalyzer/afterattack(atom/target, mob/user, proximity)
 	. = ..()
 	if(istype(target, /obj/item/hilbertshotel))
-		. |= AFTERATTACK_PROCESSED_ITEM
 		if(!proximity)
 			to_chat(user, span_warning("It's to far away to scan!"))
 			return .

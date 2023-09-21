@@ -34,7 +34,6 @@
 	..()
 
 /obj/item/gun/magic/wand/afterattack(atom/target, mob/living/user)
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(!charges)
 		shoot_with_empty_chamber(user)
 		return

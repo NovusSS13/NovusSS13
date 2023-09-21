@@ -239,7 +239,6 @@
 #include "traitor.dm"
 #include "traitor_mail_content_check.dm"
 #include "turf_icons.dm"
-#include "tutorial_sanity.dm"
 #include "unit_test.dm"
 #include "verify_config_tags.dm"
 #include "verify_emoji_names.dm"

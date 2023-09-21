@@ -41,8 +41,6 @@
 	if(!proximity)
 		return
 
-	. |= AFTERATTACK_PROCESSED_ITEM
-
 	if(!mode) //if it's off, give up.
 		return
 
@@ -101,7 +99,6 @@
 	. = ..()
 	if(!proximity)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(!iscyborg(user))
 		return
 

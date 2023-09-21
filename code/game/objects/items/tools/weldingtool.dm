@@ -157,7 +157,6 @@
 		return
 
 	if(isOn())
-		. |= AFTERATTACK_PROCESSED_ITEM
 		if (!QDELETED(attacked_atom) && isliving(attacked_atom)) // can't ignite something that doesn't exist
 			handle_fuel_and_temps(1, user)
 			var/mob/living/attacked_mob = attacked_atom
@@ -166,7 +165,6 @@
 				user.log_message("set [key_name(attacked_mob)] on fire with [src].", LOG_ATTACK)
 
 	if(!status && attacked_atom.is_refillable())
-		. |= AFTERATTACK_PROCESSED_ITEM
 		reagents.trans_to(attacked_atom, reagents.total_volume, transfered_by = user)
 		to_chat(user, span_notice("You empty [src]'s fuel tank into [attacked_atom]."))
 		update_appearance()

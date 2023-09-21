@@ -182,20 +182,18 @@
 	if (target.loc == user)
 		return
 
-	. |= AFTERATTACK_PROCESSED_ITEM
-
 	if(refilling)
 		refilling = FALSE
-		return .
+		return
 	if (!safety)
 
 
 		if (src.reagents.total_volume < 1)
 			balloon_alert(user, "it's empty!")
-			return .
+			return
 
 		if (world.time < src.last_use + 12)
-			return .
+			return
 
 		src.last_use = world.time
 
@@ -236,7 +234,7 @@
 		//Make em move dat ass, hun
 		move_particles(water_particles)
 
-	return .
+	return
 
 //Particle movement loop
 /obj/item/extinguisher/proc/move_particles(list/particles)

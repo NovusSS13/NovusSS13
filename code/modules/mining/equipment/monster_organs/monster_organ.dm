@@ -12,7 +12,6 @@
 	. = ..()
 	if (!proximity)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 
 	var/obj/item/organ/monster_core/target_core = target_organ
 	if (!istype(target_core, /obj/item/organ/monster_core))
@@ -140,7 +139,6 @@
 	if (!proximity_flag)
 		return
 	try_apply(target, user)
-	return . | AFTERATTACK_PROCESSED_ITEM
 
 /obj/item/organ/monster_core/attack_self(mob/user)
 	if (!user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
