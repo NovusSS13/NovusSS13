@@ -2182,7 +2182,7 @@
 /atom/proc/update_chat_color()
 	if(chat_color_name == name)
 		return FALSE
-	chat_color = colorize_string(target.name)
-	chat_color_darkened = colorize_string(target.name, sat_shift = 0.85, lum_shift = 0.85)
-	chat_color_name = target.name
+	chat_color = colorize_string(name)
+	chat_color_darkened = colorize_string(name, sat_shift = 0.85, lum_shift = 0.85)
+	chat_color_name = name
 	return TRUE
