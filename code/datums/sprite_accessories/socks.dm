@@ -5,10 +5,6 @@
 /datum/sprite_accessory/socks
 	icon = 'icons/mob/clothing/underwear.dmi'
 
-/datum/sprite_accessory/socks/nude
-	name = "Nude"
-	icon_state = null
-
 // please make sure they're sorted alphabetically and categorized
 
 /datum/sprite_accessory/socks/ace_knee

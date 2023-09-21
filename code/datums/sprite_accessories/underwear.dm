@@ -7,12 +7,7 @@
 	icon = 'icons/mob/clothing/underwear.dmi'
 	use_static = FALSE
 
-
 //MALE UNDERWEAR
-/datum/sprite_accessory/underwear/nude
-	name = "Nude"
-	icon_state = null
-	gender = NEUTER
 
 /datum/sprite_accessory/underwear/male_briefs
 	name = "Briefs"
