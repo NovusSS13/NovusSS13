@@ -355,7 +355,7 @@
 /mob/living/carbon/update_damage_overlays()
 	remove_overlay(DAMAGE_LAYER)
 
-	var/list/damage_overlays
+	var/list/damage_overlays = list()
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		if(iter_part.dmg_overlay_type)
 			if(iter_part.brutestate)
