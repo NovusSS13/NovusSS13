@@ -43,3 +43,4 @@
 	slot_name = "Lifebringers"
 	savefile_key = "lifebringer"
 	forced_species = /datum/species/pod
+	barebones_spawn = TRUE

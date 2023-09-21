@@ -4,7 +4,8 @@ import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 import { PreferencesMenuData, RandomSetting, ServerData, createSetPreference } from './data';
 import { filterMap } from 'common/collections';
 import { useRandomToggleState } from './useRandomToggleState';
-import { PreferenceList, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
+import { PreferenceList, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS, CharacterControls } from './MainPage';
+import { CharacterPreview } from '../common/CharacterPreview';
 
 export const BackgroundPage = (props, context) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
