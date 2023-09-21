@@ -247,7 +247,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			var/slot_key = slot_data[2]
 			var/slot_id = text2num(slot_data[3])
 
-			max_save_slots = max(max_save_slots, slot_id) //so we can still update byond member slots after they lose memeber status
+			max_save_slots = max(slot_data[2] == "main" ? max_save_slots : max_ghost_role_slots, slot_id) //so we can still update byond member slots after they lose memeber status
 
 			if(load_character(slot_id, slot_key))
 				save_character(slot_id, slot_key)

@@ -109,6 +109,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		unlock_content = !!parent.IsByondMember()
 		if(unlock_content)
 			max_save_slots = 15
+			max_ghost_role_slots = 4
 	else
 		CRASH("attempted to create a preferences datum without a client or mock!")
 	load_savefile()
