@@ -26,6 +26,7 @@ const MarkingButton = (
   );
   return (
     <Popper
+      key={props.key}
       options={{
         placement: 'bottom-start',
       }}
@@ -95,6 +96,7 @@ const MarkingButton = (
                           }
                           return (
                             <Flex.Item
+                              key={marking.name}
                               mx="10px"
                               basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
                               style={{

@@ -153,7 +153,20 @@
 
 /mob/living/carbon/examine_more(mob/user)
 	. = ..()
-	. += span_notice("<i>You examine [src] closer, and note the following...</i>")
+	var/obscure_name = FALSE
+	var/obscure_examine = FALSE
+	if(isliving(user))
+		if(HAS_TRAIT(user, TRAIT_PROSOPAGNOSIA))
+			obscure_name = TRUE
+		if(HAS_TRAIT(src, TRAIT_INVISIBLE_MAN))
+			obscure_name = TRUE
+		if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+			obscure_name = TRUE
+			obscure_examine = TRUE
+	if(obscure_examine)
+		return
+
+	. += span_notice("<i>You examine <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")]</EM> closer, and note the following...</i>")
 
 	if(dna) //not all carbons have it. eg - xenos
 		//On closer inspection, this man isnt a man at all!
