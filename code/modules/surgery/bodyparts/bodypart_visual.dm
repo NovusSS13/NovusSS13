@@ -126,8 +126,12 @@
 		if(dmg_overlay_type)
 			if(brutestate)
 				. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
+				if(aux_zone)
+					. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[aux_zone]_[brutestate]0", -DAMAGE_HIGH_LAYER, image_dir)
 			if(burnstate)
 				. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
+				if(aux_zone)
+					. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[aux_zone]_0[burnstate]", -DAMAGE_HIGH_LAYER, image_dir)
 
 	var/image/limb = image(layer = -BODYPARTS_LAYER, dir = image_dir)
 	var/image/aux
@@ -138,7 +142,7 @@
 		limb.icon_state = "invisible_[body_zone]"
 		. += limb
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "invisible_[aux_zone]", -aux_layer, image_dir)
+			aux = image(limb.icon, "invisible_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
 			. += aux
 	// Handles making bodyparts look husked
 	else if(is_husked)
@@ -147,16 +151,15 @@
 		icon_exists(limb.icon, limb.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 		. += limb
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "[husk_type]_husk_[aux_zone]", -aux_layer, image_dir)
+			aux = image(limb.icon, "[husk_type]_husk_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
 			icon_exists(aux.icon, aux.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 			. += aux
-
 	// Normal non-husk handling
-	var/effective_limb_id = limb_id
-	if((bodytype & BODYTYPE_DIGITIGRADE) && !(bodytype & BODYTYPE_COMPRESSED)) //this is a bit evil imma be real bro
-		effective_limb_id += "_digitigrade"
-	if(!is_husked && !is_invisible)
+	else
 		// This is the MEAT of limb icon code
+		var/effective_limb_id = limb_id
+		if((bodytype & BODYTYPE_DIGITIGRADE) && !(bodytype & BODYTYPE_COMPRESSED)) //this is a bit evil imma be real bro
+			effective_limb_id += "_digitigrade"
 		limb.icon = icon_greyscale
 		if(!should_draw_greyscale || !icon_greyscale)
 			limb.icon = icon_static
@@ -166,12 +169,12 @@
 		else
 			limb.icon_state = "[effective_limb_id]_[body_zone]"
 
-		icon_exists(limb.icon, limb.icon_state, TRUE) //Prints a stack trace on the first failure of a given iconstate.
+		icon_exists(limb.icon, limb.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 
 		. += limb
 
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "[effective_limb_id]_[aux_zone]", -aux_layer, image_dir)
+			aux = image(limb.icon, "[effective_limb_id]_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
 			. += aux
 
 		draw_color = variable_color
@@ -192,7 +195,6 @@
 		var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, location, layer = limb.layer, alpha = limb.alpha)
 		limb_em_block.dir = image_dir
 		. += limb_em_block
-
 		if(aux_zone)
 			var/mutable_appearance/aux_em_block = emissive_blocker(aux.icon, aux.icon_state, location, layer = aux.layer, alpha = aux.alpha)
 			aux_em_block.dir = image_dir

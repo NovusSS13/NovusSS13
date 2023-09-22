@@ -7,7 +7,9 @@
 		var/datum/offstation_customization/ghost_role = GLOB.offstation_customization_by_save_key[key]
 		var/list/role_data = list()
 		role_data["slot_name"] = ghost_role.slot_name
+		role_data["savefile_key"] = ghost_role.savefile_key
 		role_data["forced_species"] = ghost_role.forced_species
+		role_data["barebones_spawn"] = ghost_role.barebones_spawn
 
 		data[key] = role_data
 

@@ -8,6 +8,8 @@
 			return -BODY_BEHIND_LAYER
 		if(EXTERNAL_ADJACENT)
 			return -BODY_ADJ_LAYER
+		if(EXTERNAL_HIGH)
+			return -BODY_HIGH_LAYER
 		if(EXTERNAL_FRONT)
 			return -BODY_FRONT_LAYER
 	return layer
@@ -22,6 +24,8 @@
 			return "BEHIND"
 		if(-BODY_ADJ_LAYER)
 			return "ADJ"
+		if(-BODY_HIGH_LAYER)
+			return "HIGH"
 		if(-BODY_FRONT_LAYER)
 			return "FRONT"
 	return layer

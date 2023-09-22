@@ -142,7 +142,7 @@
 								TRUE,
 								bodypart_id_to_zone_to_dimorphic[limb_id][bodypart.body_zone], \
 								update = FALSE)
-	target.update_body(is_creating = TRUE)
+	target.update_body(is_creating = TRUE) //grumble grumble
 
 /datum/preference/choiced/mutant/leg_type
 	savefile_key = "feature_leg_type"
@@ -160,6 +160,13 @@
 
 /datum/preference/choiced/mutant/leg_type/init_possible_values()
 	return assoc_to_keys_features(GLOB.legs_list)
+
+/datum/preference/choiced/mutant/leg_type/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
+	. = ..()
+	if(value == LEGS_DIGITIGRADE)
+		for(var/obj/item/bodypart/leg/leg in target.bodyparts)
+			leg.bodytype |= BODYTYPE_DIGITIGRADE
+	target.update_body(is_creating = TRUE) //grumble grumble
 
 /datum/preference/choiced/mutant/frills
 	savefile_key = "feature_mutant_frills"

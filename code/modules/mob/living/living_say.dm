@@ -256,7 +256,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	var/deaf_message
 	var/deaf_type
-
 	if(speaker != src)
 		deaf_type = !radio_freq ? MSG_VISUAL : null
 	else

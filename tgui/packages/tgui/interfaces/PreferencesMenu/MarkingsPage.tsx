@@ -2,7 +2,7 @@ import { classes } from 'common/react';
 import { Autofocus, Section, Button, Box, ColorBox, Dropdown, Flex, Popper, Stack, TrackOutsideClicks } from '../../components';
 import { useBackend, useLocalState, useSharedState } from '../../backend';
 import { Marking, MarkingZone, PreferencesMenuData } from './data';
-import { CharacterPreview } from '../common/CharacterPreview';
+import { CharacterPreview, RotateButtons } from '../common/CharacterPreview';
 import { CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS, CLOTHING_SELECTION_CELL_SIZE, CLOTHING_SELECTION_WIDTH, CLOTHING_SELECTION_MULTIPLIER } from './MainPage';
 import { SearchBar } from '../Fabrication/SearchBar';
 
@@ -26,12 +26,16 @@ const MarkingButton = (
   );
   return (
     <Popper
+      key={props.key}
       options={{
         placement: 'bottom-start',
       }}
       popperContent={
         isOpen && (
-          <TrackOutsideClicks onOutsideClick={() => {handleClose();}}>
+          <TrackOutsideClicks
+            onOutsideClick={() => {
+              handleClose();
+            }}>
             <Box
               style={{
                 background: 'white',
@@ -40,7 +44,9 @@ const MarkingButton = (
                 height: `${
                   CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_MULTIPLIER
                 }px`,
-                width: `${CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_WIDTH}px`,
+                width: `${
+                  CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_WIDTH
+                }px`,
               }}>
               <Stack vertical fill>
                 <Stack.Item>
@@ -62,7 +68,11 @@ const MarkingButton = (
                     </Stack.Item>
 
                     <Stack.Item>
-                      <Button color="red" onClick={() => {handleClose();}}>
+                      <Button
+                        color="red"
+                        onClick={() => {
+                          handleClose();
+                        }}>
                         X
                       </Button>
                     </Stack.Item>
@@ -72,51 +82,56 @@ const MarkingButton = (
                 <Stack.Item overflowX="hidden" overflowY="scroll">
                   <Autofocus>
                     <Flex wrap>
-                    {(zone.markings_choices.concat([marking.name]).sort()).map((availableMarking) => {
-                      if (
-                        searchText &&
-                        availableMarking.toLowerCase().indexOf(searchText.toLowerCase()) === -1
-                      ) {
-                        return null;
-                      }
-                      return (
-                        <Flex.Item
-                          mx="10px"
-                          basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
-                          style={{
-                            padding: '5px',
-                          }}>
-                          <Button
-                            onClick={() => {
-                              act('change_marking', {
-                                body_zone: zone.body_zone,
-                                marking_index: marking.marking_index,
-                                new_marking: availableMarking,
-                              });
-                            }}
-                            selected={availableMarking === marking.name}
-                            tooltip={availableMarking}
-                            tooltipPosition="right"
-                            style={{
-                              height: `${CLOTHING_SELECTION_CELL_SIZE}px`,
-                              width: `${CLOTHING_SELECTION_CELL_SIZE}px`,
-                            }}>
-                            <Box
-                              className={classes([
-                                'markings32x32',
-                                zone.markings_icons[availableMarking],
-                                'centered-image',
-                              ])}
-                            />
-                          </Button>
-                          <Box textAlign="center">{availableMarking}</Box>
-                        </Flex.Item>
-                      )
-                    })}
+                      {zone.markings_choices
+                        .concat([marking.name])
+                        .sort()
+                        .map((availableMarking) => {
+                          if (
+                            searchText &&
+                            availableMarking
+                              .toLowerCase()
+                              .indexOf(searchText.toLowerCase()) === -1
+                          ) {
+                            return null;
+                          }
+                          return (
+                            <Flex.Item
+                              key={marking.name}
+                              mx="10px"
+                              basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
+                              style={{
+                                padding: '5px',
+                              }}>
+                              <Button
+                                onClick={() => {
+                                  act('change_marking', {
+                                    body_zone: zone.body_zone,
+                                    marking_index: marking.marking_index,
+                                    new_marking: availableMarking,
+                                  });
+                                }}
+                                selected={availableMarking === marking.name}
+                                tooltip={availableMarking}
+                                tooltipPosition="right"
+                                style={{
+                                  height: `${CLOTHING_SELECTION_CELL_SIZE}px`,
+                                  width: `${CLOTHING_SELECTION_CELL_SIZE}px`,
+                                }}>
+                                <Box
+                                  className={classes([
+                                    'markings32x32',
+                                    zone.markings_icons[availableMarking],
+                                    'centered-image',
+                                  ])}
+                                />
+                              </Button>
+                              <Box textAlign="center">{availableMarking}</Box>
+                            </Flex.Item>
+                          );
+                        })}
                     </Flex>
                   </Autofocus>
                 </Stack.Item>
-
               </Stack>
             </Box>
           </TrackOutsideClicks>
@@ -125,7 +140,9 @@ const MarkingButton = (
       <Button
         width="100%"
         content={marking.name}
-        onClick={() => {handleOpen();}}
+        onClick={() => {
+          handleOpen();
+        }}
       />
     </Popper>
   );
@@ -226,7 +243,9 @@ const ZoneItem = (
                     key={props.key}
                     zone={zone}
                     marking={marking}
-                    isOpen={currentMarkingMenu ===  zone.name + marking.marking_index}
+                    isOpen={
+                      currentMarkingMenu === zone.name + marking.marking_index
+                    }
                     handleClose={() => {
                       setCurrentMarkingMenu(null);
                     }}
@@ -287,9 +306,25 @@ export const MarkingsPage = (props, context, markingslist: MarkingZone[]) => {
   secondstack.length = Math.min(firststack.length, 6);
   const maxmarkings = data.maximum_markings_per_limb;
   return (
-    <Stack height={`${CLOTHING_SIDEBAR_ROWS * CLOTHING_CELL_SIZE * 1.25}px`}>
-      <Stack.Item grow minWidth="15%" mr="10%">
-        <CharacterPreview height="100%" id={data.character_preview_view} />
+    <Stack
+      height={`${CLOTHING_SIDEBAR_ROWS * CLOTHING_CELL_SIZE * 1.25}px`}
+      width={'100%'}>
+      <Stack.Item fill>
+        <Stack vertical fill>
+          <Stack.Item grow>
+            <CharacterPreview height="100%" id={data.character_preview_view} />
+          </Stack.Item>
+          <Stack.Item>
+            <RotateButtons
+              handleRotateLeft={() => {
+                act('rotate', { direction: -1 });
+              }}
+              handleRotateRight={() => {
+                act('rotate', { direction: 1 });
+              }}
+            />
+          </Stack.Item>
+        </Stack>
       </Stack.Item>
       <Stack.Item width="100%" height="100%">
         <Stack vertical width="100%" height="100%">

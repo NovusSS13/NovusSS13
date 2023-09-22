@@ -46,7 +46,7 @@
 	SET_PLANE_EXPLICIT(balloon_alert, BALLOON_CHAT_PLANE, src)
 	balloon_alert.alpha = 0
 	balloon_alert.appearance_flags = RESET_ALPHA|RESET_COLOR|RESET_TRANSFORM
-	var/maptext_color =  chat_color || "#FFFFFF"
+	var/maptext_color =  sanitize_hexcolor(chat_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 	balloon_alert.maptext = MAPTEXT("<span style='text-align: center; color: [maptext_color]; -dm-text-outline: 1px #0005'>[text]</span>")
 	balloon_alert.maptext_x = (BALLOON_TEXT_WIDTH - bound_width) * -0.5
 	WXH_TO_HEIGHT(viewer_client?.MeasureText(text, null, BALLOON_TEXT_WIDTH), balloon_alert.maptext_height)

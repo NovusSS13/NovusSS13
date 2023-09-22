@@ -1,5 +1,5 @@
 /datum/examine_panel
-
+	/// Guy that actually owns us
 	var/mob/living/owner
 	/// maptext rendering geyness screen obj
 	var/atom/movable/screen/map_view/examine_panel_screen
@@ -14,26 +14,26 @@
 	var/ooc_notes //also ooc notes will be an epic meme
 	var/headshot_link
 
-/datum/examine_panel/New(mob/living/_owner, datum/preferences/prefs)
-	if(isnull(_owner))
+/datum/examine_panel/New(mob/living/owner, datum/preferences/prefs)
+	if(isnull(owner))
 		stack_trace("/datum/examine_panel got initialized without an owner.")
 		qdel(src)
 		return
 
-	owner = _owner
-	flavor_text = prefs.read_preference(/datum/preference/text/flavor_text)
-	naked_flavor_text = prefs.read_preference(/datum/preference/text/naked_flavor_text)
-	cyborg_flavor_text = prefs.read_preference(/datum/preference/text/cyborg_flavor_text)
-	ai_flavor_text = prefs.read_preference(/datum/preference/text/ai_flavor_text)
-	custom_species_name = prefs.read_preference(/datum/preference/text/custom_species_name)
-	custom_species_desc = prefs.read_preference(/datum/preference/text/custom_species_desc)
-	ooc_notes = prefs.read_preference(/datum/preference/text/ooc_notes)
-	headshot_link = prefs.read_preference(/datum/preference/text/headshot_link)
+	src.owner = owner
+	src.flavor_text = prefs.read_preference(/datum/preference/text/flavor_text)
+	src.naked_flavor_text = prefs.read_preference(/datum/preference/text/naked_flavor_text)
+	src.cyborg_flavor_text = prefs.read_preference(/datum/preference/text/cyborg_flavor_text)
+	src.ai_flavor_text = prefs.read_preference(/datum/preference/text/ai_flavor_text)
+	src.custom_species_name = prefs.read_preference(/datum/preference/text/custom_species_name)
+	src.custom_species_desc = prefs.read_preference(/datum/preference/text/custom_species_desc)
+	src.ooc_notes = prefs.read_preference(/datum/preference/text/ooc_notes)
+	src.headshot_link = prefs.read_preference(/datum/preference/text/headshot_link)
 
 	RegisterSignal(owner, COMSIG_QDELETING, PROC_REF(on_qdel))
 	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
-/datum/examine_panel/Destroy(force, ...)
+/datum/examine_panel/Destroy(force)
 	owner = null
 	return ..()
 
@@ -52,39 +52,38 @@
 	. = list()
 	//temp flavor text doesnt care for if the user can tell what the species are
 	//dont be dumb kids
-	.["temporary_flavor_text"] = temporary_flavor_text || null
+	.["temporary_flavor_text"] = temporary_flavor_text
 	.["character_name"] = owner.get_visible_name()
 	.["assigned_map"] = examine_panel_screen.assigned_map
 	.["unobscured"] = TRUE
 
 	if(ishuman(owner))
 		.["mob_type"] = "human"
-		if(!owner.is_face_visible())
+		if(!owner.is_face_visible() || !owner.get_visible_name(""))
 			.["unobscured"] = FALSE
 			return
 
 		var/mob/living/carbon/human/human = owner
-		.["flavor_text"] = flavor_text || null
-		.["headshot_link"] = headshot_link || null //yes, this does mean headshots are only for humans. i dont want to bother about the "human headshot bleeding into borg" edge case
+		.["flavor_text"] = flavor_text
+		.["headshot_link"] = headshot_link //yes, this does mean headshots are only for humans. i dont want to bother about the "human headshot bleeding into borg" edge case
 		.["custom_species_name"] = custom_species_name || human.dna.species.name //also no custom species for cyborgs. ew.
 		.["custom_species_desc"] = custom_species_desc || (!custom_species_name && jointext(human.dna.species.get_species_lore(), "\n\n"))
 
-		if((~(human.get_all_covered_flags()) & (GROIN|CHEST)) == (GROIN|CHEST)) //is naked check. arbitrary but w/e
-			.["naked_flavor_text"] = naked_flavor_text || null
+		if(!(human.get_all_covered_flags() & (GROIN|CHEST))) //is naked check. arbitrary but w/e
+			.["naked_flavor_text"] = naked_flavor_text
 
 	else if(iscyborg(owner))
 		.["mob_type"] = "cyborg"
-		.["flavor_text"] = cyborg_flavor_text || null
+		.["flavor_text"] = cyborg_flavor_text
 
 	else if(isAI(owner))
 		.["mob_type"] = "ai"
-		.["flavor_text"] = ai_flavor_text || null
+		.["flavor_text"] = ai_flavor_text
 
 	else
 		.["mob_type"] = "other"
 
 	.["ooc_notes"] = ooc_notes
-
 
 /datum/examine_panel/ui_interact(mob/user, datum/tgui/ui)
 	//shamelessly ripped from skee

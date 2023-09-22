@@ -2177,3 +2177,12 @@
 	var/mutable_appearance/glow_appearance = new(glow)
 	add_overlay(glow_appearance)
 	LAZYADD(update_overlays_on_z, glow_appearance)
+
+/// Small proc that sets the chat color of an atom based on name
+/atom/proc/update_chat_color()
+	if(chat_color_name == name || !ismob(src))
+		return FALSE
+	chat_color = colorize_string(name)
+	chat_color_darkened = colorize_string(name, sat_shift = 0.85, lum_shift = 0.85)
+	chat_color_name = name
+	return TRUE

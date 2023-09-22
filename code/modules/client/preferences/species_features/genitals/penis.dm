@@ -6,7 +6,6 @@
 	modified_feature = "penis"
 	supplemental_feature_key = "feature_penis_color"
 	randomize_by_default = FALSE
-	priority = PREFERENCE_PRIORITY_BODYPARTS
 
 /datum/preference/choiced/mutant/penis/init_possible_values()
 	return assoc_to_keys_features(GLOB.penis_list)
@@ -92,6 +91,7 @@
 	relevant_inherent_trait = TRAIT_USES_SKINTONES
 	relevant_cosmetic_organ = /obj/item/organ/genital/penis
 	randomize_by_default = FALSE
+	priority = PREFERENCE_PRIORITY_BODYPARTS
 
 /datum/preference/toggle/penis_uses_skintone/included_in_randomization_flags(randomize_flags)
 	return !!(randomize_flags & RANDOMIZE_GENITALS)

@@ -1,6 +1,6 @@
 import { exhaustiveCheck } from 'common/exhaustive';
 import { useBackend, useLocalState } from '../../backend';
-import { Stack, Button, Flex, Dropdown, Box } from '../../components';
+import { Stack, Button, Box, Dropdown } from '../../components';
 import { Window } from '../../layouts';
 import { GhostRole, PreferencesMenuData, ServerData } from './data';
 import { PageButton } from './PageButton';
@@ -11,7 +11,6 @@ import { MarkingsPage } from './MarkingsPage';
 import { BackgroundPage } from './BackgroundPage';
 import { SpeciesPage } from './SpeciesPage';
 import { QuirksPage } from './QuirksPage';
-import { Cargo } from '../Cargo';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 enum Page {
@@ -28,38 +27,35 @@ const CharSlots = (props: {
   onClick: (action: string, payload?: object) => void;
   profiles: string[];
   slotKey: string;
-  activeKey: string;
   maxSlots: number;
   activeSlot: number;
 }) => {
-  const activeSlotKeyCheck = props.slotKey == props.activeKey;
-  //i cant make this wrap. fix htiws.
+  const profileoptions: string[] = [];
+  for (let profile of props.profiles) {
+    profileoptions.push(profile);
+  }
   return (
     <>
-      {props.profiles.map((profile, slot_id) => (
-        <Stack.Item key={slot_id}>
-          <Button
-            selected={slot_id === props.activeSlot - 1 && activeSlotKeyCheck}
-            onClick={() => {
-              props.onClick('change_slot', {
-                slot_key: props.slotKey,
-                slot_id: slot_id + 1,
-              });
-            }}
-            fluid>
-            {profile ?? 'FUNKY CODE, FUCK.'}
-          </Button>
-        </Stack.Item>
-      ))}
-      {Number(props.profiles?.length) < props.maxSlots && (
+      <Dropdown
+        minWidth={10}
+        selected={profileoptions[props.activeSlot - 1] || 'None'}
+        options={profileoptions}
+        onSelected={(option) => {
+          props.onClick('change_slot', {
+            slot_key: props.slotKey,
+            slot_id: profileoptions.indexOf(option) + 1,
+          });
+        }}
+      />
+      {Number(profileoptions.length) < props.maxSlots && (
         <Stack.Item>
           <Button
+            icon="plus"
             onClick={() => {
               props.onClick('new_slot', {
                 slot_key: props.slotKey,
               });
             }}
-            content="+"
             fluid
           />
         </Stack.Item>
@@ -129,17 +125,77 @@ export const CharacterPreferenceWindow = (props, context) => {
                 <Stack.Item>
                   <Stack vertical fill fluid>
                     <Stack.Item>
-                      <Stack justify="center" wrap>
-                        <CharSlots
-                          profiles={data.character_profiles['main']}
-                          activeSlot={data.active_slot_ids['main']}
-                          slotKey="main"
-                          activeKey={data.active_slot_key}
-                          maxSlots={data.max_slots_main}
-                          onClick={(action, object) => {
-                            act(action, object);
-                          }}
-                        />
+                      <Stack>
+                        <Stack.Item>
+                          <ServerPreferencesFetcher
+                            render={(render_data: ServerData | null) => {
+                              if (!render_data) {
+                                return <Box>Loading categories..</Box>;
+                              }
+
+                              const ghost_role_data: Record<string, GhostRole> =
+                                render_data.ghost_role_data;
+
+                              const categoryoptions: string[] = ['Main'];
+                              const categorykeys: string[] = ['main'];
+                              let active_slot_name = 'Main';
+                              Object.keys(ghost_role_data).map((key, index) => {
+                                categoryoptions.push(
+                                  ghost_role_data[key].slot_name
+                                );
+                                categorykeys.push(
+                                  ghost_role_data[key].savefile_key
+                                );
+                                if (
+                                  ghost_role_data[key].savefile_key ===
+                                  data.active_slot_key
+                                ) {
+                                  active_slot_name =
+                                    ghost_role_data[key].slot_name;
+                                }
+                              });
+
+                              return (
+                                <Dropdown
+                                  width={10}
+                                  justify="center"
+                                  selected={active_slot_name || 'Main'}
+                                  options={categoryoptions}
+                                  onSelected={(category_name: string) => {
+                                    if (
+                                      currentPage === Page.Species ||
+                                      currentPage === Page.Antags ||
+                                      currentPage === Page.Jobs
+                                    ) {
+                                      setCurrentPage(Page.Main);
+                                    }
+                                    act('change_category', {
+                                      slot_key:
+                                        categorykeys[
+                                          categoryoptions.indexOf(category_name)
+                                        ] || 'Main',
+                                    });
+                                  }}
+                                />
+                              );
+                            }}
+                          />
+                        </Stack.Item>
+                        <Stack.Item>
+                          <Stack justify="center">
+                            <CharSlots
+                              profiles={
+                                data.character_profiles[data.active_slot_key]
+                              }
+                              activeSlot={data.active_slot_ids['main']}
+                              slotKey="main"
+                              maxSlots={data.max_slots_main}
+                              onClick={(action, object) => {
+                                act(action, object);
+                              }}
+                            />
+                          </Stack>
+                        </Stack.Item>
                       </Stack>
                     </Stack.Item>
                     {!data.content_unlocked && (
@@ -148,55 +204,6 @@ export const CharacterPreferenceWindow = (props, context) => {
                       </Stack.Item>
                     )}
                   </Stack>
-                </Stack.Item>
-                <Stack.Item>
-                  <ServerPreferencesFetcher
-                    render={(render_data: ServerData | null) => {
-                      if (!render_data) {
-                        return <Box>Loading ghost roles..</Box>;
-                      }
-
-                      const ghost_role_data: Record<string, GhostRole> =
-                        render_data.ghost_role_data;
-
-                      return (
-                        <Stack vertical fill>
-                          {Object.keys(data.character_profiles).map(
-                            (slot_key) =>
-                              slot_key != 'main' && (
-                                <Stack.Item>
-                                  <Stack>
-                                    <Stack.Item>
-                                      {ghost_role_data[slot_key].slot_name}
-                                    </Stack.Item>
-                                    <CharSlots
-                                      onClick={(action, payload) => {
-                                        if (
-                                          currentPage == Page.Species ||
-                                          currentPage == Page.Antags ||
-                                          currentPage == Page.Jobs
-                                        )
-                                          setCurrentPage(Page.Main);
-                                        act(action, payload);
-                                      }}
-                                      profiles={
-                                        data.character_profiles[slot_key]
-                                      }
-                                      maxSlots={data.max_slots_ghost}
-                                      activeSlot={
-                                        data.active_slot_ids[slot_key]
-                                      }
-                                      slotKey={slot_key}
-                                      activeKey={data.active_slot_key}
-                                    />
-                                  </Stack>
-                                </Stack.Item>
-                              )
-                          )}
-                        </Stack>
-                      );
-                    }}
-                  />
                 </Stack.Item>
               </Stack>
             </Stack.Item>

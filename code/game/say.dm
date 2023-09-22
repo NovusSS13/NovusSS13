@@ -117,6 +117,9 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/list/stored_name = list(null)
 	SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, visible_name)
 	namepart = stored_name[NAME_PART_INDEX] || "[speaker.GetVoice()]"
+	if(namepart && speaker.chat_color)
+		var/actual_color = colorize_string(namepart) //signal means we have to do this dumb shit...
+		namepart = span_color(namepart, actual_color)
 
 	//End name span.
 	var/endspanpart = "</span>"
@@ -260,6 +263,9 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 		verb_ask = M.verb_ask
 		verb_exclaim = M.verb_exclaim
 		verb_yell = M.verb_yell
+		chat_color = M.chat_color
+		chat_color_darkened = M.chat_color_darkened
+		chat_color_name = M.chat_color_name
 
 	// The mob's job identity
 	if(ishuman(M))

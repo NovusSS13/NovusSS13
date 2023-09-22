@@ -1,11 +1,11 @@
 import { useBackend } from '../../backend';
 import { Stack } from '../../components';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
-import { PreferencesMenuData, RandomSetting, ServerData, createSetPreference } from './data';
+import { PreferencesMenuData, RandomSetting, ServerData } from './data';
 import { filterMap } from 'common/collections';
 import { useRandomToggleState } from './useRandomToggleState';
-import { PreferenceList, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS, CharacterControls } from './MainPage';
-import { CharacterPreview } from '../common/CharacterPreview';
+import { PreferenceList, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
+import { CharacterPreview, RotateButtons } from '../common/CharacterPreview';
 
 export const BackgroundPage = (props, context) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
@@ -83,28 +83,21 @@ export const BackgroundPage = (props, context) => {
             height={`${CLOTHING_SIDEBAR_ROWS * CLOTHING_CELL_SIZE * 1.25}px`}>
             <Stack.Item fill>
               <Stack vertical fill>
-                <Stack.Item>
-                  <CharacterControls
-                    gender={data.character_preferences.misc.gender}
-                    handleOpenSpecies={props.openSpecies}
-                    handleRotate={() => {
-                      act('rotate');
-                    }}
-                    setGender={createSetPreference(act, 'gender')}
-                    showGender={
-                      currentSpeciesData ? !!currentSpeciesData.sexes : true
-                    }
-                    showSpecies={
-                      !serverData?.ghost_role_data[data.active_slot_key]
-                        ?.forced_species
-                    }
-                  />
-                </Stack.Item>
-
                 <Stack.Item grow>
                   <CharacterPreview
                     height="100%"
                     id={data.character_preview_view}
+                  />
+                </Stack.Item>
+
+                <Stack.Item>
+                  <RotateButtons
+                    handleRotateLeft={() => {
+                      act('rotate', { direction: -1 });
+                    }}
+                    handleRotateRight={() => {
+                      act('rotate', { direction: 1 });
+                    }}
                   />
                 </Stack.Item>
               </Stack>

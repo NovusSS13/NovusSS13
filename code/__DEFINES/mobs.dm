@@ -598,33 +598,32 @@ GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 
 // Mob Overlays Indexes
 /// Total number of layers for mob overlays
-/// KEEP THIS UP-TO-DATE OR SHIT WILL BREAK
-/// Also consider updating layers_to_offset
-#define TOTAL_LAYERS 34
 /// Mutations layer - Tk headglows, cold resistance glow, etc
-#define MUTATIONS_LAYER 34
+#define MUTATIONS_LAYER 35
 /// Mutantrace features (tail when looking south) that must appear behind the body parts
-#define BODY_BEHIND_LAYER 33
+#define BODY_BEHIND_LAYER 34
 /// Layer for bodyparts that should appear behind every other bodypart - Mostly, legs when facing WEST or EAST
-#define BODYPARTS_LOW_LAYER 32
+#define BODYPARTS_LOW_LAYER 33
 /// Layer for most bodyparts, appears above BODYPARTS_LOW_LAYER and below BODYPARTS_HIGH_LAYER
-#define BODYPARTS_LAYER 31
+#define BODYPARTS_LAYER 32
 /// Mutantrace features (snout, body markings) that must appear above the body parts, but below underwear
-#define BODY_ADJ_LAYER 30
+#define BODY_ADJ_LAYER 31
 /// Underwear, undershirts, socks, eyes, lips(makeup)
-#define BODY_LAYER 29
+#define BODY_LAYER 30
 /// Mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)
-#define FRONT_MUTATIONS_LAYER 28
+#define FRONT_MUTATIONS_LAYER 29
 /// Damage indicators (cuts and burns)
-#define DAMAGE_LAYER 27
+#define DAMAGE_LAYER 28
 /// Jumpsuit clothing layer
-#define UNIFORM_LAYER 26
+#define UNIFORM_LAYER 27
 /// ID card layer
-#define ID_LAYER 25
-/// ID card layer (might be deprecated)
-#define ID_CARD_LAYER 24
+#define ID_LAYER 26
 /// Layer for bodyparts that should appear above every other bodypart - Currently only used for hands
-#define BODYPARTS_HIGH_LAYER 23
+#define BODYPARTS_HIGH_LAYER 25
+/// For markings that appear above the hands, basically - Dumb shit
+#define BODY_HIGH_LAYER 24
+/// Damage indicators... on a person's hands
+#define DAMAGE_HIGH_LAYER 23
 /// Gloves layer
 #define GLOVES_LAYER 22
 /// Shoes layer
@@ -655,7 +654,7 @@ GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 #define HANDCUFF_LAYER 9
 /// Legcuff layer (when your feet are cuffed)
 #define LEGCUFF_LAYER 8
-/// Hands layer (for the actual hand, not the arm... I think?)
+/// Hands layer (for things held in the hands, not the hands themselves)
 #define HANDS_LAYER 7
 /// Body front layer. Usually used for mutant bodyparts that need to be in front of stuff (e.g. cat ears)
 #define BODY_FRONT_LAYER 6
@@ -669,6 +668,10 @@ GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 #define HALO_LAYER 2
 /// Fire layer when you're on fire
 #define FIRE_LAYER 1
+
+/// KEEP THIS UP-TO-DATE OR SHIT WILL BREAK
+/// Also consider updating layers_to_offset
+#define TOTAL_LAYERS MUTATIONS_LAYER
 
 #define UPPER_BODY "upper body"
 #define LOWER_BODY "lower body"
@@ -694,7 +697,6 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 	"[GLOVES_LAYER]" = LOWER_BODY,
 	"[HALO_LAYER]" = UPPER_BODY, // above the head
 	"[HANDCUFF_LAYER]" = LOWER_BODY,
-	"[ID_CARD_LAYER]" = UPPER_BODY, // unused
 	"[ID_LAYER]" = UPPER_BODY,
 	"[FACEMASK_LAYER]" = UPPER_BODY,
 	"[LOW_FACEMASK_LAYER]" = UPPER_BODY,
@@ -704,11 +706,13 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 	// These DO get a filter, I'm leaving them here as reference,
 	// to show how many filters are added at a glance
 	// BACK_LAYER (backpacks are big)
-	// BODYPARTS_HIGH_LAYER (arms)
+	// BODYPARTS_HIGH_LAYER (hands)
 	// BODY_ADJ_LAYER (external organs like wings)
 	// BODY_BEHIND_LAYER (external organs like wings)
+	// BODY_HIGH_LAYER (external organs like wings)
 	// BODY_FRONT_LAYER (external organs like wings)
 	// DAMAGE_LAYER (full body)
+	// DAMAGE_HIGH_LAYER (hands)
 	// FIRE_LAYER (full body)
 	// UNIFORM_LAYER (full body)
 	// WOUND_LAYER (full body)
@@ -716,13 +720,15 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 
 //Bitflags for the layers a bodypart overlay can draw on (can be drawn on multiple layers)
 /// Draws overlay on the BODY_BEHIND_LAYER
-#define EXTERNAL_BEHIND (1 << 0)
+#define EXTERNAL_BEHIND (1<<0)
 /// Draws overlay on the BODY_ADJ_LAYER
-#define EXTERNAL_ADJACENT (1 << 1)
+#define EXTERNAL_ADJACENT (1<<1)
+/// Draws overlay on the BODY_HIGH_LAYER
+#define EXTERNAL_HIGH (1<<2)
 /// Draws overlay on the BODY_FRONT_LAYER
-#define EXTERNAL_FRONT (1 << 2)
+#define EXTERNAL_FRONT (1<<3)
 /// Draws organ on all EXTERNAL layers
-#define EXTERNAL_ALL_LAYERS EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
+#define EXTERNAL_ALL_LAYERS EXTERNAL_BEHIND | EXTERNAL_ADJACENT | EXTERNAL_HIGH | EXTERNAL_FRONT
 
 /// A list of every possible mutant bodypart layer bitflag, for iterating over when necessary
 GLOBAL_LIST_INIT(external_layer_bitflags, list(

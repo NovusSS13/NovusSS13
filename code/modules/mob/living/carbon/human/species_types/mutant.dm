@@ -31,6 +31,7 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/mutant,
 	)
 	custom_bodyparts = TRUE // of course the stupid "custom" species gets this
+	digitigrade_customization = DIGITIGRADE_OPTIONAL
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	payday_modifier = 0.75
 	examine_limb_id = SPECIES_MUTANT
