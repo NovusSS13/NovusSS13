@@ -20,6 +20,9 @@
 	 */
 	var/plural_form
 
+	///The color that this species gets on human examine and such
+	var/chat_color = "#ffffa1"
+
 	///The maximum number of bodyparts this species can have.
 	var/max_bodypart_count = 6
 	///This allows races to have specific hair colors. If null, it uses the H's hair/facial hair colors. If "mutcolor", it uses the H's mutant_color. If "fixedmutcolor", it uses fixedmutcolor
@@ -369,25 +372,22 @@
 		if(isnull(existing_organ) && should_have && !(new_organ.zone in excluded_zones))
 			used_neworgan = TRUE
 			new_organ.set_organ_damage(new_organ.maxHealth * (1 - health_pct))
+			if(new_organ.bodypart_overlay && cosmetic_organs[new_organ.type])
+				//this is very much correct - we don't check for SPRITE_ACCESSORY_NONE
+				new_organ.bodypart_overlay.set_appearance_from_name(cosmetic_organs[new_organ.type])
 			new_organ.Insert(organ_holder, special = TRUE, drop_if_replaced = FALSE)
 
 		if(!used_neworgan)
 			QDEL_NULL(new_organ)
 
 	if(!isnull(old_species))
-		for(var/mutant_organ in old_species.mutant_organs)
+		for(var/obj/item/organ/mutant_organ as anything in (old_species.mutant_organs + old_species.cosmetic_organs))
 			if(mutant_organ in mutant_organs)
-				continue // need this mutant organ, but we already have it!
+				continue // had this mutant organ, but we also have it!
+			if(initial(mutant_organ.slot) in organ_slots)
+				continue // we already handled this slot
 
 			var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(mutant_organ)
-			if(current_organ)
-				current_organ.Remove(organ_holder)
-				qdel(current_organ)
-		for(var/cosmetic_organ in old_species.cosmetic_organs)
-			if(cosmetic_organ in cosmetic_organs)
-				continue // need this cosmetic organ, but we already have it!
-
-			var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(cosmetic_organ)
 			if(current_organ)
 				current_organ.Remove(organ_holder)
 				qdel(current_organ)
@@ -408,9 +408,12 @@
 		cosmetic_organ.Remove(organ_holder)
 		qdel(cosmetic_organ)
 
-	var/list/species_organs = mutant_organs + cosmetic_organs
+	var/list/species_organs = cosmetic_organs + mutant_organs
 	for(var/organ_path in species_organs)
-		var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(organ_path)
+		var/obj/item/organ/current_organ = organ_path
+		if(initial(current_organ.slot) in organ_slots)
+			continue // we already handled this slot
+		current_organ = organ_holder.get_organ_by_type(organ_path)
 		if(!should_organ_apply_to(organ_path, organ_holder))
 			if(!isnull(current_organ) && replace_current)
 				// if we have an organ here and we're replacing organs, remove it

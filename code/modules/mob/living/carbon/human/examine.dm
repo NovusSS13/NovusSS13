@@ -20,8 +20,8 @@
 			obscure_species = TRUE
 
 	var/species_name = examine_panel?.custom_species_name || dna.species.name
-	species_name = span_color(species_name, colorize_string(species_name))
-	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"], a [obscure_species ? species_name : "Human?"]</EM>!")
+	species_name = span_color(species_name, dna.species.chat_color)
+	. = list("<span class='info'>This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "Human?" : "[species_name]!"]</EM>")
 	if(obscure_examine)
 		return list("<span class='warning'>You're struggling to make out any details...")
 
