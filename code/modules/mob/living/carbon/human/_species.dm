@@ -372,17 +372,20 @@
 		if(isnull(existing_organ) && should_have && !(new_organ.zone in excluded_zones))
 			used_neworgan = TRUE
 			new_organ.set_organ_damage(new_organ.maxHealth * (1 - health_pct))
-			if(new_organ.bodypart_overlay && cosmetic_organs[new_organ.type])
-				//this is very much correct - we don't check for SPRITE_ACCESSORY_NONE
-				new_organ.bodypart_overlay.set_appearance_from_name(cosmetic_organs[new_organ.type])
+			if(new_organ.bodypart_overlay)
+				if(cosmetic_organs[new_organ.type])
+					//this is very much correct - we don't check for SPRITE_ACCESSORY_NONE
+					new_organ.bodypart_overlay.set_appearance_from_name(cosmetic_organs[new_organ.type])
+				new_organ.bodypart_overlay.imprint_on_next_insertion = TRUE
 			new_organ.Insert(organ_holder, special = TRUE, drop_if_replaced = FALSE)
 
 		if(!used_neworgan)
 			QDEL_NULL(new_organ)
 
+	var/list/species_mutant_organs = mutant_organs + cosmetic_organs
 	if(!isnull(old_species))
 		for(var/obj/item/organ/mutant_organ as anything in (old_species.mutant_organs + old_species.cosmetic_organs))
-			if(mutant_organ in mutant_organs)
+			if(mutant_organ in species_mutant_organs)
 				continue // had this mutant organ, but we also have it!
 			if(initial(mutant_organ.slot) in organ_slots)
 				continue // we already handled this slot
@@ -408,12 +411,12 @@
 		cosmetic_organ.Remove(organ_holder)
 		qdel(cosmetic_organ)
 
-	var/list/species_organs = cosmetic_organs + mutant_organs
-	for(var/organ_path in species_organs)
-		var/obj/item/organ/current_organ = organ_path
-		if(initial(current_organ.slot) in organ_slots)
+	for(var/organ_path in species_mutant_organs)
+		var/obj/item/organ/replacement = organ_path
+		if(initial(replacement.slot) in organ_slots)
 			continue // we already handled this slot
-		current_organ = organ_holder.get_organ_by_type(organ_path)
+
+		var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(organ_path)
 		if(!should_organ_apply_to(organ_path, organ_holder))
 			if(!isnull(current_organ) && replace_current)
 				// if we have an organ here and we're replacing organs, remove it
@@ -422,16 +425,17 @@
 			continue
 
 		if(!current_organ || replace_current)
-			var/obj/item/organ/replacement = SSwardrobe.provide_type(organ_path)
+			replacement = SSwardrobe.provide_type(organ_path, organ_holder)
 			// If there's an existing mutant organ, we're technically replacing it.
 			// Let's abuse the snowflake proc that skillchips added. Basically retains
 			// feature parity with every other organ too.
 			if(current_organ)
 				current_organ.before_organ_replacement(replacement)
-				var/default_feature = cosmetic_organs[organ_path]
-				if(default_feature && (default_feature != SPRITE_ACCESSORY_NONE))
-					current_organ.bodypart_overlay?.set_appearance_from_name(default_feature)
-
+			// Set a default feature just in case
+			if(replacement.bodypart_overlay)
+				if(cosmetic_organs[organ_path] != SPRITE_ACCESSORY_NONE)
+					replacement.bodypart_overlay.set_appearance_from_name(cosmetic_organs[organ_path])
+				replacement.bodypart_overlay.imprint_on_next_insertion = TRUE
 			// organ.Insert will qdel any current organs in that slot, so we don't need to.
 			replacement.Insert(organ_holder, special = TRUE, drop_if_replaced = FALSE)
 
