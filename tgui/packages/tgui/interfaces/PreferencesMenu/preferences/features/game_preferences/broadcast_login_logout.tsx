@@ -1,7 +1,7 @@
 import { multiline } from 'common/string';
 import { CheckboxInput, FeatureToggle } from '../base';
 
-export const broadcast_login_logout: FeatureToggle = {
+export const display_login_logout: FeatureToggle = {
   name: 'Broadcast login/logout',
   category: 'GAMEPLAY',
   description: multiline`
