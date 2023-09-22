@@ -382,9 +382,9 @@
 		if(!used_neworgan)
 			QDEL_NULL(new_organ)
 
-	var/list/species_mutant_organs = mutant_organs + cosmetic_organs
+	var/list/species_mutant_organs = cosmetic_organs + mutant_organs
 	if(!isnull(old_species))
-		for(var/obj/item/organ/mutant_organ as anything in (old_species.mutant_organs + old_species.cosmetic_organs))
+		for(var/obj/item/organ/mutant_organ as anything in (old_species.cosmetic_organs + old_species.mutant_organs))
 			if(mutant_organ in species_mutant_organs)
 				continue // had this mutant organ, but we also have it!
 			if(initial(mutant_organ.slot) in organ_slots)
