@@ -227,6 +227,28 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			character_preview_view.update_body()
 			return TRUE
 
+		if("change_category")
+			var/slot_key = params["slot_key"]
+			if(!(slot_key in GLOB.valid_char_savekeys))
+				return FALSE
+
+			// Save existing character
+			save_character()
+
+			tainted_character_profiles = TRUE
+			// SAFETY: Creates a new character if that slot doesn't have it
+			if(used_slot_amount[slot_key] <= 0)
+				if(!add_character_slot(slot_key))
+					return FALSE
+			else if(!load_character(1, slot_key))
+				return FALSE //guest?
+
+			for(var/datum/preference_middleware/preference_middleware as anything in middleware)
+				preference_middleware.on_new_character(usr)
+
+			character_preview_view.update_body()
+			return TRUE
+
 		if("new_slot")
 			// Save existing character
 			save_character()
@@ -239,7 +261,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			return TRUE
 
 		if("rotate")
-			character_preview_view.dir = turn(character_preview_view.dir, -90)
+			character_preview_view.dir = turn(character_preview_view.dir, params["direction"]  > 0 ? 90 : -90)
 
 			return TRUE
 

@@ -2,7 +2,7 @@ import { classes } from 'common/react';
 import { sendAct, useBackend, useLocalState, useSharedState } from '../../backend';
 import { Autofocus, Box, Button, Flex, LabeledList, Popper, Stack, TrackOutsideClicks } from '../../components';
 import { createSetPreference, PreferencesMenuData, RandomSetting } from './data';
-import { CharacterPreview } from '../common/CharacterPreview';
+import { CharacterPreview, RotateButtons } from '../common/CharacterPreview';
 import { RandomizationButton } from './RandomizationButton';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 import { MultiNameInput, NameInput } from './names';
@@ -21,8 +21,7 @@ export const CLOTHING_SELECTION_WIDTH = 10.8;
 export const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 
 export const CharacterControls = (props: {
-  showSpecies: Boolean;
-  handleRotate: () => void;
+  showSpecies: boolean;
   handleOpenSpecies: () => void;
   gender: Gender;
   setGender: (gender: Gender) => void;
@@ -30,16 +29,6 @@ export const CharacterControls = (props: {
 }) => {
   return (
     <Stack>
-      <Stack.Item>
-        <Button
-          onClick={props.handleRotate}
-          fontSize="22px"
-          icon="undo"
-          tooltip="Rotate"
-          tooltipPosition="top"
-        />
-      </Stack.Item>
-
       {props.showSpecies && (
         <Stack.Item>
           <Button
@@ -83,7 +72,7 @@ const ChoicedSelection = (
   const [searchText, setSearchText] = useSharedState(
     context,
     'search_text',
-    ''
+    null
   );
 
   if (!catalog.icons) {
@@ -549,9 +538,6 @@ export const MainPage = (
                     <CharacterControls
                       gender={data.character_preferences.misc.gender}
                       handleOpenSpecies={props.openSpecies}
-                      handleRotate={() => {
-                        act('rotate');
-                      }}
                       setGender={createSetPreference(act, 'gender')}
                       showGender={
                         currentSpeciesData ? !!currentSpeciesData.sexes : true
@@ -567,6 +553,16 @@ export const MainPage = (
                     <CharacterPreview
                       height="100%"
                       id={data.character_preview_view}
+                    />
+                  </Stack.Item>
+                  <Stack.Item>
+                    <RotateButtons
+                      handleRotateLeft={() => {
+                        act('rotate', { direction: -1 });
+                      }}
+                      handleRotateRight={() => {
+                        act('rotate', { direction: 1 });
+                      }}
                     />
                   </Stack.Item>
 

@@ -93,6 +93,7 @@ export type QuirkInfo = {
 
 export type GhostRole = {
   slot_name: string;
+  savefile_key: string;
   forced_species: string;
   barebones_spawn: BooleanLike;
 };
