@@ -166,7 +166,7 @@
 	if(value != LEGS_DIGITIGRADE)
 		return
 	for(var/obj/item/bodypart/leg/leg in target.bodyparts)
-		bodypart.bodytype |= BODYTYPE_DIGITIGRADE
+		leg.bodytype |= BODYTYPE_DIGITIGRADE
 	target.update_body(is_creating = TRUE) //grumble grumble
 
 /datum/preference/choiced/mutant/frills
