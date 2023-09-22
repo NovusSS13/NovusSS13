@@ -6,7 +6,6 @@
 	modified_feature = "testicles"
 	supplemental_feature_key = "feature_testicles_color"
 	randomize_by_default = FALSE
-	priority = PREFERENCE_PRIORITY_BODYPARTS
 
 /datum/preference/choiced/mutant/testicles/init_possible_values()
 	return assoc_to_keys_features(GLOB.testicles_list)
@@ -58,6 +57,7 @@
 	relevant_inherent_trait = TRAIT_USES_SKINTONES
 	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
 	randomize_by_default = FALSE
+	priority = PREFERENCE_PRIORITY_BODYPARTS
 
 /datum/preference/toggle/testicles_uses_skintone/included_in_randomization_flags(randomize_flags)
 	return !!(randomize_flags & RANDOMIZE_GENITALS)
