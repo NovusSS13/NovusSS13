@@ -45,7 +45,7 @@
 /// Checks if the organ should reasonably apply to the target, when being applied via species change
 /proc/should_organ_apply_to(obj/item/organ/organpath, mob/living/carbon/target)
 	if(isnull(organpath) || isnull(target))
-		stack_trace("passed a null path or mob to 'should_organ_apply_to'")
+		stack_trace("passed a null path or target to 'should_organ_apply_to'")
 		return FALSE
 
 	var/datum/bodypart_overlay/mutant/bodypart_overlay = initial(organpath.bodypart_overlay)
@@ -56,6 +56,6 @@
 	if(isnull(feature_key))
 		return TRUE
 
-	if(!isnull(target.dna.features[feature_key]) && (target.dna.features[feature_key] != SPRITE_ACCESSORY_NONE))
+	if(isnull(target.dna.features[feature_key]) || (target.dna.features[feature_key] != SPRITE_ACCESSORY_NONE))
 		return TRUE
 	return FALSE
