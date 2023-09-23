@@ -635,11 +635,12 @@
 				var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][dna.features[marking_key]]
 				if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
 					continue
-				if(!markings.compatible_species || is_path_in_list(dna.species.type, markings.compatible_species))
-					var/marking_color_key = marking_key + "_color"
-					var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
-					marking.set_appearance(markings.type)
-					bodypart_instance.add_bodypart_overlay(marking)
+				else if(markings.compatible_species && is_path_in_list(dna.species.type, markings.compatible_species))
+					continue
+				var/marking_color_key = marking_key + "_color"
+				var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
+				marking.set_appearance(markings.type)
+				bodypart_instance.add_bodypart_overlay(marking)
 		bodypart_instance.set_owner(src)
 		add_bodypart(bodypart_instance)
 
