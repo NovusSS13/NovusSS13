@@ -147,7 +147,6 @@
 	desc = "A severed monkey tail. Animal cruelty is a serious crime, you know."
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/monkey
-	sprite_accessory_override = /datum/sprite_accessory/tails/monkey/default
 
 /// Monkey tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/monkey
