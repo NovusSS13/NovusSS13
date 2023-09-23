@@ -115,9 +115,6 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	set desc = "Local OOC, seen only by those in view."
 	set category = "OOC"
 
-	if(GLOB.say_disabled)	//This is here to try to identify lag problems
-		to_chat(src, span_danger("Speech is currently admin-disabled."))
-		return
 
 	if(!mob)
 		return
@@ -126,14 +123,17 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	if(!msg)
 		return
 
-	if(!prefs.read_preference(/datum/preference/toggle/mute_looc))
-		to_chat(src, span_danger("You have LOOC muted."))
-		return
-	if(is_banned_from(mob, "OOC"))
-		to_chat(src, span_danger("You have been banned from OOC."))
-		return
-
 	if(!holder)
+		if(GLOB.say_disabled)	//This is here to try to identify lag problems
+			to_chat(src, span_danger("Speech is currently admin-disabled."))
+			return
+		if(!prefs.read_preference(/datum/preference/toggle/mute_looc))
+			to_chat(src, span_danger("You have LOOC muted."))
+			return
+		if(is_banned_from(mob, "OOC"))
+			to_chat(src, span_danger("You have been banned from OOC."))
+			return
+
 		if(!GLOB.looc_allowed)
 			to_chat(src, span_danger("LOOC is globally muted."))
 			return
@@ -146,8 +146,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 			to_chat(src, "<B>Advertising other servers is not allowed.</B>")
 			log_admin("[key_name(src)] has attempted to advertise in LOOC: [msg]") //inb4 byond://trollface ascii
 			return
-		if(mob.stat)
-			to_chat(src, span_danger("You cannot use LOOC while unconscious or dead.")) //includes ghosts
+		if(mob.stat == DEAD) //this shou;dl include unconciousees
+			to_chat(src, span_danger("You cannot use LOOC while dead.")) //includes ghosts
 			return
 
 	msg = emoji_parse(msg)
