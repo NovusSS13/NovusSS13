@@ -292,6 +292,8 @@
 	equipped.eye_color_left = BLOODCULT_EYE
 	equipped.eye_color_right = BLOODCULT_EYE
 	var/obj/item/organ/eyes/eyes = equipped.get_organ_by_type(/obj/item/organ/eyes)
+	eyes?.eye_color_left = BLOODCULT_EYE
+	eyes?.eye_color_right = BLOODCULT_EYE
 	eyes?.refresh(equipped)
 
 ///Returns whether the given mob is convertable to the blood cult
