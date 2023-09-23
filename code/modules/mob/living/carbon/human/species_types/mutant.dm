@@ -1,7 +1,8 @@
 /datum/species/mutant
-	name = "Custom"
-	plural_form = "Custom species" //there is no plural i guess? i can't call them customers can i //honestly that'd be p funny
+	name = "\improper Custom"
+	plural_form = "Custom" //there is no plural i guess? i can't call them customers can i //honestly that'd be p funny
 	id = SPECIES_MUTANT
+	examine_limb_id = SPECIES_MUTANT
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
 		TRAIT_CAN_USE_FLIGHT_POTION,
@@ -34,7 +35,8 @@
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	payday_modifier = 0.75
-	examine_limb_id = SPECIES_MUTANT
+
+	ass_image = 'icons/ass/assmutant.png'
 
 /datum/species/mutant/get_species_description()
 	return "Some kind of beast in anthropomorphic form."

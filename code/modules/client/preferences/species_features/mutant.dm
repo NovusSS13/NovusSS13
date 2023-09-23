@@ -163,9 +163,13 @@
 
 /datum/preference/choiced/mutant/leg_type/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	. = ..()
-	if(value == LEGS_DIGITIGRADE)
-		for(var/obj/item/bodypart/leg/leg in target.bodyparts)
+	if(!is_accessible(prefs))
+		return
+	for(var/obj/item/bodypart/leg/leg in target.bodyparts)
+		if(value == LEGS_DIGITIGRADE)
 			leg.bodytype |= BODYTYPE_DIGITIGRADE
+		else
+			leg.bodytype &= ~BODYTYPE_DIGITIGRADE
 	target.update_body(is_creating = TRUE) //grumble grumble
 
 /datum/preference/choiced/mutant/frills

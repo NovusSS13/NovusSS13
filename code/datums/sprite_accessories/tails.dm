@@ -38,11 +38,12 @@
 
 /datum/sprite_accessory/tails/monkey
 	color_amount = 0
+	feature_suffix = "monkey"
 
-/datum/sprite_accessory/tails/monkey/monkey
+/datum/sprite_accessory/tails/monkey/default
 	name = "Monkey"
 	icon = 'icons/mob/species/monkey/monkey_tail.dmi'
-	icon_state = "monkey"
+	icon_state = "default"
 
 /datum/sprite_accessory/tails/mutant
 	icon = 'icons/mob/species/sprite_accessory/tails_mutant.dmi'

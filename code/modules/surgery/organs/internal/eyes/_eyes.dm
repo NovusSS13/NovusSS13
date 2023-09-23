@@ -105,7 +105,6 @@
 /obj/item/organ/eyes/proc/refresh(mob/living/carbon/eye_owner = owner, inserting = FALSE, call_update = TRUE)
 	owner.update_sight()
 	owner.update_tint()
-
 	if(!ishuman(eye_owner))
 		return
 

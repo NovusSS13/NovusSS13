@@ -59,6 +59,7 @@
 	return pick(GLOB.backpacklist)
 
 /proc/random_features()
+	//It is very likely that these redundant inits are deprecated and can be safely removed
 	if(!length(GLOB.tails_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list, add_blank = TRUE)
 	if(!length(GLOB.tails_list_human))

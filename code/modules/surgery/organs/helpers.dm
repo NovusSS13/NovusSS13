@@ -43,7 +43,7 @@
 	. = organs_slot[slot]
 
 /// Checks if the organ should reasonably apply to the target, when being applied via species change
-/proc/should_organ_apply_to(obj/item/organ/organpath, mob/living/carbon/target)
+/proc/should_organ_apply_to(obj/item/organ/organpath, mob/living/carbon/target, datum/species/species)
 	if(isnull(organpath) || isnull(target))
 		stack_trace("passed a null path or target to 'should_organ_apply_to'")
 		return FALSE
@@ -56,6 +56,9 @@
 	if(isnull(feature_key))
 		return TRUE
 
-	if(!isnull(target.dna.features[feature_key]) && (target.dna.features[feature_key] != SPRITE_ACCESSORY_NONE))
+	//Snowflake check for when a species will try to apply an organ that ignores dna features
+	if(species?.cosmetic_organs[organpath] && (species.cosmetic_organs[organpath] != SPRITE_ACCESSORY_NONE))
+		return TRUE
+	else if(!isnull(target.dna.features[feature_key]) && (target.dna.features[feature_key] != SPRITE_ACCESSORY_NONE))
 		return TRUE
 	return FALSE

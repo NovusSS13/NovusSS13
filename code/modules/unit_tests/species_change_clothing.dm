@@ -6,6 +6,7 @@
 	// Test lizards as their own thing so we can get more coverage on their features
 	var/mob/living/carbon/human/morphing_human = allocate(/mob/living/carbon/human/dummy/consistent)
 
+	/* Digitigrade legs no longer prevent you from wearing shoes, this test is not necessary for now
 	morphing_human.equipOutfit(/datum/outfit/job/assistant/consistent)
 	morphing_human.dna.features["legs"] = LEGS_DIGITIGRADE //you WILL have digitigrade legs
 
@@ -15,6 +16,7 @@
 	var/obj/item/lizard_shoes = morphing_human.get_item_by_slot(ITEM_SLOT_FEET)
 
 	TEST_ASSERT_NOTEQUAL(human_shoes, lizard_shoes, "Lizard still has shoes after changing species.")
+	*/
 
 	// Testing whether item-species restrictions properly blocks changing into a blacklisted species.
 	morphing_human.set_species(/datum/species/monkey)
