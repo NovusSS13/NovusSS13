@@ -184,26 +184,39 @@ Lizard subspecies: SILVER SCALED
 	mutanttongue = /obj/item/organ/tongue/lizard/silver
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	examine_limb_id = SPECIES_LIZARD
-	///stored mutcolor for when we turn back off of a silverscale.
-	var/old_mutcolor
+	///stored features for when we turn back off of a silverscale.
+	var/list/old_features
 	///stored eye color for when we turn back off of a silverscale.
 	var/old_eye_color_left
-	///See above
+	///see above
 	var/old_eye_color_right
 
 /datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/human/new_silverscale, datum/species/old_species, pref_load)
-	old_mutcolor = new_silverscale.dna.features["mcolor"]
+	var/static/list/replaced_features = list(
+		"m_color" = "#eeeeee",
+		"tail_color" = "#eeeeee",
+		"spines_color" = "#eeeeee",
+		"snout_color" = "#eeeeee",
+		"horns_color" = COLOR_WHITE,
+		"frills_color" = "#eeeeee",
+	)
 	old_eye_color_left = new_silverscale.eye_color_left
 	old_eye_color_right = new_silverscale.eye_color_right
-	new_silverscale.dna.features["mcolor"] = "#eeeeee"
+	old_features = list()
+	for(var/feature in replaced_features)
+		old_features[feature] = new_silverscale.dna.features[feature]
+		new_silverscale.dna.features[feature] = replaced_features[feature]
 	new_silverscale.eye_color_left = "#0000a0"
 	new_silverscale.eye_color_right = "#0000a0"
 	. = ..()
-	new_silverscale.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
+	new_silverscale.add_filter("silver_glint", 2, outline_filter(size = 2, color = "#ffffff63"))
 
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/human/was_silverscale, datum/species/new_species, pref_load)
-	was_silverscale.dna.features["mcolor"] = old_mutcolor
-	was_silverscale.eye_color_left = old_eye_color_left
-	was_silverscale.eye_color_right = old_eye_color_right
+	for(var/feature in old_features)
+		was_silverscale.dna.features[feature] = old_features[feature]
+	if(old_eye_color_left)
+		was_silverscale.eye_color_left = old_eye_color_left
+	if(old_eye_color_right)
+		was_silverscale.eye_color_right = old_eye_color_right
 	was_silverscale.remove_filter("silver_glint")
 	return ..()
