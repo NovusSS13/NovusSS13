@@ -38,8 +38,8 @@ GLOBAL_LIST_INIT(features_block_lengths, init_features_block_lengths())
 	)
 	//now here comes the magic
 	for(var/zone in GLOB.marking_zones)
-		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
-			var/marking_key = "marking_[zone]_[marking]"
+		for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+			var/marking_key = "marking_[zone]_[marking_index]"
 			var/marking_color_key = marking_key + "_color"
 			lengths[marking_color_key] = DNA_BLOCK_SIZE_COLOR
 	return lengths
@@ -105,8 +105,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 	)
 	var/marking_block = DNA_MAIN_FEATURE_BLOCKS
 	for(var/zone in GLOB.marking_zones)
-		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
-			var/marking_key = "marking_[zone]_[marking]"
+		for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+			var/marking_key = "marking_[zone]_[marking_index]"
 			var/marking_color_key = marking_key + "_color"
 			marking_block++
 			features_to_blocks[marking_key] = marking_block
@@ -500,13 +500,13 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 				var/markingblock = DNA_FEATURE_BLOCKS - blocknumber
 				var/counter = 0
 				for(var/zone in GLOB.marking_zones)
-					for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+					for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
 						counter++
 						if(counter != markingblock)
 							counter++
 						if(counter != markingblock)
 							continue
-						var/marking_key = "marking_[zone]_[marking]"
+						var/marking_key = "marking_[zone]_[marking_index]"
 						var/marking_color_key = marking_key + "_color"
 						switch(DNA_BLOCKS_PER_MARKING - (counter % DNA_BLOCKS_PER_MARKING))
 							//marking name block
@@ -819,8 +819,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 	//now that we handled the main DNA blocks, it's time to do markings
 	var/dna_block = DNA_MAIN_FEATURE_BLOCKS
 	for(var/zone in GLOB.marking_zones)
-		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
-			var/marking_key = "marking_[zone]_[marking]"
+		for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+			var/marking_key = "marking_[zone]_[marking_index]"
 			var/marking_color_key = marking_key + "_color"
 			var/list/markings_list = GLOB.body_markings_by_zone[zone]
 

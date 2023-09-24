@@ -16,14 +16,22 @@
 
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 
-	var/list/presets = list()
+	var/list/body_marking_sets = list()
 	for(var/set_name in GLOB.body_marking_sets)
 		//we intentionally do not remove SPRITE_ACCESSORY_NONE so that you can easily clear your markings list
 		var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[set_name]
-		if(!body_marking_set.compatible_species || is_path_in_list(species_type, body_marking_set.compatible_species))
-			presets += body_marking_set
+		if(!body_marking_set)
+			continue
+		else if(body_marking_set.compatible_species && !is_path_in_list(species_type, body_marking_set.compatible_species))
+			continue
+		var/list/this_set = list()
 
-	data["body_marking_sets"] = presets
+		this_set["name"] = set_name
+		this_set["icon"] = sanitize_css_class_name("set_[set_name]")
+
+		body_marking_sets += list(this_set)
+
+	data["body_marking_sets"] = body_marking_sets
 
 	var/list/marking_parts = list()
 	for(var/zone in GLOB.marking_zones)
@@ -32,15 +40,16 @@
 		this_zone["body_zone"] = zone
 		this_zone["name"] = capitalize(parse_zone(zone))
 		var/list/this_zone_marking_choices = list()
-		var/list/this_zone_marking_icons = list()
-		if(LAZYACCESS(GLOB.body_markings_by_zone, zone))
-			for(var/marking_name in GLOB.body_markings_by_zone[zone])
-				if(marking_name == SPRITE_ACCESSORY_NONE)
-					continue
-				var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
-				if(!body_markings.compatible_species || is_path_in_list(species_type, body_markings.compatible_species))
-					this_zone_marking_choices += marking_name
-					this_zone_marking_icons[marking_name] = sanitize_css_class_name("[zone]_[marking_name]")
+		for(var/marking_name in GLOB.body_markings_by_zone[zone])
+			var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
+			if(body_markings.compatible_species && !is_path_in_list(species_type, body_markings.compatible_species))
+				continue
+			var/list/this_marking_choice = list()
+
+			this_marking_choice["name"] = marking_name
+			this_marking_choice["icon"] = sanitize_css_class_name("marking_[zone]_[marking_name]")
+
+			this_zone_marking_choices += list(this_marking_choice)
 		var/list/this_zone_markings = list()
 		for(var/marking_name in preferences.body_markings[zone])
 			this_zone_marking_choices -= marking_name
@@ -55,7 +64,6 @@
 			this_zone_markings += list(this_marking)
 		this_zone["markings"] = this_zone_markings
 		this_zone["markings_choices"] = this_zone_marking_choices
-		this_zone["markings_icons"] = this_zone_marking_icons
 		this_zone["cant_add_markings"] = (LAZYLEN(this_zone_markings) >= MAXIMUM_MARKINGS_PER_LIMB ? "Marking limit reached!" : \
 										(!LAZYLEN(this_zone_marking_choices) ? (LAZYLEN(this_zone_markings) ? "No more options found!" : "No options found!") : null))
 
@@ -66,6 +74,7 @@
 	return data
 
 /datum/preference_middleware/markings/apply_to_human(mob/living/carbon/human/target, datum/preferences/preferences)
+	target.clear_markings(update = FALSE)
 	for(var/marking_zone in preferences.body_markings)
 		for(var/marking_index in 1 to LAZYLEN(preferences.body_markings[marking_zone]))
 			var/marking_name = preferences.body_markings[marking_zone][marking_index]
@@ -79,52 +88,32 @@
 			var/marking_color_key = marking_key + "_color"
 			target.dna.features[marking_key] = marking_name
 			target.dna.features[marking_color_key] = marking_color
-	for(var/obj/item/bodypart/bodypart in target.bodyparts)
-		for(var/datum/bodypart_overlay/mutant/marking/existing in bodypart.bodypart_overlays)
-			bodypart.remove_bodypart_overlay(existing)
-		var/list/marking_zones = list(bodypart.body_zone)
-		if(bodypart.aux_zone)
-			marking_zones |= bodypart.aux_zone
-		for(var/marking_zone in marking_zones)
-			for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
-				var/marking_key = "marking_[marking_zone]_[marking_index]"
-				if(!target.dna.features[marking_key] || (target.dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
-					continue
-				var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][target.dna.features[marking_key]]
-				if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
-					continue
-				var/bodypart_species = GLOB.species_list[bodypart.limb_id]
-				if(!markings.compatible_species || is_path_in_list(bodypart_species, markings.compatible_species))
-					var/marking_color_key = marking_key + "_color"
-					var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
-					marking.set_appearance(markings.type)
-					bodypart.add_bodypart_overlay(marking)
+	target.regenerate_markings(update = TRUE)
 
 /datum/preference_middleware/markings/proc/add_marking(list/params, mob/user)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/zone = params["body_zone"]
 	LAZYINITLIST(preferences.body_markings[zone])
-
 	var/list/marking_list = preferences.body_markings[zone]
 	var/list/available_markings = list()
 	for(var/marking_name in GLOB.body_markings_by_zone[zone])
 		if(marking_name == SPRITE_ACCESSORY_NONE)
 			continue
 		var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
-		if(!body_markings.compatible_species || is_path_in_list(species_type, body_markings.compatible_species))
-			available_markings += marking_name
+		if(body_markings.compatible_species && !is_path_in_list(species_type, body_markings.compatible_species))
+			continue
+		available_markings += marking_name
 	available_markings -= SPRITE_ACCESSORY_NONE
 	available_markings -= marking_list
 	if(!length(available_markings))
 		return FALSE
-	if(LAZYLEN(marking_list) < MAXIMUM_MARKINGS_PER_LIMB)
-		var/name = available_markings[1]
-		var/mcolor = preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color)
-		mcolor = mcolor[1]
-		marking_list[name] = sanitize_hexcolor(mcolor, DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
-		preferences.character_preview_view.update_body()
-		return TRUE
-	return FALSE
+	if(LAZYLEN(marking_list) >= MAXIMUM_MARKINGS_PER_LIMB)
+		return FALSE
+	var/marking_name = available_markings[1]
+	var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
+	marking_list[marking_name] = body_markings.get_default_color(preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color))
+	preferences.character_preview_view.update_body()
+	return TRUE
 
 /datum/preference_middleware/markings/proc/change_marking(list/params, mob/user)
 	var/zone = params["body_zone"]
@@ -190,15 +179,14 @@
 	if(preset && GLOB.body_marking_sets[preset])
 		var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 		var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[preset]
-		var/mcolor = preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color)
-		mcolor = mcolor[1]
 		preferences.body_markings = list()
-		var/list/assembled_markings = body_marking_set.assemble_body_markings_list(mcolor)
+		var/list/assembled_markings = body_marking_set.assemble_body_markings_list(preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color))
 		for(var/zone in assembled_markings)
 			for(var/marking_name in assembled_markings[zone])
 				var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
-				if(!body_marking.compatible_species || is_path_in_list(species_type, body_marking.compatible_species))
-					LAZYADDASSOC(preferences.body_markings[zone], marking_name, mcolor)
+				if(body_marking.compatible_species && !is_path_in_list(species_type, body_marking.compatible_species))
+					continue
+				LAZYADDASSOC(preferences.body_markings[zone], marking_name, assembled_markings[zone][marking_name])
 		preferences.character_preview_view.update_body()
 		return TRUE
 	return FALSE
@@ -215,29 +203,41 @@
 
 /datum/asset/spritesheet/markings/create_spritesheets()
 	var/list/to_insert = list()
+	var/static/icon/icon_fucked = icon('icons/effects/random_spawners.dmi', "questionmark")
 
-	var/icon/icon_fucked = icon('icons/effects/random_spawners.dmi', "questionmark")
 	var/mob/living/carbon/human/dummy/consistent/dummy = new()
+
+	//clean up the dummy... just in case
+	dummy.clear_markings(update = FALSE)
+
+	//prepare markings previews
 	for(var/zone in GLOB.marking_zones)
 		for(var/marking_name in GLOB.body_markings_by_zone[zone])
-			var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
+			var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings_by_zone[zone][marking_name]
+			if(!body_marking)
+				//should not happen but if it does...
+				to_insert[sanitize_css_class_name("marking_[zone]_[marking_name]")] = icon_fucked
+				continue
 
-			// set species for species specific markings
-			if(body_marking.compatible_species)
-				dummy.set_species(body_marking.compatible_species[1])
-			else
-				dummy.set_species(/datum/species/mutant)
+			// prepares the dummy for preview
+			body_marking.prepare_dummy(dummy)
 
 			// create the marking on the given bodypart
 			var/obj/item/bodypart/bodypart = dummy.get_bodypart(check_zone(zone))
 			if(!bodypart)
 				//should not happen but if it does...
-				to_insert[sanitize_css_class_name("[zone]_[marking_name]")] = icon_fucked
+				to_insert[sanitize_css_class_name("marking_[zone]_[marking_name]")] = icon_fucked
 				continue
+
+			//clear up the bodypart for the next marking to be applied
+			for(var/datum/bodypart_overlay/mutant/marking/marking_overlay in bodypart.bodypart_overlays)
+				bodypart.remove_bodypart_overlay(marking_overlay)
+				qdel(marking_overlay)
+
 			var/marking_key = "marking_[zone]_5"
 			var/marking_color_key = marking_key + "_color"
 			dummy.dna.features[marking_key] = marking_name
-			dummy.dna.features[marking_color_key] = COLOR_MAGENTA
+			dummy.dna.features[marking_color_key] = body_marking.get_default_color()
 
 			var/datum/bodypart_overlay/marking_overlay = new /datum/bodypart_overlay/mutant/marking(zone, marking_key, marking_color_key)
 			marking_overlay.set_appearance(body_marking.type)
@@ -261,9 +261,30 @@
 					bodypart_icon.Crop(9, 1, 23, 15)
 			bodypart_icon.Scale(32, 32)
 
-			bodypart.remove_bodypart_overlay(marking_overlay)
+			to_insert[sanitize_css_class_name("marking_[zone]_[marking_name]")] = bodypart_icon
 
-			to_insert[sanitize_css_class_name("[zone]_[marking_name]")] = bodypart_icon
+	//prepare marking set previews
+	for(var/set_name in GLOB.body_marking_sets)
+		var/datum/body_marking_set/marking_set = GLOB.body_marking_sets[set_name]
+		if(!marking_set)
+			//should not happen but if it does...
+			to_insert[sanitize_css_class_name("set_[set_name]")] = icon_fucked
+			continue
+
+		// clean up the dummy for the next marking set to be applied
+		dummy.clear_markings(update = FALSE)
+
+		// prepare the dummy for preview
+		marking_set.prepare_dummy(dummy)
+
+		marking_set.apply_markings_to_dna(dummy)
+
+		dummy.regenerate_markings(update = FALSE)
+		dummy.regenerate_icons()
+		var/icon/dummy_icon = getFlatIcon(dummy)
+		dummy_icon.Scale(32, 32)
+
+		to_insert[sanitize_css_class_name("set_[set_name]")] = dummy_icon
 
 	SSatoms.prepare_deletion(dummy) //FUCK YOU STUPID DUMB DUMB DUMMY
 

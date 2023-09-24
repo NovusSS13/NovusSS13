@@ -395,21 +395,21 @@
 				current_organ.Remove(organ_holder)
 				qdel(current_organ)
 
-	for(var/obj/item/organ/cosmetic_organ as anything in organ_holder.organs)
+	for(var/obj/item/organ/mutant_organ as anything in organ_holder.organs)
 		// Not a cosmetic organ, don't fuck with it
-		if(!cosmetic_organ.visual)
+		if(!mutant_organ.visual)
 			continue
 		// Already dealt with this organ slot
-		if(cosmetic_organ.slot in organ_slots)
+		if(mutant_organ.slot in organ_slots)
 			continue
 		// Cosmetic organ checking - We need to check the cosmetic organs owned by the carbon itself,
 		// because we want to remove ones not shared by this species.
 		// This should be done even if species was not changed.
-		if(cosmetic_organ.type in cosmetic_organs)
+		if(mutant_organ.type in species_mutant_organs)
 			continue // Don't remove cosmetic organs this species is supposed to have.
 
-		cosmetic_organ.Remove(organ_holder)
-		qdel(cosmetic_organ)
+		mutant_organ.Remove(organ_holder)
+		qdel(mutant_organ)
 
 	for(var/organ_path in species_mutant_organs)
 		var/obj/item/organ/replacement = organ_path
@@ -417,7 +417,7 @@
 			continue // we already handled this slot
 
 		var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(organ_path)
-		if(!should_organ_apply_to(organ_path, organ_holder))
+		if(!should_organ_apply_to(organ_path, organ_holder, src))
 			if(!isnull(current_organ) && replace_current)
 				// if we have an organ here and we're replacing organs, remove it
 				current_organ.Remove(organ_holder)
@@ -433,7 +433,7 @@
 				current_organ.before_organ_replacement(replacement)
 			// Set a default feature just in case
 			if(replacement.bodypart_overlay)
-				if(cosmetic_organs[organ_path] != SPRITE_ACCESSORY_NONE)
+				if(cosmetic_organs[organ_path] && (cosmetic_organs[organ_path] != SPRITE_ACCESSORY_NONE))
 					replacement.bodypart_overlay.set_appearance_from_name(cosmetic_organs[organ_path])
 				replacement.bodypart_overlay.imprint_on_next_insertion = TRUE
 			// organ.Insert will qdel any current organs in that slot, so we don't need to.
@@ -593,16 +593,11 @@
 			quirk.mail_goodies = list()
 			return
 
-
 	// The default case if no species implementation exists. Set quirk's mail_goodies to initial.
 	var/datum/quirk/readable_quirk = new quirk.type
 	quirk.mail_goodies = readable_quirk.mail_goodies
 	qdel(readable_quirk) // We have to do it this way because initial will not work on lists in this version of DM
 	return
-
-///Proc that will randomise the hair, or primary appearance element (i.e. for moths wings) of a species' associated mob
-/datum/species/proc/randomize_main_appearance_element(mob/living/carbon/human/human_mob)
-	human_mob.set_hairstyle(random_hairstyle(human_mob.gender), update = FALSE)
 
 ///Proc that will randomise the underwear (i.e. top, pants and socks) of a species' associated mob,
 /// but will not update the body right away.
@@ -618,7 +613,7 @@
 
 ///Proc that will randomize all the external organs (i.e. horns, frills, tails etc.) of a species' associated mob
 /datum/species/proc/randomize_cosmetic_organs(mob/living/carbon/human/human_mob)
-	var/mutant_color = sanitize_hexcolor(human_mob.dna.features["mcolor"], DEFAULT_HEX_COLOR_LEN, TRUE, "#" + random_color())
+	var/mutant_color = sanitize_hexcolor(human_mob.dna.features["mcolor"], DEFAULT_HEX_COLOR_LEN, TRUE, "#[random_color()]")
 	for(var/obj/item/organ/organ_path as anything in cosmetic_organs)
 		var/obj/item/organ/randomized_organ = human_mob.get_organ_by_type(organ_path)
 		if(randomized_organ)
@@ -629,6 +624,8 @@
 			human_mob.dna.features["[overlay.feature_key]"] = new_accessory.name
 			if(overlay.feature_color_key)
 				human_mob.dna.features["[overlay.feature_color_key]"] = mutant_color
+			overlay.inherit_color(human_mob.get_bodypart(randomized_organ.zone), force = TRUE)
+			overlay.set_appearance(new_accessory.type)
 
 ///Proc that will randomize all the markings of a species' associated mob
 /datum/species/proc/randomize_markings(mob/living/carbon/human/human_mob)
@@ -638,16 +635,9 @@
 	var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[chosen_marking_set]
 	if(!body_marking_set)
 		CRASH("[type] has an invalid body marking set ([chosen_marking_set]) in body_marking_sets!")
-	var/mutant_color = human_mob.dna.features["mcolor"]
-	var/list/markings = body_marking_set.assemble_body_markings_list(mutant_color)
-	for(var/zone in markings)
-		for(var/marking_index in 1 to length(markings[zone]))
-			var/marking_key = "marking_[zone]_[marking_index]"
-			var/marking_color_key = marking_key + "_color"
-			var/marking_name = markings[zone][marking_index]
-			var/marking_color = markings[zone][marking_name]
-			human_mob.dna.features[marking_key] = marking_name
-			human_mob.dna.features[marking_color_key] = marking_color
+	human_mob.clear_markings(update = FALSE)
+	body_marking_set.apply_markings_to_dna(human_mob, body_marking_set.assemble_body_markings_list(human_mob.dna.features["mcolor"]))
+	human_mob.regenerate_markings(update = FALSE)
 
 ///Proc that randomizes all the appearance elements (external organs, markings, hair etc.) of a species' associated mob. Function set by child procs
 /datum/species/proc/randomize_features(mob/living/carbon/human/human_mob)
@@ -2174,11 +2164,12 @@
 					var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][target.dna.features[marking_key]]
 					if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
 						continue
-					if(!markings.compatible_species || is_path_in_list(new_species.type, markings.compatible_species))
-						var/marking_color_key = marking_key + "_color"
-						var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
-						marking.set_appearance(markings.type)
-						new_part.add_bodypart_overlay(marking)
+					else if(markings.compatible_species && !is_path_in_list(new_species.type, markings.compatible_species))
+						continue
+					var/marking_color_key = marking_key + "_color"
+					var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
+					marking.set_appearance(markings.type)
+					new_part.add_bodypart_overlay(marking)
 			new_part.replace_limb(target, special = TRUE, keep_old_organs = TRUE)
 			new_part.update_limb(is_creating = TRUE)
 		qdel(old_part)

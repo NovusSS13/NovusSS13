@@ -1,23 +1,157 @@
 import { classes } from 'common/react';
-import { Autofocus, Section, Button, Box, ColorBox, Dropdown, Flex, Popper, Stack, TrackOutsideClicks } from '../../components';
+import { Autofocus, Section, Button, Box, ColorBox, Flex, Popper, Stack, TrackOutsideClicks } from '../../components';
 import { useBackend, useLocalState, useSharedState } from '../../backend';
-import { Marking, MarkingZone, PreferencesMenuData } from './data';
+import { Marking, MarkingZone, MarkingSet, PreferencesMenuData } from './data';
 import { CharacterPreview, RotateButtons } from '../common/CharacterPreview';
 import { CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS, CLOTHING_SELECTION_CELL_SIZE, CLOTHING_SELECTION_WIDTH, CLOTHING_SELECTION_MULTIPLIER } from './MainPage';
 import { SearchBar } from '../Fabrication/SearchBar';
 
-const MarkingButton = (
+const SetButton = (
   props: {
-    key: string;
-    zone: MarkingZone;
-    marking: Marking;
+    sets: MarkingSet[];
     isOpen: boolean;
     handleClose: () => void;
     handleOpen: () => void;
   },
   context
 ) => {
-  const { zone, marking, isOpen, handleClose, handleOpen } = props;
+  const { sets, isOpen, handleClose, handleOpen } = props;
+  const { act, data } = useBackend<PreferencesMenuData>(context);
+  const [searchText, setSearchText] = useSharedState(
+    context,
+    'search_text',
+    ''
+  );
+  return (
+    <Popper
+      options={{
+        placement: 'bottom-start',
+      }}
+      popperContent={
+        isOpen && (
+          <TrackOutsideClicks
+            onOutsideClick={() => {
+              handleClose();
+            }}>
+            <Box
+              style={{
+                background: 'white',
+                padding: '5px',
+
+                height: `${
+                  CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_MULTIPLIER
+                }px`,
+                width: `${
+                  CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_WIDTH
+                }px`,
+              }}>
+              <Stack vertical fill>
+                <Stack.Item>
+                  <Stack fill>
+                    <Stack.Item grow>
+                      <Box
+                        style={{
+                          'border-bottom': '1px solid #888',
+                          'font-weight': 'bold',
+                          'font-size': '14px',
+                          'text-align': 'center',
+                        }}>
+                        Select marking set
+                      </Box>
+                    </Stack.Item>
+
+                    <Stack.Item grow>
+                      <SearchBar onSearchTextChanged={setSearchText} />
+                    </Stack.Item>
+
+                    <Stack.Item>
+                      <Button
+                        color="red"
+                        onClick={() => {
+                          handleClose();
+                        }}>
+                        X
+                      </Button>
+                    </Stack.Item>
+                  </Stack>
+                </Stack.Item>
+
+                <Stack.Item overflowX="hidden" overflowY="scroll">
+                  <Autofocus>
+                    <Flex wrap>
+                      {sets.map((availableSet) => {
+                        if (
+                          searchText &&
+                          availableSet.name
+                            .toLowerCase()
+                            .indexOf(searchText.toLowerCase()) === -1
+                        ) {
+                          return null;
+                        }
+                        return (
+                          <Flex.Item
+                            key={availableSet.name}
+                            mx="10px"
+                            basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
+                            style={{
+                              padding: '5px',
+                            }}>
+                            <Button
+                              onClick={() => {
+                                act('set_preset', {
+                                  preset: availableSet.name,
+                                });
+                                handleClose();
+                              }}
+                              tooltip={availableSet.name}
+                              tooltipPosition="right"
+                              style={{
+                                height: `${CLOTHING_SELECTION_CELL_SIZE}px`,
+                                width: `${CLOTHING_SELECTION_CELL_SIZE}px`,
+                              }}>
+                              <Box
+                                className={classes([
+                                  'markings32x32',
+                                  availableSet.icon,
+                                  'centered-image',
+                                ])}
+                              />
+                            </Button>
+                            <Box textAlign="center">{availableSet.name}</Box>
+                          </Flex.Item>
+                        );
+                      })}
+                    </Flex>
+                  </Autofocus>
+                </Stack.Item>
+              </Stack>
+            </Box>
+          </TrackOutsideClicks>
+        )
+      }>
+      <Button
+        width="100%"
+        content="Presets"
+        onClick={() => {
+          handleOpen();
+        }}
+      />
+    </Popper>
+  );
+};
+
+const MarkingButton = (
+  props: {
+    key: string;
+    zone: MarkingZone;
+    selected_marking: Marking;
+    isOpen: boolean;
+    handleClose: () => void;
+    handleOpen: () => void;
+  },
+  context
+) => {
+  const { zone, selected_marking, isOpen, handleClose, handleOpen } = props;
   const { act, data } = useBackend<PreferencesMenuData>(context);
   const [searchText, setSearchText] = useSharedState(
     context,
@@ -82,53 +216,52 @@ const MarkingButton = (
                 <Stack.Item overflowX="hidden" overflowY="scroll">
                   <Autofocus>
                     <Flex wrap>
-                      {zone.markings_choices
-                        .concat([marking.name])
-                        .sort()
-                        .map((availableMarking) => {
-                          if (
-                            searchText &&
-                            availableMarking
-                              .toLowerCase()
-                              .indexOf(searchText.toLowerCase()) === -1
-                          ) {
-                            return null;
-                          }
-                          return (
-                            <Flex.Item
-                              key={marking.name}
-                              mx="10px"
-                              basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
+                      {zone.markings_choices.map((markingChoice) => {
+                        if (
+                          searchText &&
+                          markingChoice.name
+                            .toLowerCase()
+                            .indexOf(searchText.toLowerCase()) === -1
+                        ) {
+                          return null;
+                        }
+                        return (
+                          <Flex.Item
+                            key={markingChoice.name}
+                            mx="10px"
+                            basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
+                            style={{
+                              padding: '5px',
+                            }}>
+                            <Button
+                              onClick={() => {
+                                act('change_marking', {
+                                  body_zone: zone.body_zone,
+                                  marking_index: selected_marking.marking_index,
+                                  new_marking: markingChoice.name,
+                                });
+                              }}
+                              selected={
+                                markingChoice.name === selected_marking.name
+                              }
+                              tooltip={markingChoice.name}
+                              tooltipPosition="right"
                               style={{
-                                padding: '5px',
+                                height: `${CLOTHING_SELECTION_CELL_SIZE}px`,
+                                width: `${CLOTHING_SELECTION_CELL_SIZE}px`,
                               }}>
-                              <Button
-                                onClick={() => {
-                                  act('change_marking', {
-                                    body_zone: zone.body_zone,
-                                    marking_index: marking.marking_index,
-                                    new_marking: availableMarking,
-                                  });
-                                }}
-                                selected={availableMarking === marking.name}
-                                tooltip={availableMarking}
-                                tooltipPosition="right"
-                                style={{
-                                  height: `${CLOTHING_SELECTION_CELL_SIZE}px`,
-                                  width: `${CLOTHING_SELECTION_CELL_SIZE}px`,
-                                }}>
-                                <Box
-                                  className={classes([
-                                    'markings32x32',
-                                    zone.markings_icons[availableMarking],
-                                    'centered-image',
-                                  ])}
-                                />
-                              </Button>
-                              <Box textAlign="center">{availableMarking}</Box>
-                            </Flex.Item>
-                          );
-                        })}
+                              <Box
+                                className={classes([
+                                  'markings32x32',
+                                  markingChoice.icon,
+                                  'centered-image',
+                                ])}
+                              />
+                            </Button>
+                            <Box textAlign="center">{markingChoice.name}</Box>
+                          </Flex.Item>
+                        );
+                      })}
                     </Flex>
                   </Autofocus>
                 </Stack.Item>
@@ -139,7 +272,7 @@ const MarkingButton = (
       }>
       <Button
         width="100%"
-        content={marking.name}
+        content={selected_marking.name}
         onClick={() => {
           handleOpen();
         }}
@@ -242,7 +375,7 @@ const ZoneItem = (
                   <MarkingButton
                     key={props.key}
                     zone={zone}
-                    marking={marking}
+                    selected_marking={marking}
                     isOpen={
                       currentMarkingMenu === zone.name + marking.marking_index
                     }
@@ -253,20 +386,6 @@ const ZoneItem = (
                       setCurrentMarkingMenu(zone.name + marking.marking_index);
                     }}
                   />
-                  {/*
-                  <Dropdown
-                    width="100%"
-                    options={zone.markings_choices}
-                    displayText={marking.name}
-                    onSelected={(new_marking) =>
-                      act('change_marking', {
-                        body_zone: zone.body_zone,
-                        marking_index: marking.marking_index,
-                        new_marking: new_marking,
-                      })
-                    }
-                  />
-                  */}
                 </Stack.Item>
                 <Stack.Item width="50%">
                   <MarkingInput zone={zone} marking={marking} />
@@ -293,18 +412,21 @@ const ZoneItem = (
   );
 };
 
-export const MarkingsPage = (props, context, markingslist: MarkingZone[]) => {
+export const MarkingsPage = (props, context) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
-  markingslist = [];
+  const body_marking_sets = data.body_marking_sets;
+  const markingslist: MarkingZone[] = [];
   markingslist.length = data.marking_parts.length;
   for (let index = 0; index < data.marking_parts.length; index++) {
     markingslist[index] = data.marking_parts[index];
   }
-  const firststack = markingslist.splice(0, 6);
-  firststack.length = Math.min(firststack.length, 6);
-  const secondstack = markingslist.splice(0, 6);
-  secondstack.length = Math.min(firststack.length, 6);
-  const maxmarkings = data.maximum_markings_per_limb;
+  const stacks: MarkingZone[][] = [];
+  while (markingslist.length > 0) {
+    stacks.push(markingslist.splice(0, 6));
+  }
+  const [currentMarkingMenu, setCurrentMarkingMenu] = useLocalState<
+    string | null
+  >(context, 'currentMarkingMenu', null);
   return (
     <Stack
       height={`${CLOTHING_SIDEBAR_ROWS * CLOTHING_CELL_SIZE * 1.25}px`}
@@ -329,33 +451,30 @@ export const MarkingsPage = (props, context, markingslist: MarkingZone[]) => {
       <Stack.Item width="100%" height="100%">
         <Stack vertical width="100%" height="100%">
           <Stack.Item>
-            <Dropdown
-              width="100%"
-              displayText="Presets"
-              options={data.body_marking_sets}
-              onSelected={(value) => act('set_preset', { preset: value })}
+            <SetButton
+              sets={body_marking_sets}
+              isOpen={currentMarkingMenu === 'presets'}
+              handleClose={() => {
+                setCurrentMarkingMenu(null);
+              }}
+              handleOpen={() => {
+                setCurrentMarkingMenu('presets');
+              }}
             />
           </Stack.Item>
           <Stack.Item width="100%" height="100%">
             <Stack width="100%" height="100%">
-              <Stack.Item minWidth="50%">
-                <Section overflowX="hidden" overflowY="auto" fill>
-                  <Stack vertical>
-                    {firststack.map((zone) => (
-                      <ZoneItem key={zone.body_zone} zone={zone} />
-                    ))}
-                  </Stack>
-                </Section>
-              </Stack.Item>
-              <Stack.Item minWidth="50%">
-                <Section overflowX="hidden" overflowY="auto" fill>
-                  <Stack vertical>
-                    {secondstack.map((zone) => (
-                      <ZoneItem key={zone.body_zone} zone={zone} />
-                    ))}
-                  </Stack>
-                </Section>
-              </Stack.Item>
+              {stacks.map((stack, index) => (
+                <Stack.Item grow key={index}>
+                  <Section overflowX="hidden" overflowY="auto" fill>
+                    <Stack vertical>
+                      {stack.map((zone) => (
+                        <ZoneItem key={zone.body_zone} zone={zone} />
+                      ))}
+                    </Stack>
+                  </Section>
+                </Stack.Item>
+              ))}
             </Stack>
           </Stack.Item>
         </Stack>

@@ -576,13 +576,15 @@
 	if((bodytype & BODYTYPE_DIGITIGRADE) && !(bodytype & BODYTYPE_COMPRESSED))
 		. += "-compressed"
 	. += "-[body_zone]"
-	if(should_draw_greyscale && draw_color)
-		. += "-[draw_color]"
 	if(is_invisible)
 		. += "-invisible"
 	else if(is_husked)
 		. += "-husk"
+		if(husk_type)
+			. += "-[husk_type]"
 	else
+		if(should_draw_greyscale && draw_color)
+			. += "-[draw_color]"
 		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
 			if(!overlay.can_draw_on_bodypart(src) || !overlay.can_draw_on_body(src, owner))
 				continue

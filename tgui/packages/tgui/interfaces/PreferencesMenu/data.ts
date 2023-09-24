@@ -100,18 +100,28 @@ export type GhostRole = {
 
 export type Marking = {
   name: string;
+  icon: string;
   color: string;
-  marking_index: string;
   color_amount: number;
+  marking_index: string;
+};
+
+export type MarkingChoice = {
+  name: string;
+  icon: string;
 };
 
 export type MarkingZone = {
   body_zone: string;
   name: string;
-  markings_choices: string[];
-  markings_icons: string[];
+  markings_choices: MarkingChoice[];
   markings: Marking[];
   cant_add_markings: boolean;
+};
+
+export type MarkingSet = {
+  name: string;
+  icon: string;
 };
 
 export enum RandomSetting {
@@ -192,7 +202,7 @@ export type PreferencesMenuData = {
 
   marking_parts: MarkingZone[];
   maximum_markings_per_limb: number;
-  body_marking_sets: string[];
+  body_marking_sets: MarkingSet[];
 
   antag_bans?: string[];
   antag_days_left?: Record<string, number>;
