@@ -179,16 +179,14 @@
 	if(preset && GLOB.body_marking_sets[preset])
 		var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 		var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[preset]
-		var/mcolor = preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color)
-		mcolor = mcolor[1]
 		preferences.body_markings = list()
-		var/list/assembled_markings = body_marking_set.assemble_body_markings_list(mcolor)
+		var/list/assembled_markings = body_marking_set.assemble_body_markings_list(preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color))
 		for(var/zone in assembled_markings)
 			for(var/marking_name in assembled_markings[zone])
 				var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
 				if(body_marking.compatible_species && !is_path_in_list(species_type, body_marking.compatible_species))
 					continue
-				LAZYADDASSOC(preferences.body_markings[zone], marking_name, mcolor)
+				LAZYADDASSOC(preferences.body_markings[zone], marking_name, assembled_markings[zone][marking_name]])
 		preferences.character_preview_view.update_body()
 		return TRUE
 	return FALSE
