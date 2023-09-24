@@ -395,21 +395,21 @@
 				current_organ.Remove(organ_holder)
 				qdel(current_organ)
 
-	for(var/obj/item/organ/cosmetic_organ as anything in organ_holder.organs)
+	for(var/obj/item/organ/mutant_organ as anything in organ_holder.organs)
 		// Not a cosmetic organ, don't fuck with it
-		if(!cosmetic_organ.visual)
+		if(!mutant_organ.visual)
 			continue
 		// Already dealt with this organ slot
-		if(cosmetic_organ.slot in organ_slots)
+		if(mutant_organ.slot in organ_slots)
 			continue
 		// Cosmetic organ checking - We need to check the cosmetic organs owned by the carbon itself,
 		// because we want to remove ones not shared by this species.
 		// This should be done even if species was not changed.
-		if(cosmetic_organ.type in cosmetic_organs)
+		if(mutant_organ.type in species_mutant_organs)
 			continue // Don't remove cosmetic organs this species is supposed to have.
 
-		cosmetic_organ.Remove(organ_holder)
-		qdel(cosmetic_organ)
+		mutant_organ.Remove(organ_holder)
+		qdel(mutant_organ)
 
 	for(var/organ_path in species_mutant_organs)
 		var/obj/item/organ/replacement = organ_path
@@ -417,7 +417,7 @@
 			continue // we already handled this slot
 
 		var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(organ_path)
-		if(!should_organ_apply_to(organ_path, organ_holder))
+		if(!should_organ_apply_to(organ_path, organ_holder, src))
 			if(!isnull(current_organ) && replace_current)
 				// if we have an organ here and we're replacing organs, remove it
 				current_organ.Remove(organ_holder)
@@ -433,7 +433,7 @@
 				current_organ.before_organ_replacement(replacement)
 			// Set a default feature just in case
 			if(replacement.bodypart_overlay)
-				if(cosmetic_organs[organ_path] != SPRITE_ACCESSORY_NONE)
+				if(cosmetic_organs[organ_path] && (cosmetic_organs[organ_path] != SPRITE_ACCESSORY_NONE))
 					replacement.bodypart_overlay.set_appearance_from_name(cosmetic_organs[organ_path])
 				replacement.bodypart_overlay.imprint_on_next_insertion = TRUE
 			// organ.Insert will qdel any current organs in that slot, so we don't need to.
