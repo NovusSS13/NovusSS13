@@ -18,12 +18,13 @@
 
 	return data
 
-/datum/preference/choiced/mutant/create_informed_default_value(datum/preferences/preferences)
-	if(!relevant_cosmetic_organ)
+/datum/preference/choiced/mutant/create_default_value(datum/preferences/preferences)
+	if(!relevant_cosmetic_organ || !preferences)
 		return ..()
+
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = new species_type
-	return species.cosmetic_organs[relevant_cosmetic_organ] ? species.cosmetic_organs[relevant_cosmetic_organ] : SPRITE_ACCESSORY_NONE
+	return species.cosmetic_organs[relevant_cosmetic_organ] || ..()
 
 /datum/preference/choiced/mutant/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	// Doesn't make sense
@@ -59,8 +60,12 @@
 	if(!istype(accessory))
 		return ..()
 
+	//return null i guess
+	if(!accessory.color_amount)
+		return ""
+
 	var/return_value = list()
-	for(var/index = 1, index <= clamp(accessory.color_amount, 1, 3), index++)
+	for(var/index = 1, index <= min(accessory.color_amount, 3), index++)
 		return_value += value[index]
 
 	return jointext(return_value, ";")

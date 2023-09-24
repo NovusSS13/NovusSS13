@@ -162,7 +162,7 @@
 	. = ..()
 	if(!proximity || !HAS_TRAIT(src, TRAIT_WIELDED) || !istype(AM))
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
+
 	if(AM.resistance_flags & INDESTRUCTIBLE) //due to the lich incident of 2021, embedding grenades inside of indestructible structures is forbidden
 		return .
 	if(ismob(AM))

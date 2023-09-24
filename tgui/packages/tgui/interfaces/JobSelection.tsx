@@ -30,6 +30,7 @@ type Data = {
   disable_jobs_for_non_observers: BooleanLike;
   priority: BooleanLike;
   round_duration: string;
+  loaded_char: string;
 };
 
 export const JobEntry: SFC<{
@@ -120,7 +121,8 @@ export const JobSelection = (props, context) => {
                 <NoticeBox info>{data.shuttle_status}</NoticeBox>
               )}
               <span style={{ 'color': 'grey' }}>
-                It is currently {data.round_duration} into the shift.
+                It is currently {data.round_duration} into the shift. Loaded
+                character: {data.loaded_char}
               </span>
               <Button
                 style={{ 'position': 'absolute', 'right': '1em' }}

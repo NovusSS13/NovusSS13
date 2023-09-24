@@ -1205,3 +1205,58 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		text2num(semver_regex.group[2]),
 		text2num(semver_regex.group[3]),
 	)
+
+/**
+ * Gets a color for a name, will return the same color for a given string consistently within a round.
+ *
+ * Note that this proc defaults to producing pastel-ish colors using the HSL colorspace.
+ * These seem to be favorable for displaying on the map.
+ *
+ * Arguments:
+ * * name - The name to generate a color for
+ * * seed - An override seed, in case you don't want to use the default static one
+ * * sat_shift - A value between 0 and 1 that will be multiplied against the saturation
+ * * lum_shift - A value between 0 and 1 that will be multiplied against the luminescence
+ * * sat_max - A value between 0 and 1, maximum saturation of the color in the HSL space
+ * * sat_min - A value between 0 and 1, minimum saturation of the color in the HSL space
+ * * lum_max - A value between 0 and 1, maximum luminescence of the color in the HSL space
+ * * lum_min - A value between 0 and 1, minimum luminescence of the color in the HSL space
+ */
+/proc/colorize_string(name, seed, sat_shift = 1, lum_shift = 1, sat_max = 0.75, sat_min = 0.6, lum_max = 0.75, lum_min = 0.65)
+	// seed to help randomness
+	var/static/rseed = rand(1,26)
+
+	if(!seed)
+		seed = rseed
+
+	// get hsl using the selected 6 characters of the md5 hash
+	var/hash = copytext(md5(name + GLOB.round_id), seed, seed + 6)
+	var/h = hex2num(copytext(hash, 1, 3)) * (360 / 255)
+	var/s = (hex2num(copytext(hash, 3, 5)) >> 2) * ((sat_max - sat_min) / 63) + sat_min
+	var/l = (hex2num(copytext(hash, 5, 7)) >> 2) * ((lum_max - lum_min) / 63) + lum_min
+
+	// adjust for shifts
+	s *= clamp(sat_shift, 0, 1)
+	l *= clamp(lum_shift, 0, 1)
+
+	// convert to rgb
+	var/h_int = round(h/60) // mapping each section of H to 60 degree sections
+	var/c = (1 - abs(2 * l - 1)) * s
+	var/x = c * (1 - abs((h / 60) % 2 - 1))
+	var/m = l - c * 0.5
+	x = (x + m) * 255
+	c = (c + m) * 255
+	m *= 255
+	switch(h_int)
+		if(0)
+			return "#[num2hex(c, 2)][num2hex(x, 2)][num2hex(m, 2)]"
+		if(1)
+			return "#[num2hex(x, 2)][num2hex(c, 2)][num2hex(m, 2)]"
+		if(2)
+			return "#[num2hex(m, 2)][num2hex(c, 2)][num2hex(x, 2)]"
+		if(3)
+			return "#[num2hex(m, 2)][num2hex(x, 2)][num2hex(c, 2)]"
+		if(4)
+			return "#[num2hex(x, 2)][num2hex(m, 2)][num2hex(c, 2)]"
+		if(5)
+			return "#[num2hex(c, 2)][num2hex(m, 2)][num2hex(x, 2)]"

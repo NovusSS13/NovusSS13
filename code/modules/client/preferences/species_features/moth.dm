@@ -14,18 +14,21 @@
 	var/static/icon/moth_head
 
 	if (isnull(moth_head))
-		moth_head = icon('icons/mob/species/moth/bodyparts.dmi', "moth_head")
-		moth_head.Blend(icon('icons/mob/species/human/human_face.dmi', "motheyes_l"), ICON_OVERLAY)
-		moth_head.Blend(icon('icons/mob/species/human/human_face.dmi', "motheyes_r"), ICON_OVERLAY)
+		moth_head = icon('icons/mob/species/moth/bodyparts.dmi', "moth_head", SOUTH)
+		moth_head.Blend(icon('icons/mob/species/sprite_accessory/human_face.dmi', "motheyes_l", SOUTH), ICON_OVERLAY)
+		moth_head.Blend(icon('icons/mob/species/sprite_accessory/human_face.dmi', "motheyes_r", SOUTH), ICON_OVERLAY)
 
-	var/datum/sprite_accessory/antennae = GLOB.moth_antennae_list[value]
+	var/datum/sprite_accessory/sprite_accessory = GLOB.moth_antennae_list[value]
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
+		return moth_head
 
-	var/icon/icon_with_antennae = new(moth_head)
-	icon_with_antennae.Blend(icon(antennae.icon, "m_moth_antennae_[antennae.icon_state]_FRONT"), ICON_OVERLAY)
-	icon_with_antennae.Scale(64, 64)
-	icon_with_antennae.Crop(15, 64, 15 + 31, 64 - 31)
+	var/icon/final_icon = new(moth_head)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/antennae, sprite_accessory, dir = SOUTH)
 
-	return icon_with_antennae
+	final_icon.Scale(64, 64)
+	final_icon.Crop(15, 64, 15 + 31, 64 - 31)
+
+	return final_icon
 
 /datum/preference/choiced/mutant/moth_wings
 	savefile_key = "feature_moth_wings"
@@ -40,7 +43,19 @@
 	return assoc_to_keys_features(GLOB.moth_wings_list)
 
 /datum/preference/choiced/mutant/moth_wings/icon_for(value)
-	var/datum/sprite_accessory/moth_wings = GLOB.moth_wings_list[value]
-	var/icon/final_icon = icon(moth_wings.icon, "m_moth_wings_[moth_wings.icon_state]_BEHIND")
-	final_icon.Blend(icon(moth_wings.icon, "m_moth_wings_[moth_wings.icon_state]_FRONT"), ICON_OVERLAY)
+	var/static/icon/moth_chest
+
+	if (isnull(moth_chest))
+		moth_chest = icon('icons/mob/species/moth/bodyparts.dmi', "moth_chest_m", NORTH)
+
+	var/datum/sprite_accessory/sprite_accessory = GLOB.moth_wings_list[value]
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
+		return moth_chest
+
+	var/icon/final_icon = new(moth_chest)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/wings/moth, sprite_accessory, dir = NORTH)
+
+	final_icon.Crop(10, 1, 22, 13)
+	final_icon.Scale(32, 32)
+
 	return final_icon

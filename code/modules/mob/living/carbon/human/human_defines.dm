@@ -4,7 +4,7 @@
 	real_name = "Unknown"
 	icon = 'icons/mob/species/human/human.dmi'
 	icon_state = "human_basic"
-	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE
+	appearance_flags = KEEP_TOGETHER|TILE_BOUND|LONG_GLIDE
 	hud_possible = list(HEALTH_HUD,STATUS_HUD,ID_HUD,WANTED_HUD,IMPLOYAL_HUD,IMPCHEM_HUD,IMPTRACK_HUD,ANTAG_HUD,GLAND_HUD,SENTIENT_DISEASE_HUD,FAN_HUD)
 	hud_type = /datum/hud/human
 	pressure_resistance = 25
@@ -44,10 +44,10 @@
 	var/physique = MALE
 
 	//consider updating /mob/living/carbon/human/copy_clothing_prefs() if adding more of these
-	var/underwear = "Nude" //Which underwear the player wants
+	var/underwear = SPRITE_ACCESSORY_NONE //Which underwear the player wants
 	var/underwear_color = "#000000"
-	var/undershirt = "Nude" //Which undershirt the player wants
-	var/socks = "Nude" //Which socks the player wants
+	var/undershirt = SPRITE_ACCESSORY_NONE //Which undershirt the player wants
+	var/socks = SPRITE_ACCESSORY_NONE //Which socks the player wants
 	var/backpack = PREF_DEP_BACKPACK //Which backpack type the player has chosen.
 	var/jumpsuit_style = PREF_SUIT //suit/skirt
 

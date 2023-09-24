@@ -9,7 +9,7 @@
 /datum/preference/choiced/body_type/init_possible_values()
 	return list(USE_GENDER, MALE, FEMALE)
 
-/datum/preference/choiced/body_type/create_default_value()
+/datum/preference/choiced/body_type/create_default_value(datum/preferences/preferences)
 	return USE_GENDER
 
 /datum/preference/choiced/body_type/apply_to_human(mob/living/carbon/human/target, value)

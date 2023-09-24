@@ -15,6 +15,10 @@
 	///Take on the dna/preference from whoever we're gonna be inserted in
 	var/imprint_on_next_insertion = TRUE
 
+///Can't draw shit without a sprite accessory
+/datum/bodypart_overlay/mutant/can_draw_on_bodypart(obj/item/bodypart/ownerlimb)
+	return ..() && sprite_datum
+
 ///Completely random image and color generation (obeys what a player can choose from)
 /datum/bodypart_overlay/mutant/proc/randomize_appearance()
 	randomize_sprite()
@@ -76,15 +80,44 @@
 	var/list/icon_state_builder = get_icon_state(layer, limb)
 	var/finished_icon_state = icon_state_builder.Join("_")
 
-	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
+	var/list/appearances = list()
+	///here comes some truly bullshit coloring code
+	if(sprite_datum.color_amount <= 1)
+		var/mutable_appearance/final_appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
+		if(sprite_datum.center)
+			center_image(final_appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
+		appearances += final_appearance
+	else
+		for(var/index in 1 to sprite_datum.color_amount)
+			var/suffix = LAZYACCESS(GLOB.external_color_suffixes, index)
+			if(!suffix)
+				stack_trace("[sprite_datum.type] had a color amount bigger than GLOB.external_color_suffixes! ([sprite_datum.color_amount])]")
+				break
+			var/mutable_appearance/overlay = mutable_appearance(sprite_datum.icon, "[finished_icon_state]_[suffix]", layer = layer)
+			if(sprite_datum.center)
+				center_image(overlay, sprite_datum.dimension_x, sprite_datum.dimension_y)
+			appearances += overlay
 
-	if(sprite_datum.center)
-		center_image(appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
-
-	return appearance
+	return appearances
 
 /datum/bodypart_overlay/mutant/color_image(image/overlay, layer, obj/item/bodypart/limb)
-	overlay.color = sprite_datum.color_amount ? draw_color : null
+	//nothing to be colored
+	if(!draw_color || !sprite_datum.color_amount)
+		return
+	//its a list of images
+	var/list/sane_draw_color = list()
+	var/default
+	if(islist(draw_color))
+		default = sanitize_hexcolor(draw_color[length(draw_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+		sane_draw_color = draw_color
+	else
+		default = sanitize_hexcolor(draw_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+		sane_draw_color = list(draw_color)
+	sane_draw_color.len = 3
+	sane_draw_color = sanitize_hexcolor_list(sane_draw_color, DEFAULT_HEX_COLOR_LEN, TRUE, default)
+	for(var/index in 1 to min(sprite_datum.color_amount, length(overlay)))
+		var/image/appearance = overlay[index]
+		appearance.color = sane_draw_color[index]
 
 /datum/bodypart_overlay/mutant/added_to_limb(obj/item/bodypart/limb)
 	inherit_color(limb)
@@ -119,11 +152,12 @@
 	var/base_icon_state = get_base_icon_state()
 	if(base_icon_state)
 		. += "[get_base_icon_state()]"
-	if(islist(draw_color))
-		for(var/subcolor in draw_color)
-			. += "[subcolor]"
-	else
-		. += "[draw_color]"
+	if(sprite_datum.color_amount > 0)
+		if(islist(draw_color))
+			for(var/subcolor in draw_color)
+				. += "[subcolor]"
+		else
+			. += "[draw_color]"
 	return .
 
 ///Return a dumb glob list for this specific feature (called from parse_sprite)
@@ -218,7 +252,7 @@
 			var/list/validated_color = given_color
 			validated_color = validated_color.Copy()
 			var/last_color_element = sanitize_hexcolor(validated_color[length(validated_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
-			validated_color.len = sprite_datum.color_amount
+			validated_color.len = 3
 			return sanitize_hexcolor_list(validated_color, DEFAULT_HEX_COLOR_LEN, TRUE, last_color_element)
 		//repeat the same color as needed otherwise
 		var/sanitized_color = sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
@@ -229,9 +263,9 @@
 	//return a string otherwise
 	//take and sanitize only the first color if it's a matrix
 	if(islist(given_color))
-		return sanitize_hexcolor(given_color[1], 6, TRUE, "#FFFFFF")
+		return sanitize_hexcolor(given_color[1], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 	//just sanitize normally otherwise
-	return sanitize_hexcolor(given_color, 6, TRUE, "#FFFFFF")
+	return sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 
 ///Sprite accessories are singletons, stored list("Big Snout" = instance of /datum/sprite_accessory/snout/big), so here we get that singleton
 /datum/bodypart_overlay/mutant/proc/fetch_sprite_datum(datum/sprite_accessory/accessory_path)
@@ -242,43 +276,3 @@
 /datum/bodypart_overlay/mutant/proc/fetch_sprite_datum_from_name(accessory_name)
 	var/list/feature_list = get_global_feature_list()
 	return feature_list[accessory_name]
-
-/**
- * Simple mutant bodypart overlay that doesn't rely on organs
- * Requires feature_key and feature_key_color to be set on new, or manually
- */
-/datum/bodypart_overlay/mutant/marking
-	layers = EXTERNAL_ADJACENT
-	color_source = ORGAN_COLOR_DNA
-	/// Body zone we are currently on, VERY IMPORTANT otherwise we won't get the proper markings list we want to use!
-	var/body_zone
-
-/datum/bodypart_overlay/mutant/marking/New(body_zone, feature_key, feature_color_key, color_source)
-	. = ..()
-	src.body_zone = body_zone
-	src.feature_key = feature_key
-	src.feature_color_key = feature_color_key
-	if(color_source)
-		src.color_source = color_source
-
-/datum/bodypart_overlay/mutant/marking/get_icon_feature_key()
-	return "markings"
-
-/datum/bodypart_overlay/mutant/marking/get_base_icon_state()
-	return  sprite_datum.icon_state + "[body_zone ? "_[body_zone]" : null]"
-
-/datum/bodypart_overlay/mutant/marking/get_global_feature_list()
-	if(body_zone)
-		return GLOB.body_markings_by_zone[body_zone]
-	return GLOB.body_markings
-
-/// Update our features after something changed our appearance (if we have an actual feature key)
-/datum/bodypart_overlay/mutant/marking/proc/mutate_features(list/features, obj/item/bodypart/bodypart, mob/living/carbon/human/human)
-	if(!feature_key && !feature_color_key)
-		return FALSE
-
-	var/marking_name = features[feature_key]
-	if(marking_name && (marking_name != SPRITE_ACCESSORY_NONE))
-		set_appearance_from_name(marking_name)
-	inherit_color(bodypart, TRUE)
-	return TRUE

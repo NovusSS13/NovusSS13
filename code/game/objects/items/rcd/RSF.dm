@@ -131,7 +131,6 @@ RSF
 	. = ..()
 	if(!proximity)
 		return .
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if (!is_allowed(A))
 		return .
 	if(use_matter(dispense_cost, user))//If we can charge that amount of charge, we do so and return true

@@ -1,10 +1,11 @@
 import { useBackend } from '../../backend';
 import { Stack } from '../../components';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
-import { PreferencesMenuData, RandomSetting } from './data';
+import { PreferencesMenuData, RandomSetting, ServerData } from './data';
 import { filterMap } from 'common/collections';
 import { useRandomToggleState } from './useRandomToggleState';
 import { PreferenceList, CLOTHING_CELL_SIZE, CLOTHING_SIDEBAR_ROWS } from './MainPage';
+import { CharacterPreview, RotateButtons } from '../common/CharacterPreview';
 
 export const BackgroundPage = (props, context) => {
   const { act, data } = useBackend<PreferencesMenuData>(context);
@@ -13,16 +14,17 @@ export const BackgroundPage = (props, context) => {
 
   return (
     <ServerPreferencesFetcher
-      render={(serverData) => {
+      render={(serverData: ServerData | null) => {
         const currentSpeciesData =
-          serverData &&
-          serverData.species[data.character_preferences.misc.species];
+          serverData?.species[data.character_preferences.misc.species];
 
         const contextualPreferences =
           data.character_preferences.secondary_features || [];
 
         const mainFeatures = [
-          ...Object.entries(data.character_preferences.clothing),
+          ...((data.character_preferences.clothing &&
+            Object.entries(data.character_preferences.clothing)) ||
+            []),
           ...Object.entries(data.character_preferences.features).filter(
             ([featureName]) => {
               if (!currentSpeciesData) {
@@ -79,6 +81,27 @@ export const BackgroundPage = (props, context) => {
         return (
           <Stack
             height={`${CLOTHING_SIDEBAR_ROWS * CLOTHING_CELL_SIZE * 1.25}px`}>
+            <Stack.Item fill>
+              <Stack vertical fill>
+                <Stack.Item grow>
+                  <CharacterPreview
+                    height="100%"
+                    id={data.character_preview_view}
+                  />
+                </Stack.Item>
+
+                <Stack.Item>
+                  <RotateButtons
+                    handleRotateLeft={() => {
+                      act('rotate', { direction: -1 });
+                    }}
+                    handleRotateRight={() => {
+                      act('rotate', { direction: 1 });
+                    }}
+                  />
+                </Stack.Item>
+              </Stack>
+            </Stack.Item>
             <PreferenceList
               act={act}
               randomizations={getRandomization(backgroundPreferences)}

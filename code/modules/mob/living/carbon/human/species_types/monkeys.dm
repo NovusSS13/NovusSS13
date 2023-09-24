@@ -3,6 +3,14 @@
 /datum/species/monkey
 	name = "Monkey"
 	id = SPECIES_MONKEY
+	bodypart_overrides = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/monkey,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/monkey,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/monkey,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/monkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/monkey,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/monkey,
+	)
 	cosmetic_organs = list(
 		/obj/item/organ/tail/monkey = "Monkey",
 	)
@@ -25,22 +33,12 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/monkey
 
-	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/monkey,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/monkey,
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/monkey,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/monkey,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/monkey,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/monkey,
-	)
 	fire_overlay = "monkey"
 	dust_anim = "dust-m"
 	gib_anim = "gibbed-m"
 
 	payday_modifier = 1.5
 	ai_controlled_species = TRUE
-
-
 
 /datum/species/monkey/random_name(gender,unique,lastname)
 	var/randname = "monkey ([rand(1,999)])"

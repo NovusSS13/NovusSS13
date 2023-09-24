@@ -17,18 +17,6 @@
 
 	return final_color
 
-///Returns a random color picked from a list, has 2 modes (0 and 1), mode 1 doesn't pick white, black or gray
-/proc/random_colour(mode = 0)
-	switch(mode)
-		if(0)
-			return pick("white","black","gray","red","green","blue","brown","yellow","orange","darkred",
-						"crimson","lime","darkgreen","cyan","navy","teal","purple","indigo")
-		if(1)
-			return pick("red","green","blue","brown","yellow","orange","darkred","crimson",
-						"lime","darkgreen","cyan","navy","teal","purple","indigo")
-		else
-			return "white"
-
 ///Inverts the colour of an HTML string
 /proc/invert_HTML_colour(HTMLstring)
 	if(!istext(HTMLstring))

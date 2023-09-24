@@ -19,19 +19,23 @@ GLOBAL_LIST_EMPTY(undershirt_f)  //stores only undershirt name
 	//Socks
 GLOBAL_LIST_EMPTY(socks_list) //stores /datum/sprite_accessory/socks indexed by name
 	//Lizard Bits (all datum lists indexed by name)
-GLOBAL_LIST_EMPTY(snouts_list)
 GLOBAL_LIST_EMPTY(horns_list)
+GLOBAL_LIST_EMPTY(horns_list_lizard)
 GLOBAL_LIST_EMPTY(frills_list)
+GLOBAL_LIST_EMPTY(frills_list_lizard)
 GLOBAL_LIST_EMPTY(spines_list)
-GLOBAL_LIST_EMPTY(animated_spines_list)
-GLOBAL_LIST_EMPTY(legs_list)
+GLOBAL_LIST_EMPTY(spines_list_lizard)
 
 	//Mutant Human bits
+GLOBAL_LIST_EMPTY(snouts_list)
+GLOBAL_LIST_EMPTY(snouts_list_lizard)
+GLOBAL_LIST_EMPTY(legs_list)
 GLOBAL_LIST_EMPTY(tails_list)
 GLOBAL_LIST_EMPTY(tails_list_monkey)
-GLOBAL_LIST_EMPTY(tails_list_human) //Only exists for preference choices. Use "tails_list" otherwise.
-GLOBAL_LIST_EMPTY(tails_list_lizard) //See above!
+GLOBAL_LIST_EMPTY(tails_list_human)
+GLOBAL_LIST_EMPTY(tails_list_lizard)
 GLOBAL_LIST_EMPTY(ears_list)
+GLOBAL_LIST_EMPTY(ears_list_human)
 GLOBAL_LIST_EMPTY(wings_list)
 GLOBAL_LIST_EMPTY(wings_open_list)
 GLOBAL_LIST_EMPTY(moth_wings_list)
@@ -75,6 +79,17 @@ GLOBAL_LIST_INIT(genital_visibility_list, list(
 	"Always hidden" = GENITAL_VISIBILITY_NEVER,
 	"Hidden behind clothing" = GENITAL_VISIBILITY_CLOTHING,
 	"Always visible" = GENITAL_VISIBILITY_ALWAYS,
+))
+
+	//Custom bodypart icon selection
+GLOBAL_LIST_INIT(pref_bodypart_names, list(
+	"Mutant" = SPECIES_MUTANT,
+	"Lizard" = SPECIES_LIZARD,
+))
+
+GLOBAL_LIST_INIT(pref_bodypart_id_to_icon, list(
+	SPECIES_MUTANT = 'icons/mob/species/mutant/mutant_bodyparts.dmi',
+	SPECIES_LIZARD = 'icons/mob/species/lizard/bodyparts.dmi',
 ))
 
 	//Markings

@@ -33,10 +33,7 @@
 /obj/item/dna_probe/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
 	if(!proximity_flag || !target)
-		return .
-
-	if (isitem(target))
-		. |= AFTERATTACK_PROCESSED_ITEM
+		return
 
 	if(istype(target, /obj/machinery/dna_vault) && !dna_vault_ref?.resolve())
 		try_linking_vault(target, user)

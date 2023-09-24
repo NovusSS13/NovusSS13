@@ -48,6 +48,7 @@ export type Species = {
   sexes: BooleanLike;
 
   enabled_features: string[];
+  is_selectable: BooleanLike;
 
   perks: {
     positive: Perk[];
@@ -90,20 +91,37 @@ export type QuirkInfo = {
   quirk_blacklist: string[][];
 };
 
+export type GhostRole = {
+  slot_name: string;
+  savefile_key: string;
+  forced_species: string;
+  barebones_spawn: BooleanLike;
+};
+
 export type Marking = {
   name: string;
+  icon: string;
   color: string;
-  marking_index: string;
   color_amount: number;
+  marking_index: string;
+};
+
+export type MarkingChoice = {
+  name: string;
+  icon: string;
 };
 
 export type MarkingZone = {
   body_zone: string;
   name: string;
-  markings_choices: string[];
-  markings_icons: string[];
+  markings_choices: MarkingChoice[];
   markings: Marking[];
   cant_add_markings: boolean;
+};
+
+export type MarkingSet = {
+  name: string;
+  icon: string;
 };
 
 export enum RandomSetting {
@@ -139,10 +157,10 @@ export enum Window {
 
 export type PreferencesMenuData = {
   character_preview_view: string;
-  character_profiles: (string | null)[];
+  character_profiles: Record<string, string[]>;
 
   character_preferences: {
-    clothing: Record<string, string>;
+    clothing: Record<string, string> | null;
     features: Record<string, string>;
     game_preferences: Record<string, unknown>;
     non_contextual: {
@@ -164,6 +182,7 @@ export type PreferencesMenuData = {
     randomization: Record<string, RandomSetting>;
   };
 
+  is_guest: BooleanLike;
   content_unlocked: BooleanLike;
 
   job_bans?: string[];
@@ -183,13 +202,17 @@ export type PreferencesMenuData = {
 
   marking_parts: MarkingZone[];
   maximum_markings_per_limb: number;
-  body_marking_sets: string[];
+  body_marking_sets: MarkingSet[];
 
   antag_bans?: string[];
   antag_days_left?: Record<string, number>;
   selected_antags: string[];
 
-  active_slot: number;
+  active_slot_ids: Record<string, number>;
+  active_slot_key: string;
+  max_slots_main: number;
+  max_slots_ghost: number;
+
   name_to_use: string;
 
   window: Window;
@@ -208,5 +231,7 @@ export type ServerData = {
     randomizable: string[];
   };
   species: Record<string, Species>;
+  ghost_role_data: Record<string, GhostRole>;
+
   [otheyKey: string]: unknown;
 };

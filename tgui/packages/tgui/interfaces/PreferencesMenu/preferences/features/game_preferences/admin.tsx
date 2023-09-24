@@ -48,3 +48,9 @@ export const comms_notification: FeatureToggle = {
   category: 'ADMIN',
   component: CheckboxInput,
 };
+
+export const mute_looc_admin: FeatureToggle = {
+  name: 'Mute Admin LOOC',
+  category: 'ADMIN',
+  component: CheckboxInput,
+};

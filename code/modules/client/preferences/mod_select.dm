@@ -7,7 +7,7 @@
 /datum/preference/choiced/mod_select/init_possible_values()
 	return list(MIDDLE_CLICK, ALT_CLICK)
 
-/datum/preference/choiced/mod_select/create_default_value()
+/datum/preference/choiced/mod_select/create_default_value(datum/preferences/preferences)
 	return MIDDLE_CLICK
 
 /datum/preference/choiced/mod_select/apply_to_client_updated(client/client, value)

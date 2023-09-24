@@ -6,7 +6,7 @@
 	minimum = 0
 	maximum = 5000
 
-/datum/preference/numeric/tooltip_delay/create_default_value()
+/datum/preference/numeric/tooltip_delay/create_default_value(datum/preferences/preferences)
 	return 500
 
 /datum/preference/toggle/enable_tooltips

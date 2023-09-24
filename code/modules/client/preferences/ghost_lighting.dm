@@ -11,7 +11,7 @@ GLOBAL_LIST_INIT(ghost_lighting_options, list(
 	savefile_key = "ghost_lighting"
 	savefile_identifier = PREFERENCE_PLAYER
 
-/datum/preference/choiced/ghost_lighting/create_default_value()
+/datum/preference/choiced/ghost_lighting/create_default_value(datum/preferences/preferences)
 	return "Darker"
 
 /datum/preference/choiced/ghost_lighting/init_possible_values()

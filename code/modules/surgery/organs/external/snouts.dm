@@ -2,6 +2,7 @@
 /obj/item/organ/snout
 	name = "snout"
 	desc = "Take a closer look at that snout!"
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "snout"
 
 	zone = BODY_ZONE_HEAD
@@ -18,7 +19,7 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/snout
 
 /datum/bodypart_overlay/mutant/snout
-	layers = EXTERNAL_ADJACENT
+	layers = EXTERNAL_ADJACENT | EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_DNA
 	feature_key = "snout"
 	feature_color_key = "snout_color"
@@ -32,11 +33,20 @@
 /datum/bodypart_overlay/mutant/snout/get_global_feature_list()
 	return GLOB.snouts_list
 
+/obj/item/organ/snout/mutant
+	name = "mutant snout"
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/snout/mutant
+
+/datum/bodypart_overlay/mutant/snout/mutant
+
 /// A lizard's snout
 /obj/item/organ/snout/lizard
 	name = "lizard snout"
-	preference = "feature_lizard_snout"
 
-	bodypart_overlay = /datum/bodypart_overlay/mutant/snout
+	bodypart_overlay = /datum/bodypart_overlay/mutant/snout/lizard
 
-/datum/bodypart_overlay/mutant/snout
+/datum/bodypart_overlay/mutant/snout/lizard
+
+/datum/bodypart_overlay/mutant/snout/lizard/get_global_feature_list()
+	return GLOB.snouts_list_lizard

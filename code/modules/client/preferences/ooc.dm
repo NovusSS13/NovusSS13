@@ -4,7 +4,7 @@
 	savefile_key = "ooccolor"
 	savefile_identifier = PREFERENCE_PLAYER
 
-/datum/preference/color/ooc_color/create_default_value()
+/datum/preference/color/ooc_color/create_default_value(datum/preferences/preferences)
 	return "#c43b23"
 
 /datum/preference/color/ooc_color/is_accessible(datum/preferences/preferences)
@@ -13,10 +13,8 @@
 
 	return is_admin(preferences.parent) || preferences.unlock_content
 
-
-/// Whether or not to display when a player logs in or out.
-/datum/preference/toggle/display_login_logout
+/datum/preference/toggle/mute_looc
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
-	savefile_key = "display_login_logout"
+	savefile_key = "mute_looc"
 	savefile_identifier = PREFERENCE_PLAYER
-
+	default_value = FALSE

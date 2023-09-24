@@ -10,7 +10,7 @@
 	icon_state = "mannequin_wood_male"
 	density = TRUE
 	resistance_flags = FLAMMABLE
-	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE
+	appearance_flags = KEEP_TOGETHER | TILE_BOUND | LONG_GLIDE
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 	pixel_y = 3
 	base_pixel_y = 3

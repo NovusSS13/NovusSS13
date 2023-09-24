@@ -60,6 +60,9 @@
 	if (!preference.is_randomizable())
 		return FALSE
 
+	if(!preference.is_accessible(src))
+		return FALSE
+
 	var/requested_randomization = randomise[preference.savefile_key]
 
 	if (istype(preference, /datum/preference/name))

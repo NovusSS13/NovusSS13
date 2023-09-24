@@ -194,7 +194,6 @@
 
 /obj/item/fishing_rod/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
-	. |= AFTERATTACK_PROCESSED_ITEM
 
 	/// Reel in if able
 	if(currently_hooked_item)

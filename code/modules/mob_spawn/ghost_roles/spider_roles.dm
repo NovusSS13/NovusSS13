@@ -122,7 +122,7 @@
 			to_chat(user, span_warning("\The [src] is not ready to hatch yet!"))
 		return FALSE
 
-/obj/effect/mob_spawn/ghost_role/spider/special(mob/living/basic/giant_spider/spawned_mob, mob/mob_possessor)
+/obj/effect/mob_spawn/ghost_role/spider/special(mob/living/basic/giant_spider/spawned_mob)
 	spawned_mob.directive = directive
 	egg.spawner = null
 	QDEL_NULL(egg)
@@ -163,16 +163,7 @@
 	)
 	flash_window = TRUE
 
-/**
- * Makes a ghost into a spider based on the type of egg cluster.
- *
- * Allows a ghost to get a prompt to use the egg cluster to become a spider.
- *
- * Arguments:
- * * user - The ghost attempting to become a spider
- * * newname - If set, renames the mob to this name
- */
-/obj/effect/mob_spawn/ghost_role/spider/create(mob/user, newname)
+/obj/effect/mob_spawn/ghost_role/spider/create_mob(mob/user, load_custom_char)
 	var/list/spider_list = list()
 	var/list/display_spiders = list()
 	for(var/choice in potentialspawns)
@@ -197,5 +188,5 @@
 	chosen_spider = spider_list[chosen_spider]
 	if(QDELETED(src) || QDELETED(user) || !chosen_spider)
 		return FALSE
-	mob_type = chosen_spider
-	return ..()
+
+	return new chosen_spider(get_turf(src))

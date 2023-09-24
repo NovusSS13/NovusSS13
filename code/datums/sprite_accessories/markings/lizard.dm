@@ -1,8 +1,8 @@
 /datum/sprite_accessory/body_markings/lizard
-	icon = 'icons/mob/species/lizard/lizard_misc.dmi'
+	icon = 'icons/mob/species/lizard/lizard_features.dmi'
 	gender_specific = TRUE
 	allowed_bodyparts = CHEST
-	compatible_species = list(/datum/species/lizard)
+	compatible_species = list(/datum/species/lizard, /datum/species/mutant)
 
 /datum/sprite_accessory/body_markings/lizard/dtiger
 	name = "Dark Tiger Body"

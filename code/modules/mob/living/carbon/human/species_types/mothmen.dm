@@ -19,6 +19,20 @@
 		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
 	)
+	body_marking_sets = list(
+		"Reddish",
+		"Royal",
+		"White Fly",
+		"Lovers",
+		"Firewatch",
+		"Deathshead",
+		"Poison",
+		"Ragged",
+		"Moon Fly",
+		"Oak Worm",
+		"Jungle",
+		"Witch Wing",
+	)
 	meat = /obj/item/food/meat/slab/human/mutant/moth
 	mutanttongue = /obj/item/organ/tongue/moth
 	mutanteyes = /obj/item/organ/eyes/moth

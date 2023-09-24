@@ -40,7 +40,6 @@
 	. = ..()
 	if(!proximity)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(!check_sprite(target))
 		return
 	if(active_dummy)//I now present you the blackli(f)st

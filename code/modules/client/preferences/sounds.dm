@@ -47,7 +47,7 @@
 	minimum = 0
 	maximum = 100
 
-/datum/preference/numeric/sound_tts_volume/create_default_value()
+/datum/preference/numeric/sound_tts_volume/create_default_value(datum/preferences/preferences)
 	return maximum
 
 /// Controls hearing dance machines

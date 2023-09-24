@@ -17,7 +17,7 @@
 
 	return icon
 
-/datum/preference/choiced/ui_style/create_default_value()
+/datum/preference/choiced/ui_style/create_default_value(datum/preferences/preferences)
 	return GLOB.available_ui_styles[1]
 
 /datum/preference/choiced/ui_style/apply_to_client(client/client, value)

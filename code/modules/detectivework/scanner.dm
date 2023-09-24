@@ -81,7 +81,6 @@
 /obj/item/detective_scanner/afterattack(atom/A, mob/user, params)
 	. = ..()
 	safe_scan(user, atom_to_scan = A)
-	return . | AFTERATTACK_PROCESSED_ITEM
 
 /**
  * safe_scan - a wrapper proc for scan()

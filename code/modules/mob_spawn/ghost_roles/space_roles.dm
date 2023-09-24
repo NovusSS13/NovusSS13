@@ -111,6 +111,7 @@
 	outfit = /datum/outfit/syndicate_empty/battlecruiser
 	spawner_job_path = /datum/job/battlecruiser_crew
 	uses = 4
+	customization_type = /datum/offstation_customization/syndicate_battlecruiser
 
 	/// The antag team to apply the player to
 	var/datum/team/antag_team

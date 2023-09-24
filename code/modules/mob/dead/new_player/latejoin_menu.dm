@@ -40,11 +40,13 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 
 /datum/latejoin_menu/ui_data(mob/user)
 	var/mob/dead/new_player/owner = user
+	var/datum/preferences/prefs = GLOB.preferences_datums[user.ckey]
 	var/list/departments = list()
 	var/list/data = list(
 		"disable_jobs_for_non_observers" = SSlag_switch.measures[DISABLE_NON_OBSJOBS],
 		"round_duration" = DisplayTimeText(world.time - SSticker.round_start_time, round_seconds_to = 1),
 		"departments" = departments,
+		"loaded_char" = prefs.read_preference(/datum/preference/name/real_name, prefs.current_ids["main"], "main")
 	)
 	if(SSshuttle.emergency)
 		switch(SSshuttle.emergency.mode)

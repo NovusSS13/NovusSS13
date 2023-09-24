@@ -63,10 +63,10 @@
 	name = "penis"
 	desc = "A male reproductive organ."
 	icon = 'icons/obj/medical/organs/genitals/penis.dmi'
+	icon_state = "human_2_s"
 
 	dna_block = DNA_PENIS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/penis
-	preference = "feature_penis"
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_PENIS
@@ -111,7 +111,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != "Nude"))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
 			return FALSE
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
@@ -126,10 +126,10 @@
 	name = "testicles"
 	desc = "A male reproductive organ."
 	icon = 'icons/obj/medical/organs/genitals/testicles.dmi'
+	icon_state = "pair_2_s"
 
 	dna_block = DNA_TESTICLES_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/testicles
-	preference = "feature_testicles"
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_TESTICLES
@@ -141,7 +141,7 @@
 	return "a pair of [lowertext(GLOB.penis_size_names["[overlay.genital_size]"])] testicles"
 
 /datum/bodypart_overlay/mutant/genital/testicles
-	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
+	layers = EXTERNAL_BEHIND | EXTERNAL_ADJACENT
 	feature_key = "testicles"
 	feature_color_key = "testicles_color"
 
@@ -160,7 +160,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != "Nude"))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
 			return FALSE
 
 
@@ -168,13 +168,13 @@
 	name = "vagina"
 	desc = "A female reproductive organ."
 	icon = 'icons/obj/medical/organs/genitals/vagina.dmi'
-
-	dna_block = DNA_VAGINA_BLOCK
-	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/vagina
-	preference = "feature_vagina"
+	icon_state = "vagina_s"
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_VAGINA
+
+	dna_block = DNA_VAGINA_BLOCK
+	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/vagina
 
 /obj/item/organ/genital/vagina/update_icon_state()
 	. = ..()
@@ -210,7 +210,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != "Nude"))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
 			return FALSE
 
 
@@ -218,13 +218,14 @@
 	name = "breasts"
 	desc = "A female secondary sexual characteristic."
 	icon = 'icons/obj/medical/organs/genitals/breasts.dmi'
-
-	dna_block = DNA_BREASTS_BLOCK
-	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/breasts
-	preference = "feature_breasts"
+	icon_state = "breasts_pair_c_s"
 
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_BREASTS
+
+	dna_block = DNA_BREASTS_BLOCK
+	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/breasts
+
 
 /obj/item/organ/genital/breasts/mutate_features(list/features, mob/living/carbon/human/human)
 	. = ..()
@@ -271,5 +272,5 @@
 		if(owner.get_all_covered_flags() & CHEST)
 			return FALSE
 		//this is fucked man
-		if(owner.undershirt && (owner.undershirt != "Nude"))
+		if(owner.undershirt && (owner.undershirt != SPRITE_ACCESSORY_NONE))
 			return FALSE

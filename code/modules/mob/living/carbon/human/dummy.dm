@@ -104,15 +104,16 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["spines_color"] = COLOR_VIBRANT_LIME
 	target.dna.features["tail"] = get_consistent_feature_entry(GLOB.tails_list_human) // it's a lie
 	target.dna.features["tail_color"] = COLOR_VIBRANT_LIME
-	target.dna.features["moth_antennae"] = get_consistent_feature_entry(GLOB.moth_antennae_list)
 	target.dna.features["moth_wings"] = get_consistent_feature_entry(GLOB.moth_wings_list)
+	target.dna.features["moth_antennae"] = get_consistent_feature_entry(GLOB.moth_antennae_list)
+	target.dna.features["mushroom_caps"] = get_consistent_feature_entry(GLOB.mushroom_caps_list)
 	target.dna.features["pod_hair"] = get_consistent_feature_entry(GLOB.pod_hair_list)
 	for(var/zone in GLOB.marking_zones)
 		for(var/marking in 1 to MAXIMUM_MARKINGS_PER_LIMB)
 			var/marking_key = "marking_[zone]_[marking]"
 			var/marking_color_key = marking_key + "_color"
 			target.dna.features[marking_key] = SPRITE_ACCESSORY_NONE
-			target.dna.features[marking_color_key] = COLOR_VIBRANT_LIME
+			target.dna.features[marking_color_key] = COLOR_MAGENTA
 
 /// Provides a dummy that is consistently bald, white, naked, etc.
 /mob/living/carbon/human/dummy/consistent
@@ -173,7 +174,7 @@ GLOBAL_LIST_EMPTY(dummy_mob_list)
 	else
 		//even if target isn't a carbon, if they have a client we can make the
 		//dummy look like what their human would look like based on their prefs
-		target?.client?.prefs?.apply_prefs_to(copycat, TRUE)
+		target?.client?.prefs?.apply_prefs_to(copycat, icon_updates = TRUE)
 
 	return copycat
 

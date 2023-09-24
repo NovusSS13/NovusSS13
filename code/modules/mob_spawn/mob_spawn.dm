@@ -39,46 +39,16 @@
 		faction = string_list(faction)
 
 /// Creates whatever mob the spawner makes. Return FALSE if we want to exit from here without doing that, returning NULL will be logged to admins.
-/obj/effect/mob_spawn/proc/create(mob/mob_possessor, newname)
-	var/mob/living/spawned_mob = new mob_type(get_turf(src)) //living mobs only
-	name_mob(spawned_mob, newname)
+/obj/effect/mob_spawn/proc/spawn_mob(mob/mob_possessor, load_custom_char)
+	var/mob/living/spawned_mob = create_mob(mob_possessor, load_custom_char)
+	if(!load_custom_char)
+		name_mob(spawned_mob)
 	special(spawned_mob, mob_possessor)
 	equip(spawned_mob)
 	return spawned_mob
 
-/obj/effect/mob_spawn/proc/special(mob/living/spawned_mob)
-	SHOULD_CALL_PARENT(TRUE)
-	if(faction)
-		spawned_mob.faction = faction
-	if(ishuman(spawned_mob))
-		var/mob/living/carbon/human/spawned_human = spawned_mob
-		if(mob_species)
-			spawned_human.set_species(mob_species)
-		spawned_human.dna.species.give_important_for_life(spawned_human) // for preventing plasmamen from combusting immediately upon spawning
-		spawned_human.underwear = "Nude"
-		spawned_human.undershirt = "Nude"
-		spawned_human.socks = "Nude"
-		if(hairstyle)
-			spawned_human.hairstyle = hairstyle
-		else
-			spawned_human.hairstyle = random_hairstyle(spawned_human.gender)
-		if(facial_hairstyle)
-			spawned_human.facial_hairstyle = facial_hairstyle
-		else
-			spawned_human.facial_hairstyle = random_facial_hairstyle(spawned_human.gender)
-		if(haircolor)
-			spawned_human.hair_color = haircolor
-		else
-			spawned_human.hair_color = "#[random_color()]"
-		if(facial_haircolor)
-			spawned_human.facial_hair_color = facial_haircolor
-		else
-			spawned_human.facial_hair_color = "#[random_color()]"
-		if(skin_tone)
-			spawned_human.skin_tone = skin_tone
-		else
-			spawned_human.skin_tone = random_skin_tone()
-		spawned_human.update_body(is_creating = TRUE)
+/obj/effect/mob_spawn/proc/create_mob(mob/mob_possessor, load_custom_char)
+	return new mob_type(get_turf(src)) //living mobs only
 
 /obj/effect/mob_spawn/proc/name_mob(mob/living/spawned_mob, forced_name)
 	var/chosen_name
@@ -93,6 +63,31 @@
 		return
 	//not using an old name doesn't update records- but ghost roles don't have records so who cares
 	spawned_mob.fully_replace_character_name(null, chosen_name)
+
+/obj/effect/mob_spawn/proc/special(mob/living/spawned_mob)
+	SHOULD_CALL_PARENT(TRUE)
+	if(faction)
+		spawned_mob.faction = faction
+
+	var/mob/living/carbon/human/spawned_human = spawned_mob
+	if(!istype(spawned_human))
+		return
+
+	if(mob_species)
+		spawned_human.set_species(mob_species)
+
+	spawned_human.dna.species.give_important_for_life(spawned_human) // for preventing plasmamen from combusting immediately upon spawning
+	spawned_human.underwear = SPRITE_ACCESSORY_NONE
+	spawned_human.undershirt = SPRITE_ACCESSORY_NONE
+	spawned_human.socks = SPRITE_ACCESSORY_NONE
+
+	spawned_human.hairstyle = hairstyle || random_hairstyle(spawned_human.gender)
+	spawned_human.facial_hairstyle = facial_hairstyle || random_facial_hairstyle(spawned_human.gender)
+	spawned_human.hair_color = haircolor || "#[random_color()]"
+	spawned_human.facial_hair_color = facial_haircolor || "#[random_color()]"
+	spawned_human.skin_tone = skin_tone || random_skin_tone()
+
+	spawned_human.update_body(is_creating = TRUE)
 
 /obj/effect/mob_spawn/proc/equip(mob/living/spawned_mob)
 	if(outfit)
@@ -137,6 +132,8 @@
 	var/role_ban = ROLE_LAVALAND
 	/// Typepath indicating the kind of job datum this ghost role will have. PLEASE inherit this with a new job datum, it's not hard. jobs come with policy configs.
 	var/spawner_job_path = /datum/job/ghost_role
+	/// Typepath of the appropriate offstation_customization datum. Null if you can't use a custom character.
+	var/datum/offstation_customization/customization_type = null
 
 /obj/effect/mob_spawn/ghost_role/Initialize(mapload)
 	. = ..()
@@ -152,31 +149,54 @@
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /obj/effect/mob_spawn/ghost_role/attack_ghost(mob/dead/observer/user)
-	if(!SSticker.HasRoundStarted() || !loc)
+	if(!SSticker.HasRoundStarted())
 		return
 
 	// We don't open the prompt more than once at a time.
 	if(LAZYFIND(ckeys_trying_to_spawn, user.ckey))
 		return
 
+	if(uses <= 0 && !infinite_use) // Just in case something took longer than it should've and we got here after the uses went below zero.
+		to_chat(user, span_warning("This spawner is out of charges!"))
+		return
+
 	var/user_ckey = user.ckey // Just in case shenanigans happen, we always want to remove it from the list.
+	var/load_custom_char = FALSE
 	LAZYADD(ckeys_trying_to_spawn, user_ckey)
 
-	if(prompt_ghost)
-		var/prompt = "Become [prompt_name]?"
-		if(user.can_reenter_corpse && user.mind)
-			prompt += " (Warning, You can no longer be revived!)"
-		var/ghost_role = tgui_alert(usr, prompt, buttons = list("Yes", "No"), timeout = 10 SECONDS)
-		if(ghost_role != "Yes" || !loc || QDELETED(user))
+	input_handling:
+		if(!prompt_ghost)
+			break input_handling
+
+		var/input = tgui_alert(user, "Become [prompt_name]?", buttons = list("Yes", "No"), timeout = 10 SECONDS)
+		if(input != "Yes" || QDELETED(src) || QDELETED(user))
 			LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 			return
 
-	if(!(GLOB.ghost_role_flags & GHOSTROLE_SPAWNER) && !(flags_1 & ADMIN_SPAWNED_1))
-		to_chat(user, span_warning("An admin has temporarily disabled non-admin ghost roles!"))
+		if(!customization_type)
+			break input_handling
+
+		var/customization_key = initial(customization_type.savefile_key)
+		var/custom_char_id = user.client.prefs.current_ids[customization_key]
+		if(!custom_char_id)
+			break input_handling
+
+		var/custom_char_name = user.client.prefs.read_preference(/datum/preference/name/real_name, custom_char_id, customization_key)
+
+		input = tgui_alert(usr, "Load your custom character? ([custom_char_name])", buttons = list("Yes", "No", "Cancel"), timeout = 10 SECONDS)
+
+		if(input == "Yes")
+			load_custom_char = TRUE
+			break input_handling
+		if(input == "No")
+			break input_handling
+
+		//cancel/no input
 		LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 		return
-	if(uses <= 0 && !infinite_use) //just in case
-		to_chat(user, span_warning("This spawner is out of charges!"))
+
+	if(!(GLOB.ghost_role_flags & GHOSTROLE_SPAWNER) && !(flags_1 & ADMIN_SPAWNED_1))
+		to_chat(user, span_warning("An admin has temporarily disabled non-admin ghost roles!"))
 		LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 		return
 
@@ -184,10 +204,12 @@
 		to_chat(user, span_warning("You are banned from this role!"))
 		LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 		return
+
 	if(!allow_spawn(user, silent = FALSE))
 		LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 		return
-	if(QDELETED(src) || QDELETED(user))
+
+	if(QDELETED(src) || QDELETED(user) || !loc)
 		LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 		return
 
@@ -196,7 +218,7 @@
 		LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 		return
 
-	create_from_ghost(user)
+	create_from_ghost(user, load_custom_char)
 
 /**
  * Uses a use and creates a mob from a passed ghost
@@ -204,18 +226,18 @@
  * Does NOT validate that the spawn is possible or valid - assumes this has been done already!
  *
  * If you are manually forcing a player into this mob spawn,
- * you should be using this and not directly calling [proc/create].
+ * you should be using this and not directly calling [proc/spawn_mob].
  */
-/obj/effect/mob_spawn/ghost_role/proc/create_from_ghost(mob/dead/user)
+/obj/effect/mob_spawn/ghost_role/proc/create_from_ghost(mob/dead/user, load_custom_char = FALSE)
 	ASSERT(istype(user))
-	var/user_ckey = user.ckey // We need to do it before everything else, because after the create() the ckey will already have been transfered.
+	var/user_ckey = user.ckey // We need to do it before everything else, because after the spawn_mob() the ckey will already have been transfered.
 
 	user.log_message("became a [prompt_name].", LOG_GAME)
 	uses -= 1 // Remove a use before trying to spawn to prevent strangeness like the spawner trying to spawn more mobs than it should be able to
 	user.mind = null // dissassociate mind, don't let it follow us to the next life
 
-	var/created = create(user)
-	LAZYREMOVE(ckeys_trying_to_spawn, user_ckey) // We do this AFTER the create() so that we're basically sure that the user won't be in their ghost body anymore, so they can't click on the spawner again.
+	var/created = spawn_mob(user, load_custom_char)
+	LAZYREMOVE(ckeys_trying_to_spawn, user_ckey) // We do this AFTER the spawn_mob() so that we're basically sure that the user won't be in their ghost body anymore, so they can't click on the spawner again.
 
 	if(!created)
 		uses += 1 // Refund use because we didn't actually spawn anything
@@ -223,15 +245,30 @@
 		if(isnull(created)) // If we explicitly return FALSE instead of just not returning a mob, we don't want to spam the admins
 			CRASH("An instance of [type] didn't return anything when creating a mob, this might be broken!")
 
-	check_uses() // Now we check if the spawner should delete itself or not
+	if(!uses && deletes_on_zero_uses_left)
+		qdel(src)
 
 	return created
 
-/obj/effect/mob_spawn/ghost_role/create(mob/mob_possessor, newname)
+/obj/effect/mob_spawn/ghost_role/spawn_mob(mob/mob_possessor, load_custom_char)
 	if(!mob_possessor.key) // This is in the scenario that the server is somehow lagging, or someone fucked up their code, and we try to spawn the same person in twice. We'll simply not spawn anything and CRASH(), so that we report what happened.
 		CRASH("Attempted to create an instance of [type] with a mob that had no ckey attached to it, which isn't supported by ghost role spawners!")
 
 	return ..()
+
+/obj/effect/mob_spawn/ghost_role/create_mob(mob/mob_possessor, load_custom_char)
+	var/mob/living/carbon/human/spawned_mob = ..()
+	if(load_custom_char)
+		if(!istype(spawned_mob))
+			stack_trace("create_mob() called with load_custom_char set to true, but our spawned mob doesnt support custom characters!")
+			return spawned_mob
+
+		//absolutely no sanity checks. dont be stupid
+		var/datum/preferences/prefs = mob_possessor.client.prefs
+		var/char_key = initial(customization_type.savefile_key)
+		prefs.safe_transfer_prefs_to(spawned_mob, char_id = prefs.current_ids[char_key], char_key = char_key)
+
+	return spawned_mob
 
 
 /obj/effect/mob_spawn/ghost_role/special(mob/living/spawned_mob, mob/mob_possessor)
@@ -241,6 +278,7 @@
 			mob_possessor.mind.transfer_to(spawned_mob, force_key_move = TRUE)
 		else
 			spawned_mob.key = mob_possessor.key
+
 	var/datum/mind/spawned_mind = spawned_mob.mind
 	if(spawned_mind)
 		spawned_mob.mind.set_assigned_role_with_greeting(SSjob.GetJobType(spawner_job_path))
@@ -253,11 +291,6 @@
 		if(important_text != "")
 			output_message += "\n[span_userdanger("[important_text]")]"
 		to_chat(spawned_mob, output_message)
-
-/// Checks if the spawner has zero uses left, if so, delete yourself... NOW!
-/obj/effect/mob_spawn/ghost_role/proc/check_uses()
-	if(!uses && deletes_on_zero_uses_left)
-		qdel(src)
 
 ///override this to add special spawn conditions to a ghost role
 /obj/effect/mob_spawn/ghost_role/proc/allow_spawn(mob/user, silent = FALSE)
@@ -283,10 +316,10 @@
 		return
 	switch(spawn_when)
 		if(CORPSE_INSTANT)
-			INVOKE_ASYNC(src, PROC_REF(create))
+			INVOKE_ASYNC(src, PROC_REF(spawn_mob))
 		if(CORPSE_ROUNDSTART)
 			if(mapload || (SSticker && SSticker.current_state > GAME_STATE_SETTING_UP))
-				INVOKE_ASYNC(src, PROC_REF(create))
+				INVOKE_ASYNC(src, PROC_REF(spawn_mob))
 
 /obj/effect/mob_spawn/corpse/special(mob/living/spawned_mob)
 	. = ..()
@@ -295,7 +328,7 @@
 	spawned_mob.adjustBruteLoss(brute_damage)
 	spawned_mob.adjustFireLoss(burn_damage)
 
-/obj/effect/mob_spawn/corpse/create(mob/mob_possessor, newname)
+/obj/effect/mob_spawn/corpse/spawn_mob(mob/mob_possessor, load_custom_char)
 	. = ..()
 	qdel(src)
 

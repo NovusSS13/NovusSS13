@@ -37,7 +37,7 @@
 		return FALSE
 	return ..()
 
-/datum/preference/numeric/tts_voice_pitch/create_default_value()
+/datum/preference/numeric/tts_voice_pitch/create_default_value(datum/preferences/preferences)
 	return 0
 
 /datum/preference/numeric/tts_voice_pitch/apply_to_human(mob/living/carbon/human/target, value)

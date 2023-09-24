@@ -6,14 +6,6 @@
 	result = /obj/item/paper_bin/bundlenatural
 	category = CAT_MISC
 
-/datum/crafting_recipe/skeleton_key
-	name = "Skeleton Key"
-	time = 3 SECONDS
-	reqs = list(/obj/item/stack/sheet/bone = 5)
-	result = /obj/item/skeleton_key
-	always_available = FALSE
-	category = CAT_MISC
-
 /datum/crafting_recipe/coffee_cartridge
 	name = "Bootleg Coffee Cartridge"
 	result = /obj/item/coffee_cartridge/bootleg

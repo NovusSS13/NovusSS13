@@ -1,24 +1,29 @@
 /mob/living/carbon/human/examine(mob/user)
-//this is very slightly better than it was because you can use it more places. still can't do \his[src] though.
+	//this is very slightly better than it was because you can use it more places. still can't do \his[src] though.
 	var/t_He = p_they(TRUE)
 	var/t_His = p_their(TRUE)
 	var/t_his = p_their()
 	var/t_him = p_them()
 	var/t_has = p_have()
 	var/t_is = p_are()
-	var/obscure_name
-	var/obscure_examine
+	var/obscure_name = FALSE
+	var/obscure_examine = FALSE
+	var/obscure_species = FALSE
 
 	if(isliving(user))
-		var/mob/living/L = user
-		if(HAS_TRAIT(L, TRAIT_PROSOPAGNOSIA) || HAS_TRAIT(L, TRAIT_INVISIBLE_MAN))
+		if(HAS_TRAIT(user, TRAIT_PROSOPAGNOSIA))
 			obscure_name = TRUE
+		if(HAS_TRAIT(src, TRAIT_INVISIBLE_MAN))
+			obscure_name = TRUE
+			obscure_species = TRUE
 		if(HAS_TRAIT(src, TRAIT_UNKNOWN))
 			obscure_name = TRUE
 			obscure_examine = TRUE
+			obscure_species = TRUE
 
-	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM>!")
-
+	var/species_name = examine_panel?.custom_species_name || dna.species.name
+	species_name = span_color(species_name, dna.species.chat_color)
+	. = list("<span class='info'>This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "Human?" : "[species_name]!"]</EM>")
 	if(obscure_examine)
 		return list("<span class='warning'>You're struggling to make out any details...")
 
@@ -58,7 +63,7 @@
 		. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands."
 	else if(GET_ATOM_BLOOD_DNA_LENGTH(src))
 		if(num_hands)
-			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
+			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "]blood-stained hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed?
 	if(handcuffed)

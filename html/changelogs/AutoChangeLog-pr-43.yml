@@ -1,0 +1,6 @@
+author: "NullDagaf"
+delete-after: True
+changes:
+  - rscadd: "ghost roles now support custom characters"
+  - qol: "character setup now only shows character slots that are in use"
+  - code_imp: "touched up preferences code a tiny bit"

@@ -1,4 +1,17 @@
 /obj/item/bodypart
+	icon = 'icons/mob/species/human/bodyparts.dmi'
+	icon_state = "" //Leave this blank! Bodyparts are built using overlays
+	/// The icon for limbs using greyscale
+	VAR_PROTECTED/icon_greyscale = DEFAULT_BODYPART_ICON_ORGANIC
+	/// The icon for non-greyscale limbs
+	VAR_PROTECTED/icon_static = 'icons/mob/species/human/bodyparts.dmi'
+	/// The icon for husked limbs
+	VAR_PROTECTED/icon_husk = 'icons/mob/species/human/bodyparts.dmi'
+	/// The icon for invisible limbs
+	VAR_PROTECTED/icon_invisible = 'icons/mob/species/human/bodyparts.dmi'
+
+	layer = BELOW_MOB_LAYER //so it isn't hidden behind objects when on the floor
+
 	// States used in determining overlays for limb damage states. As the mob receives more burn/brute damage, their limbs update to reflect.
 	/// Current brute damage state, from 0 (intact) to 3 (max damage)
 	var/brutestate = 0
@@ -93,9 +106,9 @@
 	if(!standing.len)
 		icon_state = initial(icon_state)//no overlays found, we default back to initial icon.
 		return
-	for(var/image/img as anything in standing)
-		img.pixel_x = px_x
-		img.pixel_y = px_y
+	for(var/image/image in standing)
+		image.pixel_x = px_x
+		image.pixel_y = px_y
 	add_overlay(standing)
 
 /// Generates an /image for the limb to be used as an overlay
@@ -113,8 +126,12 @@
 		if(dmg_overlay_type)
 			if(brutestate)
 				. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
+				if(aux_zone)
+					. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[aux_zone]_[brutestate]0", -DAMAGE_HIGH_LAYER, image_dir)
 			if(burnstate)
 				. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
+				if(aux_zone)
+					. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[aux_zone]_0[burnstate]", -DAMAGE_HIGH_LAYER, image_dir)
 
 	var/image/limb = image(layer = -BODYPARTS_LAYER, dir = image_dir)
 	var/image/aux
@@ -125,7 +142,7 @@
 		limb.icon_state = "invisible_[body_zone]"
 		. += limb
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "invisible_[aux_zone]", -aux_layer, image_dir)
+			aux = image(limb.icon, "invisible_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
 			. += aux
 	// Handles making bodyparts look husked
 	else if(is_husked)
@@ -134,16 +151,15 @@
 		icon_exists(limb.icon, limb.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 		. += limb
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "[husk_type]_husk_[aux_zone]", -aux_layer, image_dir)
+			aux = image(limb.icon, "[husk_type]_husk_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
 			icon_exists(aux.icon, aux.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 			. += aux
-
 	// Normal non-husk handling
-	var/effective_limb_id = limb_id
-	if((bodytype & BODYTYPE_DIGITIGRADE) && !(bodytype & BODYTYPE_COMPRESSED)) //this is a bit evil imma be real bro
-		effective_limb_id += "_digitigrade"
-	if(!is_husked && !is_invisible)
+	else
 		// This is the MEAT of limb icon code
+		var/effective_limb_id = limb_id
+		if((bodytype & BODYTYPE_DIGITIGRADE) && !(bodytype & BODYTYPE_COMPRESSED)) //this is a bit evil imma be real bro
+			effective_limb_id += "_digitigrade"
 		limb.icon = icon_greyscale
 		if(!should_draw_greyscale || !icon_greyscale)
 			limb.icon = icon_static
@@ -153,12 +169,12 @@
 		else
 			limb.icon_state = "[effective_limb_id]_[body_zone]"
 
-		icon_exists(limb.icon, limb.icon_state, TRUE) //Prints a stack trace on the first failure of a given iconstate.
+		icon_exists(limb.icon, limb.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 
 		. += limb
 
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "[effective_limb_id]_[aux_zone]", -aux_layer, image_dir)
+			aux = image(limb.icon, "[effective_limb_id]_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
 			. += aux
 
 		draw_color = variable_color
@@ -179,7 +195,6 @@
 		var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, location, layer = limb.layer, alpha = limb.alpha)
 		limb_em_block.dir = image_dir
 		. += limb_em_block
-
 		if(aux_zone)
 			var/mutable_appearance/aux_em_block = emissive_blocker(aux.icon, aux.icon_state, location, layer = aux.layer, alpha = aux.alpha)
 			aux_em_block.dir = image_dir
@@ -190,7 +205,7 @@
 	if(!dropped && ((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG)))
 		//Legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that
 		var/obj/item/bodypart/leg/leg_source = src
-		for(var/image/limb_image in .)
+		for(var/image/limb_image in .) //yes we do need to typecheck for images
 			//remove the old, unmasked image
 			. -= limb_image
 			//add two masked images based on the old one
@@ -199,13 +214,17 @@
 	// And finally put bodypart_overlays on if not husked nor invisible
 	if(!is_husked && !is_invisible)
 		//Draw external organs like horns and frills
-		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
-			if(!overlay.can_draw_on_bodypart(src) || (!dropped && !overlay.can_draw_on_body(src, owner)))
+		for(var/datum/bodypart_overlay/bodypart_overlay as anything in bodypart_overlays)
+			if(!bodypart_overlay.can_draw_on_bodypart(src) || (!dropped && !bodypart_overlay.can_draw_on_body(src, owner)))
 				continue
 			//Some externals have multiple layers for background, foreground and between
-			for(var/external_layer in overlay.all_layers)
-				if(overlay.layers & external_layer)
-					. += overlay.get_overlays(external_layer, src)
+			for(var/external_layer in GLOB.external_layer_bitflags)
+				if(!(bodypart_overlay.layers & external_layer))
+					continue
+				for(var/image/overlay in bodypart_overlay.get_overlays(external_layer, src))
+					if(dropped)
+						overlay.dir = SOUTH
+					. += overlay
 
 	return .
 
@@ -281,7 +300,7 @@
 		overlay.inherit_color(src, force = TRUE)
 
 /// A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
-/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)
+/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic, update = TRUE)
 	var/icon_holder
 	if(greyscale)
 		icon_greyscale = icon
@@ -298,25 +317,26 @@
 	if(!isnull(dimorphic))
 		is_dimorphic = dimorphic
 
-	if(owner)
-		owner.update_body_parts()
-	else
-		update_icon_dropped()
-
 	// This foot gun needs a safety
 	if(!icon_exists(icon_holder, "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"))
-		reset_appearance()
+		reset_appearance(update)
 		stack_trace("change_appearance([icon], [id], [greyscale], [dimorphic]) generated null icon")
+	else if(update)
+		if(owner)
+			owner.update_body_parts()
+		else
+			update_icon_dropped()
 
 /// Resets the base appearance of a limb to it's default values.
-/obj/item/bodypart/proc/reset_appearance()
+/obj/item/bodypart/proc/reset_appearance(update = TRUE)
 	icon_static = initial(icon_static)
 	icon_greyscale = initial(icon_greyscale)
 	limb_id = initial(limb_id)
 	is_dimorphic = initial(is_dimorphic)
 	should_draw_greyscale = initial(should_draw_greyscale)
 
-	if(owner)
-		owner.update_body_parts()
-	else
-		update_icon_dropped()
+	if(update)
+		if(owner)
+			owner.update_body_parts()
+		else
+			update_icon_dropped()

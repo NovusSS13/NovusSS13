@@ -21,5 +21,5 @@
 	minimum = 1
 	maximum = CHAT_MESSAGE_MAX_LENGTH
 
-/datum/preference/numeric/max_chat_length/create_default_value()
+/datum/preference/numeric/max_chat_length/create_default_value(datum/preferences/preferences)
 	return CHAT_MESSAGE_MAX_LENGTH

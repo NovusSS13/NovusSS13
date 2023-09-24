@@ -622,7 +622,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 
 /obj/item/organ/tongue/cat
 	name = "fluffy tongue"
-	desc = "A fleshy muscle mostly used for meowing."
+	desc = "Cat ate your tongue?"
 	say_mod = "meows"
 	liked_foodtypes = SEAFOOD | ORANGES | BUGS | GORE
 	disliked_foodtypes = GROSS | CLOTH | RAW

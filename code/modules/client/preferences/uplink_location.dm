@@ -19,8 +19,13 @@
 
 	return data
 
-/datum/preference/choiced/uplink_location/create_default_value()
+/datum/preference/choiced/uplink_location/create_default_value(datum/preferences/preferences)
 	return UPLINK_PDA
 
 /datum/preference/choiced/uplink_location/apply_to_human(mob/living/carbon/human/target, value)
 	return
+
+/datum/preference/choiced/uplink_location/is_accessible(datum/preferences/preferences)
+	if(preferences.current_char_key != "main")
+		return FALSE
+	return ..()

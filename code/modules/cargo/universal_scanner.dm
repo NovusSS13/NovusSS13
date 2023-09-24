@@ -61,7 +61,6 @@
 	. = ..()
 	if(!istype(object) || !proximity)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(scanning_mode == SCAN_EXPORTS)
 		export_scan(object, user)
 		return .

@@ -1,8 +1,8 @@
 import { exhaustiveCheck } from 'common/exhaustive';
 import { useBackend, useLocalState } from '../../backend';
-import { Stack, Flex, Dropdown } from '../../components';
+import { Stack, Button, Box, Dropdown } from '../../components';
 import { Window } from '../../layouts';
-import { PreferencesMenuData } from './data';
+import { GhostRole, PreferencesMenuData, ServerData } from './data';
 import { PageButton } from './PageButton';
 import { AntagsPage } from './AntagsPage';
 import { JobsPage } from './JobsPage';
@@ -11,6 +11,7 @@ import { MarkingsPage } from './MarkingsPage';
 import { BackgroundPage } from './BackgroundPage';
 import { SpeciesPage } from './SpeciesPage';
 import { QuirksPage } from './QuirksPage';
+import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 enum Page {
   Antags,
@@ -22,30 +23,44 @@ enum Page {
   Quirks,
 }
 
-const CharacterProfiles = (props: {
+const CharSlots = (props: {
+  onClick: (action: string, payload?: object) => void;
+  profiles: string[];
+  slotKey: string;
+  maxSlots: number;
   activeSlot: number;
-  onClick: (index: number) => void;
-  profiles: (string | null)[];
 }) => {
-  const { profiles, activeSlot, onClick } = props;
-
+  const profileoptions: string[] = [];
+  for (let profile of props.profiles) {
+    profileoptions.push(profile);
+  }
   return (
-    <Flex align="center" justify="center">
-      <Flex.Item width="35%">
-        <Dropdown
-          width="100%"
-          selected={activeSlot}
-          displayText={profiles[activeSlot]}
-          options={profiles.map((profile, slot) => ({
-            value: slot,
-            displayText: profile ?? 'New Character',
-          }))}
-          onSelected={(slot) => {
-            onClick(slot);
-          }}
-        />
-      </Flex.Item>
-    </Flex>
+    <>
+      <Dropdown
+        minWidth={10}
+        selected={profileoptions[props.activeSlot - 1] || 'None'}
+        options={profileoptions}
+        onSelected={(option) => {
+          props.onClick('change_slot', {
+            slot_key: props.slotKey,
+            slot_id: profileoptions.indexOf(option) + 1,
+          });
+        }}
+      />
+      {Number(profileoptions.length) < props.maxSlots && (
+        <Stack.Item>
+          <Button
+            icon="plus"
+            onClick={() => {
+              props.onClick('new_slot', {
+                slot_key: props.slotKey,
+              });
+            }}
+            fluid
+          />
+        </Stack.Item>
+      )}
+    </>
   );
 };
 
@@ -87,8 +102,8 @@ export const CharacterPreferenceWindow = (props, context) => {
       pageContents = (
         <SpeciesPage closeSpecies={() => setCurrentPage(Page.Main)} />
       );
-
       break;
+
     case Page.Quirks:
       pageContents = <QuirksPage />;
       break;
@@ -100,24 +115,99 @@ export const CharacterPreferenceWindow = (props, context) => {
     <Window title="Character Preferences" width={920} height={770}>
       <Window.Content scrollable>
         <Stack vertical fill>
-          <Stack.Item>
-            <CharacterProfiles
-              activeSlot={data.active_slot - 1}
-              onClick={(slot) => {
-                act('change_slot', {
-                  slot: slot + 1,
-                });
-              }}
-              profiles={data.character_profiles}
-            />
-          </Stack.Item>
-
-          {!data.content_unlocked && (
+          {data.is_guest ? (
             <Stack.Item align="center">
-              Buy BYOND premium for more slots!
+              Create an account to save your character!
+            </Stack.Item>
+          ) : (
+            <Stack.Item>
+              <Stack justify="center" fill>
+                <Stack.Item>
+                  <Stack vertical fill fluid>
+                    <Stack.Item>
+                      <Stack>
+                        <Stack.Item>
+                          <ServerPreferencesFetcher
+                            render={(render_data: ServerData | null) => {
+                              if (!render_data) {
+                                return <Box>Loading categories..</Box>;
+                              }
+
+                              const ghost_role_data: Record<string, GhostRole> =
+                                render_data.ghost_role_data;
+
+                              const categoryoptions: string[] = ['Main'];
+                              const categorykeys: string[] = ['main'];
+                              let active_slot_name = 'Main';
+                              Object.keys(ghost_role_data).map((key, index) => {
+                                categoryoptions.push(
+                                  ghost_role_data[key].slot_name
+                                );
+                                categorykeys.push(
+                                  ghost_role_data[key].savefile_key
+                                );
+                                if (
+                                  ghost_role_data[key].savefile_key ===
+                                  data.active_slot_key
+                                ) {
+                                  active_slot_name =
+                                    ghost_role_data[key].slot_name;
+                                }
+                              });
+
+                              return (
+                                <Dropdown
+                                  width={10}
+                                  justify="center"
+                                  selected={active_slot_name || 'Main'}
+                                  options={categoryoptions}
+                                  onSelected={(category_name: string) => {
+                                    if (
+                                      currentPage === Page.Species ||
+                                      currentPage === Page.Antags ||
+                                      currentPage === Page.Jobs
+                                    ) {
+                                      setCurrentPage(Page.Main);
+                                    }
+                                    act('change_category', {
+                                      slot_key:
+                                        categorykeys[
+                                          categoryoptions.indexOf(category_name)
+                                        ] || 'Main',
+                                    });
+                                  }}
+                                />
+                              );
+                            }}
+                          />
+                        </Stack.Item>
+                        <Stack.Item>
+                          <Stack justify="center">
+                            <CharSlots
+                              profiles={
+                                data.character_profiles[data.active_slot_key]
+                              }
+                              activeSlot={data.active_slot_ids['main']}
+                              slotKey="main"
+                              maxSlots={data.max_slots_main}
+                              onClick={(action, object) => {
+                                act(action, object);
+                              }}
+                            />
+                          </Stack>
+                        </Stack.Item>
+                      </Stack>
+                    </Stack.Item>
+                    {!data.content_unlocked && (
+                      <Stack.Item align="center">
+                        Buy BYOND premium for more slots!
+                      </Stack.Item>
+                    )}
+                  </Stack>
+                </Stack.Item>
+              </Stack>
             </Stack.Item>
           )}
-
           <Stack.Divider />
 
           <Stack.Item>
@@ -150,27 +240,31 @@ export const CharacterPreferenceWindow = (props, context) => {
                 </PageButton>
               </Stack.Item>
 
-              <Stack.Item grow>
-                <PageButton
-                  currentPage={currentPage}
-                  page={Page.Jobs}
-                  setPage={setCurrentPage}>
-                  {/*
+              {data.active_slot_key == 'main' && (
+                <>
+                  <Stack.Item grow>
+                    <PageButton
+                      currentPage={currentPage}
+                      page={Page.Jobs}
+                      setPage={setCurrentPage}>
+                      {/*
                     Fun fact: This isn't "Jobs" so that it intentionally
                     catches your eyes, because it's really important!
                   */}
-                  Occupations
-                </PageButton>
-              </Stack.Item>
+                      Occupations
+                    </PageButton>
+                  </Stack.Item>
 
-              <Stack.Item grow>
-                <PageButton
-                  currentPage={currentPage}
-                  page={Page.Antags}
-                  setPage={setCurrentPage}>
-                  Antagonists
-                </PageButton>
-              </Stack.Item>
+                  <Stack.Item grow>
+                    <PageButton
+                      currentPage={currentPage}
+                      page={Page.Antags}
+                      setPage={setCurrentPage}>
+                      Antagonists
+                    </PageButton>
+                  </Stack.Item>
+                </>
+              )}
 
               <Stack.Item grow>
                 <PageButton

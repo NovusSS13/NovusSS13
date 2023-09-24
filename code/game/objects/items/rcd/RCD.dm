@@ -535,7 +535,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	mode = construction_mode
 	rcd_create(target, user)
 
-	return . | AFTERATTACK_PROCESSED_ITEM
+	return .
 
 /obj/item/construction/rcd/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()

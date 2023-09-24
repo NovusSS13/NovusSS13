@@ -12,10 +12,10 @@
 
 /proc/randomize_human(mob/living/carbon/human/human)
 	if(!HAS_TRAIT(human, TRAIT_AGENDER))
-		human.gender = pick(MALE, FEMALE, PLURAL)
+		human.gender = pick(MALE, FEMALE)
 	else
 		human.gender = PLURAL
-	human.physique = human.gender
+	human.physique = (human.gender in GLOB.body_types ? human.gender : MALE)
 	human.real_name = human.dna?.species.random_name(human.gender) || random_unique_name(human.gender)
 	human.name = human.real_name
 	human.hairstyle = random_hairstyle(human.gender)
@@ -29,10 +29,11 @@
 	human.dna.blood_type = random_blood_type()
 	human.dna.features["mcolor"] = "#[random_color()]"
 	human.dna.species.randomize_active_underwear_only(human)
-
+	//this shit is fucking weird and probably does not work as intended
 	for(var/datum/species/species_path as anything in subtypesof(/datum/species))
 		var/datum/species/new_species = new species_path
 		new_species.randomize_features(human)
+	human.dna.species.randomize_features(human)
 	human.dna.species.spec_updatehealth(human)
 	human.dna.update_dna_identity()
 	human.updateappearance()

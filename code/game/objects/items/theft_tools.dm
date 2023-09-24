@@ -302,7 +302,6 @@
 		return
 	if (!proximity)
 		return
-	. |= AFTERATTACK_PROCESSED_ITEM
 	if(ismovable(O) && O != sliver)
 		Consume(O, user)
 	return .

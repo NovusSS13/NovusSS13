@@ -7,6 +7,9 @@
 /datum/preference/choiced/gender/init_possible_values()
 	return list(MALE, FEMALE, PLURAL)
 
+/datum/preference/choiced/gender/create_random_value(datum/preferences/preferences)
+	return pick(MALE, FEMALE)
+
 /datum/preference/choiced/gender/apply_to_human(mob/living/carbon/human/target, value)
 	if(HAS_TRAIT(target, TRAIT_AGENDER))
 		value = PLURAL //disregard gender preferences
