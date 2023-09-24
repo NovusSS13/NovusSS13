@@ -415,6 +415,8 @@
 		var/obj/item/organ/replacement = organ_path
 		if(initial(replacement.slot) in organ_slots)
 			continue // we already handled this slot
+		if(visual_only && !initial(replacement.visual))
+			continue // not a visual organ
 
 		var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(organ_path)
 		if(!should_organ_apply_to(organ_path, organ_holder, src))
