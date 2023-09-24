@@ -1,0 +1,4 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - rscadd: "Added minecraft splash text to the title screen. The splash text varies by round and shows up on the hub entry too."
