@@ -269,6 +269,7 @@
 
 #define LOBBY_BACKGROUND_LAYER 3
 #define LOBBY_BUTTON_LAYER 4
+#define LOBBY_SPLASH_LAYER 5
 
 ///cinematics are "below" the splash screen
 #define CINEMATIC_LAYER -1

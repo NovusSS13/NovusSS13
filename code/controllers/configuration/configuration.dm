@@ -18,6 +18,7 @@
 	var/list/mode_reports
 	var/list/mode_false_report_weight
 
+	var/splashtext
 	var/motd
 	var/policy
 	var/datum/rules/rules
@@ -95,6 +96,7 @@
 		LoadEntries("ezdb.txt")
 	loadmaplist(CONFIG_MAPS_FILE)
 	LoadMOTD()
+	LoadSplashtext()
 	LoadPolicy()
 	LoadRules()
 	LoadChatFilter()
@@ -314,6 +316,13 @@
 	var/tm_info = GLOB.revdata.GetTestMergeInfo()
 	if(motd || tm_info)
 		motd = motd ? "[motd]<br>[tm_info]" : tm_info
+
+/// Picks a random splash text from the available pool of splash texts
+/datum/controller/configuration/proc/LoadSplashtext()
+	var/list/splashtexts = CONFIG_GET(str_list/splashtext)
+	if(!length(splashtexts))
+		return
+	splashtext = pick(splashtexts)
 
 /*
 Policy file should be a json file with a single object.

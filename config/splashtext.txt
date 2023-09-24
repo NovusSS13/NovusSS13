@@ -1,0 +1,37 @@
+# Splash text that appears on the title screen as well as the hub
+# The game will pick one of these to be displayed per round, if possible
+SPLASHTEXT 0% lag free!
+SPLASHTEXT 0% bug free!
+SPLASHTEXT More unstable than a Bethesda game!
+SPLASHTEXT Removed Buddy Loraine.
+SPLASHTEXT Nominated "Worst server ever" by famous youtuber Panigity!
+SPLASHTEXT The sign is a subtle joke. The shop is called "Sneed's Feed & Seed"...
+SPLASHTEXT Come over here and kiss me on my hot mouth... I'm feeling ROMANTICAL.
+SPLASHTEXT Rise and grind - Motivational video
+SPLASHTEXT This ain't your grandma's furry server!
+SPLASHTEXT SS13's "oldest" anarchy server!
+SPLASHTEXT The server below me sucks!
+SPLASHTEXT SS13 greytider eats you obby
+SPLASHTEXT lofi hip hop radio - beats to relax/study to
+SPLASHTEXT SS13 remade in Holy C!
+SPLASHTEXT All species except Felinid have been disabled.
+SPLASHTEXT Rebased to a Bay Luna fork!
+SPLASHTEXT Also try Escape From Nevado!
+SPLASHTEXT Built with stolen and unlicensed assets!
+SPLASHTEXT Built with Free and Open Source Software!
+SPLASHTEXT The allegations are false!
+SPLASHTEXT Now with multiplayer!
+SPLASHTEXT Made by the most dangerous man on SS13!
+SPLASHTEXT Being locally hosted on my mom's computer!
+SPLASHTEXT All is fair in love and war!
+SPLASHTEXT Includes raycasted 3D rendering technology!
+SPLASHTEXT Not Steam Deck certified!
+SPLASHTEXT Includes "Venom" antag!
+SPLASHTEXT Will you bite the hand that feeds?
+SPLASHTEXT The fire is gone!
+SPLASHTEXT Power for power!
+SPLASHTEXT This server is a safe space!
+SPLASHTEXT 0 players online!
+SPLASHTEXT Fuck you, Skyrat!
+SPLASHTEXT Fuck you, Bubbers!
+SPLASHTEXT Fuck you, TG!

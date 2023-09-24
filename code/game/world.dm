@@ -363,7 +363,9 @@ GLOBAL_VAR(restart_counter)
 		features += "Respawn disabled"
 	else
 		features += "Respawn enabled"
-	if(!CONFIG_GET(flag/allow_ai))
+	if(CONFIG_GET(flag/allow_ai))
+		features += "AI enabled"
+	else
 		features += "AI disabled"
 	hostedby = CONFIG_GET(string/hostedby)
 
@@ -389,7 +391,10 @@ GLOBAL_VAR(restart_counter)
 	var/tagline = CONFIG_GET(string/servertagline)
 	if(tagline)
 		new_status += "<br>[tagline]"
+	if(config.splashtext)
+		new_status += "<br><i>[config.splashtext]</i>"
 
+	new_status += "<br>"
 	if(length(features))
 		new_status += "<br>\[[jointext(features, ", ")]\]"
 	var/roleplaylevel = CONFIG_GET(string/roleplaylevel)
