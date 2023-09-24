@@ -151,9 +151,6 @@
 /// Monkey tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/monkey
 
-/datum/bodypart_overlay/mutant/tail/monkey/get_base_icon_state() // WE DON'T HAVE ONE MOTHERFUCKER
-	return
-
 /datum/bodypart_overlay/mutant/tail/monkey/get_global_feature_list()
 	return GLOB.tails_list_monkey
 

@@ -45,6 +45,8 @@
 	icon = 'icons/mob/species/monkey/monkey_tail.dmi'
 	icon_state = "default"
 
+/// MUTANT SPRITES
+
 /datum/sprite_accessory/tails/mutant
 	icon = 'icons/mob/species/sprite_accessory/tails_mutant.dmi'
 	color_amount = 3
