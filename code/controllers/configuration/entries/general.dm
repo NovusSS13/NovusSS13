@@ -714,3 +714,6 @@
 /// automated age gate that only accepts users that confirm they are 18+
 /datum/config_entry/flag/age_gate
 	default = FALSE
+
+/// splash text that displays on the hub as well as on the lobby screen
+/datum/config_entry/str_list/splashtext

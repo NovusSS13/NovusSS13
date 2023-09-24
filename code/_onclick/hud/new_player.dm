@@ -34,6 +34,32 @@
 	icon_state = "background"
 	screen_loc = "TOP,CENTER:-61"
 
+/atom/movable/screen/lobby/splashtext
+	layer = LOBBY_SPLASH_LAYER
+	icon = null
+	icon_state = null
+	screen_loc = "TOP-4:16,CENTER-2:-16"
+	maptext_width = 256
+	maptext_height = 32
+	maptext_x = -96
+
+/atom/movable/screen/lobby/splashtext/Initialize(mapload)
+	. = ..()
+	if(config.splashtext)
+		update_splash(config.splashtext)
+	transform = transform.Turn(20)
+	animate_splash()
+
+/atom/movable/screen/lobby/splashtext/proc/update_splash(new_splash)
+	maptext = MAPTEXT_PIXELLARI(span_color("<span style='text-align: center;'>[new_splash]</span>", COLOR_YELLOW))
+
+/atom/movable/screen/lobby/splashtext/proc/animate_splash()
+	var/matrix/big_transform = matrix(transform)
+	big_transform.Scale(1.1, 1.1)
+	var/matrix/small_transform = matrix(transform)
+	animate(src, transform = small_transform, time = 2 SECONDS, loop = -1, flags = ANIMATION_PARALLEL)
+	animate(transform = big_transform, time = 2 SECONDS)
+
 /atom/movable/screen/lobby/button
 	///Is the button currently enabled?
 	var/enabled = TRUE
