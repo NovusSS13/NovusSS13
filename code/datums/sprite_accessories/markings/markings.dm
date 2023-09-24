@@ -433,7 +433,7 @@
 /datum/sprite_accessory/body_markings/tertiary/floofer
 	name = "Floofer Sock"
 	icon_state = "floofer"
-	allowed_bodyparts = ARM_LEFT | ARM_RIGHT | LEG_RIGHT | LEG_LEFT | HAND_LEFT | HAND_RIGHT
+	allowed_bodyparts = ARM_LEFT | ARM_RIGHT | HAND_LEFT | HAND_RIGHT | LEG_RIGHT | LEG_LEFT
 
 /datum/sprite_accessory/body_markings/tertiary/rat
 	name = "Rat Spot"

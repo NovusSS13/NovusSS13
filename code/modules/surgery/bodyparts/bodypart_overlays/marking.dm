@@ -5,7 +5,7 @@
 /datum/bodypart_overlay/mutant/marking
 	layers = EXTERNAL_ADJACENT
 	color_source = ORGAN_COLOR_DNA
-	/// Body zone we are currently on, VERY IMPORTANT otherwise we won't get the proper markings list we want to use!
+	/// Body zone we are currently on, VERY IMPORTANT otherwise we won't get the proper icon state!
 	var/body_zone
 
 /datum/bodypart_overlay/mutant/marking/New(body_zone, feature_key, feature_color_key, color_source)
@@ -33,7 +33,7 @@
 	if((body_zone == BODY_ZONE_PRECISE_R_HAND) || (body_zone == BODY_ZONE_PRECISE_L_HAND))
 		for(var/image/overlay in .)
 			if(overlay.layer == -BODY_ADJ_LAYER)
-				overlay.layer =BODY_HIGH_LAYER
+				overlay.layer = -BODY_HIGH_LAYER
 
 /// Update our features after something changed our appearance (if we have an actual feature key)
 /datum/bodypart_overlay/mutant/marking/proc/mutate_features(list/features, obj/item/bodypart/bodypart, mob/living/carbon/human/human)

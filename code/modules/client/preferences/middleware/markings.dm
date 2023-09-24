@@ -205,9 +205,13 @@
 
 /datum/asset/spritesheet/markings/create_spritesheets()
 	var/list/to_insert = list()
-
 	var/static/icon/icon_fucked = icon('icons/effects/random_spawners.dmi', "questionmark")
+
 	var/mob/living/carbon/human/dummy/consistent/dummy = new()
+
+	//clean up the dummy... just in case
+	dummy.clear_markings(update = FALSE)
+
 	//prepare markings previews
 	for(var/zone in GLOB.marking_zones)
 		for(var/marking_name in GLOB.body_markings_by_zone[zone])
@@ -226,6 +230,11 @@
 				//should not happen but if it does...
 				to_insert[sanitize_css_class_name("marking_[zone]_[marking_name]")] = icon_fucked
 				continue
+
+			//clear up the bodypart for the next marking to be applied
+			for(var/datum/bodypart_overlay/mutant/marking/marking_overlay in bodypart.bodypart_overlays)
+				bodypart.remove_bodypart_overlay(marking_overlay)
+				qdel(marking_overlay)
 
 			var/marking_key = "marking_[zone]_5"
 			var/marking_color_key = marking_key + "_color"
@@ -256,12 +265,6 @@
 
 			to_insert[sanitize_css_class_name("marking_[zone]_[marking_name]")] = bodypart_icon
 
-			bodypart.remove_bodypart_overlay(marking_overlay)
-			qdel(marking_overlay)
-
-	//clean up the dummy... just in case
-	dummy.clear_markings(update = FALSE)
-
 	//prepare marking set previews
 	for(var/set_name in GLOB.body_marking_sets)
 		var/datum/body_marking_set/marking_set = GLOB.body_marking_sets[set_name]
@@ -270,7 +273,10 @@
 			to_insert[sanitize_css_class_name("set_[set_name]")] = icon_fucked
 			continue
 
-		// prepares the dummy for preview
+		// clean up the dummy for the next marking set to be applied
+		dummy.clear_markings(update = FALSE)
+
+		// prepare the dummy for preview
 		marking_set.prepare_dummy(dummy)
 
 		marking_set.apply_markings_to_dna(dummy)
@@ -281,9 +287,6 @@
 		dummy_icon.Scale(32, 32)
 
 		to_insert[sanitize_css_class_name("set_[set_name]")] = dummy_icon
-
-		//clean up the dummy for the next marking set to be applied
-		dummy.clear_markings(update = FALSE)
 
 	SSatoms.prepare_deletion(dummy) //FUCK YOU STUPID DUMB DUMB DUMMY
 
