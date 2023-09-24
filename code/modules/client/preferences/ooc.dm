@@ -12,3 +12,9 @@
 		return FALSE
 
 	return is_admin(preferences.parent) || preferences.unlock_content
+
+/datum/preference/toggle/mute_looc
+	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
+	savefile_key = "mute_looc"
+	savefile_identifier = PREFERENCE_PLAYER
+	default_value = FALSE
