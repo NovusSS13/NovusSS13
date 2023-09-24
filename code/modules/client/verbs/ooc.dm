@@ -110,6 +110,77 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 				to_chat(receiver, span_ooc(span_prefix("OOC:</span> <EM>[keyname]:</EM> <span class='message linkify'>[msg]")), avoid_highlighting = avoid_highlight)
 
 
+/client/verb/looc(msg as text)
+	set name = "LOOC"
+	set desc = "Local OOC, seen only by those in view."
+	set category = "OOC"
+
+
+	if(!mob)
+		return
+
+	msg = copytext_char(sanitize(msg), 1, MAX_MESSAGE_LEN)
+	if(!msg)
+		return
+
+	if(!holder)
+		if(GLOB.say_disabled)	//This is here to try to identify lag problems
+			to_chat(src, span_danger("Speech is currently admin-disabled."))
+			return
+		if(!prefs.read_preference(/datum/preference/toggle/mute_looc))
+			to_chat(src, span_danger("You have LOOC muted."))
+			return
+		if(is_banned_from(mob, "OOC"))
+			to_chat(src, span_danger("You have been banned from OOC."))
+			return
+
+		if(!GLOB.looc_allowed)
+			to_chat(src, span_danger("LOOC is globally muted."))
+			return
+		if(prefs.muted & MUTE_OOC)
+			to_chat(src, span_danger("You cannot use OOC (muted)."))
+			return
+		if(handle_spam_prevention(msg, MUTE_OOC))
+			return
+		if(findtext(msg, "byond://"))
+			to_chat(src, "<B>Advertising other servers is not allowed.</B>")
+			log_admin("[key_name(src)] has attempted to advertise in LOOC: [msg]") //inb4 byond://trollface ascii
+			return
+		if(mob.stat == DEAD) //this shou;dl include unconciousees
+			to_chat(src, span_danger("You cannot use LOOC while dead.")) //includes ghosts
+			return
+
+	msg = emoji_parse(msg)
+	mob.log_talk(msg, LOG_OOC, tag = "(LOOC)")
+
+	var/list/heard = get_hearers_in_view(7, src.mob)
+	for(var/mob/listener as anything in heard)
+		var/client/client = listener.client
+		if(!client)
+			continue
+
+		if(client.holder)
+			continue //they are handled later
+
+		if(client.prefs.read_preference(/datum/preference/toggle/mute_looc))
+			continue
+
+		//skyrat used <span class='message'> but that wasnt defined anywhere. lol!
+		to_chat(client, span_looc("[span_prefix("LOOC:")] <EM>[src.mob.name]:</EM> [msg]"))
+
+	for(var/client/admin_client as anything in GLOB.admins)
+		if(admin_client.prefs.read_preference(/datum/preference/toggle/mute_looc))
+			continue
+
+		if(admin_client.mob in heard)
+			to_chat(admin_client, span_looc("[ADMIN_FLW(src)] [span_prefix("LOOC:")] <EM>[src.key]/[src.mob.name]:</EM> [msg]"))
+			continue
+
+		if(admin_client.prefs.read_preference(/datum/preference/toggle/mute_looc_admin))
+			continue
+
+		to_chat(admin_client, span_looc("[ADMIN_FLW(src)] [span_prefix("(R)LOOC:")] <EM>[src.key]/[src.mob.name]:</EM> [msg]"))
+
 /proc/toggle_ooc(toggle = null)
 	if(toggle != null) //if we're specifically en/disabling ooc
 		if(toggle != GLOB.ooc_allowed)
@@ -121,13 +192,18 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	to_chat(world, "<span class='oocplain'><B>The OOC channel has been globally [GLOB.ooc_allowed ? "enabled" : "disabled"].</B></span>")
 
 /proc/toggle_dooc(toggle = null)
-	if(toggle != null)
-		if(toggle != GLOB.dooc_allowed)
-			GLOB.dooc_allowed = toggle
-		else
-			return
-	else
+	if(isnull(toggle))
 		GLOB.dooc_allowed = !GLOB.dooc_allowed
+		return
+
+	GLOB.dooc_allowed = toggle
+
+/proc/toggle_looc(toggle = null)
+	if(isnull(toggle))
+		GLOB.looc_allowed = !GLOB.looc_allowed
+		return
+
+	GLOB.looc_allowed = toggle
 
 
 /client/proc/set_ooc()
