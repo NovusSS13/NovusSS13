@@ -152,11 +152,12 @@
 	var/base_icon_state = get_base_icon_state()
 	if(base_icon_state)
 		. += "[get_base_icon_state()]"
-	if(islist(draw_color))
-		for(var/subcolor in draw_color)
-			. += "[subcolor]"
-	else
-		. += "[draw_color]"
+	if(sprite_datum.color_amount > 0)
+		if(islist(draw_color))
+			for(var/subcolor in draw_color)
+				. += "[subcolor]"
+		else
+			. += "[draw_color]"
 	return .
 
 ///Return a dumb glob list for this specific feature (called from parse_sprite)

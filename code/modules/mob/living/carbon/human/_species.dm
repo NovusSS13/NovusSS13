@@ -415,6 +415,8 @@
 		var/obj/item/organ/replacement = organ_path
 		if(initial(replacement.slot) in organ_slots)
 			continue // we already handled this slot
+		if(visual_only && !initial(replacement.visual))
+			continue // not a visual organ
 
 		var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(organ_path)
 		if(!should_organ_apply_to(organ_path, organ_holder, src))
@@ -485,16 +487,6 @@
 	//(why the fuck is blood type not tied to a fucking DNA block?)
 	else if(old_species.exotic_bloodtype && !exotic_bloodtype)
 		C.dna.blood_type = random_blood_type()
-
-	if(ishuman(C))
-		var/mob/living/carbon/human/human = C
-		for(var/obj/item/organ/organ_path as anything in cosmetic_organs)
-			if(!should_organ_apply_to(organ_path, human))
-				continue
-
-			// Loads a persons preferences from DNA
-			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
-			new_organ.Insert(human, special = TRUE, drop_if_replaced = FALSE)
 
 	if(length(inherent_traits))
 		C.add_traits(inherent_traits, SPECIES_TRAIT)
