@@ -186,7 +186,7 @@
 				var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
 				if(body_marking.compatible_species && !is_path_in_list(species_type, body_marking.compatible_species))
 					continue
-				LAZYADDASSOC(preferences.body_markings[zone], marking_name, assembled_markings[zone][marking_name]])
+				LAZYADDASSOC(preferences.body_markings[zone], marking_name, assembled_markings[zone][marking_name])
 		preferences.character_preview_view.update_body()
 		return TRUE
 	return FALSE
