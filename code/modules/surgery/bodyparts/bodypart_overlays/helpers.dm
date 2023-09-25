@@ -47,12 +47,17 @@
 
 /// Helper that loops through a human's bodyparts, and applies their respective markings based on the human's DNA
 /mob/living/carbon/human/proc/regenerate_markings(update = TRUE)
+	//this shit is dumb and clearing needs to be done separately otherwise arm markings get fucked cause hands
 	for(var/marking_zone in GLOB.marking_zones)
 		var/obj/item/bodypart/bodypart = get_bodypart(check_zone(marking_zone))
 		if(!bodypart)
 			continue
 		for(var/datum/bodypart_overlay/mutant/marking/marking_overlay in bodypart.bodypart_overlays)
 			bodypart.remove_bodypart_overlay(marking_overlay)
+	for(var/marking_zone in GLOB.marking_zones)
+		var/obj/item/bodypart/bodypart = get_bodypart(check_zone(marking_zone))
+		if(!bodypart)
+			continue
 		for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
 			var/marking_key = "marking_[marking_zone]_[marking_index]"
 			if(!dna.features[marking_key] || (dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
