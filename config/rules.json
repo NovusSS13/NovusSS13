@@ -157,5 +157,32 @@
 			"Off server behavior will not be punished, your actions within this server are judged independently. ",
 			"This applies to all rules, except the golden rule: No pedophiles or minors."
 		]
+	},
+	"Antagonist Principles": {
+		"Be prepared to lose.": [
+			"Be prepared to lose, and try to enjoy it while you fail. ",
+			"The same goes for those you target. ",
+			"You can't, and won't, win every time."
+		],
+		"The station is your toy.": [
+			"The station is your toy, and you may play with it. ",
+			"You can play rough, but how fun is it to to play with a broken toy?"
+		],
+		"You are allowed to pursue your own objectives.": [
+			"You are allowed, and in fact encouraged to create your own objectives. ",
+			"Do not feel constrained by the objectives you are given."
+		],
+		"Avoid needless destruction.": [
+			"Avoid needless destruction. ",
+			"As a nuclear operative, you're to destroy the entire station - ",
+			"But as a simple traitor, you're a saboteur, and not really there to stop regular station function."
+		],
+		"Your role as an antagonist.": [
+			"Antagonists play a very important role in creating excitement for a round. ",
+			"As such, they have the privilege of having the most freedom and leeway within our rules - ",
+			"You can do everything short of blatant anti-roleplay behavior. ",
+			"But - With great power, comes great responsibility, so, do not fuck it up! ",
+			"If we feel that antagonists are becoming problematic, the rules will be updated accordingly."
+		]
 	}
 }
