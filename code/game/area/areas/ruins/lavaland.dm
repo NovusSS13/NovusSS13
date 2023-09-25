@@ -91,7 +91,7 @@
 	ambient_buzz = 'sound/ambience/magma.ogg'
 
 //ash walker nest
-/area/ruin/unpowered/ash_walkers
+/area/ruin/unpowered/ashwalkers
 	ambient_buzz = 'sound/ambience/magma.ogg'
 /area/ruin/unpowered/ratvar
 	outdoors = TRUE

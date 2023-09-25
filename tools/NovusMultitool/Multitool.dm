@@ -5,18 +5,20 @@
 	fps = 25		// 25 frames per second
 	icon_size = 32	// 32x32 icon size by default
 	view = 6		// show up to 6 tiles outward from center (13x13 view)
+	mob = /mob
 
 //Actual important code
+
 /client/verb/unfuck_accessories()
 	set name = "Unfuck Tri-color Accessories"
 	set desc = "Fuck you, skyrat. Fuck you."
-	set category = "Unfuck"
+	set category = "CBT"
 
-	var/inputfile = input(usr, "Select an icon to unfuck. Cancel for default icon.", "HATE", null) as file|null
-	if(isnull(inputfile))
+	var/input_file = input(usr, "Select an icon to unfuck.", "HATE", null) as file|null
+	if(isnull(input_file))
 		return
 
-	var/icon/iconfile = icon(inputfile)
+	var/icon/iconfile = icon(input_file)
 	var/icon/output = icon('icons/blank.dmi', "blank")
 	var/static/list/colors = list(
 		"_primary" = "#FF0000",
@@ -48,23 +50,22 @@
 		world.log << "new state: [final_state]"
 		var/icon/blended_up_icon = icon('icons/blank.dmi', "blank")
 		for(var/color in colors)
-			var/icon/newicon = icon(inputfile, "[final_state][color]")
+			var/icon/newicon = icon(input_file, "[final_state][color]")
 			newicon.Blend(colors[color], ICON_MULTIPLY)
 			blended_up_icon.Blend(newicon, ICON_OVERLAY)
 		output.Insert(blended_up_icon, final_state)
 	//Give the output
-	usr << ftp(output, "[inputfile]")
+	usr << ftp(output, "[input_file]")
 
 /client/verb/unfuck_markings()
 	set name = "Unfuck Markings"
-	set desc = "CBT"
-	set category = "Unfuck"
+	set category = "CBT"
 
-	var/inputfile = input(usr, "Select a marking icon to unfuck. Cancel for default icon.", "HATE", null) as file|null
-	if(isnull(inputfile))
+	var/input_file = input(usr, "Select a marking icon to unfuck.", "HATE", null) as file|null
+	if(isnull(input_file))
 		return
 
-	var/icon/iconfile = icon(inputfile)
+	var/icon/iconfile = icon(input_file)
 	var/icon/output = icon('icons/blank.dmi', "blank")
 	for(var/icon_state in icon_states(iconfile))
 		world.log << "original state: [icon_state]"
@@ -78,10 +79,57 @@
 			final_state += "_ADJ"
 		world.log << "new state: [final_state]"
 		output.Insert(icon(iconfile, icon_state), final_state)
-	//Give the output
-	usr << ftp(output, "[inputfile]")
 
-/client/verb/unfuck_markings()
-	set name = "Unfuck Markings"
-	set desc = "CBT"
-	set category = "Unfuck"
+	//Give the output
+	usr << ftp(output, "[input_file]")
+
+/client/verb/apply_displacement()
+	set name = "Apply Displacement"
+	set category = "CBT"
+
+	var/displacement_file = input(usr, "Select an icon to use as a displacement map.", "HATE", null) as file|null
+	if(isnull(displacement_file))
+		return
+
+	var/list/displacement_states = icon_states(icon(displacement_file))
+	var/displacement_state = input(usr, "Select a displacement state.", "HATE", displacement_states[1]) as anything in displacement_states
+	if(isnull(displacement_state))
+		return
+
+	var/input_file = input(usr, "Select an icon to apply the displacement map to.", "HATE", null) as file|null
+	if(isnull(input_file))
+		return
+
+	var/displace_x = input(usr, "Displacement X?", "HATE", 0) as num
+	var/displace_y = input(usr, "Displacement Y?", "HATE", 0) as num
+	var/displace_size = input(usr, "Displacement size?", "HATE", 0) as num
+
+	var/icon/input_icon = icon(input_file)
+	var/icon/output_icon = icon('icons/blank.dmi', "blank")
+	var/static/list/dirs = list(
+		NORTH,
+		SOUTH,
+		WEST,
+		EAST,
+	)
+
+	for(var/icon_state in icon_states(input_icon))
+		for(var/dir in dirs)
+			var/obj/target = new(mob.loc)
+			target.icon = input_file
+			target.icon_state = icon_state
+			target.dir = dir
+			target.filters += filter(type = "displace", \
+										x = displace_x, \
+										y = displace_y, \
+										size = displace_size, \
+										icon = icon(displacement_file, displacement_state, dir))
+
+			var/icon/finalized_icon = icon(RenderIcon(target))
+
+			output_icon.Insert(finalized_icon, icon_state, dir)
+
+			del(target)
+
+	//Give the output
+	usr << ftp(output_icon, "[input_file]")

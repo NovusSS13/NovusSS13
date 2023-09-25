@@ -2,6 +2,10 @@
 	category = CATEGORY_MOVEMENT
 	weight = WEIGHT_HIGHEST
 
+/datum/keybinding/movement/up(client/user)
+	if(user.pixelshifting && !max(user.keys_held["North"], user.keys_held["South"], user.keys_held["East"], user.keys_held["West"]))
+		user.pixelshift_time = 0
+
 /datum/keybinding/movement/north
 	hotkey_keys = list("W", "North")
 	name = "North"
@@ -57,3 +61,38 @@
 		return
 	user.mob.down()
 	return TRUE
+
+
+/datum/keybinding/movement/pixelshift
+	hotkey_keys = list("`")
+	name = "Pixelshift"
+	full_name = "Enable Pixelshift"
+	description = "Lets you pixelshift."
+	keybind_signal = COMSIG_KB_MOVEMENT_PIXELSHIFT_DOWN
+
+/datum/keybinding/movement/pixelshift/down(client/user)
+	. = ..()
+	if(.)
+		return
+
+	if(user.pixelshifting)
+		return
+
+	RegisterSignal(user.mob, COMSIG_MOUSE_SCROLL_ON, PROC_REF(on_scroll))
+	user.pixelshifting = TRUE
+
+/datum/keybinding/movement/pixelshift/up(client/user)
+	. = ..()
+	UnregisterSignal(user.mob, COMSIG_MOUSE_SCROLL_ON)
+	user.pixelshifting = FALSE
+	return TRUE
+
+/datum/keybinding/movement/pixelshift/proc/on_scroll(mob/source, atom/target, delta_x, delta_y, params)
+	SIGNAL_HANDLER
+
+	var/tilt_result = clamp(source.current_pixeltilt + SIGN(delta_y), -45, 45)
+	var/tilt_amount = tilt_result - source.current_pixeltilt
+
+	if(tilt_amount)
+		source.transform = source.transform.Turn(tilt_amount)
+		source.current_pixeltilt = tilt_result

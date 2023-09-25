@@ -62,14 +62,15 @@
 	owner.update_flag_db(DB_FLAG_AGE_VETTED, TRUE)
 	to_chat(owner, span_adminsay("You have successfully passed the age gate. You will automatically be reconnected to the server in 5 seconds."))
 	addtimer(CALLBACK(src, PROC_REF(reconnect_owner), owner), 5 SECONDS)
-	qdel(src)
 	return TRUE
 
 /datum/age_gate/proc/reconnect_owner(client/goner)
 	SIGNAL_HANDLER
-	if(QDELETED(goner))
-		return
-	winset(goner, null, "command=.reconnect")
+
+	if(!QDELETED(goner))
+		winset(goner, null, "command=.reconnect")
+	if(!QDELETED(src))
+		qdel(src)
 
 /datum/age_gate/proc/validate_submission(month, year)
 	var/age_gate_result = FALSE

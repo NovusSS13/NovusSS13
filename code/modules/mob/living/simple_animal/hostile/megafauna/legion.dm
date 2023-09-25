@@ -75,15 +75,6 @@
 	maxHealth = 350
 	size = LEGION_MEDIUM
 
-/mob/living/simple_animal/hostile/megafauna/legion/medium/left
-	icon_state = "mega_legion_left"
-
-/mob/living/simple_animal/hostile/megafauna/legion/medium/eye
-	icon_state = "mega_legion_eye"
-
-/mob/living/simple_animal/hostile/megafauna/legion/medium/right
-	icon_state = "mega_legion_right"
-
 /mob/living/simple_animal/hostile/megafauna/legion/small
 	icon = 'icons/mob/simple/lavaland/lavaland_monsters.dmi'
 	icon_state = "mega_legion"
@@ -250,12 +241,11 @@
 	size--
 	switch(size)
 		if (LEGION_SMALL)
-			for (var/i in 0 to 2)
+			for (var/i in 1 to 3)
 				new /mob/living/simple_animal/hostile/megafauna/legion/small(loc)
 		if (LEGION_MEDIUM)
-			new /mob/living/simple_animal/hostile/megafauna/legion/medium/left(loc)
-			new /mob/living/simple_animal/hostile/megafauna/legion/medium/right(loc)
-			new /mob/living/simple_animal/hostile/megafauna/legion/medium/eye(loc)
+			for(var/i in 1 to 3)
+				new /mob/living/simple_animal/hostile/megafauna/legion/medium(loc)
 
 ///A basic turret that shoots at nearby mobs. Intended to be used for the legion megafauna.
 /obj/structure/legionturret

@@ -36,7 +36,7 @@
 ///dead goliath spawner
 /obj/effect/mob_spawn/corpse/goliath
 	mob_type = /mob/living/simple_animal/hostile/asteroid/goliath/beast
-	icon = 'icons/mob/simple/lavaland/lavaland_monsters_wide.dmi'
+	icon = 'icons/mob/simple/lavaland/lavaland_monsters.dmi'
 	icon_state = "goliath_dead_helper"
 	pixel_x = -12
 	base_pixel_x = -12

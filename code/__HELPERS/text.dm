@@ -1213,7 +1213,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
  * These seem to be favorable for displaying on the map.
  *
  * Arguments:
- * * name - The name to generate a color for
+ * * string - The string to generate a color for
  * * seed - An override seed, in case you don't want to use the default static one
  * * sat_shift - A value between 0 and 1 that will be multiplied against the saturation
  * * lum_shift - A value between 0 and 1 that will be multiplied against the luminescence
@@ -1221,8 +1221,20 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
  * * sat_min - A value between 0 and 1, minimum saturation of the color in the HSL space
  * * lum_max - A value between 0 and 1, maximum luminescence of the color in the HSL space
  * * lum_min - A value between 0 and 1, minimum luminescence of the color in the HSL space
+ * * ignore_global_list - If true, will not use the global list of runechat colors to generate colors
  */
-/proc/colorize_string(name, seed, sat_shift = 1, lum_shift = 1, sat_max = 0.75, sat_min = 0.6, lum_max = 0.75, lum_min = 0.65)
+/proc/colorize_string(string, seed, sat_shift = 1, lum_shift = 1, sat_max = 0.75, sat_min = 0.6, lum_max = 0.75, lum_min = 0.65, ignore_global_list = FALSE)
+	// currently, we ignore sat_max, sat_min, and lum_max, lum_min for global colors
+	if(!ignore_global_list && GLOB.chat_colors[string])
+		// not necessary to do anything else in this case
+		if(sat_shift == 1 && lum_shift == 1)
+			return GLOB.chat_colors[string]
+		var/list/hsv_color = rgb2num(GLOB.chat_colors[string], COLORSPACE_HSV)
+		var/h = hsv_color[1]
+		var/s = clamp(hsv_color[2] * clamp(sat_shift, 0, 1), 0, 255)
+		var/l = clamp(hsv_color[3] * clamp(lum_shift, 0, 1), 0, 255)
+		return rgb(h, s, l, space = COLORSPACE_HSL)
+
 	// seed to help randomness
 	var/static/rseed = rand(1,26)
 
@@ -1230,7 +1242,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		seed = rseed
 
 	// get hsl using the selected 6 characters of the md5 hash
-	var/hash = copytext(md5(name + GLOB.round_id), seed, seed + 6)
+	var/hash = copytext(md5(string + GLOB.round_id), seed, seed + 6)
 	var/h = hex2num(copytext(hash, 1, 3)) * (360 / 255)
 	var/s = (hex2num(copytext(hash, 3, 5)) >> 2) * ((sat_max - sat_min) / 63) + sat_min
 	var/l = (hex2num(copytext(hash, 5, 7)) >> 2) * ((lum_max - lum_min) / 63) + lum_min

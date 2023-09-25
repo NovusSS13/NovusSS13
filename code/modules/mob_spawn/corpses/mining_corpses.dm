@@ -123,7 +123,7 @@
 
 /datum/outfit/consumed_ashwalker
 	name = "Legion-Consumed Ashwalker"
-	uniform = /obj/item/clothing/under/costume/gladiator/ash_walker
+	uniform = /obj/item/clothing/under/costume/gladiator/ashwalker
 
 /datum/outfit/consumed_ashwalker/pre_equip(mob/living/carbon/human/ashwalker, visualsOnly = FALSE)
 	if(!visualsOnly)

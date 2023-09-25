@@ -270,3 +270,8 @@
 
 	/// Does this client have typing indicators enabled?
 	var/typing_indicators = FALSE
+
+	/// Are we trying to pixelshift?
+	var/pixelshifting = FALSE
+	/// When did we start holding the pixelshift/tilt binds? Holds world.time.
+	var/pixelshift_time = 0

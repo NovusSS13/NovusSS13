@@ -1547,3 +1547,11 @@
 	set name = "View Skills"
 
 	mind?.print_levels(src)
+
+
+/mob/proc/reset_pixelshift()
+	pixel_x -= current_pixelshift_x
+	pixel_y -= current_pixelshift_y
+	transform = transform.Turn(-current_pixeltilt)
+
+	current_pixelshift_x = current_pixelshift_y = current_pixeltilt = 0
