@@ -167,6 +167,7 @@ GLOBAL_LIST_INIT(body_types, list(
 ))
 
 	//Colors
+//normal ethereal colors
 GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"Blue" = "#3399ff",
 	"Bright Yellow" = "#ffff99",
@@ -189,6 +190,7 @@ GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"White" = "#f2f2f2",
 ))
 
+//lustrous ethereal color list
 GLOBAL_LIST_INIT(color_list_lustrous, list(
 	"Cyan Blue" = "#00ffff",
 	"Sky Blue" = "#37c0ff",
@@ -197,6 +199,16 @@ GLOBAL_LIST_INIT(color_list_lustrous, list(
 	"Bright Red" = "#fa2d2d",
 ))
 
+//runechat colors
+GLOBAL_LIST_INIT(chat_colors, list(
+	"Unknown" = COLOR_GRAY,
+))
+
+GLOBAL_LIST_INIT(protected_chat_colors, list(
+	"Unknown" = COLOR_GRAY,
+))
+
+//stores the ghost forms that support directional sprites
 GLOBAL_LIST_INIT(ghost_forms_with_directions_list, list(
 	"catghost",
 	"ghost_black",
@@ -227,8 +239,8 @@ GLOBAL_LIST_INIT(ghost_forms_with_directions_list, list(
 	"ghostking",
 	"skeleghost",
 ))
-//stores the ghost forms that support directional sprites
 
+//stores the ghost forms that support hair and other such things
 GLOBAL_LIST_INIT(ghost_forms_with_accessories_list, list(
 	"ghost_black",
 	"ghost_blazeit",
@@ -255,7 +267,6 @@ GLOBAL_LIST_INIT(ghost_forms_with_accessories_list, list(
 	"ghost",
 	"skeleghost",
 ))
-//stores the ghost forms that support hair and other such things
 
 GLOBAL_LIST_INIT(security_depts_prefs, sort_list(list(
 	SEC_DEPT_ENGINEERING,

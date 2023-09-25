@@ -2179,8 +2179,8 @@
 	LAZYADD(update_overlays_on_z, glow_appearance)
 
 /// Small proc that sets the chat color of an atom based on name
-/atom/proc/update_chat_color()
-	if(chat_color_name == name || !ismob(src))
+/atom/proc/update_chat_color(forced = FALSE)
+	if(!forced && ((chat_color_name == name) || !ismob(src)))
 		return FALSE
 	chat_color = colorize_string(name)
 	chat_color_darkened = colorize_string(name, sat_shift = 0.85, lum_shift = 0.85)

@@ -371,8 +371,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	var/talk_icon_state = say_test(message_raw)
 	for(var/mob/M in listening)
 		if(M.client)
-			if(!M.client.prefs.read_preference(/datum/preference/toggle/enable_runechat) || (SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(src, TRAIT_BYPASS_MEASURES)))
-				speech_bubble_recipients.Add(M.client)
+			speech_bubble_recipients.Add(M.client)
 			found_client = TRUE
 
 	if(voice && found_client && !message_mods[MODE_CUSTOM_SAY_ERASE_INPUT] && !HAS_TRAIT(src, TRAIT_SIGN_LANG))

@@ -3,8 +3,9 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Ethereal color"
-	should_generate_icons = TRUE
+	relevant_feature = "ethcolor"
 	modified_feature = "ethcolor"
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/mutant/ethereal_color/init_possible_values()
 	return assoc_to_keys(GLOB.color_list_ethereal)

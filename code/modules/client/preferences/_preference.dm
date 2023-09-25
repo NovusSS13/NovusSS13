@@ -74,9 +74,9 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// DOES have random body on, will this already be randomized?
 	var/randomize_by_default = TRUE
 
-	/// If the selected species has this in its /datum/species/mutant_bodyparts,
+	/// If the selected species has this in its /datum/species/get_features() return list,
 	/// will show the feature as selectable.
-	var/relevant_mutant_bodypart = null
+	var/relevant_feature = null
 
 	/// If the selected species has this in its /datum/species/inherent_traits,
 	/// will show the feature as selectable.
@@ -255,7 +255,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	SHOULD_NOT_SLEEP(TRUE)
 
 	if ( \
-		!isnull(relevant_mutant_bodypart) \
+		!isnull(relevant_feature) \
 		|| !isnull(relevant_inherent_trait) \
 		|| !isnull(relevant_cosmetic_organ) \
 		|| !isnull(relevant_head_flag) \
@@ -382,7 +382,10 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/color/deserialize(input, datum/preferences/preferences)
 	return sanitize_hexcolor(input)
 
-/datum/preference/color/create_default_value()
+/datum/preference/color/create_default_value(datum/preferences/preferences)
+	if(preferences)
+		var/list/mcolor = preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color)
+		return mcolor[1]
 	return "#FFFFFF"
 
 /datum/preference/color/create_random_value()
