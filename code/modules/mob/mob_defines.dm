@@ -229,3 +229,10 @@
 	var/active_thinking_indicator
 	/// User is thinking in character. Used to revert to thinking state after stop_typing
 	var/thinking_IC = FALSE
+
+	/// Our current pixelshift, X axis.
+	var/current_pixelshift_x = 0
+	/// Our current pixelshift, Y axis.
+	var/current_pixelshift_y = 0
+	/// Our current pixeltilt.
+	var/current_pixeltilt = 0
