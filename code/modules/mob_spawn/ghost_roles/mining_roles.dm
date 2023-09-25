@@ -242,10 +242,10 @@
 	eggshell = null
 	return ..()
 
-/obj/effect/mob_spawn/ghost_role/human/ash_walker/name_mob(mob/living/spawned_mob, forced_name)
+/obj/effect/mob_spawn/ghost_role/human/ashwalker/name_mob(mob/living/spawned_mob, forced_name)
 	spawned_mob.fully_replace_character_name(null, random_unique_lizard_name(spawned_mob.gender))
 
-/obj/effect/mob_spawn/ghost_role/human/ash_walker/special(mob/living/carbon/human/spawned_human)
+/obj/effect/mob_spawn/ghost_role/human/ashwalker/special(mob/living/carbon/human/spawned_human)
 	. = ..()
 	to_chat(spawned_human, "<b>Drag the corpses of men and beasts to your nest. It will absorb them to create more of your kind. Invade the strange structure of the outsiders if you must. Do not cause unnecessary destruction, as littering the wastes with ugly wreckage is certain to not gain you favor. Glory to the Necropolis!</b>")
 
