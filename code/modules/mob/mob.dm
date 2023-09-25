@@ -1,3 +1,48 @@
+/mob/New()
+	// This needs to happen IMMEDIATELY. I'm sorry :(
+	GenerateTag()
+	return ..()
+
+/**
+ * Intialize a mob
+ *
+ * Sends global signal COMSIG_GLOB_MOB_CREATED
+ *
+ * Adds to global lists
+ * * GLOB.mob_list
+ * * GLOB.mob_directory (by tag)
+ * * GLOB.dead_mob_list - if mob is dead
+ * * GLOB.alive_mob_list - if the mob is alive
+ *
+ * Other stuff:
+ * * Sets the mob focus to itself
+ * * Generates huds
+ * * If there are any global alternate apperances apply them to this mob
+ * * set a random nutrition level
+ * * Intialize the movespeed of the mob
+ */
+/mob/Initialize(mapload)
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_CREATED, src)
+	add_to_mob_list()
+	if(stat == DEAD)
+		add_to_dead_mob_list()
+	else
+		add_to_alive_mob_list()
+	set_focus(src)
+	prepare_huds()
+	for(var/v in GLOB.active_alternate_appearances)
+		if(!v)
+			continue
+		var/datum/atom_hud/alternate_appearance/AA = v
+		AA.onNewMob(src)
+	set_nutrition(rand(NUTRITION_LEVEL_START_MIN, NUTRITION_LEVEL_START_MAX))
+	. = ..()
+	update_config_movespeed()
+	initialize_actionspeed()
+	update_movespeed(TRUE)
+	become_hearing_sensitive()
+	log_mob_tag("TAG: [tag] CREATED: [key_name(src)] \[[type]\]")
+
 /**
  * Delete a mob
  *
@@ -54,51 +99,6 @@
 		mock_client.mob = null
 
 	return ..()
-
-/mob/New()
-	// This needs to happen IMMEDIATELY. I'm sorry :(
-	GenerateTag()
-	return ..()
-
-/**
- * Intialize a mob
- *
- * Sends global signal COMSIG_GLOB_MOB_CREATED
- *
- * Adds to global lists
- * * GLOB.mob_list
- * * GLOB.mob_directory (by tag)
- * * GLOB.dead_mob_list - if mob is dead
- * * GLOB.alive_mob_list - if the mob is alive
- *
- * Other stuff:
- * * Sets the mob focus to itself
- * * Generates huds
- * * If there are any global alternate apperances apply them to this mob
- * * set a random nutrition level
- * * Intialize the movespeed of the mob
- */
-/mob/Initialize(mapload)
-	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_CREATED, src)
-	add_to_mob_list()
-	if(stat == DEAD)
-		add_to_dead_mob_list()
-	else
-		add_to_alive_mob_list()
-	set_focus(src)
-	prepare_huds()
-	for(var/v in GLOB.active_alternate_appearances)
-		if(!v)
-			continue
-		var/datum/atom_hud/alternate_appearance/AA = v
-		AA.onNewMob(src)
-	set_nutrition(rand(NUTRITION_LEVEL_START_MIN, NUTRITION_LEVEL_START_MAX))
-	. = ..()
-	update_config_movespeed()
-	initialize_actionspeed()
-	update_movespeed(TRUE)
-	become_hearing_sensitive()
-	log_mob_tag("TAG: [tag] CREATED: [key_name(src)] \[[type]\]")
 
 /**
  * Generate the tag for this mob
@@ -1541,3 +1541,11 @@
 	set name = "View Skills"
 
 	mind?.print_levels(src)
+
+
+/mob/proc/reset_pixelshift()
+	pixel_x -= current_pixelshift_x
+	pixel_y -= current_pixelshift_y
+	transform = transform.Turn(-current_pixeltilt)
+
+	current_pixelshift_x = current_pixelshift_y = current_pixeltilt = 0

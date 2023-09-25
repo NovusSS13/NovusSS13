@@ -78,6 +78,35 @@
 		return FALSE //This is sota the goto stop mobs from moving var
 	if(mob.control_object)
 		return Move_object(direct)
+
+	if(pixelshifting)
+		if(pixelshift_time + 1.1 SECONDS < world.time) //we haven't tried to shift for a WHOLE (half) SECOND
+			pixelshift_time = 0 //assume fuck
+
+		if(pixelshift_time && pixelshift_time + 0.5 SECONDS > world.time)
+			return
+
+		if(direct & NORTH && mob.current_pixelshift_y < 16)
+			mob.pixel_y++
+			mob.current_pixelshift_y++
+		if(direct & SOUTH && mob.current_pixelshift_y > -16)
+			mob.pixel_y--
+			mob.current_pixelshift_y--
+		if(direct & EAST && mob.current_pixelshift_x < 16)
+			mob.pixel_x++
+			mob.current_pixelshift_x++
+		if(direct & WEST && mob.current_pixelshift_x > -16)
+			mob.pixel_x--
+			mob.current_pixelshift_x--
+
+		if(!pixelshift_time)
+			pixelshift_time = world.time
+		else
+			pixelshift_time = world.time - 0.6 SECONDS
+		return
+
+	mob.reset_pixelshift()
+
 	if(!isliving(mob))
 		return mob.Move(new_loc, direct)
 	if(mob.stat == DEAD)
