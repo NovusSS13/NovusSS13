@@ -919,3 +919,41 @@
 
 /datum/status_effect/teleport_madness/tick()
 	dump_in_space(owner)
+
+
+/datum/status_effect/ashwalker_freshborn
+	id = "ashwalker_freshborn"
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+	alert_type = /atom/movable/screen/alert/status_effect/freshborn
+	var/sacrifices_left = 2
+
+/datum/status_effect/ashwalker_freshborn/on_apply()
+	. = ..()
+	RegisterSignal(owner, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(on_apply_damage))
+	RegisterSignal(owner, COMSIG_ON_SACRIFICE, PROC_REF(on_sacrifice))
+
+/datum/status_effect/ashwalker_freshborn/on_remove()
+	UnregisterSignal(owner, list(COMSIG_MOB_AFTER_APPLY_DAMAGE, COMSIG_ON_SACRIFICE))
+	return ..()
+
+/datum/status_effect/ashwalker_freshborn/proc/on_apply_damage(mob/living/source, damage, damagetype, def_zone)
+	SIGNAL_HANDLER
+
+	if(damage <= 0)
+		return
+
+	UnregisterSignal(owner, COMSIG_MOB_AFTER_APPLY_DAMAGE) //infinite loop funnies
+	owner.apply_damage(damage * 0.20) //you take 20% more damage until you do two sacrifices
+	RegisterSignal(owner, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(on_apply_damage))
+
+/datum/status_effect/ashwalker_freshborn/proc/on_sacrifice(datum/source, obj/structure/lavaland/ashwalker/tendril, sacrifice_amount)
+	sacrifices_left -= sacrifice_amount
+	if(sacrifices_left <= 0)
+		qdel(src)
+
+
+/atom/movable/screen/alert/status_effect/freshborn
+	name = "Freshborn"
+	desc = "Your freshly-hatched body still needs time to harden.."
+	icon_state = "freshborn"

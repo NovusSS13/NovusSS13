@@ -123,7 +123,7 @@
 /datum/outfit/basketball/ash_gladiators
 	name = "Basketball Ash Gladiators"
 	head = /obj/item/clothing/head/helmet/gladiator
-	uniform = /obj/item/clothing/under/costume/gladiator/ash_walker
+	uniform = /obj/item/clothing/under/costume/gladiator/ashwalker
 	back = /obj/item/spear
 	shoes = null
 
