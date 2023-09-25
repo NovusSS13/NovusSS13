@@ -58,7 +58,7 @@
 		SEND_SOUND(owner, sound('sound/effects/adminhelp.ogg'))
 		to_chat(owner, "<font color='red' size='4'><b>-- Interview Update --</b></font>" \
 			+ "\n[span_adminsay("Your interview was approved, you will now be reconnected in 5 seconds.")]", confidential = TRUE)
-		addtimer(CALLBACK(src, PROC_REF(reconnect_owner)), 50)
+		addtimer(CALLBACK(src, PROC_REF(reconnect_owner)), 5 SECONDS)
 
 /**
  * Denies the interview and adds the owner to the cooldown for new interviews.
@@ -84,7 +84,7 @@
  * Forces client to reconnect, used in the callback from approval
  */
 /datum/interview/proc/reconnect_owner()
-	if (!owner)
+	if (QDELETED(owner))
 		return
 	winset(owner, null, "command=.reconnect")
 
