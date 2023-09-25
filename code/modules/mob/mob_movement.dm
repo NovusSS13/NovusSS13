@@ -80,7 +80,7 @@
 		return Move_object(direct)
 
 	if(pixelshifting)
-		if(pixelshift_time + 1 SECONDS < world.time) //we haven't tried to shift for a WHOLE (half) SECOND
+		if(pixelshift_time + 1.1 SECONDS < world.time) //we haven't tried to shift for a WHOLE (half) SECOND
 			pixelshift_time = 0 //assume fuck
 
 		if(pixelshift_time && pixelshift_time + 0.5 SECONDS > world.time)
