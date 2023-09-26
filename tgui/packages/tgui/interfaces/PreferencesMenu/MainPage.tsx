@@ -306,8 +306,10 @@ const MainFeature = (
       <Button
         onClick={() => {
           if (isOpen) {
+            setSearchText('');
             handleClose();
           } else {
+            setSearchText('');
             handleOpen();
           }
         }}
