@@ -126,7 +126,7 @@ const ChoicedSelection = (
                 color="red"
                 onClick={() => {
                   setSearchText('');
-                  props.onClose;
+                  props.onClose();
                 }}>
                 X
               </Button>
@@ -297,10 +297,7 @@ const MainFeature = (
                   supplementalFeature
                 ]
               }
-              onClose={() => {
-                setSearchText('');
-                handleClose();
-              }}
+              onClose={handleClose}
               onSelect={handleSelect}
             />
           </TrackOutsideClicks>
@@ -309,8 +306,10 @@ const MainFeature = (
       <Button
         onClick={() => {
           if (isOpen) {
+            setSearchText('');
             handleClose();
           } else {
+            setSearchText('');
             handleOpen();
           }
         }}

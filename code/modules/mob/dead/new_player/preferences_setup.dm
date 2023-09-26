@@ -1,13 +1,13 @@
 /// Fully randomizes everything in the character.
-/datum/preferences/proc/randomise_appearance_prefs(randomize_flags = (~RANDOMIZE_GENITALS))
+/datum/preferences/proc/randomise_appearance_prefs(randomize_flags = RANDOMIZE_BY_DEFAUT | RANDOMIZE_NAME | RANDOMIZE_SPECIES)
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if(!preference.is_accessible(src))
 			continue
 
-		if (!preference.included_in_randomization_flags(randomize_flags))
+		if(!preference.included_in_randomization_flags(randomize_flags))
 			continue
 
-		if (preference.is_randomizable())
+		if(preference.is_randomizable())
 			write_preference(preference, preference.create_random_value(src))
 
 /// Randomizes the character according to preferences.

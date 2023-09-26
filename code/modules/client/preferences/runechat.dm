@@ -47,11 +47,10 @@
 	return ..() && preferences && !preferences.read_preference(/datum/preference/toggle/random_chat_color)
 
 /datum/preference/color/chat_color/create_default_value(datum/preferences/preferences)
-	. = ..()
 	var/say_my_name = preferences?.read_preference(/datum/preference/name/real_name)
 	if(say_my_name)
 		return colorize_string(say_my_name)
-	return "#[random_color()]"
+	return "#FFFFFF"
 
 /datum/preference/color/chat_color/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	if(!is_accessible(prefs) || isdummy(target))

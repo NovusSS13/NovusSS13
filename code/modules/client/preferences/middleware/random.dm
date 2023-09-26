@@ -78,7 +78,7 @@
 
 /// Given randomization flags, will return whether or not this preference should be randomized.
 /datum/preference/proc/included_in_randomization_flags(randomize_flags)
-	return TRUE
+	return !!((randomize_flags & RANDOMIZE_BY_DEFAULT) && (randomize_by_default))
 
 /datum/preference/name/included_in_randomization_flags(randomize_flags)
 	return !!(randomize_flags & RANDOMIZE_NAME)
