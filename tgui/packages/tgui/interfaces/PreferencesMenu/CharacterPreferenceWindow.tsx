@@ -30,37 +30,36 @@ const CharSlots = (props: {
   maxSlots: number;
   activeSlot: number;
 }) => {
-  const profileoptions: string[] = [];
-  for (let profile of props.profiles) {
-    profileoptions.push(profile);
-  }
   return (
-    <>
-      <Dropdown
-        minWidth={10}
-        selected={profileoptions[props.activeSlot - 1] || 'None'}
-        options={profileoptions}
-        onSelected={(option) => {
-          props.onClick('change_slot', {
-            slot_key: props.slotKey,
-            slot_id: profileoptions.indexOf(option) + 1,
-          });
-        }}
-      />
-      {Number(profileoptions.length) < props.maxSlots && (
+    <Stack.Item>
+      <Stack>
         <Stack.Item>
-          <Button
-            icon="plus"
-            onClick={() => {
-              props.onClick('new_slot', {
+          <Dropdown
+            minWidth={10}
+            selected={props.profiles[props.activeSlot - 1]}
+            options={props.profiles}
+            onSelected={(option) => {
+              props.onClick('change_slot', {
                 slot_key: props.slotKey,
+                slot_id: props.profiles.indexOf(option) + 1,
               });
             }}
-            fluid
           />
         </Stack.Item>
-      )}
-    </>
+        {Number(props.profiles.length) < props.maxSlots && (
+          <Stack.Item>
+            <Button
+              icon="plus"
+              onClick={() => {
+                props.onClick('new_slot', {
+                  slot_key: props.slotKey,
+                });
+              }}
+            />
+          </Stack.Item>
+        )}
+      </Stack>
+    </Stack.Item>
   );
 };
 
@@ -187,9 +186,15 @@ export const CharacterPreferenceWindow = (props, context) => {
                               profiles={
                                 data.character_profiles[data.active_slot_key]
                               }
-                              activeSlot={data.active_slot_ids['main']}
-                              slotKey="main"
-                              maxSlots={data.max_slots_main}
+                              activeSlot={
+                                data.active_slot_ids[data.active_slot_key]
+                              }
+                              slotKey={data.active_slot_key}
+                              maxSlots={
+                                data.active_slot_key === 'main'
+                                  ? data.max_slots_main
+                                  : data.max_slots_ghost
+                              }
                               onClick={(action, object) => {
                                 act(action, object);
                               }}
@@ -240,7 +245,7 @@ export const CharacterPreferenceWindow = (props, context) => {
                 </PageButton>
               </Stack.Item>
 
-              {data.active_slot_key == 'main' && (
+              {data.active_slot_key === 'main' && (
                 <>
                   <Stack.Item grow>
                     <PageButton

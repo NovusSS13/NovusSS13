@@ -30,10 +30,7 @@
 	savefile_key = "random_chat_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	default_value = TRUE
-
-//by it's very nature, when this is true that means it's random...
-/datum/preference/toggle/random_chat_color/create_random_value(datum/preferences/preferences)
-	return TRUE
+	randomize_by_default = FALSE
 
 //not needed of course
 /datum/preference/toggle/random_chat_color/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
@@ -44,6 +41,7 @@
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	savefile_key = "chat_color"
 	savefile_identifier = PREFERENCE_CHARACTER
+	randomize_by_default = TRUE
 
 /datum/preference/color/chat_color/is_accessible(datum/preferences/preferences)
 	return ..() && preferences && !preferences.read_preference(/datum/preference/toggle/random_chat_color)

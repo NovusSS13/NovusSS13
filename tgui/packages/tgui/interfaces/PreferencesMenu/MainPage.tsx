@@ -72,7 +72,7 @@ const ChoicedSelection = (
   const [searchText, setSearchText] = useSharedState(
     context,
     'search_text',
-    null
+    ''
   );
 
   if (!catalog.icons) {
@@ -122,7 +122,12 @@ const ChoicedSelection = (
             </Stack.Item>
 
             <Stack.Item>
-              <Button color="red" onClick={props.onClose}>
+              <Button
+                color="red"
+                onClick={() => {
+                  setSearchText('');
+                  props.onClose;
+                }}>
                 X
               </Button>
             </Stack.Item>
@@ -263,6 +268,12 @@ const MainFeature = (
 
   const supplementalFeature = catalog.supplemental_feature;
 
+  const [searchText, setSearchText] = useSharedState(
+    context,
+    'search_text',
+    ''
+  );
+
   return (
     <Popper
       options={{
@@ -270,7 +281,11 @@ const MainFeature = (
       }}
       popperContent={
         isOpen && (
-          <TrackOutsideClicks onOutsideClick={props.handleClose}>
+          <TrackOutsideClicks
+            onOutsideClick={() => {
+              setSearchText('');
+              handleClose();
+            }}>
             <ChoicedSelection
               name={catalog.name}
               catalog={catalog}
@@ -282,7 +297,10 @@ const MainFeature = (
                   supplementalFeature
                 ]
               }
-              onClose={handleClose}
+              onClose={() => {
+                setSearchText('');
+                handleClose();
+              }}
               onSelect={handleSelect}
             />
           </TrackOutsideClicks>
