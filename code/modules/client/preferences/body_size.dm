@@ -6,6 +6,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	minimum = BODY_SIZE_PREF_MINIMUM
 	maximum = BODY_SIZE_PREF_MAXIMUM
+	randomize_by_default = FALSE
 
 /datum/preference/numeric/body_size/create_default_value()
 	return BODY_SIZE_STANDARD

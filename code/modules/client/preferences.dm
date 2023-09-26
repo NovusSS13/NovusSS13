@@ -241,7 +241,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if(used_slot_amount[slot_key] <= 0)
 				if(!add_character_slot(slot_key))
 					return FALSE
-			else if(!load_character(1, slot_key))
+			else if(!load_character(current_ids[slot_key] || 1, slot_key))
 				return FALSE //guest?
 
 			for(var/datum/preference_middleware/preference_middleware as anything in middleware)

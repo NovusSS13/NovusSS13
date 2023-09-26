@@ -31,6 +31,7 @@ const SetButton = (
         isOpen && (
           <TrackOutsideClicks
             onOutsideClick={() => {
+              setSearchText('');
               handleClose();
             }}>
             <Box
@@ -68,6 +69,7 @@ const SetButton = (
                       <Button
                         color="red"
                         onClick={() => {
+                          setSearchText('');
                           handleClose();
                         }}>
                         X
@@ -101,6 +103,7 @@ const SetButton = (
                                 act('set_preset', {
                                   preset: availableSet.name,
                                 });
+                                setSearchText('');
                                 handleClose();
                               }}
                               tooltip={availableSet.name}
@@ -168,6 +171,7 @@ const MarkingButton = (
         isOpen && (
           <TrackOutsideClicks
             onOutsideClick={() => {
+              setSearchText('');
               handleClose();
             }}>
             <Box
@@ -205,6 +209,7 @@ const MarkingButton = (
                       <Button
                         color="red"
                         onClick={() => {
+                          setSearchText('');
                           handleClose();
                         }}>
                         X

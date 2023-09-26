@@ -3,6 +3,7 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_key = "height"
 	savefile_identifier = PREFERENCE_CHARACTER
+	randomize_by_default = FALSE
 
 /datum/preference/choiced/height/init_possible_values()
 	return list("Shorter", "Short", "Medium", "Tall", "Taller")
