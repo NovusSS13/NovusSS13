@@ -1,5 +1,5 @@
 /// Fully randomizes everything in the character.
-/datum/preferences/proc/randomise_appearance_prefs(randomize_flags = RANDOMIZE_BY_DEFAUT | RANDOMIZE_NAME | RANDOMIZE_SPECIES)
+/datum/preferences/proc/randomise_appearance_prefs(randomize_flags = RANDOMIZE_BY_DEFAULT | RANDOMIZE_NAME | RANDOMIZE_SPECIES)
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if(!preference.is_accessible(src))
 			continue
