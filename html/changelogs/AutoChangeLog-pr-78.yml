@@ -1,0 +1,5 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - qol: "LOOC keybind and LOOC tgui say"
+  - bugfix: "Fixed character setup close buttons working improperly\n/:cl"
