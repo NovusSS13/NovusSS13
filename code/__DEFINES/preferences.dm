@@ -98,9 +98,10 @@
 #define RECOMMENDED_FPS 100
 
 // randomise_appearance_prefs() and randomize_human_appearance() proc flags
-#define RANDOMIZE_NAME (1<<0)
-#define RANDOMIZE_SPECIES (1<<1)
-#define RANDOMIZE_GENITALS (1<<2)
+#define RANDOMIZE_BY_DEFAULT (1<<0)
+#define RANDOMIZE_NAME (1<<1)
+#define RANDOMIZE_SPECIES (1<<2)
+#define RANDOMIZE_GENITALS (1<<3)
 
 // Values for /datum/preference/savefile_identifier
 /// This preference is character specific.
