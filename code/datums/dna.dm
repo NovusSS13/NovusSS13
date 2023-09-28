@@ -237,20 +237,22 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 	L[DNA_GENDER_BLOCK] = construct_block(GLOB.genders.Find(holder.gender), GLOB.genders.len)
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
-		if(!GLOB.hairstyles_list.len)
-			init_sprite_accessory_subtypes(/datum/sprite_accessory/hair,GLOB.hairstyles_list, GLOB.hairstyles_male_list, GLOB.hairstyles_female_list)
 		L[DNA_BODY_TYPE_BLOCK] = construct_block(GLOB.body_types.Find(H.physique), GLOB.body_types.len)
 		L[DNA_SKIN_TONE_BLOCK] = construct_block(GLOB.skin_tones.Find(H.skin_tone), GLOB.skin_tones.len)
 		L[DNA_HEIGHT_BLOCK] = construct_block(GLOB.mob_heights.Find(H.mob_height), GLOB.mob_heights.len)
 		L[DNA_BODY_SIZE_BLOCK] = construct_block(H.body_size, BODY_SIZE_MAXIMUM)
 		L[DNA_EYE_COLOR_LEFT_BLOCK] = sanitize_hexcolor(H.eye_color_left, include_crunch = FALSE)
 		L[DNA_EYE_COLOR_RIGHT_BLOCK] = sanitize_hexcolor(H.eye_color_right, include_crunch = FALSE)
+		if(!GLOB.hairstyles_list.len)
+			init_sprite_accessory_subtypes(/datum/sprite_accessory/hair,GLOB.hairstyles_list, GLOB.hairstyles_male_list, GLOB.hairstyles_female_list)
 		L[DNA_HAIRSTYLE_BLOCK] = construct_block(GLOB.hairstyles_list.Find(H.hairstyle), GLOB.hairstyles_list.len)
 		L[DNA_HAIR_COLOR_BLOCK] = sanitize_hexcolor(H.hair_color, include_crunch = FALSE)
 		if(!GLOB.facial_hairstyles_list.len)
 			init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_hair, GLOB.facial_hairstyles_list, GLOB.facial_hairstyles_male_list, GLOB.facial_hairstyles_female_list)
 		L[DNA_FACIAL_HAIRSTYLE_BLOCK] = construct_block(GLOB.facial_hairstyles_list.Find(H.facial_hairstyle), GLOB.facial_hairstyles_list.len)
 		L[DNA_FACIAL_HAIR_COLOR_BLOCK] = sanitize_hexcolor(H.facial_hair_color, include_crunch = FALSE)
+		var/list/possible_voices = species.get_voice_packs()
+		L[DNA_VOICE_BLOCK] = construct_block(possible_voices.Find(H.voice_pack?.name) || 1, possible_voices.len)
 
 	for(var/blocknum in 1 to DNA_UNI_IDENTITY_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -721,7 +723,7 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		dna.species = new rando_race()
 
 //proc used to update the mob's appearance after its dna UI has been changed
-/mob/living/carbon/proc/updateappearance(icon_update=1, mutcolor_update=0, mutations_overlay_update=0)
+/mob/living/carbon/proc/updateappearance(icon_update = TRUE, mutcolor_update = FALSE, mutations_overlay_update = FALSE)
 	if(!has_dna())
 		return
 

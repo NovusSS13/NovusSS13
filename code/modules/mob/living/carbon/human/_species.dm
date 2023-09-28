@@ -155,6 +155,9 @@
 	///For custom overrides for species ass images
 	var/icon/ass_image
 
+	/// Voice pack that this species uses by default, for emotes
+	var/datum/voice/voice_pack = /datum/voice/default
+
 	/// List of family heirlooms this species can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
 
@@ -176,7 +179,7 @@
 	/**
 	 * Was on_species_gain ever actually called?
 	 * Species code is really odd...
-	 **/
+	 */
 	var/properly_gained = FALSE
 
 ///////////
@@ -1607,10 +1610,6 @@
 /datum/species/proc/prepare_human_for_preview(mob/living/carbon/human/human)
 	return
 
-/// Returns the species's scream sound.
-/datum/species/proc/get_scream_sound(mob/living/carbon/human/human)
-	return
-
 /datum/species/proc/get_types_to_preload()
 	var/list/to_store = list()
 	to_store += mutant_organs
@@ -2171,7 +2170,11 @@
  * Admittedly, this is a very weird and seemingly redundant proc, but it
  * gets used by some preferences (such as hair style) to determine whether
  * or not they are accessible.
- **/
+ */
 /datum/species/proc/check_head_flags(check_flags = NONE)
 	var/obj/item/bodypart/head/fake_head = bodypart_overrides[BODY_ZONE_HEAD]
 	return (initial(fake_head.head_flags) & check_flags)
+
+/// Returns the voice packs this species can use. By default, everything is valid.
+/datum/species/proc/get_voice_packs()
+	return GLOB.voice_packs

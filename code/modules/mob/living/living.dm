@@ -15,9 +15,10 @@
 	SSpoints_of_interest.make_point_of_interest(src)
 	update_fov()
 	gravity_setup()
+	setup_voice_pack()
 
 /mob/living/prepare_huds()
-	..()
+	. = ..()
 	prepare_data_huds()
 
 /mob/living/proc/prepare_data_huds()
@@ -2443,6 +2444,17 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/played_game()
 	. = ..()
 	add_mood_event("gaming", /datum/mood_event/gaming)
+
+/// Initializes the mob's voice pack
+/mob/living/proc/setup_voice_pack()
+	if(ispath(voice_pack))
+		set_voice_pack(initial(voice_pack.name))
+	else
+		set_voice_pack(voice_pack)
+
+/// Setter for a mob's voice pack
+/mob/living/proc/set_voice_pack(voice_name)
+	voice_pack = GLOB.voice_packs[voice_name]
 
 /**
  * Helper proc for basic and simple animals to return true if the passed sentience type matches theirs

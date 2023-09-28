@@ -51,6 +51,8 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/moth,
 	)
 
+	voice_pack = /datum/voice/moth
+
 /datum/species/moth/random_name(gender,unique,lastname)
 	if(unique)
 		return random_unique_moth_name()
@@ -71,9 +73,6 @@
 	. = ..()
 	randomize_cosmetic_organs(human_mob)
 	randomize_markings(human_mob)
-
-/datum/species/moth/get_scream_sound(mob/living/carbon/human/human)
-	return 'sound/voice/moth/scream_moth.ogg'
 
 /datum/species/moth/get_species_description()
 	return "Hailing from a planet that was lost long ago, the moths travel \
