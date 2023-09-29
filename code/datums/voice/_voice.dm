@@ -4,6 +4,15 @@
 	var/name
 	/// An associative list of emote typepaths to lists possible sounds, indexed by physique
 	var/list/emote_sounds = list(
+		/datum/emote/living/laugh = list(
+			MALE = list(
+				'sound/voice/human/manlaugh1.ogg',
+				'sound/voice/human/manlaugh2.ogg',
+			),
+			FEMALE = list(
+				'sound/voice/human/womanlaugh.ogg',
+			),
+		),
 		/datum/emote/living/gasp_shock = list(
 			MALE = list(
 				'sound/voice/human/gasp_male1.ogg',
@@ -33,6 +42,8 @@
 			),
 		),
 	)
+	/// Emote we use for sound preview
+	var/preview_emote = /datum/emote/living/carbon/human/scream
 
 /datum/voice/proc/get_sound_for_emote(datum/emote/emote, mob/living/user)
 	var/sounds_list = LAZYACCESS(emote_sounds, initial(emote.type))
@@ -48,9 +59,14 @@
 		return pick(sounds_list[gender])
 	return pick(sounds_list[sounds_list[1]])
 
-/datum/voice/proc/get_preview_sound()
-	return emote_sounds?[/datum/emote/living/carbon/human/scream][emote_sounds[/datum/emote/living/carbon/human/scream][1]][1]
+/datum/voice/proc/get_preview_sound(gender = MALE)
+	var/sounds_list = LAZYACCESS(emote_sounds, preview_emote)
+	if(isnull(sounds_list))
+		return
+	if(sounds_list[gender])
+		return sounds_list[gender][1]
+	return sounds_list[sounds_list[1]][1]
 
 /datum/voice/none
-	name = "None"
+	name = "Silent"
 	emote_sounds = list()
