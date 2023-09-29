@@ -64,8 +64,8 @@
 
 	if(human_owner.underwear)
 		var/datum/sprite_accessory/underwear/underwear = GLOB.underwear_list[human_owner.underwear]
-		var/mutable_appearance/underwear_overlay
 		if(underwear)
+			var/mutable_appearance/underwear_overlay
 			if(is_dimorphic && limb_gender == "f" && (underwear.gender == MALE))
 				underwear_overlay = wear_female_version(underwear.icon_state, underwear.icon, BODY_LAYER, FEMALE_UNIFORM_FULL)
 			else
@@ -73,11 +73,13 @@
 			if(!underwear.use_static)
 				underwear_overlay.color = human_owner.underwear_color
 			underwear_overlay.dir = image_dir
-			//Emissive blocker
-			if(blocks_emissive)
-				underwear_overlay.overlays += emissive_blocker(underwear_overlay.icon, underwear_overlay.icon_state, location)
 			worn_uniform_offset?.apply_offset(underwear_overlay)
 			. += underwear_overlay
+			//Emissive blocker
+			if(blocks_emissive)
+				var/image/blocker = emissive_blocker(underwear_overlay.icon, underwear_overlay.icon_state, location)
+				worn_uniform_offset?.apply_offset(blocker)
+				. += blocker
 
 	if(human_owner.undershirt)
 		var/datum/sprite_accessory/undershirt/undershirt = GLOB.undershirt_list[human_owner.undershirt]
@@ -88,11 +90,13 @@
 			else
 				shirt_overlay = mutable_appearance(undershirt.icon, undershirt.icon_state, -BODY_LAYER)
 			shirt_overlay.dir = image_dir
-			//Emissive blocker
-			if(blocks_emissive)
-				shirt_overlay.overlays += emissive_blocker(shirt_overlay.icon, shirt_overlay.icon_state, location)
 			worn_uniform_offset?.apply_offset(shirt_overlay)
 			. += shirt_overlay
+			//Emissive blocker
+			if(blocks_emissive)
+				var/image/blocker = emissive_blocker(shirt_overlay.icon, shirt_overlay.icon_state, location)
+				worn_uniform_offset?.apply_offset(blocker)
+				. += blocker
 
 	//handling socks here is not ideal and this should be moved to be handled by legs somehow, but that's for later i guess
 	if(human_owner.socks && (human_owner.num_legs >= 2) && !(human_owner.bodytype & BODYTYPE_DIGITIGRADE))
@@ -100,11 +104,13 @@
 		if(socks)
 			var/mutable_appearance/socks_overlay = mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)
 			socks_overlay.dir = image_dir
-			//Emissive blocker
-			if(blocks_emissive)
-				socks_overlay.overlays += emissive_blocker(socks_overlay.icon, socks_overlay.icon_state, location)
 			worn_uniform_offset?.apply_offset(socks_overlay)
 			. += socks_overlay
+			//Emissive blocker
+			if(blocks_emissive)
+				var/image/blocker = emissive_blocker(socks_overlay.icon, socks_overlay.icon_state, location)
+				worn_uniform_offset?.apply_offset(blocker)
+				. += blocker
 
 	return .
 

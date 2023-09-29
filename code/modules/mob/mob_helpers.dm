@@ -9,23 +9,23 @@
 
 /// Convert a PRECISE ZONE into the actual, existing BODY_ZONE
 /proc/check_zone(zone)
-	if(!zone)
+	if(isnull(zone))
 		return BODY_ZONE_CHEST
 	switch(zone)
 		if(BODY_ZONE_PRECISE_EYES)
-			zone = BODY_ZONE_HEAD
+			return BODY_ZONE_HEAD
 		if(BODY_ZONE_PRECISE_MOUTH)
-			zone = BODY_ZONE_HEAD
-		if(BODY_ZONE_PRECISE_L_HAND)
-			zone = BODY_ZONE_L_ARM
-		if(BODY_ZONE_PRECISE_R_HAND)
-			zone = BODY_ZONE_R_ARM
-		if(BODY_ZONE_PRECISE_L_FOOT)
-			zone = BODY_ZONE_L_LEG
-		if(BODY_ZONE_PRECISE_R_FOOT)
-			zone = BODY_ZONE_R_LEG
+			return BODY_ZONE_HEAD
 		if(BODY_ZONE_PRECISE_GROIN)
-			zone = BODY_ZONE_CHEST
+			return BODY_ZONE_CHEST
+		if(BODY_ZONE_PRECISE_L_HAND)
+			return BODY_ZONE_L_ARM
+		if(BODY_ZONE_PRECISE_R_HAND)
+			return BODY_ZONE_R_ARM
+		if(BODY_ZONE_PRECISE_L_FOOT)
+			return BODY_ZONE_L_LEG
+		if(BODY_ZONE_PRECISE_R_FOOT)
+			return BODY_ZONE_R_LEG
 	return zone
 
 /**
