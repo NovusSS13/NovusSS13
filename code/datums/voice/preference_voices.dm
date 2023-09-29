@@ -65,7 +65,7 @@
 	. = ..()
 	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
 		PLURAL = list(
-			'sound/voice/creatures/monkey/monkey_screech_alt.ogg',
+			'sound/creatures/monkey/monkey_screech_alt.ogg',
 		),
 	)
 
