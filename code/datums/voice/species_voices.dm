@@ -2,7 +2,8 @@
 	name = "Human"
 
 /datum/voice/human/get_sound_for_emote(datum/emote/emote, mob/living/user)
-	if((initial(emote.type) == /datum/emote/living/carbon/human/scream) && ishuman(user))
+	var/emote_type = istype(emote) ? emote.type : emote
+	if((emote_type == /datum/emote/living/carbon/human/scream) && ishuman(user))
 		var/mob/living/carbon/human/human_user = user
 		if((human_user.physique == MALE) && prob(1))
 			return 'sound/voice/human/wilhelm_scream.ogg'
