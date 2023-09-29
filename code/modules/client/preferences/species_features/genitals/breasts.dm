@@ -11,7 +11,7 @@
 	return assoc_to_keys_features(GLOB.breasts_list)
 
 /datum/preference/choiced/mutant/breasts/included_in_randomization_flags(randomize_flags)
-	return !!(randomize_flags & RANDOMIZE_GENITALS)
+	return ..() && !!(randomize_flags & RANDOMIZE_GENITALS)
 
 /datum/preference/choiced/mutant/breasts/create_default_value(datum/preferences/preferences)
 	return SPRITE_ACCESSORY_NONE
@@ -36,7 +36,7 @@
 	return assoc_to_keys(GLOB.breasts_size_names)
 
 /datum/preference/choiced/mutant/breasts_size/included_in_randomization_flags(randomize_flags)
-	return !!(randomize_flags & RANDOMIZE_GENITALS)
+	return ..() && !!(randomize_flags & RANDOMIZE_GENITALS)
 
 /datum/preference/choiced/mutant/breasts_size/compile_constant_data()
 	var/list/data = ..()
@@ -71,7 +71,7 @@
 	return ..()
 
 /datum/preference/tricolor/mutant/breasts/included_in_randomization_flags(randomize_flags)
-	return !!(randomize_flags & RANDOMIZE_GENITALS)
+	return ..() && !!(randomize_flags & RANDOMIZE_GENITALS)
 
 /datum/preference/tricolor/mutant/breasts/get_global_feature_list()
 	return GLOB.breasts_list

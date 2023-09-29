@@ -26,13 +26,16 @@
 	var/datum/species/species = new species_type
 	return species.cosmetic_organs[relevant_cosmetic_organ] || ..()
 
-/datum/preference/choiced/mutant/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
+/datum/preference/choiced/mutant/should_apply_to_human(mob/living/carbon/human/target, datum/preference/prefs)
 	// Doesn't make sense
 	if(!modified_feature)
-		return
+		return FALSE
 	// Mutant preferences do not apply if not accessible
 	else if(!is_accessible(prefs))
-		return
+		return FALSE
+	return ..()
+
+/datum/preference/choiced/mutant/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	target.dna.features[modified_feature] = value
 
 /datum/preference/tricolor/mutant

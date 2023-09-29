@@ -52,9 +52,12 @@
 		return colorize_string(say_my_name)
 	return "#FFFFFF"
 
-/datum/preference/color/chat_color/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
+/datum/preference/color/chat_color/should_apply_to_human(mob/living/carbon/human/target, datum/preferences/prefs)
 	if(!is_accessible(prefs) || isdummy(target))
-		return
+		return FALSE
+	return ..()
+
+/datum/preference/color/chat_color/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	if(isnull(GLOB.protected_chat_colors[target.real_name]))
 		GLOB.chat_colors[target.real_name] = value
 	target.update_chat_color(forced = TRUE)

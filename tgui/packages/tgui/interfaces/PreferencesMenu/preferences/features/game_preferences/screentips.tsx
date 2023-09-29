@@ -1,5 +1,5 @@
 import { multiline } from 'common/string';
-import { FeatureColorInput, Feature, FeatureChoiced, FeatureDropdownInput } from '../base';
+import { FeatureColorInput, Feature, FeatureChoiced, FeatureDropdownInput, FeatureValueProps } from '../base';
 
 export const screentip_color: Feature<string> = {
   name: 'Screentips color',
@@ -7,7 +7,11 @@ export const screentip_color: Feature<string> = {
   description: multiline`
     The color of screen tips, the text you see when hovering over something.
   `,
-  component: FeatureColorInput,
+  component: (
+    props: FeatureValueProps<string, boolean> & { hide_mutant: boolean }
+  ) => {
+    return <FeatureColorInput {...props} hide_mutant />;
+  },
 };
 
 export const screentip_pref: FeatureChoiced = {

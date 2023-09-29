@@ -377,11 +377,21 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE //wtf?
 
 			return update_preference(requested_preference, jointext(color_list, ";"))
-
-	for(var/datum/preference_middleware/preference_middleware as anything in middleware)
-		var/delegation = preference_middleware.action_delegations[action]
-		if(!isnull(delegation))
-			return call(preference_middleware, delegation)(params, usr)
+		if ("preview_voice_pack")
+			var/requested_voice_pack = params["voice_pack"]
+			var/datum/voice/voice_pack = GLOB.voice_packs[requested_voice_pack]
+			if(isnull(voice_pack))
+				return FALSE
+			var/sound_file = voice_pack.get_preview_sound()
+			if(sound_file)
+				var/sound/voice_sound = sound(sound_file, channel = CHANNEL_VOX, volume = 80)
+				SEND_SOUND(usr, voice_sound)
+			return FALSE
+		else
+			for(var/datum/preference_middleware/preference_middleware as anything in middleware)
+				var/delegation = preference_middleware.action_delegations[action]
+				if(!isnull(delegation))
+					return call(preference_middleware, delegation)(params, usr)
 
 	return FALSE
 
@@ -584,7 +594,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	//Normal preference datums with no snowflake handling
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
-		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
+		if (!preference.should_apply_to_human(character, src))
 			continue
 
 		preference.apply_to_human(character, read_preference(preference.type), src)

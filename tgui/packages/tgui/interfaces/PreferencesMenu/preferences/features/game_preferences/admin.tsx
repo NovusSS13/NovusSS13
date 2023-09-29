@@ -1,11 +1,15 @@
-import { CheckboxInput, FeatureColorInput, Feature, FeatureDropdownInput, FeatureToggle } from '../base';
+import { CheckboxInput, FeatureColorInput, Feature, FeatureDropdownInput, FeatureToggle, FeatureValueProps } from '../base';
 import { multiline } from 'common/string';
 
 export const asaycolor: Feature<string> = {
   name: 'Admin chat color',
   category: 'ADMIN',
   description: 'The color of your messages in Adminsay.',
-  component: FeatureColorInput,
+  component: (
+    props: FeatureValueProps<string, boolean> & { hide_mutant: boolean }
+  ) => {
+    return <FeatureColorInput {...props} hide_mutant />;
+  },
 };
 
 export const brief_outfit: Feature<string> = {

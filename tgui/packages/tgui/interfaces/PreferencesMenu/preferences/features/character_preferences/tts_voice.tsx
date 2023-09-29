@@ -7,7 +7,7 @@ const FeatureTTSDropdownInput = (
   return (
     <Stack>
       <Stack.Item grow>
-        <FeatureDropdownInput {...props} />
+        <FeatureDropdownInput buttons {...props} />
       </Stack.Item>
       <Stack.Item>
         <Button

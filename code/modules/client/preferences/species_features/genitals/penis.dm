@@ -11,7 +11,7 @@
 	return assoc_to_keys_features(GLOB.penis_list)
 
 /datum/preference/choiced/mutant/penis/included_in_randomization_flags(randomize_flags)
-	return !!(randomize_flags & RANDOMIZE_GENITALS)
+	return ..() && !!(randomize_flags & RANDOMIZE_GENITALS)
 
 /datum/preference/choiced/mutant/penis/create_default_value(datum/preferences/preferences)
 	return SPRITE_ACCESSORY_NONE // the gender checks dont work rn, aaaa
@@ -36,7 +36,7 @@
 	return assoc_to_keys(GLOB.penis_size_names)
 
 /datum/preference/choiced/mutant/penis_size/included_in_randomization_flags(randomize_flags)
-	return !!(randomize_flags & RANDOMIZE_GENITALS)
+	return ..() && !!(randomize_flags & RANDOMIZE_GENITALS)
 
 /datum/preference/choiced/mutant/penis_size/compile_constant_data()
 	var/list/data = ..()
@@ -74,7 +74,7 @@
 	return ..()
 
 /datum/preference/tricolor/mutant/penis/included_in_randomization_flags(randomize_flags)
-	return !!(randomize_flags & RANDOMIZE_GENITALS)
+	return ..() && !!(randomize_flags & RANDOMIZE_GENITALS)
 
 /datum/preference/tricolor/mutant/penis/get_global_feature_list()
 	return GLOB.penis_list
@@ -94,7 +94,7 @@
 	priority = PREFERENCE_PRIORITY_BODYPARTS
 
 /datum/preference/toggle/penis_uses_skintone/included_in_randomization_flags(randomize_flags)
-	return !!(randomize_flags & RANDOMIZE_GENITALS)
+	return ..() && !!(randomize_flags & RANDOMIZE_GENITALS)
 
 /datum/preference/toggle/penis_uses_skintone/is_accessible(datum/preferences/preferences)
 	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/penis) != SPRITE_ACCESSORY_NONE

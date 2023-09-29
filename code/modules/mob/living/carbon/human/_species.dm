@@ -508,6 +508,10 @@
 	for(var/language in gaining_holder.blocked_languages)
 		C.add_blocked_language(language, LANGUAGE_SPECIES)
 
+	// Change the voice pack of the human if it's not valid
+	if(!(C.voice_pack in get_voice_packs()))
+		C.set_voice_pack(initial(voice_pack.name))
+
 	properly_gained = TRUE
 	SEND_SIGNAL(C, COMSIG_SPECIES_GAIN, src, old_species)
 
@@ -2177,4 +2181,5 @@
 
 /// Returns the voice packs this species can use. By default, everything is valid.
 /datum/species/proc/get_voice_packs()
+	RETURN_TYPE(/list)
 	return GLOB.voice_packs

@@ -122,8 +122,6 @@
 	return GLOB.pref_bodypart_names[1] //should be "Mutant"
 
 /datum/preference/choiced/mutant/bodypart_type/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
-	if(!is_accessible(prefs))
-		return
 	//this is such a niche thing that I don't think it's worth it to make it a global
 	var/static/list/bodypart_id_to_zone_to_dimorphic
 	if(!length(bodypart_id_to_zone_to_dimorphic))
@@ -163,8 +161,6 @@
 
 /datum/preference/choiced/mutant/leg_type/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	. = ..()
-	if(!is_accessible(prefs))
-		return
 	for(var/obj/item/bodypart/leg/leg in target.bodyparts)
 		if(value == LEGS_DIGITIGRADE)
 			leg.bodytype |= BODYTYPE_DIGITIGRADE
