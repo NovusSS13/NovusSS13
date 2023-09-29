@@ -1,0 +1,4 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - sound: "You can now select your character's \"voice\" on the character setup, which gets used for emotes."
