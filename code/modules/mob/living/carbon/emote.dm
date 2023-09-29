@@ -26,14 +26,13 @@
 	vary = TRUE
 
 /datum/emote/living/carbon/clap/get_sound(mob/living/user)
-	if(ishuman(user))
-		if(!user.get_bodypart(BODY_ZONE_L_ARM) || !user.get_bodypart(BODY_ZONE_R_ARM))
-			return
-		else
-			return pick('sound/misc/clap1.ogg',
-							'sound/misc/clap2.ogg',
-							'sound/misc/clap3.ogg',
-							'sound/misc/clap4.ogg')
+	if(!iscarbon(user) || (user.usable_hands < 2))
+		return
+
+	return pick('sound/misc/clap1.ogg',
+				'sound/misc/clap2.ogg',
+				'sound/misc/clap3.ogg',
+				'sound/misc/clap4.ogg')
 
 /datum/emote/living/carbon/crack
 	key = "crack"
@@ -43,7 +42,7 @@
 	cooldown = 6 SECONDS
 
 /datum/emote/living/carbon/crack/can_run_emote(mob/living/carbon/user, status_check = TRUE , intentional)
-	if(!iscarbon(user) || user.usable_hands < 2)
+	if(!iscarbon(user) || (user.usable_hands < 2))
 		return FALSE
 	return ..()
 
@@ -164,9 +163,10 @@
 	muzzle_ignore = TRUE
 
 /datum/emote/living/carbon/snap/get_sound(mob/living/user)
-	if(ishuman(user))
-		return pick('sound/misc/fingersnap1.ogg', 'sound/misc/fingersnap2.ogg')
-	return null
+	if(!ishuman(user))
+		return
+
+	return pick('sound/misc/fingersnap1.ogg', 'sound/misc/fingersnap2.ogg')
 
 /datum/emote/living/carbon/shoesteal
 	key = "shoesteal"

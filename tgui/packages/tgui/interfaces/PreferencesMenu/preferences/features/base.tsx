@@ -45,7 +45,9 @@ export type FeatureValueProps<
   value: TReceiving;
 };
 
-export const FeatureColorInput = (props: FeatureValueProps<string>) => {
+export const FeatureColorInput = (
+  props: FeatureValueProps<string, boolean> & { hide_mutant: boolean }
+) => {
   return (
     <Stack align="center" fill>
       <Stack.Item>
@@ -78,18 +80,20 @@ export const FeatureColorInput = (props: FeatureValueProps<string>) => {
           </Stack>
         </Button>
       </Stack.Item>
-      <Stack.Item>
-        <Button
-          tooltipPosition="top"
-          tooltip="Set to mutant colors"
-          onClick={() => {
-            props.act('set_color_mutant_colors', {
-              preference: props.featureId,
-            });
-          }}>
-          {(!props.shrink && <Box>Mutant</Box>) || <Box>M</Box>}
-        </Button>
-      </Stack.Item>
+      {!props.hide_mutant && (
+        <Stack.Item>
+          <Button
+            tooltipPosition="top"
+            tooltip="Set to mutant colors"
+            onClick={() => {
+              props.act('set_color_mutant_colors', {
+                preference: props.featureId,
+              });
+            }}>
+            {(!props.shrink && <Box>Mutant</Box>) || <Box>M</Box>}
+          </Button>
+        </Stack.Item>
+      )}
     </Stack>
   );
 };

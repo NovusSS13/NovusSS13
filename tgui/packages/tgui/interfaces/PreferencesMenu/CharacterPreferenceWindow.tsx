@@ -23,43 +23,50 @@ enum Page {
   Quirks,
 }
 
-const CharSlots = (props: {
-  onClick: (action: string, payload?: object) => void;
-  profiles: string[];
-  slotKey: string;
-  maxSlots: number;
-  activeSlot: number;
-}) => {
+const CharSlots = (
+  props: {
+    onClick: (action: string, payload?: object) => void;
+    profiles: string[];
+    slotKey: string;
+    maxSlots: number;
+    activeSlot: number;
+  },
+  context
+) => {
+  const [currentSlot, setCurrentSlot] = useLocalState(
+    context,
+    'currentSlot',
+    props.profiles[props.activeSlot - 1]
+  );
   return (
-    <Stack.Item>
-      <Stack>
+    <Stack>
+      <Stack.Item>
+        <Dropdown
+          minWidth={10}
+          selected={currentSlot}
+          options={props.profiles}
+          onSelected={(option) => {
+            props.onClick('change_slot', {
+              slot_key: props.slotKey,
+              slot_id: props.profiles.indexOf(option) + 1,
+            });
+            setCurrentSlot(option);
+          }}
+        />
+      </Stack.Item>
+      {Number(props.profiles.length) < props.maxSlots && (
         <Stack.Item>
-          <Dropdown
-            minWidth={10}
-            selected={props.profiles[props.activeSlot - 1]}
-            options={props.profiles}
-            onSelected={(option) => {
-              props.onClick('change_slot', {
+          <Button
+            icon="plus"
+            onClick={() => {
+              props.onClick('new_slot', {
                 slot_key: props.slotKey,
-                slot_id: props.profiles.indexOf(option) + 1,
               });
             }}
           />
         </Stack.Item>
-        {Number(props.profiles.length) < props.maxSlots && (
-          <Stack.Item>
-            <Button
-              icon="plus"
-              onClick={() => {
-                props.onClick('new_slot', {
-                  slot_key: props.slotKey,
-                });
-              }}
-            />
-          </Stack.Item>
-        )}
-      </Stack>
-    </Stack.Item>
+      )}
+    </Stack>
   );
 };
 
@@ -153,6 +160,15 @@ export const CharacterPreferenceWindow = (props, context) => {
                                     ghost_role_data[key].slot_name;
                                 }
                               });
+                              const [currentSlot, setCurrentSlot] =
+                                useLocalState(
+                                  context,
+                                  'currentSlot',
+                                  data.character_profiles[data.active_slot_key][
+                                    data.active_slot_ids[data.active_slot_key] -
+                                      1
+                                  ]
+                                );
 
                               return (
                                 <Dropdown
@@ -168,6 +184,15 @@ export const CharacterPreferenceWindow = (props, context) => {
                                     ) {
                                       setCurrentPage(Page.Main);
                                     }
+                                    setCurrentSlot(
+                                      data.character_profiles[
+                                        data.active_slot_key
+                                      ][
+                                        data.active_slot_ids[
+                                          data.active_slot_key
+                                        ] - 1
+                                      ]
+                                    );
                                     act('change_category', {
                                       slot_key:
                                         categorykeys[
@@ -181,25 +206,23 @@ export const CharacterPreferenceWindow = (props, context) => {
                           />
                         </Stack.Item>
                         <Stack.Item>
-                          <Stack justify="center">
-                            <CharSlots
-                              profiles={
-                                data.character_profiles[data.active_slot_key]
-                              }
-                              activeSlot={
-                                data.active_slot_ids[data.active_slot_key]
-                              }
-                              slotKey={data.active_slot_key}
-                              maxSlots={
-                                data.active_slot_key === 'main'
-                                  ? data.max_slots_main
-                                  : data.max_slots_ghost
-                              }
-                              onClick={(action, object) => {
-                                act(action, object);
-                              }}
-                            />
-                          </Stack>
+                          <CharSlots
+                            profiles={
+                              data.character_profiles[data.active_slot_key]
+                            }
+                            activeSlot={
+                              data.active_slot_ids[data.active_slot_key]
+                            }
+                            slotKey={data.active_slot_key}
+                            maxSlots={
+                              data.active_slot_key === 'main'
+                                ? data.max_slots_main
+                                : data.max_slots_ghost
+                            }
+                            onClick={(action, object) => {
+                              act(action, object);
+                            }}
+                          />
                         </Stack.Item>
                       </Stack>
                     </Stack.Item>

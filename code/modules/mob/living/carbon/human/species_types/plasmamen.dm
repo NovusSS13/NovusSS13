@@ -49,6 +49,8 @@
 
 	ass_image = 'icons/ass/assplasma.png'
 
+	voice_pack = /datum/voice/plasmaman
+
 	/// If the bones themselves are burning clothes won't help you much
 	var/internal_fire = FALSE
 
@@ -128,13 +130,6 @@
 		randname += " [lastname]"
 
 	return randname
-
-/datum/species/plasmaman/get_scream_sound(mob/living/carbon/human)
-	return pick(
-		'sound/voice/plasmaman/plasmeme_scream_1.ogg',
-		'sound/voice/plasmaman/plasmeme_scream_2.ogg',
-		'sound/voice/plasmaman/plasmeme_scream_3.ogg',
-	)
 
 /datum/species/plasmaman/get_species_description()
 	return "Found on the Icemoon of Freyja, plasmamen consist of colonial \

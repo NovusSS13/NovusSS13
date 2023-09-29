@@ -57,7 +57,7 @@
 
 /// Returns if a preference should be randomized.
 /datum/preferences/proc/should_randomize(datum/preference/preference, is_antag)
-	if (!preference.is_randomizable())
+	if(!preference.is_randomizable())
 		return FALSE
 
 	if(!preference.is_accessible(src))

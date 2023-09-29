@@ -37,6 +37,8 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal,
 	)
 
+	voice_pack = /datum/voice/ethereal
+
 	var/current_color
 	var/default_color
 	var/r1
@@ -177,13 +179,6 @@
 
 	return features
 
-/datum/species/ethereal/get_scream_sound(mob/living/carbon/human/ethereal)
-	return pick(
-		'sound/voice/ethereal/ethereal_scream_1.ogg',
-		'sound/voice/ethereal/ethereal_scream_2.ogg',
-		'sound/voice/ethereal/ethereal_scream_3.ogg',
-	)
-
 /datum/species/ethereal/get_species_description()
 	return "Coming from the planet of Sprout, the theocratic ethereals are \
 		separated socially by caste, and espouse a dogma of aiding the weak and \
@@ -261,14 +256,9 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal,
 	)
 
-/datum/species/ethereal/lustrous/get_scream_sound(mob/living/carbon/human/ethereal)
-	return pick(
-		'sound/voice/ethereal/lustrous_scream_1.ogg',
-		'sound/voice/ethereal/lustrous_scream_2.ogg',
-		'sound/voice/ethereal/lustrous_scream_3.ogg',
-	)
+	voice_pack = /datum/voice/ethereal/lustrous
 
 /datum/species/ethereal/lustrous/on_species_gain(mob/living/carbon/new_lustrous, datum/species/old_species, pref_load)
-	..()
+	. = ..()
 	default_color = tricolor_to_hex(new_lustrous.dna.features["ethcolor"])
 	new_lustrous.dna.features["ethcolor"] = GLOB.color_list_lustrous[pick(GLOB.color_list_lustrous)] //Picks one of 5 lustrous-specific colors.

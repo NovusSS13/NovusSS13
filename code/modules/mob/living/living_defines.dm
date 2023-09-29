@@ -213,7 +213,7 @@
 	var/fov_view
 	/// Lazy list of FOV traits that will apply a FOV view when handled.
 	var/list/fov_traits
-	///what multiplicative slowdown we get from turfs currently.
+	/// What multiplicative slowdown we get from turfs currently.
 	var/current_turf_slowdown = 0
 
 	/// Living mob's mood datum
@@ -227,4 +227,7 @@
 	var/gravity_state = null
 
 	/// The linked examine panel. Duh.
-	var/datum/examine_panel/examine_panel = null
+	var/datum/examine_panel/examine_panel
+
+	/// A datum used to store emote sounds in
+	var/datum/voice/voice_pack

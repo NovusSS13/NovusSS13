@@ -90,6 +90,7 @@
 	init_hair_gradients()
 	init_bodyparts_lists()
 	init_species_list()
+	init_voice_packs()
 	init_keybindings()
 	GLOB.emote_list = init_emote_list() // WHY DOES THIS NEED TO GO HERE? IT JUST INITS DATUMS
 	init_crafting_recipes()
@@ -213,6 +214,14 @@
 			// Structures
 			for(var/atom/req_atom as anything in recipe.structures)
 				atom_list |= req_atom
+
+//creates every voice pack
+/proc/init_voice_packs()
+	for(var/datum/voice/voice_pack as anything in init_subtypes(/datum/voice))
+		if(!voice_pack.name)
+			continue
+		GLOB.voice_packs[voice_pack.name] = voice_pack
+		GLOB.voice_packs_by_type[voice_pack.type] = voice_pack
 
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.

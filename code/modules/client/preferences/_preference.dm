@@ -154,6 +154,11 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	SHOULD_NOT_SLEEP(TRUE)
 	apply_to_client(client, value)
 
+/// Checks if a preference should be applied on a given human
+/datum/preference/proc/should_apply_to_human(mob/living/carbon/human/target)
+	SHOULD_NOT_SLEEP(TRUE)
+	return (savefile_identifier == PREFERENCE_CHARACTER)
+
 /// Apply this preference onto the given human.
 /// Must be overriden by subtypes.
 /// Called when the savefile_identifier == PREFERENCE_CHARACTER.

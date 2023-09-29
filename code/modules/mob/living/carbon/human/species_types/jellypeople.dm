@@ -45,6 +45,9 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly,
 	)
+
+	voice_pack = /datum/voice/jelly
+
 	var/datum/action/innate/regenerate_limbs/regenerate_limbs
 
 /datum/species/jelly/on_species_gain(mob/living/carbon/new_jellyperson, datum/species/old_species, pref_load)

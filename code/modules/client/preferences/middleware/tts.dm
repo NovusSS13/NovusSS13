@@ -1,4 +1,4 @@
-/// Middleware to handle quirks
+/// Middleware to handle TTS
 /datum/preference_middleware/tts
 	/// Cooldown on requesting a TTS preview.
 	COOLDOWN_DECLARE(tts_test_cooldown)
