@@ -58,6 +58,36 @@
 		),
 	)
 
+/datum/voice/human/cultist
+	name = "Cultist"
+
+/datum/voice/human/cultist/New()
+	. = ..()
+	emote_sounds[/datum/emote/living/laugh] = list(
+		PLURAL = list(
+			'sound/voice/human/cultist/cultist_laugh1.ogg',
+			'sound/voice/human/cultist/cultist_laugh2.ogg',
+			'sound/voice/human/cultist/cultist_laugh3.ogg',
+			'sound/voice/human/cultist/cultist_laugh4.ogg',
+			'sound/voice/human/cultist/cultist_laugh5.ogg',
+			'sound/voice/human/cultist/cultist_laugh6.ogg',
+			'sound/voice/human/cultist/cultist_laugh7.ogg',
+			'sound/voice/human/cultist/cultist_laugh8.ogg',
+		),
+	)
+	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
+		PLURAL = list(
+			'sound/voice/human/cultist/cultist_scream1.ogg',
+			'sound/voice/human/cultist/cultist_scream2.ogg',
+			'sound/voice/human/cultist/cultist_scream3.ogg',
+			'sound/voice/human/cultist/cultist_scream4.ogg',
+			'sound/voice/human/cultist/cultist_scream5.ogg',
+		),
+	)
+
+/datum/voice/human/cultist/get_preview_sound(gender)
+	return 'sound/voice/human/cultist/iliveagain.ogg'
+
 /datum/voice/monkey/alt
 	name = "Monkey (Alt)"
 
