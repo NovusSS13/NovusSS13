@@ -1,7 +1,3 @@
-/datum/voice/default
-	name = "Default"
-	emote_sounds = list()
-
 /datum/voice/human
 	name = "Human"
 

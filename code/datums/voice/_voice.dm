@@ -50,3 +50,7 @@
 
 /datum/voice/proc/get_preview_sound()
 	return emote_sounds?[/datum/emote/living/carbon/human/scream][emote_sounds[/datum/emote/living/carbon/human/scream][1]][1]
+
+/datum/voice/none
+	name = "None"
+	emote_sounds = list()

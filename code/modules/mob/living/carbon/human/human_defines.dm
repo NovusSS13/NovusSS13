@@ -13,7 +13,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	can_be_shoved_into = TRUE
 	initial_language_holder = /datum/language_holder/empty // We get stuff from our species
-	voice_pack = /datum/voice/default //we'll get one from the species, but still
+	voice_pack = /datum/voice/none //we'll get one from the species, but still
 
 	//Hair colour and style
 	var/hair_color = "#000000"

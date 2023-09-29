@@ -156,7 +156,7 @@
 	var/icon/ass_image
 
 	/// Voice pack that this species uses by default, for emotes
-	var/datum/voice/voice_pack = /datum/voice/default
+	var/datum/voice/voice_pack = /datum/voice/none
 
 	/// List of family heirlooms this species can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
