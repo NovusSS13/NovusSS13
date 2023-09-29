@@ -45,8 +45,8 @@
 	else
 		gender = user.gender
 	if(sounds_list[gender])
-		return sounds_list[gender]
-	return sounds_list[sounds_list[1]]
+		return pick(sounds_list[gender])
+	return pick(sounds_list[sounds_list[1]])
 
 /datum/voice/proc/get_preview_sound()
-	return emote_sounds?[/datum/emote/living/carbon/human/scream][emote_sounds[/datum/emote/living/carbon/human/scream][1]]
+	return emote_sounds?[/datum/emote/living/carbon/human/scream][emote_sounds[/datum/emote/living/carbon/human/scream][1]][1]
