@@ -63,8 +63,6 @@
 
 /datum/voice/monkey/alt/New()
 	. = ..()
-	//chimps cant laugh sorry
-	emote_sounds -= /datum/emote/living/laugh
 	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
 		PLURAL = list(
 			'sound/creatures/monkey/monkey_screech_alt.ogg',
