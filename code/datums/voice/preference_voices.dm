@@ -69,8 +69,8 @@
 		),
 	)
 
-/datum/voice/lizard/alt
-	name = "Lizard (Alt)"
+/datum/voice/lizard/classic
+	name = "Lizard (Classic)"
 	emote_sounds = list(
 		/datum/emote/living/carbon/human/scream = list(
 			PLURAL = list(
@@ -79,7 +79,7 @@
 		),
 	)
 
-/datum/voice/lizard/alt/New()
+/datum/voice/lizard/classic/New()
 	. = ..()
 	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
 		PLURAL = list(
