@@ -95,12 +95,14 @@
 		//Overlay
 		lip_overlay = image('icons/mob/species/sprite_accessory/human_face.dmi', "lips_[lip_style]", -BODY_LAYER, image_dir)
 		lip_overlay.color = lip_color
-		//Emissive blocker
-		if(blocks_emissive)
-			lip_overlay.overlays += emissive_blocker(lip_overlay.icon, lip_overlay.icon_state, location)
 		//Offsets
 		worn_face_offset?.apply_offset(lip_overlay)
 		. += lip_overlay
+		//Emissive blocker
+		if(blocks_emissive)
+			var/image/lip_blocker = emissive_blocker(lip_overlay.icon, lip_overlay.icon_state, location)
+			worn_face_offset?.apply_offset(lip_blocker)
+			. += lip_blocker
 
 	var/image/facial_hair_overlay
 	if(!facial_hair_hidden && facial_hairstyle && (head_flags & HEAD_FACIAL_HAIR))
@@ -109,12 +111,14 @@
 			//Overlay
 			facial_hair_overlay = image(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, image_dir)
 			facial_hair_overlay.alpha = facial_hair_alpha
-			//Emissive blocker
-			if(blocks_emissive)
-				facial_hair_overlay.overlays += emissive_blocker(facial_hair_overlay.icon, facial_hair_overlay.icon_state, location, alpha = facial_hair_alpha)
 			//Offsets
 			worn_face_offset?.apply_offset(facial_hair_overlay)
 			. += facial_hair_overlay
+			//Emissive blocker
+			if(blocks_emissive)
+				var/image/facial_blocker = emissive_blocker(facial_hair_overlay.icon, facial_hair_overlay.icon_state, location)
+				worn_face_offset?.apply_offset(facial_hair_overlay)
+				. += facial_blocker
 			//Gradients
 			var/facial_hair_gradient_style = LAZYACCESS(gradient_styles, GRADIENT_FACIAL_HAIR_KEY)
 			if(facial_hair_gradient_style)
@@ -130,12 +134,14 @@
 			//Overlay
 			hair_overlay = image(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, image_dir)
 			hair_overlay.alpha = hair_alpha
-			//Emissive blocker
-			if(blocks_emissive)
-				hair_overlay.overlays += emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, location, alpha = hair_alpha)
 			//Offsets
 			worn_face_offset?.apply_offset(hair_overlay)
 			. += hair_overlay
+			//Emissive blocker
+			if(blocks_emissive)
+				var/image/hair_blocker = emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, location)
+				worn_face_offset?.apply_offset(hair_blocker)
+				. += hair_blocker
 			//Gradients
 			var/hair_gradient_style = LAZYACCESS(gradient_styles, GRADIENT_HAIR_KEY)
 			if(hair_gradient_style)
@@ -171,6 +177,7 @@
 /// Returns an appropriate eyes overlay
 /obj/item/bodypart/head/proc/get_eyes_overlays(can_rotate = TRUE)
 	RETURN_TYPE(/list)
+	. = list()
 	var/obj/item/organ/eyes/eyeballs = owner ? owner.get_organ_slot(ORGAN_SLOT_EYES) : src.eyes
 	if(!eyeballs)
 		CRASH("[type] called get_eyes_overlays() while having no eyes!")
@@ -183,20 +190,29 @@
 	else
 		left_eye = image('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
 		right_eye = image('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
-	var/atom/location = loc || owner || src
 	if(head_flags & HEAD_EYECOLOR)
 		left_eye.color = eyeballs.eye_color_left
 		right_eye.color = eyeballs.eye_color_right
+	. += left_eye
+	. += right_eye
+	var/atom/location = loc || owner || src
+	var/image/left_blocker
+	var/image/right_blocker
 	if(blocks_emissive)
-		left_eye.overlays += emissive_blocker(left_eye.icon, left_eye.icon_state, location)
-		right_eye.overlays += emissive_blocker(right_eye.icon, right_eye.icon_state, location)
+		left_blocker = emissive_blocker(left_eye.icon, left_eye.icon_state, location)
+		right_blocker = emissive_blocker(right_eye.icon, right_eye.icon_state, location)
+		. += left_blocker
+		. += right_blocker
+	var/image/left_emissive
+	var/image/right_emissive
 	if(eyeballs.overlay_ignore_lighting)
-		left_eye.overlays += emissive_appearance(left_eye.icon, left_eye.icon_state, location, alpha = left_eye.alpha)
-		right_eye.overlays += emissive_appearance(right_eye.icon, right_eye.icon_state, location, alpha = right_eye.alpha)
+		left_emissive = emissive_appearance(left_eye.icon, left_eye.icon_state, location, alpha = left_eye.alpha)
+		right_emissive = emissive_appearance(right_eye.icon, right_eye.icon_state, location, alpha = right_eye.alpha)
+		. += left_emissive
+		. += right_emissive
 	if(worn_face_offset)
-		worn_face_offset.apply_offset(left_eye)
-		worn_face_offset.apply_offset(right_eye)
-	return list(left_eye, right_eye)
+		for(var/image/eye_image in .)
+			worn_face_offset.apply_offset(eye_image)
 
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)

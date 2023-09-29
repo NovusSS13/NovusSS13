@@ -139,7 +139,7 @@
 	var/list/organs_we_can_remove = list()
 	for(var/obj/item/organ/organ as anything in carbon_victim.organs)
 		// Only show organs which are in our generic zone
-		if(deprecise_zone(organ.zone) != zone_to_check)
+		if(check_zone(organ.zone) != zone_to_check)
 			continue
 		// Also, some organs to exclude. Don't remove vital (brains), don't remove synthetics, and don't remove unremovable
 		if(organ.organ_flags & (ORGAN_ROBOTIC|ORGAN_VITAL|ORGAN_UNREMOVABLE))
