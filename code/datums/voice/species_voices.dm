@@ -16,10 +16,10 @@
 	. = ..()
 	emote_sounds[/datum/emote/living/laugh] = list(
 		PLURAL = list(
-			'sound/voice/human/nyaha.ogg',
 			'sound/voice/human/nyahaha1.ogg',
 			'sound/voice/human/nyahaha2.ogg',
 			'sound/voice/human/nyahehe.ogg',
+			'sound/voice/human/nyaha.ogg',
 		),
 	)
 
