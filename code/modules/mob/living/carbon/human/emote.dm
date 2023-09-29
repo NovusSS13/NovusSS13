@@ -61,8 +61,7 @@
 	message = "screams!"
 	message_mime = "acts out a scream!"
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
-	only_forced_audio = TRUE
-	vary = TRUE
+	vary = FALSE
 
 /datum/emote/living/carbon/human/scream/get_sound(mob/living/carbon/human/user)
 	return user.voice_pack?.get_sound_for_emote(src, user)
