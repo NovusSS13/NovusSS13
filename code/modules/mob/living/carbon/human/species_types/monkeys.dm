@@ -3,6 +3,7 @@
 /datum/species/monkey
 	name = "Monkey"
 	id = SPECIES_MONKEY
+	chat_color = "#a44907"
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/monkey,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/monkey,

@@ -166,8 +166,11 @@
 /// Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.
 #define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 7
 
+/// Preferences that require the name to be set properly to work
+#define PREFERENCE_PRIORITY_AFTER_NAMES 8
+
 /// The maximum preference priority, keep this updated, but don't use it for `priority`.
-#define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_NAME_MODIFICATIONS
+#define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_AFTER_NAMES
 
 // Priorities must be in order here too!
 /// Middleware that comes before normal prefs

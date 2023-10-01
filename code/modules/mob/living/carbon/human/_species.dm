@@ -19,7 +19,6 @@
 	 *  Ex "[Plasmamen] are weak", "[Mothmen] are strong", "[Lizardpeople] don't like", "[Golems] hate"
 	 */
 	var/plural_form
-
 	///The color that this species gets on human examine and such
 	var/chat_color = "#ffffa1"
 

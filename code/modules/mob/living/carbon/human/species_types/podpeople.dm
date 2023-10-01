@@ -3,6 +3,7 @@
 	name = "\improper Podperson"
 	plural_form = "Podpeople"
 	id = SPECIES_PODPERSON
+	chat_color = COLOR_GREEN_GRAY
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
 		TRAIT_PLANT_SAFE,

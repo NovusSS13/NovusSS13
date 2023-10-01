@@ -2,6 +2,7 @@
 	name = "\improper Mothman"
 	plural_form = "Mothmen"
 	id = SPECIES_MOTH
+	chat_color = COLOR_BEIGE
 	inherent_traits = list(
 		TRAIT_HAS_MARKINGS,
 		TRAIT_CAN_USE_FLIGHT_POTION,

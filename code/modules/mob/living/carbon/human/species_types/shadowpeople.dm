@@ -3,6 +3,7 @@
 	name = "Shadow"
 	plural_form = "Shadowpeople"
 	id = SPECIES_SHADOW
+	chat_color = COLOR_WEBSAFE_DARK_GRAY
 	meat = /obj/item/food/meat/slab/human/mutant/shadow
 	inherent_traits = list(
 		TRAIT_AGENDER,

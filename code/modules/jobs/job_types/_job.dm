@@ -506,16 +506,12 @@
 /mob/living/silicon/ai/apply_prefs_job(client/player_client, datum/job/job)
 	if(GLOB.current_anonymous_theme)
 		fully_replace_character_name(real_name, GLOB.current_anonymous_theme.anonymous_ai_name(TRUE))
-		return
-
-	var/flavor_text = player_client?.prefs.read_preference(/datum/preference/text/ai_flavor_text)
-	if(flavor_text)
-		if(isnull(examine_panel))
-			examine_panel = new(src, player_client.prefs)
-		else
-			examine_panel.ai_flavor_text = flavor_text
-
-	apply_pref_name(/datum/preference/name/ai, player_client) // This proc already checks if the player is appearance banned.
+	else
+		apply_pref_name(/datum/preference/name/ai, player_client) // This proc already checks if the player is appearance banned.
+		var/flavor_text = player_client?.prefs.read_preference(/datum/preference/text/flavor/ai_flavor_text)
+		if(flavor_text)
+			var/datum/flavor_holder/flavor_holder = get_or_create_flavor_holder(real_name)
+			flavor_holder?.ai_flavor_text = flavor_text
 	set_core_display_icon(null, player_client)
 	apply_pref_emote_display(player_client)
 	apply_pref_hologram_display(player_client)
@@ -544,17 +540,14 @@
 			mmi.brainmob.real_name = organic_name //the name of the brain inside the cyborg is the robotized human's name.
 			mmi.brainmob.name = organic_name
 
-
-	var/flavor_text = player_client?.prefs.read_preference(/datum/preference/text/cyborg_flavor_text)
-	if(flavor_text)
-		if(isnull(examine_panel))
-			examine_panel = new(src, player_client.prefs)
-		else
-			examine_panel.cyborg_flavor_text = flavor_text
-
 	// If this checks fails, then the name will have been handled during initialization.
 	if(!GLOB.current_anonymous_theme && player_client.prefs.read_preference(/datum/preference/name/cyborg) != DEFAULT_CYBORG_NAME)
 		apply_pref_name(/datum/preference/name/cyborg, player_client)
+		// Flavor text honestly kinda has no value if you use a default cyborg name anyways.
+		var/flavor_text = player_client?.prefs.read_preference(/datum/preference/text/flavor/cyborg_flavor_text)
+		if(flavor_text)
+			var/datum/flavor_holder/flavor_holder = get_or_create_flavor_holder(real_name)
+			flavor_holder?.cyborg_flavor_text = flavor_text
 
 /**
  * Called after a successful roundstart spawn.

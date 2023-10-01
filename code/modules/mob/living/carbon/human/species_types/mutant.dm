@@ -3,6 +3,7 @@
 	plural_form = "Custom" //there is no plural i guess? i can't call them customers can i //honestly that'd be p funny
 	id = SPECIES_MUTANT
 	examine_limb_id = SPECIES_MUTANT
+	chat_color = "#64ff8b"
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
 		TRAIT_CAN_USE_FLIGHT_POTION,

@@ -1,6 +1,8 @@
 /datum/species/human
 	name = "\improper Human"
 	id = SPECIES_HUMAN
+	examine_limb_id = SPECIES_HUMAN
+	chat_color = "#74d5f0"
 	inherent_traits = list(
 		TRAIT_CAN_USE_FLIGHT_POTION,
 		TRAIT_USES_SKINTONES,

@@ -8,6 +8,7 @@
 	name = "Vampire"
 	id = SPECIES_VAMPIRE
 	examine_limb_id = SPECIES_HUMAN
+	chat_color = LIGHT_COLOR_BLOOD_MAGIC
 	inherent_traits = list(
 		TRAIT_BLOOD_CLANS,
 		TRAIT_DRINKS_BLOOD,

@@ -2,6 +2,7 @@
 	// 2spooky
 	name = "Spooky Scary Skeleton"
 	id = SPECIES_SKELETON
+	chat_color = COLOR_OFF_WHITE
 	meat = /obj/item/food/meat/slab/human/mutant/skeleton
 	inherent_traits = list(
 		TRAIT_AGENDER,
