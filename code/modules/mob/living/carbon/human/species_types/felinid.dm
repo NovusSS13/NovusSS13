@@ -1,8 +1,9 @@
 //Subtype of human
 /datum/species/human/felinid
 	name = "Felinid"
-	id = SPECIES_FELINE
+	id = SPECIES_FELINID
 	examine_limb_id = SPECIES_HUMAN
+	chat_color = "#ffbcbc"
 	mutanttongue = /obj/item/organ/tongue/cat
 	mutantears = /obj/item/organ/ears/cat // Yes we need to set it here and on cosmetic_organs. Ass.
 	mutantliver = /obj/item/organ/liver/felinid

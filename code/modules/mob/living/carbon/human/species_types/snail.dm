@@ -1,6 +1,7 @@
 /datum/species/snail
 	name = "Snailperson"
 	id = SPECIES_SNAIL
+	chat_color = COLOR_ASSEMBLY_LGREEN
 	inherent_traits = list(
 		TRAIT_AGENDER,
 		TRAIT_MUTANT_COLORS,

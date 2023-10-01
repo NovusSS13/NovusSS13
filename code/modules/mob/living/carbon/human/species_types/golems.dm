@@ -2,6 +2,7 @@
 /datum/species/golem
 	name = "Golem"
 	id = SPECIES_GOLEM
+	chat_color = COLOR_GOLEM_GRAY
 	inherent_traits = list(
 		TRAIT_AGENDER,
 		TRAIT_GENELESS,

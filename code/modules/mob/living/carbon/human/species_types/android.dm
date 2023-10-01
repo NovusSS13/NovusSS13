@@ -2,6 +2,7 @@
 	name = "Android"
 	id = SPECIES_ANDROID
 	examine_limb_id = SPECIES_HUMAN
+	chat_color = COLOR_SILVER
 	inherent_traits = list(
 		TRAIT_NO_UNDERWEAR,
 		TRAIT_CAN_USE_FLIGHT_POTION,

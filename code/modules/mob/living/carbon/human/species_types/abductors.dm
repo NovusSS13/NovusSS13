@@ -1,6 +1,7 @@
 /datum/species/abductor
 	name = "Abductor"
 	id = SPECIES_ABDUCTOR
+	chat_color = COLOR_GRAY
 	inherent_traits = list(
 		TRAIT_AGENDER,
 		TRAIT_CHUNKYFINGERS_IGNORE_BATON,

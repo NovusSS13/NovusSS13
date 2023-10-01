@@ -2,6 +2,7 @@
 	name = "\improper Plasmaman"
 	plural_form = "Plasmamen"
 	id = SPECIES_PLASMAMAN
+	chat_color = COLOR_VIOLET
 	meat = /obj/item/stack/sheet/mineral/plasma
 	// plasmemes get hard to wound since they only need a severe bone wound to dismember, but unlike skellies, they can't pop their bones back into place
 	inherent_traits = list(

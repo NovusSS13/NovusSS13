@@ -2,6 +2,7 @@
 	name = "Dullahan"
 	id = SPECIES_DULLAHAN
 	examine_limb_id = SPECIES_HUMAN
+	chat_color = COLOR_TAN_ORANGE
 	inherent_traits = list(
 		TRAIT_NOBREATH,
 		TRAIT_NOHUNGER,

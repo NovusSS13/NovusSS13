@@ -4,6 +4,7 @@
 	// 1spooky
 	name = "High-Functioning Zombie"
 	id = SPECIES_ZOMBIE
+	chat_color = COLOR_DARK_MODERATE_LIME_GREEN
 	meat = /obj/item/food/meat/slab/human/mutant/zombie
 	inherent_traits = list(
 		// SHARED WITH ALL ZOMBIES
