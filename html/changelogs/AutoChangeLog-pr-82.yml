@@ -1,0 +1,4 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - refactor: "Examine panel info is now \"global\", preventing it from being used as meta information against antags and other such miscreants."
