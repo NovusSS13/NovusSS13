@@ -139,6 +139,7 @@ Lizard subspecies: ASHWALKERS
 	name = "Ash Walker"
 	id = SPECIES_LIZARD_ASH
 	examine_limb_id = SPECIES_LIZARD
+	chat_color = COLOR_MAROON
 	mutantlungs = /obj/item/organ/lungs/lavaland
 	mutantbrain = /obj/item/organ/brain/primitive
 	inherent_traits = list(
@@ -164,6 +165,7 @@ Lizard subspecies: SILVER SCALED
 /datum/species/lizard/silverscale
 	name = "Silver Scale"
 	id = SPECIES_LIZARD_SILVER
+	chat_color = COLOR_VERY_LIGHT_GRAY
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	inherent_traits = list(
 		TRAIT_HOLY,

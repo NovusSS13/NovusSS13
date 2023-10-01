@@ -1068,3 +1068,6 @@
 
 /mob/living/carbon/human/species/zombie/infectious
 	race = /datum/species/zombie/infectious
+
+/mob/living/carbon/human/species/mutant
+	race = /datum/species/mutant
