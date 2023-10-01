@@ -1,8 +1,10 @@
 /datum/preference/text/flavor
 	abstract_type = /datum/preference/text/flavor
+	priority = PREFERENCE_PRIORITY_AFTER_NAMES
 
 /datum/preference/text/flavor/should_apply_to_human(mob/living/carbon/human/target, datum/preferences/prefs)
-	if(!is_accessible(prefs) || isdummy(target))
+	//flavor text honestly makes no sense when using an anonymous theme, so scrap it in that case
+	if(GLOB.current_anonymous_theme || !is_accessible(prefs) || isdummy(target))
 		return FALSE
 	return ..()
 

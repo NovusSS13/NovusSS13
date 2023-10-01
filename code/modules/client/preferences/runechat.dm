@@ -25,7 +25,7 @@
 	return CHAT_MESSAGE_MAX_LENGTH
 
 /datum/preference/toggle/random_chat_color
-	priority = PREFERENCE_PRIORITY_NAME_MODIFICATIONS //does not actually matter but w/e
+	priority = PREFERENCE_PRIORITY_AFTER_NAMES //does not actually matter but w/e
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	savefile_key = "random_chat_color"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -37,7 +37,7 @@
 	return
 
 /datum/preference/color/chat_color
-	priority = PREFERENCE_PRIORITY_NAME_MODIFICATIONS
+	priority = PREFERENCE_PRIORITY_AFTER_NAMES
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	savefile_key = "chat_color"
 	savefile_identifier = PREFERENCE_CHARACTER
