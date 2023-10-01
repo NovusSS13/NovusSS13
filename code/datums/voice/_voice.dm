@@ -46,7 +46,8 @@
 	var/preview_emote = /datum/emote/living/carbon/human/scream
 
 /datum/voice/proc/get_sound_for_emote(datum/emote/emote, mob/living/user)
-	var/sounds_list = LAZYACCESS(emote_sounds, initial(emote.type))
+	var/emote_type = istype(emote) ? emote.type : emote
+	var/sounds_list = LAZYACCESS(emote_sounds, emote_type)
 	if(!sounds_list)
 		return
 	var/gender = user.gender
