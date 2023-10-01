@@ -18,14 +18,15 @@
 			obscure_species = TRUE
 		if(HAS_TRAIT(src, TRAIT_UNKNOWN))
 			obscure_name = TRUE
-			obscure_examine = TRUE
 			obscure_species = TRUE
+			obscure_examine = TRUE
 
 	var/datum/flavor_holder/flavor_holder = GLOB.flavor_holders[name]
 	var/species_name = flavor_holder?.custom_species_name || dna.species.name
 	. = list("<span class='info'>This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "[span_color("Human", COLOR_GRAY)]?" : "[span_color(species_name, dna.species.chat_color)]!"]</EM>")
 	if(obscure_examine)
-		return list("<span class='warning'>You're struggling to make out any details...")
+		. += "<span class='warning'>You're struggling to make out any details...</span></span>"
+		return
 
 	var/obscured = check_obscured_slots()
 
@@ -363,7 +364,6 @@
 			msg += "[span_notice("<i>[t_He] [t_has] significantly disfiguring scarring, you can look again to take a closer look...</i>")]\n"
 		if(12 to INFINITY)
 			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
-	msg += "</span>" // closes info class
 
 	if (length(msg))
 		. += span_warning("[msg.Join("")]")
@@ -415,7 +415,7 @@
 					"<a href='?src=[REF(src)];hud=s;add_note=1;examine_time=[world.time]'>\[Add note\]</a>"), "")
 	else if(isobserver(user))
 		. += span_info("<b>Traits:</b> [get_quirk_string(FALSE, CAT_QUIRK_ALL)]")
-	. += "</span>"
+	.[length(.)] += "</span>" //closes info class without creating another line
 
 	SEND_SIGNAL(src, COMSIG_ATOM_EXAMINE, user, .)
 
