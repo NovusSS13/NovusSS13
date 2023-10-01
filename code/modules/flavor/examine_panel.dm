@@ -112,11 +112,11 @@
 	SIGNAL_HANDLER
 
 	if(temporary_flavor_text)
-		examine_list += span_info(temporary_flavor_text)
+		examine_list += span_info("<i>[temporary_flavor_text]</i>")
 
 	//get the flavor holder that matches the current visible name
 	var/datum/flavor_holder/flavor_holder = GLOB.flavor_holders[source.name]
 	if(!flavor_holder)
 		return
 
-	examine_list += "<a class='info bold' href='?src=[REF(src)];open_examine_panel=1'>You could probably take a closer look..</a>"
+	examine_list += span_info(span_bold("<a href='?src=[REF(src)];open_examine_panel=1'><i>You could probably take a closer look...</i></a>"))
