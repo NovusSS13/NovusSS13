@@ -213,6 +213,9 @@ GLOBAL_LIST_EMPTY(voice_packs)
 
 GLOBAL_LIST_EMPTY(voice_packs_by_type)
 
+//flavor text holders
+GLOBAL_LIST_EMPTY(flavor_holders)
+
 //stores the ghost forms that support directional sprites
 GLOBAL_LIST_INIT(ghost_forms_with_directions_list, list(
 	"catghost",

@@ -31,6 +31,8 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	//Humans always need an examine panel
+	examine_panel = new(src)
 	GLOB.human_list += src
 
 /mob/living/carbon/human/proc/setup_physiology()
@@ -81,7 +83,7 @@
 
 /mob/living/carbon/human/prepare_data_huds()
 	//Update med hud images...
-	..()
+	. = ..()
 	//...sec hud images...
 	sec_hud_set_ID()
 	sec_hud_set_implants()

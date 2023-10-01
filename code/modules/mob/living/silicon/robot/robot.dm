@@ -89,6 +89,8 @@
 	alert_control.listener.RegisterSignal(src, COMSIG_LIVING_DEATH, TYPE_PROC_REF(/datum/alarm_listener, prevent_alarm_changes))
 	alert_control.listener.RegisterSignal(src, COMSIG_LIVING_REVIVE, TYPE_PROC_REF(/datum/alarm_listener, allow_alarm_changes))
 
+	examine_panel = new(src)
+
 /mob/living/silicon/robot/model/syndicate/Initialize(mapload)
 	. = ..()
 	laws = new /datum/ai_laws/syndicate_override()

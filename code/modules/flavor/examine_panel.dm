@@ -1,41 +1,29 @@
 /datum/examine_panel
 	/// Guy that actually owns us
 	var/mob/living/owner
-	/// maptext rendering geyness screen obj
+	/// Mapview for rendering the character in the UI
 	var/atom/movable/screen/map_view/examine_panel_screen
-
-	var/flavor_text
-	var/naked_flavor_text //mmm very sechs
+	/// Temporary flavor text comes here, i don't think it should be global
 	var/temporary_flavor_text
-	var/cyborg_flavor_text
-	var/ai_flavor_text
-	var/custom_species_name //you might ask "null u stupid why are you storing all this when read_preference() exists"
-	var/custom_species_desc //see, besides temp flavor text, i dont want people changing these mid-round
-	var/ooc_notes //also ooc notes will be an epic meme
-	var/headshot_link
 
 /datum/examine_panel/New(mob/living/owner, datum/preferences/prefs)
+	. = ..()
 	if(isnull(owner))
-		stack_trace("/datum/examine_panel got initialized without an owner.")
+		stack_trace("[type] got initialized without an owner.")
 		qdel(src)
 		return
 
 	src.owner = owner
-	src.flavor_text = prefs.read_preference(/datum/preference/text/flavor_text)
-	src.naked_flavor_text = prefs.read_preference(/datum/preference/text/naked_flavor_text)
-	src.cyborg_flavor_text = prefs.read_preference(/datum/preference/text/cyborg_flavor_text)
-	src.ai_flavor_text = prefs.read_preference(/datum/preference/text/ai_flavor_text)
-	src.custom_species_name = prefs.read_preference(/datum/preference/text/custom_species_name)
-	src.custom_species_desc = prefs.read_preference(/datum/preference/text/custom_species_desc)
-	src.ooc_notes = prefs.read_preference(/datum/preference/text/ooc_notes)
-	src.headshot_link = prefs.read_preference(/datum/preference/text/headshot_link)
 
 	RegisterSignal(owner, COMSIG_QDELETING, PROC_REF(on_qdel))
 	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/examine_panel/Destroy(force)
-	owner = null
-	return ..()
+	. = ..()
+	if(owner)
+		UnregisterSignal(owner, COMSIG_QDELETING)
+		UnregisterSignal(owner, COMSIG_ATOM_EXAMINE)
+		owner = null
 
 /datum/examine_panel/Topic(href, href_list)
 	if(href_list["open_examine_panel"])
@@ -46,16 +34,20 @@
 	return owner
 
 /datum/examine_panel/ui_state()
-	return GLOB.physical_state
+	return GLOB.always_state
 
-/datum/examine_panel/ui_data(mob/user)
+/datum/examine_panel/ui_static_data(mob/user)
 	. = list()
+	var/character_name = owner.name
+	.["character_name"] = character_name
+	.["assigned_map"] = examine_panel_screen.assigned_map
 	//temp flavor text doesnt care for if the user can tell what the species are
 	//dont be dumb kids
 	.["temporary_flavor_text"] = temporary_flavor_text
-	.["character_name"] = owner.get_visible_name()
-	.["assigned_map"] = examine_panel_screen.assigned_map
 	.["unobscured"] = TRUE
+
+	//get the flavor holder that matches the current owner
+	var/datum/flavor_holder/flavor_holder = GLOB.flavor_holders[character_name]
 
 	if(ishuman(owner))
 		.["mob_type"] = "human"
@@ -64,26 +56,26 @@
 			return
 
 		var/mob/living/carbon/human/human = owner
-		.["flavor_text"] = flavor_text
-		.["headshot_link"] = headshot_link //yes, this does mean headshots are only for humans. i dont want to bother about the "human headshot bleeding into borg" edge case
-		.["custom_species_name"] = custom_species_name || human.dna.species.name //also no custom species for cyborgs. ew.
-		.["custom_species_desc"] = custom_species_desc || (!custom_species_name && jointext(human.dna.species.get_species_lore(), "\n\n"))
-
-		if(!(human.get_all_covered_flags() & (GROIN|CHEST))) //is naked check. arbitrary but w/e
-			.["naked_flavor_text"] = naked_flavor_text
+		if(flavor_holder)
+			.["headshot_link"] = flavor_holder.headshot_link //yes, this does mean headshots are only for humans. i dont want to bother about the "human headshot bleeding into borg" edge case
+			.["flavor_text"] = flavor_holder.flavor_text
+			if(!(human.get_all_covered_flags() & (GROIN|CHEST))) //is naked check. arbitrary but w/e
+				.["naked_flavor_text"] = flavor_holder.naked_flavor_text
+		.["custom_species_name"] = flavor_holder?.custom_species_name || human.dna.species.name //also no custom species for cyborgs. ew.
+		.["custom_species_desc"] = flavor_holder?.custom_species_desc || (!flavor_holder?.custom_species_name && jointext(human.dna.species.get_species_lore(), "\n\n"))
 
 	else if(iscyborg(owner))
 		.["mob_type"] = "cyborg"
-		.["flavor_text"] = cyborg_flavor_text
+		.["flavor_text"] = flavor_holder?.cyborg_flavor_text
 
 	else if(isAI(owner))
 		.["mob_type"] = "ai"
-		.["flavor_text"] = ai_flavor_text
+		.["flavor_text"] = flavor_holder?.ai_flavor_text
 
 	else
 		.["mob_type"] = "other"
 
-	.["ooc_notes"] = ooc_notes
+	.["ooc_notes"] = flavor_holder?.ooc_notes
 
 /datum/examine_panel/ui_interact(mob/user, datum/tgui/ui)
 	//shamelessly ripped from skee
@@ -121,5 +113,10 @@
 
 	if(temporary_flavor_text)
 		examine_list += span_info(temporary_flavor_text)
-	examine_list += "<a class='info bold' href='?src=[REF(src)];open_examine_panel=1'>You could probably take a closer look..</a>"
 
+	//get the flavor holder that matches the current visible name
+	var/datum/flavor_holder/flavor_holder = GLOB.flavor_holders[source.name]
+	if(!flavor_holder)
+		return
+
+	examine_list += "<a class='info bold' href='?src=[REF(src)];open_examine_panel=1'>You could probably take a closer look..</a>"

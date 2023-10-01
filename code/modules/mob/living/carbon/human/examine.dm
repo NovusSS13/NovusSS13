@@ -6,10 +6,10 @@
 	var/t_him = p_them()
 	var/t_has = p_have()
 	var/t_is = p_are()
+
 	var/obscure_name = FALSE
 	var/obscure_examine = FALSE
 	var/obscure_species = FALSE
-
 	if(isliving(user))
 		if(HAS_TRAIT(user, TRAIT_PROSOPAGNOSIA))
 			obscure_name = TRUE
@@ -21,9 +21,9 @@
 			obscure_examine = TRUE
 			obscure_species = TRUE
 
-	var/species_name = examine_panel?.custom_species_name || dna.species.name
-	species_name = span_color(species_name, dna.species.chat_color)
-	. = list("<span class='info'>This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "Human?" : "[species_name]!"]</EM>")
+	var/datum/flavor_holder/flavor_holder = GLOB.flavor_holders[name]
+	var/species_name = flavor_holder?.custom_species_name || dna.species.name
+	. = list("<span class='info'>This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "[span_color("Human", COLOR_GRAY)]?" : "[span_color(species_name, dna.species.chat_color)]!"]</EM>")
 	if(obscure_examine)
 		return list("<span class='warning'>You're struggling to make out any details...")
 
@@ -132,7 +132,7 @@
 	if(get_bodypart(BODY_ZONE_HEAD) && !get_organ_by_type(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
-	// genital handling. not on organ/on_owner_examine() because i want a pretty list.
+	//genital handling. not on organ/on_owner_examine() because i want a pretty list.
 	var/static/list/genital_examines = list(ORGAN_SLOT_PENIS, ORGAN_SLOT_TESTICLES, ORGAN_SLOT_VAGINA, ORGAN_SLOT_BREASTS)
 	var/list/genital_strings = list()
 	for(var/slot in genital_examines)
