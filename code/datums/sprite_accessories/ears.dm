@@ -3,16 +3,19 @@
 /datum/sprite_accessory/ears/human
 	icon = 'icons/mob/species/human/cat_features.dmi'
 	color_amount = 1
+	default_color = COLOR_PINK
 
 /datum/sprite_accessory/ears/human/cat
 	name = "Cat"
 	icon_state = "cat"
+	default_color = COLOR_PINK
 	hasinner = TRUE
 
 /datum/sprite_accessory/ears/human/fox
 	icon = 'icons/mob/species/human/fox_features.dmi'
 	name = "Fox"
 	icon_state = "fox"
+	default_color = COLOR_ORANGE
 	hasinner = TRUE
 	locked = TRUE
 

@@ -113,8 +113,7 @@
 	else
 		default = sanitize_hexcolor(draw_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 		sane_draw_color = list(draw_color)
-	sane_draw_color.len = 3
-	sane_draw_color = sanitize_hexcolor_list(sane_draw_color, DEFAULT_HEX_COLOR_LEN, TRUE, default)
+	sane_draw_color = sanitize_hexcolor_list(sane_draw_color, DEFAULT_HEX_COLOR_LEN, 3, TRUE, default)
 	for(var/index in 1 to min(sprite_datum.color_amount, length(overlay)))
 		var/image/appearance = overlay[index]
 		appearance.color = sane_draw_color[index]
@@ -253,7 +252,7 @@
 			validated_color = validated_color.Copy()
 			var/last_color_element = sanitize_hexcolor(validated_color[length(validated_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 			validated_color.len = 3
-			return sanitize_hexcolor_list(validated_color, DEFAULT_HEX_COLOR_LEN, TRUE, last_color_element)
+			return sanitize_hexcolor_list(validated_color, DEFAULT_HEX_COLOR_LEN, TRUE, 3, last_color_element)
 		//repeat the same color as needed otherwise
 		var/sanitized_color = sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 		var/list/sanitized_colors = list()

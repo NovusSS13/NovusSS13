@@ -64,6 +64,10 @@
 	var/use_static
 	/// Amount of colors we use actually use for coloring, from 0 to 3
 	var/color_amount = 1
+	/// Default color for this marking, if this is a number instead of a string, we access the index of the given list of mutant colors
+	var/default_color = 1
+	/// Default marking colors list for get_default_color(), in case an override list is not provided
+	var/default_colors = list(COLOR_MAGENTA, COLOR_CYAN, COLOR_LIGHT_PINK)
 	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
 	var/hasinner = FALSE
 	/// Is this part locked from roundstart selection? Used for parts that apply effects.
@@ -74,6 +78,16 @@
 	var/dimension_x = 32
 	/// The height of the sprite in pixels. Used to center it if necessary.
 	var/dimension_y = 32
+
+/// Gets a "default" color for this acessory, although the color can be edited by the player under normal circumstances
+/datum/sprite_accessory/proc/get_default_color(list/mutant_colors = default_colors)
+	if(!color_amount)
+		return
+	if(color_amount == 1)
+		if(isnum(default_color))
+			return sanitize_hexcolor(LAZYACCESS(mutant_colors, default_color), DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+		return sanitize_hexcolor(tricolor_to_hex(default_color), DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
+	return mutant_colors || sanitize_hexcolor_list(default_color, DEFAULT_HEX_COLOR_LEN, 3, TRUE, "#FFFFFF")
 
 /datum/sprite_accessory/blank
 	name = SPRITE_ACCESSORY_NONE

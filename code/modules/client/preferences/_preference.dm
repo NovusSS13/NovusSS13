@@ -491,8 +491,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /datum/preference/tricolor/deserialize(input, datum/preferences/preferences)
 	var/list/input_colors = splittext(input, ";")
-	input_colors.len = 3
-	return sanitize_hexcolor_list(input_colors, 6, TRUE, COLOR_VIBRANT_LIME)
+	return sanitize_hexcolor_list(input_colors, DEFAULT_HEX_COLOR_LEN, 3, TRUE, COLOR_VIBRANT_LIME)
 
 /datum/preference/tricolor/serialize(input)
 	return "[input[1]];[input[2]];[input[3]]"

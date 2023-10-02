@@ -62,7 +62,10 @@ const SetButton = (
                     </Stack.Item>
 
                     <Stack.Item grow>
-                      <SearchBar onSearchTextChanged={setSearchText} />
+                      <SearchBar
+                        searchText={searchText}
+                        onSearchTextChanged={setSearchText}
+                      />
                     </Stack.Item>
 
                     <Stack.Item>
@@ -202,7 +205,10 @@ const MarkingButton = (
                     </Stack.Item>
 
                     <Stack.Item grow>
-                      <SearchBar onSearchTextChanged={setSearchText} />
+                      <SearchBar
+                        searchText={searchText}
+                        onSearchTextChanged={setSearchText}
+                      />
                     </Stack.Item>
 
                     <Stack.Item>
@@ -296,60 +302,86 @@ const MarkingInput = (
   const { zone, marking } = props;
   const { act, data } = useBackend<PreferencesMenuData>(context);
   return (
-    <Box textAlign="center" verticalAlign="middle" width="100%">
+    <Stack textAlign="center" verticalAlign="middle" width="100%">
       {(marking.color_amount && (
+        <>
+          <Stack.Item>
+            <Button
+              width="25%"
+              onClick={() =>
+                act('color_marking', {
+                  body_zone: zone.body_zone,
+                  marking_name: marking.name,
+                  marking_index: marking.marking_index,
+                })
+              }>
+              <ColorBox
+                style={{
+                  border: '2px solid white',
+                  'box-sizing': 'content-box',
+                }}
+                color={marking.color}
+              />
+            </Button>
+          </Stack.Item>
+          <Stack.Item>
+            <Button
+              onClick={() =>
+                act('color_marking', {
+                  body_zone: zone.body_zone,
+                  marking_name: marking.name,
+                  marking_index: marking.marking_index,
+                })
+              }>
+              M
+            </Button>
+          </Stack.Item>
+        </>
+      )) || (
+        <Stack.Item>
+          <Button width="25%" />
+        </Stack.Item>
+      )}
+      <Stack.Item>
         <Button
           width="25%"
+          icon="sort-up"
           onClick={() =>
-            act('color_marking', {
+            act('move_marking_up', {
               body_zone: zone.body_zone,
-              marking_name: marking.name,
-              marking_index: marking.marking_index,
+              marking_name: props.marking.name,
+              marking_index: props.marking.marking_index,
             })
-          }>
-          <ColorBox
-            style={{
-              border: '2px solid white',
-              'box-sizing': 'content-box',
-            }}
-            color={marking.color}
-          />
-        </Button>
-      )) || <Button width="25%" />}
-      <Button
-        width="25%"
-        icon="sort-up"
-        onClick={() =>
-          act('move_marking_up', {
-            body_zone: zone.body_zone,
-            marking_name: props.marking.name,
-            marking_index: props.marking.marking_index,
-          })
-        }
-      />
-      <Button
-        width="25%"
-        icon="sort-down"
-        onClick={() =>
-          act('move_marking_down', {
-            body_zone: zone.body_zone,
-            marking_name: props.marking.name,
-            marking_index: props.marking.marking_index,
-          })
-        }
-      />
-      <Button
-        icon="times"
-        color="bad"
-        onClick={() =>
-          act('remove_marking', {
-            body_zone: zone.body_zone,
-            marking_name: props.marking.name,
-            marking_index: props.marking.marking_index,
-          })
-        }
-      />
-    </Box>
+          }
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          width="25%"
+          icon="sort-down"
+          onClick={() =>
+            act('move_marking_down', {
+              body_zone: zone.body_zone,
+              marking_name: props.marking.name,
+              marking_index: props.marking.marking_index,
+            })
+          }
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          icon="times"
+          color="bad"
+          onClick={() =>
+            act('remove_marking', {
+              body_zone: zone.body_zone,
+              marking_name: props.marking.name,
+              marking_index: props.marking.marking_index,
+            })
+          }
+        />
+      </Stack.Item>
+    </Stack>
   );
 };
 

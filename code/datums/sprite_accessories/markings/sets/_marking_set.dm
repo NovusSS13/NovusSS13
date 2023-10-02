@@ -18,16 +18,6 @@
 
 /datum/body_marking_set/proc/assemble_body_markings_list(list/mutant_colors = default_colors, override_color)
 	RETURN_TYPE(/list)
-	var/list/sane_mutant_colors = list()
-	var/default
-	if(islist(mutant_colors))
-		default = sanitize_hexcolor(mutant_colors[length(mutant_colors)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
-		sane_mutant_colors = mutant_colors
-	else
-		default = sanitize_hexcolor(mutant_colors, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
-		sane_mutant_colors = list(mutant_colors)
-	sane_mutant_colors.len = 3
-	sane_mutant_colors = sanitize_hexcolor_list(mutant_colors, DEFAULT_HEX_COLOR_LEN, TRUE, default)
 	var/list/final_markings = list()
 	for(var/zone in body_marking_list)
 		for(var/marking_name in body_marking_list[zone])

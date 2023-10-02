@@ -1,84 +1,3 @@
-/proc/generate_mutant_face_shot(datum/sprite_accessory/sprite_accessory, bodypart_overlay_type = /datum/bodypart_overlay/mutant, include_snout = TRUE, color_accessory = TRUE)
-	var/static/icon/head_icon
-	if (isnull(head_icon))
-		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", SOUTH)
-		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", SOUTH)
-		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
-		head_icon.Blend(eyes, ICON_OVERLAY)
-
-	var/static/icon/head_icon_cropped
-	if (isnull(head_icon_cropped))
-		head_icon_cropped = icon(head_icon)
-		head_icon_cropped.Crop(10, 19, 22, 31)
-		head_icon_cropped.Scale(32, 32)
-
-	var/static/icon/head_icon_with_snout
-	if (isnull(head_icon_with_snout))
-		head_icon_with_snout = icon(head_icon)
-		var/icon/snout = icon('icons/mob/species/sprite_accessory/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", SOUTH)
-		snout.Blend(COLOR_WHITE, ICON_MULTIPLY)
-		head_icon_with_snout.Blend(snout, ICON_OVERLAY)
-
-	var/static/icon/head_icon_with_snout_cropped
-	if (isnull(head_icon_with_snout_cropped))
-		head_icon_with_snout_cropped = icon(head_icon_with_snout)
-		head_icon_with_snout_cropped.Crop(10, 19, 22, 31)
-		head_icon_with_snout_cropped.Scale(32, 32)
-
-	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
-		return include_snout ? head_icon_with_snout_cropped : head_icon_cropped
-
-	var/icon/final_icon = include_snout ? icon(head_icon_with_snout) : icon(head_icon)
-	var/static/list/unsnouted_colors = list(COLOR_WHITE, LIGHT_COLOR_LIGHT_CYAN, COLOR_SOFT_RED)
-	var/static/list/snouted_colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
-	var/colors = include_snout ? snouted_colors : unsnouted_colors
-	blend_bodypart_overlay(final_icon, new bodypart_overlay_type(), sprite_accessory, color_accessory ? colors : null, dir = SOUTH)
-
-	final_icon.Crop(10, 19, 22, 31)
-	final_icon.Scale(32, 32)
-
-	return final_icon
-
-/proc/generate_mutant_side_shot(datum/sprite_accessory/sprite_accessory, bodypart_overlay_type = /datum/bodypart_overlay/mutant, include_snout = TRUE, color_accessory = TRUE)
-	var/static/icon/head_icon
-	if (isnull(head_icon))
-		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", EAST)
-		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", EAST)
-		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
-		head_icon.Blend(eyes, ICON_OVERLAY)
-
-	var/static/icon/head_icon_cropped
-	if (isnull(head_icon_cropped))
-		head_icon_cropped = icon(head_icon)
-		head_icon_cropped.Crop(10, 19, 22, 31)
-		head_icon_cropped.Scale(32, 32)
-
-	var/static/icon/head_icon_with_snout
-	if (isnull(head_icon_with_snout))
-		head_icon_with_snout = icon(head_icon)
-		var/icon/snout = icon('icons/mob/species/sprite_accessory/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", EAST)
-		snout.Blend(COLOR_WHITE, ICON_MULTIPLY)
-		head_icon_with_snout.Blend(snout, ICON_OVERLAY)
-
-	var/static/icon/head_icon_with_snout_cropped
-	if (isnull(head_icon_with_snout_cropped))
-		head_icon_with_snout_cropped = icon(head_icon_with_snout)
-		head_icon_with_snout_cropped.Crop(10, 19, 22, 31)
-		head_icon_with_snout_cropped.Scale(32, 32)
-
-	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
-		return include_snout ? head_icon_with_snout_cropped : head_icon_cropped
-
-	var/icon/final_icon = include_snout ? icon(head_icon_with_snout) : icon(head_icon)
-	blend_bodypart_overlay(final_icon, new bodypart_overlay_type(), sprite_accessory, color_accessory ? COLOR_ORANGE : null, dir = EAST)
-
-	final_icon.Crop(11, 20, 23, 32)
-	final_icon.Scale(32, 32)
-
-	return final_icon
-
 /datum/preference/tricolor/mutant/mutant_color
 	savefile_key = "feature_mcolor"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -182,7 +101,34 @@
 	return assoc_to_keys_features(GLOB.frills_list)
 
 /datum/preference/choiced/mutant/frills/icon_for(value)
-	return generate_mutant_side_shot(GLOB.frills_list[value], /datum/bodypart_overlay/mutant/frills/mutant)
+	var/static/icon/head_icon
+	if (isnull(head_icon))
+		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", EAST)
+		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
+		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", EAST)
+		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
+		head_icon.Blend(eyes, ICON_OVERLAY)
+		var/icon/snout = icon('icons/mob/species/sprite_accessory/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", EAST)
+		snout.Blend(COLOR_WHITE, ICON_MULTIPLY)
+		head_icon.Blend(snout, ICON_OVERLAY)
+
+	var/static/icon/head_icon_cropped
+	if (isnull(head_icon_cropped))
+		head_icon_cropped = icon(head_icon)
+		head_icon_cropped.Crop(10, 19, 22, 31)
+		head_icon_cropped.Scale(32, 32)
+
+	var/datum/sprite_accessory/sprite_accessory = GLOB.frills_list[value]
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
+		return head_icon_cropped
+
+	var/icon/final_icon = icon(head_icon)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/frills/mutant(), sprite_accessory, sprite_accessory.get_default_color(), dir = EAST)
+
+	final_icon.Crop(11, 20, 23, 32)
+	final_icon.Scale(32, 32)
+
+	return final_icon
 
 /datum/preference/tricolor/mutant/frills
 	savefile_key = "feature_mutant_frills_color"
@@ -209,7 +155,38 @@
 	return assoc_to_keys_features(GLOB.horns_list)
 
 /datum/preference/choiced/mutant/horns/icon_for(value)
-	return generate_mutant_side_shot(GLOB.horns_list[value], /datum/bodypart_overlay/mutant/horns/lizard, color_accessory = FALSE)
+	var/static/icon/head_icon
+	if (isnull(head_icon))
+		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", EAST)
+		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
+		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", EAST)
+		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
+		head_icon.Blend(eyes, ICON_OVERLAY)
+		var/icon/snout = icon('icons/mob/species/sprite_accessory/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", EAST)
+		snout.Blend(COLOR_WHITE, ICON_MULTIPLY)
+		head_icon.Blend(snout, ICON_OVERLAY)
+		var/icon/ears = icon('icons/mob/species/sprite_accessory/ears_mutant.dmi', "m_ears_bigwolfinner_FRONT", EAST)
+		ears.Blend(COLOR_ORANGE, ICON_MULTIPLY)
+		ears.Blend(icon('icons/mob/species/sprite_accessory/ears_mutant.dmi', "m_earsinner_bigwolfinner_FRONT", EAST), ICON_OVERLAY)
+		head_icon.Blend(ears, ICON_OVERLAY)
+
+	var/static/icon/head_icon_cropped
+	if (isnull(head_icon_cropped))
+		head_icon_cropped = icon(head_icon)
+		head_icon_cropped.Crop(10, 19, 22, 31)
+		head_icon_cropped.Scale(32, 32)
+
+	var/datum/sprite_accessory/sprite_accessory = GLOB.horns_list[value]
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
+		return head_icon_cropped
+
+	var/icon/final_icon = icon(head_icon)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/horns/mutant(), sprite_accessory, sprite_accessory.get_default_color(), dir = EAST)
+
+	final_icon.Crop(11, 20, 23, 32)
+	final_icon.Scale(32, 32)
+
+	return final_icon
 
 /datum/preference/tricolor/mutant/horns
 	savefile_key = "feature_mutant_horns_color"
@@ -239,7 +216,34 @@
 	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/choiced/mutant/ears/icon_for(value)
-	return generate_mutant_face_shot(GLOB.ears_list[value], /datum/bodypart_overlay/mutant/ears/mutant)
+	var/static/icon/head_icon
+	if (isnull(head_icon))
+		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", SOUTH)
+		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
+		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", SOUTH)
+		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
+		head_icon.Blend(eyes, ICON_OVERLAY)
+		var/icon/snout = icon('icons/mob/species/sprite_accessory/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", SOUTH)
+		snout.Blend(COLOR_WHITE, ICON_MULTIPLY)
+		head_icon.Blend(snout, ICON_OVERLAY)
+
+	var/static/icon/head_icon_cropped
+	if (isnull(head_icon_cropped))
+		head_icon_cropped = icon(head_icon)
+		head_icon_cropped.Crop(10, 19, 22, 31)
+		head_icon_cropped.Scale(32, 32)
+
+	var/datum/sprite_accessory/sprite_accessory = GLOB.ears_list[value]
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
+		return head_icon_cropped
+
+	var/icon/final_icon = icon(head_icon)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/ears/mutant(), sprite_accessory,  sprite_accessory.get_default_color(), dir = SOUTH)
+
+	final_icon.Crop(10, 19, 22, 31)
+	final_icon.Scale(32, 32)
+
+	return final_icon
 
 /datum/preference/tricolor/mutant/ears
 	savefile_key = "feature_mutant_ears_color"
@@ -269,7 +273,35 @@
 	return SPRITE_ACCESSORY_NONE
 
 /datum/preference/choiced/mutant/snout/icon_for(value)
-	return generate_mutant_face_shot(GLOB.snouts_list[value], /datum/bodypart_overlay/mutant/snout/mutant, include_snout = FALSE)
+	var/static/icon/head_icon
+	if (isnull(head_icon))
+		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", SOUTH)
+		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
+		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", SOUTH)
+		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
+		head_icon.Blend(eyes, ICON_OVERLAY)
+		var/icon/ears = icon('icons/mob/species/sprite_accessory/ears_mutant.dmi', "m_ears_bigwolfinner_FRONT", SOUTH)
+		ears.Blend(COLOR_ORANGE, ICON_MULTIPLY)
+		ears.Blend(icon('icons/mob/species/sprite_accessory/ears_mutant.dmi', "m_earsinner_bigwolfinner_FRONT", SOUTH), ICON_OVERLAY)
+		head_icon.Blend(ears, ICON_OVERLAY)
+
+	var/static/icon/head_icon_cropped
+	if (isnull(head_icon_cropped))
+		head_icon_cropped = icon(head_icon)
+		head_icon_cropped.Crop(10, 19, 22, 31)
+		head_icon_cropped.Scale(32, 32)
+
+	var/datum/sprite_accessory/sprite_accessory = GLOB.ears_list[value]
+	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
+		return head_icon_cropped
+
+	var/icon/final_icon = icon(head_icon)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/snout/mutant(), sprite_accessory, sprite_accessory.get_default_color(), dir = SOUTH)
+
+	final_icon.Crop(10, 19, 22, 31)
+	final_icon.Scale(32, 32)
+
+	return final_icon
 
 /datum/preference/tricolor/mutant/snout
 	savefile_key = "feature_mutant_snout_color"
@@ -317,8 +349,7 @@
 		return groin_icon_cropped
 
 	var/icon/final_icon = icon(groin_icon)
-	var/static/list/colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
-	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/mutant(), sprite_accessory, colors, dir = EAST)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/mutant(), sprite_accessory, sprite_accessory.get_default_color(), dir = EAST)
 
 	final_icon.Crop(1, 1, 15, 13)
 	final_icon.Scale(32, 32)

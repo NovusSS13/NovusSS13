@@ -118,7 +118,10 @@ const ChoicedSelection = (
             </Stack.Item>
 
             <Stack.Item grow>
-              <SearchBar onSearchTextChanged={setSearchText} />
+              <SearchBar
+                searchText={searchText}
+                onSearchTextChanged={setSearchText}
+              />
             </Stack.Item>
 
             <Stack.Item>

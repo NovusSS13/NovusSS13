@@ -25,9 +25,8 @@
 	bodytemp_heat_damage_limit = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD // about 150C
 	// Cold temperatures hurt faster as it is harder to move with out the heat energy
 	bodytemp_cold_damage_limit = (T20C - 10) // about 10c
-	hair_color = "fixedmutcolor"
+	hair_color = ORGAN_COLOR_MUTANT
 	hair_alpha = 140
-	facial_hair_alpha = 140
 
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ethereal,

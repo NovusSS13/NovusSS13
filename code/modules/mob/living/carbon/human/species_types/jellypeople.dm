@@ -183,9 +183,8 @@
 	name = "\improper Slimeperson"
 	plural_form = "Slimepeople"
 	id = SPECIES_SLIMEPERSON
-	hair_color = "mutcolor"
+	hair_color = ORGAN_COLOR_MUTANT
 	hair_alpha = 150
-	facial_hair_alpha = 150
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	mutanteyes = /obj/item/organ/eyes
 	var/datum/action/innate/split_body/slime_split

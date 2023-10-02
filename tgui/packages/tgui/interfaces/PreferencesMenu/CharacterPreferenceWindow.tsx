@@ -134,7 +134,7 @@ export const CharacterPreferenceWindow = (props, context) => {
                       <Stack>
                         <Stack.Item>
                           <ServerPreferencesFetcher
-                            render={(render_data: ServerData | null) => {
+                            render={(render_data: ServerData | undefined) => {
                               if (!render_data) {
                                 return <Box>Loading categories..</Box>;
                               }
@@ -172,7 +172,7 @@ export const CharacterPreferenceWindow = (props, context) => {
 
                               return (
                                 <Dropdown
-                                  width={10}
+                                  width={'10'}
                                   justify="center"
                                   selected={active_slot_name || 'Main'}
                                   options={categoryoptions}

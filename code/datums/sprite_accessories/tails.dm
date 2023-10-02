@@ -35,6 +35,7 @@
 	name = "Cat"
 	icon_state = "default"
 	feature_suffix = "cat"
+	default_color = COLOR_PINK
 
 /datum/sprite_accessory/tails/monkey
 	color_amount = 0

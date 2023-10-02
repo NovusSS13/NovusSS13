@@ -606,7 +606,7 @@
 	else
 		. += "-[facial_hairstyle]"
 		. += "-[override_hair_color || fixed_hair_color || facial_hair_color]"
-		. += "-[facial_hair_alpha]"
+		. += "-[hair_alpha]"
 		if(gradient_styles?[GRADIENT_FACIAL_HAIR_KEY])
 			. += "-[gradient_styles[GRADIENT_FACIAL_HAIR_KEY]]"
 			. += "-[gradient_colors[GRADIENT_FACIAL_HAIR_KEY]]"

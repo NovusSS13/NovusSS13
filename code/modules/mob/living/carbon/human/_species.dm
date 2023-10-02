@@ -28,8 +28,6 @@
 	var/hair_color
 	///The alpha used by the hair. 255 is completely solid, 0 is invisible.
 	var/hair_alpha = 255
-	///The alpha used by the facial hair. 255 is completely solid, 0 is invisible.
-	var/facial_hair_alpha = 255
 
 	///Never, Optional, or Forced digi legs?
 	var/digitigrade_customization = DIGITIGRADE_NEVER
