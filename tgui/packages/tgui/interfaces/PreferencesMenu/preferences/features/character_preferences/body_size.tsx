@@ -1,4 +1,4 @@
-import { Feature, FeatureNumberInput } from '../base';
+import { Feature, FeatureNumberInput, FeatureChoiced, FeatureDropdownInput } from '../base';
 
 export const body_size: Feature<number> = {
   name: 'Body size',
