@@ -118,9 +118,11 @@
 		if(12 to INFINITY)
 			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
 
-	msg += "</span>"
-
-	. += msg.Join("")
+	if(length(msg))
+		var/sane_msg = msg.Join("")
+		sane_msg = replacetext(sane_msg, "\n", "", -2)
+		sane_msg += "</span>"
+		. += sane_msg
 
 	if(!appears_dead)
 		switch(stat)
