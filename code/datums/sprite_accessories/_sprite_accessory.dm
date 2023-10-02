@@ -87,7 +87,7 @@
 		if(isnum(default_color))
 			return sanitize_hexcolor(LAZYACCESS(mutant_colors, default_color), DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 		return sanitize_hexcolor(tricolor_to_hex(default_color), DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
-	return mutant_colors || sanitize_hexcolor_list(default_color, DEFAULT_HEX_COLOR_LEN, 3, TRUE, "#FFFFFF")
+	return mutant_colors || sanitize_hexcolor_list(default_colors, DEFAULT_HEX_COLOR_LEN, 3, TRUE, "#FFFFFF")
 
 /datum/sprite_accessory/blank
 	name = SPRITE_ACCESSORY_NONE

@@ -1,5 +1,7 @@
 /datum/sprite_accessory/body_markings
 	color_amount = 1 //DNA code can only handle 1 color per marking, changes to the code will be necessary if you want more, swine
+	default_color = 1
+	default_colors = list(COLOR_MAGENTA, COLOR_CYAN, COLOR_LIGHT_PINK)
 	/// Bitflags for bodyparts we are allowed on
 	var/allowed_bodyparts = FULL_BODY
 	/// Species this set is compatible with - Set to null for no species restrictions

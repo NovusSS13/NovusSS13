@@ -172,7 +172,7 @@ export const CharacterPreferenceWindow = (props, context) => {
 
                               return (
                                 <Dropdown
-                                  width={'10'}
+                                  minWidth={10}
                                   justify="center"
                                   selected={active_slot_name || 'Main'}
                                   options={categoryoptions}

@@ -302,12 +302,13 @@ const MarkingInput = (
   const { zone, marking } = props;
   const { act, data } = useBackend<PreferencesMenuData>(context);
   return (
-    <Stack textAlign="center" verticalAlign="middle" width="100%">
+    <Stack fill textAlign="center" verticalAlign="middle">
       {(marking.color_amount && (
         <>
-          <Stack.Item>
+          <Stack.Item grow>
             <Button
-              width="25%"
+              fill
+              fluid
               onClick={() =>
                 act('color_marking', {
                   body_zone: zone.body_zone,
@@ -324,10 +325,14 @@ const MarkingInput = (
               />
             </Button>
           </Stack.Item>
-          <Stack.Item>
+          <Stack.Item grow>
             <Button
+              fill
+              fluid
+              tooltipPosition="top"
+              tooltip="Set to mutant colors"
               onClick={() =>
-                act('color_marking', {
+                act('color_marking_mutant_colors', {
                   body_zone: zone.body_zone,
                   marking_name: marking.name,
                   marking_index: marking.marking_index,
@@ -338,13 +343,19 @@ const MarkingInput = (
           </Stack.Item>
         </>
       )) || (
-        <Stack.Item>
-          <Button width="25%" />
-        </Stack.Item>
+        <>
+          <Stack.Item grow>
+            <Button fill fluid />
+          </Stack.Item>
+          <Stack.Item grow>
+            <Button fill fluid />
+          </Stack.Item>
+        </>
       )}
-      <Stack.Item>
+      <Stack.Item grow>
         <Button
-          width="25%"
+          fill
+          fluid
           icon="sort-up"
           onClick={() =>
             act('move_marking_up', {
@@ -355,9 +366,10 @@ const MarkingInput = (
           }
         />
       </Stack.Item>
-      <Stack.Item>
+      <Stack.Item grow>
         <Button
-          width="25%"
+          fill
+          fluid
           icon="sort-down"
           onClick={() =>
             act('move_marking_down', {
@@ -368,8 +380,10 @@ const MarkingInput = (
           }
         />
       </Stack.Item>
-      <Stack.Item>
+      <Stack.Item grow>
         <Button
+          fill
+          fluid
           icon="times"
           color="bad"
           onClick={() =>

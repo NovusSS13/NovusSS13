@@ -1,4 +1,6 @@
 /datum/sprite_accessory/snouts
+	default_color = 1
+	default_colors = list(COLOR_WHITE, LIGHT_COLOR_LIGHT_CYAN, COLOR_SOFT_RED)
 
 /datum/sprite_accessory/snouts/lizard
 	icon = 'icons/mob/species/lizard/lizard_features.dmi'

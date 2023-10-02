@@ -1,4 +1,6 @@
 /datum/sprite_accessory/frills
+	default_color = 1
+	default_colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
 
 /datum/sprite_accessory/frills/lizard
 	icon = 'icons/mob/species/lizard/lizard_features.dmi'

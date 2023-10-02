@@ -1,4 +1,6 @@
 /datum/sprite_accessory/horns
+	default_color = 1
+	default_colors = list(COLOR_WHITE, COLOR_OFF_WHITE, COLOR_VERY_LIGHT_GRAY)
 
 /datum/sprite_accessory/horns/lizard
 	icon = 'icons/mob/species/lizard/lizard_features.dmi'

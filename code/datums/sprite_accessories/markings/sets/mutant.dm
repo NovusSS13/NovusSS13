@@ -4,14 +4,17 @@
  * body_marking sprite accessory?
  */
 
-/datum/body_marking_set/tajaran
+/datum/body_marking_set/mutant
+	compatible_species = list(/datum/species/mutant)
+
+/datum/body_marking_set/mutant/tajaran
 	name = "Tajaran"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Tajaran"),
 		BODY_ZONE_CHEST = list("Tajaran"),
 	)
 
-/datum/body_marking_set/fox
+/datum/body_marking_set/mutant/fox
 	name = "Fox"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Fox"),
@@ -20,14 +23,14 @@
 		BODY_ZONE_R_LEG = list("Fox"),
 	)
 
-/datum/body_marking_set/sergal
+/datum/body_marking_set/mutant/sergal
 	name = "Sergal"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Sergal"),
 		BODY_ZONE_CHEST = list("Sergal"),
 	)
 
-/datum/body_marking_set/husky
+/datum/body_marking_set/mutant/husky
 	name = "Husky"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Husky"),
@@ -40,7 +43,7 @@
 		BODY_ZONE_R_LEG = list("Husky"),
 	)
 
-/datum/body_marking_set/fennec
+/datum/body_marking_set/mutant/fennec
 	name = "Fennec"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Fennec"),
@@ -53,7 +56,7 @@
 		BODY_ZONE_R_LEG = list("Fennec"),
 	)
 
-/datum/body_marking_set/redpanda
+/datum/body_marking_set/mutant/redpanda
 	name = "Red Panda"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Red Panda"),
@@ -66,7 +69,7 @@
 		BODY_ZONE_R_LEG = list("Red Panda"),
 	)
 
-/datum/body_marking_set/dalmatian
+/datum/body_marking_set/mutant/dalmatian
 	name = "Dalmatian"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Dalmatian"),
@@ -79,7 +82,7 @@
 		BODY_ZONE_R_LEG = list("Dalmatian"),
 	)
 
-/datum/body_marking_set/shepherd
+/datum/body_marking_set/mutant/shepherd
 	name = "Shepherd"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Shepherd Spot"),
@@ -92,7 +95,7 @@
 		BODY_ZONE_R_LEG = list("Shepherd"),
 	)
 
-/datum/body_marking_set/wolf
+/datum/body_marking_set/mutant/wolf
 	name = "Wolf"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Wolf Spot", "Wolf"),
@@ -103,7 +106,7 @@
 		BODY_ZONE_R_LEG = list("Wolf Spot"),
 	)
 
-/datum/body_marking_set/raccoon
+/datum/body_marking_set/mutant/raccoon
 	name = "Raccoon"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Raccoon"),
@@ -114,7 +117,7 @@
 		BODY_ZONE_R_LEG = list("Raccoon"),
 	)
 
-/datum/body_marking_set/bovine
+/datum/body_marking_set/mutant/bovine
 	name = "Bovine"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Bovine", "Bovine Spot"),
@@ -127,14 +130,14 @@
 		BODY_ZONE_R_LEG = list("Bovine", "Bovine Spot"),
 	)
 
-/datum/body_marking_set/possum
+/datum/body_marking_set/mutant/possum
 	name = "Possum"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Possum"),
 		BODY_ZONE_CHEST = list("Possum"),
 	)
 
-/datum/body_marking_set/corgi
+/datum/body_marking_set/mutant/corgi
 	name = "Corgi"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Corgi"),
@@ -147,7 +150,7 @@
 		BODY_ZONE_R_LEG = list("Corgi"),
 	)
 
-/datum/body_marking_set/skunk
+/datum/body_marking_set/mutant/skunk
 	name = "Skunk"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Skunk"),
@@ -156,7 +159,7 @@
 		BODY_ZONE_R_LEG = list("Skunk"),
 	)
 
-/datum/body_marking_set/panther
+/datum/body_marking_set/mutant/panther
 	name = "Panther"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Panther"),
@@ -169,7 +172,7 @@
 		BODY_ZONE_R_LEG = list("Panther"),
 	)
 
-/datum/body_marking_set/tiger
+/datum/body_marking_set/mutant/tiger
 	name = "Tiger"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Tiger Stripe", "Tiger Spot"),
@@ -182,14 +185,14 @@
 		BODY_ZONE_R_LEG = list("Tiger Stripe", "Tiger Spot"),
 	)
 
-/datum/body_marking_set/otter
+/datum/body_marking_set/mutant/otter
 	name = "Otter"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Otter", "Otter Head"),
 		BODY_ZONE_CHEST = list("Otter"),
 	)
 
-/datum/body_marking_set/otie
+/datum/body_marking_set/mutant/otie
 	name = "Otie"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Otie", "Otie Spot"),
@@ -202,7 +205,7 @@
 		BODY_ZONE_R_LEG = list("Otie", "Otie Spot"),
 	)
 
-/datum/body_marking_set/sabresune
+/datum/body_marking_set/mutant/sabresune
 	name = "Sabresune"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Sabresune"),
@@ -215,14 +218,14 @@
 		BODY_ZONE_R_LEG = list("Sabresune"),
 	)
 
-/datum/body_marking_set/orca
+/datum/body_marking_set/mutant/orca
 	name = "Orca"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Orca"),
 		BODY_ZONE_CHEST = list("Orca"),
 	)
 
-/datum/body_marking_set/hawk
+/datum/body_marking_set/mutant/hawk
 	name = "Hawk"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Hawk"),
@@ -231,7 +234,7 @@
 		BODY_ZONE_R_LEG = list("Hawk", "Hawk Talon"),
 	)
 
-/datum/body_marking_set/corvid
+/datum/body_marking_set/mutant/corvid
 	name = "Corvid"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Corvid"),
@@ -240,14 +243,14 @@
 		BODY_ZONE_R_LEG = list("Corvid", "Corvid Talon"),
 	)
 
-/datum/body_marking_set/eevee
+/datum/body_marking_set/mutant/eevee
 	name = "Eevee"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Eevee"),
 		BODY_ZONE_CHEST = list("Eevee"),
 	)
 
-/datum/body_marking_set/deer
+/datum/body_marking_set/mutant/deer
 	name = "Deer"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Deer"),
@@ -260,7 +263,7 @@
 		BODY_ZONE_R_LEG = list("Deer", "Deer Hoof"),
 	)
 
-/datum/body_marking_set/hyena
+/datum/body_marking_set/mutant/hyena
 	name = "Hyena"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Hyena", "Hyena Side"),
@@ -273,7 +276,7 @@
 		BODY_ZONE_R_LEG = list("Hyena"),
 	)
 
-/datum/body_marking_set/dog
+/datum/body_marking_set/mutant/dog
 	name = "Dog"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Dog Spot"),
@@ -286,14 +289,14 @@
 		BODY_ZONE_R_LEG = list("Dog", "Dog Spot"),
 	)
 
-/datum/body_marking_set/bat
+/datum/body_marking_set/mutant/bat
 	name = "Bat"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Bat"),
 		BODY_ZONE_CHEST = list("Bat", "Bat Mark"),
 	)
 
-/datum/body_marking_set/goat
+/datum/body_marking_set/mutant/goat
 	name = "Goat"
 	body_marking_list = list(
 		BODY_ZONE_PRECISE_L_HAND = list("Goat Hoof"),
@@ -302,14 +305,14 @@
 		BODY_ZONE_R_LEG = list("Goat Hoof"),
 	)
 
-/datum/body_marking_set/floof
+/datum/body_marking_set/mutant/floof
 	name = "Floof"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Floof"),
 		BODY_ZONE_CHEST = list("Floof"),
 	)
 
-/datum/body_marking_set/floofer
+/datum/body_marking_set/mutant/floofer
 	name = "Floofer"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Floof"),
@@ -322,7 +325,7 @@
 		BODY_ZONE_R_LEG = list("Floofer Sock"),
 	)
 
-/datum/body_marking_set/rat
+/datum/body_marking_set/mutant/rat
 	name = "Rat"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Rat Spot"),
@@ -335,7 +338,7 @@
 		BODY_ZONE_R_LEG = list("Rat Paw","Rat Spot"),
 	)
 
-/datum/body_marking_set/sloth
+/datum/body_marking_set/mutant/sloth
 	name = "Sloth"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Sloth Head"),
@@ -347,7 +350,7 @@
 		BODY_ZONE_R_LEG = list("Rat Paw"),
 	) //Yes we're re-using the rat bits as they'd be identical
 
-/datum/body_marking_set/scolipede
+/datum/body_marking_set/mutant/scolipede
 	name = "Scolipede"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Scolipede"),
@@ -360,7 +363,7 @@
 		BODY_ZONE_R_LEG = list("Scolipede"),
 	)
 
-/datum/body_marking_set/guilmon
+/datum/body_marking_set/mutant/guilmon
 	name = "Guilmon"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Guilmon Mark"),
@@ -373,7 +376,7 @@
 		BODY_ZONE_R_LEG = list("Guilmon", "Guilmon Mark"),
 	)
 
-/datum/body_marking_set/xeno
+/datum/body_marking_set/mutant/xeno
 	name = "Xeno"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Xeno Head"),
@@ -384,7 +387,7 @@
 		BODY_ZONE_R_LEG = list("Xeno"),
 	)
 
-/datum/body_marking_set/datashark
+/datum/body_marking_set/mutant/datashark
 	name = "Datashark"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Datashark"),
@@ -395,20 +398,20 @@
 		BODY_ZONE_R_LEG = list("Datashark"),
 	)
 
-/datum/body_marking_set/shark
+/datum/body_marking_set/mutant/shark
 	name = "Shark"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Shark"),
 		BODY_ZONE_CHEST = list("Shark"),
 	)
 
-/datum/body_marking_set/belly
+/datum/body_marking_set/mutant/belly
 	name = "Belly"
 	body_marking_list = list(
 		BODY_ZONE_CHEST = list("Belly"),
 	)
 
-/datum/body_marking_set/belly_slim
+/datum/body_marking_set/mutant/belly_slim
 	name = "Belly Slim"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Belly Slim"),
@@ -417,7 +420,7 @@
 		BODY_ZONE_R_LEG = list("Belly Slim"),
 	)
 
-/datum/body_marking_set/hands_feet
+/datum/body_marking_set/mutant/hands_feet
 	name = "Hands Feet"
 	body_marking_list = list(
 		BODY_ZONE_PRECISE_L_HAND = list("Hands Feet"),
@@ -426,7 +429,7 @@
 		BODY_ZONE_R_LEG = list("Hands Feet"),
 	)
 
-/datum/body_marking_set/frog
+/datum/body_marking_set/mutant/frog
 	name = "Frog"
 	body_marking_list = list("Frog")
 	body_marking_list = list(
@@ -440,7 +443,7 @@
 		BODY_ZONE_R_LEG = list("Frog"),
 	)
 
-/datum/body_marking_set/bee
+/datum/body_marking_set/mutant/bee
 	name = "Bee"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Bee"),
@@ -453,7 +456,7 @@
 		BODY_ZONE_R_LEG = list("Bee"),
 	)
 
-/datum/body_marking_set/gradient
+/datum/body_marking_set/mutant/gradient
 	name = "Gradient"
 	body_marking_list = list("Gradient")
 	body_marking_list = list(
@@ -465,7 +468,7 @@
 		BODY_ZONE_R_LEG = list("Gradient"),
 	)
 
-/datum/body_marking_set/harlequin
+/datum/body_marking_set/mutant/harlequin
 	name = "Harlequin"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Harlequin"),
@@ -475,7 +478,7 @@
 		BODY_ZONE_L_LEG = list("Harlequin"),
 	)
 
-/datum/body_marking_set/harlequin_reversed
+/datum/body_marking_set/mutant/harlequin_reversed
 	name = "Harlequin Reversed"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Harlequin Reversed"),
@@ -485,7 +488,7 @@
 		BODY_ZONE_R_LEG = list("Harlequin Reversed"),
 	)
 
-/datum/body_marking_set/plain
+/datum/body_marking_set/mutant/plain
 	name = "Plain"
 	body_marking_list = list(
 		BODY_ZONE_HEAD = list("Plain"),

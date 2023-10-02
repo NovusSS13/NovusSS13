@@ -291,7 +291,7 @@
 		head_icon_cropped.Crop(10, 19, 22, 31)
 		head_icon_cropped.Scale(32, 32)
 
-	var/datum/sprite_accessory/sprite_accessory = GLOB.ears_list[value]
+	var/datum/sprite_accessory/sprite_accessory = GLOB.snouts_list[value]
 	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
 		return head_icon_cropped
 

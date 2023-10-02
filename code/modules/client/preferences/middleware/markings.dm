@@ -135,9 +135,9 @@
 /datum/preference_middleware/markings/proc/color_marking(list/params, mob/user)
 	var/zone = params["body_zone"]
 	var/marking_name = params["marking_name"]
-	var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
-	if(body_markings)
-		var/new_color = body_markings.get_default_color(preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color))
+	if(marking_name)
+		var/old_color = preferences.body_markings[zone][marking_name]
+		var/new_color = input(user, "Select new color", "[marking_name] color", old_color) as color
 		preferences.body_markings[zone][marking_name] = sanitize_hexcolor(new_color, DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
 		preferences.character_preview_view.update_body()
 		return TRUE
@@ -146,9 +146,9 @@
 /datum/preference_middleware/markings/proc/color_marking_mutant_colors(list/params, mob/user)
 	var/zone = params["body_zone"]
 	var/marking_name = params["marking_name"]
-	if(marking_name)
-		var/old_color = preferences.body_markings[zone][marking_name]
-		var/new_color = input(user, "Select new color", "[marking_name] color", old_color) as color
+	var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
+	if(body_markings)
+		var/new_color = body_markings.get_default_color(preferences.read_preference(/datum/preference/tricolor/mutant/mutant_color))
 		preferences.body_markings[zone][marking_name] = sanitize_hexcolor(new_color, DEFAULT_HEX_COLOR_LEN, include_crunch = TRUE)
 		preferences.character_preview_view.update_body()
 		return TRUE
