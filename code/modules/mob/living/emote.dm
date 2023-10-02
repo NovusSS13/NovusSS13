@@ -111,7 +111,7 @@
 	if(. && death_sound)
 		if(!user.can_speak() || user.oxyloss >= 50)
 			return //stop the sound if oxyloss too high/cant speak
-		playsound(user, death_sound, 200, TRUE, TRUE)
+		playsound(user, death_sound, 100, vary)
 
 /datum/emote/living/drool
 	key = "drool"
