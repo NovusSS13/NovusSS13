@@ -40,11 +40,11 @@
 
 	switch(disgust_value)
 		if(DISGUST_LEVEL_GROSS to DISGUST_LEVEL_VERYGROSS)
-			return span_warning("[owner.p_they(TRUE)]  look[owner.p_s()] a bit grossed out.")
+			return span_warning("[owner.p_they(TRUE)] look[owner.p_s()] a bit grossed out.")
 		if(DISGUST_LEVEL_VERYGROSS to DISGUST_LEVEL_DISGUSTED)
-			return span_warning("[owner.p_they(TRUE)]  look[owner.p_s()] really grossed out.")
+			return span_warning("[owner.p_they(TRUE)] look[owner.p_s()] really grossed out.")
 		if(DISGUST_LEVEL_DISGUSTED to INFINITY)
-			return span_warning("[owner.p_they(TRUE)]  look[owner.p_s()] extremely disgusted.")
+			return span_warning("[owner.p_they(TRUE)] look[owner.p_s()] extremely disgusted.")
 
 	return null
 
