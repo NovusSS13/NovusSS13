@@ -10,7 +10,7 @@
  * max_checked - The maximum number of checkboxes that can be checked (optional)
  * timeout - The timeout for the input (optional)
  */
-/proc/tgui_input_checkboxes(mob/user, message, title = "Select", list/items, min_checked = 1, max_checked = 50, timeout = 0, ui_state = GLOB.always_state)
+/proc/tgui_input_checkboxes(mob/user, message, title = "Select", list/items, min_checked = 1, max_checked = 50, timeout = 0, ui_state = GLOB.always_state, ui_host = null)
 	if (!user)
 		user = usr
 	if(!length(items))
@@ -23,7 +23,7 @@
 			return
 	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
 		return input(user, message, title) as null|anything in items
-	var/datum/tgui_checkbox_input/input = new(user, message, title, items, min_checked, max_checked, timeout, ui_state)
+	var/datum/tgui_checkbox_input/input = new(user, message, title, items, min_checked, max_checked, timeout, ui_state, ui_host)
 	input.ui_interact(user)
 	input.wait()
 	if (input)
@@ -52,14 +52,17 @@
 	var/max_checked
 	/// The TGUI UI state that will be returned in ui_state(). Default: always_state
 	var/datum/ui_state/state
+	/// The TGUI UI host that will be returned in ui_host().
+	var/datum/host
 
-/datum/tgui_checkbox_input/New(mob/user, message, title, list/items, min_checked, max_checked, timeout, ui_state)
+/datum/tgui_checkbox_input/New(mob/user, message, title, list/items, min_checked, max_checked, timeout, ui_state, ui_host)
 	src.title = title
 	src.message = message
 	src.items = items.Copy()
 	src.min_checked = min_checked
 	src.max_checked = max_checked
 	src.state = ui_state
+	src.host = ui_host || src
 
 	if (timeout)
 		src.timeout = timeout
@@ -89,6 +92,9 @@
 
 /datum/tgui_checkbox_input/ui_state(mob/user)
 	return state
+
+/datum/tgui_checkbox_input/ui_host(mob/user)
+	return host
 
 /datum/tgui_checkbox_input/ui_data(mob/user)
 	var/list/data = list()

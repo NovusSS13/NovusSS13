@@ -12061,15 +12061,6 @@
 /obj/structure/plasticflaps/opaque,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
-"cUn" = (
-/obj/structure/window/reinforced/spawner/directional/west,
-/obj/structure/sign/warning/yes_smoking/circle/directional/south,
-/obj/machinery/light/small/directional/south,
-/obj/item/kirbyplants/random/dead{
-	name = "Lungie"
-	},
-/turf/open/floor/iron/white,
-/area/station/commons/fitness/recreation)
 "cUq" = (
 /obj/structure/table/reinforced,
 /obj/item/storage/toolbox/emergency,
@@ -14705,13 +14696,13 @@
 	},
 /area/station/service/chapel)
 "dFi" = (
-/obj/structure/table/wood,
-/obj/item/trash/candle,
-/obj/item/cigbutt{
-	pixel_y = 7
+/obj/machinery/cryopod{
+	dir = 1
 	},
-/obj/item/razor,
-/turf/open/floor/iron/white,
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
 /area/station/commons/fitness/recreation)
 "dFm" = (
 /obj/effect/landmark/start/hangover/closet,
@@ -14882,10 +14873,8 @@
 /turf/open/floor/iron,
 /area/station/cargo/lobby)
 "dHX" = (
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
-	dir = 8
-	},
-/turf/open/floor/iron/white/smooth_large,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/iron/white,
 /area/station/commons/fitness/recreation)
 "dIk" = (
 /obj/structure/disposalpipe/segment{
@@ -19083,11 +19072,9 @@
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "eME" = (
-/obj/structure/chair/stool/directional/west,
-/obj/effect/landmark/start/hangover,
-/obj/machinery/newscaster/directional/south,
-/obj/machinery/light/small/directional/south,
-/turf/open/floor/iron/white,
+/obj/effect/turf_decal/siding/white,
+/obj/machinery/cryopod,
+/turf/open/floor/iron/dark,
 /area/station/commons/fitness/recreation)
 "eMG" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -23157,11 +23144,18 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "fNN" = (
-/obj/structure/window/reinforced/spawner/directional/west,
-/obj/effect/spawner/random/vending/snackvend,
-/obj/item/radio/intercom/directional/north,
-/obj/effect/turf_decal/bot_white,
-/turf/open/floor/iron/white,
+/obj/machinery/cryopod{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/machinery/airalarm/directional/east,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
+/obj/machinery/camera/directional/east,
+/turf/open/floor/iron/dark,
 /area/station/commons/fitness/recreation)
 "fNO" = (
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible{
@@ -42492,15 +42486,12 @@
 /turf/open/floor/plating,
 /area/station/science/xenobiology)
 "kBR" = (
-/obj/machinery/door/window{
-	dir = 8;
-	name = "Smoking Room"
-	},
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 8
-	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron/white/smooth_large,
+/obj/machinery/door/airlock/public/glass{
+	name = "Cryopods"
+	},
+/turf/open/floor/iron/white,
 /area/station/commons/fitness/recreation)
 "kBT" = (
 /obj/machinery/duct,
@@ -61938,8 +61929,11 @@
 /turf/open/floor/carpet/green,
 /area/station/commons/lounge)
 "pEx" = (
-/obj/effect/turf_decal/bot_white,
-/obj/machinery/vending/cigarette,
+/obj/machinery/computer/cryopod/directional/east,
+/obj/machinery/light/directional/east,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 8
+	},
 /turf/open/floor/iron/white,
 /area/station/commons/fitness/recreation)
 "pEz" = (
@@ -70194,7 +70188,10 @@
 /area/station/engineering/atmos/project)
 "rGd" = (
 /obj/effect/landmark/start/hangover,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 8
+	},
 /turf/open/floor/iron/white,
 /area/station/commons/fitness/recreation)
 "rGf" = (
@@ -94436,9 +94433,9 @@
 /turf/open/floor/iron,
 /area/station/science/research/abandoned)
 "xGv" = (
-/obj/effect/spawner/random/vending/colavend,
-/obj/effect/turf_decal/bot_white,
-/turf/open/floor/iron/white,
+/obj/machinery/cryopod,
+/obj/effect/turf_decal/siding/white,
+/turf/open/floor/iron/dark,
 /area/station/commons/fitness/recreation)
 "xGw" = (
 /obj/structure/window/reinforced/spawner/directional/south,
@@ -152168,9 +152165,9 @@ fIQ
 mfC
 mfC
 uKw
-fNN
+mfC
 kBR
-cUn
+mfC
 uKw
 qYo
 qYo
@@ -152425,7 +152422,7 @@ spV
 aad
 aaa
 mfC
-pEx
+xGv
 rGd
 dFi
 mfC
@@ -152684,8 +152681,8 @@ aad
 mfC
 xGv
 dHX
-eME
-uKw
+dFi
+mfC
 qYo
 qYo
 aaa
@@ -152938,11 +152935,11 @@ cFF
 cFF
 fIQ
 aaa
-uKw
 mfC
+eME
+pEx
+fNN
 mfC
-mfC
-uKw
 qYo
 qYo
 efQ
@@ -153195,11 +153192,11 @@ cFF
 cFF
 fIQ
 aaa
-mfC
-qYo
-aad
-aad
-aad
+uKw
+uKw
+uKw
+uKw
+uKw
 qYo
 qYo
 aaa

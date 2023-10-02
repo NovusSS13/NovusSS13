@@ -15,7 +15,7 @@
  * * timeout - The timeout of the number input, after which the modal will close and qdel itself. Set to zero for no timeout.
  * * round_value - whether the inputted number is rounded down into an integer.
  */
-/proc/tgui_input_number(mob/user, message, title = "Number Input", default = 0, max_value = 10000, min_value = 0, timeout = 0, round_value = TRUE, ui_state = GLOB.always_state)
+/proc/tgui_input_number(mob/user, message, title = "Number Input", default = 0, max_value = 10000, min_value = 0, timeout = 0, round_value = TRUE, ui_state = GLOB.always_state, ui_host = null)
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -28,7 +28,8 @@
 	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
 		var/input_number = input(user, message, title, default) as null|num
 		return clamp(round_value ? round(input_number) : input_number, min_value, max_value)
-	var/datum/tgui_input_number/number_input = new(user, message, title, default, max_value, min_value, timeout, round_value, ui_state)
+
+	var/datum/tgui_input_number/number_input = new(user, message, title, default, max_value, min_value, timeout, round_value, ui_state, ui_host)
 	number_input.ui_interact(user)
 	number_input.wait()
 	if (number_input)
@@ -64,8 +65,10 @@
 	var/title
 	/// The TGUI UI state that will be returned in ui_state(). Default: always_state
 	var/datum/ui_state/state
+	/// The TGUI UI host that will be returned in ui_host().
+	var/datum/host
 
-/datum/tgui_input_number/New(mob/user, message, title, default, max_value, min_value, timeout, round_value, ui_state)
+/datum/tgui_input_number/New(mob/user, message, title, default, max_value, min_value, timeout, round_value, ui_state, ui_host = src)
 	src.default = default
 	src.max_value = max_value
 	src.message = message
@@ -73,6 +76,8 @@
 	src.title = title
 	src.round_value = round_value
 	src.state = ui_state
+	src.host = ui_host
+
 	if (timeout)
 		src.timeout = timeout
 		start_time = world.time
@@ -113,6 +118,9 @@
 
 /datum/tgui_input_number/ui_state(mob/user)
 	return state
+
+/datum/tgui_input_number/ui_host(mob/user)
+	return host
 
 /datum/tgui_input_number/ui_static_data(mob/user)
 	var/list/data = list()

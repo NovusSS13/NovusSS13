@@ -58,14 +58,18 @@
 	var/closed
 	/// The TGUI UI state that will be returned in ui_state(). Default: always_state
 	var/datum/ui_state/state
+	/// The TGUI UI host that will be returned in ui_host().
+	var/datum/host
 
-/datum/tgui_list_input/New(mob/user, message, title, list/items, default, timeout, ui_state)
+/datum/tgui_list_input/New(mob/user, message, title, list/items, default, timeout, ui_state, ui_host)
 	src.title = title
 	src.message = message
 	src.items = list()
 	src.items_map = list()
 	src.default = default
 	src.state = ui_state
+	src.host = ui_host || src
+
 	var/list/repeat_items = list()
 	// Gets rid of illegal characters
 	var/static/regex/whitelistedWords = regex(@{"([^\u0020-\u8000]+)"})

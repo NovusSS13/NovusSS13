@@ -6,6 +6,7 @@
 	can_elimination_hijack = ELIMINATION_ENABLED
 	suicide_cry = "FOR SCOTLAND!!" // If they manage to lose their no-drop stuff somehow
 	count_against_dynamic_roll_chance = FALSE
+	antag_flags = FLAG_ANTAG_SAFE_TO_CRYO // no hurt in one less guy if the whole station is CRYING FOR SCOTLAAAND!!!
 	/// Traits we apply/remove to our target on-demand.
 	var/static/list/applicable_traits = list(
 		TRAIT_NOBREATH,

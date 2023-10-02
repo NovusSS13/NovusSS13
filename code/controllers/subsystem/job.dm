@@ -195,6 +195,14 @@ SUBSYSTEM_DEF(job)
 		SetupOccupations()
 	return type_occupations[jobtype]
 
+/datum/controller/subsystem/job/proc/FreeRole(rank) //i hate the formatting but consistency or whatever
+	var/datum/job/job = GetJob(rank)
+	if(!job)
+		CRASH("Invalid job passed to free_role! Expected a job string, received: [rank]")
+
+	JobDebug("Freeing role: [rank]")
+	job.current_positions = max(0, job.current_positions - 1)
+
 /datum/controller/subsystem/job/proc/get_department_type(department_type)
 	if(!length(all_occupations))
 		SetupOccupations()
