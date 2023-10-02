@@ -251,8 +251,7 @@
 			var/list/validated_color = given_color
 			validated_color = validated_color.Copy()
 			var/last_color_element = sanitize_hexcolor(validated_color[length(validated_color)], DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
-			validated_color.len = 3
-			return sanitize_hexcolor_list(validated_color, DEFAULT_HEX_COLOR_LEN, TRUE, 3, last_color_element)
+			return sanitize_hexcolor_list(validated_color, DEFAULT_HEX_COLOR_LEN, 3, TRUE, last_color_element)
 		//repeat the same color as needed otherwise
 		var/sanitized_color = sanitize_hexcolor(given_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
 		var/list/sanitized_colors = list()
