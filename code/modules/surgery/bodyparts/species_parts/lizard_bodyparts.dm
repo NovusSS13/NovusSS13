@@ -43,6 +43,6 @@
 /obj/item/bodypart/arm/right/lizard/ashwalker
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
-/obj/item/bodypart/leg/right/lizard/ashwalker
+/obj/item/bodypart/leg/left/lizard/ashwalker
 
 /obj/item/bodypart/leg/right/lizard/ashwalker

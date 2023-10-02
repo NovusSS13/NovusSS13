@@ -3,7 +3,7 @@
 	gender_specific = TRUE
 
 /datum/sprite_accessory/body_markings/mutant/primary
-	icon = 'icons/mob/species/sprite_accessory/body_markings/other_markings.dmi'
+	icon = 'icons/mob/species/sprite_accessory/body_markings/primary_markings.dmi'
 	default_color = 1
 
 /datum/sprite_accessory/body_markings/mutant/primary/drake_bone
