@@ -33,7 +33,7 @@
 	allowed_bodyparts = HEAD
 
 /datum/sprite_accessory/body_markings/mutant/primary/blank_face
-	name = "Blank round face (use with monster mouth)"
+	name = "Blank face"
 	icon_state = "blankface"
 	default_color = "#CCCCCC"
 	allowed_bodyparts = HEAD

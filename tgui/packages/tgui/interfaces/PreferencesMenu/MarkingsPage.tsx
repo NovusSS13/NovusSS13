@@ -382,7 +382,6 @@ const MarkingInput = (
       </Stack.Item>
       <Stack.Item grow>
         <Button
-          fill
           fluid
           icon="times"
           color="bad"
