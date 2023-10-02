@@ -118,9 +118,11 @@
 		if(12 to INFINITY)
 			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
 
-	msg += "</span>"
-
-	. += msg.Join("")
+	if(length(msg))
+		var/sane_msg = msg.Join("")
+		sane_msg = replacetext(sane_msg, "\n", "", -2)
+		sane_msg += "</span>"
+		. += sane_msg
 
 	if(!appears_dead)
 		switch(stat)
@@ -129,8 +131,8 @@
 			if(UNCONSCIOUS, HARD_CRIT)
 				. += "[t_He] [t_is]n't responding to anything around [t_him] and seems to be asleep."
 
-	var/trait_exam = common_trait_examine()
-	if (!isnull(trait_exam))
+	var/list/trait_exam = common_trait_examine()
+	if(length(trait_exam))
 		. += trait_exam
 
 	if(mob_mood)

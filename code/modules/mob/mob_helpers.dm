@@ -378,6 +378,8 @@
  * I wish examine was less copypasted. (oranges say, be the change you want to see buddy)
  */
 /mob/proc/common_trait_examine()
+	RETURN_TYPE(/list)
+	. = list()
 	if(HAS_TRAIT(src,TRAIT_HUSK))
 		. += span_warning("This body has been reduced to a grotesque husk.")
 
