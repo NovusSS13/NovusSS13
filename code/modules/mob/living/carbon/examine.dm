@@ -129,8 +129,8 @@
 			if(UNCONSCIOUS, HARD_CRIT)
 				. += "[t_He] [t_is]n't responding to anything around [t_him] and seems to be asleep."
 
-	var/trait_exam = common_trait_examine()
-	if (!isnull(trait_exam))
+	var/list/trait_exam = common_trait_examine()
+	if(length(trait_exam))
 		. += trait_exam
 
 	if(mob_mood)
