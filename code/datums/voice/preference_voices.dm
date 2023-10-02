@@ -15,10 +15,10 @@
 		),
 	)
 
-/datum/voice/human/grim
+/datum/voice/grim
 	name = "Grim"
 
-/datum/voice/human/grim/New()
+/datum/voice/grim/New()
 	. = ..()
 	emote_sounds[/datum/emote/living/laugh] = list(
 		MALE = list(
@@ -43,10 +43,10 @@
 		),
 	)
 
-/datum/voice/human/scientist
+/datum/voice/scientist
 	name = "Scientist"
 
-/datum/voice/human/scientist/New()
+/datum/voice/scientist/New()
 	. = ..()
 	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
 		PLURAL = list(
@@ -57,11 +57,17 @@
 			'sound/voice/human/scientist/scientist_scream5.ogg',
 		),
 	)
+	emote_sounds[/datum/emote/living/deathgasp] = list(
+		PLURAL = list(
+			'sound/voice/human/scientist/scientist_deathgasp1.ogg',
+			'sound/voice/human/scientist/scientist_deathgasp2.ogg',
+		)
+	)
 
-/datum/voice/human/cultist
+/datum/voice/cultist
 	name = "Cultist"
 
-/datum/voice/human/cultist/New()
+/datum/voice/cultist/New()
 	. = ..()
 	emote_sounds[/datum/emote/living/laugh] = list(
 		PLURAL = list(
@@ -84,8 +90,13 @@
 			'sound/voice/human/cultist/cultist_scream5.ogg',
 		),
 	)
+	emote_sounds[/datum/emote/living/deathgasp] = list(
+		PLURAL = list(
+			'sound/voice/human/cultist/cultist_deathgasp.ogg',
+		)
+	)
 
-/datum/voice/human/cultist/get_preview_sound(gender)
+/datum/voice/cultist/get_preview_sound(gender)
 	return 'sound/voice/human/cultist/iliveagain.ogg'
 
 /datum/voice/monkey/alt

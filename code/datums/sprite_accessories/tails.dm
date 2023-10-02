@@ -1,4 +1,6 @@
 /datum/sprite_accessory/tails
+	default_color = 1
+	default_colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
 	/**
 	 * Whether or not we can wag
 	 * Not about actually preventing the emote, it's just for sprite updates

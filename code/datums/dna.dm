@@ -647,8 +647,6 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 			new_race = mrace
 		else
 			return
-		death_sound = new_race.death_sound
-
 		var/datum/species/old_species = dna.species
 		dna.species = new_race
 

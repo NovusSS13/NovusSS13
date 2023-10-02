@@ -1232,8 +1232,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		var/list/hsv_color = rgb2num(GLOB.chat_colors[string], COLORSPACE_HSV)
 		var/h = hsv_color[1]
 		var/s = clamp(hsv_color[2] * clamp(sat_shift, 0, 1), 0, 255)
-		var/l = clamp(hsv_color[3] * clamp(lum_shift, 0, 1), round(lum_min * 255), 255) //yes, we apply lum_min here but not sat_min, fuck you
-		return rgb(h, s, l, space = COLORSPACE_HSL)
+		var/l = clamp(hsv_color[3] * clamp(lum_shift, 0, 1), 0, 255)
+		return rgb(h=h, s=s, l=l)
 
 	// seed to help randomness
 	var/static/rseed = rand(1,26)

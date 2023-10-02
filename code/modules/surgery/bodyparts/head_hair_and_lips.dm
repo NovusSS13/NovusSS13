@@ -68,12 +68,19 @@
 	lip_style = human_head_owner.lip_style
 	lip_color = human_head_owner.lip_color
 	hairstyle = human_head_owner.hairstyle
-	hair_alpha = owner_species.hair_alpha
 	hair_color = human_head_owner.hair_color
 	facial_hairstyle = human_head_owner.facial_hairstyle
-	facial_hair_alpha = owner_species.facial_hair_alpha
 	facial_hair_color = human_head_owner.facial_hair_color
-	fixed_hair_color = owner_species.fixed_mut_color //Can be null
+	fixed_hair_color = owner_species.hair_color //Can be null
+	switch(owner_species.hair_color)
+		if(ORGAN_COLOR_MUTANT)
+			if(HAS_TRAIT(human_head_owner, TRAIT_FIXED_MUTANT_COLORS) && owner_species.fixed_mut_color)
+				fixed_hair_color = tricolor_to_hex(owner_species.fixed_mut_color)
+			else
+				fixed_hair_color = tricolor_to_hex(human_head_owner.dna.features["mcolor"])
+		else
+			fixed_hair_color = owner_species.hair_color
+	hair_alpha = owner_species.hair_alpha
 	gradient_styles = human_head_owner.grad_style?.Copy()
 	gradient_colors = human_head_owner.grad_color?.Copy()
 
@@ -110,15 +117,10 @@
 		if(sprite_accessory)
 			//Overlay
 			facial_hair_overlay = image(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, image_dir)
-			facial_hair_overlay.alpha = facial_hair_alpha
+			facial_hair_overlay.alpha = hair_alpha
 			//Offsets
 			worn_face_offset?.apply_offset(facial_hair_overlay)
 			. += facial_hair_overlay
-			//Emissive blocker
-			if(blocks_emissive)
-				var/image/facial_blocker = emissive_blocker(facial_hair_overlay.icon, facial_hair_overlay.icon_state, location)
-				worn_face_offset?.apply_offset(facial_hair_overlay)
-				. += facial_blocker
 			//Gradients
 			var/facial_hair_gradient_style = LAZYACCESS(gradient_styles, GRADIENT_FACIAL_HAIR_KEY)
 			if(facial_hair_gradient_style)
@@ -126,6 +128,11 @@
 				var/image/facial_hair_gradient_overlay = get_gradient_overlay(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, GLOB.facial_hair_gradients_list[facial_hair_gradient_style], facial_hair_gradient_color)
 				worn_face_offset?.apply_offset(facial_hair_gradient_overlay)
 				. += facial_hair_gradient_overlay
+			//Emissive blocker
+			if(blocks_emissive)
+				var/image/facial_blocker = emissive_blocker(facial_hair_overlay.icon, facial_hair_overlay.icon_state, location)
+				worn_face_offset?.apply_offset(facial_hair_overlay)
+				. += facial_blocker
 
 	var/image/hair_overlay
 	if(!(show_debrained && (head_flags & HEAD_DEBRAIN)) && !hair_hidden && hairstyle && (head_flags & HEAD_HAIR))
@@ -137,11 +144,6 @@
 			//Offsets
 			worn_face_offset?.apply_offset(hair_overlay)
 			. += hair_overlay
-			//Emissive blocker
-			if(blocks_emissive)
-				var/image/hair_blocker = emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, location)
-				worn_face_offset?.apply_offset(hair_blocker)
-				. += hair_blocker
 			//Gradients
 			var/hair_gradient_style = LAZYACCESS(gradient_styles, GRADIENT_HAIR_KEY)
 			if(hair_gradient_style)
@@ -149,6 +151,11 @@
 				var/image/hair_gradient_overlay = get_gradient_overlay(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, GLOB.hair_gradients_list[hair_gradient_style], hair_gradient_color)
 				worn_face_offset?.apply_offset(hair_gradient_overlay)
 				. += hair_gradient_overlay
+			//Emissive blocker
+			if(blocks_emissive)
+				var/image/hair_blocker = emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, location)
+				worn_face_offset?.apply_offset(hair_blocker)
+				. += hair_blocker
 
 	if(show_debrained && (head_flags & HEAD_DEBRAIN))
 		. += get_debrain_overlay(can_rotate = !dropped)

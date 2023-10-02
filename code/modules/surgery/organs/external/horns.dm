@@ -18,7 +18,7 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/horns
 
 /datum/bodypart_overlay/mutant/horns
-	layers = EXTERNAL_ADJACENT
+	layers = EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_DNA
 	feature_key = "horns"
 	feature_color_key = "horns_color"

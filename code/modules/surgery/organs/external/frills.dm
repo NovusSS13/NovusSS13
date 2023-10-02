@@ -18,7 +18,7 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/frills
 
 /datum/bodypart_overlay/mutant/frills
-	layers = EXTERNAL_ADJACENT
+	layers = EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_DNA
 	feature_key = "frills"
 	feature_color_key = "frills_color"

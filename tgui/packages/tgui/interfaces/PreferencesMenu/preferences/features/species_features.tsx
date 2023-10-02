@@ -78,11 +78,7 @@ export const feature_felinid_tail_color: FeatureChoiced = {
 
 export const feature_bodypart_type: FeatureChoiced = {
   name: 'Bodypart type',
-  component: (
-    props: FeatureValueProps<string, string, FeatureChoicedServerData>
-  ) => {
-    return <FeatureDropdownInput buttons {...props} />;
-  },
+  component: FeatureDropdownInput,
 };
 
 export const feature_leg_type: FeatureChoiced = {

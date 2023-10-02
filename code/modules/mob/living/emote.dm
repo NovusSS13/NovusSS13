@@ -107,10 +107,11 @@
 		message_animal_or_basic = custom_message
 	. = ..()
 	message_animal_or_basic = initial(message_animal_or_basic)
-	if(. && user.death_sound)
+	var/death_sound = user.voice_pack?.get_sound_for_emote(src, user) || user.death_sound
+	if(. && death_sound)
 		if(!user.can_speak() || user.oxyloss >= 50)
 			return //stop the sound if oxyloss too high/cant speak
-		playsound(user, user.death_sound, 200, TRUE, TRUE)
+		playsound(user, death_sound, 200, TRUE, TRUE)
 
 /datum/emote/living/drool
 	key = "drool"

@@ -37,7 +37,8 @@
 		return groin_cropped
 
 	var/icon/final_icon = icon(groin)
-	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/cat(), sprite_accessory, COLOR_PINK, dir = EAST)
+	var/static/list/colors = list(COLOR_PINK, COLOR_PINK, COLOR_PINK)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/cat(), sprite_accessory, sprite_accessory.get_default_color(colors), dir = EAST)
 
 	final_icon.Crop(1, 10, 15, 26)
 	final_icon.Scale(32, 32)
@@ -94,7 +95,8 @@
 		return head_icon_cropped
 
 	var/icon/final_icon = icon(head_icon)
-	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/ears/cat(), sprite_accessory, COLOR_PINK, dir = SOUTH)
+	var/static/list/colors = list(COLOR_PINK, COLOR_PINK, COLOR_PINK)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/ears/cat(), sprite_accessory, sprite_accessory.get_default_color(colors), dir = SOUTH)
 
 	final_icon.Crop(10, 19, 22, 31)
 	final_icon.Scale(32, 32)

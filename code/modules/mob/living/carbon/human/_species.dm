@@ -28,8 +28,6 @@
 	var/hair_color
 	///The alpha used by the hair. 255 is completely solid, 0 is invisible.
 	var/hair_alpha = 255
-	///The alpha used by the facial hair. 255 is completely solid, 0 is invisible.
-	var/facial_hair_alpha = 255
 
 	///Never, Optional, or Forced digi legs?
 	var/digitigrade_customization = DIGITIGRADE_NEVER
@@ -106,7 +104,7 @@
 	///Special mutation that can be found in the genepool exclusively in this species. Dont leave empty or changing species will be a headache
 	var/inert_mutation = /datum/mutation/human/dwarfism
 	///Used to set the mob's death_sound upon species change
-	var/death_sound
+	var/death_sound = 'sound/voice/human/deathgasp.ogg'
 	///Sounds to override barefeet walking
 	var/list/special_step_sounds
 	///Special sound for grabbing
@@ -510,6 +508,7 @@
 	// Change the voice pack of the human if it's not valid
 	if(!(C.voice_pack in get_voice_packs()))
 		C.set_voice_pack(initial(voice_pack.name))
+	C.death_sound = death_sound
 
 	properly_gained = TRUE
 	SEND_SIGNAL(C, COMSIG_SPECIES_GAIN, src, old_species)

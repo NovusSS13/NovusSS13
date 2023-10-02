@@ -54,8 +54,6 @@
 	var/facial_hairstyle = "Shaved"
 	///Facial hair color
 	var/facial_hair_color = "#000000"
-	///Facial hair alpha
-	var/facial_hair_alpha = 255
 	///Is the facial hair currently hidden by something?
 	var/facial_hair_hidden = FALSE
 

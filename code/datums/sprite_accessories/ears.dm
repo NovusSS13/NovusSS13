@@ -1,4 +1,6 @@
 /datum/sprite_accessory/ears
+	default_color = 1
+	default_colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
 
 /datum/sprite_accessory/ears/human
 	icon = 'icons/mob/species/human/cat_features.dmi'

@@ -33,5 +33,5 @@
 	if(isethereal(user) && (slot & ITEM_SLOT_ICLOTHING))
 		var/mob/living/carbon/human/ethereal = user
 		to_chat(ethereal, span_notice("[src] gently quivers for a moment as you put it on."))
-		set_greyscale(ethereal.dna.species.fixed_mut_color)
+		set_greyscale(tricolor_to_hex(ethereal.dna.species.fixed_mut_color))
 		ethereal.update_worn_undersuit()

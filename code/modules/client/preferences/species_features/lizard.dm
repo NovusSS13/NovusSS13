@@ -30,7 +30,8 @@
 		return include_snout ? lizard_with_snout_cropped : lizard_cropped
 
 	var/icon/final_icon = include_snout ? icon(lizard_with_snout) : icon(lizard)
-	blend_bodypart_overlay(final_icon, new bodypart_overlay_type(), sprite_accessory, color_accessory ? COLOR_VIBRANT_LIME : null, dir = EAST)
+	var/static/list/colors = list(COLOR_VIBRANT_LIME, COLOR_VIBRANT_LIME, COLOR_VIBRANT_LIME)
+	blend_bodypart_overlay(final_icon, new bodypart_overlay_type(), sprite_accessory, color_accessory ? sprite_accessory.get_default_color(colors) : null, dir = EAST)
 
 	final_icon.Crop(11, 20, 23, 32)
 	final_icon.Scale(32, 32)
@@ -122,7 +123,6 @@
 /datum/preference/tricolor/mutant/lizard_snout/get_global_feature_list()
 	return GLOB.snouts_list_lizard
 
-
 /datum/preference/choiced/mutant/lizard_tail
 	savefile_key = "feature_lizard_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -159,7 +159,8 @@
 		return groin_icon_cropped
 
 	var/icon/final_icon = icon(groin_icon)
-	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/lizard(), sprite_accessory, COLOR_VIBRANT_LIME, dir = EAST)
+	var/static/list/colors = list(COLOR_VIBRANT_LIME, COLOR_VIBRANT_LIME, COLOR_VIBRANT_LIME)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/lizard(), sprite_accessory, sprite_accessory.get_default_color(colors), dir = EAST)
 
 	final_icon.Crop(1, 1, 15, 13)
 	final_icon.Scale(32, 32)
@@ -216,7 +217,8 @@
 		return groin_icon_cropped
 
 	var/icon/final_icon = icon(groin_with_tail)
-	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/spines/lizard(), sprite_accessory, COLOR_CYAN, dir = EAST)
+	var/static/list/colors = list(COLOR_VIBRANT_LIME, COLOR_VIBRANT_LIME, COLOR_VIBRANT_LIME)
+	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/spines/lizard(), sprite_accessory, sprite_accessory.get_default_color(colors), dir = EAST)
 
 	final_icon.Crop(1, 1, 15, 13)
 	final_icon.Scale(32, 32)
