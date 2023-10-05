@@ -43,5 +43,5 @@
 	var/marking_name = features[feature_key]
 	if(marking_name && (marking_name != SPRITE_ACCESSORY_NONE))
 		set_appearance_from_name(marking_name)
-	inherit_color(bodypart, TRUE)
+	inherit_color(bodypart, force = TRUE)
 	return TRUE

@@ -7,6 +7,7 @@
 		/datum/species/lizard/ashwalker,
 		/datum/species/lizard/silverscale,
 		/datum/species/moth,
+		/datum/species/mutant,
 	)
 	// Test lizards as their own thing so we can get more coverage on their features
 	var/mob/living/carbon/human/lizard = allocate(/mob/living/carbon/human/dummy/consistent)
@@ -69,6 +70,30 @@
 	moth.set_species(/datum/species/moth)
 	moth.equipOutfit(/datum/outfit/job/cmo, visualsOnly = TRUE)
 	test_screenshot("[/datum/species/moth]", get_flat_icon_for_all_directions(moth))
+
+	// Muties are a nightmare, so uhhh here is susie deltarune
+	var/mob/living/carbon/human/mutant = allocate(/mob/living/carbon/human/dummy/consistent)
+	mutant.set_haircolor("#291420", update = FALSE)
+	mutant.set_hairstyle("Long Bedhead", update = FALSE)
+	mutant.gender = FEMALE
+	mutant.physique = FEMALE
+	mutant.dna.features["mcolor"] = "#AF67AF"
+	mutant.dna.features["tail"] = "Smooth"
+	mutant.dna.features["tail_color"] = "#AF67AF"
+	mutant.dna.features["spines"] = "None"
+	mutant.dna.features["spines_color"] = "#AF67AF"
+	mutant.dna.features["snout"] = "Round"
+	mutant.dna.features["snout_color"] = "#AF67AF"
+	mutant.dna.features["horns"] = "None"
+	mutant.dna.features["horns_color"] = COLOR_WHITE
+	mutant.dna.features["frills"] = "None"
+	mutant.dna.features["frills_color"] = "#AF67AF"
+	mutant.dna.features["ears"] = "None"
+	mutant.dna.features["ears_color"] = "#AF67AF"
+	mutant.dna.features["legs"] = LEGS_NORMAL
+	mutant.set_species(/datum/species/mutant)
+	mutant.equipOutfit(/datum/outfit/job/janitor, visualsOnly = TRUE)
+	test_screenshot("[/datum/species/mutant]", get_flat_icon_for_all_directions(mutant))
 
 	// The rest of the species
 	for (var/species_type as anything in subtypesof(/datum/species) - pre_tested_species)

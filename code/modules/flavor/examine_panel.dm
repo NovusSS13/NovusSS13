@@ -14,6 +14,7 @@
 		return
 
 	src.owner = owner
+	owner.examine_panel = src
 
 	RegisterSignal(owner, COMSIG_QDELETING, PROC_REF(on_qdel))
 	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
@@ -24,6 +25,7 @@
 	if(owner)
 		UnregisterSignal(owner, COMSIG_QDELETING)
 		UnregisterSignal(owner, COMSIG_ATOM_EXAMINE)
+		owner.examine_panel = null
 	owner = null
 	return ..()
 
