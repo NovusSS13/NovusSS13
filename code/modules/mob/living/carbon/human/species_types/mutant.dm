@@ -37,7 +37,7 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	payday_modifier = 0.75
 
-	ass_image = 'icons/ass/asshuman.png'
+	ass_image = 'icons/ass/assmutant.png'
 	voice_pack = /datum/voice/mutant
 
 /datum/species/mutant/get_species_description()
