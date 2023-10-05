@@ -104,7 +104,7 @@
 	///Special mutation that can be found in the genepool exclusively in this species. Dont leave empty or changing species will be a headache
 	var/inert_mutation = /datum/mutation/human/dwarfism
 	///Used to set the mob's death_sound upon species change
-	var/death_sound = 'sound/voice/human/deathgasp.ogg'
+	var/death_sound = 'sound/voice/human/grim/deathgasp.ogg'
 	///Sounds to override barefeet walking
 	var/list/special_step_sounds
 	///Special sound for grabbing

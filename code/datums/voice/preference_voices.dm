@@ -22,24 +22,24 @@
 	. = ..()
 	emote_sounds[/datum/emote/living/laugh] = list(
 		MALE = list(
-			'sound/voice/human/poopdark/laugh_male1.ogg',
-			'sound/voice/human/poopdark/laugh_male2.ogg',
-			'sound/voice/human/poopdark/laugh_male3.ogg',
+			'sound/voice/human/grim/laugh_male1.ogg',
+			'sound/voice/human/grim/laugh_male2.ogg',
+			'sound/voice/human/grim/laugh_male3.ogg',
 		),
 		FEMALE = list(
-			'sound/voice/human/poopdark/laugh_female1.ogg',
-			'sound/voice/human/poopdark/laugh_female2.ogg',
-			'sound/voice/human/poopdark/laugh_female3.ogg',
+			'sound/voice/human/grim/laugh_female1.ogg',
+			'sound/voice/human/grim/laugh_female2.ogg',
+			'sound/voice/human/grim/laugh_female3.ogg',
 		),
 	)
 	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
 		MALE = list(
-			'sound/voice/human/poopdark/terror_scream_male1.ogg',
-			'sound/voice/human/poopdark/terror_scream_male2.ogg',
+			'sound/voice/human/grim/terror_scream_male1.ogg',
+			'sound/voice/human/grim/terror_scream_male2.ogg',
 		),
 		FEMALE = list(
-			'sound/voice/human/poopdark/terror_scream_female1.ogg',
-			'sound/voice/human/poopdark/terror_scream_female2.ogg',
+			'sound/voice/human/grim/terror_scream_female1.ogg',
+			'sound/voice/human/grim/terror_scream_female2.ogg',
 		),
 	)
 
@@ -63,6 +63,9 @@
 			'sound/voice/human/scientist/scientist_deathgasp2.ogg',
 		)
 	)
+
+/datum/voice/scientist/get_preview_sound(gender)
+	return 'sound/voice/human/scientist/ridiculousties.ogg'
 
 /datum/voice/cultist
 	name = "Cultist"
@@ -127,3 +130,42 @@
 			'sound/voice/lizard/lizard_scream_alt.ogg',
 		),
 	)
+
+/datum/voice/mutant/alt
+	name = "Beast (Alt)"
+
+/datum/voice/mutant/alt/New()
+	. = ..()
+	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
+		MALE = list(
+			'sound/voice/mutant/oblivion/male_beast_scream_1.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_2.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_3.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_4.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_5.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_6.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_7.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_8.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_9.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_10.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_11.ogg',
+		),
+		FEMALE = list(
+			'sound/voice/mutant/oblivion/female_beast_scream_1.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_2.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_3.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_4.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_5.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_6.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_7.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_8.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_9.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_10.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_11.ogg',
+		),
+	)
+
+/datum/voice/mutant/alt/get_preview_sound(gender)
+	if(gender == FEMALE)
+		return 'sound/voice/mutant/oblivion/female_beast_greetings.ogg'
+	return 'sound/voice/mutant/oblivion/male_beast_greetings.ogg'

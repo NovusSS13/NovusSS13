@@ -62,12 +62,9 @@
 			is_husked = FALSE
 			is_invisible = FALSE
 
-	if(variable_color)
-		draw_color = variable_color
-	else if(should_draw_greyscale)
-		draw_color = (species_color) || (skin_tone && skintone2hex(skin_tone))
-	else
-		draw_color = null
+	draw_color = variable_color
+	if(should_draw_greyscale) //Should the limb be colored?
+		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 
 	if(!is_creating || !owner)
 		return
@@ -94,7 +91,7 @@
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 
-	recolor_mutant_overlays()
+	recolor_mutant_overlays(force = TRUE)
 	return TRUE
 
 /// Updates the bodypart's icon when not attached to a mob
@@ -294,10 +291,10 @@
 #undef BLEED_OVERLAY_MED
 #undef BLEED_OVERLAY_GUSH
 
-/// Loops through all of the bodypart's mutant overlays and updates their color forcefully.
-/obj/item/bodypart/proc/recolor_mutant_overlays()
+/// Loops through all of the bodypart's mutant overlays and updates their colors
+/obj/item/bodypart/proc/recolor_mutant_overlays(force = FALSE)
 	for(var/datum/bodypart_overlay/mutant/overlay in bodypart_overlays)
-		overlay.inherit_color(src, force = TRUE)
+		overlay.inherit_color(src, force)
 
 /// A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
 /obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic, update = TRUE)

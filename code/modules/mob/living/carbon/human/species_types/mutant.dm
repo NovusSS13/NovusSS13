@@ -35,9 +35,9 @@
 	custom_bodyparts = TRUE // of course the stupid "custom" species gets this
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
-	payday_modifier = 0.75
 
 	ass_image = 'icons/ass/assmutant.png'
+	voice_pack = /datum/voice/mutant
 
 /datum/species/mutant/get_species_description()
 	return "Some kind of beast in anthropomorphic form."
@@ -56,9 +56,22 @@
 	randomize_markings(human_mob)
 
 /datum/species/mutant/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = COLOR_ORANGE
-	human.dna.features["ears"] = "Big Wolf (Alt)"
-	human.dna.features["snout"] = "Mammal, Short"
-	human.hairstyle = "Bedhead"
-	human.set_haircolor(COLOR_RED, update = FALSE)
+	human.gender = FEMALE
+	human.physique = FEMALE
+	human.set_haircolor("#291420", update = FALSE)
+	human.set_hairstyle("Long Bedhead", update = FALSE)
+	human.dna.features["mcolor"] = "#AF67AF"
+	human.dna.features["tail"] = "Smooth"
+	human.dna.features["tail_color"] = "#AF67AF"
+	human.dna.features["spines"] = "None"
+	human.dna.features["spines_color"] = "#AF67AF"
+	human.dna.features["snout"] = "Round"
+	human.dna.features["snout_color"] = "#AF67AF"
+	human.dna.features["horns"] = "None"
+	human.dna.features["horns_color"] = COLOR_WHITE
+	human.dna.features["frills"] = "None"
+	human.dna.features["frills_color"] = "#AF67AF"
+	human.dna.features["ears"] = "None"
+	human.dna.features["ears_color"] = "#AF67AF"
+	human.dna.features["legs"] = LEGS_NORMAL
 	human.update_body(is_creating = TRUE)

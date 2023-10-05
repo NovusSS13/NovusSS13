@@ -13,7 +13,6 @@
 	inherent_factions = list(FACTION_MUSHROOM)
 
 	fixed_mut_color = "#DBBF92"
-	hair_color = "#FF4B19" //cap color, spot color uses eye color
 
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 	no_equip_flags = ITEM_SLOT_MASK | ITEM_SLOT_OCLOTHING | ITEM_SLOT_GLOVES | ITEM_SLOT_FEET | ITEM_SLOT_ICLOTHING

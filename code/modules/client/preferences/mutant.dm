@@ -27,16 +27,14 @@
 	return species.cosmetic_organs[relevant_cosmetic_organ] || ..()
 
 /datum/preference/choiced/mutant/should_apply_to_human(mob/living/carbon/human/target, datum/preference/prefs)
-	// Doesn't make sense
-	if(!modified_feature)
-		return FALSE
 	// Mutant preferences do not apply if not accessible
-	else if(!is_accessible(prefs))
+	if(!is_accessible(prefs))
 		return FALSE
 	return ..()
 
 /datum/preference/choiced/mutant/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
-	target.dna.features[modified_feature] = value
+	if(modified_feature)
+		target.dna.features[modified_feature] = value
 
 /datum/preference/tricolor/mutant
 	/// Feature that will be changed on apply_on_human()

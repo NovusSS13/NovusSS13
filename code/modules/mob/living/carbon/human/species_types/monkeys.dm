@@ -38,8 +38,9 @@
 	dust_anim = "dust-m"
 	gib_anim = "gibbed-m"
 
-	payday_modifier = 1.5
 	ai_controlled_species = TRUE
+
+	payday_modifier = 1.5 //i have no idea why this is set like this lmao
 
 	voice_pack = /datum/voice/monkey
 

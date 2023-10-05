@@ -23,6 +23,8 @@
 	var/mob/living/carbon/human/dummy/consistent/clone = new
 
 	var/icon/clone_icon = render_preview_outfit(clone_fit, clone)
+	clone_icon.Blend(icon('icons/effects/blood.dmi', "uniformblood"), ICON_OVERLAY)
+	clone_icon.Blend(icon('icons/effects/blood.dmi', "maskblood"), ICON_OVERLAY)
 	clone_icon.ChangeOpacity(0.5)
 	qdel(clone)
 
