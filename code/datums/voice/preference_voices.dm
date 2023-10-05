@@ -64,6 +64,9 @@
 		)
 	)
 
+/datum/voice/scientist/get_preview_sound(gender)
+	return 'sound/voice/human/scientist/ridiculousties.ogg'
+
 /datum/voice/cultist
 	name = "Cultist"
 
@@ -131,7 +134,7 @@
 /datum/voice/mutant/alt
 	name = "Beast (Alt)"
 
-/datum/voice/mutant/New()
+/datum/voice/mutant/alt/New()
 	. = ..()
 	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
 		MALE = list(
@@ -161,3 +164,8 @@
 			'sound/voice/mutant/oblivion/female_beast_scream_11.ogg',
 		),
 	)
+
+/datum/voice/mutant/alt/get_preview_sound(gender)
+	if(gender == FEMALE)
+		return 'sound/voice/mutant/oblivion/female_beast_greetings.ogg'
+	return 'sound/voice/mutant/oblivion/male_beast_greetings.ogg'

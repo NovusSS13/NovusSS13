@@ -180,3 +180,8 @@
 			'sound/voice/mutant/oblivion/male_beast_deathgasp_2.ogg',
 		),
 	)
+
+/datum/voice/mutant/get_preview_sound(gender)
+	if(gender == FEMALE)
+		return 'sound/voice/mutant/morrowind/female_beast_greetings.ogg'
+	return 'sound/voice/mutant/morrowind/male_beast_greetings.ogg'
