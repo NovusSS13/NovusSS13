@@ -167,14 +167,14 @@
 
 	//HAIR COLOR START
 	if(override_hair_color)
-		SET_OVERLAY_VALUE(facial_hair_overlay, color, override_hair_color)
 		SET_OVERLAY_VALUE(hair_overlay, color, override_hair_color)
+		SET_OVERLAY_VALUE(facial_hair_overlay, color, override_hair_color)
 	else if(fixed_hair_color)
-		SET_OVERLAY_VALUE(facial_hair_overlay, color, fixed_hair_color)
 		SET_OVERLAY_VALUE(hair_overlay, color, fixed_hair_color)
+		SET_OVERLAY_VALUE(facial_hair_overlay, color, fixed_hair_color)
 	else
-		SET_OVERLAY_VALUE(facial_hair_overlay, color, facial_hair_color)
 		SET_OVERLAY_VALUE(hair_overlay, color, hair_color)
+		SET_OVERLAY_VALUE(facial_hair_overlay, color, facial_hair_color)
 	//HAIR COLOR END
 
 	return .
