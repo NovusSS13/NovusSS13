@@ -127,3 +127,37 @@
 			'sound/voice/lizard/lizard_scream_alt.ogg',
 		),
 	)
+
+/datum/voice/mutant/alt
+	name = "Beast (Alt)"
+
+/datum/voice/mutant/New()
+	. = ..()
+	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
+		MALE = list(
+			'sound/voice/mutant/oblivion/male_beast_scream_1.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_2.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_3.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_4.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_5.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_6.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_7.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_8.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_9.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_10.ogg',
+			'sound/voice/mutant/oblivion/male_beast_scream_11.ogg',
+		),
+		FEMALE = list(
+			'sound/voice/mutant/oblivion/female_beast_scream_1.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_2.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_3.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_4.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_5.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_6.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_7.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_8.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_9.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_10.ogg',
+			'sound/voice/mutant/oblivion/female_beast_scream_11.ogg',
+		),
+	)

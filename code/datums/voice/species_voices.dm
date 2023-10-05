@@ -17,8 +17,8 @@
 	. = ..()
 	emote_sounds[/datum/emote/living/laugh] = list(
 		PLURAL = list(
-			'sound/voice/human/nyahaha1.ogg',
-			'sound/voice/human/nyahaha2.ogg',
+			'sound/voice/human/nyahaha_1.ogg',
+			'sound/voice/human/nyahaha_2.ogg',
 			'sound/voice/human/nyahehe.ogg',
 			'sound/voice/human/nyaha.ogg',
 		),
@@ -125,5 +125,58 @@
 	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
 		PLURAL = list(
 			'sound/voice/jelly/jelly_scream.ogg',
+		),
+	)
+
+/datum/voice/mutant
+	name = "Beast"
+
+/datum/voice/mutant/New()
+	. = ..()
+	//i could not for the life of me, find female laughing sounds - so you get male for both fuck you
+	emote_sounds[/datum/emote/living/laugh] = list(
+		PLURAL = list(
+			'sound/voice/mutant/oblivion/male_beast_laugh_1.ogg',
+			'sound/voice/mutant/oblivion/male_beast_laugh_2.ogg',
+			'sound/voice/mutant/oblivion/male_beast_laugh_3.ogg',
+			'sound/voice/mutant/oblivion/male_beast_laugh_4.ogg',
+			'sound/voice/mutant/oblivion/male_beast_laugh_5.ogg',
+			'sound/voice/mutant/oblivion/male_beast_laugh_6.ogg',
+			'sound/voice/mutant/oblivion/male_beast_laugh_7.ogg',
+			'sound/voice/mutant/oblivion/male_beast_laugh_8.ogg',
+			'sound/voice/mutant/oblivion/male_beast_laugh_9.ogg',
+		),
+	)
+	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
+		MALE = list(
+			'sound/voice/mutant/morrowind/male_beast_scream_1.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_2.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_3.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_4.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_5.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_6.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_7.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_8.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_9.ogg',
+			'sound/voice/mutant/morrowind/male_beast_scream_10.ogg',
+		),
+		FEMALE = list(
+			'sound/voice/mutant/morrowind/female_beast_scream_1.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_2.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_3.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_4.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_5.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_6.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_7.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_8.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_9.ogg',
+			'sound/voice/mutant/morrowind/female_beast_scream_10.ogg',
+		),
+	)
+	//male "dying" sounds were just better and more beastlike, so you get no female ones here
+	emote_sounds[/datum/emote/living/deathgasp] = list(
+		PLURAL = list(
+			'sound/voice/mutant/oblivion/male_beast_deathgasp_1.ogg',
+			'sound/voice/mutant/oblivion/male_beast_deathgasp_2.ogg',
 		),
 	)

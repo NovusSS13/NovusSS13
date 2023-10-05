@@ -38,6 +38,7 @@
 	payday_modifier = 0.75
 
 	ass_image = 'icons/ass/assmutant.png'
+	voice_pack = /datum/voice/mutant
 
 /datum/species/mutant/get_species_description()
 	return "Some kind of beast in anthropomorphic form."
