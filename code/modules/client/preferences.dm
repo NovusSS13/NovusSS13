@@ -382,7 +382,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			var/datum/voice/voice_pack = GLOB.voice_packs[requested_voice_pack]
 			if(isnull(voice_pack))
 				return FALSE
-			var/sound_file = voice_pack.get_preview_sound(read_preference(/datum/preference/choiced/body_type))
+			var/preview_gender = read_preference(/datum/preference/choiced/body_type)
+			if(!(preview_gender in GLOB.genders))
+				preview_gender = MALE
+			var/sound_file = voice_pack.get_preview_sound(preview_gender)
 			if(sound_file)
 				var/sound/voice_sound = sound(sound_file, channel = CHANNEL_VOX, volume = 80)
 				SEND_SOUND(usr, voice_sound)
