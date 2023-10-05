@@ -8,7 +8,7 @@
 
 /datum/examine_panel/New(mob/living/owner, datum/preferences/prefs)
 	. = ..()
-	if(isnull(owner))
+	if(!owner)
 		stack_trace("[type] got initialized without an owner.")
 		qdel(src)
 		return
@@ -19,11 +19,13 @@
 	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/examine_panel/Destroy(force)
-	. = ..()
+	if(examine_panel_screen)
+		QDEL_NULL(examine_panel_screen)
 	if(owner)
 		UnregisterSignal(owner, COMSIG_QDELETING)
 		UnregisterSignal(owner, COMSIG_ATOM_EXAMINE)
-		owner = null
+	owner = null
+	return ..()
 
 /datum/examine_panel/Topic(href, href_list)
 	if(href_list["open_examine_panel"])
