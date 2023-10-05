@@ -24,6 +24,9 @@
 		),
 	)
 
+/datum/voice/human/felinid/get_preview_sound(gender)
+	return 'sound/voice/human/nyahaha_1.ogg'
+
 /datum/voice/monkey
 	name = "Monkey"
 	emote_sounds = list(

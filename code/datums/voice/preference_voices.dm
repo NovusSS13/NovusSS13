@@ -22,24 +22,24 @@
 	. = ..()
 	emote_sounds[/datum/emote/living/laugh] = list(
 		MALE = list(
-			'sound/voice/human/poopdark/laugh_male1.ogg',
-			'sound/voice/human/poopdark/laugh_male2.ogg',
-			'sound/voice/human/poopdark/laugh_male3.ogg',
+			'sound/voice/human/grim/laugh_male1.ogg',
+			'sound/voice/human/grim/laugh_male2.ogg',
+			'sound/voice/human/grim/laugh_male3.ogg',
 		),
 		FEMALE = list(
-			'sound/voice/human/poopdark/laugh_female1.ogg',
-			'sound/voice/human/poopdark/laugh_female2.ogg',
-			'sound/voice/human/poopdark/laugh_female3.ogg',
+			'sound/voice/human/grim/laugh_female1.ogg',
+			'sound/voice/human/grim/laugh_female2.ogg',
+			'sound/voice/human/grim/laugh_female3.ogg',
 		),
 	)
 	emote_sounds[/datum/emote/living/carbon/human/scream] = list(
 		MALE = list(
-			'sound/voice/human/poopdark/terror_scream_male1.ogg',
-			'sound/voice/human/poopdark/terror_scream_male2.ogg',
+			'sound/voice/human/grim/terror_scream_male1.ogg',
+			'sound/voice/human/grim/terror_scream_male2.ogg',
 		),
 		FEMALE = list(
-			'sound/voice/human/poopdark/terror_scream_female1.ogg',
-			'sound/voice/human/poopdark/terror_scream_female2.ogg',
+			'sound/voice/human/grim/terror_scream_female1.ogg',
+			'sound/voice/human/grim/terror_scream_female2.ogg',
 		),
 	)
 
