@@ -15,7 +15,7 @@
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
-	payday_modifier = 1
+	payday_modifier = 1.1
 
 	voice_pack = /datum/voice/human
 
