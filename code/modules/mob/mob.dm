@@ -1470,6 +1470,7 @@
 	if(!canon_client)
 		return
 
+	mind?.last_client_time = world.time
 	for(var/foo in canon_client.player_details.post_logout_callbacks)
 		var/datum/callback/CB = foo
 		CB.Invoke()

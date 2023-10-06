@@ -6,23 +6,33 @@
 	icon = 'icons/obj/structures/cryogenics.dmi'
 	icon_state = "cryopod-open"
 	base_icon_state = "cryopod"
-	use_power = FALSE
+	use_power = IDLE_POWER_USE
+	power_channel = AREA_USAGE_ENVIRON
 	density = TRUE
 	anchored = TRUE
 	state_open = TRUE
+	vis_flags = NONE
 
 	/// if false, plays announcement on cryo
 	var/quiet = FALSE
 	/// Has the occupant been tucked in?
 	var/tucked = FALSE
+	/// Set to true if someone leaves the game while inside the pod. Skips the "hasn't rejoined in x" time checks.
+	var/skip_ssd_check = FALSE
+
 	/// The linked cryopod console weakref. On compile-time it's the string ID of the console to locate - leave as null to pull from the current area.
 	var/datum/weakref/linked_console = null
+	/// stupid shit because mutapps break
+	var/atom/movable/visual/cryopod_occupant/vis_obj = TRUE
 	/// The linked "go cryo" action.
 	var/datum/action/cryopod/pod_action
 
 /obj/machinery/cryopod/Initialize(mapload)
 	. = ..()
 	pod_action = new
+	if(vis_obj)
+		vis_obj = new(null, src)
+		vis_contents += vis_obj
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -56,7 +66,41 @@
 
 /obj/machinery/cryopod/Destroy()
 	QDEL_NULL(pod_action)
+	linked_console = null
+
 	return ..()
+
+/obj/machinery/cryopod/attack_hand_secondary(mob/living/user, list/modifiers)
+	if(user == src.occupant || !GLOB.default_state.can_use_topic(src, user))
+		return ..()
+
+	var/mob/living/occupant = src.occupant
+	if(!istype(occupant))
+		to_chat(user, span_warning("There's no one inside to cryo!"))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+	if(occupant.client)
+		to_chat(user, span_warning("\The [src] beeps: \"Error: User is concious. External cryosleep request denied."))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+	if(occupant.mind)
+		if(!skip_ssd_check && occupant.mind.last_client_time - world.time <= 30 MINUTES)
+			to_chat(user, span_warning("\The [src] beeps: \"Error: User has not yet entered the REM stage of SSD. Try again later."))
+			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+	var/input = tgui_alert(user, "Are you sure you want to put the occupant into cryogenic sleep?", "Send Cryo?", list("Yes", "No"))
+	if(input != "Yes")
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+	go_cryo(occupant)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/machinery/cryopod/update_appearance(updates)
+	. = ..()
+	if(state_open)
+		vis_contents -= vis_obj
+	else
+		vis_contents |= vis_obj
 
 /obj/machinery/cryopod/update_icon_state()
 	icon_state = base_icon_state
@@ -66,37 +110,10 @@
 
 /obj/machinery/cryopod/update_overlays()
 	. = ..()
-	if(state_open)
+	if(state_open || !occupant || !initial(vis_obj))
 		return
 
-	var/mutable_appearance/occupant_overlay = get_occupant_overlay()
-	if(!occupant_overlay)
-		return
-
-	. += occupant_overlay //first the guy
-	. += mutable_appearance(icon, "[base_icon_state]-base") //then the base, so the edges are obscured
-	. += mutable_appearance(icon, "[base_icon_state]-lid", alpha = 128) //then the glass.
-
-/obj/machinery/cryopod/proc/get_occupant_overlay()
-	if(!occupant)
-		return null //nothing to do
-
-	var/mutable_appearance/mob_appearance = new /mutable_appearance(occupant)
-	if(dir == NORTH)
-		mob_appearance.dir = SOUTH //laying on your face looks like ass
-	else
-		mob_appearance.dir = src.dir
-
-	var/matrix/mob_transform = new
-	mob_transform = mob_transform.Turn(dir2angle(src.dir)) //make us oriented with the pod
-	mob_transform = mob_transform.Scale(occupant.body_size / 100)
-	mob_transform = mob_transform.Translate(0, -8)
-	mob_transform.add_filter("cryopod_anticlip", 1, alpha_mask_filter(icon = icon(icon, icon_state), flags = MASK_INVERSE))
-
-	mob_appearance.transform = mob_transform
-
-	return mob_appearance
-
+	. += mutable_appearance(icon, "[base_icon_state]-lid", ABOVE_ALL_MOB_LAYER, src, plane = ABOVE_GAME_PLANE, alpha = 128)
 
 /obj/machinery/cryopod/open_machine(drop = TRUE, density_to_set = TRUE)
 	if(state_open)
@@ -104,8 +121,10 @@
 
 	if(occupant)
 		pod_action.Remove(occupant)
+		UnregisterSignal(occupant, list(COMSIG_MOB_LOGOUT, COMSIG_MOB_LOGIN))
 
 	tucked = FALSE
+	skip_ssd_check = FALSE
 	return ..()
 
 /obj/machinery/cryopod/close_machine(atom/movable/target, density_to_set = TRUE)
@@ -116,13 +135,21 @@
 		return
 
 	to_chat(occupant, span_boldnotice("You feel cool air surround you. You go numb as your senses turn inward."))
+	RegisterSignal(occupant, COMSIG_MOB_LOGIN, PROC_REF(on_login))
+	RegisterSignal(occupant, COMSIG_MOB_LOGOUT, PROC_REF(on_logout))
 	pod_action.Grant(occupant)
+
+/obj/machinery/cryopod/proc/on_login(mob/source)
+	skip_ssd_check = FALSE
+
+/obj/machinery/cryopod/proc/on_logout(mob/source)
+	skip_ssd_check = TRUE
 
 
 #define AHELP_MSG "Make sure to adminhelp before you do so (even if there are no admins online)!"
 /obj/machinery/cryopod/proc/attempt_cryo(mob/living/user)
 	var/datum/ui_state/used_ui_state = GLOB.contained_state
-	if(used_ui_state.can_use_topic(src, user))
+	if(used_ui_state.can_use_topic(src, user) < UI_INTERACTIVE)
 		return FALSE
 
 	var/message = "Are you sure you want to enter cryogenic storage?"
@@ -143,7 +170,6 @@
 			message += "\n\n(You are playing an important job! [AHELP_MSG])"
 
 	var/input = tgui_alert(user, message, "Cryo Storage", list("Yes", "No"), ui_state = GLOB.contained_state, ui_host = src)
-
 	if(input != "Yes")
 		return FALSE
 
@@ -191,6 +217,7 @@
 				message_app.invisible = TRUE
 
 		occupant.transferItemToLoc(item, cryopod_console, force = TRUE, silent = TRUE)
+		cryopod_console.stored_items += item
 		continue
 
 	var/announced_rank = null
@@ -203,17 +230,24 @@
 		break
 
 	visible_message(span_notice("[src] hums and hisses as it moves [occupant.real_name] into storage."))
-	if(!quiet)
-		cryopod_console?.announce_cryo(occupant, announced_rank)
+	if(cryopod_console)
+		cryopod_console.frozen_crew[occupant.real_name] = announced_rank
+		if(!quiet)
+			cryopod_console.announce_cryo(occupant, announced_rank)
 
+	occupant.ghostize(FALSE) //we don't *have* to do this but it throws a runtime if we don't
 	qdel(occupant)
 	update_appearance()
 
-/obj/machinery/cryopod/MouseDrop_T(atom/dropping, mob/living/user)
-	if(HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !ISADVANCEDTOOLUSER(user))
-		return
-	close_machine(target)
 
+/obj/machinery/cryopod/MouseDrop_T(atom/dropping, mob/living/user)
+	if(HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !iscarbon(dropping) || !Adjacent(user) || !user.Adjacent(dropping) || !ISADVANCEDTOOLUSER(user))
+		return
+
+	if(!do_after(user, 0.5 SECONDS, src))
+		return
+
+	close_machine(dropping)
 
 /obj/machinery/cryopod/container_resist_act(mob/living/user)
 	visible_message(
@@ -235,20 +269,18 @@
 	base_icon_state = "cellconsole"
 	icon_keyboard = null
 	icon_screen = null
-	use_power = FALSE
+	use_power = IDLE_POWER_USE
 	density = FALSE
-	interaction_flags_machine = INTERACT_MACHINE_OFFLINE
 	req_one_access = list(ACCESS_COMMAND, ACCESS_ARMORY) // Heads of staff or the warden can go here to claim recover items from their department that people went were cryodormed with.
 	verb_say = "coldly states"
 	verb_ask = "queries"
 	verb_exclaim = "alarms"
 
-/*
-	/// Used for logging people entering cryosleep and important items they are carrying.
+	/// Used for logging people entering cryosleep and important items they are carrying. Structure: list(name:rank)
 	var/list/frozen_crew = list()
 	/// The items currently stored in the cryopod control panel.
-	var/list/frozen_item = list()
-*/
+	var/list/stored_items = list()
+
 	/// Console ID for the cryopods to link with. Set in map editors. Only matters on mapload.
 	var/console_id = null
 
@@ -289,14 +321,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/cryopod, 32)
 
 /obj/machinery/computer/cryopod/ui_data(mob/user)
 	var/list/data = list()
-	data["frozen_crew"] = contents //= frozen_crew
+	for(var/name in frozen_crew)
+		LAZYADD(data["frozen_crew"], list(list(
+			"name" = name,
+			"rank" = frozen_crew[name]
+		)))
 
-	data["item_names"] = list()
-	data["item_refs"] = list()
-	for(var/obj/item/item in contents)
-		var/ref = REF(item)
-		data["item_names"] = item.name
-		data["item_refs"] += ref
+	for(var/obj/item/item as anything in stored_items)
+		LAZYADDASSOC(data["item_refs"], REF(item), item.name)
 
 	// Check Access for item dropping.
 	data["item_retrieval_allowed"] = allowed(user)
@@ -327,8 +359,55 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/cryopod, 32)
 	ASSERT(istype(occupant))
 
 	var/occupant_name = occupant.real_name
-	radio.talk_into(src, "[occupant_name][occupant_rank ? ", [occupant_rank]" : ""] has woken up from cryo storage.", announcement_channel)
+	radio.talk_into(src, "[occupant_name][occupant_rank ? ", [occupant_rank]" : ""] has been moved into cryo storage.", announcement_channel)
 
+
+/// This is a visual helper that shows the occupant inside the cryo cell.
+/atom/movable/visual/cryopod_occupant
+	layer = ABOVE_MOB_LAYER
+	plane = GAME_PLANE_UPPER
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	appearance_flags = KEEP_TOGETHER
+	/// The current occupant being presented
+	var/mob/living/occupant
+
+/atom/movable/visual/cryopod_occupant/Initialize(mapload, obj/machinery/cryopod/parent)
+	. = ..()
+	RegisterSignal(parent, COMSIG_MACHINERY_SET_OCCUPANT, PROC_REF(on_set_occupant))
+	RegisterSignal(parent, COMSIG_ATOM_DIR_CHANGE, PROC_REF(on_dir_change))
+	on_dir_change(parent) //lol
+
+/atom/movable/visual/cryopod_occupant/proc/on_set_occupant(obj/machinery/source, mob/living/new_occupant)
+	SIGNAL_HANDLER
+
+	if(occupant)
+		vis_contents -= occupant
+		occupant.vis_flags &= ~VIS_INHERIT_PLANE
+		occupant.remove_traits(list(TRAIT_FORCED_STANDING), CRYO_TRAIT)
+
+	occupant = new_occupant
+	if(!occupant)
+		return
+
+	occupant.setDir(SOUTH)
+	occupant.vis_flags |= VIS_INHERIT_PLANE // We want to pull our occupant up to our plane so we look right
+	vis_contents += occupant
+
+	// Keep them standing! They'll go sideways in the tube when they fall asleep otherwise.
+	occupant.add_traits(list(TRAIT_FORCED_STANDING), CRYO_TRAIT)
+
+/atom/movable/visual/cryopod_occupant/proc/on_dir_change(obj/machinery/source)
+	SIGNAL_HANDLER
+
+	dir = source.dir
+
+	var/matrix/new_transform = new //reset it
+	new_transform = new_transform.Turn(dir2angle(REVERSE_DIR(source.dir))) //orient with the pod
+	if(source.dir == WEST || source.dir == EAST)
+		new_transform = new_transform.Translate(0, -2) //move it a bit downwards
+
+	transform = new_transform
+	add_filter("cryopod_alpha", 1, alpha_mask_filter(icon = icon(source.icon, "[source.base_icon_state]-lid", source.dir)))
 
 /datum/action/cryopod
 	name = "Go Cryo"
@@ -358,8 +437,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/cryopod, 32)
 	icon_state = "prisonpod"
 	base_icon_state = "prisonpod"
 	density = FALSE
+	vis_obj = FALSE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/cryopod/prison, 18)
-
-/obj/machinery/cryopod/prison/get_occupant_overlay()
-	return null //we dont use these
