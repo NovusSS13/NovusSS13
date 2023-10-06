@@ -546,7 +546,7 @@
 	// Must be tall, otherwise the filter will consider this as a 32x32 tile
 	// and will crop the head off.
 	icon_state = "mask_bg"
-	appearance_flags = KEEP_TOGETHER
+	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE | VIS_INHERIT_LAYER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pixel_y = 22

@@ -270,7 +270,7 @@
 
 /// This is a visual helper that shows the occupant inside the cryopod
 /obj/effect/overlay/vis/cryopod_occupant
-	appearance_flags = KEEP_TOGETHER
+	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE | VIS_INHERIT_LAYER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	/// The cryopod that owns us
