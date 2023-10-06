@@ -14,6 +14,8 @@ GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 	var/martyr_compatible = FALSE //If the objective is compatible with martyr objective, i.e. if you can still do it while dead.
 	///can this be granted by admins?
 	var/admin_grantable = FALSE
+	/// Currently only used by cryopod code, this basically counts how much this objective has had to had it's target changed
+	var/current_plan = 1
 
 /datum/objective/New(text)
 	GLOB.objectives += src

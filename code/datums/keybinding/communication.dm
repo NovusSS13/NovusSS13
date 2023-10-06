@@ -46,7 +46,7 @@
 	full_name = "Local Out Of Character Say (LOOC)"
 	keybind_signal = COMSIG_KB_CLIENT_OOC_DOWN
 
-/datum/keybinding/client/communication/ooclooc/down(client/user)
+/datum/keybinding/client/communication/looc/down(client/user)
 	. = ..()
 	if(.)
 		return
