@@ -50,7 +50,7 @@
 	vent_movement = NONE
 
 	/// Visual content - Occupant overlay
-	var/atom/movable/visual/cryo_occupant/occupant_vis
+	var/obj/effect/overlay/vis/cryo_occupant/occupant_vis
 
 	var/message_cooldown
 	///Cryo will continue to treat people with 0 damage but existing wounds, but will sound off when damage healing is done in case doctors want to directly treat the wounds instead
@@ -541,7 +541,7 @@
 	return
 
 /// This is a visual helper that shows the occupant inside the cryo cell.
-/atom/movable/visual/cryo_occupant
+/obj/effect/overlay/vis/cryo_occupant
 	icon = 'icons/obj/medical/cryogenics.dmi'
 	// Must be tall, otherwise the filter will consider this as a 32x32 tile
 	// and will crop the head off.
@@ -553,7 +553,7 @@
 	/// The current occupant being presented
 	var/mob/living/occupant
 
-/atom/movable/visual/cryo_occupant/Initialize(mapload, obj/machinery/atmospherics/components/unary/cryo_cell/parent)
+/obj/effect/overlay/vis/cryo_occupant/Initialize(mapload, obj/machinery/atmospherics/components/unary/cryo_cell/parent)
 	. = ..()
 	if(!istype(parent))
 		stack_trace("[type] initialized without a cryo cell parent!")
@@ -566,7 +566,7 @@
 	RegisterSignal(parent, COMSIG_CRYO_SET_ON, PROC_REF(on_set_on))
 
 /// COMSIG_MACHINERY_SET_OCCUPANT callback
-/atom/movable/visual/cryo_occupant/proc/on_set_occupant(datum/source, mob/living/new_occupant)
+/obj/effect/overlay/vis/cryo_occupant/proc/on_set_occupant(datum/source, mob/living/new_occupant)
 	SIGNAL_HANDLER
 
 	if(occupant)
@@ -587,7 +587,7 @@
 	occupant.add_traits(list(TRAIT_IMMOBILIZED, TRAIT_FORCED_STANDING), CRYO_TRAIT)
 
 /// COMSIG_CRYO_SET_ON callback
-/atom/movable/visual/cryo_occupant/proc/on_set_on(datum/source, on)
+/obj/effect/overlay/vis/cryo_occupant/proc/on_set_on(datum/source, on)
 	SIGNAL_HANDLER
 
 	if(on)

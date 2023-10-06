@@ -22,7 +22,7 @@
 	/// The linked cryopod console weakref. On compile-time it's the string ID of the console to locate - leave as null to pull from the current area.
 	var/datum/weakref/linked_console = null
 	/// stupid shit because mutapps break
-	var/atom/movable/visual/cryopod_occupant/occupant_vis = /atom/movable/visual/cryopod_occupant
+	var/obj/effect/overlay/vis/cryopod_occupant/occupant_vis = /obj/effect/overlay/vis/cryopod_occupant
 	/// The linked "go cryo" action.
 	var/datum/action/cryopod/pod_action
 
@@ -269,7 +269,7 @@
 	container_resist_act(user)
 
 /// This is a visual helper that shows the occupant inside the cryopod
-/atom/movable/visual/cryopod_occupant
+/obj/effect/overlay/vis/cryopod_occupant
 	appearance_flags = KEEP_TOGETHER
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE | VIS_INHERIT_LAYER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
@@ -278,7 +278,7 @@
 	/// The current occupant being presented
 	var/mob/living/occupant
 
-/atom/movable/visual/cryopod_occupant/Initialize(mapload, obj/machinery/cryopod/parent)
+/obj/effect/overlay/vis/cryopod_occupant/Initialize(mapload, obj/machinery/cryopod/parent)
 	. = ..()
 	if(!parent)
 		stack_trace("[type] initialized without a cryopod parent!")
@@ -290,12 +290,12 @@
 	if(parent.occupant)
 		on_set_occupant(parent, parent.occupant)
 
-/atom/movable/visual/cryopod_occupant/Destroy(force)
+/obj/effect/overlay/vis/cryopod_occupant/Destroy(force)
 	. = ..()
 	owner = null
 	occupant = null
 
-/atom/movable/visual/cryopod_occupant/update_overlays()
+/obj/effect/overlay/vis/cryopod_occupant/update_overlays()
 	. = ..()
 	if(!occupant)
 		return
@@ -315,14 +315,14 @@
 
 	. += occupant_overlay
 
-/atom/movable/visual/cryopod_occupant/setDir(newdir)
+/obj/effect/overlay/vis/cryopod_occupant/setDir(newdir)
 	. = ..()
 	//not really necessary, but the occupant should face the same dir as us for consistency
 	if(occupant)
 		occupant.setDir(newdir)
 	update_appearance(UPDATE_ICON)
 
-/atom/movable/visual/cryopod_occupant/proc/on_set_occupant(obj/machinery/source, mob/living/new_occupant)
+/obj/effect/overlay/vis/cryopod_occupant/proc/on_set_occupant(obj/machinery/source, mob/living/new_occupant)
 	SIGNAL_HANDLER
 
 	if(occupant)
@@ -342,7 +342,7 @@
 	occupant.add_traits(list(TRAIT_FORCED_STANDING), CRYO_TRAIT)
 	update_appearance(UPDATE_ICON)
 
-/atom/movable/visual/cryopod_occupant/proc/on_dir_change(obj/machinery/source, olddir, newdir)
+/obj/effect/overlay/vis/cryopod_occupant/proc/on_dir_change(obj/machinery/source, olddir, newdir)
 	SIGNAL_HANDLER
 
 	add_filter("cryopod_mask", 1, alpha_mask_filter(icon = icon(source.icon, "[source.base_icon_state]-lid", dir = source.dir)))
