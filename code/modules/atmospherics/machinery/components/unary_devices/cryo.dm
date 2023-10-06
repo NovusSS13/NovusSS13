@@ -177,6 +177,7 @@
 		. += "pod-panel"
 	if(state_open)
 		return
+	// layer needs to be explicitly above us, so it overlays above the occupant overlay
 	if(on && is_operational)
 		. += mutable_appearance('icons/obj/medical/cryogenics.dmi', "cover-on", layer = src.layer+0.01)
 	else
