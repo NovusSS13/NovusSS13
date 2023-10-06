@@ -109,6 +109,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	ignore += typesof(/turf/open/openspace)
 	// Stupid Destroy() override, skiiip
 	ignore += typesof(/atom/movable/turf_liquid/immutable)
+	// Abstract atoms that generally get used for vis_contents, should not be tested here since some require an owner
+	ignore += typesof(/obj/effect/overlay/vis)
 
 	var/list/cached_contents = spawn_at.contents.Copy()
 	var/original_turf_type = spawn_at.type

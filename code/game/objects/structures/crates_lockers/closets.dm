@@ -17,7 +17,7 @@
 	contents_thermal_insulation = 0
 
 	/// The overlay for the closet's door
-	var/obj/effect/overlay/closet_door/door_obj
+	var/obj/effect/overlay/vis/closet_door/door_obj
 	/// Whether or not this door is being animated
 	var/is_animating_door = FALSE
 	/// Vertical squish of the door
@@ -1140,5 +1140,13 @@
 
 /obj/structure/closet/preopen
 	opened = TRUE
+
+/// Door overlay for animating closets
+/obj/effect/overlay/vis/closet_door
+	anchored = TRUE
+	plane = FLOAT_PLANE
+	layer = FLOAT_LAYER
+	vis_flags = VIS_INHERIT_ID
+	appearance_flags = KEEP_TOGETHER | LONG_GLIDE | PIXEL_SCALE
 
 #undef LOCKER_FULL

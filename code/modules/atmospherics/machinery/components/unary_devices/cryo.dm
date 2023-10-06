@@ -10,60 +10,6 @@
 #define CRYO_MIN_GAS_MOLES 5
 #define CRYO_BREAKOUT_TIME (30 SECONDS)
 
-/// This is a visual helper that shows the occupant inside the cryo cell.
-/atom/movable/visual/cryo_occupant
-	icon = 'icons/obj/medical/cryogenics.dmi'
-	// Must be tall, otherwise the filter will consider this as a 32x32 tile
-	// and will crop the head off.
-	icon_state = "mask_bg"
-	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	pixel_y = 22
-	appearance_flags = KEEP_TOGETHER
-	/// The current occupant being presented
-	var/mob/living/occupant
-
-/atom/movable/visual/cryo_occupant/Initialize(mapload, obj/machinery/atmospherics/components/unary/cryo_cell/parent)
-	. = ..()
-	// Alpha masking
-	// It will follow this as the animation goes, but that's no problem as the "mask" icon state
-	// already accounts for this.
-	add_filter("alpha_mask", 1, list("type" = "alpha", "icon" = icon('icons/obj/medical/cryogenics.dmi', "mask"), "y" = -22))
-	RegisterSignal(parent, COMSIG_MACHINERY_SET_OCCUPANT, PROC_REF(on_set_occupant))
-	RegisterSignal(parent, COMSIG_CRYO_SET_ON, PROC_REF(on_set_on))
-
-/// COMSIG_MACHINERY_SET_OCCUPANT callback
-/atom/movable/visual/cryo_occupant/proc/on_set_occupant(datum/source, mob/living/new_occupant)
-	SIGNAL_HANDLER
-
-	if(occupant)
-		vis_contents -= occupant
-		occupant.vis_flags &= ~VIS_INHERIT_PLANE
-		occupant.remove_traits(list(TRAIT_IMMOBILIZED, TRAIT_FORCED_STANDING), CRYO_TRAIT)
-
-	occupant = new_occupant
-	if(!occupant)
-		return
-
-	occupant.setDir(SOUTH)
-	// We want to pull our occupant up to our plane so we look right
-	occupant.vis_flags |= VIS_INHERIT_PLANE
-	vis_contents += occupant
-	pixel_y = 22
-	// Keep them standing! They'll go sideways in the tube when they fall asleep otherwise.
-	occupant.add_traits(list(TRAIT_IMMOBILIZED, TRAIT_FORCED_STANDING), CRYO_TRAIT)
-
-/// COMSIG_CRYO_SET_ON callback
-/atom/movable/visual/cryo_occupant/proc/on_set_on(datum/source, on)
-	SIGNAL_HANDLER
-
-	if(on)
-		animate(src, pixel_y = 24, time = 20, loop = -1)
-		animate(pixel_y = 22, time = 20)
-	else
-		animate(src)
-
 /// Cryo cell
 /obj/machinery/atmospherics/components/unary/cryo_cell
 	name = "cryo cell"
@@ -103,8 +49,8 @@
 	var/radio_channel = RADIO_CHANNEL_MEDICAL
 	vent_movement = NONE
 
-	/// Visual content - Occupant
-	var/atom/movable/visual/cryo_occupant/occupant_vis
+	/// Visual content - Occupant overlay
+	var/obj/effect/overlay/vis/cryo_occupant/occupant_vis
 
 	var/message_cooldown
 	///Cryo will continue to treat people with 0 damage but existing wounds, but will sound off when damage healing is done in case doctors want to directly treat the wounds instead
@@ -135,12 +81,6 @@
 	if(airs[1])
 		airs[1].volume = CELL_VOLUME * 0.5
 	register_context()
-
-/obj/machinery/atmospherics/components/unary/cryo_cell/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
-	. = ..()
-	if(same_z_layer)
-		return
-	SET_PLANE(occupant_vis, PLANE_TO_TRUE(occupant_vis.plane), new_turf)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/set_occupant(atom/movable/new_occupant)
 	. = ..()
@@ -237,10 +177,11 @@
 		. += "pod-panel"
 	if(state_open)
 		return
+	// layer needs to be explicitly above us, so it overlays above the occupant overlay
 	if(on && is_operational)
-		. += mutable_appearance('icons/obj/medical/cryogenics.dmi', "cover-on", ABOVE_ALL_MOB_LAYER, src, plane = ABOVE_GAME_PLANE)
+		. += mutable_appearance('icons/obj/medical/cryogenics.dmi', "cover-on", layer = src.layer+0.01)
 	else
-		. += mutable_appearance('icons/obj/medical/cryogenics.dmi', "cover-off", ABOVE_ALL_MOB_LAYER, src, plane = ABOVE_GAME_PLANE)
+		. += mutable_appearance('icons/obj/medical/cryogenics.dmi', "cover-off", layer = src.layer+0.01)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/nap_violation(mob/violator)
 	open_machine()
@@ -598,6 +539,62 @@
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/update_layer()
 	return
+
+/// This is a visual helper that shows the occupant inside the cryo cell.
+/obj/effect/overlay/vis/cryo_occupant
+	icon = 'icons/obj/medical/cryogenics.dmi'
+	// Must be tall, otherwise the filter will consider this as a 32x32 tile
+	// and will crop the head off.
+	icon_state = "mask_bg"
+	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE
+	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE | VIS_INHERIT_LAYER
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	pixel_y = 22
+	/// The current occupant being presented
+	var/mob/living/occupant
+
+/obj/effect/overlay/vis/cryo_occupant/Initialize(mapload, obj/machinery/atmospherics/components/unary/cryo_cell/parent)
+	. = ..()
+	if(!istype(parent))
+		stack_trace("[type] initialized without a cryo cell parent!")
+		return INITIALIZE_HINT_QDEL
+	// Alpha masking
+	// It will follow this as the animation goes, but that's no problem as the "mask" icon state
+	// already accounts for this.
+	add_filter("alpha_mask", 1, list("type" = "alpha", "icon" = icon('icons/obj/medical/cryogenics.dmi', "mask"), "y" = -22))
+	RegisterSignal(parent, COMSIG_MACHINERY_SET_OCCUPANT, PROC_REF(on_set_occupant))
+	RegisterSignal(parent, COMSIG_CRYO_SET_ON, PROC_REF(on_set_on))
+
+/// COMSIG_MACHINERY_SET_OCCUPANT callback
+/obj/effect/overlay/vis/cryo_occupant/proc/on_set_occupant(datum/source, mob/living/new_occupant)
+	SIGNAL_HANDLER
+
+	if(occupant)
+		vis_contents -= occupant
+		occupant.vis_flags &= ~VIS_INHERIT_PLANE
+		occupant.remove_traits(list(TRAIT_IMMOBILIZED, TRAIT_FORCED_STANDING), CRYO_TRAIT)
+
+	occupant = new_occupant
+	if(!occupant)
+		return
+
+	occupant.setDir(SOUTH)
+	// We want to pull our occupant up to our plane so we look right
+	occupant.vis_flags |= VIS_INHERIT_PLANE
+	vis_contents += occupant
+	pixel_y = 22
+	// Keep them standing! They'll go sideways in the tube when they fall asleep otherwise.
+	occupant.add_traits(list(TRAIT_IMMOBILIZED, TRAIT_FORCED_STANDING), CRYO_TRAIT)
+
+/// COMSIG_CRYO_SET_ON callback
+/obj/effect/overlay/vis/cryo_occupant/proc/on_set_on(datum/source, on)
+	SIGNAL_HANDLER
+
+	if(on)
+		animate(src, pixel_y = 24, time = 20, loop = -1)
+		animate(pixel_y = 22, time = 20)
+	else
+		animate(src)
 
 #undef MAX_TEMPERATURE
 #undef CRYO_MULTIPLY_FACTOR
