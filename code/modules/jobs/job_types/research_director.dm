@@ -10,7 +10,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = SUPERVISOR_CAPTAIN
-	req_admin_notify = 1
+	req_admin_notify = TRUE
 	minimal_player_age = 7
 	exp_required_type_department = EXP_TYPE_SCIENCE
 	exp_requirements = 180

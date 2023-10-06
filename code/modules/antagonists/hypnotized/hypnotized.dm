@@ -9,6 +9,7 @@
 	antagpanel_category = "Other"
 	show_name_in_check_antagonists = TRUE
 	count_against_dynamic_roll_chance = FALSE
+	antag_flags = FLAG_ANTAG_SAFE_TO_CRYO
 
 	silent = TRUE //not actually silent, because greet will be called by the trauma anyway.
 	/// Brain trauma associated with this antag datum

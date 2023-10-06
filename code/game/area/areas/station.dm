@@ -609,6 +609,10 @@
 	name = "\improper Public Mining Storage"
 	icon_state = "mining_storage"
 
+/area/station/commons/cryopods
+	name = "\improper Cryogenic Storage"
+	icon_state = "cryopods"
+
 //Service
 
 /area/station/service

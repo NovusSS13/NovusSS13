@@ -1023,6 +1023,7 @@
 	total_genetic_points = 5
 	chem_charges = 10
 	total_chem_storage = 50
+	antag_flags = FLAG_ANTAG_SAFE_TO_CRYO
 
 /datum/antagonist/changeling/headslug/greet()
 	to_chat(owner, span_boldannounce("You are a fresh changeling birthed from a headslug! \

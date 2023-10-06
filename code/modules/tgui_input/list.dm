@@ -10,7 +10,7 @@
  * * default - If an option is already preselected on the UI. Current values, etc.
  * * timeout - The timeout of the input box, after which the menu will close and qdel itself. Set to zero for no timeout.
  */
-/proc/tgui_input_list(mob/user, message, title = "Select", list/items, default, timeout = 0, ui_state = GLOB.always_state)
+/proc/tgui_input_list(mob/user, message, title = "Select", list/items, default, timeout = 0, ui_state = GLOB.always_state, ui_host = null)
 	if (!user)
 		user = usr
 	if(!length(items))
@@ -24,7 +24,7 @@
 	/// Client does NOT have tgui_input on: Returns regular input
 	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
 		return input(user, message, title, default) as null|anything in items
-	var/datum/tgui_list_input/input = new(user, message, title, items, default, timeout, ui_state)
+	var/datum/tgui_list_input/input = new(user, message, title, items, default, timeout, ui_state, ui_host)
 	input.ui_interact(user)
 	input.wait()
 	if (input)
@@ -58,14 +58,18 @@
 	var/closed
 	/// The TGUI UI state that will be returned in ui_state(). Default: always_state
 	var/datum/ui_state/state
+	/// The TGUI UI host that will be returned in ui_host().
+	var/datum/host
 
-/datum/tgui_list_input/New(mob/user, message, title, list/items, default, timeout, ui_state)
+/datum/tgui_list_input/New(mob/user, message, title, list/items, default, timeout, ui_state, ui_host)
 	src.title = title
 	src.message = message
 	src.items = list()
 	src.items_map = list()
 	src.default = default
 	src.state = ui_state
+	src.host = ui_host || src
+
 	var/list/repeat_items = list()
 	// Gets rid of illegal characters
 	var/static/regex/whitelistedWords = regex(@{"([^\u0020-\u8000]+)"})
@@ -85,6 +89,7 @@
 /datum/tgui_list_input/Destroy(force, ...)
 	SStgui.close_uis(src)
 	state = null
+	host = null
 	QDEL_NULL(items)
 	return ..()
 
@@ -108,6 +113,9 @@
 
 /datum/tgui_list_input/ui_state(mob/user)
 	return state
+
+/datum/tgui_list_input/ui_host(mob/user)
+	return host
 
 /datum/tgui_list_input/ui_static_data(mob/user)
 	var/list/data = list()

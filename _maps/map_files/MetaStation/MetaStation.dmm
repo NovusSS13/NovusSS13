@@ -3969,6 +3969,16 @@
 	},
 /turf/open/floor/iron,
 /area/station/commons/locker)
+"bvm" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/trimline/dark_green/line,
+/obj/effect/turf_decal/trimline/dark_green/line{
+	dir = 1
+	},
+/turf/open/floor/iron/white,
+/area/station/commons/cryopods)
 "bvJ" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -7060,6 +7070,9 @@
 /obj/structure/lattice/catwalk,
 /turf/open/space/basic,
 /area/station/solars/starboard/aft)
+"cKp" = (
+/turf/closed/wall,
+/area/station/commons/cryopods)
 "cKx" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/visible,
@@ -9220,6 +9233,16 @@
 /obj/structure/window/reinforced/spawner/directional/north,
 /turf/open/floor/iron,
 /area/station/science/research)
+"dBc" = (
+/obj/machinery/cryopod,
+/obj/effect/turf_decal/siding/white,
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable,
+/obj/machinery/camera/directional/north{
+	c_tag = "Cryogenics Pods"
+	},
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "dBV" = (
 /obj/docking_port/stationary/escape_pod{
 	dir = 4
@@ -10820,6 +10843,15 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
+"edr" = (
+/obj/machinery/cryopod{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "edu" = (
 /turf/closed/wall/r_wall,
 /area/station/maintenance/solars/starboard/aft)
@@ -12099,6 +12131,19 @@
 	},
 /turf/open/floor/iron,
 /area/station/command/teleporter)
+"exY" = (
+/obj/machinery/computer/cryopod/directional/west,
+/obj/structure/cable,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 4
+	},
+/obj/machinery/light/directional/west,
+/obj/effect/turf_decal/trimline/dark_green/line,
+/obj/effect/turf_decal/trimline/dark_green/line{
+	dir = 1
+	},
+/turf/open/floor/iron/white,
+/area/station/commons/cryopods)
 "eyd" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 4
@@ -12186,6 +12231,10 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/station/service/bar)
+"eAl" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/station/commons/cryopods)
 "eAL" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/white,
@@ -29565,6 +29614,22 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/security/prison/mess)
+"kLa" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/airlock/public/glass{
+	name = "Cryopods"
+	},
+/obj/effect/landmark/navigate_destination,
+/obj/effect/turf_decal/trimline/dark_green/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/trimline/dark_green/corner{
+	dir = 8
+	},
+/turf/open/floor/iron/white,
+/area/station/commons/cryopods)
 "kLg" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -32868,6 +32933,16 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/disposal)
+"lVf" = (
+/obj/machinery/cryopod{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/machinery/airalarm/directional/south,
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "lVl" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
@@ -42215,6 +42290,11 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
+"pnj" = (
+/obj/effect/turf_decal/siding/white,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "pnk" = (
 /obj/structure/chair{
 	dir = 4
@@ -46873,9 +46953,9 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
 "qWm" = (
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 4
-	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white/side{
 	dir = 9
 	},
@@ -57698,6 +57778,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/science/explab)
+"uKG" = (
+/obj/effect/spawner/structure/window,
+/turf/open/floor/plating,
+/area/station/commons/cryopods)
 "uKL" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral{
@@ -67106,6 +67190,7 @@
 /obj/effect/turf_decal/trimline/dark_red/mid_joiner,
 /obj/effect/turf_decal/trimline/dark_red/line,
 /obj/structure/cable,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/white/smooth_half,
 /area/station/commons/fitness)
 "yfn" = (
@@ -101451,11 +101536,11 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-lMJ
+cKp
+eAl
+cKp
+eAl
+cKp
 aaa
 ilh
 mQe
@@ -101708,11 +101793,11 @@ aaa
 aaa
 aaa
 aaa
-aWl
-lMJ
-lMJ
-lMJ
-szp
+cKp
+dBc
+exY
+lVf
+cKp
 szp
 ilh
 ilh
@@ -101965,11 +102050,11 @@ aaa
 rrt
 rrt
 lMJ
-rrt
-aaa
-aaa
-aaa
-nvn
+cKp
+pnj
+bvm
+edr
+cKp
 lLw
 ePA
 ilh
@@ -102222,11 +102307,11 @@ aaa
 rrt
 aaa
 aaa
-aag
-iHc
-iHc
-aag
-aag
+cKp
+uKG
+kLa
+cKp
+cKp
 vOZ
 vwp
 ilh

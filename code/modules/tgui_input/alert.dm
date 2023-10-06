@@ -10,7 +10,7 @@
  * * timeout - The timeout of the alert, after which the modal will close and qdel itself. Set to zero for no timeout.
  * * autofocus - The bool that controls if this alert should grab window focus.
  */
-/proc/tgui_alert(mob/user, message = "", title, list/buttons = list("Ok"), timeout = 0, autofocus = TRUE, ui_state = GLOB.always_state)
+/proc/tgui_alert(mob/user, message = "", title, list/buttons = list("Ok"), timeout = 0, autofocus = TRUE, ui_state = GLOB.always_state, ui_host = null)
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -29,7 +29,7 @@
 			return alert(user, message, title, buttons[1], buttons[2])
 		if(length(buttons) == 3)
 			return alert(user, message, title, buttons[1], buttons[2], buttons[3])
-	var/datum/tgui_alert/alert = new(user, message, title, buttons, timeout, autofocus, ui_state)
+	var/datum/tgui_alert/alert = new(user, message, title, buttons, timeout, autofocus, ui_state, ui_host)
 	alert.ui_interact(user)
 	alert.wait()
 	if (alert)
@@ -61,13 +61,16 @@
 	var/closed
 	/// The TGUI UI state that will be returned in ui_state(). Default: always_state
 	var/datum/ui_state/state
+	/// The TGUI UI host that will be returned in ui_host().
+	var/datum/host
 
-/datum/tgui_alert/New(mob/user, message, title, list/buttons, timeout, autofocus, ui_state)
+/datum/tgui_alert/New(mob/user, message, title, list/buttons, timeout, autofocus, ui_state, ui_host = src)
 	src.autofocus = autofocus
 	src.buttons = buttons.Copy()
 	src.message = message
 	src.title = title
 	src.state = ui_state
+	src.host = ui_host
 	if (timeout)
 		src.timeout = timeout
 		start_time = world.time
@@ -99,6 +102,9 @@
 
 /datum/tgui_alert/ui_state(mob/user)
 	return state
+
+/datum/tgui_alert/ui_host(mob/user)
+	return host
 
 /datum/tgui_alert/ui_static_data(mob/user)
 	var/list/data = list()

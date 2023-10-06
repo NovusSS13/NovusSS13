@@ -8953,6 +8953,18 @@
 /obj/machinery/power/apc/auto_name/directional/east,
 /turf/open/floor/iron,
 /area/station/security/prison/workout)
+"cKk" = (
+/obj/machinery/cryopod{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/white{
+	dir = 8
+	},
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "cKl" = (
 /obj/effect/turf_decal/bot,
 /obj/structure/sign/warning/xeno_mining{
@@ -11067,9 +11079,9 @@
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "drZ" = (
-/obj/structure/flora/grass/both,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/surface/outdoors/nospawn)
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/iron,
+/area/station/commons/cryopods)
 "dsf" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/table,
@@ -17903,9 +17915,15 @@
 /turf/open/floor/stone,
 /area/mine/eva/lower)
 "fEZ" = (
-/obj/effect/spawner/structure/window,
-/turf/open/floor/plating,
-/area/station/commons/dorms)
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/airlock/public/glass{
+	name = "Cryopods"
+	},
+/obj/effect/landmark/navigate_destination,
+/turf/open/floor/iron,
+/area/station/commons/cryopods)
 "fFn" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
@@ -31208,6 +31226,16 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/engineering/atmos)
+"jYI" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 9
+	},
+/obj/machinery/light/directional/east,
+/obj/machinery/cryopod{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "jYL" = (
 /obj/structure/light_construct/directional/south,
 /obj/structure/sign/poster/contraband/random/directional/south,
@@ -36692,6 +36720,9 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/wood/parquet,
 /area/station/commons/lounge)
+"lHn" = (
+/turf/closed/wall,
+/area/station/commons/cryopods)
 "lHu" = (
 /obj/structure/closet/secure_closet/brig,
 /obj/structure/cable,
@@ -43823,6 +43854,21 @@
 /obj/item/plate,
 /turf/open/floor/iron/checker,
 /area/station/maintenance/port/fore)
+"nWg" = (
+/obj/machinery/cryopod{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/white{
+	dir = 4
+	},
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 4
+	},
+/obj/machinery/camera/directional/west,
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "nWy" = (
 /obj/structure/sign/poster/official/work_for_a_future,
 /turf/closed/wall,
@@ -46238,10 +46284,15 @@
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "oJn" = (
-/obj/structure/flora/grass/brown/style_3,
-/obj/structure/flora/bush/snow/style_random,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/surface/outdoors/nospawn)
+/obj/machinery/cryopod{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/white{
+	dir = 4
+	},
+/obj/machinery/airalarm/directional/west,
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "oJP" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/dark_green,
@@ -49028,6 +49079,13 @@
 	},
 /turf/open/floor/iron/large,
 /area/station/service/hydroponics/garden)
+"pEH" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron,
+/area/station/commons/cryopods)
 "pEX" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -56106,6 +56164,15 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
+"rSU" = (
+/obj/machinery/cryopod{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/white{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/station/commons/cryopods)
 "rSW" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
@@ -64623,10 +64690,15 @@
 /turf/open/floor/iron,
 /area/station/service/bar/backroom)
 "uGa" = (
-/obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral/half/contrasted{
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/dorms)
 "uGl" = (
@@ -68625,9 +68697,9 @@
 /turf/closed/wall,
 /area/mine/storage)
 "vWB" = (
-/obj/effect/spawner/random/vending/colavend,
-/turf/open/floor/iron/dark,
-/area/station/hallway/primary/central)
+/obj/effect/spawner/structure/window,
+/turf/open/floor/plating,
+/area/station/commons/cryopods)
 "vWL" = (
 /obj/structure/chair{
 	dir = 1;
@@ -68738,9 +68810,12 @@
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "vXU" = (
-/obj/item/toy/snowball,
-/turf/open/misc/asteroid/snow/icemoon,
-/area/icemoon/surface/outdoors/nospawn)
+/obj/machinery/computer/cryopod/directional/north,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron,
+/area/station/commons/cryopods)
 "vXY" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -237075,11 +237150,11 @@ skl
 skl
 skl
 skl
-skl
-skl
-skl
-pAZ
-pAZ
+lHn
+lHn
+lHn
+vWB
+vWB
 dnq
 gOy
 utR
@@ -237332,11 +237407,11 @@ rmn
 ygB
 wIz
 eFt
-ygB
-bln
+lHn
+nWg
 oJn
-fsm
-pAZ
+rSU
+vWB
 dnq
 nfk
 utR
@@ -237589,11 +237664,11 @@ bnt
 ygB
 vZz
 rVV
-ygB
+lHn
 vXU
 drZ
-yfF
-jII
+drZ
+vWB
 mpy
 wtb
 bmz
@@ -237846,12 +237921,12 @@ oCF
 ygB
 mJO
 oCF
-ygB
-lBD
-jII
-jII
-jII
-fzy
+lHn
+pEH
+jYI
+cKk
+vWB
+dnq
 xwC
 utR
 pAZ
@@ -238103,11 +238178,11 @@ lOz
 ygB
 ygB
 oTh
-ygB
+lHn
 fEZ
-ygB
+lHn
 vWB
-cDQ
+vWB
 kyL
 sNI
 bUH
