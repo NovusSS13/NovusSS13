@@ -212,18 +212,16 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
  */
 /obj/item/stack/sheet/sinew
 	name = "watcher sinew"
-	icon = 'icons/obj/mining.dmi'
 	desc = "Long stringy filaments which presumably came from a watcher's wings."
-	singular_name = "watcher sinew"
 	icon_state = "sinew"
-	novariants = TRUE
 	merge_type = /obj/item/stack/sheet/sinew
+	singular_name = "watcher sinew"
 
 /obj/item/stack/sheet/sinew/wolf
 	name = "wolf sinew"
 	desc = "Long stringy filaments which came from the insides of a wolf."
-	singular_name = "wolf sinew"
 	merge_type = /obj/item/stack/sheet/sinew/wolf
+	singular_name = "wolf sinew"
 
 GLOBAL_LIST_INIT(sinew_recipes, list ( \
 	new/datum/stack_recipe("sinew restraints", /obj/item/restraints/handcuffs/cable/sinew, 1, check_density = FALSE, category = CAT_EQUIPMENT), \

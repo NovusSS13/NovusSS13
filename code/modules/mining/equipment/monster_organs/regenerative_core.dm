@@ -52,12 +52,17 @@
 	desc_inert = "The core has decayed, and is completely useless."
 	icon_state = "legion_core"
 	icon_state_inert = "legion_core_decayed"
-	icon_state_preserved = "legion_core_stable"
+	icon_state_preserved = "legion_core"
+
+/obj/item/organ/monster_core/regenerative_core/legion/update_overlays()
+	. = ..()
+	if(!inert && !decay_timer)
+		. += mutable_appearance(icon, "[icon_state]_crackle")
 
 /// Action used by the regenerative core
 /datum/action/cooldown/monster_core_action/regenerative_core
 	name = "Regenerate"
 	desc = "Fully regenerate your body, consuming your regenerative core in the process. \
 		This process will trigger automatically if you are badly wounded."
-	button_icon_state = "legion_core_stable"
+	button_icon_state = "legion_core"
 	check_flags = NONE
