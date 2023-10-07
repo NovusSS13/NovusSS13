@@ -8,8 +8,6 @@
 	icon_aggro = "goldgrub_alert"
 	icon_dead = "goldgrub_dead"
 	icon_gib = "syndicate_gib"
-	pixel_x = -12
-	base_pixel_x = -12
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	vision_range = 2
 	aggro_vision_range = 9

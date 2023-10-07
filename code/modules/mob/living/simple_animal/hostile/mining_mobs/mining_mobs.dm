@@ -44,6 +44,15 @@
 
 	RegisterSignals(src, list(COMSIG_PROJECTILE_PREHIT, COMSIG_ATOM_PREHITBY), PROC_REF(Aggro))
 
+/mob/living/simple_animal/hostile/asteroid/death(gibbed)
+	. = ..()
+	UnregisterSignal(src, list(COMSIG_PROJECTILE_PREHIT, COMSIG_ATOM_PREHITBY)) //uh yeah we dont want to aggro when dead
+
+/mob/living/simple_animal/hostile/asteroid/revive(full_heal_flags, excess_healing, force_grab_ghost)
+	. = ..()
+	RegisterSignals(src, list(COMSIG_PROJECTILE_PREHIT, COMSIG_ATOM_PREHITBY), PROC_REF(Aggro), TRUE)
+
+
 /mob/living/simple_animal/hostile/asteroid/Aggro()
 	..()
 	if(vision_range == aggro_vision_range && icon_aggro)
