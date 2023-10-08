@@ -31,11 +31,6 @@
 /// GAY SEX
 #define INTERACTION_CATEGORY_SEXUAL "Sexual"
 
-// ~body zone or organ that needs to be exposed on interactions, avoid using this in zones in favor of organs
-#define INTERACTION_ZONE_EXISTS (1<<0)
-#define INTERACTION_ZONE_COVERED (1<<1)
-#define INTERACTION_ZONE_UNCOVERED (1<<1)
-
 /// Factor at which genitals lose their proximity to orgasm, per second
 #define DELUST_FACTOR 0.2
 
