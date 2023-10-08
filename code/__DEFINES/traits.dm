@@ -927,6 +927,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_CHASM_DESTROYED "chasm_destroyed"
 /// Trait from being under the floor in some manner
 #define TRAIT_UNDERFLOOR "underfloor"
+/// Trait from [/datum/component/interactable] - Just to avoid using getcomponent() when it is not necessary
+#define TRAIT_INTERACTABLE "interactable"
 
 // unique trait sources, still defines
 #define EMP_TRAIT "emp_trait"
@@ -1146,7 +1148,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// the object has a label applied
 #define TRAIT_HAS_LABEL "labeled"
 
-/// some trait sorces dirived from bodyparts BODYPART_TRAIT is generic.
+// bodypart trait sources
 #define BODYPART_TRAIT "bodypart"
 #define HEAD_TRAIT "head"
 #define CHEST_TRAIT "chest"

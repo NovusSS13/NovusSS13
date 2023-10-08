@@ -426,3 +426,17 @@ GLOBAL_LIST_INIT(status_display_state_pictures, list(
 	"blank",
 	"shuttle",
 ))
+
+/// Interaction datums
+GLOBAL_LIST_EMPTY(interactions)
+
+/// Interaction datums, but by category
+GLOBAL_LIST_EMPTY(interactions_by_category)
+
+/// Order of interaction categories, for sorting
+GLOBAL_LIST_INIT(interaction_categories, list(
+	INTERACTION_CATEGORY_MEAN,
+	INTERACTION_CATEGORY_FRIENDLY,
+	INTERACTION_CATEGORY_ROMANTIC,
+	INTERACTION_CATEGORY_SEXUAL,
+))
