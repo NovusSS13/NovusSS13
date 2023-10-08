@@ -77,9 +77,9 @@
 
 			var/list/this_interaction = list()
 			this_interaction["name"] = interaction.name
-			this_interaction["path"] = interaction.type
 			this_interaction["desc"] = interaction.desc
 			this_interaction["icon"] = interaction.icon
+			this_interaction["path"] = interaction.type
 			//NOW we check the cooldown
 			this_interaction["block_interact"] = !interaction.allow_interaction(user_interactable, src, silent = TRUE, check_cooldown = TRUE)
 
@@ -99,7 +99,8 @@
 		return
 	switch(action)
 		if("interact")
-			var/datum/interaction/interaction = GLOB.interactions[params["interaction"]]
+			var/path = params["interaction"]
+			var/datum/interaction/interaction = GLOB.interactions[path]
 			if(!interaction)
 				return
 			var/datum/component/interactable/user_interactable = usr.GetComponent(/datum/component/interactable)
@@ -119,18 +120,19 @@
 /datum/component/interactable/proc/try_interact(atom/source, mob/living/user)
 	SIGNAL_HANDLER
 
+	//Should never happen, but to be sure
+	if(!HAS_TRAIT(user, TRAIT_INTERACTABLE))
+		return
+
 	if(SEND_SIGNAL(src, COMSIG_INTERACTABLE_TRYING_INTERACT, user) & COMPONENT_NO_INTERACT)
 		return COMPONENT_NO_INTERACT
 
 	var/mob/living/carbon/human/human_user = user
-	//Distance check, yes it's arbitrary
+	//Distance check - yes it's arbitrary
 	var/max_distance = 3
 	if(istype(human_user) && human_user.dna.check_mutation(/datum/mutation/human/telekinesis))
 		max_distance = DEFAULT_MESSAGE_RANGE
 	if(get_dist(parent, user) > max_distance)
-		return
-	//Should never happen, but to be sure
-	if(!HAS_TRAIT(user, TRAIT_INTERACTABLE))
 		return
 	INVOKE_ASYNC(src, PROC_REF(ui_interact), user)
 	return COMPONENT_CAN_INTERACT

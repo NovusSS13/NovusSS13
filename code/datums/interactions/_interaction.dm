@@ -105,22 +105,22 @@
 
 /datum/interaction/proc/distance_checks(datum/component/interactable/user, datum/component/interactable/target, silent = TRUE)
 	var/atom/atom_target = target.parent
-	var/mob/mob_user = user.parent //currently, user must always be a mob... will be changed later if necessary
+	var/mob/atom_user = user.parent
 	var/mob/living/carbon/human/human_user = user.parent
 	var/tk_check = istype(human_user) && human_user.dna.check_mutation(/datum/mutation/human/telekinesis) && maximum_tk_distance
 	//Adjacency check
-	if(!tk_check && (maximum_distance <= 1) && !mob_user.Adjacent(atom_target))
+	if(!tk_check && (maximum_distance <= 1) && !atom_user.Adjacent(atom_target))
 		if(!silent)
-			to_chat(mob_user, span_warning("You need physical contact to do this."))
+			to_chat(atom_user, span_warning("You need physical contact to do this."))
 		return FALSE
 	//Normal distance check
-	else if(!tk_check && maximum_distance && (get_dist(atom_target, mob_user) > maximum_distance))
+	else if(!tk_check && maximum_distance && (get_dist(atom_target, atom_user) > maximum_distance))
 		if(!silent)
-			to_chat(mob_user, span_warning("You need to get closer."))
+			to_chat(atom_user, span_warning("You need to get closer."))
 		return FALSE
-	else if(tk_check && (get_dist(atom_target, mob_user) > maximum_tk_distance))
+	else if(tk_check && (get_dist(atom_target, atom_user) > maximum_tk_distance))
 		if(!silent)
-			to_chat(mob_user, span_warning("You need to get closer"))
+			to_chat(atom_user, span_warning("You need to get closer"))
 		return FALSE
 	return TRUE
 
@@ -173,7 +173,7 @@
 	return TRUE
 
 /datum/interaction/proc/do_interaction(datum/component/interactable/user, datum/component/interactable/target)
-	var/mob/mob_user = user.parent
+	var/mob/atom_user = user.parent
 	var/message_index = 0
 	if(islist(message))
 		message_index = rand(1, length(message))
@@ -209,15 +209,17 @@
 			blind_msg = blind_message
 		blind_msg = replacetext(blind_msg, "%USER", "<b>[user.parent]</b>")
 		blind_msg = replacetext(blind_msg, "%TARGET", "<b>[target.parent]</b>")
-	mob_user.face_atom(target.parent)
+	if(ismob(user))
+		var/mob/mob_user = user
+		mob_user.face_atom(target.parent)
 	if(interaction_flags & INTERACTION_AUDIBLE)
 		//for some dumb reason, audible message does not in fact have an ignored_mobs argument so uh, get fucked?
-		mob_user.audible_message(message = msg, \
+		atom_user.audible_message(message = msg, \
 							self_message = user_msg, \
 							deaf_message = blind_msg, \
 							hearing_distance = message_range)
 	else
-		mob_user.visible_message(message = msg, \
+		atom_user.visible_message(message = msg, \
 					self_message = user_msg, \
 					blind_message = blind_msg, \
 					vision_distance = message_range,
@@ -225,7 +227,7 @@
 		if(target_msg)
 			to_chat(target.parent, target_msg)
 	if(sounds && sound_volume)
-		playsound(mob_user, pick(sounds), sound_volume, sound_vary, sound_extrarange)
+		playsound(atom_user, pick(sounds), sound_volume, sound_vary, sound_extrarange)
 	return TRUE
 
 /datum/interaction/proc/after_interact(datum/component/interactable/user, datum/component/interactable/target)
