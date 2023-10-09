@@ -2,14 +2,14 @@
 # The game will pick one of these to be displayed per round, if possible
 SPLASHTEXT 0% lag free!
 SPLASHTEXT 0% bug free!
-SPLASHTEXT More unstable than a Bethesda game!
-SPLASHTEXT Removed Buddy Loraine.
+SPLASHTEXT More stable than a Bethesda game!
 SPLASHTEXT Nominated "Worst server ever" by famous youtuber Panigity!
 SPLASHTEXT The sign is a subtle joke. The shop is called "Sneed's Feed & Seed"...
 SPLASHTEXT Come over here and kiss me on my hot mouth... I'm feeling ROMANTICAL.
 SPLASHTEXT Rise and grind - Motivational video
 SPLASHTEXT This ain't your grandma's furry server!
 SPLASHTEXT SS13's "oldest" anarchy server!
+SPLASHTEXT The server above me sucks!
 SPLASHTEXT The server below me sucks!
 SPLASHTEXT SS13 greytider eats you obby
 SPLASHTEXT lofi hip hop radio - beats to relax/study to
@@ -21,17 +21,28 @@ SPLASHTEXT Built with stolen and unlicensed assets!
 SPLASHTEXT Built with Free and Open Source Software!
 SPLASHTEXT The allegations are false!
 SPLASHTEXT Now with multiplayer!
-SPLASHTEXT Made by the most dangerous man on SS13!
-SPLASHTEXT Being locally hosted on my mom's computer!
+SPLASHTEXT Locally hosted on my mom's computer!
 SPLASHTEXT All is fair in love and war!
 SPLASHTEXT Includes raycasted 3D rendering technology!
 SPLASHTEXT Not Steam Deck certified!
 SPLASHTEXT Includes "Venom" antag!
-SPLASHTEXT Will you bite the hand that feeds?
 SPLASHTEXT The fire is gone!
 SPLASHTEXT Power for power!
-SPLASHTEXT This server is a safe space!
 SPLASHTEXT 0 players online!
-SPLASHTEXT Fuck you, Skyrat!
-SPLASHTEXT Fuck you, Bubbers!
-SPLASHTEXT Fuck you, TG!
+SPLASHTEXT Also try Mojave Sun!
+SPLASHTEXT Now with 12% less jank!
+SPlASHTEXT Now with 12% more jank!
+SPLASHTEXT A small loan of a million markings..
+SPLASHTEXT Make a change! PR a TG revert!
+SPLASHTEXT Better than the competition!
+SPLASHTEXT Smells like lemons.
+SPLASHTEXT Smells like racoons.
+SPLASHTEXT Smells like sepsis.. wait, what?
+SPLASHTEXT Also try Desert Bus 13!
+SPLASHTEXT The OOC channel has been globally disabled.
+SPLASHTEXT Alright, but what's YOUR N game completion rate?
+SPLASHTEXT Wake up. Get on E621. Sleep. Grindset.
+SPLASHTEXT You can now play as Luigi!
+SPLASHTEXT Now with 42% more soul!
+SPLASHTEXT The hidden ceiling room in maints is a lie.
+SPLASHTEXT This is just like 1984..
