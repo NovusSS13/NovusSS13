@@ -37,6 +37,13 @@
 	/// Cooldown applied to the target
 	var/target_cooldown_duraction = DEFAULT_INTERACTION_COOLDOWN
 
+
+	// When both minimum_repeat_time and maximum_repeat_time are 0, the interaction is not repeatable
+	/// Minimum time for repeating this interaction on the interface knob
+	var/minimum_repeat_time = 1 SECONDS
+	/// Maximum time for repeating this interaction on the interface knob
+	var/maximum_repeat_time = 10 SECONDS
+
 	/// How much time it takes to clear last_interaction_as_user
 	var/user_clear_time = 30 SECONDS
 	/// How much time it takes to clear last_interaction_as_target
@@ -70,6 +77,11 @@
 	. = ..()
 	build_user_types_allowed()
 	build_target_types_allowed()
+	if(interaction_flags & INTERACTION_RESPECT_COOLDOWN)
+		if(minimum_repeat_time)
+			minimum_repeat_time = clamp(minimum_repeat_time, user_cooldown_duration, user_clear_time)
+		if(maximum_repeat_time)
+			maximum_repeat_time = clamp(maximum_repeat_time, minimum_repeat_time, user_clear_time)
 
 /// Overridable proc where you can set up what atoms this interaction can be used by
 /datum/interaction/proc/build_user_types_allowed()
@@ -80,16 +92,15 @@
 	target_types_allowed = typecacheof(/mob/living/carbon/human)
 
 /datum/interaction/proc/allow_interaction(datum/component/interactable/user, datum/component/interactable/target, silent = TRUE, check_cooldown = TRUE)
-	. = FALSE
 	if(!user || !target)
 		return FALSE
 	if((user.parent == target.parent) && !(interaction_flags & INTERACTION_SELF))
 		if(!silent)
-			to_chat(user.parent, span_warning("You can only do that on other people."))
+			to_chat(user.parent, span_warning("You can only do that to yourself."))
 		return FALSE
 	else if((user.parent != target.parent) && !(interaction_flags & INTERACTION_OTHER))
 		if(!silent)
-			to_chat(user.parent, span_warning("You can only do that to yourself."))
+			to_chat(user.parent, span_warning("You can only do that on other people."))
 		return FALSE
 	if(user != target)
 		//Distance checks
@@ -99,7 +110,7 @@
 		if(!evaluate_target(user, target, silent, check_cooldown))
 			return FALSE
 	//Checks that are user specific
-	if(!evaluate_user(user, target, silent))
+	if(!evaluate_user(user, target, silent, check_cooldown))
 		return FALSE
 	return TRUE
 
@@ -126,7 +137,7 @@
 
 /datum/interaction/proc/evaluate_user(datum/component/interactable/user, datum/component/interactable/target, silent = FALSE, check_cooldown = TRUE)
 	//Type check
-	if(!is_type_in_typecache(user.parent.type, user_types_allowed))
+	if(!is_type_in_typecache(user.parent, user_types_allowed))
 		if(!silent)
 			to_chat(user.parent, span_warning("Not possible with you."))
 		return FALSE
@@ -150,7 +161,7 @@
 
 /datum/interaction/proc/evaluate_target(datum/component/interactable/user, datum/component/interactable/target, silent = FALSE, check_cooldown = TRUE)
 	//Type check
-	if(!is_type_in_list(target.parent.type, target_types_allowed))
+	if(!is_type_in_typecache(target.parent, target_types_allowed))
 		if(!silent)
 			to_chat(user.parent, span_warning("Not possible with them."))
 		return FALSE
@@ -173,7 +184,12 @@
 	return TRUE
 
 /datum/interaction/proc/do_interaction(datum/component/interactable/user, datum/component/interactable/target)
-	var/mob/atom_user = user.parent
+	do_interaction_message(user, target)
+	do_interaction_sound(user, target)
+	return TRUE
+
+/datum/interaction/proc/do_interaction_message(datum/component/interactable/user, datum/component/interactable/target)
+	var/atom/atom_user = user.parent
 	var/message_index = 0
 	if(islist(message))
 		message_index = rand(1, length(message))
@@ -226,28 +242,39 @@
 					ignored_mobs = (target_msg ? target.parent : null))
 		if(target_msg)
 			to_chat(target.parent, target_msg)
-	if(sounds && sound_volume)
-		playsound(atom_user, pick(sounds), sound_volume, sound_vary, sound_extrarange)
-	return TRUE
 
-/datum/interaction/proc/after_interact(datum/component/interactable/user, datum/component/interactable/target)
+/datum/interaction/proc/do_interaction_sound(datum/component/interactable/user, datum/component/interactable/target)
+	if(!sounds || !sound_volume)
+		return
+	playsound(user.parent, pick(sounds), sound_volume, sound_vary, sound_extrarange)
+
+/datum/interaction/proc/after_interaction(datum/component/interactable/user, datum/component/interactable/target)
 	if(user_cooldown_duration)
 		COOLDOWN_START(user, next_interaction, user_cooldown_duration)
 	if((user != target) && target_cooldown_duraction)
 		COOLDOWN_START(target, next_interaction, target_cooldown_duraction)
+	if(user.repeat_last_action)
+		if(!minimum_repeat_time && !maximum_repeat_time)
+			STOP_PROCESSING(SSinteractables, user)
+			user.repeat_last_action = null
+		else
+			user.repeat_last_action = clamp(user.repeat_last_action, minimum_repeat_time, maximum_repeat_time)
 	user.last_interaction_as_user = src
 	user.last_interaction_as_user_time = world.time
-	if(user.clear_user_interaction_timer)
+	user.last_interaction_target = WEAKREF(target)
+	if(user_clear_time)
+		user.clear_user_interaction_timer = addtimer(CALLBACK(user, TYPE_PROC_REF(/datum/component/interactable, clear_user_interaction)), user_clear_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
+	else if(user_clear_time)
 		deltimer(user.clear_user_interaction_timer)
 		user.clear_user_interaction_timer = null
-	if(user_clear_time)
-		user.clear_user_interaction_timer = addtimer(CALLBACK(user, TYPE_PROC_REF(/datum/component/interactable, clear_user_interaction), user_clear_time, TIMER_STOPPABLE))
+
 	target.last_interaction_as_target = src
 	target.last_interaction_as_target_time = world.time
-	if(target.clear_target_interaction_timer)
+	if(target_clear_time)
+		target.clear_target_interaction_timer = addtimer(CALLBACK(target, TYPE_PROC_REF(/datum/component/interactable, clear_target_interaction)), target_clear_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
+	else if(target.clear_target_interaction_timer)
 		deltimer(target.clear_target_interaction_timer)
 		target.clear_target_interaction_timer = null
-	if(target_clear_time)
-		target.clear_target_interaction_timer = addtimer(CALLBACK(user, TYPE_PROC_REF(/datum/component/interactable, clear_user_interaction), target_clear_time, TIMER_STOPPABLE))
+
 	return TRUE
 

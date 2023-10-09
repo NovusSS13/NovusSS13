@@ -1,9 +1,9 @@
 /datum/interaction/mean
 	icon = "handshake"
 	category = INTERACTION_CATEGORY_MEAN
-	interaction_flags = INTERACTION_RESPECT_COOLDOWN
+	interaction_flags = INTERACTION_OTHER | INTERACTION_RESPECT_COOLDOWN
 
-/datum/interaction/mean/middlefinger
+/datum/interaction/mean/flipoff
 	name = "Flip Them Off"
 	desc = "Tell them to fuck off!"
 	icon = "hand-middle-finger"
