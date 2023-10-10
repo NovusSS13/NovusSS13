@@ -8,12 +8,12 @@
 	/// Whether or not we can coom
 	var/can_climax = TRUE
 
+	/// The organ slot we actually provide our fluid to - If null, fill ourselves
+	var/fluid_receiving_slot
 	/// If we produce any reagent, set it here
 	var/fluid_reagent
 	/// The rate we produce fluids at, per second, when we have an owner
 	var/fluid_production_rate = 0.2 //almost 4 minutes to fill up with coom
-	/// The organ slot we actually provide our fluid to - If empty, fill ourselves
-	var/fluid_receiving_slot
 	/// Amount of fluid we expel on orgasm
 	var/fluid_amount_orgasm = 15
 	/// The splatter we create if we don't want to create a fluid flood
@@ -80,24 +80,14 @@
 			coom_holder.expose(target_turf, TOUCH)
 		if(!splatter_type)
 			target_turf.add_liquid_from_reagents(coom_holder)
-		/*
 		else
 			var/atom/movable/cummy_decal = locate(splatter_type) in target_turf
-			if(istype(splatter_type, /obj/effect/decal/cleanable/blood))
-				cummy_decal = locate(/obj/effect/decal/cleanable/blood) in target_turf
 			if(!cummy_decal)
 				cummy_decal = new splatter_type(target)
 				if(!cummy_decal.reagents)
 					cummy_decal.create_reagents(100)
 				cummy_decal.reagents.remove_all(1000)
 			coom_holder.trans_to(cummy_decal, coom_holder.total_volume, methods = methods)
-		*/
-	/*
-	if(pollutant_type)
-		var/turf/open/target_turf = get_turf(target)
-		if(istype(target_turf))
-			target_turf.pollute_turf(pollutant_type, pollutant_amount)
-	*/
 	qdel(coom_holder)
 	return TRUE
 
@@ -133,15 +123,19 @@
 
 /obj/item/organ/genital/penis
 	name = "penis"
-	desc = "A male reproductive organ."
+	desc = "Circumcision gone too far."
 	icon = 'icons/obj/medical/organs/genitals/penis.dmi'
 	icon_state = "human_2_s"
+
+	zone = BODY_ZONE_PRECISE_GROIN
+	slot = ORGAN_SLOT_PENIS
 
 	dna_block = DNA_PENIS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/penis
 
-	zone = BODY_ZONE_PRECISE_GROIN
-	slot = ORGAN_SLOT_PENIS
+	fluid_reagent = /datum/reagent/consumable/cum
+	fluid_production_rate = 0
+	splatter_type = /obj/effect/decal/cleanable/cum
 
 /obj/item/organ/genital/penis/mutate_features(list/features, mob/living/carbon/human/human)
 	. = ..()
@@ -196,7 +190,8 @@
 
 /obj/item/organ/genital/testicles
 	name = "testicles"
-	desc = "A male reproductive organ."
+	desc = "Some balls are held for charity, and some for fancy dress. \
+			But when they're held for pleasure, they're the balls that I like best."
 	icon = 'icons/obj/medical/organs/genitals/testicles.dmi'
 	icon_state = "pair_2_s"
 
@@ -207,6 +202,10 @@
 	slot = ORGAN_SLOT_TESTICLES
 
 	can_climax = FALSE
+
+	fluid_receiving_slot = ORGAN_SLOT_PENIS
+	fluid_reagent = /datum/reagent/consumable/cum
+	splatter_type = /obj/effect/decal/cleanable/cum
 
 /obj/item/organ/genital/testicles/mutate_features(list/features, mob/living/carbon/human/human)
 	. = ..()
@@ -252,7 +251,7 @@
 
 /obj/item/organ/genital/vagina
 	name = "vagina"
-	desc = "A female reproductive organ."
+	desc = "A pussy. Just like you!"
 	icon = 'icons/obj/medical/organs/genitals/vagina.dmi'
 	icon_state = "vagina_s"
 
@@ -261,6 +260,9 @@
 
 	dna_block = DNA_VAGINA_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/vagina
+
+	fluid_reagent = /datum/reagent/consumable/cum/femcum
+	splatter_type = /obj/effect/decal/cleanable/cum/femcum
 
 /obj/item/organ/genital/vagina/update_icon_state()
 	. = ..()
@@ -302,7 +304,7 @@
 
 /obj/item/organ/genital/breasts
 	name = "breasts"
-	desc = "A female secondary sexual characteristic."
+	desc = "Does not belong on reptiles."
 	icon = 'icons/obj/medical/organs/genitals/breasts.dmi'
 	icon_state = "breasts_pair_c_s"
 
@@ -313,6 +315,8 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/breasts
 
 	can_climax = FALSE
+
+	fluid_reagent = /datum/reagent/consumable/milk
 
 /obj/item/organ/genital/breasts/mutate_features(list/features, mob/living/carbon/human/human)
 	. = ..()
@@ -364,7 +368,7 @@
 
 /obj/item/organ/genital/anus
 	name = "anus"
-	desc = "Despite popular belief, this is not a sexual organ."
+	desc = "Space asshole. In a truck, flying off a ridge. Space asshole. Smashing through a bridge."
 	icon = 'icons/obj/medical/organs/genitals/anus.dmi'
 	icon_state = "anus"
 

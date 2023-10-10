@@ -40,13 +40,13 @@
 /// Returns qualities, descriptive strings for the interaction menu
 /mob/living/proc/get_interaction_qualities(temp_gender)
 	RETURN_TYPE(/list)
-	var/list/qualities = list()
+	. = list()
 	var/p_is = p_are(temp_gender)
 	var/p_has = p_have(temp_gender)
 	if(combat_mode)
-		qualities += "[p_is] acting rough"
+		. += "[p_is] acting rough"
 	else
-		qualities += "[p_is] acting gentle"
+		. += "[p_is] acting gentle"
 	switch(num_hands)
 		if(2)
 			. += "[p_has] a pair of hands."
@@ -65,4 +65,4 @@
 			. += "[p_has] no feet"
 		else
 			. += "[p_has] [num_legs] feet"
-	return qualities
+	return .

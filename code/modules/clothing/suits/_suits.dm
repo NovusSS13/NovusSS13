@@ -27,7 +27,15 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damaged[blood_overlay_type]")
-	if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_FEMCUM))
+		var/mutable_appearance/femcum = mutable_appearance('icons/effects/femcum.dmi', "[blood_overlay_type]cum")
+		femcum.color = COLOR_FEMCUM
+		. += femcum
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_CUM))
+		var/mutable_appearance/cum = mutable_appearance('icons/effects/cum.dmi', "[blood_overlay_type]cum")
+		cum.color = COLOR_CUM
+		. += cum
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_BLOOD))
 		. += mutable_appearance('icons/effects/blood.dmi', "[blood_overlay_type]blood")
 
 	var/mob/living/carbon/human/M = loc

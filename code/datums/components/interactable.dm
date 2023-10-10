@@ -234,7 +234,7 @@
 			if(!overlay?.arousal_options)
 				return FALSE
 			overlay.arousal_state = overlay.arousal_options[params["arousal_state"]]
-			carbon_parent.update_body()
+			carbon_parent.update_body_parts()
 			return TRUE
 		if("set_genital_visibility")
 			var/slot = params["slot"]
@@ -248,7 +248,7 @@
 			if(!overlay)
 				return FALSE
 			overlay.genital_visibility = params["visibility"]
-			carbon_parent.update_body()
+			carbon_parent.update_body_parts()
 			return TRUE
 
 /datum/component/interactable/ui_close(mob/user)
@@ -261,14 +261,14 @@
 /// Returns a list of descriptive qualities we have, such as "acting gentle", "clothed", etc
 /datum/component/interactable/proc/get_qualities(temp_gender)
 	RETURN_TYPE(/list)
-	var/list/qualities = list()
+	. = list()
 	if(!COOLDOWN_FINISHED(src, next_sexual_interaction))
-		qualities += "[parent.p_are(temp_gender)] sexually exhausted"
+		. += "[parent.p_are(temp_gender)] sexually exhausted"
 	if(qualities_callback)
-		qualities += qualities_callback.Invoke(temp_gender)
-	if(!length(qualities))
-		qualities += list("[parent.p_have(temp_gender)] no noteworthy qualities")
-	return qualities
+		. += qualities_callback.Invoke(temp_gender)
+	if(!length(.))
+		. += "[parent.p_have(temp_gender)] no noteworthy qualities"
+	return .
 
 /datum/component/interactable/proc/mousedrop_onto(atom/dropped_atom, atom/movable/receiver, mob/user, params)
 	SIGNAL_HANDLER

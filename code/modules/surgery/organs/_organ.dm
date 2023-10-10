@@ -228,7 +228,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		organ_owner.synchronize_bodytypes()
 	if(visual)
 		organ_owner.update_body_parts()
-
 	//we're being taken out and dropped
 	if(use_mob_sprite_as_obj_sprite)
 		update_appearance()

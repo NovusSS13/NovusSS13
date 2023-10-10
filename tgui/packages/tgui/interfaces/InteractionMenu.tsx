@@ -203,7 +203,7 @@ const InteractionsTab = (props, context) => {
                       value={repeat_last_action}
                       minValue={last_interaction.minimum_repeat_time}
                       maxValue={last_interaction.maximum_repeat_time}
-                      format={(value) => toFixed(value * 0.1) + 's'}
+                      format={(value) => toFixed(value * 0.1, 1) + 's'}
                       onChange={(e, value) =>
                         act('set_repeat_last_action', {
                           wait: value,
@@ -214,7 +214,7 @@ const InteractionsTab = (props, context) => {
                   <Stack.Item>
                     <AnimatedNumber
                       value={repeat_last_action}
-                      format={(value) => toFixed(value * 0.1) + 's'}
+                      format={(value) => toFixed(value * 0.1, 1) + 's'}
                     />
                   </Stack.Item>
                 </Stack>

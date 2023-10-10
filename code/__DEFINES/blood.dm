@@ -17,5 +17,9 @@
 #define BLOOD_STATE_XENO "xeno"
 /// Black robot oil
 #define BLOOD_STATE_OIL "oil"
+/// Cummies
+#define BLOOD_STATE_CUM "cum"
+/// Femcummies
+#define BLOOD_STATE_FEMCUM "femcum"
 /// No blood is present
 #define BLOOD_STATE_NOT_BLOODY "no blood whatsoever"

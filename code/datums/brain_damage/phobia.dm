@@ -159,7 +159,7 @@
 	random_gain = FALSE
 
 /datum/brain_trauma/mild/phobia/blood/is_scary_item(obj/checked)
-	if (GET_ATOM_BLOOD_DNA_LENGTH(checked))
+	if(HAS_TRAIT(checked, TRAIT_COVERED_IN_BLOOD))
 		return TRUE
 	return ..()
 

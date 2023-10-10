@@ -64,7 +64,15 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedhelmet")
-	if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_FEMCUM))
+		var/mutable_appearance/femcum = mutable_appearance('icons/effects/femcum.dmi', "helmetfemcum")
+		femcum.color = COLOR_FEMCUM
+		. += femcum
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_CUM))
+		var/mutable_appearance/cum = mutable_appearance('icons/effects/cum.dmi', "helmetcum")
+		cum.color = COLOR_CUM
+		. += cum
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_BLOOD))
 		if(clothing_flags & LARGE_WORN_ICON)
 			. += mutable_appearance('icons/effects/64x64.dmi', "helmetblood_large")
 		else

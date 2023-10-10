@@ -31,6 +31,22 @@
 
 	var/obscured = check_obscured_slots()
 
+	//lips
+	var/obj/item/bodypart/shoeonhead = get_bodypart(BODY_ZONE_HEAD)
+	if(shoeonhead)
+		var/list/covered_lips = list()
+		for(var/component_type in subtypesof(/datum/component/creamed))
+			var/datum/component/creamed/coom = GetComponent(component_type)
+			if(coom?.cover_lips)
+				covered_lips += coom.cover_lips
+		if((!key && !ai_controller) || !client)
+			covered_lips += span_color("drool", "#b6e7f5")
+		if(LAZYLEN(covered_lips))
+			. += "Mmm, [t_his] lips are covered with [english_list(covered_lips)]!"
+
+	//head
+	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
+		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head."
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))
 		//accessory
@@ -41,9 +57,6 @@
 				accessory_msg += " with [under.attached_accessory.get_examine_string(user)]"
 
 		. += "[t_He] [t_is] wearing [w_uniform.get_examine_string(user)][accessory_msg]."
-	//head
-	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head."
 	//suit/armor
 	if(wear_suit && !(obscured & ITEM_SLOT_OCLOTHING) && !(wear_suit.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_is] wearing [wear_suit.get_examine_string(user)]."
@@ -65,9 +78,9 @@
 	if(!(obscured & ITEM_SLOT_GLOVES))
 		if(gloves && !(gloves.item_flags & EXAMINE_SKIP))
 			. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands."
-		else if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+		else if(GET_ATOM_BLOOD_DNA_LENGTH(src) && blood_in_hands)
 			if(num_hands)
-				. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][span_bloody("blood-stained")] hand[num_hands > 1 ? "s" : ""]!")
+				. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][span_bloody("<b>blood-stained</b>")] hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed
 	if(handcuffed && !(obscured && ITEM_SLOT_HANDCUFFED))
@@ -95,7 +108,7 @@
 		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
 			. += span_warning("<B>[t_His] eyes are glowing with an [span_red("unnatural red aura")]!</B>")
 		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
-			. += span_warning("<B>[t_His] eyes are [span_bloody("bloodshot")]!</B>")
+			. += span_warning("<B>[t_His] eyes are [span_bloody("<b>bloodshot</b>")]!</B>")
 
 	//ears
 	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))

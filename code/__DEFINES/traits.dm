@@ -712,6 +712,12 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_CUSTOM_TAP_SOUND "no_tap_sound"
 /// Makes the feedback message when someone else is putting this item on you more noticeable
 #define TRAIT_DANGEROUS_OBJECT "dangerous_object"
+/// Covered in blood because of decal element, worn icon should reflect that
+#define TRAIT_COVERED_IN_BLOOD "covered_in_blood"
+/// Covered in cum because of decal element, worn icon should reflect that
+#define TRAIT_COVERED_IN_CUM "covered_in_cum"
+/// Covered in femcum because of decal element, worn icon should reflect that
+#define TRAIT_COVERED_IN_FEMCUM "covered_in_femcum"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"
