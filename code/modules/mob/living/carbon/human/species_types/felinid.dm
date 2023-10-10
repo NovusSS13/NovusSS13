@@ -15,6 +15,7 @@
 		/obj/item/organ/genital/testicles = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/anus = SPRITE_ACCESSORY_NONE,
 	)
 	inherent_traits = list(
 		TRAIT_CAN_USE_FLIGHT_POTION,

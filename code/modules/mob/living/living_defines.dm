@@ -33,6 +33,9 @@
 	///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
 	var/cloneloss = 0
 
+	/// Literally just, how close we are to cooming
+	var/lust = 0
+
 	/// Rate at which fire stacks should decay from this mob
 	var/fire_stack_decay_rate = -0.05
 

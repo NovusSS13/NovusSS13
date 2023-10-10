@@ -712,6 +712,12 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_CUSTOM_TAP_SOUND "no_tap_sound"
 /// Makes the feedback message when someone else is putting this item on you more noticeable
 #define TRAIT_DANGEROUS_OBJECT "dangerous_object"
+/// Covered in blood because of decal element, worn icon should reflect that
+#define TRAIT_COVERED_IN_BLOOD "covered_in_blood"
+/// Covered in cum because of decal element, worn icon should reflect that
+#define TRAIT_COVERED_IN_CUM "covered_in_cum"
+/// Covered in femcum because of decal element, worn icon should reflect that
+#define TRAIT_COVERED_IN_FEMCUM "covered_in_femcum"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"
@@ -927,6 +933,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_CHASM_DESTROYED "chasm_destroyed"
 /// Trait from being under the floor in some manner
 #define TRAIT_UNDERFLOOR "underfloor"
+/// Trait from [/datum/component/interactable] - Just to avoid using getcomponent() when it is not necessary
+#define TRAIT_INTERACTABLE "interactable"
 
 // unique trait sources, still defines
 #define EMP_TRAIT "emp_trait"
@@ -1146,7 +1154,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// the object has a label applied
 #define TRAIT_HAS_LABEL "labeled"
 
-/// some trait sorces dirived from bodyparts BODYPART_TRAIT is generic.
+// bodypart trait sources
 #define BODYPART_TRAIT "bodypart"
 #define HEAD_TRAIT "head"
 #define CHEST_TRAIT "chest"

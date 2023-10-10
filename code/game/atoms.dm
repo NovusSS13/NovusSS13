@@ -692,6 +692,7 @@
  * * user - The user who is doing the examining.
  */
 /atom/proc/get_id_examine_strings(mob/user)
+	RETURN_TYPE(/list)
 	. = list()
 	return
 

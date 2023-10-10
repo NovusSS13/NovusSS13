@@ -18,12 +18,8 @@
 	. = ..()
 	. += "[icon_state]"
 
-///A sixpack drawn on the chest
+/// A sixpack drawn on the chest
 /datum/bodypart_overlay/simple/sixpack
 	icon_state = "sixpack"
 	layers = EXTERNAL_ADJACENT
 
-///A creampie drawn on the head
-/datum/bodypart_overlay/simple/creampie
-	icon_state = "creampie_human"
-	layers = EXTERNAL_FRONT

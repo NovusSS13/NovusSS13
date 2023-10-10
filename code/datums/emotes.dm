@@ -111,9 +111,9 @@
 			if(!ghost.client || isnewplayer(ghost))
 				continue
 			if(ghost.client.prefs.chat_toggles & CHAT_GHOSTSIGHT && !(ghost in viewers(user_turf, null)))
-				ghost.show_message("<span class='emote'>[FOLLOW_LINK(ghost, user)] [dchatmsg]</span>")
+				ghost.show_message(span_emote("[FOLLOW_LINK(ghost, user)] [dchatmsg]"))
 	if(emote_type & (EMOTE_AUDIBLE | EMOTE_VISIBLE)) //emote is audible and visible
-		user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[span_color("[user]", user.chat_color)]</b> [msg]</span>", audible_message_flags = EMOTE_MESSAGE)
+		user.audible_message(msg, deaf_message = span_emote("You see how <b>[span_color("[user]", user.chat_color)]</b> [msg]"), audible_message_flags = EMOTE_MESSAGE)
 	else if(emote_type & EMOTE_VISIBLE)	//emote is only visible
 		user.visible_message(msg, visible_message_flags = EMOTE_MESSAGE)
 	if(emote_type & EMOTE_IMPORTANT)

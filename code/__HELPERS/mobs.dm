@@ -110,6 +110,8 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/breasts, GLOB.breasts_list, add_blank = TRUE)
 	if(!length(GLOB.vagina_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/vagina, GLOB.vagina_list, add_blank = TRUE)
+	if(!length(GLOB.anus_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/anus, GLOB.anus_list, add_blank = TRUE)
 
 	//God this is fucking
 	return(list(

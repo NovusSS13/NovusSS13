@@ -35,7 +35,7 @@
 
 /datum/status_effect/disgust/get_examine_text()
 	// Dead people don't look disgusted
-	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_FAKEDEATH))
+	if(owner.stat >= DEAD || HAS_TRAIT(owner, TRAIT_FAKEDEATH))
 		return null
 
 	switch(disgust_value)

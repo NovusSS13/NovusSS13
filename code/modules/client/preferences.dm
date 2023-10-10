@@ -384,7 +384,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				return FALSE
 			var/preview_gender = read_preference(/datum/preference/choiced/body_type)
 			if(!(preview_gender in GLOB.genders))
-				preview_gender = MALE
+				if(preview_gender == "Use gender")
+					preview_gender = read_preference(/datum/preference/choiced/body_type)
+				else
+					preview_gender = MALE
 			var/sound_file = voice_pack.get_preview_sound(preview_gender)
 			if(sound_file)
 				var/sound/voice_sound = sound(sound_file, channel = CHANNEL_VOX, volume = 80)

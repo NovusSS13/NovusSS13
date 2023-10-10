@@ -23,6 +23,32 @@
 	return initial(testicles.name)
 	*/
 
+/datum/preference/choiced/mutant/testicles_size
+	savefile_key = "feature_testicles_size"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	relevant_cosmetic_organ = /obj/item/organ/genital/testicles
+	modified_feature = "testicles_size"
+	randomize_by_default = FALSE
+
+/datum/preference/choiced/mutant/testicles_size/init_possible_values()
+	return assoc_to_keys(GLOB.testicles_size_names)
+
+/datum/preference/choiced/mutant/testicles_size/included_in_randomization_flags(randomize_flags)
+	return ..() && !!(randomize_flags & RANDOMIZE_GENITALS)
+
+/datum/preference/choiced/mutant/testicles_size/compile_constant_data()
+	var/list/data = ..()
+
+	data[CHOICED_PREFERENCE_DISPLAY_NAMES] = GLOB.penis_size_names
+
+	return data
+
+/datum/preference/choiced/mutant/testicles_size/is_accessible(datum/preferences/preferences)
+	return ..() && preferences.read_preference(/datum/preference/choiced/mutant/testicles) != SPRITE_ACCESSORY_NONE
+
+/datum/preference/choiced/mutant/testicles_size/create_default_value(datum/preferences/preferences)
+	return "2"
 
 /datum/preference/tricolor/mutant/testicles
 	savefile_key = "feature_testicles_color"

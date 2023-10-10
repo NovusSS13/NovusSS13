@@ -38,7 +38,15 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
-	if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_FEMCUM))
+		var/mutable_appearance/femcum = mutable_appearance('icons/effects/femcum.dmi', "femcummyhands")
+		femcum.color = COLOR_FEMCUM
+		. += femcum
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_CUM))
+		var/mutable_appearance/cum = mutable_appearance('icons/effects/cum.dmi', "cummyhands")
+		cum.color = COLOR_CUM
+		. += cum
+	if(HAS_TRAIT(src, TRAIT_COVERED_IN_BLOOD))
 		. += mutable_appearance('icons/effects/blood.dmi', "bloodyhands")
 
 /obj/item/clothing/gloves/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)

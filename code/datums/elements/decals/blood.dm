@@ -1,4 +1,5 @@
 /datum/element/decal/blood
+	decal_trait = TRAIT_COVERED_IN_BLOOD
 
 /datum/element/decal/blood/Attach(datum/target, _icon, _icon_state, _dir, _plane, _layer, _alpha, _color, _smoothing, _cleanable=CLEAN_TYPE_BLOOD, _description, mutable_appearance/_pic)
 	if(!isitem(target))
@@ -43,5 +44,5 @@
 
 	var/atom/A = source
 	override[EXAMINE_POSITION_ARTICLE] = A.gender == PLURAL? "some" : "a"
-	override[EXAMINE_POSITION_BEFORE] = " blood-stained "
+	override[EXAMINE_POSITION_BEFORE] = " [span_bloody("<b>blood-stained</b>")] "
 	return COMPONENT_EXNAME_CHANGED

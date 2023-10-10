@@ -63,7 +63,7 @@
 		if(flavor_holder)
 			.["headshot_link"] = flavor_holder.headshot_link //yes, this does mean headshots are only for humans. i dont want to bother about the "human headshot bleeding into borg" edge case
 			.["flavor_text"] = flavor_holder.flavor_text
-			if(!(human.get_all_covered_flags() & (GROIN|CHEST))) //is naked check. arbitrary but w/e
+			if(!(human.get_all_covered_flags_with_underwear() & (CHEST | GROIN))) //is naked check. arbitrary but w/e
 				.["naked_flavor_text"] = flavor_holder.naked_flavor_text
 		.["custom_species_name"] = flavor_holder?.custom_species_name || human.dna.species.name //also no custom species for cyborgs. ew.
 		.["custom_species_desc"] = flavor_holder?.custom_species_desc || (!flavor_holder?.custom_species_name && jointext(human.dna.species.get_species_lore(), "\n\n"))

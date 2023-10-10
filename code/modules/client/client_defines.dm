@@ -184,7 +184,7 @@
 	//Hide top bars
 	var/fullscreen = FALSE
 	//Hide status bar (bottom left)
-	var/show_status_bar = TRUE
+	var/show_status_bar = FALSE
 
 	/// datum wrapper for client view
 	var/datum/view_data/view_size

@@ -1,6 +1,8 @@
 /datum/element/decal
 	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH_ON_HOST_DESTROY
 	argument_hash_start_idx = 2
+	/// Trait we apply to the object, if any
+	var/decal_trait
 	/// Whether this decal can be cleaned.
 	var/cleanable
 	/// A description this decal appends to the target's examine message.
@@ -92,6 +94,8 @@
 		RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(examine),TRUE)
 
 	RegisterSignal(target, COMSIG_TURF_ON_SHUTTLE_MOVE, PROC_REF(shuttle_move_react),TRUE)
+	if(decal_trait)
+		ADD_TRAIT(target, decal_trait, ELEMENT_TRAIT(type))
 
 /**
  * ## generate_appearance
@@ -118,6 +122,8 @@
 	source.update_appearance(UPDATE_OVERLAYS)
 	if(isitem(source))
 		INVOKE_ASYNC(source, TYPE_PROC_REF(/obj/item/, update_slot_icon))
+	if(decal_trait)
+		REMOVE_TRAIT(source, decal_trait, ELEMENT_TRAIT(type))
 	SEND_SIGNAL(source, COMSIG_TURF_DECAL_DETACHED, description, cleanable, directional, pic)
 	return ..()
 

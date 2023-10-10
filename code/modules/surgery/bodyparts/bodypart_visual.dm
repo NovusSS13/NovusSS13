@@ -24,7 +24,7 @@
 /obj/item/bodypart/proc/synchronize_bodytypes()
 	var/final_bodytype = NONE
 	for(var/obj/item/organ/organ as anything in organs)
-		external_bodytypes |= organ.external_bodytypes
+		final_bodytype |= organ.external_bodytypes
 	external_bodytypes = final_bodytype
 	return final_bodytype
 

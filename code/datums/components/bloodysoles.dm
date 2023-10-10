@@ -95,13 +95,18 @@
 		return TRUE
 
 	parent_atom.add_blood_DNA(GET_ATOM_BLOOD_DNA(pool))
+	switch(pool.blood_state)
+		if(BLOOD_STATE_CUM)
+			parent_atom.AddElement(/datum/element/decal/cum)
+		if(BLOOD_STATE_FEMCUM)
+			parent_atom.AddElement(/datum/element/decal/femcum)
 	update_icon()
 
 /**
  * Find a blood decal on a turf that matches our last_blood_state
  */
 /datum/component/bloodysoles/proc/find_pool_by_blood_state(turf/turfLoc, typeFilter = null)
-	for(var/obj/effect/decal/cleanable/blood/pool in turfLoc)
+	for(var/obj/effect/decal/cleanable/pool in turfLoc)
 		if(pool.blood_state == last_blood_state && (!typeFilter || istype(pool, typeFilter)))
 			return pool
 
@@ -160,9 +165,11 @@
 	var/half_our_blood = bloody_shoes[last_blood_state] / 2
 
 	// Add footprints in old loc if we have enough cream
+	var/footprint_type = get_footprint_type()
 	if(half_our_blood >= BLOOD_FOOTPRINTS_MIN)
 		var/turf/oldLocTurf = get_turf(OldLoc)
-		var/obj/effect/decal/cleanable/blood/footprints/oldLocFP = find_pool_by_blood_state(oldLocTurf, /obj/effect/decal/cleanable/blood/footprints)
+		var/obj/effect/decal/cleanable/blood/footprints/oldLocFP = find_pool_by_blood_state(oldLocTurf, footprint_type) //always pretend we are stepping on blood for convenience
+		//trust me it will be ok the variables are copypasted regardless
 		if(oldLocFP)
 			// Footprints found in the tile we left, add us to it
 			add_parent_to_footprint(oldLocFP)
@@ -174,7 +181,7 @@
 			adjust_bloody_shoes(last_blood_state, half_our_blood)
 			update_icon()
 
-			oldLocFP = new(oldLocTurf)
+			oldLocFP = new footprint_type(oldLocTurf)
 			if(!QDELETED(oldLocFP)) ///prints merged
 				oldLocFP.blood_state = last_blood_state
 				oldLocFP.exited_dirs |= wielder.dir
@@ -194,7 +201,8 @@
 		adjust_bloody_shoes(last_blood_state, half_our_blood)
 		update_icon()
 
-		var/obj/effect/decal/cleanable/blood/footprints/FP = new(get_turf(parent_atom))
+		var/obj/effect/decal/cleanable/blood/footprints/FP = new footprint_type(get_turf(parent_atom)) //always pretend we are stepping on blood for convenience
+		//trust me it will be ok the variables are copypasted regardless
 		if(!QDELETED(FP)) ///prints merged
 			FP.blood_state = last_blood_state
 			FP.entered_dirs |= wielder.dir
@@ -215,9 +223,10 @@
 	if(QDELETED(wielder) || is_obscured())
 		return
 
-	if(istype(pool, /obj/effect/decal/cleanable/blood/footprints) && pool.blood_state == last_blood_state)
+	if(istype(pool, get_footprint_type()) && pool.blood_state == last_blood_state)
 		// The pool we stepped in was actually footprints with the same type
-		var/obj/effect/decal/cleanable/blood/footprints/pool_FP = pool
+		var/obj/effect/decal/cleanable/blood/footprints/pool_FP = pool //always pretend we are stepping on blood for convenience
+		//trust me it will be ok the variables are copypasted regardless
 		add_parent_to_footprint(pool_FP)
 		if((bloody_shoes[last_blood_state] / 2) >= BLOOD_FOOTPRINTS_MIN && !(pool_FP.entered_dirs & wielder.dir))
 			// If our feet are bloody enough, add an entered dir
@@ -241,12 +250,22 @@
 	update_icon()
 	return COMPONENT_CLEANED
 
+/datum/component/bloodysoles/proc/get_footprint_type()
+	var/footprint_type = /obj/effect/decal/cleanable/blood/footprints
+	switch(last_blood_state)
+		if(BLOOD_STATE_CUM)
+			footprint_type = /obj/effect/decal/cleanable/cum/footprints
+		if(BLOOD_STATE_FEMCUM)
+			footprint_type = /obj/effect/decal/cleanable/cum/footprints/femcum
+	return footprint_type
 
 /**
  * Like its parent but can be applied to carbon mobs instead of clothing items
  */
 /datum/component/bloodysoles/feet
 	var/static/mutable_appearance/bloody_feet
+	var/static/mutable_appearance/cummy_feet
+	var/static/mutable_appearance/femcummy_feet
 
 /datum/component/bloodysoles/feet/Initialize()
 	if(!iscarbon(parent))
@@ -256,6 +275,12 @@
 
 	if(!bloody_feet)
 		bloody_feet = mutable_appearance('icons/effects/blood.dmi', "shoeblood", SHOES_LAYER)
+	if(!cummy_feet)
+		cummy_feet = mutable_appearance('icons/effects/cum.dmi', "shoecum", SHOES_LAYER)
+		cummy_feet.color = COLOR_CUM
+	if(!femcummy_feet)
+		femcummy_feet = mutable_appearance('icons/effects/femcum.dmi', "shoefemcum", SHOES_LAYER)
+		femcummy_feet.color = COLOR_FEMCUM
 
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 	RegisterSignal(parent, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
@@ -265,9 +290,15 @@
 /datum/component/bloodysoles/feet/update_icon()
 	if(!ishuman(wielder) || HAS_TRAIT(wielder, TRAIT_NO_BLOOD_OVERLAY))
 		return
-	if(bloody_shoes[BLOOD_STATE_HUMAN] > 0 && !is_obscured())
+	var/chosen_overlay = bloody_feet
+	switch(last_blood_state)
+		if(BLOOD_STATE_CUM)
+			chosen_overlay = cummy_feet
+		if(BLOOD_STATE_FEMCUM)
+			chosen_overlay = femcummy_feet
+	if(bloody_shoes[last_blood_state] > 0 && !is_obscured())
 		wielder.remove_overlay(SHOES_LAYER)
-		wielder.overlays_standing[SHOES_LAYER] = bloody_feet
+		wielder.overlays_standing[SHOES_LAYER] = chosen_overlay
 		wielder.apply_overlay(SHOES_LAYER)
 	else
 		wielder.update_worn_shoes()
@@ -295,13 +326,13 @@
 	if(wielder.num_legs < 2)
 		return
 
-	..()
+	return ..()
 
 /datum/component/bloodysoles/feet/on_step_blood(datum/source, obj/effect/decal/cleanable/pool)
 	if(wielder.num_legs < 2)
 		return
 
-	..()
+	return ..()
 
 /datum/component/bloodysoles/feet/proc/unequip_shoecover(datum/source)
 	SIGNAL_HANDLER

@@ -51,10 +51,6 @@
 /datum/preference/choiced/mutant/penis_size/create_default_value(datum/preferences/preferences)
 	return "2"
 
-/datum/preference/choiced/mutant/penis_size/create_random_value(datum/preferences/preferences)
-	return create_default_value(preferences)
-
-
 /datum/preference/tricolor/mutant/penis
 	savefile_key = "feature_penis_color"
 	savefile_identifier = PREFERENCE_CHARACTER

@@ -1,0 +1,71 @@
+/**
+ * Copyright (c) 2020 Aleksej Komarov
+ * SPDX-License-Identifier: MIT
+ */
+
+@use 'sass:color';
+@use 'sass:meta';
+
+@use '../colors.scss' with (
+   $primary: #763b7e,
+   $fg-map-keys: (),
+   $bg-map-keys: (),
+ );
+@use '../base.scss' with (
+   $color-bg: #5e0b57,
+   $color-bg-grad-spread: 10%,
+   $border-radius: 2px,
+ );
+
+.theme-cutesy {
+  // Atomic classes
+  @include meta.load-css('../atomic/color.scss');
+
+  // Components
+  @include meta.load-css(
+    '../components/Button.scss',
+    $with: (
+      'color-default': #c765aa,
+      'color-disabled': #712a80,
+      'color-selected': #e500c6,
+      'color-caution': #8d257c,
+      'color-danger': #b31e69
+    )
+  );
+  @include meta.load-css(
+    '../components/BlockQuote.scss',
+    $with: ('color-default': #cf89ba)
+  );
+  @include meta.load-css(
+    '../components/Input.scss',
+    $with: ('border-color': #795288)
+  );
+  @include meta.load-css(
+    '../components/NoticeBox.scss',
+    $with: ('background-color': #8d4a9c)
+  );
+  @include meta.load-css('../components/Section.scss');
+  .Tab {
+    color: #a46e94;
+  }
+
+  .Tab--selected {
+    color: #dd92c7;
+  }
+  @include meta.load-css(
+    '../components/Tooltip.scss',
+    $with: ('background-color': #602a61)
+  );
+
+  // Layouts
+  @include meta.load-css('../layouts/Layout.scss');
+  @include meta.load-css('../layouts/Window.scss');
+  @include meta.load-css(
+    '../layouts/TitleBar.scss',
+    $with: ('background-color': #8f2599)
+  );
+
+  .Layout__content {
+    background-image: url('../../assets/bg-cutesy.svg');
+  }
+}

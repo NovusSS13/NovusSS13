@@ -43,7 +43,7 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 	//Not incompatible, but pointless
 	if((acid_power <= 0) || (acid_volume <= 0))
 		qdel(src)
-		stack_trace("Tried to add /datum/component/acid to an atom ([atom_parent.type]) with insufficient acid power ([acid_power]) or acid volume ([acid_volume]).")
+		stack_trace("Tried to add [type] to an atom ([atom_parent.type]) with insufficient acid power ([acid_power]) or acid volume ([acid_volume]).")
 		return
 
 	if(isliving(parent))
@@ -59,7 +59,7 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 		src.process_effect = CALLBACK(src, PROC_REF(process_movable), parent)
 	//or not...
 	else
-		stack_trace("Tried to add /datum/component/acid to an atom ([atom_parent.type]) which does not use atom_integrity!")
+		stack_trace("Tried to add [type] to an atom ([atom_parent.type]) which does not use atom_integrity!")
 		return COMPONENT_INCOMPATIBLE
 
 	src.acid_power = acid_power

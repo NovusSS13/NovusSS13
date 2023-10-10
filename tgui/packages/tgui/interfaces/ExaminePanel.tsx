@@ -3,8 +3,22 @@ import { useBackend, useLocalState } from '../backend';
 import { ByondUi, Flex, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 
+type Data = {
+  mob_type: string;
+  character_name: string;
+  assigned_map: string;
+  flavor_text: string;
+  naked_flavor_text: string;
+  temporary_flavor_text: string;
+  custom_species_name: string;
+  custom_species_desc: string;
+  unobscured: boolean;
+  ooc_notes: string;
+  headshot_link: string;
+};
+
 export const ExaminePanel = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend<Data>(context);
   const {
     mob_type,
     character_name,
@@ -33,8 +47,17 @@ export const ExaminePanel = (props, context) => {
     'tab-index',
     flavor_text ? 0 : naked_flavor_text ? 1 : temporary_flavor_text ? 2 : 0 // this is ass
   );
-  const make_tabs =
-    !!flavor_text + !!naked_flavor_text + !!temporary_flavor_text > 1;
+  let tab_amount = 0;
+  if (flavor_text) {
+    tab_amount++;
+  }
+  if (naked_flavor_text) {
+    tab_amount++;
+  }
+  if (temporary_flavor_text) {
+    tab_amount++;
+  }
+  const make_tabs = tab_amount > 1;
   const cs_name =
     (mob_type === 'ai' && 'AI Core') ||
     (mob_type === 'cyborg' && 'Cyborg') ||

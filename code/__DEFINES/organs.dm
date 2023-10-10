@@ -38,9 +38,9 @@
 // genitalia
 #define ORGAN_SLOT_PENIS "penis"
 #define ORGAN_SLOT_TESTICLES "testicles" //no bob im not adding 2 slots for each testicle //fuck you
-#define ORGAN_SLOT_BREASTS "breasts"
 #define ORGAN_SLOT_VAGINA "vagina"
-#define ORGAN_SLOT_WOMB "womb"
+#define ORGAN_SLOT_BREASTS "breasts"
+#define ORGAN_SLOT_ANUS "anus"
 
 // xenomorph organ slots
 #define ORGAN_SLOT_XENO_ACIDGLAND "acid_gland"
@@ -161,4 +161,9 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_EXTERNAL_BODYMARKINGS,
 	ORGAN_SLOT_EXTERNAL_MUSHROOM_CAP,
 	ORGAN_SLOT_EXTERNAL_POD_HAIR,
+	ORGAN_SLOT_PENIS,
+	ORGAN_SLOT_TESTICLES,
+	ORGAN_SLOT_VAGINA,
+	ORGAN_SLOT_BREASTS,
+	ORGAN_SLOT_ANUS,
 ))

@@ -14,7 +14,15 @@
 	if(body_parts_covered & HEAD)
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
-		if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+		if(HAS_TRAIT(src, TRAIT_COVERED_IN_FEMCUM))
+			var/mutable_appearance/femcum = mutable_appearance('icons/effects/femcum.dmi', "maskfemcum")
+			femcum.color = COLOR_FEMCUM
+			. += femcum
+		if(HAS_TRAIT(src, TRAIT_COVERED_IN_CUM))
+			var/mutable_appearance/cum = mutable_appearance('icons/effects/cum.dmi', "maskcum")
+			cum.color = COLOR_CUM
+			. += cum
+		if(HAS_TRAIT(src, TRAIT_COVERED_IN_BLOOD))
 			. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 
 /obj/item/clothing/neck/tie

@@ -425,6 +425,25 @@ em {
   font-weight: bold;
 }
 
+.userlove {
+  color: #ff57cd;
+  text-shadow: 0 0 6px #e72b8f;
+  font-style: italic;
+  font-size: 110%;
+}
+
+.love {
+  color: #ff45c7;
+  font-style: italic;
+  text-shadow: 0 0 6px #cc77ee;
+}
+
+.horny {
+  color: #ff4591;
+  font-style: italic;
+  text-shadow: 0 0 3px #9b4e77;
+}
+
 .announce {
   color: #c51e1e;
   font-weight: bold;
@@ -576,6 +595,10 @@ em {
   color: #973e3b;
   font-weight: bold;
   font-size: 370%;
+}
+
+.bloody {
+  color: #cc0f0f;
 }
 
 .colossus {

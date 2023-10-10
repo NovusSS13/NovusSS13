@@ -97,11 +97,13 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		"penis_size" = DNA_PENIS_SIZE_BLOCK,
 		"testicles" = DNA_TESTICLES_BLOCK,
 		"testicles_color" = DNA_TESTICLES_COLOR_BLOCK,
+		"testicles_size" = DNA_TESTICLES_SIZE_BLOCK,
 		"vagina" = DNA_VAGINA_BLOCK,
 		"vagina_color" = DNA_VAGINA_COLOR_BLOCK,
 		"breasts" = DNA_BREASTS_BLOCK,
 		"breasts_color" = DNA_BREASTS_COLOR_BLOCK,
 		"breasts_size" = DNA_BREASTS_SIZE_BLOCK,
+		"anus" = DNA_ANUS_BLOCK,
 	)
 	var/marking_block = DNA_MAIN_FEATURE_BLOCKS
 	for(var/zone in GLOB.marking_zones)
@@ -309,6 +311,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		L[DNA_TESTICLES_BLOCK] = construct_block(GLOB.testicles_list.Find(features["testicles"]), GLOB.testicles_list.len)
 	if(features["testicles_color"])
 		L[DNA_TESTICLES_COLOR_BLOCK] = serialize_dna_tricolor(features["testicles_color"])
+	if(features["testicles_size"])
+		L[DNA_TESTICLES_SIZE_BLOCK] = construct_block(GLOB.testicles_size_names.Find(features["testicles_size"]), GLOB.testicles_size_names.len)
 	if(features["vagina"])
 		L[DNA_VAGINA_BLOCK] = construct_block(GLOB.vagina_list.Find(features["vagina"]), GLOB.vagina_list.len)
 	if(features["vagina_color"])
@@ -319,6 +323,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		L[DNA_BREASTS_COLOR_BLOCK] = serialize_dna_tricolor(features["breasts_color"])
 	if(features["breasts_size"])
 		L[DNA_BREASTS_SIZE_BLOCK] = construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len)
+	if(features["anus"])
+		L[DNA_ANUS_BLOCK] = construct_block(GLOB.anus_list.Find(features["anus"]), GLOB.anus_list.len)
 	//awfulness ends here
 
 	for(var/blocknum in 1 to DNA_MAIN_FEATURE_BLOCKS)
@@ -490,6 +496,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.testicles_list.Find(features["testicles"]), GLOB.testicles_list.len))
 		if(DNA_TESTICLES_COLOR_BLOCK)
 			set_uni_feature_block(blocknumber, serialize_dna_tricolor(features["testicles_color"]))
+		if(DNA_TESTICLES_SIZE_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.testicles_size_names.Find(features["testicles_size"]), GLOB.testicles_size_names.len))
 		if(DNA_VAGINA_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.vagina_list.Find(features["vagina"]), GLOB.vagina_list.len))
 		if(DNA_VAGINA_COLOR_BLOCK)
@@ -500,6 +508,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 			set_uni_feature_block(blocknumber, serialize_dna_tricolor(features["breasts_color"]))
 		if(DNA_BREASTS_SIZE_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.breasts_size_names.Find(features["breasts_size"]), GLOB.breasts_size_names.len))
+		if(DNA_ANUS_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.anus_list.Find(features["anus"]), GLOB.anus_list.len))
 
 		else
 			//it's a marking, we have to do shady shit to get this working
@@ -812,6 +822,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		dna.features["testicles"] = GLOB.testicles_list[deconstruct_block(get_uni_feature_block(features, DNA_TESTICLES_BLOCK), GLOB.testicles_list.len)]
 	if(dna.features["testicles_color"])
 		dna.features["testicles_color"] = unserialize_dna_tricolor(get_uni_feature_block(features, DNA_TESTICLES_COLOR_BLOCK))
+	if(dna.features["testicles_size"])
+		dna.features["testicles_size"] = GLOB.testicles_size_names[deconstruct_block(get_uni_feature_block(features, DNA_TESTICLES_SIZE_BLOCK), GLOB.testicles_size_names.len)]
 	if(dna.features["vagina"])
 		dna.features["vagina"] = GLOB.vagina_list[deconstruct_block(get_uni_feature_block(features, DNA_VAGINA_BLOCK), GLOB.vagina_list.len)]
 	if(dna.features["vagina_color"])
@@ -822,6 +834,8 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		dna.features["breasts_color"] = unserialize_dna_tricolor(get_uni_feature_block(features, DNA_BREASTS_COLOR_BLOCK))
 	if(dna.features["breasts_size"])
 		dna.features["breasts_size"] = GLOB.breasts_size_names[deconstruct_block(get_uni_feature_block(features, DNA_BREASTS_SIZE_BLOCK), GLOB.breasts_size_names.len)]
+	if(dna.features["anus"])
+		dna.features["anus"] = GLOB.anus_list[deconstruct_block(get_uni_feature_block(features, DNA_ANUS_BLOCK), GLOB.anus_list.len)]
 
 	//now that we handled the main DNA blocks, it's time to do markings
 	var/dna_block = DNA_MAIN_FEATURE_BLOCKS

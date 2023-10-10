@@ -46,14 +46,21 @@ GLOBAL_LIST_EMPTY(pod_hair_list)
 	//Human bits bits
 GLOBAL_LIST_EMPTY(penis_list)
 GLOBAL_LIST_EMPTY(testicles_list)
-GLOBAL_LIST_EMPTY(breasts_list)
 GLOBAL_LIST_EMPTY(vagina_list)
+GLOBAL_LIST_EMPTY(breasts_list)
+GLOBAL_LIST_EMPTY(anus_list)
 
 GLOBAL_LIST_INIT(penis_size_names, list(
-	"1" = "Tiny",
+	"1" = "Small",
 	"2" = "Average",
 	"3" = "Big",
-	"4" = "Enormous"
+	"4" = "Enormous",
+))
+
+GLOBAL_LIST_INIT(testicles_size_names, list(
+	"1" = "Small",
+	"2" = "Average",
+	"3" = "Big",
 ))
 
 GLOBAL_LIST_INIT(breasts_size_names, list(
@@ -425,4 +432,18 @@ GLOBAL_LIST_INIT(status_display_approved_pictures, list(
 GLOBAL_LIST_INIT(status_display_state_pictures, list(
 	"blank",
 	"shuttle",
+))
+
+/// Interaction datums
+GLOBAL_LIST_EMPTY(interactions)
+
+/// Interaction datums, but by category
+GLOBAL_LIST_EMPTY(interactions_by_category)
+
+/// Order of interaction categories, for sorting
+GLOBAL_LIST_INIT(interaction_categories, list(
+	INTERACTION_CATEGORY_MEAN,
+	INTERACTION_CATEGORY_FRIENDLY,
+	INTERACTION_CATEGORY_ROMANTIC,
+	INTERACTION_CATEGORY_SEXUAL,
 ))

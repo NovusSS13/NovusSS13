@@ -39,6 +39,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/testicles, GLOB.testicles_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/breasts, GLOB.breasts_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/vagina, GLOB.vagina_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/genital/anus, GLOB.anus_list, add_blank = TRUE)
 
 	//markings are dumb
 	init_body_markings()
@@ -93,6 +94,7 @@
 	init_voice_packs()
 	init_keybindings()
 	GLOB.emote_list = init_emote_list() // WHY DOES THIS NEED TO GO HERE? IT JUST INITS DATUMS
+	init_interactions()
 	init_crafting_recipes()
 	init_crafting_recipes_atoms()
 
@@ -222,6 +224,20 @@
 			continue
 		GLOB.voice_packs[voice_pack.name] = voice_pack
 		GLOB.voice_packs_by_type[voice_pack.type] = voice_pack
+
+//creates every interaction datum and adds them to the correct lists
+/proc/init_interactions()
+	for(var/datum/interaction/interaction as anything in init_subtypes(/datum/interaction))
+		//probably an abstract type
+		if(!interaction.name)
+			continue
+		GLOB.interactions[interaction.type] = interaction
+		if(interaction.category)
+			LAZYADDASSOC(GLOB.interactions_by_category[interaction.category], interaction.type, interaction)
+	sort_list(GLOB.interactions_by_category, GLOBAL_PROC_REF(cmp_interaction_categories_asc))
+
+/proc/cmp_interaction_categories_asc(category_a, category_b)
+	return GLOB.interaction_categories.Find(category_a) - GLOB.interaction_categories.Find(category_b)
 
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.
