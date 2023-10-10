@@ -253,7 +253,7 @@ const SpeciesPageInner = (
       <Stack.Item grow>
         <Stack fill>
           <Stack.Item>
-            <Box height="calc(100vh - 170px)" overflowY="auto" pr={3}>
+            <Box height="calc(100vh - 170px)" scrollable pr={3}>
               {species.map(([speciesKey, species]) => {
                 return (
                   <Button
@@ -339,14 +339,15 @@ const SpeciesPageInner = (
 export const SpeciesPage = (props: { closeSpecies: () => void }) => {
   return (
     <ServerPreferencesFetcher
-      render={(serverData: ServerData | null) => {
+      render={(serverData: ServerData | undefined) => {
         if (!serverData) return <Box>Loading species...</Box>;
 
         const filtered_species: Record<string, Species> = {};
 
         Object.keys(serverData.species).forEach((x) => {
-          if (serverData.species[x].is_selectable)
+          if (serverData.species[x].is_selectable) {
             filtered_species[x] = serverData.species[x];
+          }
         });
 
         return (

@@ -1,0 +1,8 @@
+/datum/interaction/saygex
+	icon = "heart"
+	category = INTERACTION_CATEGORY_SEXUAL
+	usage_flags = INTERACTION_OTHER
+	interaction_flags = INTERACTION_COOLDOWN | INTERACTION_SEX_COOLDOWN | INTERACTION_USER_LUST | INTERACTION_TARGET_LUST | INTERACTION_USER_CLIMAX | INTERACTION_TARGET_CLIMAX
+	lust_gain_user = LUST_GAIN_NORMAL
+	lust_gain_target = LUST_GAIN_NORMAL
+	sound_volume = 75

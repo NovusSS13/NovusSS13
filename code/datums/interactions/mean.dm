@@ -1,7 +1,7 @@
 /datum/interaction/mean
 	icon = "handshake"
+	color = "bad"
 	category = INTERACTION_CATEGORY_MEAN
-	interaction_flags = INTERACTION_OTHER | INTERACTION_RESPECT_COOLDOWN
 
 /datum/interaction/mean/flipoff
 	name = "Flip Them Off"

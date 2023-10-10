@@ -1,7 +1,7 @@
 /datum/interaction/friendly
 	icon = "handshake"
+	color = "good"
 	category = INTERACTION_CATEGORY_FRIENDLY
-	interaction_flags = INTERACTION_OTHER | INTERACTION_RESPECT_COOLDOWN
 
 /datum/interaction/friendly/handshake
 	name = "Handshake"
@@ -13,7 +13,7 @@
 	user_hands_required = 1
 	target_hands_required = 1
 	sounds = 'sound/weapons/thudswoosh.ogg'
-	sound_vary = 1
+	sound_vary = TRUE
 	sound_extrarange = -1
 
 /datum/interaction/friendly/hug
@@ -25,7 +25,7 @@
 	target_message = span_notice("%USER hugs you.")
 	user_hands_required = 1
 	sounds = 'sound/weapons/thudswoosh.ogg'
-	sound_vary = 1
+	sound_vary = TRUE
 	sound_extrarange = -1
 
 /*
@@ -37,14 +37,14 @@
 /datum/interaction/friendly/headpat
 	name = "Headpat"
 	desc = "Pat their head! How nice."
+	icon = "hand-paper"
 	message = span_notice("%USER pats %TARGET's head.")
 	user_message = span_notice("You pat %TARGET's head.")
 	target_message = span_notice("%USER pats your head.")
 	user_hands_required = 1
 	sounds = 'sound/weapons/thudswoosh.ogg'
-	sound_vary = 1
+	sound_vary = TRUE
 	sound_extrarange = -1
-	icon = "hand-paper"
 
 /datum/interaction/friendly/headpat/evaluate_target(datum/component/interactable/user, datum/component/interactable/target, silent = FALSE)
 	. = ..()

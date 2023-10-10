@@ -516,7 +516,7 @@ export const MarkingsPage = (props, context) => {
             <Stack width="100%" height="100%">
               {stacks.map((stack, index) => (
                 <Stack.Item grow key={index}>
-                  <Section overflowX="hidden" overflowY="auto" fill>
+                  <Section overflowX="hidden" scrollable fill>
                     <Stack vertical>
                       {stack.map((zone) => (
                         <ZoneItem key={zone.body_zone} zone={zone} />

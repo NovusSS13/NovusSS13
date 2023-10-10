@@ -65,11 +65,20 @@
 
 		handle_gravity(seconds_per_tick, times_fired)
 
+		handle_lust(seconds_per_tick, times_fired)
+
 	if(machine)
 		machine.check_eye(src)
 
 	if(stat != DEAD)
 		return 1
+
+/mob/living/proc/handle_lust(seconds_per_tick, times_fired)
+	var/lust_amount = get_lust()
+	if(lust_amount >= LUST_CLIMAX)
+		handle_climax()
+	else if(lust_amount)
+		adjust_lust(-DELUST_FACTOR * seconds_per_tick)
 
 /mob/living/proc/handle_breathing(seconds_per_tick, times_fired)
 	SEND_SIGNAL(src, COMSIG_LIVING_HANDLE_BREATHING, seconds_per_tick, times_fired)

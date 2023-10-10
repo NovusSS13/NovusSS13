@@ -77,6 +77,8 @@
 
 //More efficient than add_liquid for multiples
 /turf/proc/add_liquid_list(reagent_list, no_react = FALSE, chem_temp = 300)
+	if(!length(reagent_list))
+		return
 	if(!liquids)
 		liquids = new(src)
 	if(liquids.immutable)
@@ -124,6 +126,8 @@
 		lgroup.dirty = TRUE
 
 /turf/proc/add_liquid(reagent, amount, no_react = FALSE, chem_temp = 300)
+	if(!reagent)
+		return
 	if(!liquids)
 		liquids = new(src)
 	if(liquids.immutable)

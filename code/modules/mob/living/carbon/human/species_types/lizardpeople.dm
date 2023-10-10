@@ -21,6 +21,7 @@
 		/obj/item/organ/genital/testicles = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/anus = SPRITE_ACCESSORY_NONE,
 	)
 	body_marking_sets = list(
 		"Dark Tiger Body",

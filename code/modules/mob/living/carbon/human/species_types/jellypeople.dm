@@ -22,6 +22,7 @@
 		/obj/item/organ/genital/testicles = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/breasts = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/genital/anus = SPRITE_ACCESSORY_NONE,
 	)
 	mutanttongue = /obj/item/organ/tongue/jelly
 	mutantlungs = /obj/item/organ/lungs/slime

@@ -37,6 +37,15 @@ export const feature_testicles: FeatureChoiced = {
   },
 };
 
+export const feature_testicles_size: FeatureChoiced = {
+  name: 'Testicles size',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
 export const feature_testicles_skintone: FeatureToggle = {
   name: 'Testicles uses skintone',
   component: CheckboxInput,
@@ -92,4 +101,13 @@ export const feature_breasts_skintone: FeatureToggle = {
 export const feature_breasts_color: FeatureToggle = {
   name: 'Breasts color',
   component: FeatureTriColorInput,
+};
+
+export const feature_anus: FeatureChoiced = {
+  name: 'Anus',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
 };

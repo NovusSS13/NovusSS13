@@ -31,7 +31,7 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-	AddComponent(/datum/component/interactable)
+	AddComponent(/datum/component/interactable, CALLBACK(src, TYPE_PROC_REF(/mob/living/, get_interaction_qualities)))
 	//Humans always need an examine panel
 	examine_panel = new(src)
 	GLOB.human_list += src

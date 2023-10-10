@@ -1,7 +1,7 @@
 /datum/interaction/romance
 	icon = "heart"
 	category = INTERACTION_CATEGORY_ROMANTIC
-	interaction_flags = INTERACTION_OTHER | INTERACTION_RESPECT_COOLDOWN | INTERACTION_USER_LUST | INTERACTION_TARGET_LUST | INTERACTION_USER_CLIMAX | INTERACTION_TARGET_CLIMAX
+	interaction_flags = INTERACTION_COOLDOWN | INTERACTION_USER_LUST | INTERACTION_TARGET_LUST
 
 /datum/interaction/romance/handholding
 	name = "Handholding"
@@ -46,8 +46,6 @@
 	message = span_horny("%USER kisses %TARGET's lips.")
 	user_message = span_horny("You kiss %TARGET's lips.")
 	target_message = span_horny("%USER kisses your lips.")
-	arousal_gain_target = AROUSAL_GAIN_LOW
-	arousal_gain_user = AROUSAL_GAIN_LOW
 
 /datum/interaction/romance/kiss/evaluate_user(datum/component/interactable/user, datum/component/interactable/target, silent)
 	. = ..()
@@ -81,4 +79,3 @@
 			if(!silent)
 				to_chat(user, span_warning("Their mouth is covered!"))
 			return FALSE
-

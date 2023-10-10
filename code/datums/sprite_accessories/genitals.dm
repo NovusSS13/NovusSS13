@@ -116,3 +116,10 @@
 	icon_state = "sextuple"
 	max_size = 5
 	examine_name_override = "a sextuplet"
+
+/datum/sprite_accessory/genital/anus
+	icon = 'icons/mob/species/sprite_accessory/genitals/anus_onmob.dmi'
+
+/datum/sprite_accessory/genital/anus/human
+	name = "Human"
+	icon_state = "human"

@@ -46,14 +46,21 @@ GLOBAL_LIST_EMPTY(pod_hair_list)
 	//Human bits bits
 GLOBAL_LIST_EMPTY(penis_list)
 GLOBAL_LIST_EMPTY(testicles_list)
-GLOBAL_LIST_EMPTY(breasts_list)
 GLOBAL_LIST_EMPTY(vagina_list)
+GLOBAL_LIST_EMPTY(breasts_list)
+GLOBAL_LIST_EMPTY(anus_list)
 
 GLOBAL_LIST_INIT(penis_size_names, list(
-	"1" = "Tiny",
+	"1" = "Small",
 	"2" = "Average",
 	"3" = "Big",
-	"4" = "Enormous"
+	"4" = "Enormous",
+))
+
+GLOBAL_LIST_INIT(testicles_size_names, list(
+	"1" = "Small",
+	"2" = "Average",
+	"3" = "Big",
 ))
 
 GLOBAL_LIST_INIT(breasts_size_names, list(

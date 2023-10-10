@@ -44,7 +44,7 @@
 		valid_restyles += accessory_datum
 	//no restyles? this is fucked
 	if(!length(valid_restyles))
-		CRASH("[type] had no available valid appearances on get_random_appearance()!")
+		CRASH("[type] had no available valid appearances on get_random_sprite_accessory()!")
 	return pick(valid_restyles)
 
 ///Returns a list of strings that gets used to build the icon_state for the image on get_image()
