@@ -8,7 +8,6 @@ import { AntagsPage } from './AntagsPage';
 import { JobsPage } from './JobsPage';
 import { MainPage } from './MainPage';
 import { MarkingsPage } from './MarkingsPage';
-import { BackgroundPage } from './BackgroundPage';
 import { SpeciesPage } from './SpeciesPage';
 import { QuirksPage } from './QuirksPage';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
@@ -99,11 +98,6 @@ export const CharacterPreferenceWindow = (props, context) => {
         <MarkingsPage openSpecies={() => setCurrentPage(Page.Species)} />
       );
       break;
-    case Page.Background:
-      pageContents = (
-        <BackgroundPage openSpecies={() => setCurrentPage(Page.Species)} />
-      );
-      break;
     case Page.Species:
       pageContents = (
         <SpeciesPage closeSpecies={() => setCurrentPage(Page.Main)} />
@@ -127,112 +121,98 @@ export const CharacterPreferenceWindow = (props, context) => {
             </Stack.Item>
           ) : (
             <Stack.Item>
-              <Stack justify="center" fill>
+              <Stack vertical justify="center" fill>
                 <Stack.Item>
-                  <Stack vertical fill fluid>
+                  <Stack justify="center" fill>
                     <Stack.Item>
-                      <Stack>
-                        <Stack.Item>
-                          <ServerPreferencesFetcher
-                            render={(render_data: ServerData | undefined) => {
-                              if (!render_data) {
-                                return <Box>Loading categories..</Box>;
-                              }
+                      <ServerPreferencesFetcher
+                        render={(render_data: ServerData | undefined) => {
+                          if (!render_data) {
+                            return <Box>Loading categories..</Box>;
+                          }
 
-                              const ghost_role_data: Record<string, GhostRole> =
-                                render_data.ghost_role_data;
+                          const ghost_role_data: Record<string, GhostRole> =
+                            render_data.ghost_role_data;
 
-                              const categoryoptions: string[] = ['Main'];
-                              const categorykeys: string[] = ['main'];
-                              let active_slot_name = 'Main';
-                              Object.keys(ghost_role_data).map((key, index) => {
-                                categoryoptions.push(
-                                  ghost_role_data[key].slot_name
-                                );
-                                categorykeys.push(
-                                  ghost_role_data[key].savefile_key
-                                );
+                          const categoryoptions: string[] = ['Main'];
+                          const categorykeys: string[] = ['main'];
+                          let active_slot_name = 'Main';
+                          Object.keys(ghost_role_data).map((key, index) => {
+                            categoryoptions.push(
+                              ghost_role_data[key].slot_name
+                            );
+                            categorykeys.push(
+                              ghost_role_data[key].savefile_key
+                            );
+                            if (
+                              ghost_role_data[key].savefile_key ===
+                              data.active_slot_key
+                            ) {
+                              active_slot_name = ghost_role_data[key].slot_name;
+                            }
+                          });
+                          const [currentSlot, setCurrentSlot] = useLocalState(
+                            context,
+                            'currentSlot',
+                            data.character_profiles[data.active_slot_key][
+                              data.active_slot_ids[data.active_slot_key] - 1
+                            ]
+                          );
+
+                          return (
+                            <Dropdown
+                              minWidth={10}
+                              justify="center"
+                              selected={active_slot_name || 'Main'}
+                              options={categoryoptions}
+                              onSelected={(category_name: string) => {
                                 if (
-                                  ghost_role_data[key].savefile_key ===
-                                  data.active_slot_key
+                                  currentPage === Page.Species ||
+                                  currentPage === Page.Antags ||
+                                  currentPage === Page.Jobs
                                 ) {
-                                  active_slot_name =
-                                    ghost_role_data[key].slot_name;
+                                  setCurrentPage(Page.Main);
                                 }
-                              });
-                              const [currentSlot, setCurrentSlot] =
-                                useLocalState(
-                                  context,
-                                  'currentSlot',
+                                setCurrentSlot(
                                   data.character_profiles[data.active_slot_key][
                                     data.active_slot_ids[data.active_slot_key] -
                                       1
                                   ]
                                 );
-
-                              return (
-                                <Dropdown
-                                  minWidth={10}
-                                  justify="center"
-                                  selected={active_slot_name || 'Main'}
-                                  options={categoryoptions}
-                                  onSelected={(category_name: string) => {
-                                    if (
-                                      currentPage === Page.Species ||
-                                      currentPage === Page.Antags ||
-                                      currentPage === Page.Jobs
-                                    ) {
-                                      setCurrentPage(Page.Main);
-                                    }
-                                    setCurrentSlot(
-                                      data.character_profiles[
-                                        data.active_slot_key
-                                      ][
-                                        data.active_slot_ids[
-                                          data.active_slot_key
-                                        ] - 1
-                                      ]
-                                    );
-                                    act('change_category', {
-                                      slot_key:
-                                        categorykeys[
-                                          categoryoptions.indexOf(category_name)
-                                        ] || 'Main',
-                                    });
-                                  }}
-                                />
-                              );
-                            }}
-                          />
-                        </Stack.Item>
-                        <Stack.Item>
-                          <CharSlots
-                            profiles={
-                              data.character_profiles[data.active_slot_key]
-                            }
-                            activeSlot={
-                              data.active_slot_ids[data.active_slot_key]
-                            }
-                            slotKey={data.active_slot_key}
-                            maxSlots={
-                              data.active_slot_key === 'main'
-                                ? data.max_slots_main
-                                : data.max_slots_ghost
-                            }
-                            onClick={(action, object) => {
-                              act(action, object);
-                            }}
-                          />
-                        </Stack.Item>
-                      </Stack>
+                                act('change_category', {
+                                  slot_key:
+                                    categorykeys[
+                                      categoryoptions.indexOf(category_name)
+                                    ] || 'Main',
+                                });
+                              }}
+                            />
+                          );
+                        }}
+                      />
                     </Stack.Item>
-                    {!data.content_unlocked && (
-                      <Stack.Item align="center">
-                        Buy BYOND premium for more slots!
-                      </Stack.Item>
-                    )}
+                    <Stack.Item>
+                      <CharSlots
+                        profiles={data.character_profiles[data.active_slot_key]}
+                        activeSlot={data.active_slot_ids[data.active_slot_key]}
+                        slotKey={data.active_slot_key}
+                        maxSlots={
+                          data.active_slot_key === 'main'
+                            ? data.max_slots_main
+                            : data.max_slots_ghost
+                        }
+                        onClick={(action, object) => {
+                          act(action, object);
+                        }}
+                      />
+                    </Stack.Item>
                   </Stack>
                 </Stack.Item>
+                {!data.content_unlocked && (
+                  <Stack.Item align="center">
+                    Buy BYOND premium for more slots!
+                  </Stack.Item>
+                )}
               </Stack>
             </Stack.Item>
           )}
@@ -256,15 +236,6 @@ export const CharacterPreferenceWindow = (props, context) => {
                   page={Page.Markings}
                   setPage={setCurrentPage}>
                   Markings
-                </PageButton>
-              </Stack.Item>
-
-              <Stack.Item grow>
-                <PageButton
-                  currentPage={currentPage}
-                  page={Page.Background}
-                  setPage={setCurrentPage}>
-                  Background
                 </PageButton>
               </Stack.Item>
 

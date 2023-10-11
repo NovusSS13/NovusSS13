@@ -128,17 +128,17 @@
 /// Preferences that will be put into the 3rd list, and are not contextual.
 #define PREFERENCE_CATEGORY_NON_CONTEXTUAL "non_contextual"
 
-/// Preferences that will be put into the background list, which is on a separate tab.
-#define PREFERENCE_CATEGORY_BACKGROUND "background"
-
-/// Will be put under the game preferences window.
-#define PREFERENCE_CATEGORY_GAME_PREFERENCES "game_preferences"
-
 /// These will show in the list to the right of the character preview.
 #define PREFERENCE_CATEGORY_SECONDARY_FEATURES "secondary_features"
 
 /// These are preferences that are supplementary for main features, such as hair color being affixed to hair.
 #define PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES "supplemental_features"
+
+/// Preferences that will be put into the background list, which is on a separate tab.
+#define PREFERENCE_CATEGORY_BACKGROUND "background_features"
+
+/// Will be put under the game preferences window.
+#define PREFERENCE_CATEGORY_GAME_PREFERENCES "game_preferences"
 
 // Priorities must be in order!
 /// The default priority level
