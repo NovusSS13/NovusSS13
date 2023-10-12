@@ -1,6 +1,6 @@
 import { classes } from 'common/react';
 import { sendAct, useBackend, useLocalState, useSharedState } from '../../backend';
-import { Autofocus, Box, Button, Flex, LabeledList, Popper, Stack, TrackOutsideClicks } from '../../components';
+import { Autofocus, Box, Button, Flex, LabeledList, Popper, Stack, TrackOutsideClicks, Tabs } from '../../components';
 import { createSetPreference, PreferencesMenuData, RandomSetting } from './data';
 import { CharacterPreview, RotateButtons } from '../common/CharacterPreview';
 import { RandomizationButton } from './RandomizationButton';
@@ -453,6 +453,7 @@ export const MainPage = (
     false
   );
   const [randomToggleEnabled] = useRandomToggleState(context);
+  const [tabIndex, setTabIndex] = useLocalState(context, 'tabIndex', 0);
 
   return (
     <ServerPreferencesFetcher
@@ -529,6 +530,10 @@ export const MainPage = (
           // server doesn't know whether the random toggle is on.
           delete nonContextualPreferences['random_name'];
         }
+
+        const backgroundPreferences = {
+          ...data.character_preferences.background_features,
+        };
 
         return (
           <>
@@ -641,17 +646,48 @@ export const MainPage = (
 
               <Stack.Item grow basis={0}>
                 <Stack vertical fill>
-                  <PreferenceList
-                    act={act}
-                    randomizations={getRandomization(contextualPreferences)}
-                    preferences={contextualPreferences}
-                  />
-                  <PreferenceList
-                    basis="15%"
-                    act={act}
-                    randomizations={getRandomization(nonContextualPreferences)}
-                    preferences={nonContextualPreferences}
-                  />
+                  <Stack.Item>
+                    <Tabs fluid textAlign="center">
+                      <Tabs.Tab
+                        selected={tabIndex === 0}
+                        onClick={() => setTabIndex(0)}>
+                        Contextual
+                      </Tabs.Tab>
+                      <Tabs.Tab
+                        selected={tabIndex === 1}
+                        onClick={() => setTabIndex(1)}>
+                        Non-Contextual
+                      </Tabs.Tab>
+                      <Tabs.Tab
+                        selected={tabIndex === 2}
+                        onClick={() => setTabIndex(2)}>
+                        Background
+                      </Tabs.Tab>
+                    </Tabs>
+                  </Stack.Item>
+                  {(tabIndex === 0 && (
+                    <PreferenceList
+                      act={act}
+                      randomizations={getRandomization(contextualPreferences)}
+                      preferences={contextualPreferences}
+                    />
+                  )) ||
+                    (tabIndex === 1 && (
+                      <PreferenceList
+                        act={act}
+                        randomizations={getRandomization(
+                          nonContextualPreferences
+                        )}
+                        preferences={nonContextualPreferences}
+                      />
+                    )) ||
+                    (tabIndex === 2 && (
+                      <PreferenceList
+                        act={act}
+                        randomizations={getRandomization(backgroundPreferences)}
+                        preferences={backgroundPreferences}
+                      />
+                    ))}
                 </Stack>
               </Stack.Item>
             </Stack>

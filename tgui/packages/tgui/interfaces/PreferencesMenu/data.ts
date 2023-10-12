@@ -167,8 +167,8 @@ export type PreferencesMenuData = {
       random_body: RandomSetting;
       [otherKey: string]: unknown;
     };
-    background: Record<string, unknown>;
     secondary_features: Record<string, unknown>;
+    background_features: Record<string, unknown>;
     supplemental_features: Record<string, unknown>;
 
     names: Record<string, string>;
