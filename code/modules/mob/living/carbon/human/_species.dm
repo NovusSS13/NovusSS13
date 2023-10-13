@@ -2114,14 +2114,14 @@
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "sack-dollar",
 			SPECIES_PERK_NAME = "High Income",
-			SPECIES_PERK_DESC = "[plural_form] earn [(1 - payday_modifier) * 100]% more than the average crewmember.",
+			SPECIES_PERK_DESC = "[plural_form] earn [(payday_modifier - 1) * 100]% more than the average crewmember.",
 		))
 	else if(payday_modifier < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "sack-xmark",
 			SPECIES_PERK_NAME = "Low Income",
-			SPECIES_PERK_DESC = "[plural_form] earn [(payday_modifier - 1) * 100]% less than the average crewmember.",
+			SPECIES_PERK_DESC = "[plural_form] earn [(1 - payday_modifier) * 100]% less than the average crewmember.",
 		))
 
 	return to_add
