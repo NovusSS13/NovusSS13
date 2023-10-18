@@ -171,7 +171,11 @@ There are several things that need to be remembered:
 	//Bloody hands begin
 	var/mutable_appearance/bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
 	cut_overlay(bloody_overlay)
-	if(!gloves && blood_in_hands && (num_hands > 0))
+	var/obj/item/bodypart/left_hand = get_bodypart(BODY_ZONE_PRECISE_L_HAND)
+	var/obj/item/bodypart/right_hand = get_bodypart(BODY_ZONE_PRECISE_R_HAND)
+	if(!gloves && blood_in_hands && (num_hands > 0) && \
+		(!left_hand || (left_hand.bodytype & BODYTYPE_HUMANOID)) && \
+		(!right_hand || (right_hand.bodytype & BODYTYPE_HUMANOID)))
 		bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
 		if(num_hands < 2)
 			if(has_left_hand(FALSE))
