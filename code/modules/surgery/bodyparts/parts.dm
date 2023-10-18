@@ -47,7 +47,7 @@
 
 /obj/item/bodypart/chest/generate_icon_key()
 	. = ..()
-	if(!ishuman(owner))
+	if(is_invisible || is_husked || !ishuman(owner))
 		return .
 
 	var/mob/living/carbon/human/human_owner = owner
@@ -70,7 +70,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 	. = list()
-	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible || is_husked || !ishuman(owner))
+	if(is_invisible || is_husked || !ishuman(owner))
 		return .
 
 	var/mob/living/carbon/human/human_owner = owner
@@ -78,7 +78,7 @@
 	var/atom/location = loc || owner || src
 	var/image_dir = (dropped ? SOUTH : NONE)
 
-	if(human_owner.underwear && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+	if(human_owner.underwear && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR) && (bodytype & BODYTYPE_HUMANOID))
 		var/datum/sprite_accessory/underwear/underwear = GLOB.underwear_list[human_owner.underwear]
 		if(underwear)
 			var/mutable_appearance/underwear_overlay
@@ -94,10 +94,11 @@
 			//Emissive blocker
 			if(blocks_emissive)
 				var/image/blocker = emissive_blocker(underwear_overlay.icon, underwear_overlay.icon_state, location)
+				blocker.dir = image_dir
 				worn_uniform_offset?.apply_offset(blocker)
 				. += blocker
 
-	if(human_owner.undershirt && !HAS_TRAIT(owner, TRAIT_NO_UNDERSHIRT))
+	if(human_owner.undershirt && !HAS_TRAIT(owner, TRAIT_NO_UNDERSHIRT) && (bodytype & BODYTYPE_HUMANOID))
 		var/datum/sprite_accessory/undershirt/undershirt = GLOB.undershirt_list[human_owner.undershirt]
 		if(undershirt)
 			var/mutable_appearance/shirt_overlay
@@ -111,6 +112,7 @@
 			//Emissive blocker
 			if(blocks_emissive)
 				var/image/blocker = emissive_blocker(shirt_overlay.icon, shirt_overlay.icon_state, location)
+				blocker.dir = image_dir
 				worn_uniform_offset?.apply_offset(blocker)
 				. += blocker
 
@@ -118,8 +120,8 @@
 	var/obj/item/bodypart/leg/left_leg = owner.get_bodypart(BODY_ZONE_L_LEG)
 	var/obj/item/bodypart/leg/right_leg = owner.get_bodypart(BODY_ZONE_R_LEG)
 	if(human_owner.socks && !HAS_TRAIT(human_owner, TRAIT_NO_SOCKS) \
-		&& left_leg && !(left_leg.bodytype & BODYTYPE_DIGITIGRADE) \
-		&& right_leg && !(right_leg.bodytype & BODYTYPE_DIGITIGRADE))
+		&& left_leg && (left_leg.bodytype & BODYTYPE_HUMANOID) && !(left_leg.bodytype & BODYTYPE_DIGITIGRADE)  \
+		&& right_leg && (right_leg.bodytype & BODYTYPE_HUMANOID) && !(right_leg.bodytype & BODYTYPE_DIGITIGRADE))
 		var/datum/sprite_accessory/socks/socks = GLOB.socks_list[human_owner.socks]
 		if(socks)
 			var/mutable_appearance/socks_overlay = mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)
@@ -129,6 +131,7 @@
 			//Emissive blocker
 			if(blocks_emissive)
 				var/image/blocker = emissive_blocker(socks_overlay.icon, socks_overlay.icon_state, location)
+				blocker.dir = image_dir
 				worn_uniform_offset?.apply_offset(blocker)
 				. += blocker
 
