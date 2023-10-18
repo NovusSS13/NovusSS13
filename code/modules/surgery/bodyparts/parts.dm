@@ -115,8 +115,11 @@
 				. += blocker
 
 	//handling socks here is not ideal and this should be moved to be handled by legs somehow, but that's for later i guess
+	var/obj/item/bodypart/leg/left_leg = owner.get_bodypart(BODY_ZONE_L_LEG)
+	var/obj/item/bodypart/leg/right_leg = owner.get_bodypart(BODY_ZONE_R_LEG)
 	if(human_owner.socks && !HAS_TRAIT(human_owner, TRAIT_NO_SOCKS) \
-		&& (human_owner.num_legs >= 2) && !(human_owner.bodytype & BODYTYPE_DIGITIGRADE))
+		&& left_leg && !(left_leg.bodytype & BODYTYPE_DIGITIGRADE) \
+		&& right_leg && !(right_leg.bodytype & BODYTYPE_DIGITIGRADE))
 		var/datum/sprite_accessory/socks/socks = GLOB.socks_list[human_owner.socks]
 		if(socks)
 			var/mutable_appearance/socks_overlay = mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)
