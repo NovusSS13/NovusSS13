@@ -120,19 +120,6 @@ const UnderwearTab = (props: { target_name: string }, context) => {
                   <Stack.Item>
                     <Button
                       width={100 / (2 * 1.75) + '%'}
-                      tooltip="Visible"
-                      icon={'eye'}
-                      disabled={underwear.disabled}
-                      selected={!underwear.hidden}
-                      onClick={() =>
-                        act('set_underwear_visibility', {
-                          slot: underwear.slot,
-                          hidden: false,
-                        })
-                      }
-                    />
-                    <Button
-                      width={100 / (2 * 1.75) + '%'}
                       tooltip="Hidden"
                       icon={'eye-slash'}
                       disabled={underwear.disabled}
@@ -141,6 +128,19 @@ const UnderwearTab = (props: { target_name: string }, context) => {
                         act('set_underwear_visibility', {
                           slot: underwear.slot,
                           hidden: true,
+                        })
+                      }
+                    />
+                    <Button
+                      width={100 / (2 * 1.75) + '%'}
+                      tooltip="Visible"
+                      icon={'eye'}
+                      disabled={underwear.disabled}
+                      selected={!underwear.hidden}
+                      onClick={() =>
+                        act('set_underwear_visibility', {
+                          slot: underwear.slot,
+                          hidden: false,
                         })
                       }
                     />
