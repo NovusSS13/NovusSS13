@@ -37,10 +37,18 @@
 	var/sound_vary = 0
 
 	/// Cooldown applied to the user
-	var/user_cooldown_duration = DEFAULT_INTERACTION_COOLDOWN_DURATION
+	var/user_cooldown_duration = 0.5 SECONDS
 	/// Cooldown applied to the target
-	var/target_cooldown_duraction = DEFAULT_INTERACTION_COOLDOWN_DURATION
+	var/target_cooldown_duraction = 0.5 SECONDS
 
+	/// Minimum sex cooldown applied to the user when climaxing
+	var/user_climax_cooldown_duration_min = 45 SECONDS
+	/// Maximum sex cooldown applied to the user when climaxing
+	var/user_climax_cooldown_duration_max = 90 SECONDS
+	/// Minimum sex cooldown applied to the target when climaxing
+	var/target_climax_cooldown_duration_min = 45 SECONDS
+	/// Maximum sex cooldown applied to the target when climaxing
+	var/target_climax_cooldown_duration_max = 90 SECONDS
 
 	// When both minimum_repeat_time and maximum_repeat_time are 0, the interaction is not repeatable
 	/// Minimum time for repeating this interaction on the interface knob
@@ -69,37 +77,29 @@
 	var/target_hands_required = 0
 
 	/// Typecache of user types that can use this interaction
-	var/list/user_types_allowed
+	var/list/user_types_allowed = list(/mob/living/carbon/human)
 	/// Typecache of target types that can use this interaction
-	var/list/target_types_allowed
+	var/list/target_types_allowed = list(/mob/living/carbon/human)
 
 /datum/interaction/New()
 	. = ..()
-	build_user_types_allowed()
-	build_target_types_allowed()
+	user_types_allowed = typecacheof(user_types_allowed)
+	target_types_allowed = typecacheof(target_types_allowed)
 	if(interaction_flags & INTERACTION_COOLDOWN)
 		if(minimum_repeat_time)
 			minimum_repeat_time = clamp(minimum_repeat_time, user_cooldown_duration, user_clear_time)
 		if(maximum_repeat_time)
 			maximum_repeat_time = clamp(maximum_repeat_time, minimum_repeat_time, user_clear_time)
 
-/// Overridable proc where you can set up what atoms this interaction can be used by
-/datum/interaction/proc/build_user_types_allowed()
-	user_types_allowed = typecacheof(/mob/living/carbon/human)
-
-/// Overridable proc where you can set up what atoms this interaction can be used with
-/datum/interaction/proc/build_target_types_allowed()
-	target_types_allowed = typecacheof(/mob/living/carbon/human)
-
 /// Determines whether or not this interaction can be used by the user on the target
 /datum/interaction/proc/allow_interaction(datum/component/interactable/user, datum/component/interactable/target, silent = TRUE, check_cooldown = TRUE)
 	if(!user || !target)
 		return FALSE
-	if((user.parent == target.parent) && !(interaction_flags & INTERACTION_SELF))
+	if((user.parent == target.parent) && !(usage_flags & INTERACTION_SELF))
 		if(!silent)
 			to_chat(user.parent, span_warning("You can only do that to yourself."))
 		return FALSE
-	else if((user.parent != target.parent) && !(interaction_flags & INTERACTION_OTHER))
+	else if((user.parent != target.parent) && !(usage_flags & INTERACTION_OTHER))
 		if(!silent)
 			to_chat(user.parent, span_warning("You can only do that on other people."))
 		return FALSE
@@ -188,8 +188,12 @@
 	return TRUE
 
 /datum/interaction/proc/perform_interaction(datum/component/interactable/user, datum/component/interactable/target)
+	perform_interaction_animation(user, target)
 	perform_interaction_message(user, target)
 	perform_interaction_sound(user, target)
+	return TRUE
+
+/datum/interaction/proc/perform_interaction_animation(datum/component/interactable/user, datum/component/interactable/target)
 	return TRUE
 
 /datum/interaction/proc/perform_interaction_message(datum/component/interactable/user, datum/component/interactable/target)
@@ -203,32 +207,28 @@
 			msg = message[message_index]
 		else
 			msg = message
-		msg = replacetext(msg, "%USER", "<b>[user.parent]</b>")
-		msg = replacetext(msg, "%TARGET", "<b>[target.parent]</b>")
+		msg = compose_message(user, target, msg)
 	var/target_msg
 	if(target_message && ismob(target.parent))
 		if(message_index)
 			target_msg = target_message[message_index]
 		else
 			target_msg = target_message
-		target_msg = replacetext(target_msg, "%USER", "<b>[user.parent]</b>")
-		target_msg = replacetext(target_msg, "%TARGET", "<b>[target.parent]</b>")
+		target_msg = compose_message(user, target, target_msg)
 	var/user_msg
 	if(user_message)
 		if(message_index)
 			user_msg = user_message[message_index]
 		else
 			user_msg = user_message
-		user_msg = replacetext(user_msg, "%USER", "<b>[user.parent]</b>")
-		user_msg = replacetext(user_msg, "%TARGET", "<b>[target.parent]</b>")
+		user_msg = compose_message(user, target, user_msg)
 	var/blind_msg
 	if(blind_message)
 		if(message_index)
 			blind_msg = blind_message[message_index]
 		else
 			blind_msg = blind_message
-		blind_msg = replacetext(blind_msg, "%USER", "<b>[user.parent]</b>")
-		blind_msg = replacetext(blind_msg, "%TARGET", "<b>[target.parent]</b>")
+		blind_msg = compose_message(user, target, blind_msg)
 	if(ismob(user))
 		var/mob/mob_user = user
 		mob_user.face_atom(target.parent)
@@ -301,86 +301,93 @@
 
 /// Generic behavior for user climax
 /datum/interaction/proc/handle_user_climax(datum/component/interactable/user, datum/component/interactable/target)
-	var/mob/living/living_user = user.parent
-	living_user.handle_climax()
-	/*
-	SEND_SIGNAL(living_user, COMSIG_ADD_MOOD_EVENT, "goodsex", /datum/mood_event/goodsex)
-	*/
+	var/refractory_period = rand(user_climax_cooldown_duration_min, user_climax_cooldown_duration_max)
+	COOLDOWN_START(user, next_sexual_interaction, refractory_period)
 	return TRUE
 
 /// Generic behavior for target climax
 /datum/interaction/proc/handle_target_climax(datum/component/interactable/user, datum/component/interactable/target)
-	var/mob/living/living_target = target.parent
-	living_target.handle_climax()
-	/*
-	SEND_SIGNAL(living_target, COMSIG_ADD_MOOD_EVENT, "goodsex", /datum/mood_event/goodsex)
-	*/
+	var/refractory_period = rand(target_climax_cooldown_duration_min, target_climax_cooldown_duration_max)
+	COOLDOWN_START(target, next_sexual_interaction, refractory_period)
 	return TRUE
 
 /// Basically handles moaning
 /datum/interaction/proc/handle_user_lust(datum/component/interactable/user, datum/component/interactable/target)
 	var/mob/living/living_user = user.parent
-	if(prob(living_user.get_lust()))
-		var/static/list/friendly_messages = list(
-			span_horny("%USER shivers in arousal."),
-			span_horny("%USER moans quietly."),
-			span_horny("%USER breathes out a soft moan."),
-			span_horny("%USER gasps."),
-			span_horny("%USER shudders softly"),
-		)
-		var/static/list/friendly_messages_self = list(
-			span_horny("You shiver in arousal."),
-			span_horny("You moan quietly."),
-			span_horny("You breathe out a soft moan."),
-			span_horny("You gasp."),
-			span_horny("You shudder softly."),
-		)
-		//todo: lust messages based on combat mode, CBA to do it now, so for now you just dont moan while on combat mode
-		var/message_index
-		var/msg
-		var/msg_self
-		if(!living_user.combat_mode)
-			message_index = rand(1, length(friendly_messages))
-			msg = friendly_messages[message_index]
-			msg_self = friendly_messages_self[message_index]
-		if(msg && msg_self)
-			msg = replacetext(msg, "%USER", "<b>[user.parent]</b>")
-			msg = replacetext(msg, "%TARGET", "<b>[target.parent]</b>")
-			msg_self = replacetext(msg, "%USER", "<b>[user.parent]</b>")
-			msg_self = replacetext(msg, "%TARGET", "<b>[target.parent]</b>")
-			living_user.audible_message(msg, msg_self)
+	if(!prob(living_user.get_lust()))
+		return
+	var/static/list/friendly_messages = list(
+		span_horny("%USER shiver%USER_S in arousal."),
+		span_horny("%USER moan%USER_S quietly."),
+		span_horny("%USER breath%USER_ES out a soft moan."),
+		span_horny("%USER gasp%USER_S."),
+		span_horny("%USER shudder%USER_S softly"),
+	)
+	var/static/list/friendly_messages_self = list(
+		span_horny("You shiver in arousal."),
+		span_horny("You moan quietly."),
+		span_horny("You breathe out a soft moan."),
+		span_horny("You gasp."),
+		span_horny("You shudder softly."),
+	)
+	//todo: lust messages based on combat mode, CBA to do it now, so for now you just dont moan while on combat mode
+	var/message_index
+	var/msg
+	var/msg_self
+	if(!living_user.combat_mode)
+		message_index = rand(1, length(friendly_messages))
+		msg = friendly_messages[message_index]
+		msg_self = friendly_messages_self[message_index]
+	if(msg && msg_self)
+		msg = compose_message(user, target, msg)
+		msg_self = compose_message(user, target, msg_self)
+		living_user.audible_message(msg, self_message = msg_self)
 	return TRUE
 
 /// Basically handles moaning
 /datum/interaction/proc/handle_target_lust(datum/component/interactable/user, datum/component/interactable/target)
 	var/mob/living/living_target = target.parent
-	if(prob(living_target.get_lust()))
-		var/static/list/friendly_messages = list(
-			span_horny("%TARGET shivers in arousal."),
-			span_horny("%TARGET moans quietly."),
-			span_horny("%TARGET breathes out a soft moan."),
-			span_horny("%TARGET gasps."),
-			span_horny("%TARGET shudders softly"),
-		)
-		var/static/list/friendly_messages_self = list(
-			span_horny("You shiver in arousal."),
-			span_horny("You moan quietly."),
-			span_horny("You breathe out a soft moan."),
-			span_horny("You gasp."),
-			span_horny("You shudder softly."),
-		)
-		//todo: lust messages based on combat mode, CBA to do it now, so for now you just dont moan while on combat mode
-		var/message_index
-		var/msg
-		var/msg_self
-		if(!living_target.combat_mode)
-			message_index = rand(1, length(friendly_messages))
-			msg = friendly_messages[message_index]
-			msg_self = friendly_messages_self[message_index]
-		if(msg && msg_self)
-			msg = replacetext(msg, "%USER", "<b>[user.parent]</b>")
-			msg = replacetext(msg, "%TARGET", "<b>[target.parent]</b>")
-			msg_self = replacetext(msg, "%USER", "<b>[user.parent]</b>")
-			msg_self = replacetext(msg, "%TARGET", "<b>[target.parent]</b>")
-			living_target.audible_message(msg, msg_self)
+	if(!prob(living_target.get_lust()))
+		return
+	var/static/list/friendly_messages = list(
+		span_horny("%TARGET shiver%TARGET_S in arousal."),
+		span_horny("%TARGET moan%TARGET_S quietly."),
+		span_horny("%TARGET breath%TARGET_ES out a soft moan."),
+		span_horny("%TARGET gasp%TARGET_S."),
+		span_horny("%TARGET shudder%TARGET_S softly"),
+	)
+	var/static/list/friendly_messages_self = list(
+		span_horny("You shiver in arousal."),
+		span_horny("You moan quietly."),
+		span_horny("You breathe out a soft moan."),
+		span_horny("You gasp."),
+		span_horny("You shudder softly."),
+	)
+	//todo: lust messages based on combat mode, CBA to do it now, so for now you just dont moan while on combat mode
+	var/message_index
+	var/msg
+	var/msg_self
+	if(!living_target.combat_mode)
+		message_index = rand(1, length(friendly_messages))
+		msg = friendly_messages[message_index]
+		msg_self = friendly_messages_self[message_index]
+	if(msg && msg_self)
+		msg = compose_message(user, target, msg)
+		msg_self = compose_message(user, target, msg_self)
+		living_target.audible_message(msg, self_message =  msg_self)
 	return TRUE
+
+/datum/interaction/proc/compose_message(datum/component/interactable/user, datum/component/interactable/target, msg)
+	msg = replacetext(msg, "%USER_THEY", user.parent.p_they())
+	msg = replacetext(msg, "%USER_THEM", user.parent.p_them())
+	msg = replacetext(msg, "%USER_THEIR", user.parent.p_their())
+	msg = replacetext(msg, "%USER_ES", user.parent.p_es())
+	msg = replacetext(msg, "%USER_S", user.parent.p_s())
+	msg = replacetext(msg, "%USER", "<b>[user.parent]</b>")
+	msg = replacetext(msg, "%TARGET_THEY", target.parent.p_they())
+	msg = replacetext(msg, "%TARGET_THEM", target.parent.p_them())
+	msg = replacetext(msg, "%TARGET_THEIR", target.parent.p_their())
+	msg = replacetext(msg, "%TARGET_ES", target.parent.p_es())
+	msg = replacetext(msg, "%TARGET_S", target.parent.p_s())
+	msg = replacetext(msg, "%TARGET", "<b>[target.parent]</b>")
+	return msg

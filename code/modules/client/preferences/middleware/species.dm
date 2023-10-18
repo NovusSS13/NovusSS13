@@ -18,9 +18,10 @@
 		var/datum/species/species_type = GLOB.species_list[species_id]
 
 		var/mob/living/carbon/human/dummy/consistent/dummy = new
-		dummy.set_species(species_type)
+		var/datum/species/new_species = new species_type
+		new_species.prepare_human_for_preview(dummy)
+		dummy.set_species(new_species)
 		dummy.equipOutfit(/datum/outfit/job/assistant/consistent, visualsOnly = TRUE)
-		dummy.dna.species.prepare_human_for_preview(dummy)
 
 		var/icon/dummy_icon = getFlatIcon(dummy)
 		dummy_icon.Scale(64, 64)

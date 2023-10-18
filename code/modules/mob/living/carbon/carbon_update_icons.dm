@@ -595,60 +595,6 @@
 		. += "-[human_owner.get_mob_height()]"
 	return .
 
-/obj/item/bodypart/head/generate_icon_key()
-	. = ..()
-	if(lip_style)
-		. += "-[lip_style]"
-		. += "-[lip_color]"
-
-	if(facial_hair_hidden)
-		. += "-facial_hair_hidden"
-	else
-		. += "-[facial_hairstyle]"
-		. += "-[override_hair_color || fixed_hair_color || facial_hair_color]"
-		. += "-[hair_alpha]"
-		if(gradient_styles?[GRADIENT_FACIAL_HAIR_KEY])
-			. += "-[gradient_styles[GRADIENT_FACIAL_HAIR_KEY]]"
-			. += "-[gradient_colors[GRADIENT_FACIAL_HAIR_KEY]]"
-
-	if(hair_hidden)
-		. += "-hair_hidden"
-	else
-		. += "-[hairstyle]"
-		. += "-[override_hair_color || fixed_hair_color || hair_color]"
-		. += "-[hair_alpha]"
-		if(gradient_styles?[GRADIENT_HAIR_KEY])
-			. += "-[gradient_styles[GRADIENT_HAIR_KEY]]"
-			. += "-[gradient_colors[GRADIENT_HAIR_KEY]]"
-
-	if(show_eyeless)
-		. += "-show_eyeless"
-	else
-		var/obj/item/organ/eyes/eyeballs = owner ? owner.get_organ_slot(ORGAN_SLOT_EYES) : src.eyes
-		if(eyeballs)
-			. += "-[eyeballs.eye_icon_state]"
-			. += "-[eyeballs.eye_color_left]"
-			. += "-[eyeballs.eye_color_right]"
-			. += "-[eyeballs.overlay_ignore_lighting]"
-
-	if(show_debrained)
-		. += "-show_debrained"
-
-	return .
-
-/obj/item/bodypart/chest/generate_icon_key()
-	. = ..()
-	if(!ishuman(owner))
-		return .
-
-	var/mob/living/carbon/human/human_owner = owner
-	. += "-[human_owner.underwear]"
-	. += "-[human_owner.underwear_color]"
-	. += "-[human_owner.undershirt]"
-	. += "-[human_owner.socks]"
-
-	return .
-
 GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 
 /**

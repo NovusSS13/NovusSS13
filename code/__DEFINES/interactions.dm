@@ -1,6 +1,3 @@
-/// Default interaction cooldown, can be changed on each interaction datum
-#define DEFAULT_INTERACTION_COOLDOWN_DURATION 0.5 SECONDS
-
 // ~interaction usage flags
 /// Self interaction, can be used on yourself
 #define INTERACTION_SELF (1<<0)

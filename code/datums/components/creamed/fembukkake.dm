@@ -18,7 +18,7 @@
 
 /datum/component/creamed/bukkake/fem/update_lips()
 	if(big_cummies)
-		cover_lips = span_color("a lot of squirt", copytext(COLOR_FEMCUM, 1, -2)) //remove the alpha
+		cover_lips = span_color("<b>a lot of squirt</b>", copytext(COLOR_FEMCUM, 1, -2)) //remove the alpha
 	else
 		cover_lips = span_color("squirt", copytext(COLOR_FEMCUM, 1, -2)) //remove the alpha
 

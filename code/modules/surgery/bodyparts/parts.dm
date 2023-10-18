@@ -45,6 +45,22 @@
 	QDEL_NULL(worn_neck_offset)
 	return ..()
 
+/obj/item/bodypart/chest/generate_icon_key()
+	. = ..()
+	if(!ishuman(owner))
+		return .
+
+	var/mob/living/carbon/human/human_owner = owner
+	if(!HAS_TRAIT(human_owner, TRAIT_NO_UNDERWEAR))
+		. += "-[human_owner.underwear]"
+		. += "-[human_owner.underwear_color]"
+	if(!HAS_TRAIT(human_owner, TRAIT_NO_UNDERSHIRT))
+		. += "-[human_owner.undershirt]"
+	if(!HAS_TRAIT(human_owner, TRAIT_NO_SOCKS))
+		. += "-[human_owner.socks]"
+
+	return .
+
 /obj/item/bodypart/chest/get_limb_icon(dropped)
 	. = ..()
 	. += get_underwear_icon(dropped)
@@ -54,7 +70,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 	. = list()
-	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible || is_husked || !ishuman(owner) || HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible || is_husked || !ishuman(owner))
 		return .
 
 	var/mob/living/carbon/human/human_owner = owner
@@ -62,7 +78,7 @@
 	var/atom/location = loc || owner || src
 	var/image_dir = (dropped ? SOUTH : NONE)
 
-	if(human_owner.underwear)
+	if(human_owner.underwear && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
 		var/datum/sprite_accessory/underwear/underwear = GLOB.underwear_list[human_owner.underwear]
 		if(underwear)
 			var/mutable_appearance/underwear_overlay
@@ -81,7 +97,7 @@
 				worn_uniform_offset?.apply_offset(blocker)
 				. += blocker
 
-	if(human_owner.undershirt)
+	if(human_owner.undershirt && !HAS_TRAIT(owner, TRAIT_NO_UNDERSHIRT))
 		var/datum/sprite_accessory/undershirt/undershirt = GLOB.undershirt_list[human_owner.undershirt]
 		if(undershirt)
 			var/mutable_appearance/shirt_overlay
@@ -99,7 +115,8 @@
 				. += blocker
 
 	//handling socks here is not ideal and this should be moved to be handled by legs somehow, but that's for later i guess
-	if(human_owner.socks && (human_owner.num_legs >= 2) && !(human_owner.bodytype & BODYTYPE_DIGITIGRADE))
+	if(human_owner.socks && !HAS_TRAIT(human_owner, TRAIT_NO_SOCKS) \
+		&& (human_owner.num_legs >= 2) && !(human_owner.bodytype & BODYTYPE_DIGITIGRADE))
 		var/datum/sprite_accessory/socks/socks = GLOB.socks_list[human_owner.socks]
 		if(socks)
 			var/mutable_appearance/socks_overlay = mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)

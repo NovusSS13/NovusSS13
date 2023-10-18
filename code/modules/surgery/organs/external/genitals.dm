@@ -68,16 +68,19 @@
 
 /// Handle cooming
 /obj/item/organ/genital/proc/handle_climax(atom/target, methods = INGEST, spill = TRUE)
-	if((organ_flags & ORGAN_FAILING) || !fluid_reagent || !fluid_amount_orgasm)
+	if(!can_climax || (organ_flags & ORGAN_FAILING) || !fluid_reagent || !fluid_amount_orgasm)
 		return FALSE
 	var/volume = fluid_amount_orgasm
 	var/datum/reagents/coom_holder = new(1000)
 	reagents.trans_id_to(coom_holder, fluid_reagent, volume)
 	var/turf/target_turf = isturf(target) ? target : get_turf(target)
-	coom_holder.expose(target, methods)
-	if(spill || (target == target_turf))
-		if(target != target_turf)
-			coom_holder.expose(target_turf, TOUCH)
+	var/spilled_milk = 0
+	if(target == target_turf)
+		spilled_milk = 1
+	else if(spill)
+		spilled_milk = 0.5
+	if(spilled_milk)
+		coom_holder.expose(target_turf, TOUCH)
 		if(!splatter_type)
 			target_turf.add_liquid_from_reagents(coom_holder)
 		else
@@ -87,7 +90,12 @@
 				if(!cummy_decal.reagents)
 					cummy_decal.create_reagents(100)
 				cummy_decal.reagents.remove_all(1000)
-			coom_holder.trans_to(cummy_decal, coom_holder.total_volume, methods = methods)
+			coom_holder.trans_to(cummy_decal, coom_holder.total_volume, methods = TOUCH, multiplier = spilled_milk)
+	if(spilled_milk < 1)
+		if(!target.reagents)
+			coom_holder.expose(target, methods)
+		else
+			coom_holder.trans_to(target, coom_holder.total_volume, methods = methods)
 	qdel(coom_holder)
 	return TRUE
 

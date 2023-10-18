@@ -32,7 +32,7 @@ GLOBAL_LIST_INIT(bukkakeable, typecacheof(list(
 
 /datum/component/creamed/bukkake/proc/update_lips()
 	if(big_cummies)
-		cover_lips = span_color("a lot of cum", COLOR_CUM)
+		cover_lips = span_color("<b>a lot of cum</b>", COLOR_CUM)
 	else
 		cover_lips = span_color("cum", COLOR_CUM)
 

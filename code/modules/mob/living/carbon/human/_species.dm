@@ -373,8 +373,8 @@
 			used_neworgan = TRUE
 			new_organ.set_organ_damage(new_organ.maxHealth * (1 - health_pct))
 			if(new_organ.bodypart_overlay)
+				//this is very much correct - we don't check for SPRITE_ACCESSORY_NONE in this case
 				if(cosmetic_organs[new_organ.type])
-					//this is very much correct - we don't check for SPRITE_ACCESSORY_NONE
 					new_organ.bodypart_overlay.set_appearance_from_name(cosmetic_organs[new_organ.type])
 				new_organ.bodypart_overlay.imprint_on_next_insertion = TRUE
 			new_organ.Insert(organ_holder, special = TRUE, drop_if_replaced = FALSE)
@@ -385,10 +385,10 @@
 	var/list/species_mutant_organs = cosmetic_organs + mutant_organs
 	if(!isnull(old_species))
 		for(var/obj/item/organ/mutant_organ as anything in (old_species.cosmetic_organs + old_species.mutant_organs))
-			if(mutant_organ in species_mutant_organs)
-				continue // had this mutant organ, but we also have it!
 			if(initial(mutant_organ.slot) in organ_slots)
-				continue // we already handled this slot
+				continue // We already handled this slot
+			if(mutant_organ in species_mutant_organs)
+				continue // Don't remove cosmetic organs this species is supposed to have.
 
 			var/obj/item/organ/current_organ = organ_holder.get_organ_by_type(mutant_organ)
 			if(current_organ)
@@ -472,8 +472,7 @@
 	C.mob_respiration_type = inherent_respiration_type
 	C.butcher_results = knife_butcher_results?.Copy()
 
-	if(old_species.type != type)
-		replace_body(C, src)
+	replace_body(C, src)
 
 	regenerate_organs(C, old_species, visual_only = C.visual_only_organs)
 
