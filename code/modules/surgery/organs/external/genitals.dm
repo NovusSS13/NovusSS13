@@ -365,7 +365,7 @@
 
 /obj/item/organ/genital/anus
 	name = "anus"
-	desc = "Space asshole. In a truck, flying off a ridge. Space asshole. Smashing through a bridge."
+	desc = "Space asshole.\nIn a truck, flying off a ridge.\nSpace asshole.\nSmashing through a bridge."
 	icon = 'icons/obj/medical/organs/genitals/anus.dmi'
 	icon_state = "anus"
 
