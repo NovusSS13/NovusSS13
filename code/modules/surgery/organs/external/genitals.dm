@@ -185,7 +185,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
 			return FALSE
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
@@ -253,7 +253,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
 			return FALSE
 
 
@@ -306,7 +306,7 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
 			return FALSE
 
 
@@ -371,8 +371,9 @@
 		if(owner.get_all_covered_flags() & CHEST)
 			return FALSE
 		//this is fucked man
-		if(owner.undershirt && (owner.undershirt != SPRITE_ACCESSORY_NONE))
+		if(owner.undershirt && (owner.undershirt != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERSHIRT))
 			return FALSE
+
 
 /obj/item/organ/genital/anus
 	name = "anus"
@@ -410,5 +411,5 @@
 		if(owner.get_all_covered_flags() & GROIN)
 			return FALSE
 		//this is fucked man
-		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE))
+		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
 			return FALSE
