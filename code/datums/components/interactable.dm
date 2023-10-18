@@ -25,6 +25,11 @@
 	/// Time to wait before repeating our last action as user, null if we don't want to repeats
 	var/repeat_last_action
 
+	/// Whether or not other people can interact with our genital options
+	var/genitals_allowed = FALSE
+	/// Whether or not other people can interact with our underwear options
+	var/underwear_allowed = FALSE
+
 /datum/component/interactable/Initialize(datum/callback/qualities_callback)
 	if(!isatom(parent) || isarea(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -95,6 +100,8 @@
 	user_interactor["name"] = user.name
 	user_interactor["qualities"] = user_interactable.get_qualities(PLURAL)
 	user_interactor["pronoun"] = "You"
+	var/mob/living/living_user = user
+	user_interactor["lust"] = istype(living_user) ? living_user.get_lust() : 0
 
 	interactors += list(user_interactor)
 
@@ -102,6 +109,8 @@
 	target_interactor["name"] = target.name
 	target_interactor["qualities"] = get_qualities()
 	target_interactor["pronoun"] = target.p_they(TRUE)
+	var/mob/living/living_target = target
+	target_interactor["lust"] = istype(living_target) ? living_target.get_lust() : 0
 
 	interactors += list(target_interactor)
 
@@ -139,6 +148,63 @@
 			categories += list(this_category)
 
 	data["categories"] = categories
+
+	var/user_distance = get_dist(user, target)
+	if((user_is_target || genitals_allowed) && iscarbon(parent))
+		var/mob/living/carbon/carbon_parent = parent
+		var/list/genitals = list()
+		for(var/obj/item/organ/genital/genital in carbon_parent.organs)
+			var/list/this_genital = list()
+
+			this_genital["name"] = capitalize(genital.name)
+			this_genital["slot"] = genital.slot
+			var/datum/bodypart_overlay/mutant/genital/overlay = genital.bodypart_overlay
+			if(overlay)
+				this_genital["visibility"] = overlay.genital_visibility
+				this_genital["arousal_state"] = 0
+				for(var/arousal_state in overlay.arousal_options)
+					if(overlay.arousal_options[arousal_state] != overlay.arousal_state)
+						continue
+					this_genital["arousal_state"] = arousal_state
+					break
+				this_genital["arousal_options"] = assoc_to_keys(overlay.arousal_options) || list()
+			this_genital["disabled"] = (user_distance > 1)
+
+			genitals += list(this_genital)
+		data["genitals"] = genitals
+	else
+		data["genitals"] = list()
+	data["genitals_allowed"] = genitals_allowed
+
+	if((user_is_target || underwear_allowed) && ishuman(parent))
+		var/mob/living/carbon/human/human_parent = parent
+		var/list/underwear = list()
+
+		if(!HAS_TRAIT_NOT_FROM(human_parent, TRAIT_NO_UNDERWEAR, "[type]") && (human_parent.underwear != SPRITE_ACCESSORY_NONE))
+			underwear += list(list(
+				"name" = human_parent.underwear,
+				"slot" = "underwear",
+				"hidden" = HAS_TRAIT_FROM(human_parent, TRAIT_NO_UNDERWEAR, "[type]"),
+				"disabled" = (user_distance > 1),
+			))
+		if(!HAS_TRAIT_NOT_FROM(human_parent, TRAIT_NO_UNDERSHIRT, "[type]") && (human_parent.undershirt != SPRITE_ACCESSORY_NONE))
+			underwear += list(list(
+				"name" = human_parent.undershirt,
+				"slot" = "undershirt",
+				"hidden" = HAS_TRAIT_FROM(human_parent, TRAIT_NO_UNDERSHIRT, "[type]"),
+				"disabled" = (user_distance > 1),
+			))
+		if(!HAS_TRAIT_NOT_FROM(human_parent, TRAIT_NO_SOCKS, "[type]") && (human_parent.socks != SPRITE_ACCESSORY_NONE))
+			underwear += list(list(
+				"name" = human_parent.socks,
+				"slot" = "socks",
+				"hidden" = HAS_TRAIT_FROM(human_parent, TRAIT_NO_SOCKS, "[type]"),
+				"disabled" = (user_distance > 1),
+			))
+
+		data["underwear"] = underwear
+	data["underwear_allowed"] = underwear_allowed
+
 	if(user_interactable.last_interaction_as_user && (user_interactable.last_interaction_target == WEAKREF(src)))
 		var/datum/interaction/interaction = user_interactable.last_interaction_as_user
 
@@ -154,33 +220,9 @@
 		this_interaction["block_interact"] = !interaction.allow_interaction(user_interactable, src, silent = TRUE, check_cooldown = TRUE)
 
 		data["last_interaction"] = this_interaction
-
 	data["repeat_last_action"] = user_interactable.repeat_last_action
+
 	data["on_cooldown"] = !COOLDOWN_FINISHED(user_interactable, next_interaction)
-
-	if(user_is_target && iscarbon(user))
-		var/mob/living/carbon/human/human_user = user
-		var/list/genitals = list()
-		for(var/obj/item/organ/genital/genital in human_user.organs)
-			var/list/this_genital = list()
-
-			this_genital["name"] = capitalize(genital.name)
-			this_genital["slot"] = genital.slot
-			var/datum/bodypart_overlay/mutant/genital/overlay = genital.bodypart_overlay
-			if(overlay)
-				this_genital["visibility"] = overlay.genital_visibility
-				this_genital["arousal_state"] = 0
-				for(var/arousal_state in overlay.arousal_options)
-					if(overlay.arousal_options[arousal_state] != overlay.arousal_state)
-						continue
-					this_genital["arousal_state"] = arousal_state
-					break
-				this_genital["arousal_options"] = assoc_to_keys(overlay.arousal_options) || list()
-
-			genitals += list(this_genital)
-		data["genitals"] = genitals
-	else
-		data["genitals"] = list()
 
 	return data
 
@@ -222,6 +264,9 @@
 				return FALSE
 			user.repeat_last_action = clamp(wait, user.last_interaction_as_user.minimum_repeat_time, user.last_interaction_as_user.maximum_repeat_time)
 			return TRUE
+		if("set_genitals_allowed")
+			genitals_allowed = params["allowed"]
+			return TRUE
 		if("set_genital_arousal")
 			var/slot = params["slot"]
 			var/mob/living/carbon/carbon_parent = parent
@@ -250,6 +295,31 @@
 			overlay.genital_visibility = params["visibility"]
 			carbon_parent.update_body_parts()
 			return TRUE
+		if("set_underwear_visibility")
+			var/mob/living/carbon/carbon_parent = parent
+			if(!istype(carbon_parent))
+				return FALSE
+			var/slot = params["slot"]
+			var/hidden = params["hidden"]
+			var/trait
+			switch(slot)
+				if("underwear")
+					trait = TRAIT_NO_UNDERWEAR
+				if("undershirt")
+					trait = TRAIT_NO_UNDERSHIRT
+				if("socks")
+					trait = TRAIT_NO_SOCKS
+				else
+					trait = TRAIT_NO_UNDERWEAR
+			if(hidden)
+				ADD_TRAIT(parent, trait, "[type]")
+			else
+				REMOVE_TRAIT(parent, trait, "[type]")
+			carbon_parent.update_body_parts()
+			return TRUE
+		if("set_underwear_allowed")
+			underwear_allowed = params["allowed"]
+			return TRUE
 
 /datum/component/interactable/ui_close(mob/user)
 	. = ..()
@@ -262,10 +332,10 @@
 /datum/component/interactable/proc/get_qualities(temp_gender)
 	RETURN_TYPE(/list)
 	. = list()
-	if(!COOLDOWN_FINISHED(src, next_sexual_interaction))
-		. += "[parent.p_are(temp_gender)] sexually exhausted"
 	if(qualities_callback)
 		. += qualities_callback.Invoke(temp_gender)
+	if(!COOLDOWN_FINISHED(src, next_sexual_interaction))
+		. += "[parent.p_are(temp_gender)] sexually exhausted"
 	if(!length(.))
 		. += "[parent.p_have(temp_gender)] no noteworthy qualities"
 	return .

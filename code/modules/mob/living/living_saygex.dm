@@ -12,10 +12,10 @@
 
 /// Handle a generic climax, one that didn't get handled by an interaction in a custom way
 /mob/living/proc/handle_climax()
-	if(get_organ_slot(ORGAN_SLOT_PENIS))
+	if(gender == MALE)
 		visible_message(span_love("<b>[src]</b> cums on [src.loc]!"),\
 								span_userlove("You cum on [src.loc]!"))
-	else if(get_organ_slot(ORGAN_SLOT_VAGINA))
+	else if(gender == FEMALE)
 		visible_message(span_love("<b>[src]</b> squirts on [src.loc]!"),\
 								span_userlove("You squirt on [src.loc]!"))
 	else
@@ -24,17 +24,14 @@
 	// PROPEL YOURSELF WITH COOM
 	if(!Process_Spacemove(REVERSE_DIR(src.dir)))
 		newtonian_move(REVERSE_DIR(src.dir))
-	var/static/list/genital_slots = list(
-		ORGAN_SLOT_PENIS,
-		ORGAN_SLOT_TESTICLES,
-		ORGAN_SLOT_BREASTS,
-		ORGAN_SLOT_VAGINA,
-	)
-	for(var/organ_slot in genital_slots)
-		var/obj/item/organ/genital/genital = get_organ_slot(organ_slot)
-		if(genital?.can_climax)
-			genital.handle_climax(get_turf(src), TOUCH)
 	set_lust(0)
+	if(!HAS_TRAIT(src, TRAIT_INTERACTABLE))
+		return TRUE
+	var/datum/component/interactable/interactable = GetComponent(/datum/component/interactable)
+	if(interactable)
+		var/refractory_period = rand(45 SECONDS, 90 SECONDS)
+		// Generic refractory period, this normally will get overriden by interactions
+		COOLDOWN_START(interactable, next_sexual_interaction, refractory_period)
 	return TRUE
 
 /// Returns qualities, descriptive strings for the interaction menu

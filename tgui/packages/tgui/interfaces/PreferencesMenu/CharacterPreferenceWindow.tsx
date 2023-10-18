@@ -191,6 +191,7 @@ export const CharacterPreferenceWindow = (props, context) => {
                         }}
                       />
                     </Stack.Item>
+                    <Stack.Divider />
                     <Stack.Item>
                       <CharSlots
                         profiles={data.character_profiles[data.active_slot_key]}

@@ -68,7 +68,7 @@ export const ExaminePanel = (props, context) => {
     (mob_type === 'cyborg' && 'A cyborg unit.') ||
     custom_species_desc ||
     'No species description.';
-  const notes = ooc_notes || 'No notes';
+  const notes = ooc_notes || 'No notes.';
 
   return (
     <Window title="Examine Panel" width={900} height={670} theme="admin">

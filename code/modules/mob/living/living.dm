@@ -1767,8 +1767,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if (NAMEOF(src, maxHealth))
-			if (!isnum(var_value) || var_value <= 0)
+		if(NAMEOF(src, maxHealth))
+			if(!isnum(var_value) || var_value <= 0)
 				return FALSE
 		if(NAMEOF(src, health)) //this doesn't work. gotta use procs instead.
 			return FALSE
@@ -1800,6 +1800,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			if(var_value == 0) //prevents divisions of and by zero.
 				return FALSE
 			update_transform(var_value/current_size)
+			. = TRUE
+		if(NAMEOF(src, lust))
+			set_lust(var_value)
 			. = TRUE
 
 	if(!isnull(.))

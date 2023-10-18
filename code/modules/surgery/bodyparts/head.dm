@@ -168,6 +168,7 @@
 	ears = null
 	tongue = null
 
+
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
 	if(owner)
@@ -176,7 +177,46 @@
 			real_name = "Unknown"
 	update_hair_and_lips(dropping_limb, is_creating)
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/obj/item/bodypart/head/generate_icon_key()
+	. = ..()
+	if(lip_style)
+		. += "-[lip_style]"
+		. += "-[lip_color]"
+
+	if(facial_hair_hidden)
+		. += "-facial_hair_hidden"
+	else
+		. += "-[facial_hairstyle]"
+		. += "-[override_hair_color || fixed_hair_color || facial_hair_color]"
+		. += "-[hair_alpha]"
+		if(gradient_styles?[GRADIENT_FACIAL_HAIR_KEY])
+			. += "-[gradient_styles[GRADIENT_FACIAL_HAIR_KEY]]"
+			. += "-[gradient_colors[GRADIENT_FACIAL_HAIR_KEY]]"
+
+	if(hair_hidden)
+		. += "-hair_hidden"
+	else
+		. += "-[hairstyle]"
+		. += "-[override_hair_color || fixed_hair_color || hair_color]"
+		. += "-[hair_alpha]"
+		if(gradient_styles?[GRADIENT_HAIR_KEY])
+			. += "-[gradient_styles[GRADIENT_HAIR_KEY]]"
+			. += "-[gradient_colors[GRADIENT_HAIR_KEY]]"
+
+	if(show_eyeless)
+		. += "-show_eyeless"
+	else
+		var/obj/item/organ/eyes/eyeballs = owner ? owner.get_organ_slot(ORGAN_SLOT_EYES) : src.eyes
+		if(eyeballs)
+			. += "-[eyeballs.eye_icon_state]"
+			. += "-[eyeballs.eye_color_left]"
+			. += "-[eyeballs.eye_color_right]"
+			. += "-[eyeballs.overlay_ignore_lighting]"
+
+	if(show_debrained)
+		. += "-show_debrained"
+
+	return .
 
 /obj/item/bodypart/head/get_limb_icon(dropped)
 	. = ..()

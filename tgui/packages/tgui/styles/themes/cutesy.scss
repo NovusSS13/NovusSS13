@@ -53,6 +53,13 @@
     color: #dd92c7;
   }
   @include meta.load-css(
+    '../components/ProgressBar.scss',
+    $with: (
+      'color-default-fill': #c400aa,
+      'background-color': rgba(0, 0, 0, 0.5)
+    )
+  );
+  @include meta.load-css(
     '../components/Tooltip.scss',
     $with: ('background-color': #602a61)
   );

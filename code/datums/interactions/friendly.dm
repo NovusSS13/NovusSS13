@@ -7,9 +7,9 @@
 	name = "Handshake"
 	desc = "Shake their hands."
 	icon = "handshake"
-	message = span_notice("%USER shakes %TARGET's hand.")
+	message = span_notice("%USER shake%USER_S %TARGET's hand.")
 	user_message = span_notice("You shake %TARGET's hand.")
-	target_message = span_notice("%USER shakes your hand.")
+	target_message = span_notice("%USER shake%USER_S your hand.")
 	user_hands_required = 1
 	target_hands_required = 1
 	sounds = 'sound/weapons/thudswoosh.ogg'
@@ -20,9 +20,9 @@
 	name = "Hug"
 	desc = "Give them a hug! How nice."
 	icon = "grin-beam"
-	message = span_notice("%USER hugs %TARGET.")
+	message = span_notice("%USER hug%USER_S %TARGET.")
 	user_message = span_notice("You hug %TARGET.")
-	target_message = span_notice("%USER hugs you.")
+	target_message = span_notice("%USER hug%USER_S you.")
 	user_hands_required = 1
 	sounds = 'sound/weapons/thudswoosh.ogg'
 	sound_vary = TRUE
@@ -38,9 +38,9 @@
 	name = "Headpat"
 	desc = "Pat their head! How nice."
 	icon = "hand-paper"
-	message = span_notice("%USER pats %TARGET's head.")
+	message = span_notice("%USER pat%USER_S %TARGET's head.")
 	user_message = span_notice("You pat %TARGET's head.")
-	target_message = span_notice("%USER pats your head.")
+	target_message = span_notice("%USER pat%USER_S your head.")
 	user_hands_required = 1
 	sounds = 'sound/weapons/thudswoosh.ogg'
 	sound_vary = TRUE
@@ -53,7 +53,7 @@
 	var/mob/living/carbon/human/human_target = target.parent
 	if(istype(human_target) && !human_target.get_bodypart(BODY_ZONE_HEAD))
 		if(!silent)
-			to_chat(user, span_warning("They have no head!"))
+			to_chat(user, span_warning("[human_target.p_they(TRUE)] have no head!"))
 		return FALSE
 
 /*

@@ -80,15 +80,15 @@
 	mutant.dna.features["mcolor"] = "#AF67AF"
 	mutant.dna.features["tail"] = "Smooth"
 	mutant.dna.features["tail_color"] = "#AF67AF"
-	mutant.dna.features["spines"] = "None"
+	mutant.dna.features["spines"] = SPRITE_ACCESSORY_NONE
 	mutant.dna.features["spines_color"] = "#AF67AF"
 	mutant.dna.features["snout"] = "Round"
 	mutant.dna.features["snout_color"] = "#AF67AF"
-	mutant.dna.features["horns"] = "None"
+	mutant.dna.features["horns"] = SPRITE_ACCESSORY_NONE
 	mutant.dna.features["horns_color"] = COLOR_WHITE
-	mutant.dna.features["frills"] = "None"
+	mutant.dna.features["frills"] = SPRITE_ACCESSORY_NONE
 	mutant.dna.features["frills_color"] = "#AF67AF"
-	mutant.dna.features["ears"] = "None"
+	mutant.dna.features["ears"] = SPRITE_ACCESSORY_NONE
 	mutant.dna.features["ears_color"] = "#AF67AF"
 	mutant.dna.features["legs"] = LEGS_NORMAL
 	mutant.set_species(/datum/species/mutant)

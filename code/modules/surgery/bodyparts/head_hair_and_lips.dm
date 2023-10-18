@@ -100,14 +100,16 @@
 	if(!is_husked && lip_style && (head_flags & HEAD_LIPS))
 		//not a sprite accessory, don't ask
 		//Overlay
-		lip_overlay = image('icons/mob/species/sprite_accessory/human_face.dmi', "lips_[lip_style]", -BODY_LAYER, image_dir)
+		lip_overlay = image('icons/mob/species/sprite_accessory/human_face.dmi', "lips_[lip_style]", -BODY_LAYER)
 		lip_overlay.color = lip_color
+		lip_overlay.dir = image_dir
 		//Offsets
 		worn_face_offset?.apply_offset(lip_overlay)
 		. += lip_overlay
 		//Emissive blocker
 		if(blocks_emissive)
 			var/image/lip_blocker = emissive_blocker(lip_overlay.icon, lip_overlay.icon_state, location)
+			lip_blocker.dir = image_dir
 			worn_face_offset?.apply_offset(lip_blocker)
 			. += lip_blocker
 
@@ -116,8 +118,9 @@
 		sprite_accessory = GLOB.facial_hairstyles_list[facial_hairstyle]
 		if(sprite_accessory)
 			//Overlay
-			facial_hair_overlay = image(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, image_dir)
+			facial_hair_overlay = image(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER)
 			facial_hair_overlay.alpha = hair_alpha
+			facial_hair_overlay.dir = image_dir
 			//Offsets
 			worn_face_offset?.apply_offset(facial_hair_overlay)
 			. += facial_hair_overlay
@@ -126,11 +129,12 @@
 			if(facial_hair_gradient_style)
 				var/facial_hair_gradient_color = LAZYACCESS(gradient_colors, GRADIENT_FACIAL_HAIR_KEY)
 				var/image/facial_hair_gradient_overlay = get_gradient_overlay(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, GLOB.facial_hair_gradients_list[facial_hair_gradient_style], facial_hair_gradient_color)
-				worn_face_offset?.apply_offset(facial_hair_gradient_overlay)
+				facial_hair_gradient_overlay.dir = image_dir
 				. += facial_hair_gradient_overlay
 			//Emissive blocker
 			if(blocks_emissive)
 				var/image/facial_blocker = emissive_blocker(facial_hair_overlay.icon, facial_hair_overlay.icon_state, location)
+				facial_blocker.dir = image_dir
 				worn_face_offset?.apply_offset(facial_hair_overlay)
 				. += facial_blocker
 
@@ -139,8 +143,9 @@
 		sprite_accessory = GLOB.hairstyles_list[hairstyle]
 		if(sprite_accessory)
 			//Overlay
-			hair_overlay = image(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, image_dir)
+			hair_overlay = image(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER)
 			hair_overlay.alpha = hair_alpha
+			hair_overlay.dir = image_dir
 			//Offsets
 			worn_face_offset?.apply_offset(hair_overlay)
 			. += hair_overlay
@@ -149,11 +154,12 @@
 			if(hair_gradient_style)
 				var/hair_gradient_color = LAZYACCESS(gradient_colors, GRADIENT_HAIR_KEY)
 				var/image/hair_gradient_overlay = get_gradient_overlay(sprite_accessory.icon, sprite_accessory.icon_state, -HAIR_LAYER, GLOB.hair_gradients_list[hair_gradient_style], hair_gradient_color)
-				worn_face_offset?.apply_offset(hair_gradient_overlay)
+				hair_gradient_overlay.dir = image_dir
 				. += hair_gradient_overlay
 			//Emissive blocker
 			if(blocks_emissive)
 				var/image/hair_blocker = emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, location)
+				hair_blocker.dir = image_dir
 				worn_face_offset?.apply_offset(hair_blocker)
 				. += hair_blocker
 
@@ -229,7 +235,7 @@
 
 	var/image/eyeless_overlay
 	if(can_rotate)
-		eyeless_overlay = mutable_appearance(eyeless_icon, eyeless_icon_state, HAIR_LAYER)
+		eyeless_overlay = mutable_appearance(eyeless_icon, eyeless_icon_state, -HAIR_LAYER)
 	else
 		eyeless_overlay = image(eyeless_icon, eyeless_icon_state, -HAIR_LAYER, SOUTH)
 	worn_face_offset?.apply_offset(eyeless_overlay)
@@ -251,7 +257,7 @@
 
 	var/image/debrain_overlay
 	if(can_rotate)
-		debrain_overlay = mutable_appearance(debrain_icon, debrain_icon_state, HAIR_LAYER)
+		debrain_overlay = mutable_appearance(debrain_icon, debrain_icon_state, -HAIR_LAYER)
 	else
 		debrain_overlay = image(debrain_icon, debrain_icon_state, -HAIR_LAYER, SOUTH)
 	worn_face_offset?.apply_offset(debrain_overlay)
