@@ -72,7 +72,7 @@
 		return FALSE
 	var/volume = fluid_amount_orgasm
 	var/datum/reagents/coom_holder = new(1000)
-	reagents.trans_id_to(coom_holder, fluid_reagent, volume)
+	reagents.trans_id_to(coom_holder, fluid_reagent, volume, preserve_data = TRUE)
 	var/turf/target_turf = isturf(target) ? target : get_turf(target)
 	var/spilled_milk = 0
 	if(target == target_turf)
