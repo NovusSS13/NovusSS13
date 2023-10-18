@@ -182,10 +182,7 @@
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(owner.get_all_covered_flags() & GROIN)
-			return FALSE
-		//this is fucked man
-		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+		if(owner.get_all_covered_flags_with_underwear() & GROIN)
 			return FALSE
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
@@ -250,10 +247,7 @@
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(owner.get_all_covered_flags() & GROIN)
-			return FALSE
-		//this is fucked man
-		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+		if(owner.get_all_covered_flags_with_underwear() & GROIN)
 			return FALSE
 
 
@@ -303,10 +297,7 @@
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(owner.get_all_covered_flags() & GROIN)
-			return FALSE
-		//this is fucked man
-		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+		if(owner.get_all_covered_flags_with_underwear() & GROIN)
 			return FALSE
 
 
@@ -368,10 +359,7 @@
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(owner.get_all_covered_flags() & CHEST)
-			return FALSE
-		//this is fucked man
-		if(owner.undershirt && (owner.undershirt != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERSHIRT))
+		if(owner.get_all_covered_flags_with_underwear() & CHEST)
 			return FALSE
 
 
@@ -408,8 +396,5 @@
 	if(!.)
 		return
 	if(genital_visibility == GENITAL_VISIBILITY_CLOTHING)
-		if(owner.get_all_covered_flags() & GROIN)
-			return FALSE
-		//this is fucked man
-		if(owner.underwear && (owner.underwear != SPRITE_ACCESSORY_NONE) && !HAS_TRAIT(owner, TRAIT_NO_UNDERWEAR))
+		if(owner.get_all_covered_flags_with_underwear() & GROIN)
 			return FALSE
