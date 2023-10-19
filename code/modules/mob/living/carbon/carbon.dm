@@ -152,6 +152,7 @@
 		return FALSE
 	var/atom/movable/thrown_thing
 	var/obj/item/held_item = get_active_held_item()
+	var/throwing_sound = 'sound/effects/throw.ogg'
 	var/neckgrab_throw = FALSE // we can't check for if it's a neckgrab throw when totaling up power_throw since we've already stopped pulling them by then, so get it early
 	if(!held_item)
 		if(pulling && isliving(pulling) && grab_state >= GRAB_AGGRESSIVE)
@@ -166,6 +167,7 @@
 					return FALSE
 	else
 		thrown_thing = held_item.on_thrown(src, target)
+		throwing_sound = held_item.throw_sound
 	if(!thrown_thing)
 		return FALSE
 	if(isliving(thrown_thing))
@@ -182,6 +184,9 @@
 		power_throw++
 	if(neckgrab_throw)
 		power_throw++
+	do_attack_animation(target, no_effect = TRUE)
+	if(throwing_sound)
+		playsound(src, throwing_sound, 50, FALSE, -1)
 	visible_message(span_danger("[src] throws [thrown_thing][power_throw ? " really hard!" : "."]"), \
 					span_danger("You throw [thrown_thing][power_throw ? " really hard!" : "."]"))
 	log_message("has thrown [thrown_thing] [power_throw > 0 ? "really hard" : ""]", LOG_ATTACK)
