@@ -69,7 +69,9 @@
 	var/hitsound
 	///Played when the item is used, for example tools
 	var/usesound
-	///Used when yate into a mob
+	///Sound used when throw
+	var/throw_sound = 'sound/effects/throw.ogg'
+	///Sound when we hit a mob when throw
 	var/mob_throw_hit_sound
 	///Sound used when equipping the item into a valid slot
 	var/equip_sound
