@@ -39,7 +39,7 @@
 			var/datum/component/creamed/coom = GetComponent(component_type)
 			if(coom?.cover_lips)
 				covered_lips += coom.cover_lips
-		if((!key && !ai_controller) || !client)
+		if(!client && !ai_controller)
 			covered_lips += span_color("drool", "#b6e7f5")
 		if(LAZYLEN(covered_lips))
 			. += "Mmm, [t_his] lips are covered with [english_list(covered_lips)]!"
@@ -333,7 +333,7 @@
 			if(CONSCIOUS)
 				if(HAS_TRAIT(src, TRAIT_DUMB))
 					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
-		if(get_organ_by_type(/obj/item/organ/brain))
+		if(!ai_controller && get_organ_by_type(/obj/item/organ/brain))
 			if(!key)
 				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 			else if(!client)

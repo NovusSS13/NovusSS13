@@ -21,12 +21,15 @@
 
 	var/turf/our_tile = get_turf(src)
 	var/obj/visual = new /obj/effect/temp_visual/point(our_tile, invisibility)
-	var/final_x = (tile.x - our_tile.x) * world.icon_size + pointed_atom.pixel_x
-	var/final_y = (tile.y - our_tile.y) * world.icon_size + pointed_atom.pixel_y
+	var/final_x
+	var/final_y
 	var/list/modifiers = params2list(params)
 	if(LAZYLEN(modifiers))
-		final_x -= text2num(LAZYACCESS(modifiers, ICON_X)) - world.icon_size/2
-		final_y -= text2num(LAZYACCESS(modifiers, ICON_Y)) - world.icon_size/2
+		final_x = (tile.x - our_tile.x) * world.icon_size - world.icon_size/2 + text2num(LAZYACCESS(modifiers, ICON_X))
+		final_y = (tile.y - our_tile.y) * world.icon_size - world.icon_size/2 + text2num(LAZYACCESS(modifiers, ICON_Y))
+	else
+		final_x = (tile.x - our_tile.x) * world.icon_size + pointed_atom.pixel_x
+		final_y = (tile.y - our_tile.y) * world.icon_size + pointed_atom.pixel_y
 
 	animate(visual, pixel_x = final_x, pixel_y = final_y, time = 1.7, easing = EASE_OUT)
 
@@ -100,7 +103,7 @@
  *
  * overridden here and in /mob/dead/observer for different point span classes and sanity checks
  */
-/mob/verb/pointed(atom/A as mob|obj|turf in view(), params)
+/mob/verb/pointed(atom/A as mob|obj|turf in view(), params as text|null)
 	set name = "Point To"
 	set category = "Object"
 
