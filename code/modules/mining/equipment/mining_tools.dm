@@ -130,6 +130,7 @@
 	tool_behaviour = TOOL_SHOVEL
 	toolspeed = 1
 	usesound = 'sound/effects/shovel_dig.ogg'
+	hitsound = 'sound/weapons/sonic_jackhammer.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT*0.5)
 	attack_verb_continuous = list("bashes", "bludgeons", "thrashes", "whacks")
