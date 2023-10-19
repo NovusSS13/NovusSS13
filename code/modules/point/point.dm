@@ -7,7 +7,7 @@
  *
  * Not intended as a replacement for the mob verb
  */
-/atom/movable/proc/point_at(atom/pointed_atom)
+/atom/movable/proc/point_at(atom/pointed_atom, params)
 	if(!isturf(loc))
 		return
 
@@ -21,8 +21,14 @@
 
 	var/turf/our_tile = get_turf(src)
 	var/obj/visual = new /obj/effect/temp_visual/point(our_tile, invisibility)
+	var/final_x = (tile.x - our_tile.x) * world.icon_size + pointed_atom.pixel_x
+	var/final_y = (tile.y - our_tile.y) * world.icon_size + pointed_atom.pixel_y
+	var/list/modifiers = params2list(params)
+	if(LAZYLEN(modifiers))
+		final_x -= text2num(LAZYACCESS(modifiers, ICON_X)) - world.icon_size/2
+		final_y -= text2num(LAZYACCESS(modifiers, ICON_Y)) - world.icon_size/2
 
-	animate(visual, pixel_x = (tile.x - our_tile.x) * world.icon_size + pointed_atom.pixel_x, pixel_y = (tile.y - our_tile.y) * world.icon_size + pointed_atom.pixel_y, time = 1.7, easing = EASE_OUT)
+	animate(visual, pixel_x = final_x, pixel_y = final_y, time = 1.7, easing = EASE_OUT)
 
 /atom/movable/proc/create_point_bubble(atom/pointed_atom)
 	var/mutable_appearance/thought_bubble = mutable_appearance(
@@ -94,22 +100,23 @@
  *
  * overridden here and in /mob/dead/observer for different point span classes and sanity checks
  */
-/mob/verb/pointed(atom/A as mob|obj|turf in view())
+/mob/verb/pointed(atom/A as mob|obj|turf in view(), params)
 	set name = "Point To"
 	set category = "Object"
 
+	//lol this is a dumb check
 	if(istype(A, /obj/effect/temp_visual/point))
 		return FALSE
 
-	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(_pointed), A))
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(_pointed), A, params))
 
 /// possibly delayed verb that finishes the pointing process starting in [/mob/verb/pointed()].
 /// either called immediately or in the tick after pointed() was called, as per the [DEFAULT_QUEUE_OR_CALL_VERB()] macro
-/mob/proc/_pointed(atom/pointing_at)
+/mob/proc/_pointed(atom/pointing_at, params)
 	if(client && !(pointing_at in view(client.view, src)))
 		return FALSE
 
-	point_at(pointing_at)
+	point_at(pointing_at, params)
 
-	SEND_SIGNAL(src, COMSIG_MOB_POINTED, pointing_at)
+	SEND_SIGNAL(src, COMSIG_MOB_POINTED, pointing_at, params)
 	return TRUE
