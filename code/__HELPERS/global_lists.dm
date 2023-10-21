@@ -23,7 +23,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/horns/lizard, GLOB.horns_list_lizard, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/human, GLOB.ears_list_human, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/avali, GLOB.ears_list_avali, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/avali, GLOB.ears_list_avali)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills/lizard, GLOB.frills_list_lizard, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list, add_blank = TRUE)

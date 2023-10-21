@@ -71,6 +71,7 @@
 	unarmed_damage_low = AVALI_PUNCH_LOW
 	unarmed_damage_high = AVALI_PUNCH_HIGH
 
+//
 
 /obj/item/bodypart/leg/left/avali
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
@@ -78,7 +79,7 @@
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
-	speed_modifier = -0.9
+	speed_modifier = -0.45
 
 /obj/item/bodypart/leg/right/avali
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
@@ -86,7 +87,7 @@
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
-	speed_modifier = -0.9
+	speed_modifier = -0.45
 
 #undef AVALI_PUNCH_LOW
 #undef AVALI_PUNCH_HIGH

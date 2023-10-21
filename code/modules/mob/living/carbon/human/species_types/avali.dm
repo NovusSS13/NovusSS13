@@ -50,16 +50,9 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/avali,
 	)
 
-// Avali are ammonia-based creatures that resemble prehistoric raptors.
-// They have large wings that end in rudimentary hands, long tails, and four rabbit-like ears.
-// They are typically 1.5 to 1.8 meters long from nose to tail, with about half of this length being in their tails.
-// The tail aids in balancing when walking on their rear legs 2
 /datum/species/avali/get_species_description()
 	return "From the icy moon of Avalon, come Avali; the nomadic chickens with ammonia-based biology\
 	and a heavy aversion towards any sanely-heated places."
-	// avian-like species originating from the icy moon of Avalon. \
-		They are sentient and nomadic, with most of them living around the equatorial regions of their home moon. \
-		They have since acquired space travel and established colonies and outposts elsewhere in the solar system."
 
 /datum/species/avali/get_species_lore()
 	return list("uhhh idk")

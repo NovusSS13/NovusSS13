@@ -83,7 +83,7 @@
 	if(!length(GLOB.ears_list_human))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/human, GLOB.ears_list_human, add_blank = TRUE)
 	if(!length(GLOB.ears_list_avali))
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/avali, GLOB.ears_list_avali, add_blank = TRUE)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/avali, GLOB.ears_list_avali)
 	if(!length(GLOB.frills_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list, add_blank = TRUE)
 	if(!length(GLOB.frills_list_lizard))
