@@ -827,7 +827,7 @@
 
 	label = "[name_string], [assignment_string]"
 	if(registered_name)
-		set_photo(find_record(registered_name))
+		INVOKE_ASYNC(src, PROC_REF(set_photo), find_record(registered_name))
 
 /// Sets the UI icon of the ID to their record entry, or their current appearance if no record is provided
 /obj/item/card/id/proc/set_photo(datum/record/crew/record, mutable_appearance/mob_appearance)
@@ -835,7 +835,8 @@
 
 	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
 	if(record)
-		front_photo = record.get_front_photo()
+		var/obj/item/photo/photo = record.get_front_photo()
+		front_photo = photo.picture.picture_image
 	else
 		if(ismob(mob_appearance))
 			mob_appearance = new(mob_appearance)
