@@ -826,6 +826,7 @@
 		assignment_string = assignment
 
 	label = "[name_string], [assignment_string]"
+	name = assignment_string ? "[assignment_string] ID card" : initial(name)
 	if(registered_name)
 		set_photo(find_record(registered_name))
 
@@ -1127,13 +1128,6 @@
 	trim = /datum/id_trim/job/captain
 	registered_age = null
 
-/obj/item/card/id/advanced/gold/captains_spare/update_label() //so it doesn't change to Captain's ID card (Captain) on a sneeze
-	if(registered_name == "Captain")
-		name = "[initial(name)][(!assignment || assignment == "Captain") ? "" : " ([assignment])"]"
-		update_appearance(UPDATE_ICON)
-	else
-		..()
-
 /obj/item/card/id/advanced/centcom
 	name = "\improper CentCom ID"
 	desc = "An ID straight from Central Command."
@@ -1227,14 +1221,6 @@
 	desc = "The spare ID of the Dark Lord himself."
 	registered_name = "Captain"
 	registered_age = null
-
-/obj/item/card/id/advanced/black/syndicate_command/captain_id/syndie_spare/update_label()
-	if(registered_name == "Captain")
-		name = "[initial(name)][(!assignment || assignment == "Captain") ? "" : " ([assignment])"]"
-		update_appearance(UPDATE_ICON)
-		return
-
-	return ..()
 
 /obj/item/card/id/advanced/debug
 	name = "\improper Debug ID"
