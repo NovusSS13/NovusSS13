@@ -117,9 +117,6 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/list/stored_name = list(null)
 	SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, visible_name)
 	namepart = stored_name[NAME_PART_INDEX] || "[speaker.GetVoice()]"
-	if(namepart && speaker.chat_color)
-		var/actual_color = colorize_string(namepart) //signal means we have to do this dumb shit...
-		namepart = span_color(namepart, actual_color)
 
 	//End name span.
 	var/endspanpart = "</span>"
