@@ -206,16 +206,18 @@
 		registered_account["account_balance"] = id_account.account_balance
 		registered_account["mining_points"] = id_account.mining_points
 		if(id_account.account_job)
-			registered_account["job_account"] = id_account.account_job.name
-			registered_account["job_account_balance"] = id_account.account_job.account_balance
+			var/datum/bank_account/department_account = SSeconomy.get_dep_account(id_account.account_job.paycheck_department)
+			if(department_account)
+				registered_account["department_account"] = department_account.account_holder
+				registered_account["department_account_balance"] = department_account.account_balance
 
 		data["registered_account"] = registered_account
 		if(id_account.civilian_bounty)
 			var/list/bounty = list()
 
-			bounty["bounty_text"] = id_account.civilian_bounty.bounty_text()
-			bounty["bounty_amount"] = id_account.civilian_bounty.bounty_num()
-			bounty["bounty_reward"] = id_account.civilian_bounty.bounty_value()
+			bounty["name"] = id_account.civilian_bounty.name
+			bounty["description"] = id_account.civilian_bounty.description
+			bounty["bounty_reward"] = id_account.civilian_bounty.reward
 
 			data["bounty"] = bounty
 
