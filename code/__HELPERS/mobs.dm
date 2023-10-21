@@ -68,6 +68,8 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey, add_blank = TRUE)
 	if(!length(GLOB.tails_list_lizard))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
+	if(!length(GLOB.tails_list_avali))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/avali, GLOB.tails_list_avali)
 	if(!length(GLOB.snouts_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list, add_blank = TRUE)
 	if(!length(GLOB.snouts_list_lizard))
@@ -80,6 +82,8 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list, add_blank = TRUE)
 	if(!length(GLOB.ears_list_human))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/human, GLOB.ears_list_human, add_blank = TRUE)
+	if(!length(GLOB.ears_list_avali))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears/avali, GLOB.ears_list_avali, add_blank = TRUE)
 	if(!length(GLOB.frills_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list, add_blank = TRUE)
 	if(!length(GLOB.frills_list_lizard))
@@ -183,6 +187,13 @@
 /proc/random_unique_moth_name(attempts_to_find_unique_name=10)
 	for(var/i in 1 to attempts_to_find_unique_name)
 		. = capitalize(pick(GLOB.moth_first)) + " " + capitalize(pick(GLOB.moth_last))
+
+		if(!findname(.))
+			break
+
+/proc/random_unique_avali_name(attempts_to_find_unique_name=10)
+	for(var/i in 1 to attempts_to_find_unique_name)
+		. = capitalize(avali_name())
 
 		if(!findname(.))
 			break

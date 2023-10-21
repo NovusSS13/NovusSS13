@@ -33,6 +33,8 @@
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
 #define SPECIES_ZOMBIE_KROKODIL "krokodil_zombie"
 
+#define SPECIES_AVALI "avali"
+
 // Defines for used in creating "perks" for the species preference pages.
 /// A key that designates UI icon displayed on the perk.
 #define SPECIES_PERK_ICON "ui_icon"

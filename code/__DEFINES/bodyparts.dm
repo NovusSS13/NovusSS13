@@ -23,6 +23,8 @@
 #define BODYTYPE_ALIEN (1<<8)
 ///The limb is from a golem
 #define BODYTYPE_GOLEM (1<<9)
+///The limb is from an avali.
+#define BODYTYPE_AVALI (1<<10)
 
 /// Helper to figure out if a limb is organic
 #define IS_ORGANIC_LIMB(limb) (limb.bodytype & BODYTYPE_ORGANIC)

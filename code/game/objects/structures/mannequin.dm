@@ -143,19 +143,19 @@
 				default_icon = 'icons/mob/clothing/id.dmi'
 			if(ITEM_SLOT_ICLOTHING)
 				default_layer = UNIFORM_LAYER
-				default_icon = DEFAULT_UNIFORM_FILE
+				default_icon = 'icons/mob/clothing/under/default.dmi'
 				if(body_type == FEMALE && istype(worn_item, /obj/item/clothing/under))
 					var/obj/item/clothing/under/worn_jumpsuit = worn_item
 					female_icon = worn_jumpsuit.female_sprite_flags
 			if(ITEM_SLOT_OCLOTHING)
 				default_layer = SUIT_LAYER
-				default_icon = DEFAULT_SUIT_FILE
+				default_icon = 'icons/mob/clothing/suits/default.dmi'
 			if(ITEM_SLOT_GLOVES)
 				default_layer = GLOVES_LAYER
 				default_icon = 'icons/mob/clothing/hands.dmi'
 			if(ITEM_SLOT_FEET)
 				default_layer = SHOES_LAYER
-				default_icon = DEFAULT_SHOES_FILE
+				default_icon = 'icons/mob/clothing/feet.dmi'
 		. += worn_item.build_worn_icon(default_layer, default_icon, female_uniform = female_icon)
 
 /obj/structure/mannequin/attack_hand_secondary(mob/user, list/modifiers)

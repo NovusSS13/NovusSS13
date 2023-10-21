@@ -84,10 +84,11 @@
 	name = "flat cap"
 	desc = "A working man's cap."
 	icon_state = "beret_flat"
+	inhand_icon_state = null
+	greyscale_colors = "#8F7654"
 	greyscale_config = /datum/greyscale_config/beret
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
-	greyscale_colors = "#8F7654"
-	inhand_icon_state = null
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_worn
 
 /obj/item/clothing/head/cowboy
 	name = "bounty hunting hat"

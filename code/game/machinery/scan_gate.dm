@@ -17,6 +17,8 @@
 #define SCANGATE_GOLEM "golem"
 #define SCANGATE_ZOMBIE "zombie"
 
+#define SCANGATE_AVALI "avali"
+
 /obj/machinery/scanner_gate
 	name = "scanner gate"
 	desc = "A gate able to perform mid-depth scans on any organisms who pass under it."
@@ -157,6 +159,9 @@
 						scan_species = /datum/species/golem
 					if(SCANGATE_ZOMBIE)
 						scan_species = /datum/species/zombie
+
+					if(SCANGATE_AVALI)
+						scan_species = /datum/species/avali
 				if(is_species(H, scan_species))
 					beep = TRUE
 				if(detect_species == SCANGATE_ZOMBIE) //Can detect dormant zombies
@@ -281,3 +286,5 @@
 #undef SCANGATE_POD
 #undef SCANGATE_GOLEM
 #undef SCANGATE_ZOMBIE
+
+#undef SCANGATE_AVALI

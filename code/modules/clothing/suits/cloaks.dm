@@ -10,6 +10,9 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDESUITSTORAGE
 
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/cloak
+	clothing_color_coords_key = "cloak"
+
 /obj/item/clothing/neck/cloak/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/surgery_initiator)

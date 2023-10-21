@@ -645,3 +645,107 @@
 	name = "Worn Witch Hat"
 	icon_file = 'icons/mob/clothing/head/wizard.dmi'
 	json_config = 'code/datums/greyscale/json_configs/witch_hat_worn.json'
+
+
+
+//
+// AVALI SHIT
+//
+
+/datum/greyscale_config/avali
+	name = "Avali Clothing"
+	icon_file = 'icons/mob/species/avali/clothing/_greyscale.dmi'
+	json_config = 'code/datums/greyscale/json_configs/avali/under.json' // SSgreyscale freaks out if we dont put a dummy config here
+
+/datum/greyscale_config/avali/under
+	name = "Avali Under"
+	json_config = 'code/datums/greyscale/json_configs/avali/under.json'
+
+/datum/greyscale_config/avali/under_skirt
+	name = "Avali Skirt"
+	json_config = 'code/datums/greyscale/json_configs/avali/under_skirt.json'
+
+/datum/greyscale_config/avali/shoes
+	name = "Avali Shoes"
+	json_config = 'code/datums/greyscale/json_configs/avali/shoes.json'
+
+/datum/greyscale_config/avali/gloves
+	name = "Avali Gloves"
+	json_config = 'code/datums/greyscale/json_configs/avali/gloves.json'
+
+/datum/greyscale_config/avali/glasses
+	name = "Avali Glasses"
+	json_config = 'code/datums/greyscale/json_configs/avali/glasses.json'
+
+/datum/greyscale_config/avali/coat
+	name = "Avali Coat"
+	json_config = 'code/datums/greyscale/json_configs/avali/coat.json'
+
+/datum/greyscale_config/avali/armor
+	name = "Avali Armor"
+	json_config = 'code/datums/greyscale/json_configs/avali/armor.json'
+
+/datum/greyscale_config/avali/backpack
+	name = "Avali Backpack"
+	json_config = 'code/datums/greyscale/json_configs/avali/backpack.json'
+
+/datum/greyscale_config/avali/spacesuit
+	name = "Avali Spacesuit"
+	json_config = 'code/datums/greyscale/json_configs/avali/spacesuit.json'
+
+/datum/greyscale_config/avali/cloak
+	name = "Avali Cloak"
+	json_config = 'code/datums/greyscale/json_configs/avali/cloak.json'
+
+/datum/greyscale_config/avali/tie
+	name = "Avali Tie"
+	json_config = 'code/datums/greyscale/json_configs/avali/tie.json'
+
+/datum/greyscale_config/avali/scarf
+	name = "Avali Scarf"
+	json_config = 'code/datums/greyscale/json_configs/avali/scarf.json'
+
+/datum/greyscale_config/avali/modcontrol
+	name = "Avali Modsuit"
+	json_config = 'code/datums/greyscale/json_configs/avali/modcontrol.json'
+
+/datum/greyscale_config/avali/hardsuit
+	name = "Avali Hardsuit"
+	json_config = 'code/datums/greyscale/json_configs/avali/hardsuit.json'
+
+
+/datum/greyscale_config/avali/beret_worn
+	name = "Beret Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/beret_worn.json'
+
+/datum/greyscale_config/avali/beret_badge_worn
+	name = "Badge Beret Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/beret_badge_worn.json'
+
+/datum/greyscale_config/avali/beret_badge_fancy_worn
+	name = "Fancy Badge Beret Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/beret_badge_fancy_worn.json'
+
+/datum/greyscale_config/avali/jumpsuit_worn
+	name = "Jumpsuit Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/jumpsuit_worn.json'
+
+/datum/greyscale_config/avali/jumpsuit_prison_worn
+	name = "Prison Jumpsuit Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/jumpsuit_prison_worn.json'
+
+/datum/greyscale_config/avali/plaidskirt_worn
+	name = "Plaid Skirt Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/plaidskirt_worn.json'
+
+/datum/greyscale_config/avali/sundress_worn
+	name = "Sundress Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/sundress_worn.json'
+
+/datum/greyscale_config/avali/sneakers_worn
+	name = "Sneakers Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/sneakers_worn.json'
+
+/datum/greyscale_config/avali/sneakers_orange_worn
+	name = "Orange Sneakers Worn (Avali)"
+	json_config = 'code/datums/greyscale/json_configs/sneakers_orange_worn.json'

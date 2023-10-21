@@ -268,8 +268,8 @@
 		defense_mod -= 2
 	if(HAS_TRAIT(target, TRAIT_FAT)) // chonkers are harder to knock over
 		defense_mod += 1
-	if(HAS_TRAIT(target, TRAIT_GRABWEAKNESS))
-		defense_mod -= 2
+	if(HAS_TRAIT(target, TRAIT_EASILY_GRABBED))
+		defense_mod -= 4 //birds be fucked
 	if(HAS_TRAIT(target, TRAIT_DWARF))
 		defense_mod -= 2
 	if(HAS_TRAIT(target, TRAIT_GIANT))

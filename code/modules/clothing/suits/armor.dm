@@ -14,6 +14,9 @@
 	resistance_flags = NONE
 	armor_type = /datum/armor/suit_armor
 
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/armor
+	clothing_color_coords_key = "armor"
+
 /datum/armor/suit_armor
 	melee = 35
 	bullet = 30

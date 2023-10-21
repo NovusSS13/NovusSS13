@@ -54,6 +54,10 @@ const TARGET_SPECIES_LIST = [
     name: 'Zombie',
     value: 'zombie',
   },
+  {
+    name: 'Avali',
+    value: 'avali',
+  },
 ];
 
 const TARGET_NUTRITION_LIST = [

@@ -6,6 +6,9 @@
 	strip_delay = 40
 	equip_delay_other = 40
 
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/scarf
+	clothing_color_coords_key = "necklace"
+
 /obj/item/clothing/neck/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
@@ -37,6 +40,10 @@
 	greyscale_config_worn = /datum/greyscale_config/ties_worn
 	greyscale_colors = "#4d4e4e"
 	flags_1 = IS_PLAYER_COLORABLE_1
+
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/tie
+	clothing_color_coords_key = "tie"
+
 	/// All ties start untied unless otherwise specified
 	var/is_tied = FALSE
 	/// How long it takes to tie the tie

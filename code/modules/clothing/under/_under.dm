@@ -11,6 +11,10 @@
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	limb_integrity = 30
+
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/under
+	clothing_color_coords_key = "under"
+
 	/// The variable containing the flags for how the woman uniform cropping is supposed to interact with the sprite.
 	var/female_sprite_flags = FEMALE_UNIFORM_FULL
 	var/has_sensor = HAS_SENSORS // For the crew computer

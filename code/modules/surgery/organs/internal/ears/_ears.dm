@@ -149,6 +149,22 @@
 /datum/bodypart_overlay/mutant/ears/cat/get_global_feature_list()
 	return GLOB.ears_list_human
 
+/obj/item/organ/ears/avali
+	name = "avali ears"
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
+	icon_state = "ears-fluffy"
+	damage_multiplier = 2
+
+	visual = TRUE
+	dna_block = DNA_EARS_BLOCK
+	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/avali
+
+/datum/bodypart_overlay/mutant/ears/avali
+	required_bodytype = BODYTYPE_AVALI
+
+/datum/bodypart_overlay/mutant/ears/avali/get_global_feature_list()
+	return GLOB.ears_list_avali
+
 /obj/item/organ/ears/penguin
 	name = "penguin ears"
 	desc = "The source of a penguin's happy feet."

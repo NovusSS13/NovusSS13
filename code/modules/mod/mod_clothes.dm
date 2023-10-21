@@ -30,6 +30,9 @@
 	cold_protection = CHEST|GROIN
 	obj_flags = IMMUTABLE_SLOW
 
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/hardsuit
+	clothing_color_coords_key = "modsuit"
+
 /obj/item/clothing/gloves/mod
 	name = "MOD gauntlets"
 	desc = "A pair of gauntlets for a MODsuit."

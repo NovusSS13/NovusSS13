@@ -23,6 +23,9 @@
 	resistance_flags = NONE
 	max_integrity = 300
 	storage_type = /datum/storage/backpack
+	clothing_color_coords_key = "backpack"
+
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/backpack
 
 /obj/item/storage/backpack/Initialize(mapload)
 	. = ..()

@@ -33,6 +33,8 @@
 	var/datum/worn_feature_offset/worn_suit_offset
 	/// Offset to apply to equipment worn on the neck
 	var/datum/worn_feature_offset/worn_neck_offset
+	/// Offset to apply to accessories
+	var/datum/worn_feature_offset/worn_accessory_offset
 
 /obj/item/bodypart/chest/Destroy()
 	QDEL_NULL(cavity_item)
