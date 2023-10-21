@@ -153,7 +153,7 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	msg = emoji_parse(msg)
 	mob.log_talk(msg, LOG_OOC, tag = "(LOOC)")
 
-	var/list/heard = dview()
+	var/list/heard = get_hearers_in_view(7, src.mob)
 	for(var/mob/listener as anything in heard)
 		var/client/client = listener.client
 		if(!client)
