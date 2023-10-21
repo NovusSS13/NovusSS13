@@ -232,7 +232,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	return "0"
 
 /atom/movable/proc/GetVoice()
-	return "[src.name]"
+	return "[src]"
 
 //HACKY VIRTUALSPEAKER STUFF BEYOND THIS POINT
 //these exist mostly to deal with the AIs hrefs and job stuff.
