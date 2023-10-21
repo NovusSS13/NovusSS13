@@ -123,4 +123,4 @@
 	if(!flavor_holder)
 		return
 
-	examine_list += span_info(span_bold("<a href='?src=[REF(src)];open_examine_panel=1'><i>You could probably take a closer look...</i></a>"))
+	examine_list += span_info(span_bold("<a href='?src=[REF(src)];open_examine_panel=1'><i>You can take a closer look...</i></a>"))

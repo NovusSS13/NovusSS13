@@ -14,6 +14,7 @@
 /datum/asset/spritesheet/species/create_spritesheets()
 	var/list/to_insert = list()
 
+	GLOB.species_examine_icons["Unknown"] = icon('icons/effects/random_spawners.dmi', "questionmark")
 	for (var/species_id in get_selectable_species())
 		var/datum/species/species_type = GLOB.species_list[species_id]
 
@@ -24,6 +25,7 @@
 		dummy.equipOutfit(/datum/outfit/job/assistant/consistent, visualsOnly = TRUE)
 
 		var/icon/dummy_icon = getFlatIcon(dummy)
+		GLOB.species_examine_icons[initial(species_type.name)] = icon(dummy_icon)
 		dummy_icon.Scale(64, 64)
 		dummy_icon.Crop(15, 64, 15 + 31, 64 - 31)
 		dummy_icon.Scale(64, 64)

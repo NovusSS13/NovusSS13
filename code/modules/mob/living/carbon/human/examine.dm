@@ -23,9 +23,10 @@
 
 	var/datum/flavor_holder/flavor_holder = GLOB.flavor_holders[name]
 	var/species_name = flavor_holder?.custom_species_name || dna.species.name
-	. = list("<span class='info'>This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "[span_color("Human", COLOR_GRAY)]?" : "[span_color(species_name, dna.species.chat_color)]!"]</EM>")
+	var/species_icon = icon2html(GLOB.species_examine_icons[obscure_species ? "Unknown" : initial(dna.species.name)], user)
+	. = list("<span class='info'>[species_icon] This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "[span_color("Human", COLOR_GRAY)]?" : "[span_color(species_name, dna.species.chat_color)]!"]</EM>")
 	if(obscure_examine)
-		. += "<span class='warning'>You're struggling to make out any details...</span>"
+		. += span_warning("You're struggling to make out any details...")
 		.[length(.)] += "</span>" //closes info class without creating another line
 		return
 
@@ -117,11 +118,13 @@
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]."
-		. += wear_id.get_id_examine_strings(user)
+		var/list/id_examine_strings = wear_id.get_id_examine_strings(user)
+		if(LAZYLEN(id_examine_strings))
+			. += id_examine_strings
 
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()
-	if (length(status_examines))
+	if (LAZYLEN(status_examines))
 		. += status_examines
 
 	var/appears_dead = FALSE

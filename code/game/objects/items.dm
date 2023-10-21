@@ -457,6 +457,15 @@
 	add_fingerprint(usr)
 	return ..()
 
+/obj/item/Topic(href, list/href_list)
+	. = ..()
+	if(.)
+		return
+	if(href_list["look_at_id"])
+		var/obj/item/card/id/id = GetID()
+		if(istype(id) && id.id_card_panel)
+			id.id_card_panel.ui_interact(usr)
+
 /obj/item/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION(VV_HK_ADD_FANTASY_AFFIX, "Add Fantasy Affix")
