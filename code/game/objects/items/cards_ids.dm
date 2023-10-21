@@ -151,6 +151,8 @@
 
 /obj/item/card/id/Destroy()
 	QDEL_NULL(id_card_panel)
+	front_photo = null
+	side_photo = null
 	if (registered_account)
 		registered_account.bank_cards -= src
 	if (my_store)
@@ -189,37 +191,37 @@
 
 	data["label"] = id_card.label
 	data["registered_name"] = id_card.registered_name
-	data["assignment"] = id_card.assignment
 	data["registered_age"] = id_card.registered_age
+	data["assignment"] = id_card.assignment
 	data["dna_hash"] = id_card.dna_hash
 	data["fingerprint"] = id_card.fingerprint
 	data["blood_type"] = id_card.blood_type
 	if(id_card.front_photo)
-		data["front_photo"] = icon2html(id_card.front_photo, user, sourceonly = TRUE)
+		data["front_photo"] = icon2html(id_card.front_photo, user, dir = SOUTH, sourceonly = TRUE)
 	if(id_card.side_photo)
-		data["side_photo"] = icon2html(id_card.side_photo, user, sourceonly = TRUE)
+		data["side_photo"] = icon2html(id_card.side_photo, user, dir = WEST, sourceonly = TRUE)
 	if(id_card.registered_account)
 		var/datum/bank_account/id_account = id_card.registered_account
 		var/list/registered_account = list()
 
 		registered_account["holder"] = id_account.account_holder
-		registered_account["account_balance"] = id_account.account_balance
+		registered_account["balance"] = id_account.account_balance
 		registered_account["mining_points"] = id_account.mining_points
 		if(id_account.account_job)
 			var/datum/bank_account/department_account = SSeconomy.get_dep_account(id_account.account_job.paycheck_department)
 			if(department_account)
 				registered_account["department_account"] = department_account.account_holder
-				registered_account["department_account_balance"] = department_account.account_balance
-
-		data["registered_account"] = registered_account
+				registered_account["department_balance"] = department_account.account_balance
 		if(id_account.civilian_bounty)
 			var/list/bounty = list()
 
 			bounty["name"] = id_account.civilian_bounty.name
 			bounty["description"] = id_account.civilian_bounty.description
-			bounty["bounty_reward"] = id_account.civilian_bounty.reward
+			bounty["reward"] = id_account.civilian_bounty.reward
 
-			data["bounty"] = bounty
+			registered_account["bounty"] = bounty
+
+		data["registered_account"] = registered_account
 
 	return data
 
@@ -490,7 +492,9 @@
 		user.visible_message(span_notice("[user] shows you: [get_examine_string(user)]."), \
 						span_notice("You show [get_examine_string(user)]."))
 		if(id_card_panel)
-			for(var/mob/living/friend in view(1, src))
+			for(var/mob/living/friend in view(1, user))
+				if(!friend.client)
+					continue
 				id_card_panel.ui_interact(friend)
 
 /obj/item/card/id/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
@@ -770,7 +774,7 @@
 	if(!user.can_read(src))
 		return
 	if(HAS_TRAIT(user, TRAIT_ID_APPRAISER))
-		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... yes, this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
+		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... Yes... this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
 		if(HAS_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD) && (user.is_holding(src) || (user.CanReach(src) && user.put_in_hands(src, ignore_animation = FALSE))))
 			ADD_TRAIT(src, TRAIT_NODROP, "psycho")
 			. += span_hypnophrase("Look at that subtle coloring... The tasteful thickness of it. Oh my God, it even has a watermark...")
@@ -835,10 +839,10 @@
 
 	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
 	if(record)
-		var/obj/item/photo/side = record.get_side_photo()
-		side_photo = side.picture.picture_image
 		var/obj/item/photo/front = record.get_front_photo()
 		front_photo = front.picture.picture_image
+		var/obj/item/photo/side = record.get_side_photo()
+		side_photo = side.picture.picture_image
 	else
 		if(ismob(mob_appearance))
 			mob_appearance = new(mob_appearance)
