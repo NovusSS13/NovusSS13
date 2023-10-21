@@ -127,11 +127,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 		if(GLOB.say_disabled)	//This is here to try to identify lag problems
 			to_chat(src, span_danger("Speech is currently admin-disabled."))
 			return
-		if(!prefs.read_preference(/datum/preference/toggle/mute_looc))
+		if(prefs.read_preference(/datum/preference/toggle/mute_looc))
 			to_chat(src, span_danger("You have LOOC muted."))
-			return
-		if(is_banned_from(mob, "OOC"))
-			to_chat(src, span_danger("You have been banned from OOC."))
 			return
 
 		if(!GLOB.looc_allowed)
@@ -149,11 +146,14 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 		if(mob.stat == DEAD) //this shou;dl include unconciousees
 			to_chat(src, span_danger("You cannot use LOOC while dead.")) //includes ghosts
 			return
+	if(is_banned_from(mob, "OOC"))
+		to_chat(src, span_danger("You have been banned from OOC."))
+		return
 
 	msg = emoji_parse(msg)
 	mob.log_talk(msg, LOG_OOC, tag = "(LOOC)")
 
-	var/list/heard = get_hearers_in_view(7, src.mob)
+	var/list/heard = dview()
 	for(var/mob/listener as anything in heard)
 		var/client/client = listener.client
 		if(!client)
