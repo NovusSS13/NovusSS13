@@ -1,3 +1,4 @@
+import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { LabeledList, Section, Stack } from '../components';
 import { Window } from '../layouts';
@@ -112,10 +113,10 @@ export const IdCardPanel = (props, context) => {
               <Section>
                 <Stack width="100%" height="100%">
                   <Stack.Item grow>
-                    <img src={front_photo} width="100%" />
+                    <img src={resolveAsset(front_photo)} width="100%" />
                   </Stack.Item>
                   <Stack.Item grow>
-                    <img src={side_photo} width="100%" />
+                    <img src={resolveAsset(side_photo)} width="100%" />
                   </Stack.Item>
                 </Stack>
               </Section>

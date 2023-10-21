@@ -72,12 +72,12 @@
 	var/assignment = null
 	/// Registered owner's age
 	var/registered_age = null
+	/// Registered owner's blood type.
+	var/blood_type = "?"
 	/// Registered owner's dna hash.
 	var/dna_hash = "??????"
 	/// Registered owner's fingerprint.
 	var/fingerprint = "??????"
-	/// Registered owner's blood type.
-	var/blood_type = "?"
 
 	// Images to store in the ID, representing the owner's appearance
 	var/icon/front_photo
@@ -197,9 +197,9 @@
 	data["fingerprint"] = id_card.fingerprint
 	data["blood_type"] = id_card.blood_type
 	if(id_card.front_photo)
-		data["front_photo"] = icon2html(id_card.front_photo, user, dir = SOUTH, sourceonly = TRUE)
+		data["front_photo"] = icon2html(id_card.front_photo, user, icon_state = "front_photo", dir = SOUTH, sourceonly = TRUE)
 	if(id_card.side_photo)
-		data["side_photo"] = icon2html(id_card.side_photo, user, dir = WEST, sourceonly = TRUE)
+		data["side_photo"] = icon2html(id_card.side_photo, user, icon_state = "side_photo", dir = WEST, sourceonly = TRUE)
 	if(id_card.registered_account)
 		var/datum/bank_account/id_account = id_card.registered_account
 		var/list/registered_account = list()
@@ -1629,6 +1629,20 @@
 
 				if(tgui_alert(user, "Activate wallet ID spoofing, allowing this card to force itself to occupy the visible ID slot in wallets?", "Wallet ID Spoofing", list("Yes", "No")) == "Yes")
 					ADD_TRAIT(src, TRAIT_MAGNETIC_ID_CARD, CHAMELEON_ITEM_TRAIT)
+
+				if(tgui_alert(user, "Create new DNA, fingerprints, and blood type?", "DNA Spoofing", list("Yes", "No")) == "Yes")
+					dna_hash = md5(rand(1,999))
+					fingerprint = md5(rand(1, 999))
+					blood_type = random_blood_type()
+				else
+					var/mob/living/carbon/human/human_user = user
+					if(istype(human_user))
+						if(tgui_alert(user, "Use real DNA?", "Forge ID", list("Yes", "No")) == "Yes")
+							dna_hash = human_user.dna.unique_identity
+						if(tgui_alert(user, "Use real fingerprint?", "Forge ID", list("Yes", "No")) == "Yes")
+							fingerprint = md5(human_user.dna.unique_identity)
+						if(tgui_alert(user, "Use real blood type?", "Forge ID", list("Yes", "No")) == "Yes")
+							blood_type = human_user.dna.blood_type
 
 				update_label()
 				update_icon()

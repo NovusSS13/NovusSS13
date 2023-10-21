@@ -332,6 +332,7 @@
 
 		card.registered_name = equipped.real_name
 		card.registered_age = equipped.age
+		card.blood_type = equipped.dna.blood_type
 		card.dna_hash = equipped.dna.unique_identity
 		card.fingerprint = md5(equipped.dna.unique_identity)
 
