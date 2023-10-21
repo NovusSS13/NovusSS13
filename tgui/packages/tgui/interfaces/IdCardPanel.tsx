@@ -13,7 +13,6 @@ type Data = {
   blood_type: string;
   registered_account: Account;
   front_photo: string;
-  side_photo: string;
 };
 
 type Account = {
@@ -43,7 +42,6 @@ export const IdCardPanel = (props, context) => {
     fingerprint,
     registered_account,
     front_photo,
-    side_photo,
   } = data;
   const { bounty } = registered_account || { bounty: null };
 
@@ -55,20 +53,22 @@ export const IdCardPanel = (props, context) => {
             <Stack.Item maxWidth="65%">
               <LabeledList>
                 <LabeledList.Item label="Name">
-                  {registered_name}
+                  {registered_name || 'Unknown'}
                 </LabeledList.Item>
                 <LabeledList.Item label="Age">
-                  {registered_age}
+                  {registered_age || '??'}
                 </LabeledList.Item>
                 <LabeledList.Item label="Assignment">
-                  {assignment}
+                  {assignment || 'Unknown'}
                 </LabeledList.Item>
                 <LabeledList.Item label="Blood Type">
-                  {blood_type}
+                  {blood_type || '?'}
                 </LabeledList.Item>
-                <LabeledList.Item label="DNA Hash">{dna_hash}</LabeledList.Item>
+                <LabeledList.Item label="DNA Hash">
+                  {dna_hash || '??????'}
+                </LabeledList.Item>
                 <LabeledList.Item label="Fingerprint">
-                  {fingerprint}
+                  {fingerprint || '??????'}
                 </LabeledList.Item>
                 {(registered_account && (
                   <>
@@ -111,14 +111,9 @@ export const IdCardPanel = (props, context) => {
             </Stack.Item>
             <Stack.Item width="35%">
               <Section>
-                <Stack width="100%" height="100%">
-                  <Stack.Item grow>
-                    <img src={resolveAsset(front_photo)} width="100%" />
-                  </Stack.Item>
-                  <Stack.Item grow>
-                    <img src={resolveAsset(side_photo)} width="100%" />
-                  </Stack.Item>
-                </Stack>
+                <Stack.Item grow>
+                  <img src={resolveAsset(front_photo)} width="100%" />
+                </Stack.Item>
               </Section>
             </Stack.Item>
           </Stack>

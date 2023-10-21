@@ -22,7 +22,6 @@
 		var/datum/species/new_species = new species_type
 		new_species.prepare_human_for_preview(dummy)
 		dummy.set_species(new_species)
-		dummy.equipOutfit(/datum/outfit/job/assistant/consistent, visualsOnly = TRUE)
 
 		var/icon/dummy_icon = getFlatIcon(dummy)
 		GLOB.species_examine_icons[initial(species_type.name)] = icon(dummy_icon)

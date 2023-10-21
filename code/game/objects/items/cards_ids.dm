@@ -65,26 +65,25 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 	/// The name registered on the card (for example: Bryan See)
-	var/registered_name = null
+	var/registered_name
 	/// The label shown on the id card's UI
-	var/label = "Unassigned"
+	var/label = "Unassigned ID card"
 	/// The job name registered on the card (for example: Assistant).
-	var/assignment = null
+	var/assignment
 	/// Registered owner's age
-	var/registered_age = null
+	var/registered_age
 	/// Registered owner's blood type.
-	var/blood_type = "?"
+	var/blood_type
 	/// Registered owner's dna hash.
-	var/dna_hash = "??????"
+	var/dna_hash
 	/// Registered owner's fingerprint.
-	var/fingerprint = "??????"
-
-	// Images to store in the ID, representing the owner's appearance
-	var/icon/front_photo
-	var/icon/side_photo
+	var/fingerprint
 
 	/// Linked bank account.
 	var/datum/bank_account/registered_account
+
+	/// Owner's mugshot, basically
+	var/icon/front_photo
 
 	/// A datum used to manage our tgui panel, very silly but chameleon cards also have a separate UI
 	var/datum/id_card_panel/id_card_panel
@@ -152,7 +151,6 @@
 /obj/item/card/id/Destroy()
 	QDEL_NULL(id_card_panel)
 	front_photo = null
-	side_photo = null
 	if (registered_account)
 		registered_account.bank_cards -= src
 	if (my_store)
@@ -197,9 +195,7 @@
 	data["fingerprint"] = id_card.fingerprint
 	data["blood_type"] = id_card.blood_type
 	if(id_card.front_photo)
-		data["front_photo"] = icon2html(id_card.front_photo, user, icon_state = "front_photo", dir = SOUTH, sourceonly = TRUE)
-	if(id_card.side_photo)
-		data["side_photo"] = icon2html(id_card.side_photo, user, icon_state = "side_photo", dir = WEST, sourceonly = TRUE)
+		data["front_photo"] = icon2html(id_card.front_photo, user, dir = SOUTH, sourceonly = TRUE)
 	if(id_card.registered_account)
 		var/datum/bank_account/id_account = id_card.registered_account
 		var/list/registered_account = list()
@@ -839,10 +835,7 @@
 
 	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
 	if(record)
-		var/obj/item/photo/front = record.get_front_photo()
-		front_photo = front.picture.picture_image
-		var/obj/item/photo/side = record.get_side_photo()
-		side_photo = side.picture.picture_image
+		front_photo = record.get_front_photo()
 	else
 		if(ismob(mob_appearance))
 			mob_appearance = new(mob_appearance)
@@ -853,8 +846,8 @@
 			if(!mob_loc)
 				return
 			mob_appearance = new(mob_loc)
-		front_photo = getFlatIcon(mob_appearance, WEST)
-		side_photo = getFlatIcon(mob_appearance, SOUTH)
+		mob_appearance.dir = SOUTH
+		front_photo = getFlatIcon(mob_appearance)
 
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()
