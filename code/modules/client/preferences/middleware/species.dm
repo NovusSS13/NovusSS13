@@ -25,6 +25,9 @@
 
 		var/icon/dummy_icon = getFlatIcon(dummy)
 		GLOB.species_examine_icons[initial(species_type.name)] = icon(dummy_icon)
+
+		dummy.equipOutfit(/datum/outfit/job/assistant/consistent, visualsOnly = TRUE)
+		dummy_icon = getFlatIcon(dummy)
 		dummy_icon.Scale(64, 64)
 		dummy_icon.Crop(15, 64, 15 + 31, 64 - 31)
 		dummy_icon.Scale(64, 64)
