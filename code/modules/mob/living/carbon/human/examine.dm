@@ -68,7 +68,7 @@
 	if(back && !(obscured & ITEM_SLOT_BACK) && !(back.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_has] [back.get_examine_string(user)] on [t_his] back."
 
-	//Hands
+	//hands
 	if(!(obscured & ITEM_SLOT_HANDS))
 		for(var/obj/item/held_thing in held_items)
 			if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
@@ -84,7 +84,7 @@
 				. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][span_bloody("<b>blood-stained</b>")] hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed
-	if(handcuffed && !(obscured && ITEM_SLOT_HANDCUFFED))
+	if(handcuffed && !(obscured && ITEM_SLOT_HANDCUFFED) && !(handcuffed.item_flags & EXAMINE_SKIP))
 		. += span_warning("[t_He] [t_is] <b>restrained</b> with [handcuffed.get_examine_string(user)]!")
 
 	//belt
