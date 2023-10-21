@@ -28,6 +28,8 @@
 	var/hair_color
 	///The alpha used by the hair. 255 is completely solid, 0 is invisible.
 	var/hair_alpha = 255
+	///To use MUTCOLOR with a fixed color that's independent of the mcolor feature in DNA.
+	var/fixed_mut_color = ""
 
 	///Never, Optional, or Forced digi legs?
 	var/digitigrade_customization = DIGITIGRADE_NEVER
@@ -47,6 +49,8 @@
 	/// Use a [language holder datum][/datum/language_holder] typepath in this var.
 	/// Should never be null.
 	var/datum/language_holder/species_language_holder = /datum/language_holder/human_basic
+	/// Whether or not this species can use custom bodypart icons, basically only important for character setup preferences.
+	var/custom_bodyparts = FALSE
 	///The bodyparts this species uses. assoc of bodypart string - bodypart type. Make sure all the fucking entries are in or I'll skin you alive.
 	var/list/bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left,
@@ -81,9 +85,6 @@
 	///Replaces default appendix with a different organ.
 	var/obj/item/organ/appendix/mutantappendix = /obj/item/organ/appendix
 
-	/// Whether or not this species can use custom bodypart icons, basically only important for character setup preferences
-	var/custom_bodyparts = FALSE
-
 	/**
 	 * Percentage modifier for overall defense of the race, or less defense, if it's negative
 	 * THIS MODIFIES ALL DAMAGE TYPES.
@@ -99,8 +100,6 @@
 	var/payday_modifier = 1
 	///Base electrocution coefficient.  Basically a multiplier for damage from electrocutions.
 	var/siemens_coeff = 1
-	///To use MUTCOLOR with a fixed color that's independent of the mcolor feature in DNA.
-	var/fixed_mut_color = ""
 	///Special mutation that can be found in the genepool exclusively in this species. Dont leave empty or changing species will be a headache
 	var/inert_mutation = /datum/mutation/human/dwarfism
 	///Used to set the mob's death_sound upon species change

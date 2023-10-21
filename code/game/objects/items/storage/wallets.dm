@@ -128,7 +128,7 @@
 /obj/item/storage/wallet/get_id_examine_strings(mob/user)
 	. = ..()
 	if(front_id)
-		. += front_id.get_id_examine_strings(user)
+		. += "[icon2html(src, user)] [src] is displaying [icon2html(front_id, user)] [front_id]."
 
 /obj/item/storage/wallet/GetID()
 	return front_id

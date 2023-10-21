@@ -46,4 +46,4 @@
 	var/atom/A = source
 	override[EXAMINE_POSITION_ARTICLE] = A.gender == PLURAL? "some" : "a"
 	override[EXAMINE_POSITION_BEFORE] = " [span_color("<b>squirt-stained</b>", copytext(COLOR_FEMCUM, 1, -2))] " //remove the alpha
-	return COMPONENT_EXNAME_CHANGED
+	return COMPONENT_EXAMINE_NAME_CHANGED
