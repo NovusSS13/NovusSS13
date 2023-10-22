@@ -1,0 +1,6 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - rscadd: "The dumb brain trauma makes you drool."
+  - rscadd: "You can now see the player count in the status tab"
+  - qol: "Say sentences automatically get punctuation at the end now"
