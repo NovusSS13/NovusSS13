@@ -234,14 +234,14 @@
 		mob_user.face_atom(target.parent)
 	if(interaction_flags & INTERACTION_AUDIBLE)
 		//for some dumb reason, audible message does not in fact have an ignored_mobs argument so uh, get fucked?
-		atom_user.audible_message(message = msg, \
-							self_message = user_msg, \
-							deaf_message = blind_msg, \
+		atom_user.audible_message(message = span_emote(msg), \
+							self_message = span_emote(user_msg), \
+							deaf_message = span_emote(blind_msg), \
 							hearing_distance = message_range)
 	else
-		atom_user.visible_message(message = msg, \
-					self_message = user_msg, \
-					blind_message = blind_msg, \
+		atom_user.visible_message(message = span_emote(msg), \
+					self_message = span_emote(user_msg), \
+					blind_message = span_emote(blind_msg), \
 					vision_distance = message_range,
 					ignored_mobs = (target_msg ? target.parent : null))
 		if(target_msg)
