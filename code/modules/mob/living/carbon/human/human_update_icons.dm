@@ -110,8 +110,8 @@ There are several things that need to be remembered:
 			icon_file = MONKEY_UNIFORM_FILE
 		else if((bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			icon_file = DIGITIGRADE_UNIFORM_FILE
-		//Female sprites have lower priority than digitigrade sprites - Agggggggghhhhh!!!!!
-		else if(!HAS_TRAIT(src, TRAIT_AGENDER) && (chest_bodytype & BODYTYPE_HUMANOID) && (chest.limb_gender == "f") && !(uniform.female_sprite_flags & NO_FEMALE_UNIFORM))
+
+		if(!HAS_TRAIT(src, TRAIT_AGENDER) && (chest_bodytype & BODYTYPE_HUMANOID) && (chest.limb_gender == "f") && !(uniform.female_sprite_flags & NO_FEMALE_UNIFORM))
 			woman = TRUE
 
 		if(!icon_exists(icon_file, RESOLVE_ICON_STATE(uniform)))
@@ -659,7 +659,6 @@ generate/load female uniform sprites matching all previously decided variables
 	override_state = null,
 	override_file = null,
 )
-
 	//Find a valid icon_state from variables+arguments
 	var/t_state
 	if(override_state)
@@ -676,35 +675,47 @@ generate/load female uniform sprites matching all previously decided variables
 	//Find a valid layer from variables+arguments
 	var/layer2use = alternate_worn_layer ? alternate_worn_layer : default_layer
 
+	var/supports_variations_flags = NONE
+	if(isclothing(src))
+		var/obj/item/clothing/clothing_src = src
+		supports_variations_flags = clothing_src.supports_variations_flags
+
 	var/mutable_appearance/standing
 	if(female_uniform)
 		standing = wear_female_version(t_state, file2use, layer2use, female_uniform, greyscale_colors) //should layer2use be in sync with the adjusted value below? needs testing - shiz
-	if(!standing)
+	else if(!standing)
 		standing = mutable_appearance(file2use, t_state, -layer2use)
 
 	//Get the overlays for this item when it's being worn
 	//eg: ammo counters, primed grenade flashes, etc.
 	var/list/worn_overlays = worn_overlays(standing, isinhands, file2use)
+	if(!isinhands && default_layer && ishuman(loc))
+		var/mob/living/carbon/human/human_loc = loc
+		if(supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION_DISPLACEMENT)
+			var/obj/effect/abstract/displacement_map/human/displacement_map = human_loc.get_displacement_map(/obj/effect/abstract/displacement_map/human/digitigrade/clothes)
+			displacement_map?.apply_filters(standing)
+			if(worn_overlays?.len)
+				for(var/mutable_appearance/applied_appearance as anything in worn_overlays)
+					if(isnull(applied_appearance))
+						continue
+					displacement_map.apply_filters(applied_appearance)
+		if(worn_overlays?.len && (human_loc.get_mob_height() != HUMAN_HEIGHT_MEDIUM))
+			var/string_form_layer = num2text(default_layer)
+			var/offset_amount = GLOB.layers_to_offset[string_form_layer]
+			if(isnull(offset_amount))
+				// Worn overlays don't get batched in with standing overlays because they are overlay overlays
+				// ...So we need to apply human height here as well
+				for(var/mutable_appearance/applied_appearance as anything in worn_overlays)
+					if(isnull(applied_appearance))
+						continue
+					human_loc.apply_height_filters(applied_appearance)
+
+			else
+				for(var/mutable_appearance/applied_appearance as anything in worn_overlays)
+					if(isnull(applied_appearance))
+						continue
+					human_loc.apply_height_offsets(applied_appearance, offset_amount)
 	if(worn_overlays?.len)
-		if(!isinhands && default_layer && ishuman(loc))
-			var/mob/living/carbon/human/human_loc = loc
-			if(human_loc.get_mob_height() != HUMAN_HEIGHT_MEDIUM)
-				var/string_form_layer = num2text(default_layer)
-				var/offset_amount = GLOB.layers_to_offset[string_form_layer]
-				if(isnull(offset_amount))
-					// Worn overlays don't get batched in with standing overlays because they are overlay overlays
-					// ...So we need to apply human height here as well
-					for(var/mutable_appearance/applied_appearance as anything in worn_overlays)
-						if(isnull(applied_appearance))
-							continue
-						human_loc.apply_height_filters(applied_appearance)
-
-				else
-					for(var/mutable_appearance/applied_appearance in worn_overlays)
-						if(isnull(applied_appearance))
-							continue
-						human_loc.apply_height_offsets(applied_appearance, offset_amount)
-
 		standing.overlays.Add(worn_overlays)
 
 	standing = center_image(standing, isinhands ? inhand_x_dimension : worn_x_dimension, isinhands ? inhand_y_dimension : worn_y_dimension)
@@ -767,7 +778,6 @@ generate/load female uniform sprites matching all previously decided variables
 		return
 
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
-
 	if(!istype(my_head))
 		return
 
@@ -782,10 +792,24 @@ generate/load female uniform sprites matching all previously decided variables
 // Some overlays can't be displaced as they're too close to the edge of the sprite or cross the middle point in a weird way.
 // So instead we have to pass them through an offset, which is close enough to look good.
 /mob/living/carbon/human/apply_overlay(cache_index)
+	var/raw_applied = overlays_standing[cache_index]
+	for(var/displacement_type in displacement_maps)
+		if(!ispath(displacement_type, /obj/effect/abstract/displacement_map/human))
+			continue
+		var/obj/effect/abstract/displacement_map/human/displacement_map = displacement_maps[displacement_type]
+		var/list/applicable_layers = displacement_map.get_applicable_layers()
+		if(!(cache_index in applicable_layers))
+			continue
+		if(islist(raw_applied))
+			for(var/mutable_appearance/applied_appearance as anything in raw_applied)
+				if(isnull(applied_appearance))
+					continue
+				displacement_map.apply_filters(applied_appearance)
+		else if(!isnull(raw_applied))
+			displacement_map.apply_filters(raw_applied)
 	if(get_mob_height() == HUMAN_HEIGHT_MEDIUM)
 		return ..()
 
-	var/raw_applied = overlays_standing[cache_index]
 	var/string_form_index = num2text(cache_index)
 	var/offset_amount = GLOB.layers_to_offset[string_form_index]
 	if(isnull(offset_amount))
@@ -843,24 +867,25 @@ generate/load female uniform sprites matching all previously decided variables
 		"Lenghten_Torso",
 	))
 
+	var/filter_priority = 2
 	switch(get_mob_height())
 		// Don't set this one directly, use TRAIT_DWARF
 		if(HUMAN_HEIGHT_DWARF)
-			appearance.add_filter("Cut_Torso", 1, displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 2))
-			appearance.add_filter("Cut_Legs", 1, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 3))
+			appearance.add_filter("Cut_Torso", filter_priority, displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 2))
+			appearance.add_filter("Cut_Legs", filter_priority, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 3))
 		if(HUMAN_HEIGHT_SHORTER)
-			appearance.add_filter("Cut_Torso", 1, displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 1))
-			appearance.add_filter("Cut_Legs", 1, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 1))
+			appearance.add_filter("Cut_Torso", filter_priority, displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 1))
+			appearance.add_filter("Cut_Legs", filter_priority, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 1))
 		if(HUMAN_HEIGHT_SHORT)
-			appearance.add_filter("Cut_Legs", 1, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 1))
+			appearance.add_filter("Cut_Legs", filter_priority, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 1))
 		if(HUMAN_HEIGHT_TALL)
-			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 1))
+			appearance.add_filter("Lenghten_Legs", filter_priority, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 1))
 		if(HUMAN_HEIGHT_TALLER)
-			appearance.add_filter("Lenghten_Torso", 1, displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1))
-			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 1))
+			appearance.add_filter("Lenghten_Torso", filter_priority, displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1))
+			appearance.add_filter("Lenghten_Legs", filter_priority, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 1))
 		if(HUMAN_HEIGHT_MANMORE)
-			appearance.add_filter("Lenghten_Torso", 1, displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1))
-			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 2))
+			appearance.add_filter("Lenghten_Torso", filter_priority, displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1))
+			appearance.add_filter("Lenghten_Legs", filter_priority, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 2))
 
 	return appearance
 

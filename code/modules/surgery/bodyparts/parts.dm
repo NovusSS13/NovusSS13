@@ -323,24 +323,46 @@
 
 /obj/item/bodypart/leg/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
-	if(ishuman(owner) && (bodytype & BODYTYPE_DIGITIGRADE))
-		var/mob/living/carbon/human/human_owner = owner
+	if(!ishuman(owner))
+		return
+	var/mob/living/carbon/human/human_owner = owner
+	if(bodytype & BODYTYPE_DIGITIGRADE)
 		var/uniform_compatible = FALSE
 		var/suit_compatible = FALSE
 		var/shoes_compatible = FALSE
-		if(!human_owner.w_uniform || (human_owner.w_uniform.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))) //Checks uniform compatibility
+		if(!human_owner.w_uniform || (human_owner.w_uniform.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON|CLOTHING_DIGITIGRADE_VARIATION_DISPLACEMENT))) //Checks uniform compatibility
 			uniform_compatible = TRUE
-		if(!human_owner.wear_suit || (human_owner.wear_suit.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)) || !(human_owner.wear_suit.body_parts_covered & LEGS)) //Checks suit compatability
+		if(!human_owner.wear_suit || (human_owner.wear_suit.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON|CLOTHING_DIGITIGRADE_VARIATION_DISPLACEMENT)) || !(human_owner.wear_suit.body_parts_covered & LEGS)) //Checks suit compatability
 			suit_compatible = TRUE
-		if(!human_owner.shoes || (human_owner.shoes.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)))
+		if(!human_owner.shoes || (human_owner.shoes.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON|CLOTHING_DIGITIGRADE_VARIATION_DISPLACEMENT)))
 			shoes_compatible = TRUE
 
+		var/old_bodytype = bodytype
 		if((uniform_compatible && suit_compatible && shoes_compatible) \
 			//If the uniform is hidden, it doesnt matter if its compatible
-			|| (suit_compatible && shoes_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT))
+			|| ((human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT) && suit_compatible && shoes_compatible))
 			bodytype &= ~BODYTYPE_COMPRESSED
 		else
 			bodytype |= BODYTYPE_COMPRESSED
+		if(bodytype != old_bodytype)
+			owner.synchronize_bodytypes()
+	var/current_displacement_map = owner.get_displacement_map(/obj/effect/abstract/displacement_map/human/digitigrade/clothes)
+	var/should_apply_displacement_map = (owner.bodytype & BODYTYPE_DIGITIGRADE) && !(owner.bodytype & BODYTYPE_COMPRESSED)
+	var/displacement_changed = FALSE
+	if(should_apply_displacement_map && !current_displacement_map)
+		owner.add_displacement_map(/obj/effect/abstract/displacement_map/human/digitigrade/body)
+		owner.add_displacement_map(/obj/effect/abstract/displacement_map/human/digitigrade/clothes)
+		displacement_changed = TRUE
+	else if(!should_apply_displacement_map && current_displacement_map)
+		owner.remove_displacement_map(/obj/effect/abstract/displacement_map/human/digitigrade/body)
+		owner.remove_displacement_map(/obj/effect/abstract/displacement_map/human/digitigrade/clothes)
+		displacement_changed = TRUE
+	if(displacement_changed)
+		owner.update_worn_undersuit()
+		owner.update_worn_oversuit()
+		owner.update_worn_shoes()
+		owner.update_worn_legcuffs()
+		owner.update_damage_overlays()
 
 // Legs never get the top offset applied!
 /obj/item/bodypart/leg/get_applicable_top_offset()

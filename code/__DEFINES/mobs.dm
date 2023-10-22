@@ -608,7 +608,7 @@ GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 #define BODYPARTS_LAYER 32
 /// Mutantrace features (snout, body markings) that must appear above the body parts, but below underwear
 #define BODY_ADJ_LAYER 31
-/// Underwear, undershirts, socks, eyes, lips(makeup)
+/// Underwear, undershirts, socks
 #define BODY_LAYER 30
 /// Mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)
 #define FRONT_MUTATIONS_LAYER 29
@@ -717,18 +717,6 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 	// UNIFORM_LAYER (full body)
 	// WOUND_LAYER (full body)
 ))
-
-//Bitflags for the layers a bodypart overlay can draw on (can be drawn on multiple layers)
-/// Draws overlay on the BODY_BEHIND_LAYER
-#define EXTERNAL_BEHIND (1<<0)
-/// Draws overlay on the BODY_ADJ_LAYER
-#define EXTERNAL_ADJACENT (1<<1)
-/// Draws overlay on the BODY_HIGH_LAYER
-#define EXTERNAL_HIGH (1<<2)
-/// Draws overlay on the BODY_FRONT_LAYER
-#define EXTERNAL_FRONT (1<<3)
-/// Draws organ on all EXTERNAL layers
-#define EXTERNAL_ALL_LAYERS EXTERNAL_BEHIND | EXTERNAL_ADJACENT | EXTERNAL_HIGH | EXTERNAL_FRONT
 
 /// A list of every possible mutant bodypart layer bitflag, for iterating over when necessary
 GLOBAL_LIST_INIT(external_layer_bitflags, list(

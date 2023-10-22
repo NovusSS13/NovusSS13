@@ -358,18 +358,22 @@
 	var/list/damage_overlays = list()
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		if(iter_part.dmg_overlay_type)
-			if(iter_part.brutestate)
-				var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0")
-				damage_overlay.layer = -DAMAGE_LAYER
-				if((iter_part.body_zone == BODY_ZONE_PRECISE_L_HAND) || (iter_part.body_zone == BODY_ZONE_PRECISE_R_HAND))
-					damage_overlay.layer = -DAMAGE_HIGH_LAYER
-				damage_overlays += damage_overlay
-			if(iter_part.burnstate)
-				var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
-				damage_overlay.layer = -DAMAGE_LAYER
-				if((iter_part.body_zone == BODY_ZONE_PRECISE_L_HAND) || (iter_part.body_zone == BODY_ZONE_PRECISE_R_HAND))
-					damage_overlay.layer = -DAMAGE_HIGH_LAYER
-				damage_overlays += damage_overlay
+			var/list/zones = list(iter_part.body_zone)
+			if(iter_part.aux_zone)
+				zones += iter_part.aux_zone
+			for(var/body_zone in zones)
+				if(iter_part.brutestate)
+					var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[body_zone]_[iter_part.brutestate]0")
+					damage_overlay.layer = -DAMAGE_LAYER
+					if((body_zone == BODY_ZONE_PRECISE_L_HAND) || (body_zone == BODY_ZONE_PRECISE_R_HAND))
+						damage_overlay.layer = -DAMAGE_HIGH_LAYER
+					damage_overlays += damage_overlay
+				if(iter_part.burnstate)
+					var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[body_zone]_0[iter_part.burnstate]")
+					damage_overlay.layer = -DAMAGE_LAYER
+					if((body_zone == BODY_ZONE_PRECISE_L_HAND) || (body_zone == BODY_ZONE_PRECISE_R_HAND))
+						damage_overlay.layer = -DAMAGE_HIGH_LAYER
+					damage_overlays += damage_overlay
 	overlays_standing[DAMAGE_LAYER] = damage_overlays
 
 	apply_overlay(DAMAGE_LAYER)
@@ -501,8 +505,6 @@
  * is_creating = TRUE redraws the limbs to conform to the owner.
  */
 /mob/living/carbon/proc/update_body_parts(is_creating)
-	update_damage_overlays()
-	update_wound_overlays()
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
@@ -520,6 +522,8 @@
 		for(var/missing_limb in missing_bodyparts)
 			icon_render_keys -= missing_limb //Removes dismembered limbs from the key list
 
+	update_damage_overlays()
+	update_wound_overlays()
 	if(!needs_update.len && !limb_count_update)
 		return
 

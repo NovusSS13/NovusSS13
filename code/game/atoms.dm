@@ -177,6 +177,9 @@
 	/// How this atom should react to having its astar blocking checked
 	var/can_astar_pass = CANASTARPASS_DENSITY
 
+	/// Lazylist of displacement maps attached to us
+	var/list/obj/effect/abstract/displacement_map/displacement_maps
+
 /**
  * Called when an atom is created in byond (built in engine proc)
  *
@@ -311,6 +314,8 @@
 
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
+
+	QDEL_LIST(displacement_maps)
 
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
@@ -2187,3 +2192,25 @@
 	chat_color_darkened = colorize_string(name, sat_shift = 0.85, lum_shift = 0.85)
 	chat_color_name = name
 	return TRUE
+
+/// Gets a displacement map of the given type, if one exists
+/atom/movable/proc/get_displacement_map(displacement_map_type)
+	if(!displacement_map_type)
+		return
+	return LAZYACCESS(displacement_maps, displacement_map_type)
+
+/// Adds a displacement map of the given type
+/atom/movable/proc/add_displacement_map(displacement_map_type)
+	if(!displacement_map_type)
+		return
+	var/map = new displacement_map_type(null, src)
+	return map
+
+/atom/movable/proc/remove_displacement_map(displacement_map_type)
+	if(!displacement_map_type)
+		return
+	var/map = get_displacement_map(displacement_map_type)
+	if(map)
+		qdel(map)
+		return TRUE
+	return FALSE

@@ -13,8 +13,9 @@
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	slot_flags = ITEM_SLOT_OCLOTHING
-	var/blood_overlay_type = "suit"
 	limb_integrity = 0 // disabled for most exo-suits
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_DISPLACEMENT
+	var/blood_overlay_type = "suit"
 
 /obj/item/clothing/suit/Initialize(mapload)
 	. = ..()

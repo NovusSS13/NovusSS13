@@ -332,6 +332,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/plane_master)
 	// If we're outside bounds AND we're the 0th plane, we need to show cause parallax is hacked to hell
 	return offset != 0 && is_outside_bounds
 
+/atom/movable/screen/plane_master/displacement_maps
+	name = "Displacement maps"
+	documentation = "This is a hacky plane that exists to make displacement maps have no alpha, while still being considered \"visible\" by the displacement filter...\
+		<br>Yes, this is jank!"
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = DISPLACEMENT_MAP_PLANE
+	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
+	render_relay_planes = list()
+
 /atom/movable/screen/plane_master/gravpulse
 	name = "Gravpulse"
 	documentation = "Ok so this one's fun. Basically, we want to be able to distort the game plane when a grav annom is around.\
