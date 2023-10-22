@@ -153,6 +153,7 @@
 	front_photo = null
 	if (registered_account)
 		registered_account.bank_cards -= src
+	registered_account = null
 	if (my_store)
 		QDEL_NULL(my_store)
 	return ..()
@@ -218,8 +219,6 @@
 			registered_account["bounty"] = bounty
 
 		data["registered_account"] = registered_account
-	data["from_central_command"] = HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD)
-	data["tastefully_thick"] = HAS_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD)
 
 	return data
 

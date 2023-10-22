@@ -66,7 +66,7 @@ export const IdCardPanel = (props, context) => {
                   name={from_central_command ? 'tg-nanotrasen-logo' : 'id-card'}
                 />
               </Stack.Item>
-              <Stack.Item grow>{label}</Stack.Item>
+              <Stack.Item grow>{label || 'Unassigned ID Card'}</Stack.Item>
             </Stack>
           }>
           <Stack>
@@ -79,7 +79,7 @@ export const IdCardPanel = (props, context) => {
                   {registered_age || '??'}
                 </LabeledList.Item>
                 <LabeledList.Item label="Assignment">
-                  {assignment || 'Unknown'}
+                  {assignment || 'Unassigned'}
                 </LabeledList.Item>
                 <LabeledList.Item label="Blood Type">
                   {blood_type || '?'}
