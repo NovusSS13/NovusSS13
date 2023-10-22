@@ -207,28 +207,28 @@
 			msg = message[message_index]
 		else
 			msg = message
-		msg = compose_message(user, target, msg)
+		msg = replace_pronouns(user, target, msg)
 	var/target_msg
 	if(target_message && ismob(target.parent))
 		if(message_index)
 			target_msg = target_message[message_index]
 		else
 			target_msg = target_message
-		target_msg = compose_message(user, target, target_msg)
+		target_msg = replace_pronouns(user, target, target_msg)
 	var/user_msg
 	if(user_message)
 		if(message_index)
 			user_msg = user_message[message_index]
 		else
 			user_msg = user_message
-		user_msg = compose_message(user, target, user_msg)
+		user_msg = replace_pronouns(user, target, user_msg)
 	var/blind_msg
 	if(blind_message)
 		if(message_index)
 			blind_msg = blind_message[message_index]
 		else
 			blind_msg = blind_message
-		blind_msg = compose_message(user, target, blind_msg)
+		blind_msg = replace_pronouns(user, target, blind_msg)
 	if(ismob(user))
 		var/mob/mob_user = user
 		mob_user.face_atom(target.parent)
@@ -339,9 +339,9 @@
 		msg = friendly_messages[message_index]
 		msg_self = friendly_messages_self[message_index]
 	if(msg && msg_self)
-		msg = compose_message(user, target, msg)
-		msg_self = compose_message(user, target, msg_self)
-		living_user.audible_message(msg, self_message = msg_self)
+		msg = replace_pronouns(user, target, msg)
+		msg_self = replace_pronouns(user, target, msg_self)
+		living_user.audible_message(span_emote(msg), self_message = span_emote(msg_self))
 	return TRUE
 
 /// Basically handles moaning
@@ -372,12 +372,12 @@
 		msg = friendly_messages[message_index]
 		msg_self = friendly_messages_self[message_index]
 	if(msg && msg_self)
-		msg = compose_message(user, target, msg)
-		msg_self = compose_message(user, target, msg_self)
-		living_target.audible_message(msg, self_message =  msg_self)
+		msg = replace_pronouns(user, target, msg)
+		msg_self = replace_pronouns(user, target, msg_self)
+		living_target.audible_message(span_emote(msg), self_message =  span_emote(msg_self))
 	return TRUE
 
-/datum/interaction/proc/compose_message(datum/component/interactable/user, datum/component/interactable/target, msg)
+/datum/interaction/proc/replace_pronouns(datum/component/interactable/user, datum/component/interactable/target, msg)
 	msg = replacetext(msg, "%USER_THEY", user.parent.p_they())
 	msg = replacetext(msg, "%USER_THEM", user.parent.p_them())
 	msg = replacetext(msg, "%USER_THEIR", user.parent.p_their())
