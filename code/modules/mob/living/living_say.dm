@@ -438,11 +438,12 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
  *
  * message - The message to treat.
  * capitalize_message - Whether we run capitalize() on the message after we're done.
+ * add_period - Whether we add a period to the end of the message after we're done.
  *
  * Returns a list, which is a packet of information corresponding to the message that has been treated, which
  * contains the new message, as well as text-to-speech information.
  */
-/mob/living/proc/treat_message(message, tts_message, tts_filter, capitalize_message = TRUE)
+/mob/living/proc/treat_message(message, tts_message, tts_filter, capitalize_message = TRUE, add_period = TRUE)
 	RETURN_TYPE(/list)
 
 	if(HAS_TRAIT(src, TRAIT_UNINTELLIGIBLE_SPEECH))
@@ -461,6 +462,11 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	if(capitalize_message)
 		message = capitalize(message)
 		tts_message = capitalize(tts_message)
+
+	var/static/regex/punctuation_regex = regex(@"[^\w\s]$", "gi")
+	if(add_period && !punctuation_regex.Find(message))
+		message += "."
+		tts_message += "."
 
 	///caps the length of individual letters to 3: ex: heeeeeeyy -> heeeyy
 	/// prevents TTS from choking on unrealistic text while keeping emphasis
