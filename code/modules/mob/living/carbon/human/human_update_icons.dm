@@ -693,12 +693,13 @@ generate/load female uniform sprites matching all previously decided variables
 		var/mob/living/carbon/human/human_loc = loc
 		if(supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION_DISPLACEMENT)
 			var/obj/effect/abstract/displacement_map/human/displacement_map = human_loc.get_displacement_map(/obj/effect/abstract/displacement_map/human/digitigrade/clothes)
-			displacement_map?.apply_filters(standing)
-			if(worn_overlays?.len)
-				for(var/mutable_appearance/applied_appearance as anything in worn_overlays)
-					if(isnull(applied_appearance))
-						continue
-					displacement_map.apply_filters(applied_appearance)
+			if(displacement_map)
+				displacement_map.apply_filters(standing)
+				if(worn_overlays?.len)
+					for(var/mutable_appearance/applied_appearance as anything in worn_overlays)
+						if(isnull(applied_appearance))
+							continue
+						displacement_map.apply_filters(applied_appearance)
 		if(worn_overlays?.len && (human_loc.get_mob_height() != HUMAN_HEIGHT_MEDIUM))
 			var/string_form_layer = num2text(default_layer)
 			var/offset_amount = GLOB.layers_to_offset[string_form_layer]
