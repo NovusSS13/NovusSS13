@@ -46,6 +46,10 @@
 	QDEL_LIST(surgeries)
 	return ..()
 
+/mob/living/get_status_tab_items()
+	. = ..()
+	. += "Players Connected: [LAZYLEN(GLOB.clients)]"
+
 /mob/living/onZImpact(turf/T, levels, message = TRUE)
 	if(!isgroundlessturf(T))
 		ZImpactDamage(T, levels)

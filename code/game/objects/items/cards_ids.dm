@@ -153,6 +153,7 @@
 	front_photo = null
 	if (registered_account)
 		registered_account.bank_cards -= src
+	registered_account = null
 	if (my_store)
 		QDEL_NULL(my_store)
 	return ..()
