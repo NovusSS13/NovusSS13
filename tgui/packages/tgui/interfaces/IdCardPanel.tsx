@@ -1,6 +1,6 @@
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { LabeledList, Section, Stack } from '../components';
+import { Icon, LabeledList, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 type Data = {
@@ -13,6 +13,8 @@ type Data = {
   blood_type: string;
   registered_account: Account;
   front_photo: string;
+  from_central_command: boolean;
+  tastefully_thick: boolean;
 };
 
 type Account = {
@@ -42,13 +44,31 @@ export const IdCardPanel = (props, context) => {
     fingerprint,
     registered_account,
     front_photo,
+    from_central_command,
+    tastefully_thick,
   } = data;
   const { bounty } = registered_account || { bounty: null };
 
   return (
     <Window title="ID Card" width={800} height={450}>
-      <Window.Content>
-        <Section fill title={label}>
+      <Window.Content
+        style={
+          !from_central_command && {
+            'background': 'none',
+          }
+        }>
+        <Section
+          fill
+          title={
+            <Stack>
+              <Stack.Item>
+                <Icon
+                  name={from_central_command ? 'tg-nanotrasen-logo' : 'id-card'}
+                />
+              </Stack.Item>
+              <Stack.Item grow>{label}</Stack.Item>
+            </Stack>
+          }>
           <Stack>
             <Stack.Item maxWidth="65%">
               <LabeledList>
@@ -109,9 +129,14 @@ export const IdCardPanel = (props, context) => {
                   null}
               </LabeledList>
             </Stack.Item>
+            <Stack.Divider />
             <Stack.Item width="35%">
               <Section>
-                <Stack.Item grow>
+                <Stack.Item
+                  grow
+                  style={{
+                    'background-color': 'black',
+                  }}>
                   <img src={resolveAsset(front_photo)} width="100%" />
                 </Stack.Item>
               </Section>
