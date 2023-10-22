@@ -69,7 +69,9 @@
 	var/hitsound
 	///Played when the item is used, for example tools
 	var/usesound
-	///Used when yate into a mob
+	///Sound used when throw
+	var/throw_sound = 'sound/effects/throw.ogg'
+	///Sound when we hit a mob when throw
 	var/mob_throw_hit_sound
 	///Sound used when equipping the item into a valid slot
 	var/equip_sound
@@ -454,6 +456,15 @@
 /obj/item/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	add_fingerprint(usr)
 	return ..()
+
+/obj/item/Topic(href, list/href_list)
+	. = ..()
+	if(.)
+		return
+	if(href_list["look_at_id"])
+		var/obj/item/card/id/id = GetID()
+		if(istype(id) && id.id_card_panel)
+			id.id_card_panel.ui_interact(usr)
 
 /obj/item/vv_get_dropdown()
 	. = ..()

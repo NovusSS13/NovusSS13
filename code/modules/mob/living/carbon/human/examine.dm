@@ -23,9 +23,10 @@
 
 	var/datum/flavor_holder/flavor_holder = GLOB.flavor_holders[name]
 	var/species_name = flavor_holder?.custom_species_name || dna.species.name
-	. = list("<span class='info'>This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "[span_color("Human", COLOR_GRAY)]?" : "[span_color(species_name, dna.species.chat_color)]!"]</EM>")
+	var/species_icon = icon2html(GLOB.species_examine_icons[obscure_species ? "Unknown" : initial(dna.species.name)], user)
+	. = list("<span class='info'>[species_icon] This is <EM>[!obscure_name ? span_color(name, chat_color) : colorize_string("Unknown")], a [obscure_species ? "[span_color("Human", COLOR_GRAY)]?" : "[span_color(species_name, dna.species.chat_color)]!"]</EM>")
 	if(obscure_examine)
-		. += "<span class='warning'>You're struggling to make out any details...</span>"
+		. += span_warning("You're struggling to make out any details...")
 		.[length(.)] += "</span>" //closes info class without creating another line
 		return
 
@@ -39,7 +40,7 @@
 			var/datum/component/creamed/coom = GetComponent(component_type)
 			if(coom?.cover_lips)
 				covered_lips += coom.cover_lips
-		if((!key && !ai_controller) || !client)
+		if(!client && !ai_controller)
 			covered_lips += span_color("drool", "#b6e7f5")
 		if(LAZYLEN(covered_lips))
 			. += "Mmm, [t_his] lips are covered with [english_list(covered_lips)]!"
@@ -67,7 +68,7 @@
 	if(back && !(obscured & ITEM_SLOT_BACK) && !(back.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_has] [back.get_examine_string(user)] on [t_his] back."
 
-	//Hands
+	//hands
 	if(!(obscured & ITEM_SLOT_HANDS))
 		for(var/obj/item/held_thing in held_items)
 			if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
@@ -83,7 +84,7 @@
 				. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][span_bloody("<b>blood-stained</b>")] hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed
-	if(handcuffed && !(obscured && ITEM_SLOT_HANDCUFFED))
+	if(handcuffed && !(obscured && ITEM_SLOT_HANDCUFFED) && !(handcuffed.item_flags & EXAMINE_SKIP))
 		. += span_warning("[t_He] [t_is] <b>restrained</b> with [handcuffed.get_examine_string(user)]!")
 
 	//belt
@@ -117,11 +118,13 @@
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]."
-		. += wear_id.get_id_examine_strings(user)
+		var/list/id_examine_strings = wear_id.get_id_examine_strings(user)
+		if(LAZYLEN(id_examine_strings))
+			. += id_examine_strings
 
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()
-	if (length(status_examines))
+	if (LAZYLEN(status_examines))
 		. += status_examines
 
 	var/appears_dead = FALSE
@@ -333,7 +336,7 @@
 			if(CONSCIOUS)
 				if(HAS_TRAIT(src, TRAIT_DUMB))
 					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
-		if(get_organ_by_type(/obj/item/organ/brain))
+		if(!ai_controller && get_organ_by_type(/obj/item/organ/brain))
 			if(!key)
 				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 			else if(!client)

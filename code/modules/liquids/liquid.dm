@@ -584,21 +584,21 @@
 			var/reagent_name = initial(reagent_type.name)
 			var/volume = round(reagent_list[reagent_type], 0.01)
 
-			examine_list += "<hr>There is [replacetext(liquid_state_template, "$", "[volume] units of [reagent_name]")] here."
+			examine_list += "There is [replacetext(liquid_state_template, "$", "[volume] units of [reagent_name]")] here."
 		else
 			// Show each individual reagent
-			examine_list += "<hr>There is [replacetext(liquid_state_template, "$", "the following")] here:"
+			examine_list += "There is [replacetext(liquid_state_template, "$", "the following")] here:"
 
 			for(var/datum/reagent/reagent_type as anything in reagent_list)
 				var/reagent_name = initial(reagent_type.name)
 				var/volume = round(reagent_list[reagent_type], 0.01)
 				examine_list += "&bull; [volume] units of [reagent_name]"
 
-		examine_list += span_notice("The solution has a temperature of [temperature]K.<hr>")
+		examine_list += span_notice("The solution has a temperature of [temperature]K.")
 		return
 
 	// Otherwise, just show the total volume
-	examine_list += "<hr>[span_notice("There is [replacetext(liquid_state_template, "$", "liquid")] here.")]<hr>"
+	examine_list += "[span_notice("There is [replacetext(liquid_state_template, "$", "liquid")] here.")]"
 
 /obj/effect/temp_visual/liquid_splash
 	icon = 'icons/effects/liquid.dmi'

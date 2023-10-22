@@ -56,7 +56,7 @@
 
 /// "Retro" ID card that renders itself as the icon state with no overlays.
 /obj/item/card/id
-	name = "retro identification card"
+	name = "identification card"
 	desc = "A card used to provide ID and determine access across the station."
 	icon_state = "card_grey"
 	worn_icon_state = "nothing"
@@ -64,10 +64,29 @@
 	armor_type = /datum/armor/card_id
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
-	/// The name registered on the card (for example: Dr Bryan See)
-	var/registered_name = null
+	/// The name registered on the card (for example: Bryan See)
+	var/registered_name
+	/// The label shown on the id card's UI
+	var/label = "Unassigned ID card"
+	/// The job name registered on the card (for example: Assistant).
+	var/assignment
+	/// Registered owner's age
+	var/registered_age
+	/// Registered owner's blood type.
+	var/blood_type
+	/// Registered owner's dna hash.
+	var/dna_hash
+	/// Registered owner's fingerprint.
+	var/fingerprint
+
 	/// Linked bank account.
 	var/datum/bank_account/registered_account
+
+	/// Owner's mugshot, basically
+	var/icon/front_photo
+
+	/// A datum used to manage our tgui panel, very silly but chameleon cards also have a separate UI
+	var/datum/id_card_panel/id_card_panel
 
 	/// Linked holopay.
 	var/obj/structure/holopay/my_store
@@ -89,12 +108,6 @@
 	var/holopay_min_fee = 0
 	/// The holopay name chosen by the user
 	var/holopay_name = "holographic pay stand"
-
-	/// Registered owner's age.
-	var/registered_age = 30
-
-	/// The job name registered on the card (for example: Assistant).
-	var/assignment
 
 	/// Trim datum associated with the card. Controls which job icon is displayed on the card and which accesses do not require wildcards.
 	var/datum/id_trim/trim
@@ -133,19 +146,83 @@
 	if(prob(1))
 		ADD_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD, ROUNDSTART_TRAIT)
 
+	id_card_panel = new(src)
+
 /obj/item/card/id/Destroy()
+	QDEL_NULL(id_card_panel)
+	front_photo = null
 	if (registered_account)
 		registered_account.bank_cards -= src
 	if (my_store)
 		QDEL_NULL(my_store)
 	return ..()
 
-/obj/item/card/id/get_id_examine_strings(mob/user)
-	. = ..()
-	. += list("[icon2html(get_cached_flat_icon(), user, extra_classes = "bigicon")]")
-
 /obj/item/card/id/get_examine_string(mob/user, thats = FALSE)
 	return "[icon2html(get_cached_flat_icon(), user)] [thats? "That's ":""][get_examine_name(user)]"
+
+/datum/id_card_panel
+	/// Our owner ID card
+	var/obj/item/card/id/id_card
+
+/datum/id_card_panel/New(obj/item/card/id/id_card)
+	. = ..()
+	src.id_card = id_card
+
+/datum/id_card_panel/Destroy(force)
+	. = ..()
+	id_card = null
+
+/datum/id_card_panel/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		if(!user.can_read(src, READING_CHECK_LITERACY))
+			return
+		ui = new(user, src, "IdCardPanel", id_card?.name)
+		ui.open()
+	else if(!user.can_read(src, READING_CHECK_LITERACY))
+		ui.close()
+
+/datum/id_card_panel/ui_static_data(mob/user)
+	var/list/data = list()
+	if(!id_card)
+		return data
+
+	data["label"] = id_card.label
+	data["registered_name"] = id_card.registered_name
+	data["registered_age"] = id_card.registered_age
+	data["assignment"] = id_card.assignment
+	data["dna_hash"] = id_card.dna_hash
+	data["fingerprint"] = id_card.fingerprint
+	data["blood_type"] = id_card.blood_type
+	if(id_card.front_photo)
+		data["front_photo"] = icon2html(id_card.front_photo, user, dir = SOUTH, sourceonly = TRUE)
+	if(id_card.registered_account)
+		var/datum/bank_account/id_account = id_card.registered_account
+		var/list/registered_account = list()
+
+		registered_account["holder"] = id_account.account_holder
+		registered_account["balance"] = id_account.account_balance
+		registered_account["mining_points"] = id_account.mining_points
+		if(id_account.account_job)
+			var/datum/bank_account/department_account = SSeconomy.get_dep_account(id_account.account_job.paycheck_department)
+			if(department_account)
+				registered_account["department_account"] = department_account.account_holder
+				registered_account["department_balance"] = department_account.account_balance
+		if(id_account.civilian_bounty)
+			var/list/bounty = list()
+
+			bounty["name"] = id_account.civilian_bounty.name
+			bounty["description"] = id_account.civilian_bounty.description
+			bounty["reward"] = id_account.civilian_bounty.reward
+
+			registered_account["bounty"] = bounty
+
+		data["registered_account"] = registered_account
+
+	return data
+
+/datum/id_card_panel/ui_host(mob/user)
+	return id_card
 
 /**
  * Helper proc, checks whether the ID card can hold any given set of wildcards.
@@ -406,12 +483,15 @@
 		wildcard_access_list |= new_access
 
 /obj/item/card/id/attack_self(mob/user)
-	if(Adjacent(user))
-		var/minor
-		if(registered_name && registered_age && registered_age < AGE_MINOR)
-			minor = " <b>(MINOR)</b>"
-		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [src.name][minor]."), span_notice("You show \the [src.name][minor]."))
 	add_fingerprint(user)
+	if(Adjacent(user))
+		user.visible_message(span_notice("[user] shows you: [get_examine_string(user)]."), \
+						span_notice("You show [get_examine_string(user)]."))
+		if(id_card_panel)
+			for(var/mob/living/friend in view(1, user))
+				if(!friend.client)
+					continue
+				id_card_panel.ui_interact(friend)
 
 /obj/item/card/id/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
@@ -689,15 +769,8 @@
 	. = ..()
 	if(!user.can_read(src))
 		return
-
-	if(registered_account)
-		. += "The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr."
-		if(ACCESS_COMMAND in access)
-			var/datum/bank_account/linked_dept = SSeconomy.get_dep_account(registered_account.account_job.paycheck_department)
-			. += "The [linked_dept.account_holder] linked to the ID reports a balance of [linked_dept.account_balance] cr."
-
 	if(HAS_TRAIT(user, TRAIT_ID_APPRAISER))
-		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... yes, this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
+		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... Yes... this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
 		if(HAS_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD) && (user.is_holding(src) || (user.CanReach(src) && user.put_in_hands(src, ignore_animation = FALSE))))
 			ADD_TRAIT(src, TRAIT_NODROP, "psycho")
 			. += span_hypnophrase("Look at that subtle coloring... The tasteful thickness of it. Oh my God, it even has a watermark...")
@@ -707,7 +780,8 @@
 				var/mob/living/living_user = user
 				living_user.adjust_jitter(10 SECONDS)
 			addtimer(CALLBACK(src, PROC_REF(drop_card), user), 10 SECONDS)
-	. += span_notice("<i>There's more information below, you can look again to take a closer look...</i>")
+	if(Adjacent(user))
+		. += span_notice("<i><a href='?src=[REF(src)];look_at_id=1'>There's more information on the card...</a>")
 
 /obj/item/card/id/proc/drop_card(mob/user)
 	user.stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -719,37 +793,6 @@
 			continue
 		viewing_mob.say("Is something wrong? [user.first_name()]... you're sweating.", forced = "psycho")
 		break
-
-/obj/item/card/id/examine_more(mob/user)
-	if(!user.can_read(src))
-		return
-
-	. = ..()
-	. += span_notice("<i>You examine [src] closer, and note the following...</i>")
-
-	if(registered_age)
-		. += "The card indicates that the holder is [registered_age] years old. [(registered_age < AGE_MINOR) ? "There's a holographic stripe that reads <b>[span_danger("'MINOR: DO NOT SERVE ALCOHOL OR TOBACCO'")]</b> along the bottom of the card." : ""]"
-	if(registered_account)
-		if(registered_account.mining_points)
-			. += "There's [registered_account.mining_points] mining point\s loaded onto the card's bank account."
-		. += "The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr."
-		if(registered_account.account_job)
-			var/datum/bank_account/D = SSeconomy.get_dep_account(registered_account.account_job.paycheck_department)
-			if(D)
-				. += "The [D.account_holder] reports a balance of [D.account_balance] cr."
-		. += span_info("Alt-Click the ID to pull money from the linked account in the form of holochips.")
-		. += span_info("You can insert credits into the linked account by pressing holochips, cash, or coins against the ID.")
-		if(registered_account.civilian_bounty)
-			. += "<span class='info'><b>There is an active civilian bounty.</b>"
-			. += span_info("<i>[registered_account.bounty_text()]</i>")
-			. += span_info("Quantity: [registered_account.bounty_num()]")
-			. += span_info("Reward: [registered_account.bounty_value()]")
-		if(registered_account.account_holder == user.real_name)
-			. += span_boldnotice("If you lose this ID card, you can reclaim your account by Alt-Clicking a blank ID card while holding it and entering your account ID number.")
-	else
-		. += span_info("There is no registered account linked to this card. Alt-Click to add one.")
-
-	return .
 
 /obj/item/card/id/GetAccess()
 	return access.Copy()
@@ -774,7 +817,6 @@
 /obj/item/card/id/proc/update_label()
 	var/name_string = registered_name ? "[registered_name]'s ID Card" : initial(name)
 	var/assignment_string
-
 	if(is_intern)
 		if(assignment)
 			assignment_string = trim?.intern_alt_name || "Intern [assignment]"
@@ -783,7 +825,30 @@
 	else
 		assignment_string = assignment
 
-	name = "[name_string] ([assignment_string])"
+	label = "[name_string], [assignment_string]"
+	if(registered_name)
+		INVOKE_ASYNC(src, PROC_REF(set_photo), find_record(registered_name))
+
+/// Sets the UI icon of the ID to their record entry, or their current appearance if no record is provided
+/obj/item/card/id/proc/set_photo(datum/record/crew/record, mutable_appearance/mob_appearance)
+	set waitfor = FALSE
+
+	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
+	if(record)
+		var/obj/item/photo/photo = record.get_front_photo()
+		front_photo = photo.picture.picture_image
+	else
+		if(ismob(mob_appearance))
+			mob_appearance = new(mob_appearance)
+		else if(!mob_appearance)
+			var/mob/mob_loc = src
+			while(mob_loc && !ismob(mob_loc))
+				mob_loc = mob_loc.loc
+			if(!mob_loc)
+				return
+			mob_appearance = new(mob_loc)
+		mob_appearance.dir = SOUTH
+		front_photo = getFlatIcon(mob_appearance)
 
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()
@@ -1398,9 +1463,11 @@
 
 /obj/item/card/id/advanced/chameleon/ui_static_data(mob/user)
 	var/list/data = list()
+
 	data["wildcardFlags"] = SSid_access.wildcard_flags_by_wildcard
 	data["accessFlagNames"] = SSid_access.access_flag_string_by_flag
 	data["accessFlags"] = SSid_access.flags_by_access
+
 	return data
 
 /obj/item/card/id/advanced/chameleon/ui_host(mob/user)
@@ -1556,6 +1623,20 @@
 
 				if(tgui_alert(user, "Activate wallet ID spoofing, allowing this card to force itself to occupy the visible ID slot in wallets?", "Wallet ID Spoofing", list("Yes", "No")) == "Yes")
 					ADD_TRAIT(src, TRAIT_MAGNETIC_ID_CARD, CHAMELEON_ITEM_TRAIT)
+
+				if(tgui_alert(user, "Create new DNA, fingerprints, and blood type?", "DNA Spoofing", list("Yes", "No")) == "Yes")
+					dna_hash = md5(rand(1,999))
+					fingerprint = md5(rand(1, 999))
+					blood_type = random_blood_type()
+				else
+					var/mob/living/carbon/human/human_user = user
+					if(istype(human_user))
+						if(tgui_alert(user, "Use real DNA?", "Forge ID", list("Yes", "No")) == "Yes")
+							dna_hash = human_user.dna.unique_identity
+						if(tgui_alert(user, "Use real fingerprint?", "Forge ID", list("Yes", "No")) == "Yes")
+							fingerprint = md5(human_user.dna.unique_identity)
+						if(tgui_alert(user, "Use real blood type?", "Forge ID", list("Yes", "No")) == "Yes")
+							blood_type = human_user.dna.blood_type
 
 				update_label()
 				update_icon()
@@ -1753,19 +1834,6 @@
 		return FALSE
 	return TRUE
 
-/obj/item/card/cardboard/attack_self(mob/user)
-	if(!Adjacent(user))
-		return
-	user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [name]."), span_notice("You show \the [name]."))
-	add_fingerprint(user)
-
-/obj/item/card/cardboard/update_name()
-	. = ..()
-	if(!scribbled_name)
-		name = initial(name)
-		return
-	name = "[scribbled_name]'s ID Card ([scribbled_assignment])"
-
 /obj/item/card/cardboard/update_overlays()
 	. = ..()
 	if(scribbled_name)
@@ -1783,10 +1851,6 @@
 		var/mutable_appearance/trim_overlay = mutable_appearance(icon, scribbled_trim)
 		trim_overlay.color = details_colors[INDEX_TRIM_COLOR]
 		. += trim_overlay
-
-/obj/item/card/cardboard/get_id_examine_strings(mob/user)
-	. = ..()
-	. += list("[icon2html(get_cached_flat_icon(), user, extra_classes = "bigicon")]")
 
 /obj/item/card/cardboard/get_examine_string(mob/user, thats = FALSE)
 	return "[icon2html(get_cached_flat_icon(), user)] [thats? "That's ":""][get_examine_name(user)]"

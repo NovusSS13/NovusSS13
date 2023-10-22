@@ -329,18 +329,20 @@
 	if(istype(card))
 		ADD_TRAIT(card, TRAIT_JOB_FIRST_ID_CARD, ROUNDSTART_TRAIT)
 		shuffle_inplace(card.access) // Shuffle access list to make NTNet passkeys less predictable
+
 		card.registered_name = equipped.real_name
+		card.registered_age = equipped.age
+		card.blood_type = equipped.dna.blood_type
+		card.dna_hash = equipped.dna.unique_identity
+		card.fingerprint = md5(equipped.dna.unique_identity)
 
-		if(equipped.age)
-			card.registered_age = equipped.age
-
-		card.update_label()
-		card.update_icon()
 		var/datum/bank_account/account = SSeconomy.bank_accounts_by_id["[equipped.account_id]"]
-
 		if(account && account.account_id == equipped.account_id)
 			card.registered_account = account
 			account.bank_cards += card
+
+		card.update_label()
+		card.update_icon()
 
 		equipped.sec_hud_set_ID()
 

@@ -77,7 +77,7 @@ export const ExaminePanel = (props, context) => {
           <Stack.Item fill width="30%">
             <Section
               fill
-              height={headshot_link ? '50%' : ''}
+              height={headshot_link ? '50%' : null}
               title="Character Preview">
               <ByondUi
                 height="100%"

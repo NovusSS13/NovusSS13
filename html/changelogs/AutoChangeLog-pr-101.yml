@@ -1,0 +1,5 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - rscadd: "Throwing now has an animation just like attacking"
+  - sound: "Added a sound for throwing"

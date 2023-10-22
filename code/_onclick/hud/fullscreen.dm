@@ -216,3 +216,4 @@
 	layer = LIGHTING_ABOVE_ALL
 	blend_mode = BLEND_ADD
 	show_when_dead = TRUE
+	alpha = 0 //fuck you, no darksight by default
