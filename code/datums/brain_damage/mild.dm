@@ -71,11 +71,11 @@
 
 /datum/brain_trauma/mild/speech_impediment/on_gain()
 	ADD_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/mild/speech_impediment/on_lose()
 	REMOVE_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/mild/concussion
 	name = "Concussion"
