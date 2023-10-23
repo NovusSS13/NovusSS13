@@ -61,32 +61,6 @@
 								update = FALSE)
 	target.update_body(is_creating = TRUE) //grumble grumble
 
-/datum/preference/choiced/mutant/leg_type
-	savefile_key = "feature_leg_type"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	modified_feature = "legs"
-
-/datum/preference/choiced/mutant/leg_type/is_accessible(datum/preferences/preferences)
-	. = ..()
-	if(!.)
-		return FALSE
-
-	var/datum/species/species_type = preferences.read_preference(/datum/preference/choiced/species)
-	return (initial(species_type.digitigrade_customization) == DIGITIGRADE_OPTIONAL)
-
-/datum/preference/choiced/mutant/leg_type/init_possible_values()
-	return assoc_to_keys_features(GLOB.legs_list)
-
-/datum/preference/choiced/mutant/leg_type/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
-	. = ..()
-	for(var/obj/item/bodypart/leg/leg in target.bodyparts)
-		if(value == LEGS_DIGITIGRADE)
-			leg.bodytype |= BODYTYPE_DIGITIGRADE
-		else
-			leg.bodytype &= ~BODYTYPE_DIGITIGRADE
-	target.update_body(is_creating = TRUE) //grumble grumble
-
 /datum/preference/choiced/mutant/frills
 	savefile_key = "feature_mutant_frills"
 	savefile_identifier = PREFERENCE_CHARACTER
