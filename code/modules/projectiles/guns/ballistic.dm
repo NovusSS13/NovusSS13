@@ -256,7 +256,8 @@
 			if(!QDELETED(casing))
 				var/bounce_angle
 				if(user)
-					bounce_angle = SIMPLIFY_DEGREES(dir2angle(user.dir) + pick(-90, 90) + rand(-45, 45))
+					var/sign_x = (istype(user) && !(user.get_held_index_of_item(src) % RIGHT_HANDS)) ? 1 : -1
+					bounce_angle = SIMPLIFY_DEGREES(dir2angle(user.dir) + (sign_x * 90) + rand(-45, 45))
 				casing.bounce_away(bounce_angle = bounce_angle, still_warm = TRUE)
 				SEND_SIGNAL(casing, COMSIG_CASING_EJECTED)
 		else if(empty_chamber)
@@ -502,7 +503,8 @@
 			CB.forceMove(drop_location())
 			var/bounce_angle
 			if(user)
-				bounce_angle = SIMPLIFY_DEGREES(dir2angle(user.dir) + pick(-90, 90) + rand(-45, 45))
+				var/sign_x = (istype(user) && !(user.get_held_index_of_item(src) % RIGHT_HANDS)) ? 1 : -1
+				bounce_angle = SIMPLIFY_DEGREES(dir2angle(user.dir) + (sign_x * 90) + rand(-45, 45))
 			CB.bounce_away(bounce_angle = bounce_angle, still_warm = FALSE, sound_delay = 0)
 			num_unloaded++
 			var/turf/T = get_turf(drop_location())
