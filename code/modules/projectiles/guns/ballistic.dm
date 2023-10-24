@@ -242,7 +242,7 @@
 		. += "[icon_state]_mag_[capacity_number]"
 
 
-/obj/item/gun/ballistic/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+/obj/item/gun/ballistic/handle_chamber(mob/living/user, empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	if(!semi_auto && from_firing)
 		return
 	var/obj/item/ammo_casing/casing = chambered //Find chambered round
@@ -254,7 +254,10 @@
 			chambered = null
 			casing.forceMove(drop_location()) //Eject casing onto ground.
 			if(!QDELETED(casing))
-				casing.bounce_away(TRUE)
+				var/bounce_angle
+				if(user)
+					bounce_angle = SIMPLIFY_DEGREES(dir2angle(user.dir) + pick(-90, 90) + rand(-45, 45))
+				casing.bounce_away(bounce_angle = bounce_angle, still_warm = TRUE)
 				SEND_SIGNAL(casing, COMSIG_CASING_EJECTED)
 		else if(empty_chamber)
 			chambered = null
@@ -284,7 +287,7 @@
 		bolt_locked = FALSE
 	if (user)
 		balloon_alert(user, "[bolt_wording] racked")
-	process_chamber(!chambered, FALSE)
+	process_chamber(user = user, empty_chamber = !chambered, from_firing = FALSE)
 	if (bolt_type == BOLT_TYPE_LOCKING && !chambered)
 		bolt_locked = TRUE
 		playsound(src, lock_back_sound, lock_back_sound_volume, lock_back_sound_vary)
@@ -497,7 +500,10 @@
 		var/num_unloaded = 0
 		for(var/obj/item/ammo_casing/CB in get_ammo_list(FALSE, TRUE))
 			CB.forceMove(drop_location())
-			CB.bounce_away(FALSE, NONE)
+			var/bounce_angle
+			if(user)
+				bounce_angle = SIMPLIFY_DEGREES(dir2angle(user.dir) + pick(-90, 90) + rand(-45, 45))
+			CB.bounce_away(bounce_angle = bounce_angle, still_warm = FALSE, sound_delay = 0)
 			num_unloaded++
 			var/turf/T = get_turf(drop_location())
 			if(T && is_station_level(T.z))
