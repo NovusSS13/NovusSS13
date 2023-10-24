@@ -1,0 +1,4 @@
+author: "ChungusGamer666, ma44"
+delete-after: True
+changes:
+  - rscadd: "Casings now use an awesome, albeit rudimentary, physics system."
