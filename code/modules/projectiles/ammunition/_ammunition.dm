@@ -144,11 +144,12 @@
 	if(!isnull(bounce_angle))
 		//cool awesome physics this is so sick tbh
 		AddComponent(/datum/component/movable_physics, \
+			physics_flags = MPHYSICS_QDEL_WHEN_NO_MOVEMENT, \
 			angle = bounce_angle, \
 			horizontal_velocity = rand(4.5 * 100, 5.5 * 100) * spread_multiplier * 0.01, \
 			vertical_velocity = -rand(4 * 100, 4.5 * 100) * spread_multiplier * 0.01, \
-			horizontal_friction = rand(0.2 * 100, 0.24 * 100) * 0.01, \
-			vertical_friction = 10 * 0.05, \
+			horizontal_friction = rand(0.2 * 100, 0.24 * 100) * spread_multiplier * 0.01, \
+			vertical_friction = 10 * spread_multiplier * 0.05, \
 			z_floor = 0, \
 		)
 	if(still_warm && our_turf.bullet_sizzle)
