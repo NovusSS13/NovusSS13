@@ -127,10 +127,10 @@
 		return ..()
 
 /obj/item/ammo_casing/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
-	bounce_away(bounce_angle = rand(0, 360), still_warm = FALSE, sound_delay = 0)
+	bounce_away(bounce_angle = rand(0, 360), spread_multiplier = 0.5, still_warm = FALSE, sound_delay = 0)
 	return ..()
 
-/obj/item/ammo_casing/proc/bounce_away(bounce_angle, pixel_mess = TRUE, still_warm = FALSE, sound_delay = 3)
+/obj/item/ammo_casing/proc/bounce_away(bounce_angle, spread_multiplier = 1, pixel_mess = TRUE, still_warm = FALSE, sound_delay = 3)
 	if(!is_cased_ammo)
 		return
 	update_appearance()
@@ -145,8 +145,8 @@
 		//cool awesome physics this is so sick tbh
 		AddComponent(/datum/component/movable_physics, \
 			angle = bounce_angle, \
-			horizontal_velocity = rand(4.5 * 100, 5.5 * 100) * 0.01, \
-			vertical_velocity = -rand(4 * 100, 4.5 * 100) * 0.01, \
+			horizontal_velocity = rand(4.5 * 100, 5.5 * 100) * spread_multiplier * 0.01, \
+			vertical_velocity = -rand(4 * 100, 4.5 * 100) * spread_multiplier * 0.01, \
 			horizontal_friction = rand(0.2 * 100, 0.24 * 100) * 0.01, \
 			vertical_friction = 10 * 0.05, \
 			z_floor = 0, \

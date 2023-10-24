@@ -499,17 +499,17 @@
 	if(bolt_type == BOLT_TYPE_NO_BOLT)
 		chambered = null
 		var/num_unloaded = 0
-		for(var/obj/item/ammo_casing/CB in get_ammo_list(FALSE, TRUE))
-			CB.forceMove(drop_location())
+		for(var/obj/item/ammo_casing/casing in get_ammo_list(FALSE, TRUE))
+			casing.forceMove(drop_location())
 			var/bounce_angle
 			if(user)
 				var/sign_x = (istype(user) && !(user.get_held_index_of_item(src) % RIGHT_HANDS)) ? 1 : -1
 				bounce_angle = SIMPLIFY_DEGREES(dir2angle(user.dir) + (sign_x * 90) + rand(-45, 45))
-			CB.bounce_away(bounce_angle = bounce_angle, still_warm = FALSE, sound_delay = 0)
+			casing.bounce_away(bounce_angle = bounce_angle, still_warm = FALSE, sound_delay = 0)
 			num_unloaded++
-			var/turf/T = get_turf(drop_location())
-			if(T && is_station_level(T.z))
-				SSblackbox.record_feedback("tally", "station_mess_created", 1, CB.name)
+			var/turf/our_turf = get_turf(drop_location())
+			if(our_turf && is_station_level(our_turf.z))
+				SSblackbox.record_feedback("tally", "station_mess_created", 1, casing.name)
 		if (num_unloaded)
 			balloon_alert(user, "[num_unloaded] [cartridge_wording] unloaded")
 			playsound(user, eject_sound, eject_sound_volume, eject_sound_vary)
