@@ -114,6 +114,13 @@
 	/// Will not automatically apply to the turf below you, you need to apply /datum/element/block_explosives in conjunction with this
 	var/explosion_block = 0
 
+	/**
+	 * Current visual angle in degrees
+	 * Generally if you want to make an atom rotate visually, you should use this var
+	 * and it's setter procs
+	 */
+	var/visual_angle = 0
+
 /mutable_appearance/emissive_blocker
 
 /mutable_appearance/emissive_blocker/New()
@@ -1606,6 +1613,7 @@
 /atom/movable/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION(VV_HK_EDIT_PARTICLES, "Edit Particles")
+	VV_DROPDOWN_OPTION(VV_HK_EDIT_MOVABLE_PHYSICS, "Edit Movable Physics")
 	VV_DROPDOWN_OPTION(VV_HK_DEADCHAT_PLAYS, "Start/Stop Deadchat Plays")
 	VV_DROPDOWN_OPTION(VV_HK_ADD_FANTASY_AFFIX, "Add Fantasy Affix")
 
@@ -1618,6 +1626,10 @@
 	if(href_list[VV_HK_EDIT_PARTICLES] && check_rights(R_VAREDIT))
 		var/client/C = usr.client
 		C?.open_particle_editor(src)
+
+	if(href_list[VV_HK_EDIT_MOVABLE_PHYSICS] && check_rights(R_VAREDIT))
+		var/client/C = usr.client
+		C?.open_movable_physics_editor(src)
 
 	if(href_list[VV_HK_DEADCHAT_PLAYS] && check_rights(R_FUN))
 		if(tgui_alert(usr, "Allow deadchat to control [src] via chat commands?", "Deadchat Plays [src]", list("Allow", "Cancel")) != "Allow")
@@ -1643,3 +1655,19 @@
 */
 /atom/movable/proc/keybind_face_direction(direction)
 	setDir(direction)
+
+/// Adjusts the visual angle of the atom by angle_amount in degrees, based on it's current transform
+/atom/movable/proc/adjust_visual_angle(angle_amount, animate_time = 0, animate_loop = 0, animate_easing = LINEAR_EASING, animate_flags = NONE)
+	angle_amount = SIMPLIFY_DEGREES(angle_amount)
+	if(!angle_amount)
+		return
+	animate(src, transform = transform.Turn(angle_amount), time = animate_time, loop = animate_loop, easing = animate_easing, flags = animate_flags)
+	visual_angle += angle_amount
+	visual_angle = SIMPLIFY_DEGREES(visual_angle)
+
+/// Sets the angle of the transform to exactly new_angle in degrees
+/atom/movable/proc/set_visual_angle(new_angle = 0)
+	if(isnull(new_angle))
+		return
+	var/difference = SIMPLIFY_DEGREES(new_angle - visual_angle)
+	return adjust_visual_angle(difference)

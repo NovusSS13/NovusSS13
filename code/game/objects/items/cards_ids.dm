@@ -170,8 +170,8 @@
 	src.id_card = id_card
 
 /datum/id_card_panel/Destroy(force)
-	. = ..()
 	id_card = null
+	return ..()
 
 /datum/id_card_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
