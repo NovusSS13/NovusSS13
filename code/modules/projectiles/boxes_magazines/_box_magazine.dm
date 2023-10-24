@@ -162,7 +162,7 @@
 
 	casing.forceMove(drop_location())
 	if(!user.is_holding(src) || !user.put_in_hands(casing)) //incase they're using TK
-		casing.bounce_away(bounce_angle = rand(0, 360), spread_multiplier = 0.5,  still_warm = FALSE, sound_delay = 0)
+		casing.bounce_away(bounce_angle = rand(0, 360), spread_multiplier = 0.75,  still_warm = FALSE, sound_delay = 0)
 	playsound(src, 'sound/weapons/gun/general/mag_bullet_insert.ogg', 60, TRUE)
 	to_chat(user, span_notice("You remove a round from [src]!"))
 	update_appearance()
