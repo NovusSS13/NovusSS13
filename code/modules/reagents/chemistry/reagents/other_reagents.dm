@@ -168,7 +168,7 @@
 	taste_description = "water"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS
 	default_container = /obj/item/reagent_containers/cup/glass/waterbottle
-	evaporates = TRUE
+	liquid_evaporation_rate = 10
 	var/cooling_temperature = 2
 
 /datum/glass_style/shot_glass/water
@@ -1163,8 +1163,9 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/alcohol = 4)
 
+	liquid_evaporation_rate = 20 //gasoline evaporates a lot
 	liquid_fire_power = 10
-	liquid_fire_burnrate = 0.1
+	liquid_fire_burn_rate = 0.1
 
 /datum/glass_style/drinking_glass/fuel
 	required_drink_type = /datum/reagent/fuel

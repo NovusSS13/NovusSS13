@@ -79,9 +79,10 @@
 /turf/proc/add_liquid_list(reagent_list, no_react = FALSE, chem_temp = 300)
 	if(!length(reagent_list))
 		return
+
 	if(!liquids)
 		liquids = new(src)
-	if(liquids.immutable)
+	else if(liquids.immutable)
 		return
 
 	var/prev_total_reagents = liquids.total_reagents

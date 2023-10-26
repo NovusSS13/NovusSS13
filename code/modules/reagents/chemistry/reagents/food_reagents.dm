@@ -13,6 +13,9 @@
 	taste_mult = 4
 	inverse_chem_val = 0.1
 	inverse_chem = null
+
+	liquid_evaporation_rate = 7.5 //making the silly assumption that this is made mainly out of water thus evaporates similarly
+
 	/// How much nutrition this reagent supplies
 	var/nutriment_factor = 1 * REAGENTS_METABOLISM
 	/// affects mood, typically higher for mixed drinks with more complex recipes'

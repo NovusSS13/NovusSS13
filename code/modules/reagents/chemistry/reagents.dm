@@ -106,14 +106,17 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	/// When ordered in a restaurant, what custom order do we create?
 	var/restaurant_order = /datum/custom_order/reagent/drink
 
-	///Whether it will evaporate if left untouched on a liquids simulated puddle
-	var/evaporates = FALSE
-	///How much fire power does the liquid have, for burning on simulated liquids. Not enough fire power/unit of entire mixture may result in no fire
+	/// Rate at which this reagent will evaporate in a liquid puddle
+	var/liquid_evaporation_rate = 0
+	/**
+	 * How much fire power does the liquid have, for burning on simulated liquids
+	 * Not enough fire power per unit of entire mixture may result in no fire
+	 */
 	var/liquid_fire_power = 0
-	///How fast does the liquid burn on simulated turfs, if it does
-	var/liquid_fire_burnrate = 0
-	///Whether a fire from this requires oxygen in the atmosphere
-	var/fire_needs_oxygen = TRUE
+	/// How fast does the liquid burn on simulated turfs, if it does
+	var/liquid_fire_burn_rate = 0
+	/// Whether or not a liquid fire from this requires oxygen in the atmosphere of the tile
+	var/liquid_fire_needs_oxygen = TRUE
 
 /datum/reagent/New()
 	SHOULD_CALL_PARENT(TRUE)
