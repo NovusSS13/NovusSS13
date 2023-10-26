@@ -138,8 +138,8 @@
 	if(!our_turf)
 		return
 	if(pixel_mess)
-		pixel_x = rand(-world.icon_size/4, world.icon_size/4)
-		pixel_y = rand(-world.icon_size/4, world.icon_size/4)
+		pixel_x = base_pixel_x + rand(-world.icon_size/4, world.icon_size/4)
+		pixel_y = base_pixel_y + rand(-world.icon_size/4, world.icon_size/4)
 	SpinAnimation(speed = 10, loops = 1)
 	if(!isnull(bounce_angle))
 		//cool awesome physics this is so sick tbh
