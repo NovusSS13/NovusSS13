@@ -156,6 +156,7 @@
 
 	// this component was designed to tick every 1/20 seconds, so we have to always account for that
 	var/tick_amount = 20 * seconds_per_tick
+	//this code basically only makes sense if we only move at most a single tile per tick, it is absolutely fucked otherwise
 	while(tick_amount > 0)
 		tick_amount--
 		moving_atom.pixel_x = round(moving_atom.pixel_x + (horizontal_velocity * sin(angle)), MOVABLE_PHYSICS_PRECISION)
@@ -208,8 +209,10 @@
 		//attempt to move to that tile, if successful we reset the pixel_x and pixel_y to be on the edge of appropriate boundaries
 		//if unsuccessful, bump signal will be called and newton's third law comes into play
 		if(moving_atom.Move(step, move_direction, world.icon_size))
-			moving_atom.pixel_x = round(moving_atom.base_pixel_x + (sign_x * world.icon_size/2), MOVABLE_PHYSICS_PRECISION)
-			moving_atom.pixel_y = round(moving_atom.base_pixel_y + (sign_y * world.icon_size/2), MOVABLE_PHYSICS_PRECISION)
+			if(sign_x)
+				moving_atom.pixel_x = round(moving_atom.base_pixel_x + (sign_x * world.icon_size/2) + MODULUS(effective_pixel_x, world.icon_size/2), MOVABLE_PHYSICS_PRECISION)
+			if(sign_y)
+				moving_atom.pixel_y = round(moving_atom.base_pixel_y + (sign_y * world.icon_size/2) + MODULUS(effective_pixel_x, world.icon_size/2), MOVABLE_PHYSICS_PRECISION)
 
 /// Checks if we still have any movement going on
 /datum/component/movable_physics/proc/has_movement()
