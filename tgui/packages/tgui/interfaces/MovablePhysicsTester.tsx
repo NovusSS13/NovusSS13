@@ -120,9 +120,9 @@ export const MovablePhysicsTester = (props, context) => {
                   <Button
                     width="100%"
                     height="100%"
-                    color={physics_flags & 2 ? 'bad' : 'good'}
+                    color={!(physics_flags & 2) ? 'bad' : 'good'}
                     onClick={() => act('pause')}>
-                    {physics_flags & 2 ? 'Paused' : 'Running'}
+                    {!(physics_flags & 2) ? 'Paused' : 'Running'}
                   </Button>
                 </Stack.Item>
                 <Stack.Item grow>

@@ -176,30 +176,22 @@
 
 		visual_angle_velocity = max(0, visual_angle_velocity - visual_angle_friction)
 
-		// the code below only really works if we don't happen to move more than one tile at once
-		// if we do, uhhh, basically it just resets back to moving a single tile
 		var/move_direction = NONE
 		var/effective_pixel_x = moving_atom.pixel_x - moving_atom.base_pixel_x
 		var/effective_pixel_y = moving_atom.pixel_y - moving_atom.base_pixel_y
-		var/sign_x = 0
-		var/sign_y = 0
 		//crossed east boundary
 		if(effective_pixel_x > world.icon_size/2)
 			move_direction |= EAST
-			sign_x = -1
 		//crossed west boundary
 		else if(effective_pixel_x < -world.icon_size/2)
 			move_direction |= WEST
-			sign_x = 1
 
 		//crossed north boundary
 		if(effective_pixel_y > world.icon_size/2)
 			move_direction |= NORTH
-			sign_y = -1
 		//crossed south boundary
 		else if(effective_pixel_y < -world.icon_size/2)
 			move_direction |= SOUTH
-			sign_y = 1
 
 		//check if we need to move, continue otherwise
 		if(!move_direction)
@@ -209,10 +201,15 @@
 		//attempt to move to that tile, if successful we reset the pixel_x and pixel_y to be on the edge of appropriate boundaries
 		//if unsuccessful, bump signal will be called and newton's third law comes into play
 		if(moving_atom.Move(step, move_direction, world.icon_size))
-			if(sign_x)
-				moving_atom.pixel_x = round(moving_atom.base_pixel_x + (sign_x * world.icon_size/2) + MODULUS(effective_pixel_x, world.icon_size/2), MOVABLE_PHYSICS_PRECISION)
-			if(sign_y)
-				moving_atom.pixel_y = round(moving_atom.base_pixel_y + (sign_y * world.icon_size/2) + MODULUS(effective_pixel_x, world.icon_size/2), MOVABLE_PHYSICS_PRECISION)
+			if(move_direction & EAST)
+				moving_atom.pixel_x -= world.icon_size
+			else if(move_direction & WEST)
+				moving_atom.pixel_x += world.icon_size
+
+			if(move_direction & NORTH)
+				moving_atom.pixel_y -= world.icon_size
+			else if(move_direction & SOUTH)
+				moving_atom.pixel_y += world.icon_size
 
 /// Checks if we still have any movement going on
 /datum/component/movable_physics/proc/has_movement()
