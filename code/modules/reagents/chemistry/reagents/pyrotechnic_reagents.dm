@@ -7,9 +7,10 @@
 	color = "#550000"
 	taste_description = "sweet tasting metal"
 
+	liquid_evaporation_rate = 0 //does not evaporate
 	liquid_fire_power = 20
-	liquid_fire_burnrate = 0.1
-	fire_needs_oxygen = FALSE //aunt google says unneeded
+	liquid_fire_burn_rate = 0.1
+	liquid_fire_needs_oxygen = FALSE //aunt google says unneeded
 
 /datum/reagent/thermite/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
@@ -50,9 +51,10 @@
 	penetrates_skin = NONE
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
+	liquid_evaporation_rate = 30 //very quick evaporation
 	liquid_fire_power = 30
-	liquid_fire_burnrate = 0.1
-	fire_needs_oxygen = FALSE
+	liquid_fire_burn_rate = 0.1
+	liquid_fire_needs_oxygen = FALSE
 
 /datum/reagent/clf3/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	affected_mob.adjust_fire_stacks(2 * REM * seconds_per_tick)
@@ -177,8 +179,10 @@
 	self_consuming = TRUE
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
+	liquid_evaporation_rate = 20 //quick evaporation
 	liquid_fire_power = 20
-	liquid_fire_burnrate = 0.1
+	liquid_fire_burn_rate = 0.1
+	liquid_fire_needs_oxygen = FALSE
 
 /datum/reagent/phlogiston/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()
@@ -203,8 +207,9 @@
 	penetrates_skin = NONE
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
+	liquid_evaporation_rate = 20 //evaporates about as quick as gasoline i'd imagine
 	liquid_fire_power = 30
-	liquid_fire_burnrate = 0.1
+	liquid_fire_burn_rate = 0.1
 
 // why, just why
 /datum/reagent/napalm/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)

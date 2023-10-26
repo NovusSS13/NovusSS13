@@ -104,8 +104,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	/// Never directly access this, use get_explosive_block() instead
 	var/inherent_explosive_resistance = -1
 
+	/// Liquids system atom
 	var/atom/movable/turf_liquid/liquids
+	/// Liquid group in case we have active liquids
+	var/datum/liquid_group/lgroup
+	/// Height used exclusively for liquid calculations
 	var/liquid_height = 0
+	/// Height used for small, non z level falls
 	var/turf_height = 0
 
 /turf/vv_edit_var(var_name, new_value)

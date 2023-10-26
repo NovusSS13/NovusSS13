@@ -1,4 +1,4 @@
-/// Lovely copypasta from blood, because making this a subtype would FUCK SHIT UP
+/// Lovely copypasta from blood, because making this a subtype of blood could cause issues
 /obj/effect/decal/cleanable/cum
 	name = "cum"
 	desc = "Someone had fun."

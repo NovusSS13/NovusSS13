@@ -225,7 +225,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 /obj/item/modular_computer/get_id_examine_strings(mob/user)
 	. = ..()
 	if(computer_id_slot)
-		. += "[get_examine_string(user)] is displaying [computer_id_slot.get_examine_string()]."
+		. += "[get_examine_string(user)] is displaying [computer_id_slot.get_examine_string(user)]."
 
 /obj/item/modular_computer/proc/print_text(text_to_print, paper_title = "")
 	if(!stored_paper)

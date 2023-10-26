@@ -1,7 +1,7 @@
 //CUM
 /datum/reagent/consumable/cum
 	name = "Semen"
-	description = "Baby batter..."
+	description = "Baby batter."
 	taste_description = "something salty"
 	data = list("viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null,"cloneable"=null,"factions"=null,"quirks"=null)
 	color = COLOR_CUM
