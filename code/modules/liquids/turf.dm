@@ -172,19 +172,10 @@
 	layer = FLY_LAYER
 	randomdir = FALSE
 
-/***************************************************/
-/********************PROPER GROUPING**************/
-
-/turf
-	var/datum/liquid_group/lgroup
-
+/// PROPER GROUPING CODE
 /turf/proc/can_share_liquids_with(turf/shared_turf)
 	if(shared_turf.z != z) //No Z here handling currently
 		return FALSE
-	/*
-	if(T.lgroup && T.lgroup != lgroup) //TEMPORARY@!!!!!!!!
-		return FALSE
-	*/
 	if(shared_turf.liquids && shared_turf.liquids.immutable)
 		return FALSE
 

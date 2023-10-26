@@ -39,15 +39,21 @@
 
 	/// State-specific message chunks for examine_turf()
 	var/static/list/liquid_state_messages = list(
-		"[LIQUID_STATE_PUDDLE]" = "a puddle of %liquid",
-		"[LIQUID_STATE_ANKLES]" = "%liquid going [span_warning("up to your ankles")]",
-		"[LIQUID_STATE_WAIST]" = "%liquid going [span_warning("up to your waist")]",
-		"[LIQUID_STATE_SHOULDERS]" = "%liquid going [span_warning("up to your shoulders")]",
-		"[LIQUID_STATE_FULLTILE]" = "%liquid going [span_danger("over your head")]",
+		"[LIQUID_STATE_PUDDLE]" = "a puddle of %LIQUID",
+		"[LIQUID_STATE_ANKLES]" = "%LIQUID going [span_warning("up to your ankles")]",
+		"[LIQUID_STATE_WAIST]" = "%LIQUID going [span_warning("up to your waist")]",
+		"[LIQUID_STATE_SHOULDERS]" = "%LIQUID going [span_warning("up to your shoulders")]",
+		"[LIQUID_STATE_FULLTILE]" = "%LIQUID going [span_danger("over your head")]",
 	)
 
 /atom/movable/turf_liquid/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
 	return
+
+/atom/movable/turf_liquid/proc/set_new_liquid_state(new_state)
+	liquid_state = new_state
+	if(no_effects)
+		return
+	update_appearance(UPDATE_ICON)
 
 /atom/movable/turf_liquid/proc/check_fire(hotspotted = FALSE)
 	var/my_burn_power = get_burn_power(hotspotted)
@@ -91,7 +97,7 @@
 		if(LIQUID_FIRE_STATE_INFERNO)
 			set_light_range(LIGHT_RANGE_FIRE)
 	update_light()
-	update_appearance()
+	update_appearance(UPDATE_ICON)
 
 /atom/movable/turf_liquid/proc/get_burn_power(hotspotted = FALSE)
 	//We are not on fire and werent ignited by a hotspot exposure, no fire pls
@@ -104,7 +110,8 @@
 			has_oxygen = TRUE
 	var/total_burn_power = 0
 	for(var/datum/reagent/reagent_type as anything in reagent_list)
-		if(initial(reagent_type.liquid_fire_power) && (!initial(reagent_type.liquid_fire_needs_oxygen) || has_oxygen))
+		var/burn_power = initial(reagent_type.liquid_fire_power)
+		if(burn_power && (has_oxygen || !initial(reagent_type.liquid_fire_needs_oxygen)))
 			total_burn_power += burn_power * reagent_list[reagent_type]
 	if(!total_burn_power)
 		return FALSE
@@ -176,7 +183,7 @@
 	var/any_change = FALSE
 	//cast as reagent bcuz initial
 	for(var/datum/reagent/reagent_type as anything in reagent_list)
-		var/evaporation_rate = initial(reagent.liquid_evaporation_rate)
+		var/evaporation_rate = initial(reagent_type.liquid_evaporation_rate)
 		if(!evaporation_rate)
 			continue
 		//We evaporate - bye bye
@@ -217,9 +224,9 @@
 		shine.blend_mode = BLEND_ADD
 		. += shine
 	else
-		. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[state]_bottom", ABOVE_MOB_LAYER, offset_spokesman = src, plane = GAME_PLANE_UPPER)
+		. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[liquid_state]_bottom", ABOVE_MOB_LAYER, offset_spokesman = src, plane = GAME_PLANE_UPPER)
 		if(liquid_state < LIQUID_STATE_FULLTILE)
-			. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[state]_top", GATEWAY_UNDERLAY_LAYER, offset_spokesman = src, plane = GAME_PLANE)
+			. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[liquid_state]_top", GATEWAY_UNDERLAY_LAYER, offset_spokesman = src, plane = GAME_PLANE)
 
 	//Add a fire overlay lastly, if necessary
 	if(fire_state <= LIQUID_FIRE_STATE_NONE)
@@ -296,7 +303,7 @@
 	if(fire_state)
 		return
 
-	if(check_fire(hot_spotted = TRUE))
+	if(check_fire(hotspotted = TRUE))
 		SSliquids.processing_fire[my_turf] = TRUE
 
 /atom/movable/turf_liquid/proc/set_reagent_color_for_liquid()
@@ -304,11 +311,9 @@
 
 /atom/movable/turf_liquid/proc/calculate_height()
 	var/new_height = CEILING(total_reagents, 1)/LIQUID_HEIGHT_DIVISOR
-	set_height(new_height)
 	var/determined_new_state
-	//We add the turf height if it's positive to state calculations
-	if(my_turf.turf_height > 0)
-		new_height += my_turf.turf_height
+
+	set_height(new_height)
 	switch(new_height)
 		if(0 to LIQUID_ANKLES_LEVEL_HEIGHT-1)
 			determined_new_state = LIQUID_STATE_PUDDLE
@@ -550,10 +555,10 @@
 			var/reagent_name = initial(reagent_type.name)
 			var/volume = round(reagent_list[reagent_type], 0.01)
 
-			examine_list += "There is [replacetext(liquid_state_template, "%liquid", "[volume] units of [reagent_name]")] here."
+			examine_list += "There is [replacetext(liquid_state_template, "%LIQUID", "[volume] units of [reagent_name]")] here."
 		else
 			// Show each individual reagent
-			examine_list += "There is [replacetext(liquid_state_template, "%liquid", "the following")] here:"
+			examine_list += "There is [replacetext(liquid_state_template, "%LIQUID", "the following")] here:"
 
 			for(var/datum/reagent/reagent_type as anything in reagent_list)
 				var/reagent_name = initial(reagent_type.name)
@@ -564,7 +569,7 @@
 		return
 
 	// Otherwise, just show the total volume
-	examine_list += "[span_notice("There is [replacetext(liquid_state_template, "$", "liquid")] here.")]"
+	examine_list += span_notice("There is [replacetext(liquid_state_template, "%LIQUID", "liquid")] here.")
 
 /obj/effect/temp_visual/liquid_splash
 	icon = 'icons/effects/liquid.dmi'
