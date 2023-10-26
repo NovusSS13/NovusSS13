@@ -229,7 +229,7 @@
 			. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[liquid_state]_top", GATEWAY_UNDERLAY_LAYER, offset_spokesman = src, plane = GAME_PLANE)
 
 	//Add a fire overlay lastly, if necessary
-	if(fire_state <= LIQUID_FIRE_STATE_NONE)
+	if(fire_state < LIQUID_FIRE_STATE_SMALL)
 		return
 
 	var/mutable_appearance/liquid_fire = mutable_appearance('icons/effects/liquid_overlays.dmi', BELOW_MOB_LAYER, offset_spokesman = src, plane = GAME_PLANE, appearance_flags = RESET_COLOR|RESET_ALPHA)
