@@ -1,0 +1,5 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - rscadd: "Liquids have an improved evaporation system now"
+  - bugfix: "Liquid fire visuals actually work"
