@@ -117,3 +117,8 @@
 2023-10-25:
   ChungusGamer666, ma44:
   - rscadd: Casings now use an awesome, albeit rudimentary, physics system.
+2023-10-27:
+  ChungusGamer666:
+  - rscadd: Liquids have an improved evaporation system now
+  - bugfix: Liquid fire visuals actually work
+  - bugfix: Movable physics should act less jittery now
