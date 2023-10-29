@@ -13,7 +13,7 @@
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	limb_integrity = 30
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_under
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/under
 	clothing_color_coords_key = "under"
 
 	/// The variable containing the flags for how the woman uniform cropping is supposed to interact with the sprite.

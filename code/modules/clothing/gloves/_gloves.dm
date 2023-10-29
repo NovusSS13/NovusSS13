@@ -18,7 +18,7 @@
 	strip_delay = 20
 	equip_delay_other = 40
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_gloves
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/gloves
 	clothing_color_coords_key = "gloves"
 
 	// Path variable. If defined, will produced the type through interaction with wirecutters.

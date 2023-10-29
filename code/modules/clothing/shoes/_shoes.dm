@@ -14,7 +14,7 @@
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_shoes
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/shoes
 	clothing_color_coords_key = "shoes"
 
 	var/offset = 0

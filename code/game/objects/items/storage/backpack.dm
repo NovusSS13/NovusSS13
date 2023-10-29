@@ -25,7 +25,7 @@
 	storage_type = /datum/storage/backpack
 	clothing_color_coords_key = "backpack"
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_backpack
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/backpack
 
 /obj/item/storage/backpack/Initialize(mapload)
 	. = ..()

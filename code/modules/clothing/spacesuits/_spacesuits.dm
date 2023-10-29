@@ -37,7 +37,7 @@
 	inhand_icon_state = "s_suit"
 	worn_icon = 'icons/mob/clothing/suits/spacesuit.dmi'
 	worn_icon_avali = null
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/fallback_spacesuit
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/spacesuit
 
 	armor_type = /datum/armor/suit_space
 	resistance_flags = NONE

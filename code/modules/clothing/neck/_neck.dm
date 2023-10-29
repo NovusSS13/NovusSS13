@@ -7,7 +7,7 @@
 	strip_delay = 40
 	equip_delay_other = 40
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_scarf
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/scarf
 	clothing_color_coords_key = "necklace"
 
 /obj/item/clothing/neck/worn_overlays(mutable_appearance/standing, isinhands = FALSE)

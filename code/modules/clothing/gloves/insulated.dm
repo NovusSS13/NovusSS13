@@ -1,7 +1,7 @@
 /obj/item/clothing/gloves/color
 	worn_icon_avali = null
 	greyscale_colors = null
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/fallback_gloves
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/gloves
 	dying_key = DYE_REGISTRY_GLOVES
 
 /obj/item/clothing/gloves/color/yellow

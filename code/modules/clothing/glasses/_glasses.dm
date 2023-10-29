@@ -14,7 +14,7 @@
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT*2.5)
 	gender = PLURAL
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_glasses
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/glasses
 	clothing_color_coords_key = "glasses"
 
 	var/vision_flags = 0

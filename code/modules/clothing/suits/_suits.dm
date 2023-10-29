@@ -15,7 +15,7 @@
 	slot_flags = ITEM_SLOT_OCLOTHING
 	limb_integrity = 0 // disabled for most exo-suits
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_coat
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/coat
 	clothing_color_coords_key = "suit"
 
 	var/blood_overlay_type = "suit"
