@@ -72,17 +72,27 @@
 	qdel(src)
 
 /obj/effect/decal/cleanable/blood/particle/proc/on_bump(atom/bumped_atom)
-	if(!isturf(loc) || !iswallturf(bumped_atom) || !splatter_type_wall)
+	if(!isturf(loc) || !splatter_type_wall)
 		return
-	//Adjust pixel offset to make splatters appear on the wall
-	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(loc)
-	var/dir_to_wall = get_dir(src, bumped_atom)
-	final_splatter.pixel_x = (dir_to_wall & EAST ? world.icon_size : (dir_to_wall & WEST ? -world.icon_size : 0))
-	final_splatter.pixel_y = (dir_to_wall & NORTH ? world.icon_size : (dir_to_wall & SOUTH ? -world.icon_size : 0))
-	var/list/blood_dna = GET_ATOM_BLOOD_DNA(src)
-	if(blood_dna)
-		final_splatter.add_blood_DNA(blood_dna)
-	qdel(src)
+	if(iswallturf(bumped_atom))
+		//Adjust pixel offset to make splatters appear on the wall
+		var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new splatter_type_wall(loc)
+		var/dir_to_wall = get_dir(src, bumped_atom)
+		final_splatter.pixel_x = (dir_to_wall & EAST ? world.icon_size : (dir_to_wall & WEST ? -world.icon_size : 0))
+		final_splatter.pixel_y = (dir_to_wall & NORTH ? world.icon_size : (dir_to_wall & SOUTH ? -world.icon_size : 0))
+		var/list/blood_dna = GET_ATOM_BLOOD_DNA(src)
+		if(blood_dna)
+			final_splatter.add_blood_DNA(blood_dna)
+		qdel(src)
+	else if(istype(bumped_atom, /obj/structure/window))
+		var/obj/structure/window/the_window = bumped_atom
+		if(!the_window.fulltile || the_window.bloodied)
+			return
+		var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new splatter_type_wall()
+		final_splatter.forceMove(the_window)
+		the_window.vis_contents += final_splatter
+		the_window.bloodied = TRUE
+		qdel(src)
 
 /// subtype of splatter capable of doing proper "stacking" behavior
 /obj/effect/decal/cleanable/blood/splatter/stacking
