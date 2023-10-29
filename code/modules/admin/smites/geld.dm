@@ -21,10 +21,7 @@
 	playsound(get_turf(owner), 'sound/effects/dismember.ogg', 80, TRUE)
 	genital.Remove(owner)
 	genital.add_mob_blood(owner)
-	var/turf/owner_location = owner.loc
-	if(istype(owner_location))
-		owner.add_splatter_floor(owner_location)
-	genital.forceMove(owner_location)
+	genital.forceMove(owner.loc)
 	owner.bleed(rand(20, 40))
 	var/direction = pick(GLOB.cardinals)
 	var/t_range = rand(2,max(genital.throw_range/2, 2))

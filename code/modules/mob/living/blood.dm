@@ -83,15 +83,15 @@
 		iter_part.update_part_wound_overlay()
 
 //Makes a blood drop, leaking amt units of blood from the mob
-/mob/living/carbon/proc/bleed(amt)
+/mob/living/carbon/proc/bleed(amt, no_visual = FALSE)
 	if(!blood_volume || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
 	//Blood loss still happens in locker, floor stays clean
-	if(isturf(loc) && prob(sqrt(amt) * 80))
+	if(!no_visual && isturf(loc) && prob(sqrt(amt) * 80))
 		add_splatter_floor(loc, small_drip = (amt < 10))
 
-/mob/living/carbon/human/bleed(amt)
+/mob/living/carbon/human/bleed(amt, no_visual = FALSE)
 	amt *= physiology.bleed_mod
 	return ..()
 
@@ -278,9 +278,8 @@
 
 // This is has more potential uses, and is probably faster than the old proc.
 /proc/get_safe_blood(bloodtype)
-	. = list()
 	if(!bloodtype)
-		return
+		return list()
 
 	var/static/list/bloodtypes_safe = list(
 		"A-" = list("A-", "O-"),
@@ -298,18 +297,18 @@
 	return bloodtypes_safe[bloodtype]
 
 //to add a splatter of blood or other mob liquid.
-/mob/living/proc/add_splatter_floor(turf/T, small_drip)
+/mob/living/proc/add_splatter_floor(turf/splattered, small_drip)
 	if((get_blood_id() != /datum/reagent/blood) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
-	if(!T)
-		T = get_turf(src)
-	if(isclosedturf(T) || (isgroundlessturf(T) && !GET_TURF_BELOW(T)))
+	if(!splattered)
+		splattered = get_turf(src)
+	if(isclosedturf(splattered) || (isgroundlessturf(splattered) && !GET_TURF_BELOW(splattered)))
 		return
 
 	var/list/temp_blood_DNA
 	if(small_drip)
 		// Only a certain number of drips (or one large splatter) can be on a given turf.
-		var/obj/effect/decal/cleanable/blood/drip/drop = locate() in T
+		var/obj/effect/decal/cleanable/blood/drip/drop = locate() in splattered
 		if(drop)
 			if(drop.drips < 5)
 				drop.drips++
@@ -320,32 +319,61 @@
 				temp_blood_DNA = GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
 				qdel(drop)//the drip is replaced by a bigger splatter
 		else
-			drop = new(T, get_static_viruses())
+			drop = new(splattered, get_static_viruses())
 			drop.transfer_mob_blood_dna(src)
 			return
 
 	// Find a blood decal or create a new one.
-	var/obj/effect/decal/cleanable/blood/B = locate() in T
-	if(!B)
-		B = new /obj/effect/decal/cleanable/blood/splatter(T, get_static_viruses())
-	if(QDELETED(B)) //Give it up
+	var/obj/effect/decal/cleanable/blood/decal = locate() in splattered
+	if(!decal)
+		decal = new /obj/effect/decal/cleanable/blood/splatter(splattered, get_static_viruses())
+	if(QDELETED(decal)) //Give it up
 		return
-	B.bloodiness = min((B.bloodiness + BLOOD_AMOUNT_PER_DECAL), BLOOD_POOL_MAX)
-	B.transfer_mob_blood_dna(src) //give blood info to the blood decal.
+	decal.bloodiness = min((decal.bloodiness + BLOOD_AMOUNT_PER_DECAL), BLOOD_POOL_MAX)
+	splattered.transfer_mob_blood_dna(src) //give blood info to the blood decal.
 	if(temp_blood_DNA)
-		B.add_blood_DNA(temp_blood_DNA)
+		splattered.add_blood_DNA(temp_blood_DNA)
 
-/mob/living/carbon/alien/add_splatter_floor(turf/T, small_drip)
-	if(!T)
-		T = get_turf(src)
-	var/obj/effect/decal/cleanable/xenoblood/B = locate() in T.contents
-	if(!B)
-		B = new(T)
-	B.add_blood_DNA(list("UNKNOWN DNA" = "X*"))
+/mob/living/carbon/alien/add_splatter_floor(turf/splattered, small_drip)
+	if(!splattered)
+		splattered = get_turf(src)
+	var/obj/effect/decal/cleanable/xenoblood/decal = locate() in splattered
+	if(!decal)
+		decal = new(splattered)
+	decal.add_blood_DNA(list("UNKNOWN DNA" = "X*"))
 
-/mob/living/silicon/robot/add_splatter_floor(turf/T, small_drip)
-	if(!T)
-		T = get_turf(src)
-	var/obj/effect/decal/cleanable/oil/B = locate() in T.contents
-	if(!B)
-		B = new(T)
+/mob/living/silicon/robot/add_splatter_floor(turf/splattered, small_drip)
+	if(!splattered)
+		splattered = get_turf(src)
+	var/obj/effect/decal/cleanable/oil/decal = locate() in splattered
+	if(!decal)
+		decal = new(splattered)
+
+/**
+ * This proc is a helper for spraying blood for things like slashing/piercing wounds and dismemberment.
+ *
+ * The strength of the splatter in the second argument determines how much it can dirty and how far it can go
+ *
+ * Arguments:
+ * * splatter_direction: Which direction the blood is flying
+ * * splatter_strength: How many tiles it can go, and how many items it can pass over and dirty
+ */
+/mob/living/proc/spray_blood(splatter_direction, splatter_strength = 3)
+	if(!isturf(loc) || !blood_volume || HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc)
+	our_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
+	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
+	our_splatter.fly_towards(targ, splatter_strength)
+
+/**
+ * Helper proc for throwing blood particles around, similar to the spray_blood proc.
+ */
+/mob/living/proc/blood_particles(amount = rand(1, 3), angle = rand(0,360), min_deviation = -30, max_deviation = 30, min_pixel_z = 0, max_pixel_z = 6)
+	if(!isturf(loc) || !blood_volume ||HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return
+	for(var/i in 1 to amount)
+		var/obj/effect/decal/cleanable/blood/particle/droplet = new(loc)
+		droplet.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
+		droplet.pixel_z = rand(min_pixel_z, max_pixel_z)
+		droplet.start_movement(angle + rand(min_deviation, max_deviation))

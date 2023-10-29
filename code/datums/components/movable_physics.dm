@@ -290,7 +290,7 @@
 		new_angle = SIMPLIFY_DEGREES(face_angle + incidence)
 		source.set_visual_angle(new_angle)
 	if(bump_callback)
-		bump_callback.Invoke()
+		bump_callback.Invoke(bumped_atom)
 
 /// Stops movement for pesky items when they get picked up, as that essentially invalidates this component
 /datum/component/movable_physics/proc/on_item_pickup(obj/item/source)
