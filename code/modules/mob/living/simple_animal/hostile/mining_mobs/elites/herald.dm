@@ -257,6 +257,7 @@
 	desc = "A cloak which protects you from the heresy of the world."
 	icon = 'icons/obj/lavaland/elite_trophies.dmi'
 	icon_state = "herald_cloak"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS
 	hit_reaction_chance = 20
 

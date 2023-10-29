@@ -125,10 +125,11 @@
 	name = "captain's beret"
 	desc = "For the Captains known for their sense of fashion."
 	icon_state = "beret_badge"
+	worn_icon_avali = null
 	greyscale_colors = "#0070B7#FFCE5B"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 
 //Head of Personnel
 /obj/item/clothing/head/hats/hopcap
@@ -152,6 +153,7 @@
 	name = "nun hood"
 	desc = "Maximum piety in this star system."
 	icon_state = "nun_hood"
+	worn_icon_avali = null
 	flags_inv = HIDEHAIR
 	flags_cover = HEADCOVERSEYES
 
@@ -159,6 +161,7 @@
 	name = "bishop mitre"
 	desc = "An opulent hat that functions as a radio to God. Or as a lightning rod, depending on who you ask."
 	icon_state = "bishopmitre"
+	worn_icon_avali = null
 
 //Detective
 /obj/item/clothing/head/fedora/det_hat
@@ -212,12 +215,13 @@
 	name = "beret"
 	desc = "A beret, a mime's favorite headwear."
 	icon_state = "beret"
-	dog_fashion = /datum/dog_fashion/head/beret
+	worn_icon_avali = null
 	greyscale_config = /datum/greyscale_config/beret
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret
 	greyscale_colors = "#972A2A"
 	flags_1 = IS_PLAYER_COLORABLE_1
+	dog_fashion = /datum/dog_fashion/head/beret
 
 //Security
 /obj/item/clothing/head/hats/hos
@@ -251,6 +255,7 @@
 	desc = "Wearing this makes you want to shout \"Down and give me twenty!\" at someone."
 	icon_state = "hosshako"
 	worn_icon = 'icons/mob/large-worn-icons/64x64/head.dmi'
+	worn_icon_avali = null
 	worn_x_dimension = 64
 	worn_y_dimension = 64
 
@@ -258,10 +263,11 @@
 	name = "head of security's beret"
 	desc = "A robust beret for the Head of Security, for looking stylish while not sacrificing protection."
 	icon_state = "beret_badge"
+	worn_icon_avali = null
+	greyscale_colors = "#39393f#f0cc8f"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
-	greyscale_colors = "#39393f#f0cc8f"
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 
 /obj/item/clothing/head/hats/hos/beret/navyhos
 	name = "head of security's formal beret"
@@ -298,6 +304,7 @@
 	name = "warden's hat"
 	desc = "A warden's red hat. Looking at it gives you the feeling of wanting to keep people in cells for as long as possible."
 	icon_state = "wardenhat"
+	worn_icon_avali = null
 	armor_type = /datum/armor/warden_red
 	strip_delay = 60
 	dog_fashion = /datum/dog_fashion/head/warden_red
@@ -317,6 +324,7 @@
 	desc = "A special armored campaign hat with the security insignia emblazoned on it. Uses reinforced fabric to offer sufficient protection."
 	icon_state = "wardendrill"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	dog_fashion = null
 	var/mode = DRILL_DEFAULT
 
@@ -388,7 +396,7 @@
 	greyscale_colors = "#a52f29#F2F2F2"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 
 	armor_type = /datum/armor/beret_sec
 	flags_1 = NONE
@@ -427,7 +435,7 @@
 	icon_state = "beret_badge"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 	greyscale_colors = "#7e1980#c9cbcb"
 
 //Medical
@@ -435,7 +443,7 @@
 	name = "medical beret"
 	desc = "A medical-flavored beret for the doctor in you!"
 	greyscale_colors = "#FFFFFF"
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 	flags_1 = NONE
 
 /obj/item/clothing/head/beret/medical/paramedic
@@ -479,7 +487,7 @@
 	name = "engineering beret"
 	desc = "Might not protect you from radiation, but definitely will protect you from looking unfashionable!"
 	greyscale_colors = "#FFBC30"
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 	flags_1 = NONE
 
 //Cargo
@@ -503,7 +511,7 @@
 	icon_state_preview = "beret_durathread"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 	greyscale_colors = "#C5D4F3#ECF1F8"
 	armor_type = /datum/armor/beret_durathread
 
@@ -532,7 +540,7 @@
 	icon_state = "beret_badge"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 	greyscale_colors = "#46b946#f2c42e"
 	armor_type = /datum/armor/beret_centcom_formal
 	strip_delay = 10 SECONDS
@@ -562,6 +570,6 @@
 	greyscale_colors = "#43523d#a2abb0"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_badge
 
 	armor_type = /datum/armor/beret_sec

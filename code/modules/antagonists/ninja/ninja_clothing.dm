@@ -11,6 +11,7 @@
 	desc = "A close-fitting nano-enhanced mask that acts both as an air filter and a post-modern fashion statement."
 	icon_state = "ninja"
 	inhand_icon_state = "sechailer"
+	worn_icon_avali = null
 	strip_delay = 12 SECONDS
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	flags_inv = HIDEFACIALHAIR | HIDEFACE | HIDESNOUT
@@ -21,6 +22,7 @@
 	name = "ninja suit"
 	desc = "A nano-enhanced jumpsuit designed for maximum comfort and tacticality."
 	icon_state = "ninja_suit"
+	worn_icon_avali = null
 	strip_delay = 12 SECONDS
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	can_adjust = FALSE

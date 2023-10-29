@@ -115,8 +115,9 @@
 
 /obj/item/clothing/suit/hooded/cloak/goliath
 	name = "goliath cloak"
-	icon_state = "goliath_cloak"
 	desc = "A staunch, practical cape made out of numerous monster materials, it is coveted amongst exiles & hermits."
+	icon_state = "goliath_cloak"
+	worn_icon_avali = null
 	allowed = list(
 		/obj/item/flashlight,
 		/obj/item/knife/combat/bone,
@@ -161,10 +162,11 @@
 
 /obj/item/clothing/head/hooded/cloakhood/goliath
 	name = "goliath cloak hood"
-	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
-	icon_state = "golhood"
 	desc = "A protective & concealing hood."
+	icon = 'icons/obj/clothing/head/helmet.dmi'
+	icon_state = "golhood"
+	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
+	worn_icon_avali = null
 	armor_type = /datum/armor/cloakhood_goliath
 	clothing_flags = SNUG_FIT
 	flags_inv = HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR
@@ -182,8 +184,8 @@
 
 /obj/item/clothing/suit/hooded/cloak/drake
 	name = "drake armour"
-	icon_state = "dragon"
 	desc = "A suit of armour fashioned from the remains of an ash drake."
+	icon_state = "dragon"
 	allowed = list(
 		/obj/item/flashlight,
 		/obj/item/gun/energy/recharge/kinetic_accelerator,
@@ -240,8 +242,9 @@
 
 /obj/item/clothing/suit/hooded/cloak/godslayer
 	name = "godslayer armour"
-	icon_state = "godslayer"
 	desc = "A suit of armour fashioned from the remnants of a knight's armor, and parts of a wendigo."
+	icon_state = "godslayer"
+	worn_icon_avali = null
 	allowed = list(
 		/obj/item/flashlight,
 		/obj/item/gun/energy/recharge/kinetic_accelerator,
@@ -282,10 +285,11 @@
 
 /obj/item/clothing/head/hooded/cloakhood/godslayer
 	name = "godslayer helm"
-	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
-	icon_state = "godslayer"
 	desc = "The horns and skull of a wendigo, held together by the remaining icey energy of a demonic miner."
+	icon = 'icons/obj/clothing/head/helmet.dmi'
+	icon_state = "godslayer"
+	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
+	worn_icon_avali = null
 	armor_type = /datum/armor/cloakhood_godslayer
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT
 	cold_protection = HEAD
@@ -333,9 +337,10 @@
 /obj/item/clothing/suit/hooded/explorer/syndicate
 	name = "syndicate explorer suit"
 	desc = "An armoured suit for exploring harsh environments, dyed in the sinister red and black of the Syndicate. This one seems better armored than the ones Nanotrasen gives out."
-	icon_state = "explorer_syndicate"
 	icon = 'icons/obj/clothing/suits/utility.dmi'
+	icon_state = "explorer_syndicate"
 	worn_icon = 'icons/mob/clothing/suits/utility.dmi'
+	worn_icon_avali = null
 	hoodtype = /obj/item/clothing/head/hooded/explorer/syndicate
 	armor_type = /datum/armor/hooded_explorer_syndicate
 
@@ -352,5 +357,6 @@
 	name = "syndicate explorer hood"
 	desc = "An armoured hood for exploring harsh environments."
 	icon_state = "explorer_syndicate"
+	worn_icon_avali = null
 	armor_type = /datum/armor/hooded_explorer_syndicate
 

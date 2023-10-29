@@ -3,6 +3,7 @@
 	desc = "A specialized pair of combat boots with a built-in propulsion system for rapid foward movement."
 	icon_state = "jetboots"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	resistance_flags = FIRE_PROOF
 	actions_types = list(/datum/action/item_action/bhop)
 	armor_type = /datum/armor/shoes_bhop

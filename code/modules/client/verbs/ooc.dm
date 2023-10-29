@@ -115,7 +115,6 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	set desc = "Local OOC, seen only by those in view."
 	set category = "OOC"
 
-
 	if(!mob)
 		return
 

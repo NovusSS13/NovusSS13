@@ -33,6 +33,7 @@
 	desc = "Doesn't seem to do much for some reason."
 	icon_state = "reactiveoff"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	blood_overlay_type = "armor"
 	armor_type = /datum/armor/armor_reactive
 	actions_types = list(/datum/action/item_action/toggle)

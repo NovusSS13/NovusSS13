@@ -58,6 +58,7 @@
 	return ..()
 
 /obj/item/clothing/gloves/boxing
+	worn_icon_avali = null
 	var/datum/martial_art/boxing/style = new
 
 /obj/item/clothing/gloves/boxing/equipped(mob/user, slot)

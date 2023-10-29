@@ -17,6 +17,7 @@
 	name = "absorbent galoshes"
 	desc = "A pair of purple rubber boots, designed to prevent slipping on wet surfaces while also drying them."
 	icon_state = "galoshes_dry"
+	worn_icon_avali = null
 
 /datum/armor/shoes_galoshes
 	bio = 100

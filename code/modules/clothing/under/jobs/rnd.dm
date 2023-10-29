@@ -39,6 +39,7 @@
 	name = "research director's tan suit"
 	icon_state = "rdwhimsy"
 	inhand_icon_state = "rdwhimsy"
+	worn_icon_avali = null
 	can_adjust = TRUE
 	alt_covers_chest = TRUE
 
@@ -109,6 +110,7 @@
 	name = "geneticist's jumpsuit"
 	icon_state = "genetics"
 	inhand_icon_state = "w_suit"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/rnd/geneticist/skirt
 	name = "geneticist's jumpskirt"

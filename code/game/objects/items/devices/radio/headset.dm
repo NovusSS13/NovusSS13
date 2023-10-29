@@ -21,6 +21,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	inhand_icon_state = "headset"
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+	worn_icon_avali = 'icons/mob/species/avali/clothing/ears.dmi'
 	worn_icon_state = "headset"
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT * 0.75)
 	subspace_transmission = TRUE
@@ -179,6 +180,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	name = "robotics radio headset"
 	desc = "Made specifically for the roboticists, who cannot decide between departments."
 	icon_state = "rob_headset"
+	worn_icon_avali = null //this stupid sprite will not be graced with my effort
 	worn_icon_state = "rob_headset"
 	keyslot = /obj/item/encryptionkey/headset_rob
 

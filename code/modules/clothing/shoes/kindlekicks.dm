@@ -3,6 +3,7 @@
 	desc = "They'll sure kindle something in you, and it's not childhood nostalgia..."
 	icon_state = "kindleKicks"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	actions_types = list(/datum/action/item_action/kindle_kicks)
 	light_system = MOVABLE_LIGHT
 	light_range = 2

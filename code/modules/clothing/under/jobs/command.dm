@@ -27,6 +27,7 @@
 	desc = "A green suit and yellow necktie. Exemplifies authority."
 	icon_state = "green_suit"
 	inhand_icon_state = "dg_suit"
+	worn_icon_avali = null
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/captain/suit/skirt
@@ -44,4 +45,5 @@
 	desc = "A captain's luxury-wear, for special occasions."
 	icon_state = "captain_parade"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	can_adjust = FALSE

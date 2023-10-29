@@ -6,12 +6,13 @@
 /obj/item/bodypart/head/avali
 	custom_eyes_icon = 'icons/mob/species/avali/avali_eyes.dmi'
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
-	bodytype = BODYTYPE_ORGANIC | BODYTYPE_AVALI
+	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_AVALI
 	head_flags = HEAD_EYESPRITES | HEAD_EYECOLOR | HEAD_EYEHOLES | HEAD_DEBRAIN
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
 
+/*
 /obj/item/bodypart/head/avali/Initialize(mapload)
 	worn_ears_offset = new(
 		attached_part = src,
@@ -30,6 +31,7 @@
 		offset_y = list("north" = -5, "south" = -5, "east" = -5, "west" = -5),
 	)
 	return ..()
+*/
 
 
 /obj/item/bodypart/chest/avali
@@ -79,7 +81,7 @@
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
-	speed_modifier = -0.45
+	speed_modifier = -0.475
 
 /obj/item/bodypart/leg/right/avali
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
@@ -87,7 +89,7 @@
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
-	speed_modifier = -0.45
+	speed_modifier = -0.475
 
 #undef AVALI_PUNCH_LOW
 #undef AVALI_PUNCH_HIGH

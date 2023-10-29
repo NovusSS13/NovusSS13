@@ -3,11 +3,11 @@
 	name = "clown shoes"
 	icon_state = "clown"
 	inhand_icon_state = "clown_shoes"
-	slowdown = SHOES_SLOWDOWN+1
+	slowdown = SHOES_SLOWDOWN + 1
+	lace_time = 20 SECONDS // how the hell do these laces even work??
 	var/enabled_waddle = TRUE
 	///List of possible sounds for the squeak component to use, allows for different clown shoe subtypes to have different sounds.
 	var/list/squeak_sound = list('sound/effects/footstep/clownstep1.ogg'=1,'sound/effects/footstep/clownstep2.ogg'=1)
-	lace_time = 20 SECONDS // how the hell do these laces even work??
 
 /obj/item/clothing/shoes/clown_shoes/Initialize(mapload)
 	. = ..()
@@ -47,9 +47,11 @@
 	name = "jester shoes"
 	desc = "A court jester's shoes, updated with modern squeaking technology."
 	icon_state = "jester_shoes"
+	worn_icon_avali = null
 
 /obj/item/clothing/shoes/clown_shoes/meown_shoes
 	name = "meown shoes"
 	desc = "The adorable sound they make when you walk will mean making friends is more likely."
 	icon_state = "meown_shoes"
+	worn_icon_avali = null
 	squeak_sound = list('sound/effects/footstep/meowstep1.ogg'=1) //mew mew mew mew

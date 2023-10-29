@@ -1,8 +1,8 @@
 /obj/item/clothing/shoes/sneakers
 	icon_state = "sneakers"
 	inhand_icon_state = "sneakers_back"
+	worn_icon_avali = null
 	greyscale_colors = "#2d2d33#ffffff"
-
 	greyscale_config = /datum/greyscale_config/sneakers
 	greyscale_config_worn = /datum/greyscale_config/sneakers_worn
 	greyscale_config_worn_avali = /datum/greyscale_config/avali/sneakers_worn

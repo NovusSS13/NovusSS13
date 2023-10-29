@@ -713,14 +713,14 @@
 	name = "Avali Hardsuit"
 	json_config = 'code/datums/greyscale/json_configs/avali/hardsuit.json'
 
-
-/datum/greyscale_config/avali/beret_worn
+/datum/greyscale_config/avali/beret
 	name = "Beret Worn (Avali)"
-	json_config = 'code/datums/greyscale/json_configs/beret_worn.json'
+	json_config = 'code/datums/greyscale/json_configs/avali/beret.json'
 
-/datum/greyscale_config/avali/beret_badge_worn
+/datum/greyscale_config/avali/beret_badge
 	name = "Badge Beret Worn (Avali)"
-	json_config = 'code/datums/greyscale/json_configs/beret_badge_worn.json'
+	json_config = 'code/datums/greyscale/json_configs/avali/beret_badge.json'
+
 
 /datum/greyscale_config/avali/beret_badge_fancy_worn
 	name = "Fancy Badge Beret Worn (Avali)"

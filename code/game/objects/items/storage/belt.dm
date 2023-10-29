@@ -272,6 +272,7 @@
 	name = "EMT belt"
 	icon_state = "emt"
 	inhand_icon_state = "security"
+	worn_icon_avali = null
 	worn_icon_state = "emt"
 	preload = TRUE
 
@@ -299,6 +300,7 @@
 /obj/item/storage/belt/medical/ert
 	icon_state = "emt"
 	inhand_icon_state = "security"
+	worn_icon_avali = null
 	worn_icon_state = "emt"
 	preload = TRUE
 
@@ -328,6 +330,7 @@
 	desc = "Can hold security gear like handcuffs and flashes."
 	icon_state = "security"
 	inhand_icon_state = "security"//Could likely use a better one.
+	worn_icon_avali = null
 	worn_icon_state = "security"
 	content_overlays = TRUE
 
@@ -435,6 +438,7 @@
 /obj/item/storage/belt/mining/alt
 	icon_state = "explorer2"
 	inhand_icon_state = "explorer2"
+	worn_icon_avali = null
 	worn_icon_state = "explorer2"
 
 /obj/item/storage/belt/mining/healing/PopulateContents()
@@ -451,6 +455,7 @@
 	desc = "A versatile belt, woven from sinew."
 	icon_state = "ebelt"
 	inhand_icon_state = "ebelt"
+	worn_icon_avali = null
 	worn_icon_state = "ebelt"
 
 /obj/item/storage/belt/mining/primitive/Initialize(mapload)
@@ -462,6 +467,7 @@
 	desc = "Designed for ease of access to the shards during a fight, as to not let a single enemy spirit slip away."
 	icon_state = "soulstonebelt"
 	inhand_icon_state = "soulstonebelt"
+	worn_icon_avali = null
 	worn_icon_state = "soulstonebelt"
 
 /obj/item/storage/belt/soulstone/Initialize(mapload)
@@ -484,6 +490,7 @@
 	desc = "Proves to the world that you are the strongest!"
 	icon_state = "championbelt"
 	inhand_icon_state = "championbelt"
+	worn_icon_avali = null
 	worn_icon_state = "championbelt"
 	custom_materials = list(/datum/material/gold=SMALL_MATERIAL_AMOUNT *4)
 
@@ -559,6 +566,7 @@
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "belt"
 	inhand_icon_state = "security"
+	worn_icon_avali = null
 	worn_icon_state = "security"
 	content_overlays = TRUE
 
@@ -576,6 +584,7 @@
 	desc = "A belt used by military forces."
 	icon_state = "military"
 	inhand_icon_state = "security"
+	worn_icon_avali = null
 	worn_icon_state = "military"
 
 /obj/item/storage/belt/military/assault
@@ -583,6 +592,7 @@
 	desc = "A tactical assault belt."
 	icon_state = "assault"
 	inhand_icon_state = "security"
+	worn_icon_avali = null
 	worn_icon_state = "assault"
 
 /obj/item/storage/belt/military/assault/Initialize(mapload)
@@ -600,6 +610,7 @@
 	desc = "A belt for holding grenades."
 	icon_state = "grenadebeltnew"
 	inhand_icon_state = "security"
+	worn_icon_avali = null
 	worn_icon_state = "grenadebeltnew"
 
 /obj/item/storage/belt/grenade/Initialize(mapload)
@@ -639,6 +650,7 @@
 	desc = "A belt designed to hold various rods of power. A veritable fanny pack of exotic magic."
 	icon_state = "soulstonebelt"
 	inhand_icon_state = "soulstonebelt"
+	worn_icon_avali = null
 	worn_icon_state = "soulstonebelt"
 
 /obj/item/storage/belt/wands/Initialize(mapload)
@@ -718,9 +730,11 @@
 	desc = "A dorky fannypack for keeping small items in."
 	icon_state = "fannypack_leather"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	worn_icon_state = "fannypack_leather"
-	dying_key = DYE_REGISTRY_FANNYPACK
+
 	custom_price = PAYCHECK_CREW * 2
+	dying_key = DYE_REGISTRY_FANNYPACK
 
 /obj/item/storage/belt/fannypack/Initialize(mapload)
 	. = ..()
@@ -838,9 +852,10 @@
 /obj/item/storage/belt/plant
 	name = "botanical belt"
 	desc = "A sturdy leather belt used to hold most hydroponics supplies."
+	worn_icon_avali = null
 	icon_state = "plantbelt"
-	inhand_icon_state = "utility"
 	worn_icon_state = "plantbelt"
+	inhand_icon_state = "utility"
 	content_overlays = TRUE
 
 /obj/item/storage/belt/plant/Initialize(mapload)

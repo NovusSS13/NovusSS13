@@ -31,6 +31,7 @@
 	desc = "Ancient bandages."
 	icon_state = "mummy_mask"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 
 /obj/item/clothing/mask/scarecrow
@@ -38,4 +39,5 @@
 	desc = "A burlap sack with eyeholes."
 	icon_state = "scarecrow_sack"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT

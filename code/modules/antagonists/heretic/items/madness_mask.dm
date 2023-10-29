@@ -4,6 +4,7 @@
 	desc = "A mask created from the suffering of existence. Looking down it's eyes, you notice something gazing back at you."
 	icon_state = "mad_mask"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_SMALL
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE

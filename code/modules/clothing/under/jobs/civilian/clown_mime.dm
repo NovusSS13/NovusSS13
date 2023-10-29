@@ -42,41 +42,48 @@
 	desc = "<i>'BLUE HONK!'</i>"
 	icon_state = "blueclown"
 	inhand_icon_state = "blueclown"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/clown/green
 	name = "green clown suit"
 	desc = "<i>'GREEN HONK!'</i>"
 	icon_state = "greenclown"
 	inhand_icon_state = "greenclown"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/clown/yellow
 	name = "yellow clown suit"
 	desc = "<i>'YELLOW HONK!'</i>"
 	icon_state = "yellowclown"
 	inhand_icon_state = "yellowclown"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/clown/purple
 	name = "purple clown suit"
 	desc = "<i>'PURPLE HONK!'</i>"
 	icon_state = "purpleclown"
 	inhand_icon_state = "purpleclown"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/clown/orange
 	name = "orange clown suit"
 	desc = "<i>'ORANGE HONK!'</i>"
 	icon_state = "orangeclown"
 	inhand_icon_state = "orangeclown"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/clown/rainbow
 	name = "rainbow clown suit"
 	desc = "<i>'R A I N B O W HONK!'</i>"
 	icon_state = "rainbowclown"
 	inhand_icon_state = "rainbowclown"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/clown/jester
 	name = "jester suit"
 	desc = "A jolly dress, well suited to entertain your master, nuncle."
 	icon_state = "jester"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/clown/jester/alt
 	icon_state = "jester2"
@@ -86,3 +93,4 @@
 	desc = "It makes you look HONKable!"
 	icon_state = "sexyclown"
 	inhand_icon_state = null
+	worn_icon_avali = null

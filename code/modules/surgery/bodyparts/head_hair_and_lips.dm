@@ -88,7 +88,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 	. = list()
-	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible)
+	if(!(bodytype & (BODYTYPE_HUMANOID|BODYTYPE_AVALI)) || is_invisible)
 		return .
 
 	var/atom/location = loc || owner || src
@@ -233,7 +233,7 @@
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
 	RETURN_TYPE(/image)
-	var/eyeless_icon = 'icons/mob/species/sprite_accessory/human_face.dmi'
+	var/eyeless_icon = (custom_eyes_icon ||= 'icons/mob/species/sprite_accessory/human_face.dmi')
 	var/eyeless_icon_state = "eyes_missing"
 
 	var/image/eyeless_overlay

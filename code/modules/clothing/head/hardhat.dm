@@ -1,6 +1,7 @@
 /obj/item/clothing/head/utility
 	icon = 'icons/obj/clothing/head/utility.dmi'
 	worn_icon = 'icons/mob/clothing/head/utility.dmi'
+	worn_icon_avali = null
 
 /obj/item/clothing/head/utility/hardhat
 	name = "hard hat"

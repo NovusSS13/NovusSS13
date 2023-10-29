@@ -1,6 +1,8 @@
 /obj/item/clothing/gloves/color
-	dying_key = DYE_REGISTRY_GLOVES
+	worn_icon_avali = null
 	greyscale_colors = null
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/fallback_gloves
+	dying_key = DYE_REGISTRY_GLOVES
 
 /obj/item/clothing/gloves/color/yellow
 	name = "insulated gloves"
@@ -101,6 +103,7 @@
 	name = "fingerless insulated gloves"
 	icon_state = "yellowcut"
 	inhand_icon_state = "ygloves"
+	worn_icon_avali = null
 	greyscale_colors = null
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 

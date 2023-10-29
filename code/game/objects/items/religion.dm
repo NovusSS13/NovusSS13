@@ -359,6 +359,7 @@
 	name = "plate gauntlets"
 	icon_state = "crusader"
 	desc = "They're like gloves, but made of metal."
+	worn_icon_avali = null
 	siemens_coefficient = 0
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
@@ -375,6 +376,7 @@
 	name = "plate boots"
 	desc = "Metal boots, they look heavy."
 	icon_state = "crusader"
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_NORMAL
 	armor_type = /datum/armor/shoes_plate
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)

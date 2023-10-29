@@ -41,6 +41,7 @@
 	name = "shaft miner's jumpsuit"
 	icon_state = "miner"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	armor_type = /datum/armor/clothing_under/cargo_miner
 	resistance_flags = NONE
 

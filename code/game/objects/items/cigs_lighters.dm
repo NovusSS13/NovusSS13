@@ -444,6 +444,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	name = "rollie"
 	desc = "A roll of dried plant matter wrapped in thin paper."
 	icon_state = "spliffoff"
+	worn_icon_avali = null
 	icon_on = "spliffon"
 	icon_off = "spliffoff"
 	type_butt = /obj/item/cigbutt/roach
@@ -515,11 +516,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/cigarette/candy
 	name = "\improper Little Timmy's candy cigarette"
 	desc = "For all ages*! Doesn't contain any amount of nicotine. Health and safety risks can be read on the tip of the cigarette."
-	smoketime = 2 MINUTES
 	icon_state = "candyoff"
+	worn_icon_avali = null
 	icon_on = "candyon"
 	icon_off = "candyoff" //make sure to add positional sprites in icons/obj/cigarettes.dmi if you add more.
 	inhand_icon_off = "candyoff"
+	smoketime = 2 MINUTES
 	type_butt = /obj/item/food/candy_trash
 	heat = 473.15 // Lowered so that the sugar can be carmalized, but not burnt.
 	lung_harm = 0.5
@@ -566,6 +568,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	name = "\improper Cohiba Robusto cigar"
 	desc = "There's little more you could want from a cigar."
 	icon_state = "cigar2off"
+	worn_icon_avali = null
 	icon_on = "cigar2on"
 	icon_off = "cigar2off"
 	smoketime = 20 MINUTES
@@ -576,6 +579,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	name = "premium Havanian cigar"
 	desc = "A cigar fit for only the best of the best."
 	icon_state = "cigar2off"
+	worn_icon_avali = null
 	icon_on = "cigar2on"
 	icon_off = "cigar2off"
 	smoketime = 30 MINUTES
@@ -603,9 +607,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	name = "smoking pipe"
 	desc = "A pipe, for smoking. Probably made of meerschaum or something."
 	icon_state = "pipeoff"
+	inhand_icon_state = null
+	worn_icon_avali = null
+
 	icon_on = "pipeon"  //Note - these are in masks.dmi
 	icon_off = "pipeoff"
-	inhand_icon_state = null
 	inhand_icon_on = null
 	inhand_icon_off = null
 	smoketime = 0
@@ -1007,11 +1013,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	name = "\improper E-Cigarette"
 	desc = "A classy and highly sophisticated electronic cigarette, for classy and dignified gentlemen. A warning label reads \"Warning: Do not fill with flammable materials.\""//<<< i'd vape to that.
 	icon_state = "vape"
+	inhand_icon_state = null
+	worn_icon_avali = null
 	worn_icon_state = "vape_worn"
 	greyscale_config = /datum/greyscale_config/vape
 	greyscale_config_worn = /datum/greyscale_config/vape/worn
 	greyscale_colors = "#2e2e2e"
-	inhand_icon_state = null
 	w_class = WEIGHT_CLASS_TINY
 	flags_1 = IS_PLAYER_COLORABLE_1
 

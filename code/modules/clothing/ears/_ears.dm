@@ -15,6 +15,7 @@
 	icon = 'icons/obj/clothing/ears.dmi'
 	icon_state = "earmuffs"
 	inhand_icon_state = "earmuffs"
+	worn_icon_avali = 'icons/mob/species/avali/clothing/ears.dmi'
 	clothing_traits = list(TRAIT_DEAF)
 	strip_delay = 15
 	equip_delay_other = 25

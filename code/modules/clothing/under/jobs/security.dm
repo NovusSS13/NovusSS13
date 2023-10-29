@@ -34,6 +34,7 @@
 	desc = "A tactical relic of years past before Nanotrasen decided it was cheaper to dye the suits red instead of washing out the blood."
 	icon_state = "security"
 	inhand_icon_state = "gy_suit"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/security/officer/skirt
 	name = "security skirt"
@@ -50,6 +51,7 @@
 	desc = "I'm a little busy right now, Calhoun."
 	icon_state = "blueshift"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/security/officer/formal
@@ -57,6 +59,7 @@
 	desc = "The latest in fashionable security outfits."
 	icon_state = "officerblueclothes"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/security/constable
@@ -64,6 +67,7 @@
 	desc = "A british looking outfit."
 	icon_state = "constable"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	can_adjust = FALSE
 	custom_price = PAYCHECK_COMMAND
 
@@ -79,6 +83,7 @@
 	desc = "A formal relic of years past before Nanotrasen decided it was cheaper to dye the suits red instead of washing out the blood."
 	icon_state = "warden"
 	inhand_icon_state = "gy_suit"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/security/warden/skirt
 	name = "warden's suitskirt"
@@ -95,6 +100,7 @@
 	name = "warden's formal uniform"
 	icon_state = "wardenblueclothes"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	alt_covers_chest = TRUE
 
 /*
@@ -105,6 +111,7 @@
 	desc = "Someone who wears this means business."
 	icon_state = "detective"
 	inhand_icon_state = "det"
+	worn_icon_avali = null
 	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/security/detective/skirt
@@ -168,12 +175,14 @@
 	desc = "There are old men, and there are bold men, but there are very few old, bold men."
 	icon_state = "hos"
 	inhand_icon_state = "gy_suit"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/security/head_of_security/alt
 	name = "head of security's turtleneck"
 	desc = "A stylish alternative to the normal head of security jumpsuit, complete with tactical pants."
 	icon_state = "hosalt"
 	inhand_icon_state = "bl_suit"
+	worn_icon_avali = null
 	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/security/head_of_security/alt/skirt
@@ -192,6 +201,7 @@
 	desc = "A male head of security's luxury-wear, for special occasions."
 	icon_state = "hos_parade_male"
 	inhand_icon_state = "r_suit"
+	worn_icon_avali = null
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/security/head_of_security/parade/female
@@ -207,6 +217,7 @@
 	name = "head of security's formal uniform"
 	icon_state = "hosblueclothes"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	alt_covers_chest = TRUE
 
 /*
@@ -218,6 +229,7 @@
 	desc = "Space not controlled by megacorporations, planets, or pirates is under the jurisdiction of Spacepol."
 	icon_state = "spacepol"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	can_adjust = FALSE
 	armor_type = /datum/armor/clothing_under/sec_uniform_spacepol
 
@@ -231,8 +243,7 @@
 	name = "prison jumpsuit"
 	desc = "It's standardised Nanotrasen prisoner-wear. Its suit sensors are stuck in the \"Fully On\" position."
 	icon_state = "jumpsuit"
-	icon_preview = 'icons/obj/previews.dmi'
-	icon_state_preview = "prisonsuit"
+	worn_icon_avali = null
 	inhand_icon_state = "jumpsuit"
 	greyscale_colors = "#ff8300"
 	greyscale_config = /datum/greyscale_config/jumpsuit_prison
@@ -240,6 +251,9 @@
 	greyscale_config_inhand_right = /datum/greyscale_config/jumpsuit_prison_inhand_right
 	greyscale_config_worn = /datum/greyscale_config/jumpsuit_prison_worn
 	greyscale_config_worn_avali = /datum/greyscale_config/avali/jumpsuit_prison_worn
+
+	icon_preview = 'icons/obj/previews.dmi'
+	icon_state_preview = "prisonsuit"
 	has_sensor = LOCKED_SENSORS
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
@@ -266,6 +280,7 @@
 	desc = "A police uniform often found in the lines at donut shops."
 	icon_state = "spacepolice_families"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/security/detective/disco

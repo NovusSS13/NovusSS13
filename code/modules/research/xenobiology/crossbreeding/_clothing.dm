@@ -10,12 +10,13 @@ Slimecrossing Armor
 	desc = "A transparent mask, resembling a conventional breath mask, but made of bluish slime. Seems to lack any air supply tube, though."
 	icon_state = "slime"
 	inhand_icon_state = "b_mask"
-	body_parts_covered = NONE
-	w_class = WEIGHT_CLASS_SMALL
-	clothing_traits = list(TRAIT_NOBREATH)
+	worn_icon_avali = null
 	armor_type = /datum/armor/mask_nobreath
+	w_class = WEIGHT_CLASS_SMALL
+	body_parts_covered = NONE
 	flags_cover = MASKCOVERSMOUTH
 	resistance_flags = NONE
+	clothing_traits = list(TRAIT_NOBREATH)
 
 /datum/armor/mask_nobreath
 	bio = 50
@@ -36,6 +37,7 @@ Slimecrossing Armor
 	desc = "The lenses seem to glow slightly, and reflect light into dazzling colors."
 	icon = 'icons/obj/xenobiology/slimecrossing.dmi'
 	icon_state = "prismglasses"
+	worn_icon_avali = null
 	actions_types = list(/datum/action/item_action/change_prism_colour, /datum/action/item_action/place_light_prism)
 	var/glasses_color = "#FFFFFF"
 
@@ -99,9 +101,10 @@ Slimecrossing Armor
 	name = "heroine bud"
 	desc = "An extremely addictive flower, full of peace magic."
 	icon = 'icons/obj/xenobiology/slimecrossing.dmi'
-	worn_icon = 'icons/mob/clothing/head/costume.dmi'
 	icon_state = "peaceflower"
 	inhand_icon_state = null
+	worn_icon = 'icons/mob/clothing/head/costume.dmi'
+	worn_icon_avali = null
 	slot_flags = ITEM_SLOT_HEAD
 	clothing_traits = list(TRAIT_PACIFISM)
 	body_parts_covered = NONE

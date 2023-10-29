@@ -1,9 +1,10 @@
 /obj/item/clothing/shoes
 	name = "shoes"
+	desc = "Comfortable-looking shoes."
 	icon = 'icons/obj/clothing/shoes.dmi'
+	worn_icon_avali = 'icons/mob/species/avali/clothing/feet.dmi'
 	lefthand_file = 'icons/mob/inhands/clothing/shoes_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/shoes_righthand.dmi'
-	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 
 	body_parts_covered = FEET
@@ -13,7 +14,7 @@
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
 
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/shoes
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_shoes
 	clothing_color_coords_key = "shoes"
 
 	var/offset = 0

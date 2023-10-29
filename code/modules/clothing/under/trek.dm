@@ -4,6 +4,7 @@
 	can_adjust = FALSE
 	icon = 'icons/obj/clothing/under/trek.dmi'
 	worn_icon = 'icons/mob/clothing/under/trek.dmi'
+	worn_icon_avali = null
 
 /*
 *	The Original Series (Technically not THE original because these have a black undershirt while the very-original didn't but IDC)

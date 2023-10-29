@@ -22,22 +22,14 @@
 		groin.Blend(icon('icons/mob/species/avali/bodyparts_greyscale.dmi', "avali_l_leg", EAST), ICON_UNDERLAY)
 		groin.Blend(icon('icons/mob/species/avali/bodyparts_greyscale.dmi', "avali_r_leg", EAST), ICON_OVERLAY)
 		groin.Blend(icon('icons/mob/species/avali/bodyparts_greyscale.dmi', "avali_head_m", EAST), ICON_OVERLAY)
-
-	var/static/icon/groin_cropped
-	if(isnull(groin_cropped))
-		groin_cropped = icon(groin)
-		groin_cropped.Crop(1, 10, 15, 26)
-		groin_cropped.Scale(32, 32)
+		groin.Blend("#c0965f", ICON_MULTIPLY)
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.tails_list[value]
-	if(!is_valid_rendering_sprite_accessory(sprite_accessory))
-		return groin_cropped
-
 	var/icon/final_icon = icon(groin)
-	var/static/list/colors = list(COLOR_PINK, COLOR_PINK, COLOR_PINK)
+	var/static/list/colors = list("#c0965f", "#c0965f", "#c0965f")
 	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/tail/avali(), sprite_accessory, sprite_accessory.get_default_color(colors), dir = EAST)
 
-	final_icon.Crop(1, 10, 15, 26)
+	final_icon.Crop(1, 1, 17, 24)
 	final_icon.Scale(32, 32)
 
 	return final_icon
@@ -74,22 +66,15 @@
 	var/static/icon/head_icon
 	if (isnull(head_icon))
 		head_icon = icon('icons/mob/species/avali/bodyparts_greyscale.dmi', "avali_head_f", SOUTH)
+		head_icon.Blend("#c0965f", ICON_MULTIPLY)
+
 		var/icon/eyes = icon('icons/mob/species/avali/avali_eyes.dmi', "eyes", SOUTH)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		head_icon.Blend(eyes, ICON_OVERLAY)
 
-	var/static/icon/head_icon_cropped //for baldies
-	if (isnull(head_icon_cropped))
-		head_icon_cropped = icon(head_icon)
-		head_icon_cropped.Crop(10, 19, 22, 31)
-		head_icon_cropped.Scale(32, 32)
-
 	var/datum/sprite_accessory/sprite_accessory = GLOB.ears_list[value]
-	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
-		return head_icon_cropped
-
 	var/icon/final_icon = icon(head_icon)
-	var/static/list/colors = list(COLOR_PINK, COLOR_PINK, COLOR_PINK)
+	var/static/list/colors = list("#e4c49b", "#e4c49b", "#e4c49b")
 	blend_bodypart_overlay(final_icon, new /datum/bodypart_overlay/mutant/ears/avali(), sprite_accessory, sprite_accessory.get_default_color(colors), dir = SOUTH)
 
 	final_icon.Crop(10, 19, 22, 31)

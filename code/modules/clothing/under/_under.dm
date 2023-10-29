@@ -2,6 +2,7 @@
 	name = "under"
 	icon = 'icons/obj/clothing/under/default.dmi'
 	worn_icon = 'icons/mob/clothing/under/default.dmi'
+	worn_icon_avali = 'icons/mob/species/avali/clothing/uniform.dmi'
 	lefthand_file = 'icons/mob/inhands/clothing/suits_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/suits_righthand.dmi'
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
@@ -12,7 +13,7 @@
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	limb_integrity = 30
 
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/under
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_under
 	clothing_color_coords_key = "under"
 
 	/// The variable containing the flags for how the woman uniform cropping is supposed to interact with the sprite.

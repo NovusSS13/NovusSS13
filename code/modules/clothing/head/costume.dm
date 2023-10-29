@@ -1,6 +1,7 @@
 /obj/item/clothing/head/costume
 	icon = 'icons/obj/clothing/head/costume.dmi'
 	worn_icon = 'icons/mob/clothing/head/costume.dmi'
+	worn_icon_avali = null
 
 /obj/item/clothing/head/costume/powdered_wig
 	name = "powdered wig"
@@ -17,11 +18,12 @@
 
 /obj/item/clothing/head/syndicatefake
 	name = "black space-helmet replica"
+	desc = "A plastic replica of a Syndicate agent's space helmet. You'll look just like a real murderous Syndicate agent in this! This is a toy, it is not made for use in space!"
 	icon = 'icons/obj/clothing/head/spacehelm.dmi'
-	worn_icon = 'icons/mob/clothing/head/spacehelm.dmi'
 	icon_state = "syndicate-helm-black-red"
 	inhand_icon_state = "syndicate-helm-black-red"
-	desc = "A plastic replica of a Syndicate agent's space helmet. You'll look just like a real murderous Syndicate agent in this! This is a toy, it is not made for use in space!"
+	worn_icon = 'icons/mob/clothing/head/spacehelm.dmi'
+	worn_icon_avali = null
 	clothing_flags = SNUG_FIT
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 

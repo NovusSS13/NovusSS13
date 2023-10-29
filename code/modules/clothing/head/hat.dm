@@ -39,6 +39,7 @@
 	desc = "It smells like fresh donut holes. / <i>Il sent comme des trous de beignets frais.</i>"
 	icon_state = "canada"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/head/costume/redcoat
 	name = "redcoat's hat"
@@ -73,6 +74,7 @@
 	desc = "Gentleman, elite aboard!"
 	icon_state = "bowler"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/head/costume/bearpelt
 	name = "bear pelt hat"
@@ -85,19 +87,21 @@
 	desc = "A working man's cap."
 	icon_state = "beret_flat"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	greyscale_colors = "#8F7654"
 	greyscale_config = /datum/greyscale_config/beret
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret
 
 /obj/item/clothing/head/cowboy
 	name = "bounty hunting hat"
 	desc = "Ain't nobody gonna cheat the hangman in my town."
 	icon = 'icons/obj/clothing/head/cowboy.dmi'
-	worn_icon = 'icons/mob/clothing/head/cowboy.dmi'
 	icon_state = "cowboy"
-	worn_icon_state = "hunter"
 	inhand_icon_state = null
+	worn_icon = 'icons/mob/clothing/head/cowboy.dmi'
+	worn_icon_avali = null
+	worn_icon_state = "hunter"
 	armor_type = /datum/armor/head_cowboy
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	/// Chance that the hat will catch a bullet for you
@@ -217,6 +221,7 @@
 	desc = "A horrifying mix of beanie and softcap in CentCom green. You'd have to be pretty desperate for power over your peers to agree to wear this."
 	icon_state = "intern_hat"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/head/hats/coordinator
 	name = "coordinator cap"

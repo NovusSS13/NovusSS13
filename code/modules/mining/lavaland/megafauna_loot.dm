@@ -253,21 +253,33 @@
 	name = "H.E.C.K. suit"
 	desc = "Hostile Environment Cross-Kinetic Suit: A suit designed to withstand the wide variety of hazards from Lavaland. It wasn't enough for its last owner."
 	icon_state = "hostile_env"
-	hoodtype = /obj/item/clothing/head/hooded/hostile_environment
-	armor_type = /datum/armor/hooded_hostile_environment
-	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
-	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	clothing_flags = THICKMATERIAL
-	resistance_flags = FIRE_PROOF|LAVA_PROOF|ACID_PROOF
-	transparent_protection = HIDESUITSTORAGE|HIDEJUMPSUIT
-	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/resonator, /obj/item/mining_scanner, /obj/item/t_scanner/adv_mining_scanner, /obj/item/gun/energy/recharge/kinetic_accelerator, /obj/item/pickaxe)
+	worn_icon_avali = null
 	greyscale_colors = "#4d4d4d#808080"
 	greyscale_config = /datum/greyscale_config/heck_suit
 	greyscale_config_worn = /datum/greyscale_config/heck_suit/worn
+
+	armor_type = /datum/armor/hooded_hostile_environment
 	flags_1 = IS_PLAYER_COLORABLE_1
+	resistance_flags = FIRE_PROOF|LAVA_PROOF|ACID_PROOF
+
+	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
+	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
+	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
+	transparent_protection = HIDESUITSTORAGE|HIDEJUMPSUIT
+	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
+	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
+
+	allowed = list(
+		/obj/item/flashlight,
+		/obj/item/tank/internals,
+		/obj/item/resonator,
+		/obj/item/mining_scanner,
+		/obj/item/t_scanner/adv_mining_scanner,
+		/obj/item/gun/energy/recharge/kinetic_accelerator,
+		/obj/item/pickaxe
+	)
+	clothing_flags = THICKMATERIAL
+	hoodtype = /obj/item/clothing/head/hooded/hostile_environment
 
 /datum/armor/hooded_hostile_environment
 	melee = 70
@@ -294,10 +306,14 @@
 
 /obj/item/clothing/head/hooded/hostile_environment
 	name = "H.E.C.K. helmet"
-	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
 	desc = "Hostile Environment Cross-Kinetic Helmet: A helmet designed to withstand the wide variety of hazards from Lavaland. It wasn't enough for its last owner."
+	icon = 'icons/obj/clothing/head/helmet.dmi'
 	icon_state = "hostile_env"
+	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
+	worn_icon_avali = null
+	greyscale_colors = "#4d4d4d#808080#ff3300"
+	greyscale_config = /datum/greyscale_config/heck_helmet
+	greyscale_config_worn = /datum/greyscale_config/heck_helmet/worn
 	w_class = WEIGHT_CLASS_NORMAL
 	armor_type = /datum/armor/hooded_hostile_environment
 	cold_protection = HEAD
@@ -309,22 +325,19 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEFACE|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSMOUTH
 	actions_types = list()
-	greyscale_colors = "#4d4d4d#808080#ff3300"
-	greyscale_config = /datum/greyscale_config/heck_helmet
-	greyscale_config_worn = /datum/greyscale_config/heck_helmet/worn
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/head/hooded/hostile_environment/Initialize(mapload)
 	. = ..()
 	update_appearance()
 	AddComponent(/datum/component/butchering/wearable, \
-	speed = 0.5 SECONDS, \
-	effectiveness = 150, \
-	bonus_modifier = 0, \
-	butcher_sound = null, \
-	disabled = null, \
-	can_be_blunt = TRUE, \
-	butcher_callback = CALLBACK(src, PROC_REF(consume)), \
+		speed = 0.5 SECONDS, \
+		effectiveness = 150, \
+		bonus_modifier = 0, \
+		butcher_sound = null, \
+		disabled = null, \
+		can_be_blunt = TRUE, \
+		butcher_callback = CALLBACK(src, PROC_REF(consume)), \
 	)
 	AddElement(/datum/element/radiation_protected_clothing)
 	AddComponent(/datum/component/gags_recolorable)

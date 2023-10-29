@@ -3,6 +3,7 @@
 	desc = "These leather gloves protect against thorns, barbs, prickles, spikes and other harmful objects of floral origin.  They're also quite warm."
 	icon_state = "leather"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	greyscale_colors = null
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT

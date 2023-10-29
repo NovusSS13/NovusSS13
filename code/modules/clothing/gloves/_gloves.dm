@@ -3,7 +3,7 @@
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/clothing/gloves.dmi'
-	worn_icon_avali = AVALI_GLOVES_FILE
+	worn_icon_avali = 'icons/mob/species/avali/clothing/gloves.dmi'
 	inhand_icon_state = "greyscale_gloves"
 	lefthand_file = 'icons/mob/inhands/clothing/gloves_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/gloves_righthand.dmi'
@@ -18,7 +18,7 @@
 	strip_delay = 20
 	equip_delay_other = 40
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/gloves
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_gloves
 	clothing_color_coords_key = "gloves"
 
 	// Path variable. If defined, will produced the type through interaction with wirecutters.

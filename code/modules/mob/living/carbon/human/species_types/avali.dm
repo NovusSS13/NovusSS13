@@ -51,11 +51,11 @@
 	)
 
 /datum/species/avali/get_species_description()
-	return "From the icy moon of Avalon, come Avali; the nomadic chickens with ammonia-based biology\
+	return "From the icy moon of Avalon, come Avali; the nomadic chickens with ammonia-based biology \
 	and a heavy aversion towards any sanely-heated places."
 
 /datum/species/avali/get_species_lore()
-	return list("uhhh idk")
+	return list("WIP")
 
 
 /datum/species/avali/random_name(gender, unique, lastname)
@@ -93,7 +93,8 @@
 		var/list/used_colors = SSgreyscale.ParseColorString(item.greyscale_colors)
 		if(length(used_colors) >= expected_color_amount)
 			used_colors.len = expected_color_amount // GAGS errors if we overshoot
-			return item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
+			item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
+			return item.worn_icon_avali
 
 		// not enough colors, gotta guess the rest
 		var/icon/final_human_icon = icon(default_worn_icon, default_worn_icon_state)
@@ -113,6 +114,13 @@
 
 		item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
 		return item.worn_icon_avali
+
+/*
+	// uhhh, offset the default sprites??
+	if((item_slot == ITEM_SLOT_HEAD || item_slot == ITEM_SLOT_MASK) && default_worn_icon)
+		var/icon/icon = icon(default_worn_icon)
+		icon.pixel_x
+*/
 
 	// fuck it, we bail
 	return null

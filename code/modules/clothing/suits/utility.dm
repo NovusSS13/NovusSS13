@@ -18,6 +18,7 @@
 	desc = "A suit that helps protect against fire and heat."
 	icon_state = "fire"
 	inhand_icon_state = "ro_suit"
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_BULKY
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	allowed = list(
@@ -112,6 +113,7 @@
 	desc = "A suit designed for safety when handling explosives."
 	icon_state = "bombsuit"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_BULKY
 	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS

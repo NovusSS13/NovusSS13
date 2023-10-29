@@ -1,6 +1,7 @@
 /obj/item/clothing/suit
 	name = "suit"
 	icon = 'icons/obj/clothing/suits/default.dmi'
+	worn_icon_avali = 'icons/mob/species/avali/clothing/suit.dmi'
 	lefthand_file = 'icons/mob/inhands/clothing/suits_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/suits_righthand.dmi'
 	allowed = list(
@@ -14,7 +15,7 @@
 	slot_flags = ITEM_SLOT_OCLOTHING
 	limb_integrity = 0 // disabled for most exo-suits
 
-	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/coat
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/fallback_coat
 	clothing_color_coords_key = "suit"
 
 	var/blood_overlay_type = "suit"

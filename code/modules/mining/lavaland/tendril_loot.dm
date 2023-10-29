@@ -143,6 +143,7 @@
 	desc = "A mysterious pendant. An inscription on it says: \"Certain death tomorrow means certain life today.\""
 	icon = 'icons/obj/lavaland/artefacts.dmi'
 	icon_state = "memento_mori"
+	worn_icon_avali = null
 	worn_icon_state = "memento"
 	actions_types = list(/datum/action/item_action/hands_free/memento_mori)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
@@ -608,6 +609,7 @@
 	desc = "Pickaxes... for your hands!"
 	icon_state = "concussive_gauntlets"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	toolspeed = 0.1
 	strip_delay = 40
 	equip_delay_other = 20
@@ -655,9 +657,10 @@
 /obj/item/clothing/suit/hooded/berserker
 	name = "berserker armor"
 	desc = "Voices echo from the armor, driving the user insane. Is not space-proof."
-	icon_state = "berserker"
 	icon = 'icons/obj/clothing/suits/armor.dmi'
+	icon_state = "berserker"
 	worn_icon = 'icons/mob/clothing/suits/armor.dmi'
+	worn_icon_avali = null
 	hoodtype = /obj/item/clothing/head/hooded/berserker
 	armor_type = /datum/armor/hooded_berserker
 	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -705,6 +708,7 @@
 	icon_state = "berserker"
 	icon = 'icons/obj/clothing/head/helmet.dmi'
 	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
+	worn_icon_avali = null
 	armor_type = /datum/armor/hooded_berserker
 	actions_types = list(/datum/action/item_action/berserk_mode)
 	cold_protection = HEAD
@@ -794,6 +798,7 @@
 	desc = "A strange eye, said to have been torn from an omniscient creature that used to roam the wastes."
 	icon_state = "godeye"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	vision_flags = SEE_TURFS
 	// Blue, light blue
 	color_cutoffs = list(15, 30, 40)

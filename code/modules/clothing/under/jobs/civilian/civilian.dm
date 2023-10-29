@@ -15,6 +15,7 @@
 	desc = "It looks like it has lots of flair!"
 	name = "purple bartender's uniform"
 	icon_state = "purplebartender"
+	worn_icon_avali = null
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/civilian/bartender/skirt
@@ -22,6 +23,7 @@
 	desc = "It looks like it could use some more flair."
 	icon_state = "barman_skirt"
 	inhand_icon_state = "bar_suit"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS
 	dying_key = DYE_REGISTRY_JUMPSKIRT
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
@@ -81,6 +83,7 @@
 	desc = "A teal suit and yellow necktie. An authoritative yet tacky ensemble."
 	icon_state = "teal_suit"
 	inhand_icon_state = "g_suit"
+	worn_icon_avali = null
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/civilian/head_of_personnel/suit/skirt
@@ -137,6 +140,7 @@
 	desc = "A simple maid uniform for housekeeping."
 	icon_state = "janimaid"
 	inhand_icon_state = "janimaid"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 	can_adjust = FALSE
@@ -159,6 +163,7 @@
 	name = "lawyer black suit"
 	icon_state = "lawyer_black"
 	inhand_icon_state = "lawyer_black"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/lawyer/black/skirt
 	name = "lawyer black suitskirt"
@@ -174,6 +179,7 @@
 	icon_state = "good_suit"
 	inhand_icon_state = "good_suit"
 	worn_icon = 'icons/mob/clothing/under/suits.dmi'
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/lawyer/beige/skirt
 	name = "good lawyer's suitskirt"
@@ -189,6 +195,7 @@
 	name = "lawyer red suit"
 	icon_state = "lawyer_red"
 	inhand_icon_state = "lawyer_red"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/lawyer/red/skirt
 	name = "lawyer red suitskirt"
@@ -202,6 +209,7 @@
 	name = "lawyer blue suit"
 	icon_state = "lawyer_blue"
 	inhand_icon_state = "lawyer_blue"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/civilian/lawyer/blue/skirt
 	name = "lawyer blue suitskirt"
@@ -216,6 +224,7 @@
 	desc = "A classy suit."
 	icon_state = "bluesuit"
 	inhand_icon_state = "b_suit"
+	worn_icon_avali = null
 	can_adjust = TRUE
 	alt_covers_chest = TRUE
 
@@ -241,17 +250,19 @@
 	name = "purple suitskirt"
 	icon_state = "lawyer_purp_skirt"
 	inhand_icon_state = "p_suit"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS
 	dying_key = DYE_REGISTRY_JUMPSKIRT
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/under/rank/civilian/lawyer/galaxy
-	worn_icon = 'icons/mob/clothing/under/lawyer_galaxy.dmi'
-	can_adjust = FALSE
 	name = "blue galaxy suit"
 	icon_state = "lawyer_galaxy_blue"
 	inhand_icon_state = "b_suit"
+	worn_icon = 'icons/mob/clothing/under/lawyer_galaxy.dmi'
+	worn_icon_avali = null
+	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/civilian/lawyer/galaxy/skirt
 	name = "blue galaxy suitskirt"
@@ -277,5 +288,6 @@
 	desc = "For when all you want in life is to grill for god's sake!"
 	icon_state = "cookjorts"
 	inhand_icon_state = "cookjorts"
+	worn_icon_avali = null
 	can_adjust = FALSE
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY

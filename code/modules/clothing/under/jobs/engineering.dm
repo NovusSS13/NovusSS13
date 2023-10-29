@@ -58,6 +58,7 @@
 	desc = "A high visibility jumpsuit. Made from fire resistant materials."
 	icon_state = "hazard"
 	inhand_icon_state = "syndicate-orange"
+	worn_icon_avali = null
 	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/engineering/engineer/skirt

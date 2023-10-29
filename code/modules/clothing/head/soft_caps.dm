@@ -121,6 +121,7 @@
 	desc = "It's a baseball hat in a bright rainbow of colors."
 	icon_state = "rainbowsoft"
 	inhand_icon_state = "rainbow_softcap"
+	worn_icon_avali = null
 	soft_type = "rainbow"
 	dog_fashion = null
 

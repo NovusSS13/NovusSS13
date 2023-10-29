@@ -4,6 +4,7 @@
 	icon = 'icons/obj/clothing/under/ethereal.dmi'
 	icon_state = "eth_tunic"
 	worn_icon = 'icons/mob/clothing/under/ethereal.dmi'
+	worn_icon_avali = null
 	greyscale_colors = "#4e7cc7"
 	greyscale_config = /datum/greyscale_config/eth_tunic
 	greyscale_config_worn = /datum/greyscale_config/eth_tunic_worn

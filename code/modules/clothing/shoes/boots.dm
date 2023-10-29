@@ -63,6 +63,7 @@
 
 /obj/item/clothing/shoes/jackboots/sec
 	icon_state = "jackboots_sec"
+	worn_icon_avali = null
 
 /obj/item/clothing/shoes/winterboots
 	name = "winter boots"
@@ -89,6 +90,7 @@
 	desc = "A pair of winter boots with special grips on the bottom, designed to prevent slipping on frozen surfaces."
 	icon_state = "iceboots"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	clothing_traits = list(TRAIT_NO_SLIP_ICE, TRAIT_NO_SLIP_SLIDE)
 
 // A pair of ice boots intended for general crew EVA use - see EVA winter coat for comparison.
@@ -117,6 +119,7 @@
 	desc = "Nanotrasen-issue Engineering lace-up work boots for the especially blue-collar."
 	icon_state = "workboots"
 	inhand_icon_state = "jackboots"
+	worn_icon_avali = null
 	armor_type = /datum/armor/shoes_workboots
 	strip_delay = 20
 	equip_delay_other = 40
@@ -141,6 +144,7 @@
 	desc = "Comfy shoes."
 	icon_state = "rus_shoes"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	lace_time = 8 SECONDS
 
 /obj/item/clothing/shoes/russian/Initialize(mapload)
@@ -153,18 +157,21 @@
 	desc = "They may have lost some of their lustre over the years, but these green lizardskin shoes fit you perfectly."
 	icon_state = "lizardskin_shoes"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/shoes/kim
 	name = "aerostatic boots"
 	desc = "A crisp, clean set of boots for working long hours on the beat."
 	icon_state = "aerostatic_boots"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/shoes/pirate
 	name = "pirate boots"
 	desc = "Yarr."
 	icon_state = "pirateboots"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/shoes/pirate/armored
 	armor_type = /datum/armor/shoes_pirate

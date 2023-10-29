@@ -5,8 +5,9 @@
 	name = "collectable hat"
 	desc = "A rare collectable hat."
 	icon = 'icons/obj/clothing/head/costume.dmi'
-	worn_icon = 'icons/mob/clothing/head/costume.dmi'
 	icon_state = null
+	worn_icon = 'icons/mob/clothing/head/costume.dmi'
+	worn_icon_avali = null
 
 /obj/item/clothing/head/collectable/Initialize(mapload)
 	. = ..()
@@ -71,7 +72,7 @@
 	greyscale_colors = "#972A2A"
 	greyscale_config = /datum/greyscale_config/beret
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret
 	dog_fashion = /datum/dog_fashion/head/beret
 
 /obj/item/clothing/head/collectable/welding
@@ -98,7 +99,7 @@
 	icon_state = "beret_flat"
 	greyscale_config = /datum/greyscale_config/beret
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
-	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret
 	greyscale_colors = "#8F7654"
 	inhand_icon_state = null
 
