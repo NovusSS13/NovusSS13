@@ -298,11 +298,11 @@
 
 //to add a splatter of blood or other mob liquid.
 /mob/living/proc/add_splatter_floor(turf/splattered, small_drip)
-	if((get_blood_id() != /datum/reagent/blood) || HAS_TRAIT(src, TRAIT_NOBLOOD))
+	if(!blood_volume || (get_blood_id() != /datum/reagent/blood) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	if(!splattered)
 		splattered = get_turf(src)
-	if(isclosedturf(splattered) || (isgroundlessturf(splattered) && !GET_TURF_BELOW(splattered)))
+	if(!splattered || isclosedturf(splattered) || (isgroundlessturf(splattered) && !GET_TURF_BELOW(splattered)))
 		return
 
 	var/list/temp_blood_DNA
@@ -359,7 +359,7 @@
  * * splatter_strength: How many tiles it can go, and how many items it can pass over and dirty
  */
 /mob/living/proc/spray_blood(splatter_direction, splatter_strength = 3)
-	if(!isturf(loc) || !blood_volume || HAS_TRAIT(src, TRAIT_NOBLOOD))
+	if(!isturf(loc) || !blood_volume || (get_blood_id() != /datum/reagent/blood) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc)
 	our_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
@@ -370,7 +370,7 @@
  * Helper proc for throwing blood particles around, similar to the spray_blood proc.
  */
 /mob/living/proc/blood_particles(amount = rand(1, 3), angle = rand(0,360), min_deviation = -30, max_deviation = 30, min_pixel_z = 0, max_pixel_z = 6)
-	if(!isturf(loc) || !blood_volume ||HAS_TRAIT(src, TRAIT_NOBLOOD))
+	if(!isturf(loc) || !blood_volume || (get_blood_id() != /datum/reagent/blood) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	for(var/i in 1 to amount)
 		var/obj/effect/decal/cleanable/blood/particle/droplet = new(loc)

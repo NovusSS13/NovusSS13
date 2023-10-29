@@ -40,7 +40,7 @@
 			var/datum/component/creamed/coom = GetComponent(component_type)
 			if(coom?.cover_lips)
 				covered_lips += coom.cover_lips
-		if((!client && !ai_controller) || HAS_TRAIT(src, TRAIT_DUMB))
+		if((stat <= CONSCIOUS) && ((!client && !ai_controller) || HAS_TRAIT(src, TRAIT_DUMB)))
 			covered_lips += span_color("drool", "#b6e7f5")
 		if(LAZYLEN(covered_lips))
 			. += "Mmm, [t_his] lips are covered with [english_list(covered_lips)]!"
