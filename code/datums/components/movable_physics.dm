@@ -178,6 +178,10 @@
 		else if(moving_atom.pixel_z <= z_floor && vertical_velocity)
 			z_floor_bounce(moving_atom)
 
+		// z_floor_bounce could have deleted us
+		if(QDELETED(src))
+			return
+
 		visual_angle_velocity = max(0, visual_angle_velocity - visual_angle_friction)
 
 		var/move_direction = NONE
@@ -236,7 +240,7 @@
 	var/atom/movable/moving_atom = parent
 	cached_animate_movement = moving_atom.animate_movement
 	moving_atom.animate_movement = NO_STEPS
-	if(!spin_speed || visual_angle_velocity || visual_angle_friction)
+	if(!spin_speed || !spin_loops || visual_angle_velocity || visual_angle_friction)
 		return
 	moving_atom.SpinAnimation(speed = spin_speed, loops = spin_loops)
 	if(spin_loops == INFINITE)
