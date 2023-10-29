@@ -79,6 +79,9 @@
 	var/dir_to_wall = get_dir(src, bumped_atom)
 	final_splatter.pixel_x = (dir_to_wall & EAST ? world.icon_size : (dir_to_wall & WEST ? -world.icon_size : 0))
 	final_splatter.pixel_y = (dir_to_wall & NORTH ? world.icon_size : (dir_to_wall & SOUTH ? -world.icon_size : 0))
+	var/list/blood_dna = GET_ATOM_BLOOD_DNA(src)
+	if(blood_dna)
+		final_splatter.add_blood_DNA(blood_dna)
 	qdel(src)
 
 /// subtype of splatter capable of doing proper "stacking" behavior
