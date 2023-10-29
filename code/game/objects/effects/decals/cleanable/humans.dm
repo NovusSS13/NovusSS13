@@ -84,8 +84,8 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 	return isgroundlessturf(here_turf)
 
 /obj/effect/decal/cleanable/blood/tracks
-	icon_state = "tracks"
 	desc = "They look like tracks left by wheels."
+	icon_state = "tracks_1"
 	random_icon_states = null
 	beauty = -50
 	dryname = "dried tracks"
@@ -93,8 +93,8 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 
 /obj/effect/decal/cleanable/trail_holder //not a child of blood on purpose
 	name = "blood"
-	icon = 'icons/effects/blood.dmi'
 	desc = "Your instincts say you shouldn't be following these."
+	icon = 'icons/effects/blood.dmi'
 	beauty = -50
 	var/list/existing_dirs = list()
 
