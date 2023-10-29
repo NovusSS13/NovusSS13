@@ -1,3 +1,6 @@
+/// List of blood states that are well, actually blood
+GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
+
 /obj/effect/decal/cleanable/blood
 	name = "blood"
 	desc = "It's red and gooey. Perhaps it's the chef's cooking?"
@@ -51,11 +54,13 @@
 		STOP_PROCESSING(SSobj, src)
 		return TRUE
 
-/obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/C)
-	C.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
-	if (bloodiness)
-		C.bloodiness = min((C.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
-	return ..()
+/obj/effect/decal/cleanable/blood/handle_merge_decal(obj/effect/decal/cleanable/merger)
+	. = ..()
+	var/list/blood_dna = GET_ATOM_BLOOD_DNA(src)
+	if(LAZYLEN(blood_dna))
+		merger.add_blood_DNA(blood_dna)
+	if(bloodiness)
+		merger.bloodiness = min((merger.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
 
 /obj/effect/decal/cleanable/blood/old
 	bloodiness = 0
@@ -79,8 +84,8 @@
 	return isgroundlessturf(here_turf)
 
 /obj/effect/decal/cleanable/blood/tracks
-	icon_state = "tracks"
 	desc = "They look like tracks left by wheels."
+	icon_state = "tracks_1"
 	random_icon_states = null
 	beauty = -50
 	dryname = "dried tracks"
@@ -88,8 +93,8 @@
 
 /obj/effect/decal/cleanable/trail_holder //not a child of blood on purpose
 	name = "blood"
-	icon = 'icons/effects/blood.dmi'
 	desc = "Your instincts say you shouldn't be following these."
+	icon = 'icons/effects/blood.dmi'
 	beauty = -50
 	var/list/existing_dirs = list()
 
@@ -110,7 +115,7 @@
 	drydesc = "They look bloody and gruesome while some terrible smell fills the air."
 	decal_reagent = /datum/reagent/consumable/liquidgibs
 	reagent_amount = 5
-	///Information about the diseases our streaking spawns
+	/// Information about the diseases our streaking spawns
 	var/list/streak_diseases
 
 /obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases)
@@ -220,13 +225,17 @@
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
 	bloodiness = 0
-	var/drips = 1
 	dryname = "drips of blood"
 	drydesc = "It's red."
+	should_dry = FALSE
+	/// Amount of blood droplets we currently have
+	var/drips = 1
 
 /obj/effect/decal/cleanable/blood/drip/can_bloodcrawl_in()
-	return TRUE
+	if(blood_state in GLOB.bloody_blood_states)
+		return TRUE
 
+	return FALSE
 
 //BLOODY FOOTPRINTS
 /obj/effect/decal/cleanable/blood/footprints
@@ -326,19 +335,18 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	return ..()
 
 /obj/effect/decal/cleanable/blood/footprints/can_bloodcrawl_in()
-	if((blood_state != BLOOD_STATE_OIL) && (blood_state != BLOOD_STATE_NOT_BLOODY))
+	if(blood_state in GLOB.bloody_blood_states)
 		return TRUE
+
 	return FALSE
 
 /obj/effect/decal/cleanable/blood/hitsplatter
 	name = "blood splatter"
-	pass_flags = PASSTABLE | PASSGRILLE
 	icon_state = "hitsplatter1"
 	random_icon_states = list("hitsplatter1", "hitsplatter2", "hitsplatter3")
+	pass_flags = PASSTABLE | PASSGRILLE
 	/// The turf we just came from, so we can back up when we hit a wall
 	var/turf/prev_loc
-	/// The cached info about the blood
-	var/list/blood_dna_info
 	/// Skip making the final blood splatter when we're done, like if we're not in a turf
 	var/skip = FALSE
 	/// How many tiles/items/people we can paint red
@@ -355,8 +363,6 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 /obj/effect/decal/cleanable/blood/hitsplatter/Destroy()
 	if(isturf(loc) && !skip)
 		playsound(src, 'sound/effects/wounds/splatter.ogg', 60, TRUE, -1)
-		if(blood_dna_info)
-			loc.add_blood_DNA(blood_dna_info)
 	return ..()
 
 /// Set the splatter up to fly through the air until it rounds out of steam or hits something
@@ -373,6 +379,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/post_move(datum/move_loop/source)
 	SIGNAL_HANDLER
+	var/list/blood_dna_info = GET_ATOM_BLOOD_DNA(src)
 	for(var/atom/iter_atom in get_turf(src))
 		if(hit_endpoint)
 			return
@@ -415,13 +422,14 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	if(isturf(prev_loc))
 		abstract_move(bumped_atom)
 		skip = TRUE
-		//Adjust pixel offset to make splatters appear on the wall
 		if(istype(bumped_atom, /obj/structure/window))
+			//special window case
 			land_on_window(bumped_atom)
 		else
+			//Adjust pixel offset to make splatters appear on the wall
 			var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(prev_loc)
-			final_splatter.pixel_x = (dir == EAST ? 32 : (dir == WEST ? -32 : 0))
-			final_splatter.pixel_y = (dir == NORTH ? 32 : (dir == SOUTH ? -32 : 0))
+			final_splatter.pixel_x = (dir & EAST ? world.icon_size : (dir & WEST ? -world.icon_size : 0))
+			final_splatter.pixel_y = (dir & NORTH ? world.icon_size : (dir & SOUTH ? -world.icon_size : 0))
 	else // This will only happen if prev_loc is not even a turf, which is highly unlikely.
 		abstract_move(bumped_atom)
 		qdel(src)
@@ -429,6 +437,9 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 /// A special case for hitsplatters hitting windows, since those can actually be moved around, store it in the window and slap it in the vis_contents
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/land_on_window(obj/structure/window/the_window)
 	if(!the_window.fulltile)
+		return
+	if(the_window.bloodied)
+		qdel(src)
 		return
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new
 	final_splatter.forceMove(the_window)

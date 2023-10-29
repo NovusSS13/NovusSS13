@@ -295,7 +295,7 @@
 	if(params && message_param)
 		msg = select_param(user, params)
 
-	msg = replace_pronoun(user, msg)
+	msg = replace_pronouns(user, msg)
 
 	if(!msg)
 		return TRUE
@@ -354,7 +354,7 @@
 	. = ..()
 	message = null
 
-/datum/emote/imaginary_friend/custom/replace_pronoun(mob/user, message)
+/datum/emote/imaginary_friend/custom/replace_pronouns(mob/user, message)
 	return message
 
 // Another snowflake proc, when will they end... should have refactored it differently

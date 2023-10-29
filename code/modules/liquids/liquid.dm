@@ -5,7 +5,7 @@
 	base_icon_state = "water"
 	anchored = TRUE
 	plane = FLOOR_PLANE
-	color = "#DDF"
+	color = "#DDDDFF"
 
 	//For being on fire
 	light_range = 0
