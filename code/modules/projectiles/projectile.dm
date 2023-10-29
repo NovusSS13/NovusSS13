@@ -235,8 +235,8 @@
 /mob/living/carbon/check_limb_hit(hit_zone)
 	if(get_bodypart(hit_zone))
 		return hit_zone
-	else //when a limb is missing the damage is actually passed to the chest
-		return BODY_ZONE_CHEST
+	//when a limb is missing the damage is actually passed to the chest
+	return BODY_ZONE_CHEST
 
 /**
  * Called when the projectile hits something

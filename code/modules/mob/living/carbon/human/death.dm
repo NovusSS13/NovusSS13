@@ -21,9 +21,9 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	if(stat == DEAD)
 		return
 	stop_sound_channel(CHANNEL_HEARTBEAT)
-	var/obj/item/organ/heart/H = get_organ_slot(ORGAN_SLOT_HEART)
-	if(H)
-		H.beat = BEAT_NONE
+	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
+	if(heart)
+		heart.beat = BEAT_NONE
 
 	. = ..()
 

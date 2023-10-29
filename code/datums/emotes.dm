@@ -92,8 +92,7 @@
 	if(params && message_param)
 		msg = select_param(user, params)
 
-	msg = replace_pronoun(user, msg)
-
+	msg = replace_pronouns(user, msg)
 	if(!msg)
 		return
 
@@ -106,14 +105,16 @@
 		playsound(user, tmp_sound, 50, vary)
 
 	var/user_turf = get_turf(user)
-	if (user.client)
+	if(user.client)
 		for(var/mob/ghost as anything in GLOB.dead_mob_list)
 			if(!ghost.client || isnewplayer(ghost))
 				continue
 			if(ghost.client.prefs.chat_toggles & CHAT_GHOSTSIGHT && !(ghost in viewers(user_turf, null)))
 				ghost.show_message(span_emote("[FOLLOW_LINK(ghost, user)] [dchatmsg]"))
-	if(emote_type & (EMOTE_AUDIBLE | EMOTE_VISIBLE)) //emote is audible and visible
-		user.audible_message(msg, deaf_message = span_emote("You see how <b>[span_color("[user]", user.chat_color)]</b> [msg]"), audible_message_flags = EMOTE_MESSAGE)
+	if((emote_type & EMOTE_AUDIBLE) && (emote_type & EMOTE_VISIBLE)) //emote is audible and visible
+		user.audible_message(msg, deaf_message = msg, audible_message_flags = EMOTE_MESSAGE)
+	else if(emote_type & EMOTE_AUDIBLE)	//emote is only audible
+		user.audible_message(msg, audible_message_flags = EMOTE_MESSAGE)
 	else if(emote_type & EMOTE_VISIBLE)	//emote is only visible
 		user.visible_message(msg, visible_message_flags = EMOTE_MESSAGE)
 	if(emote_type & EMOTE_IMPORTANT)
@@ -159,20 +160,20 @@
  *
  * Arguments:
  * * user - Person that is trying to send the emote.
- * * msg - The string to modify.
+ * * message - The string to modify.
  *
  * Returns the modified msg string.
  */
-/datum/emote/proc/replace_pronoun(mob/user, msg)
-	if(findtext(msg, "their"))
-		msg = replacetext(msg, "their", user.p_their())
-	if(findtext(msg, "them"))
-		msg = replacetext(msg, "them", user.p_them())
-	if(findtext(msg, "they"))
-		msg = replacetext(msg, "they", user.p_they())
-	if(findtext(msg, "%s"))
-		msg = replacetext(msg, "%s", user.p_s())
-	return msg
+/datum/emote/proc/replace_pronouns(mob/user, message)
+	if(findtext(message, "their"))
+		message = replacetext(message, "their", user.p_their())
+	if(findtext(message, "them"))
+		message = replacetext(message, "them", user.p_them())
+	if(findtext(message, "they"))
+		message = replacetext(message, "they", user.p_they())
+	if(findtext(message, "%s"))
+		message = replacetext(message, "%s", user.p_s())
+	return message
 
 /**
  * Selects the message type to override the message with.

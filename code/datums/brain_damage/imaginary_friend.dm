@@ -354,7 +354,7 @@
 	. = ..()
 	message = null
 
-/datum/emote/imaginary_friend/custom/replace_pronoun(mob/user, message)
+/datum/emote/imaginary_friend/custom/replace_pronouns(mob/user, message)
 	return message
 
 // Another snowflake proc, when will they end... should have refactored it differently

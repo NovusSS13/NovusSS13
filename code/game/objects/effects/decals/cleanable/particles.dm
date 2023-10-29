@@ -86,7 +86,10 @@
 		qdel(src)
 	else if(istype(bumped_atom, /obj/structure/window))
 		var/obj/structure/window/the_window = bumped_atom
-		if(!the_window.fulltile || the_window.bloodied)
+		if(!the_window.fulltile)
+			return
+		if(the_window.bloodied)
+			qdel(src)
 			return
 		var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new splatter_type_wall()
 		final_splatter.forceMove(the_window)

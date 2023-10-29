@@ -1099,7 +1099,7 @@
 		//blood spatter!
 		bloody = TRUE
 		weapon.add_mob_blood(human) //Make the weapon bloody, not the person.
-		human.blood_particles(amount = rand(1,2), angle = get_angle(user, human))
+		human.blood_particles(amount = rand(1, 1 + round(weapon.force/15, 1)), angle = (user == human ? rand(0, 360) : get_angle(user, human)))
 		if(get_dist(user, human) <= 1) //people with TK won't get smeared with blood
 			user.add_mob_blood(human)
 

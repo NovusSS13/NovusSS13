@@ -436,7 +436,10 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 
 /// A special case for hitsplatters hitting windows, since those can actually be moved around, store it in the window and slap it in the vis_contents
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/land_on_window(obj/structure/window/the_window)
-	if(!the_window.fulltile || the_window.bloodied)
+	if(!the_window.fulltile)
+		return
+	if(the_window.bloodied)
+		qdel(src)
 		return
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new
 	final_splatter.forceMove(the_window)
