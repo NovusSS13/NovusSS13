@@ -295,7 +295,7 @@
 	if(params && message_param)
 		msg = select_param(user, params)
 
-	msg = replace_pronoun(user, msg)
+	msg = replace_pronouns(user, msg)
 
 	if(!msg)
 		return TRUE

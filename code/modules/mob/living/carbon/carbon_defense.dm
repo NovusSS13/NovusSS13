@@ -102,7 +102,7 @@
 		apply_damage(I.force, I.damtype, affecting, wound_bonus = I.wound_bonus, bare_wound_bonus = I.bare_wound_bonus, sharpness = I.get_sharpness(), attack_direction = attack_direction, attacking_item = I)
 		if(I.damtype == BRUTE && IS_ORGANIC_LIMB(affecting) && prob(I.force * 2))
 			I.add_mob_blood(src)
-			blood_particles(amount = rand(1, 1 + round(weapon.force/15, 1)), angle = (user == src ? rand(0, 360): get_angle(user, src)))
+			blood_particles(amount = rand(1, 1 + round(I.force/15, 1)), angle = (user == src ? rand(0, 360): get_angle(user, src)))
 			if(get_dist(user, src) <= 1) //people with TK won't get smeared with blood
 				user.add_mob_blood(src)
 			if(affecting.body_zone == BODY_ZONE_HEAD)
