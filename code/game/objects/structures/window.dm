@@ -34,7 +34,7 @@
 	var/hit_sound = 'sound/effects/glasshit.ogg'
 	/// If some inconsiderate jerk has had their blood spilled on this window, thus making it cleanable
 	var/bloodied = FALSE
-	///Datum that the shard and debris type is pulled from for when the glass is broken.
+	/// Datum that the shard and debris type is pulled from for when the glass is broken.
 	var/datum/material/glass_material_datum = /datum/material/glass
 
 /datum/armor/structure_window

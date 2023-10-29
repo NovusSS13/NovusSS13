@@ -143,7 +143,7 @@
 
 	fluid_reagent = /datum/reagent/consumable/cum
 	fluid_production_rate = 0
-	splatter_type = /obj/effect/decal/cleanable/cum
+	splatter_type = /obj/effect/decal/cleanable/blood/cum
 
 /obj/item/organ/genital/penis/mutate_features(list/features, mob/living/carbon/human/human)
 	. = ..()
@@ -210,7 +210,7 @@
 
 	fluid_receiving_slot = ORGAN_SLOT_PENIS
 	fluid_reagent = /datum/reagent/consumable/cum
-	splatter_type = /obj/effect/decal/cleanable/cum
+	splatter_type = /obj/effect/decal/cleanable/blood/cum
 
 /obj/item/organ/genital/testicles/mutate_features(list/features, mob/living/carbon/human/human)
 	. = ..()
@@ -264,7 +264,7 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/genital/vagina
 
 	fluid_reagent = /datum/reagent/consumable/cum/femcum
-	splatter_type = /obj/effect/decal/cleanable/cum/femcum
+	splatter_type = /obj/effect/decal/cleanable/blood/cum/femcum
 
 /obj/item/organ/genital/vagina/update_icon_state()
 	. = ..()

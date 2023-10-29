@@ -167,7 +167,7 @@
 /mob/living/basic/blob_act(obj/structure/blob/attacking_blob)
 	apply_damage(20, damagetype = BRUTE)
 
-/mob/living/basic/do_attack_animation(atom/attacked_atom, visual_effect_icon, used_item, no_effect)
+/mob/living/basic/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect = FALSE, fov_effect = TRUE, angled = FALSE)
 	if(!no_effect && !visual_effect_icon && melee_damage_upper)
 		if(attack_vis_effect && !iswallturf(attacked_atom)) // override the standard visual effect.
 			visual_effect_icon = attack_vis_effect
@@ -175,7 +175,7 @@
 			visual_effect_icon = ATTACK_EFFECT_PUNCH
 		else
 			visual_effect_icon = ATTACK_EFFECT_SMASH
-	..()
+	return ..()
 
 /mob/living/basic/update_stat()
 	if(status_flags & GODMODE)

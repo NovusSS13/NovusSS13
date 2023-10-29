@@ -24,6 +24,6 @@ GLOBAL_LIST_INIT(bloodymouthable, typecacheof(list(
 /// Bloody lips drawn on the head
 /datum/bodypart_overlay/simple/bloodymouth
 	required_bodytype = BODYTYPE_HUMANOID | BODYTYPE_MONKEY
-	icon = 'icons/effects/bloodface.dmi'
+	icon = 'icons/effects/blood.dmi'
 	icon_state = "bloodface_human"
 	layers = EXTERNAL_FRONT

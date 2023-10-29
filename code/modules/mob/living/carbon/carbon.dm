@@ -184,7 +184,7 @@
 		power_throw++
 	if(neckgrab_throw)
 		power_throw++
-	do_attack_animation(target, no_effect = TRUE)
+	do_attack_animation(target, no_effect = TRUE, angled = TRUE)
 	if(throwing_sound)
 		playsound(src, throwing_sound, 50, FALSE, -1)
 	visible_message(span_danger("[src] throws [thrown_thing][power_throw ? " really hard!" : "."]"), \

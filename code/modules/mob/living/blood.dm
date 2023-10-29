@@ -1,16 +1,13 @@
-#define BLOOD_DRIP_RATE_MOD 90 //Greater number means creating blood drips more often while bleeding
-
 /****************************************************
 				BLOOD SYSTEM
 ****************************************************/
 
 // Takes care blood loss and regeneration
 /mob/living/carbon/human/handle_blood(seconds_per_tick, times_fired)
-
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
 		return
 
-	if(bodytemperature < BLOOD_STOP_TEMP || (HAS_TRAIT(src, TRAIT_HUSK))) //cold or husked people do not pump the blood.
+	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump blood.
 		return
 
 	//Blood regeneration if there is some space
@@ -73,9 +70,8 @@
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
 		temp_bleed += iter_bleed_rate * seconds_per_tick
-
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
-			iter_part.adjustBleedStacks(-1, 0)
+			iter_part.adjustBleedStacks(-1, minimum = 0)
 
 	if(temp_bleed)
 		bleed(temp_bleed)
@@ -88,34 +84,28 @@
 
 //Makes a blood drop, leaking amt units of blood from the mob
 /mob/living/carbon/proc/bleed(amt)
-	if(!blood_volume)
+	if(!blood_volume || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
-
 	//Blood loss still happens in locker, floor stays clean
-	if(isturf(loc) && prob(sqrt(amt)*BLOOD_DRIP_RATE_MOD))
-		add_splatter_floor(loc, (amt >= 10))
+	if(isturf(loc) && prob(sqrt(amt) * 80))
+		add_splatter_floor(loc, small_drip = (amt < 10))
 
 /mob/living/carbon/human/bleed(amt)
 	amt *= physiology.bleed_mod
-	if(!HAS_TRAIT(src, TRAIT_NOBLOOD))
-		..()
+	return ..()
 
 /// A helper to see how much blood we're losing per tick
 /mob/living/carbon/proc/get_bleed_rate()
-	if(!blood_volume)
-		return
+	if(!blood_volume || HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return 0
 	var/bleed_amt = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/iter_bodypart = X
+	for(var/obj/item/bodypart/iter_bodypart as anything in bodyparts)
 		bleed_amt += iter_bodypart.get_modified_bleed_rate()
 	return bleed_amt
 
 /mob/living/carbon/human/get_bleed_rate()
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return
-	. = ..()
-	. *= physiology.bleed_mod
+	return ..() * physiology.bleed_mod
 
 /**
  * bleed_warn() is used to for carbons with an active client to occasionally receive messages warning them about their bleeding status (if applicable)
@@ -125,7 +115,7 @@
  * * forced-
  */
 /mob/living/carbon/proc/bleed_warn(bleed_amt = 0, forced = FALSE)
-	if(!blood_volume || !client)
+	if(!client || !blood_volume || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	if(!COOLDOWN_FINISHED(src, bleeding_message_cd) && !forced)
 		return
@@ -159,8 +149,7 @@
 		rate_of_change = ", but it's clotting up quickly!"
 	else
 		// flick through our wounds to see if there are any bleeding ones getting worse or holding flow (maybe move this to handle_blood and cache it so we don't need to cycle through the wounds so much)
-		for(var/i in all_wounds)
-			var/datum/wound/iter_wound = i
+		for(var/datum/wound/iter_wound as anything in all_wounds)
 			if(!iter_wound.blood_flow)
 				continue
 			var/iter_wound_roc = iter_wound.get_bleed_rate_of_change()
@@ -176,18 +165,13 @@
 	to_chat(src, span_warning("[bleeding_severity][rate_of_change]"))
 	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)
 
-/mob/living/carbon/human/bleed_warn(bleed_amt = 0, forced = FALSE)
-	if(!HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return ..()
-
 /mob/living/proc/restore_blood()
 	blood_volume = initial(blood_volume)
 
 /mob/living/carbon/restore_blood()
 	blood_volume = BLOOD_VOLUME_NORMAL
-	for(var/i in bodyparts)
-		var/obj/item/bodypart/BP = i
-		BP.setBleedStacks(0)
+	for(var/obj/item/bodypart/bleed_part as anything in bodyparts)
+		bleed_part.setBleedStacks(0)
 
 /****************************************************
 				BLOOD TRANSFERS
@@ -279,18 +263,17 @@
 	return
 
 /mob/living/simple_animal/get_blood_id()
-	if(blood_volume)
-		return /datum/reagent/blood
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return
+	return /datum/reagent/blood
 
 /mob/living/carbon/human/get_blood_id()
-	if(HAS_TRAIT(src, TRAIT_HUSK))
+	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	if(check_holidays(APRIL_FOOLS) && is_clown_job(mind?.assigned_role))
 		return /datum/reagent/colorful_reagent
 	if(dna.species.exotic_blood)
 		return dna.species.exotic_blood
-	else if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return
 	return /datum/reagent/blood
 
 // This is has more potential uses, and is probably faster than the old proc.
@@ -312,13 +295,11 @@
 		"U" = list("A-", "A+", "B-", "B+", "O-", "O+", "AB-", "AB+", "L", "U")
 	)
 
-	var/safe = bloodtypes_safe[bloodtype]
-	if(safe)
-		. = safe
+	return bloodtypes_safe[bloodtype]
 
 //to add a splatter of blood or other mob liquid.
 /mob/living/proc/add_splatter_floor(turf/T, small_drip)
-	if(get_blood_id() != /datum/reagent/blood)
+	if((get_blood_id() != /datum/reagent/blood) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	if(!T)
 		T = get_turf(src)
@@ -354,10 +335,6 @@
 	if(temp_blood_DNA)
 		B.add_blood_DNA(temp_blood_DNA)
 
-/mob/living/carbon/human/add_splatter_floor(turf/T, small_drip)
-	if(!HAS_TRAIT(src, TRAIT_NOBLOOD))
-		..()
-
 /mob/living/carbon/alien/add_splatter_floor(turf/T, small_drip)
 	if(!T)
 		T = get_turf(src)
@@ -372,5 +349,3 @@
 	var/obj/effect/decal/cleanable/oil/B = locate() in T.contents
 	if(!B)
 		B = new(T)
-
-#undef BLOOD_DRIP_RATE_MOD

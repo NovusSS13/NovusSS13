@@ -254,9 +254,9 @@
 	var/footprint_type = /obj/effect/decal/cleanable/blood/footprints
 	switch(last_blood_state)
 		if(BLOOD_STATE_CUM)
-			footprint_type = /obj/effect/decal/cleanable/cum/footprints
+			footprint_type = /obj/effect/decal/cleanable/blood/footprints/cum
 		if(BLOOD_STATE_FEMCUM)
-			footprint_type = /obj/effect/decal/cleanable/cum/footprints/femcum
+			footprint_type = /obj/effect/decal/cleanable/blood/footprints/cum/femcum
 	return footprint_type
 
 /**
