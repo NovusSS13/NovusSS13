@@ -380,8 +380,16 @@
 /mob/proc/common_trait_examine()
 	RETURN_TYPE(/list)
 	. = list()
-	if(HAS_TRAIT(src,TRAIT_HUSK))
-		. += span_warning("This body has been reduced to a grotesque husk.")
+	var/t_He = p_they(TRUE)
+	var/t_his = p_their()
+	var/t_has = p_have()
+	var/t_is = p_are()
+	if(HAS_TRAIT(src, TRAIT_SUICIDED))
+		. += span_deadsay("[t_He] appear[p_s()] to have committed suicide... there is no hope of recovery.")
+	if(HAS_TRAIT(src, TRAIT_HUSK))
+		. += span_warning("[t_He] [t_has] been reduced to a grotesque husk.")
+	if(HAS_TRAIT(src, TRAIT_TESLIUM_AFFECTED))
+		. += span_warning(span_color("[t_He] [t_is] emitting a gentle blue glow!", COLOR_CYAN))
 
 /**
  * Get the list of keywords for policy config
