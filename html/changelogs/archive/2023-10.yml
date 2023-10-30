@@ -122,3 +122,7 @@
   - rscadd: Liquids have an improved evaporation system now
   - bugfix: Liquid fire visuals actually work
   - bugfix: Movable physics should act less jittery now
+2023-10-30:
+  ChungusGamer666:
+  - rscadd: Blood "particle" effects using movable physics, very cool! Also, blood
+      sprites are generally darker.
