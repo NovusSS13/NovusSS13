@@ -464,6 +464,15 @@
 	add_fingerprint(usr)
 	return ..()
 
+/obj/item/Topic(href, list/href_list)
+	. = ..()
+	if(.)
+		return
+	if(href_list["look_at_id"])
+		var/obj/item/card/id/id = GetID()
+		if(istype(id) && id.id_card_panel)
+			id.id_card_panel.ui_interact(usr)
+
 /obj/item/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION(VV_HK_ADD_FANTASY_AFFIX, "Add Fantasy Affix")
@@ -794,7 +803,7 @@
 		playsound(src, drop_sound, YEET_SOUND_VOLUME, ignore_walls = FALSE)
 	return hit_atom.hitby(src, 0, itempush, throwingdatum=throwingdatum)
 
-/obj/item/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)
+/obj/item/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, diagonals_first = FALSE, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)
 	if(HAS_TRAIT(src, TRAIT_NODROP))
 		return
 	thrownby = WEAKREF(thrower)
@@ -916,8 +925,8 @@
 		if(w_class == WEIGHT_CLASS_HUGE || w_class == WEIGHT_CLASS_GIGANTIC)
 			ash_type = /obj/effect/decal/cleanable/ash/large
 		var/obj/effect/decal/cleanable/ash/A = new ash_type(T)
-		A.desc += "\nLooks like this used to be \an [name] some time ago."
-		..()
+		A.desc += "\nLooks like this used to be \a [src] some time ago."
+		return ..()
 
 /obj/item/acid_melt()
 	if(!QDELETED(src))
@@ -925,8 +934,8 @@
 		var/obj/effect/decal/cleanable/molten_object/MO = new(T)
 		MO.pixel_x = rand(-16,16)
 		MO.pixel_y = rand(-16,16)
-		MO.desc = "Looks like this was \an [src] some time ago."
-		..()
+		MO.desc = "Looks like this was \a [src] some time ago."
+		return ..()
 
 /obj/item/proc/microwave_act(obj/machinery/microwave/microwave_source, mob/microwaver, randomize_pixel_offset)
 	SHOULD_CALL_PARENT(TRUE)

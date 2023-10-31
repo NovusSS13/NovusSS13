@@ -108,10 +108,9 @@
 	. = ..()
 	message_animal_or_basic = initial(message_animal_or_basic)
 	var/death_sound = user.voice_pack?.get_sound_for_emote(src, user) || user.death_sound
-	if(. && death_sound)
-		if(!user.can_speak() || user.oxyloss >= 50)
-			return //stop the sound if oxyloss too high/cant speak
-		playsound(user, death_sound, 100, vary)
+	//stop the sound if oxyloss too high/cant speak
+	if(. && death_sound && user.can_speak() && (user.oxyloss < 50))
+		playsound(user, death_sound, 80, vary)
 
 /datum/emote/living/drool
 	key = "drool"
@@ -614,7 +613,7 @@
 	message = null
 	emote_type = EMOTE_VISIBLE
 
-/datum/emote/living/custom/replace_pronoun(mob/user, message)
+/datum/emote/living/custom/replace_pronouns(mob/user, message)
 	return message
 
 
@@ -660,12 +659,12 @@
 		params = " " + params
 
 	for(var/mob/receiver in range(1, src))
-		receiver.show_message("<b>[user]</b>[params]") //ghosts being included in this (and not being broadcasted globally) is intentional. subtle is SUBTLE after all.
+		receiver.show_message("<b>[span_color("[user]", user.chat_color)]</b>[params]") //ghosts being included in this (and not being broadcasted globally) is intentional. subtle is SUBTLE after all.
 
 	return TRUE
 
 
-/datum/emote/living/subtle/replace_pronoun(mob/user, message)
+/datum/emote/living/subtle/replace_pronouns(mob/user, message)
 	return message
 
 

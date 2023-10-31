@@ -678,7 +678,7 @@
 	if(article)
 		. = "[article] <b>[src]</b>"
 		override[EXAMINE_POSITION_ARTICLE] = article
-	if(SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override) & COMPONENT_EXNAME_CHANGED)
+	if(SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override) & COMPONENT_EXAMINE_NAME_CHANGED)
 		. = override.Join("")
 
 ///Generate the full examine string of this atom (including icon for goonchat)
@@ -969,7 +969,7 @@
  */
 /atom/proc/hitby(atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	SEND_SIGNAL(src, COMSIG_ATOM_HITBY, hitting_atom, skipcatch, hitpush, blocked, throwingdatum)
-	if(density && !has_gravity(hitting_atom)) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
+	if(density) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
 		addtimer(CALLBACK(src, PROC_REF(hitby_react), hitting_atom), 2)
 
 /**
@@ -978,8 +978,11 @@
  * Default behaviour is to move back from the item that hit us
  */
 /atom/proc/hitby_react(atom/movable/harmed_atom)
-	if(harmed_atom && isturf(harmed_atom.loc))
+	if(QDELETED(harmed_atom))
+		return FALSE
+	if(isturf(harmed_atom.loc))
 		step(harmed_atom, turn(harmed_atom.dir, 180))
+	return TRUE
 
 ///Handle the atom being slipped over
 /atom/proc/handle_slip(mob/living/carbon/slipped_carbon, knockdown_amount, obj/slipping_object, lube, paralyze, force_drop)
@@ -2108,7 +2111,7 @@
 		active_hud.screentip_text.maptext = ""
 	else
 		//We inline a MAPTEXT() here, because there's no good way to statically add to a string like this
-		active_hud.screentip_text.maptext = "<span class='context' style='text-align: center; color: [active_hud.screentip_color]'>[name][extra_context]</span>"
+		active_hud.screentip_text.maptext = "<span class='context' style='text-align: center; color: [active_hud.screentip_color]'>[uppertext(name)][extra_context]</span>"
 
 /// Gets a merger datum representing the connected blob of objects in the allowed_types argument
 /atom/proc/GetMergeGroup(id, list/allowed_types)

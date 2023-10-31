@@ -225,8 +225,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 /obj/item/modular_computer/get_id_examine_strings(mob/user)
 	. = ..()
 	if(computer_id_slot)
-		. += "\The [src] is displaying [computer_id_slot]."
-		. += computer_id_slot.get_id_examine_strings(user)
+		. += "[get_examine_string(user)] is displaying [computer_id_slot.get_examine_string(user)]."
 
 /obj/item/modular_computer/proc/print_text(text_to_print, paper_title = "")
 	if(!stored_paper)
@@ -346,14 +345,14 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 			. += span_warning("It's falling apart!")
 
 	if(long_ranged)
-		. += "It is upgraded with an experimental long-ranged network capabilities, picking up NTNet frequencies while further away."
-	. += span_notice("It has [max_capacity] GQ of storage capacity.")
+		. += span_info("It is upgraded with an experimental long-ranged network capabilities, picking up NTNet frequencies while further away.")
+	. += span_info("It has [max_capacity] GQ of storage capacity.")
 
 	if(computer_id_slot)
 		if(Adjacent(user))
-			. += "It has \the [computer_id_slot] card installed in its card slot."
+			. += span_info("It has [computer_id_slot.get_examine_string(user)] card installed in its card slot.")
 		else
-			. += "Its identification card slot is currently occupied."
+			. += span_info("It's identification card slot is currently occupied.")
 		. += span_info("Alt-click [src] to eject the identification card.")
 
 /obj/item/modular_computer/examine_more(mob/user)
@@ -682,10 +681,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	return TRUE
 
 /obj/item/modular_computer/proc/UpdateDisplay()
-	if(!saved_identification && !saved_job)
-		name = initial(name)
-		return
-	name = "[saved_identification] ([saved_job])"
+	return
 
 /obj/item/modular_computer/attackby(obj/item/attacking_item, mob/user, params)
 	// Check for ID first

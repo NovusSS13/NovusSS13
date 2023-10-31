@@ -1,13 +1,13 @@
 //CUM
 /datum/reagent/consumable/cum
 	name = "Semen"
-	description = "Baby batter..."
+	description = "Baby batter."
 	taste_description = "something salty"
 	data = list("viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null,"cloneable"=null,"factions"=null,"quirks"=null)
 	color = COLOR_CUM
 	ph = 7.2
 	/// Type of decal, to simplify the code
-	var/decal_type = /obj/effect/decal/cleanable/cum
+	var/decal_type = /obj/effect/decal/cleanable/blood/cum
 
 // FEED ME
 /datum/reagent/consumable/cum/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
@@ -71,7 +71,7 @@
 	if(reac_volume < 3)
 		return
 
-	var/obj/effect/decal/cleanable/cummies = locate(decal_type) in exposed_turf //find some cummies here
+	var/obj/effect/decal/cleanable/blood/cummies = locate(decal_type) in exposed_turf //find some cummies here
 	if(!cummies)
 		cummies = new decal_type(exposed_turf, data["viruses"])
 	else if(LAZYLEN(data["viruses"]))
@@ -90,4 +90,4 @@
 	description = "I can't believe it's not urine!"
 	taste_description = "something slightly sweet"
 	color = COLOR_FEMCUM
-	decal_type = /obj/effect/decal/cleanable/cum/femcum
+	decal_type = /obj/effect/decal/cleanable/blood/cum/femcum

@@ -19,7 +19,6 @@
 	else
 		return ..()
 
-/mob/living/brain/treat_message(message, tts_message, tts_filter, capitalize_message = TRUE)
-	if(capitalize_message)
-		message = capitalize(message)
-	return list(message = message, tts_message = message, tts_filter = list())
+/mob/living/brain/treat_message(message, tts_message, tts_filter, capitalize_message = TRUE, add_period = TRUE)
+	tts_filter = null
+	return ..()

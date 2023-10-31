@@ -115,10 +115,7 @@
 	return ..()
 
 /obj/item/storage/wallet/proc/update_label()
-	if(front_id)
-		name = "wallet displaying [front_id]"
-	else
-		name = "wallet"
+	return
 
 /obj/item/storage/wallet/examine()
 	. = ..()
@@ -128,7 +125,7 @@
 /obj/item/storage/wallet/get_id_examine_strings(mob/user)
 	. = ..()
 	if(front_id)
-		. += front_id.get_id_examine_strings(user)
+		. += "[get_examine_string(user)] is displaying [front_id.get_examine_string(user)]."
 
 /obj/item/storage/wallet/GetID()
 	return front_id

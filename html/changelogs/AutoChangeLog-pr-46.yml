@@ -1,9 +1,0 @@
-author: "ChungusGamer666"
-delete-after: True
-changes:
-  - rscadd: "Height pref"
-  - rscadd: "Body size pref"
-  - rscdel: "Character preview will not be visible in the background page of character setup"
-  - refactor: "Digitigrade legs are now less awful and will properly inherit stats from normal, non-digi legs."
-  - refactor: "Markings are now done via a marking system."
-  - refactor: "A bunch of character setup options can be previewed now, like lizard and felinid tails, felinid ears and lizard spines."

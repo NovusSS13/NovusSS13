@@ -117,9 +117,13 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/list/stored_name = list(null)
 	SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, visible_name)
 	namepart = stored_name[NAME_PART_INDEX] || "[speaker.GetVoice()]"
-	if(namepart && speaker.chat_color)
-		var/actual_color = colorize_string(namepart) //signal means we have to do this dumb shit...
-		namepart = span_color(namepart, actual_color)
+	if(!radio_freq)
+		var/atom/movable/real_speaker = speaker
+		if(istype(speaker, /atom/movable/virtualspeaker))
+			var/atom/movable/virtualspeaker/vspeaker = speaker
+			real_speaker = vspeaker.source
+		if(ismob(real_speaker))
+			namepart = span_color(namepart, colorize_string(namepart))
 
 	//End name span.
 	var/endspanpart = "</span>"
@@ -235,7 +239,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	return "0"
 
 /atom/movable/proc/GetVoice()
-	return "[src.name]"
+	return src.name
 
 //HACKY VIRTUALSPEAKER STUFF BEYOND THIS POINT
 //these exist mostly to deal with the AIs hrefs and job stuff.

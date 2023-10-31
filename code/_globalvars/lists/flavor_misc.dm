@@ -1,4 +1,7 @@
 //Preferences stuff
+	//Species examine icon
+GLOBAL_LIST_EMPTY(species_examine_icons)
+
 	//Hairstyles
 GLOBAL_LIST_EMPTY(hairstyles_list) //stores /datum/sprite_accessory/hair indexed by name
 GLOBAL_LIST_EMPTY(hairstyles_male_list) //stores only hair names

@@ -54,6 +54,7 @@
 	holder.chem_temp += extra_heat // Average temperature of reagents + extra heat.
 	holder.handle_reactions() // React them now.
 
+	epicenter.add_liquid_from_reagents(holder)
 	if(holder.total_volume)
 		if(affected_range >= 0)
 			spread_reagents(holder, epicenter, affected_range)

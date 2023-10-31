@@ -98,7 +98,7 @@
 
 /obj/item/clothing/suit/jacket/letterman
 	name = "letterman jacket"
-	desc = "A classic brown letterman jacket. Looks pretty hot and heavy."
+	desc = "Question number one: Do you like hurting other people?"
 	icon_state = "letterman"
 	inhand_icon_state = null
 	worn_icon_avali = null

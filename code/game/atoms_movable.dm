@@ -114,6 +114,13 @@
 	/// Will not automatically apply to the turf below you, you need to apply /datum/element/block_explosives in conjunction with this
 	var/explosion_block = 0
 
+	/**
+	 * Current visual angle in degrees
+	 * Generally if you want to make an atom rotate visually, you should use this var
+	 * and it's setter procs
+	 */
+	var/visual_angle = 0
+
 /mutable_appearance/emissive_blocker
 
 /mutable_appearance/emissive_blocker/New()
@@ -1260,7 +1267,7 @@
 	return throw_at(target, range, speed, thrower, spin, diagonals_first, callback, force, gentle)
 
 ///If this returns FALSE then callback will not be called.
-/atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, diagonals_first = FALSE, datum/callback/callback, force = MOVE_FORCE_STRONG, gentle = FALSE, quickstart = TRUE)
+/atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = FALSE, diagonals_first = FALSE, datum/callback/callback, force = MOVE_FORCE_STRONG, gentle = FALSE, quickstart = TRUE)
 	. = FALSE
 
 	if(QDELETED(src))
@@ -1409,37 +1416,58 @@
 	return
 
 
-/atom/movable/proc/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect, fov_effect = TRUE)
+/atom/movable/proc/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect = FALSE, fov_effect = TRUE, angled = FALSE)
 	if(!no_effect && (visual_effect_icon || used_item))
 		do_item_attack_animation(attacked_atom, visual_effect_icon, used_item)
 
 	if(attacked_atom == src)
 		return //don't do an animation if attacking self
+
 	var/pixel_x_diff = 0
 	var/pixel_y_diff = 0
-	var/turn_dir = 1
+	var/turn_angle = 0
+	if(angled)
+		var/angle = get_angle(src, attacked_atom)
+		pixel_x_diff = round(sin(angle) * (world.icon_size/4))
+		pixel_y_diff = round(cos(angle) * (world.icon_size/4))
+		if(angle <= 15)
+			turn_angle = angle
+		else if(angle <= 165)
+			turn_angle = 15
+		else if(angle <= 180)
+			turn_angle = 15 - (angle - 165)
+		else if(angle <= 195)
+			turn_angle = -(angle - 180)
+		else if(angle <= 345)
+			turn_angle = -15
+		else
+			turn_angle = angle-360
+		turn_angle = round(turn_angle)
+		if(fov_effect)
+			play_fov_effect(get_turf_in_angle(angle, src, 1), 5, "attack")
+	else
+		var/direction = get_dir(src, attacked_atom)
+		if(direction & NORTH)
+			pixel_y_diff = world.icon_size/4
+			turn_angle = 0
+		else if(direction & SOUTH)
+			pixel_y_diff = -world.icon_size/4
+			turn_angle = 0
 
-	var/direction = get_dir(src, attacked_atom)
-	if(direction & NORTH)
-		pixel_y_diff = 8
-		turn_dir = prob(50) ? -1 : 1
-	else if(direction & SOUTH)
-		pixel_y_diff = -8
-		turn_dir = prob(50) ? -1 : 1
+		if(direction & EAST)
+			pixel_x_diff = world.icon_size/4
+			turn_angle = 15
+		else if(direction & WEST)
+			pixel_x_diff = -world.icon_size/4
+			turn_angle = -15
 
-	if(direction & EAST)
-		pixel_x_diff = 8
-	else if(direction & WEST)
-		pixel_x_diff = -8
-		turn_dir = -1
-
-	if(fov_effect)
-		play_fov_effect(attacked_atom, 5, "attack")
+		if(fov_effect)
+			play_fov_effect(attacked_atom, 5, "attack")
 
 	var/matrix/initial_transform = matrix(transform)
-	var/matrix/rotated_transform = transform.Turn(15 * turn_dir)
-	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, transform=rotated_transform, time = 1, easing=BACK_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
-	animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, transform=initial_transform, time = 2, easing=SINE_EASING, flags = ANIMATION_PARALLEL)
+	var/matrix/rotated_transform = transform.Turn(turn_angle)
+	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, transform = rotated_transform, time = 1, easing = BACK_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
+	animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, transform = initial_transform, time = 2, easing = SINE_EASING, flags = ANIMATION_PARALLEL)
 
 /atom/movable/vv_get_dropdown()
 	. = ..()
@@ -1606,6 +1634,7 @@
 /atom/movable/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION(VV_HK_EDIT_PARTICLES, "Edit Particles")
+	VV_DROPDOWN_OPTION(VV_HK_EDIT_MOVABLE_PHYSICS, "Edit Movable Physics")
 	VV_DROPDOWN_OPTION(VV_HK_DEADCHAT_PLAYS, "Start/Stop Deadchat Plays")
 	VV_DROPDOWN_OPTION(VV_HK_ADD_FANTASY_AFFIX, "Add Fantasy Affix")
 
@@ -1618,6 +1647,10 @@
 	if(href_list[VV_HK_EDIT_PARTICLES] && check_rights(R_VAREDIT))
 		var/client/C = usr.client
 		C?.open_particle_editor(src)
+
+	if(href_list[VV_HK_EDIT_MOVABLE_PHYSICS] && check_rights(R_VAREDIT))
+		var/client/C = usr.client
+		C?.open_movable_physics_editor(src)
 
 	if(href_list[VV_HK_DEADCHAT_PLAYS] && check_rights(R_FUN))
 		if(tgui_alert(usr, "Allow deadchat to control [src] via chat commands?", "Deadchat Plays [src]", list("Allow", "Cancel")) != "Allow")
@@ -1643,3 +1676,19 @@
 */
 /atom/movable/proc/keybind_face_direction(direction)
 	setDir(direction)
+
+/// Adjusts the visual angle of the atom by angle_amount in degrees, based on it's current transform
+/atom/movable/proc/adjust_visual_angle(angle_amount, animate_time = 0, animate_loop = 0, animate_easing = LINEAR_EASING, animate_flags = NONE)
+	angle_amount = SIMPLIFY_DEGREES(angle_amount)
+	if(!angle_amount)
+		return
+	animate(src, transform = transform.Turn(angle_amount), time = animate_time, loop = animate_loop, easing = animate_easing, flags = animate_flags)
+	visual_angle += angle_amount
+	visual_angle = SIMPLIFY_DEGREES(visual_angle)
+
+/// Sets the angle of the transform to exactly new_angle in degrees
+/atom/movable/proc/set_visual_angle(new_angle = 0)
+	if(isnull(new_angle))
+		return
+	var/difference = SIMPLIFY_DEGREES(new_angle - visual_angle)
+	return adjust_visual_angle(difference)

@@ -1,5 +1,0 @@
-author: "ChungusGamer666"
-delete-after: True
-changes:
-  - rscadd: "You can now customize your runechat color. Yippie."
-  - bugfix: "Age gate is less of a buggy mess now and will try to properly reconnect you to the game."

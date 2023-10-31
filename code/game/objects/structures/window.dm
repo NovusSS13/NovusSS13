@@ -34,7 +34,7 @@
 	var/hit_sound = 'sound/effects/glasshit.ogg'
 	/// If some inconsiderate jerk has had their blood spilled on this window, thus making it cleanable
 	var/bloodied = FALSE
-	///Datum that the shard and debris type is pulled from for when the glass is broken.
+	/// Datum that the shard and debris type is pulled from for when the glass is broken.
 	var/datum/material/glass_material_datum = /datum/material/glass
 
 /datum/armor/structure_window
@@ -370,18 +370,26 @@
 	else
 		set_opacity(initial(opacity))
 
+/obj/structure/window/proc/become_bloodied(obj/effect/decal/cleanable/blood/splatter)
+	if(bloodied || !fulltile || !splatter)
+		return
+	var/obj/effect/decal/cleanable/blood/splatter/over_window/mess = new()
+	mess.forceMove(src)
+	vis_contents += mess
+	mess.alpha = 0
+	animate(mess, alpha = initial(mess.alpha), time = 2)
+	bloodied = TRUE
+
 /obj/structure/window/wash(clean_types)
 	. = ..()
 	if(!(clean_types & CLEAN_SCRUB))
 		return
 	set_opacity(initial(opacity))
 	remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-	for(var/atom/movable/cleanables as anything in src)
-		if(cleanables == src)
+	for(var/atom/movable/cleanable as anything in src)
+		if(!cleanable.wash(clean_types))
 			continue
-		if(!cleanables.wash(clean_types))
-			continue
-		vis_contents -= cleanables
+		vis_contents -= cleanable
 	bloodied = FALSE
 
 /obj/structure/window/Destroy()

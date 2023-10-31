@@ -47,7 +47,7 @@
 
 /datum/unit_test/translate_language/Run()
 	host_mob = allocate(/mob/living/carbon/human/consistent)
-	var/surfer_quote = "surfing in the USA"
+	var/surfer_quote = "Surfing in the USA!"
 
 	host_mob.grant_language(/datum/language/beachbum, SPOKEN_LANGUAGE) // can speak but can't understand
 	host_mob.add_blocked_language(subtypesof(/datum/language) - /datum/language/beachbum, LANGUAGE_STONER)
@@ -132,7 +132,7 @@
 	speaker.forceMove(run_loc_floor_bottom_left)
 	listener.forceMove(locate((run_loc_floor_bottom_left.x + distance), run_loc_floor_bottom_left.y, run_loc_floor_bottom_left.z))
 
-	var/pangram_quote = "The quick brown fox jumps over the lazy dog"
+	var/pangram_quote = "The quick brown fox jumps over the lazy dog."
 
 	// speaking
 	speaker.say(pangram_quote)

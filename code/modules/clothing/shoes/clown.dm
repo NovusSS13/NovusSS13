@@ -20,13 +20,13 @@
 	. = ..()
 	if(slot & ITEM_SLOT_FEET)
 		if(enabled_waddle)
-			user.AddElement(/datum/element/waddling)
+			ADD_WADDLE(user, WADDLE_SOURCE_CLOWN_SHOES)
 		if(is_clown_job(user.mind?.assigned_role))
 			user.add_mood_event("clownshoes", /datum/mood_event/clownshoes)
 
 /obj/item/clothing/shoes/clown_shoes/dropped(mob/living/user)
 	. = ..()
-	user.RemoveElement(/datum/element/waddling)
+	REMOVE_WADDLE(user, WADDLE_SOURCE_CLOWN_SHOES)
 	if(is_clown_job(user.mind?.assigned_role))
 		user.clear_mood_event("clownshoes")
 

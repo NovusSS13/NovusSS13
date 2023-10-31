@@ -1,5 +1,0 @@
-author: "NullDagaf"
-delete-after: True
-changes:
-  - bugfix: "fixed goliaths getting up after dying"
-  - image: "hide and sinew sprites now have soul again"

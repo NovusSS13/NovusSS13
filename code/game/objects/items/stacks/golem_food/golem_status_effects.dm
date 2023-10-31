@@ -405,7 +405,7 @@
 	. = ..()
 	if (!.)
 		return
-	owner.AddElement(/datum/element/waddling)
+	ADD_WADDLE(owner, WADDLE_SOURCE_GOLEM)
 	ADD_TRAIT(owner, TRAIT_NO_SLIP_WATER, TRAIT_STATUS_EFFECT(id))
 	slipperiness = owner.AddComponent(\
 		/datum/component/slippery,\
@@ -420,7 +420,7 @@
 
 /datum/status_effect/golem/bananium/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_NO_SLIP_WATER, TRAIT_STATUS_EFFECT(id))
-	owner.RemoveElement(/datum/element/waddling)
+	REMOVE_WADDLE(owner, WADDLE_SOURCE_GOLEM)
 	QDEL_NULL(slipperiness)
 	return ..()
 

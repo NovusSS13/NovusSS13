@@ -158,17 +158,15 @@
 	if(QDELETED(src))
 		return // little bit of sanity sauce before we wreck ourselves somehow
 
-	if(!reagents.total_volume)
+	if(!reagents?.total_volume)
 		qdel(src) // :shrug:
 		return
 
 	var/fuel_amount = 0
 
-	var/datum/reagent/fuel/volatiles = reagents.has_reagent(/datum/reagent/fuel)
-	if(volatiles?.volume >= 25)
-		fuel_amount = volatiles.volume
+	fuel_amount = reagents.get_reagent_amount(/datum/reagent/fuel)
 
-	if(!try_explode || fuel_amount < 25)
+	if(!try_explode || (fuel_amount < 25))
 		var/turf/source = get_turf(src)
 		if(istype(source))
 			source.add_liquid_from_reagents(reagents)
@@ -188,7 +186,7 @@
 	// It did not account for how much fuel was actually in the tank at all, just the size of the tank.
 	// I encourage others to better scale these numbers in the future.
 	// As it stands this is a minor nerf in exchange for an easy bombing technique working that has been broken for a while.
-	switch(fuel_amount) // old code for reference:
+	switch(fuel_amount)
 		if(25 to 150)
 			explosion(src, light_impact_range = 1, flame_range = 2)
 		if(150 to 300)
@@ -314,7 +312,7 @@
 	name = "high capacity fuel tank"
 	desc = "A tank full of a high quantity of welding fuel. Keep away from open flames."
 	icon_state = "fuel_high"
-	tank_volume =SHEET_MATERIAL_AMOUNT * 2.5
+	tank_volume = 2500
 
 /// Wall mounted dispeners, like pepper spray or virus food. Not a normal tank, and shouldn't be able to be turned into a plumbed stationary one.
 /obj/structure/reagent_dispensers/wall

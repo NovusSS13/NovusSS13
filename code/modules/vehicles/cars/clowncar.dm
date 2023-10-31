@@ -154,7 +154,7 @@
 	to_chat(user, span_danger("You scramble [src]'s child safety lock, and a panel with six colorful buttons appears!"))
 	initialize_controller_action_type(/datum/action/vehicle/sealed/roll_the_dice, VEHICLE_CONTROL_DRIVE)
 	initialize_controller_action_type(/datum/action/vehicle/sealed/cannon, VEHICLE_CONTROL_DRIVE)
-	AddElement(/datum/element/waddling)
+	ADD_WADDLE(src, WADDLE_SOURCE_CLOWN_CAR)
 
 /obj/vehicle/sealed/car/clowncar/atom_destruction(damage_flag)
 	playsound(src, 'sound/vehicles/clowncar_fart.ogg', 100)

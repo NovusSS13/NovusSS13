@@ -1,0 +1,128 @@
+2023-10-23:
+  ChungusGamer666:
+  - refactor: Character setup has been improved in some tiny ways.
+  - rscadd: Ingame rules menu
+  - rscadd: Big chungus
+  - rscadd: Balloon alert chat text
+  - qol: LOOC keybind and LOOC tgui say
+  - bugfix: 'Fixed character setup close buttons working improperly
+
+      /:cl'
+  - sound: Added two new voice packs to the character setup. Very cool.
+  - rscadd: Added self interactions to the interaction menu.
+  - rscadd: Added underwear options to the interaction menu.
+  - rscadd: Now it's possible for other people to manage your genitals and underwear,
+      if you allow that.
+  - rscadd: You can view your lust, and the lust of the target, in the interaction
+      menu.
+  - qol: Character setup is less dogshit to use
+  - sound: You can now select your character's "voice" on the character setup, which
+      gets used for emotes.
+  - rscdel: Crewmembers on Sneed Outpost 13 no longer have feline eyes.
+  - bugfix: Damage overlays now overlay properly on hands
+  - bugfix: Markings now overlay properly on hands
+  - bugfix: Mutant tail now has the proper icon state
+  - bugfix: Examine panel will now properly obscure flavor text, species and such
+  - rscadd: Examining humans will now tell you their species
+  - rscadd: Chat messages will now colorize the name of the owner, just like runechat!
+      Unless the owner isn't a mob at all.
+  - rscdel: Digitigrades can freely wear shoes now, no fucks given
+  - sound: Shovels now use an iconic hit sound effect.
+  - rscadd: You can now customize your runechat color. Yippie.
+  - bugfix: Age gate is less of a buggy mess now and will try to properly reconnect
+      you to the game.
+  - qol: Radio messages no longer use the user's chat color.
+  - rscdel: IDs are no longer named after the owner, neither are modular computers.
+  - rscdel: HUGE id icons no longer get displayed on examine, fuck you tg.
+  - rscadd: IDs can now be examined to see lots of information about the registered
+      employee.
+  - rscadd: The dumb brain trauma makes you drool.
+  - rscadd: You can now see the player count in the status tab
+  - qol: Say sentences automatically get punctuation at the end now
+  - rscadd: Added minecraft splash text to the title screen. The splash text varies
+      by round and shows up on the hub entry too.
+  - rscadd: Pixel pointing
+  - rscadd: Age gate
+  - rscadd: Added fully fledged gay sex mechanics to the game. Novus has fallen.
+  - qol: Marking sets now have previews
+  - rscadd: Added a fuckton of marking sets
+  - refactor: Examine panel info is now "global", preventing it from being used as
+      meta information against antags and other such miscreants.
+  - rscadd: Throwing now has an animation just like attacking
+  - sound: Added a sound for throwing
+  - qol: Character setup now uses tabs, rather than a background page and sectioning
+      the main character page.
+  - rscadd: Height pref
+  - rscadd: Body size pref
+  - rscdel: Character preview will not be visible in the background page of character
+      setup
+  - refactor: Digitigrade legs are now less awful and will properly inherit stats
+      from normal, non-digi legs.
+  - refactor: Markings are now done via a marking system.
+  - refactor: A bunch of character setup options can be previewed now, like lizard
+      and felinid tails, felinid ears and lizard spines.
+  FlufflesTheDog:
+  - bugfix: Destroying the fabled "green text" now properly releases its victims from
+      their curse.
+  Helg2:
+  - bugfix: warden has his garment bag in locker as should
+  Jacquerel:
+  - bugfix: Bile/Vileworms now have the same projectile and thrown weapon resistances
+      of other mining mobs.
+  - bugfix: Guard spiders can now only make one scary duplicate of themselves at a
+      time, rather than as many as they can click on the button.
+  - rscadd: PAIs can no longer be inserted into Bots
+  - rscadd: Bots can now have their sapience toggled by anyone with access to their
+      settings panel
+  - rscadd: Bots which exist on the map at the start of the round automatically have
+      this setting enabled
+  - qol: Bots, Regal Rats, and Cargorilla now appear in the Spawners menu if you are
+      dead
+  - qol: Bots can be renamed from their maintenance panel
+  NullDagaf:
+  - rscadd: adds looc
+  - balance: insulated gloves no longer prevent you from using guns
+  - rscadd: ghost roles now support custom characters
+  - qol: character setup now only shows character slots that are in use
+  - code_imp: touched up preferences code a tiny bit
+  - qol: felinids can again be killed with chocolate-based products
+  - balance: ashwalkers can spawn in multiple times again
+  - bugfix: fixed mice description
+  - image: restored soul to several sprites
+  - bugfix: fixed goliaths getting up after dying
+  - image: hide and sinew sprites now have soul again
+  - balance: skeleton keys have been removed
+  - rscadd: adds genital examine text, as well as organ sprites
+  - balance: hooch heals assistants again
+  - balance: borgs can be blown up again
+  - rscadd: adds pixelshifting and pixeltilting
+  - rscadd: cryopods are here, finally
+  - rscdel: removes tutorials
+  - rscadd: client login/logout now displays to all players
+  - rscdel: removed login/out broadcast preference
+  Singul0:
+  - rscadd: IRS jacket is now back in the clothesvend
+  - rscadd: Ports breaching shells from beestation
+  - rscadd: Space IRS has been added into the heavy weight pirates spawn pool
+  - code_imp: Mosin nagant ammo boxes is now a subtype of regular ammo boxes (the
+      toolbox subtype)
+  StaringGasMask:
+  - qol: Now plasmamen can use the infiltrator MODsuit without having their species
+      revealed. The helmet's still not sealed, so remember your mask.
+  Tattle:
+  - qol: changed mouth blocked message to a balloon alert
+  lizardqueenlexi:
+  - refactor: Foxes are more crafty now. They will run from danger, and hunt small
+      prey when no one is keeping an eye on them. Don't leave Renault alone with Ian!
+2023-10-25:
+  ChungusGamer666, ma44:
+  - rscadd: Casings now use an awesome, albeit rudimentary, physics system.
+2023-10-27:
+  ChungusGamer666:
+  - rscadd: Liquids have an improved evaporation system now
+  - bugfix: Liquid fire visuals actually work
+  - bugfix: Movable physics should act less jittery now
+2023-10-30:
+  ChungusGamer666:
+  - rscadd: Blood "particle" effects using movable physics, very cool! Also, blood
+      sprites are generally darker.

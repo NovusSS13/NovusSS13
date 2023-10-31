@@ -505,7 +505,7 @@
 		owner.visible_message(span_warning("[owner]'s head splatters with a sickening crunch!"), ignored_mobs = list(owner))
 		new /obj/effect/gibspawner/generic(get_turf(owner), owner)
 		head.dismember(dam_type = BRUTE, silent = TRUE)
-		head.drop_organs()
+		head.drop_organs(violent_removal = TRUE)
 		qdel(head)
 	RegisterSignal(owner, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, PROC_REF(abort_attachment))
 
