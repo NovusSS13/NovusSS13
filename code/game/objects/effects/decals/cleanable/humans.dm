@@ -3,7 +3,7 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 
 /obj/effect/decal/cleanable/blood
 	name = "blood"
-	desc = "It's red and gooey. Perhaps it's the chef's cooking?"
+	desc = "My crimson liquid so frantically spilled - The ruby fluid of life unleashed."
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "floor1"
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
@@ -30,11 +30,12 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 	return ..()
 
 /obj/effect/decal/cleanable/blood/process()
-	if(world.time > drytime)
-		dry()
+	if(world.time < drytime)
+		return
+	dry()
 
 /obj/effect/decal/cleanable/blood/proc/get_timer()
-	drytime = world.time + 3 MINUTES
+	drytime = world.time + 5 MINUTES
 
 /obj/effect/decal/cleanable/blood/proc/start_drying()
 	get_timer()
@@ -56,9 +57,9 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 
 /obj/effect/decal/cleanable/blood/handle_merge_decal(obj/effect/decal/cleanable/merger)
 	. = ..()
-	var/list/blood_dna = GET_ATOM_BLOOD_DNA(src)
-	if(LAZYLEN(blood_dna))
-		merger.add_blood_DNA(blood_dna)
+	var/list/our_blood_dna = GET_ATOM_BLOOD_DNA(src)
+	if(LAZYLEN(our_blood_dna))
+		merger.add_blood_DNA(our_blood_dna)
 	if(bloodiness)
 		merger.bloodiness = min((merger.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
 
@@ -237,6 +238,12 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 
 	return FALSE
 
+/obj/effect/decal/cleanable/blood/drip/handle_merge_decal(obj/effect/decal/cleanable/merger)
+	. = ..()
+	if(istype(merger, /obj/effect/decal/cleanable/blood/drip))
+		var/obj/effect/decal/cleanable/blood/drip/dripper = merger
+		dripper.drips += drips
+
 //BLOODY FOOTPRINTS
 /obj/effect/decal/cleanable/blood/footprints
 	name = "footprints"
@@ -353,6 +360,8 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	var/splatter_strength = 3
 	/// Insurance so that we don't keep moving once we hit a stoppoint
 	var/hit_endpoint = FALSE
+	/// Type of squirt decals we should try to create when moving
+	var/squirt_type = /obj/effect/decal/cleanable/blood/squirt
 
 /obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, splatter_strength)
 	. = ..()
@@ -391,15 +400,31 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 			splatter_strength--
 		else if(ishuman(iter_atom))
 			var/mob/living/carbon/human/splashed_human = iter_atom
+			if(!splashed_human.is_eyes_covered())
+				splashed_human.adjust_eye_blur(3)
+				to_chat(splashed_human, span_userdanger("You're blinded by a spray of blood!"))
+			if(splashed_human.glasses)
+				splashed_human.glasses.add_blood_DNA(blood_dna_info)
+				splashed_human.update_worn_glasses() //updates mob overlays to show the new blood (no refresh)
+			if(splashed_human.wear_mask)
+				splashed_human.wear_mask.add_blood_DNA(blood_dna_info)
+				splashed_human.update_worn_mask() //updates mob overlays to show the new blood (no refresh)
 			if(splashed_human.wear_suit)
 				splashed_human.wear_suit.add_blood_DNA(blood_dna_info)
-				splashed_human.update_worn_oversuit()    //updates mob overlays to show the new blood (no refresh)
+				splashed_human.update_worn_oversuit() //updates mob overlays to show the new blood (no refresh)
 			if(splashed_human.w_uniform)
 				splashed_human.w_uniform.add_blood_DNA(blood_dna_info)
-				splashed_human.update_worn_undersuit()    //updates mob overlays to show the new blood (no refresh)
+				splashed_human.update_worn_undersuit() //updates mob overlays to show the new blood (no refresh)
 			splatter_strength--
 	if(splatter_strength <= 0) // we used all the puff so we delete it.
 		qdel(src)
+		return
+
+	if(squirt_type && isturf(loc))
+		var/obj/effect/decal/cleanable/squirt = new squirt_type(loc, get_dir(prev_loc, loc), blood_dna_info)
+		squirt.add_blood_DNA(blood_dna_info)
+		squirt.alpha = 0
+		animate(squirt, alpha = initial(squirt.alpha), time = 2)
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/loop_done(datum/source)
 	SIGNAL_HANDLER
@@ -419,30 +444,18 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 			return
 
 	hit_endpoint = TRUE
-	if(isturf(prev_loc))
+	if(istype(bumped_atom, /obj/structure/window))
+		//special window case
+		var/obj/structure/window/window = bumped_atom
+		window.become_bloodied(src)
+		skip = TRUE
+	else if(isturf(prev_loc))
 		abstract_move(bumped_atom)
 		skip = TRUE
-		if(istype(bumped_atom, /obj/structure/window))
-			//special window case
-			land_on_window(bumped_atom)
-		else
-			//Adjust pixel offset to make splatters appear on the wall
-			var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(prev_loc)
-			final_splatter.pixel_x = (dir & EAST ? world.icon_size : (dir & WEST ? -world.icon_size : 0))
-			final_splatter.pixel_y = (dir & NORTH ? world.icon_size : (dir & SOUTH ? -world.icon_size : 0))
+		//Adjust pixel offset to make splatters appear on the wall
+		var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(prev_loc)
+		final_splatter.pixel_x = (dir & EAST ? world.icon_size : (dir & WEST ? -world.icon_size : 0))
+		final_splatter.pixel_y = (dir & NORTH ? world.icon_size : (dir & SOUTH ? -world.icon_size : 0))
 	else // This will only happen if prev_loc is not even a turf, which is highly unlikely.
 		abstract_move(bumped_atom)
-		qdel(src)
-
-/// A special case for hitsplatters hitting windows, since those can actually be moved around, store it in the window and slap it in the vis_contents
-/obj/effect/decal/cleanable/blood/hitsplatter/proc/land_on_window(obj/structure/window/the_window)
-	if(!the_window.fulltile)
-		return
-	if(the_window.bloodied)
-		qdel(src)
-		return
-	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new
-	final_splatter.forceMove(the_window)
-	the_window.vis_contents += final_splatter
-	the_window.bloodied = TRUE
 	qdel(src)

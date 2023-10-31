@@ -53,6 +53,7 @@
 	liquid_state = new_state
 	if(no_effects)
 		return
+
 	update_appearance(UPDATE_ICON)
 
 /atom/movable/turf_liquid/proc/check_fire(hotspotted = FALSE)
@@ -224,9 +225,9 @@
 		shine.blend_mode = BLEND_ADD
 		. += shine
 	else
-		. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[liquid_state]_bottom", ABOVE_MOB_LAYER, offset_spokesman = src, plane = GAME_PLANE_UPPER)
+		. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[liquid_state - 1]_bottom", ABOVE_MOB_LAYER, offset_spokesman = src, plane = GAME_PLANE_UPPER)
 		if(liquid_state < LIQUID_STATE_FULLTILE)
-			. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[liquid_state]_top", GATEWAY_UNDERLAY_LAYER, offset_spokesman = src, plane = GAME_PLANE)
+			. += mutable_appearance('icons/effects/liquid_overlays.dmi', "stage[liquid_state - 1]_top", GATEWAY_UNDERLAY_LAYER, offset_spokesman = src, plane = GAME_PLANE)
 
 	//Add a fire overlay lastly, if necessary
 	if(fire_state < LIQUID_FIRE_STATE_SMALL)
@@ -310,25 +311,6 @@
 	color = mix_color_from_reagent_list(reagent_list)
 
 /atom/movable/turf_liquid/proc/calculate_height()
-	var/new_height = CEILING(total_reagents, 1)/LIQUID_HEIGHT_DIVISOR
-	var/determined_new_state
-
-	set_height(new_height)
-	switch(new_height)
-		if(0 to LIQUID_ANKLES_LEVEL_HEIGHT-1)
-			determined_new_state = LIQUID_STATE_PUDDLE
-		if(LIQUID_ANKLES_LEVEL_HEIGHT to LIQUID_WAIST_LEVEL_HEIGHT-1)
-			determined_new_state = LIQUID_STATE_ANKLES
-		if(LIQUID_WAIST_LEVEL_HEIGHT to LIQUID_SHOULDERS_LEVEL_HEIGHT-1)
-			determined_new_state = LIQUID_STATE_WAIST
-		if(LIQUID_SHOULDERS_LEVEL_HEIGHT to LIQUID_FULLTILE_LEVEL_HEIGHT-1)
-			determined_new_state = LIQUID_STATE_SHOULDERS
-		if(LIQUID_FULLTILE_LEVEL_HEIGHT to INFINITY)
-			determined_new_state = LIQUID_STATE_FULLTILE
-	if(determined_new_state != liquid_state)
-		set_new_liquid_state(determined_new_state)
-
-/atom/movable/turf_liquid/immutable/calculate_height()
 	var/new_height = CEILING(total_reagents, 1)/LIQUID_HEIGHT_DIVISOR
 	var/determined_new_state
 

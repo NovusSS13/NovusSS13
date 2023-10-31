@@ -370,18 +370,24 @@
 	else
 		set_opacity(initial(opacity))
 
+/obj/structure/window/proc/become_bloodied(obj/effect/decal/cleanable/blood/splatter)
+	if(bloodied || !fulltile || !splatter)
+		return
+	var/obj/effect/decal/cleanable/blood/splatter/over_window/mess = new()
+	mess.forceMove(src)
+	vis_contents += mess
+	bloodied = TRUE
+
 /obj/structure/window/wash(clean_types)
 	. = ..()
 	if(!(clean_types & CLEAN_SCRUB))
 		return
 	set_opacity(initial(opacity))
 	remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-	for(var/atom/movable/cleanables as anything in src)
-		if(cleanables == src)
+	for(var/atom/movable/cleanable as anything in src)
+		if(!cleanable.wash(clean_types))
 			continue
-		if(!cleanables.wash(clean_types))
-			continue
-		vis_contents -= cleanables
+		vis_contents -= cleanable
 	bloodied = FALSE
 
 /obj/structure/window/Destroy()

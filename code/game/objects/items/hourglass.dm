@@ -2,14 +2,14 @@
 
 /obj/item/hourglass
 	name = "hourglass"
-	desc = "Nanotrasen patented gravity invariant hourglass. Guaranteed to flow perfectly under any conditions."
+	desc = "Has it dawned on you yet? Have you begun to grasp - That life is not a clock, but an hourglass?"
+	icon = 'icons/obj/toys/hourglass.dmi'
+	icon_state = "hourglass_idle"
 	var/obj/effect/countdown/hourglass/countdown
 	var/time = 1 MINUTES
 	var/finish_time //So countdown doesn't need to fiddle with timers
 	var/timing_id //if present we're timing
 	var/hand_activated = TRUE
-	icon = 'icons/obj/toys/hourglass.dmi'
-	icon_state = "hourglass_idle"
 
 /obj/item/hourglass/Initialize(mapload)
 	. = ..()

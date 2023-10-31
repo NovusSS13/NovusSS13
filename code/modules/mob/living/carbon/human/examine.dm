@@ -212,7 +212,6 @@
 			msg += "[wound.get_examine_description(user)]\n"
 
 	for(var/obj/item/bodypart/body_part as anything in disabled)
-		var/damage_text
 		if(HAS_TRAIT(body_part, TRAIT_DISABLED_BY_WOUND))
 			continue // skip if it's disabled by a wound (cuz we'll be able to see the bone sticking out!)
 		msg += "<B>[t_His] [body_part.name] is limp and lifeless!</B>\n"
@@ -247,8 +246,6 @@
 				bleeding_limbs += body_part
 			if(body_part.grasped_by)
 				grasped_limbs += body_part
-
-		var/num_bleeds = LAZYLEN(bleeding_limbs)
 
 		var/list/bleed_text
 		if(appears_dead)
@@ -332,7 +329,7 @@
 		if(just_sleeping)
 			msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
 		else
-			. += generate_death_examine_text()
+			msg += generate_death_examine_text()
 
 	var/scar_severity = 0
 	for(var/datum/scar/scar as anything in all_scars)

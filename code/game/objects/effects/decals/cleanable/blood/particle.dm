@@ -130,5 +130,8 @@
 
 /obj/effect/decal/cleanable/blood/splatter/stacking/handle_merge_decal(obj/effect/decal/cleanable/blood/splatter/stacking/merger)
 	. = ..()
-	merger.splat_overlays |= splat_overlays
-	merger.update_appearance(UPDATE_ICON)
+	if(istype(merger, /obj/effect/decal/cleanable/blood/splatter/stacking))
+		var/obj/effect/decal/cleanable/blood/splatter/stacking/stacker = merger
+		stacker.splat_overlays |= splat_overlays
+		stacker.get_timer() //reset drying time, ripbozo
+		stacker.update_appearance(UPDATE_ICON)

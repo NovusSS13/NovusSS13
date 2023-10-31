@@ -373,7 +373,7 @@
 		user.visible_message(span_warning("[user] begins to cut open [src]."),\
 			span_notice("You begin to cut open [src]..."))
 		if(do_after(user, 5 SECONDS, target = src))
-			drop_organs(user, TRUE)
+			drop_organs(user, violent_removal = TRUE)
 		return
 	return ..()
 
@@ -736,7 +736,7 @@
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
-	drop_organs(violent_removal = TRUE)
+	drop_organs()
 	return ..()
 
 // INTERNAL PROC, DO NOT USE
