@@ -333,12 +333,14 @@
 
 /datum/reagent/teslium/on_mob_metabolize(mob/living/carbon/human/affected_mob)
 	. = ..()
+	ADD_TRAIT(affected_mob, TRAIT_TESLIUM_AFFECTED, "[type]")
 	if(!istype(affected_mob))
 		return
 	affected_mob.physiology.siemens_coeff *= 2
 
 /datum/reagent/teslium/on_mob_end_metabolize(mob/living/carbon/human/affected_mob)
 	. = ..()
+	REMOVE_TRAIT(affected_mob, TRAIT_TESLIUM_AFFECTED, "[type]")
 	if(!istype(affected_mob))
 		return
 	affected_mob.physiology.siemens_coeff *= 0.5

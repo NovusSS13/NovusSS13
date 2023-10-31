@@ -18,6 +18,7 @@
 	desc = "WHOSE FOOTPRINTS ARE THESE?"
 	icon_state = "cum1"
 	random_icon_states = null
+	color = COLOR_CUM
 	blood_state = BLOOD_STATE_CUM //the icon state to load images from
 	dryname = "dried cum footprints"
 	drydesc = "HMM... SOMEONE WAS HERE!"

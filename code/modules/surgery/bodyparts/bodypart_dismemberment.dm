@@ -34,9 +34,7 @@
 	drop_limb()
 
 	limb_owner.update_equipment_speed_mods() // Update in case speed affecting item unequipped by dismemberment
-	var/turf/owner_location = limb_owner.loc
-	if(istype(owner_location))
-		limb_owner.add_splatter_floor(owner_location)
+	limb_owner.bleed(rand(20, 40))
 
 	if(QDELETED(src)) //Could have dropped into lava/explosion/chasm/whatever
 		return TRUE
@@ -44,19 +42,26 @@
 		burn()
 		return TRUE
 	add_mob_blood(limb_owner)
-	limb_owner.bleed(rand(20, 40))
-	var/direction = pick(GLOB.cardinals)
-	var/t_range = rand(2,max(throw_range/2, 2))
-	var/turf/target_turf = get_turf(src)
-	for(var/i in 1 to t_range-1)
-		var/turf/new_turf = get_step(target_turf, direction)
-		if(!new_turf)
-			break
-		target_turf = new_turf
-		if(new_turf.density)
-			break
-	throw_at(target_turf, throw_range, throw_speed)
+	fly_away(limb_owner.drop_location())
 	return TRUE
+
+/// Proc called to initialize movable physics when a bodypart gets dismembered
+/obj/item/bodypart/proc/fly_away(turf/open/owner_location, fly_angle = rand(0, 360))
+	if(!istype(owner_location))
+		return
+	pixel_x = -px_x
+	pixel_y = -px_y
+	return AddComponent(/datum/component/movable_physics, \
+		physics_flags = MPHYSICS_QDEL_WHEN_NO_MOVEMENT, \
+		angle = fly_angle, \
+		horizontal_velocity = rand(2.5 * 100, 6 * 100) * 0.01, \
+		vertical_velocity = rand(4 * 100, 4.5 * 100) * 0.01, \
+		horizontal_friction = rand(0.24 * 100, 0.3 * 100) * 0.01, \
+		vertical_friction = 10 * 0.05, \
+		horizontal_conservation_of_momentum = 0.5, \
+		vertical_conservation_of_momentum = 0.5, \
+		z_floor = 0, \
+	)
 
 /obj/item/bodypart/chest/dismember()
 	if(!owner || (bodypart_flags & BODYPART_UNREMOVABLE))
@@ -67,22 +72,26 @@
 		return FALSE
 	return drop_organs(violent_removal = TRUE)
 
-///empties the bodypart from its organs and other things inside it
-/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal)
+/**
+ * Eviscerates the bodypart, dropping all organs and items inside of it
+ * Arguments:
+ * * violent_removal: If TRUE, organs will be thrown out using proc/fly_away() and a splort sound is played
+ */
+/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/atom/drop_loc = drop_location()
-	if(IS_ORGANIC_LIMB(src))
+	if(IS_ORGANIC_LIMB(src) && violent_removal)
 		playsound(drop_loc, 'sound/misc/splort.ogg', 50, TRUE, -1)
 	seep_gauze(9999) // destroy any existing gauze if any exists
-	if(owner)
-		for(var/obj/item/organ/organ as anything in organs)
+	for(var/obj/item/organ/organ as anything in organs)
+		if(owner)
 			organ.Remove(owner)
-			organ.forceMove(drop_loc)
-	else
-		for(var/obj/item/organ/organ as anything in organs)
+		else
 			organ.remove_from_limb(src)
-			organ.forceMove(drop_loc)
+		organ.forceMove(drop_loc)
+		if(violent_removal)
+			organ.fly_away(drop_loc)
 	for(var/obj/item/item_in_bodypart in src)
 		item_in_bodypart.forceMove(drop_loc)
 
@@ -100,9 +109,8 @@
 	if(!owner)
 		return
 	var/atom/drop_loc = owner.drop_location()
-
-	SEND_SIGNAL(owner, COMSIG_CARBON_REMOVE_LIMB, src, dismembered)
-	SEND_SIGNAL(src, COMSIG_BODYPART_REMOVED, owner, dismembered)
+	SEND_SIGNAL(owner, COMSIG_CARBON_REMOVE_LIMB, src, special, dismembered)
+	SEND_SIGNAL(src, COMSIG_BODYPART_REMOVED, owner, special, dismembered)
 	update_limb(dropping_limb = TRUE)
 	bodypart_flags &= ~BODYPART_IMPLANTED //limb is out and about, it can't really be considered an implant
 	owner.remove_bodypart(src)
@@ -143,7 +151,7 @@
 	phantom_owner.update_body()
 	phantom_owner.update_body_parts()
 
-	SEND_SIGNAL(phantom_owner, COMSIG_CARBON_POST_REMOVE_LIMB, src, dismembered)
+	SEND_SIGNAL(phantom_owner, COMSIG_CARBON_POST_REMOVE_LIMB, src, special, dismembered)
 	// drop_loc = null happens when a "dummy human" used for rendering icons on prefs screen gets its limbs replaced.
 	if(!drop_loc)
 		qdel(src)

@@ -122,28 +122,15 @@
 		if(LAZYLEN(id_examine_strings))
 			. += id_examine_strings
 
+	//Common traits
+	var/list/trait_examines = common_trait_examine()
+	if (LAZYLEN(trait_examines))
+		. += trait_examines
+
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()
 	if (LAZYLEN(status_examines))
 		. += status_examines
-
-	var/appears_dead = FALSE
-	var/just_sleeping = FALSE
-
-	if(stat == DEAD || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
-		appears_dead = TRUE
-
-		var/obj/item/clothing/glasses/glasses = get_item_by_slot(ITEM_SLOT_EYES)
-		var/are_we_in_weekend_at_bernies = glasses?.tint && istype(buckled, /obj/vehicle/ridden/wheelchair)
-
-		if(isliving(user) && (HAS_MIND_TRAIT(user, TRAIT_NAIVE) || are_we_in_weekend_at_bernies))
-			just_sleeping = TRUE
-
-		if(!just_sleeping)
-			if(HAS_TRAIT(src, TRAIT_SUICIDED))
-				. += span_warning("[t_He] appear[p_s()] to have committed suicide... there is no hope of recovery.")
-
-			. += generate_death_examine_text()
 
 	//genital handling. not on organ/on_owner_examine() because i want a pretty list.
 	var/list/genital_strings = list()
@@ -152,54 +139,32 @@
 			continue
 
 		genital_strings += genital.get_genital_examine()
-
-	if(length(genital_strings))
+	if(LAZYLEN(genital_strings))
 		. += span_notice("[t_He] [t_has] [english_list(genital_strings)], on full display.")
+
+	var/appears_dead = FALSE
+	var/just_sleeping = FALSE
+	if(stat == DEAD || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		appears_dead = TRUE
+
+		var/obj/item/clothing/glasses/glasses = get_item_by_slot(ITEM_SLOT_EYES)
+		var/are_we_in_weekend_at_bernies = glasses?.tint && istype(buckled, /obj/vehicle/ridden/wheelchair)
+
+		if(isliving(user) && (are_we_in_weekend_at_bernies || HAS_MIND_TRAIT(user, TRAIT_NAIVE)))
+			just_sleeping = TRUE
 
 	var/list/msg = list()
 
-	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
-	var/list/disabled = list()
-	for(var/obj/item/bodypart/body_part as anything in bodyparts)
-		if(body_part.bodypart_disabled)
-			disabled += body_part
-		missing -= body_part.body_zone
-		for(var/obj/item/item in body_part.embedded_objects)
-			msg += "<B>[t_He] [t_has] [item.get_examine_string(user)] [item.isEmbedHarmless() ?  "stuck" : "embedded"] to [t_his] [body_part.name]!</B>\n"
-
-		for(var/datum/wound/wound as anything in body_part.wounds)
-			msg += "[wound.get_examine_description(user)]\n"
-
-	for(var/obj/item/bodypart/body_part as anything in disabled)
-		var/damage_text
-		if(HAS_TRAIT(body_part, TRAIT_DISABLED_BY_WOUND))
-			continue // skip if it's disabled by a wound (cuz we'll be able to see the bone sticking out!)
-		if(!(body_part.get_damage() >= body_part.max_damage)) //we don't care if it's stamcritted
-			damage_text = "limp and lifeless"
+	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
+		msg += "[t_He] [t_is] severely malnourished.\n"
+	else if(nutrition >= NUTRITION_LEVEL_FAT)
+		if(user.nutrition < NUTRITION_LEVEL_STARVING - 50)
+			msg += "[t_He] [t_is] plump and delicious looking - Like a fat little piggy. A tasty piggy.\n"
 		else
-			damage_text = (body_part.brute_dam >= body_part.burn_dam) ? body_part.heavy_brute_msg : body_part.heavy_burn_msg
-		msg += "<B>[capitalize(t_his)] [body_part.name] is [damage_text]!</B>\n"
+			msg += "[t_He] [t_is] quite chubby.\n"
 
-	//stores missing limbs
-	var/l_limbs_missing = 0
-	var/r_limbs_missing = 0
-	for(var/zone in missing)
-		if(zone == BODY_ZONE_HEAD)
-			msg += "<span class='deadsay'><B>[t_His] [parse_zone(zone)] is missing!</B></span>\n"
-			continue
-		if(zone == BODY_ZONE_L_ARM || zone == BODY_ZONE_L_LEG)
-			l_limbs_missing++
-		else if(zone == BODY_ZONE_R_ARM || zone == BODY_ZONE_R_LEG)
-			r_limbs_missing++
-
-		msg += "<B>[capitalize(t_his)] [parse_zone(zone)] is missing!</B>\n"
-
-	if(l_limbs_missing >= 2 && r_limbs_missing == 0)
-		msg += "[t_He] look[p_s()] all right now.\n"
-	else if(l_limbs_missing == 0 && r_limbs_missing >= 2)
-		msg += "[t_He] really keep[p_s()] to the left.\n"
-	else if(l_limbs_missing >= 2 && r_limbs_missing >= 2)
-		msg += "[t_He] [p_do()]n't seem all there.\n"
+	if(pulledby?.grab_state)
+		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
 
 	if((user != src) || !has_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy)) //fake healthy
 		var/temp
@@ -234,16 +199,80 @@
 			else
 				msg += "<b>[t_He] [t_has] severe [damage_desc[CLONE]]!</b>\n"
 
-	if(pulledby?.grab_state)
-		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
+	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+	var/list/disabled = list()
+	for(var/obj/item/bodypart/body_part as anything in bodyparts)
+		if(body_part.bodypart_disabled)
+			disabled += body_part
+		missing -= body_part.body_zone
+		for(var/obj/item/item in body_part.embedded_objects)
+			msg += "<B>[t_He] [t_has] [item.get_examine_string(user)] [item.isEmbedHarmless() ?  "stuck to" : "embedded in"] [t_his] [body_part.name]!</B>\n"
 
-	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
-		msg += "[t_He] [t_is] severely malnourished.\n"
-	else if(nutrition >= NUTRITION_LEVEL_FAT)
-		if(user.nutrition < NUTRITION_LEVEL_STARVING - 50)
-			msg += "[t_He] [t_is] plump and delicious looking - Like a fat little piggy. A tasty piggy.\n"
+		for(var/datum/wound/wound as anything in body_part.wounds)
+			msg += "[wound.get_examine_description(user)]\n"
+
+	for(var/obj/item/bodypart/body_part as anything in disabled)
+		if(HAS_TRAIT(body_part, TRAIT_DISABLED_BY_WOUND))
+			continue // skip if it's disabled by a wound (cuz we'll be able to see the bone sticking out!)
+		msg += "<B>[t_His] [body_part.name] is limp and lifeless!</B>\n"
+
+	//stores missing limbs
+	var/l_limbs_missing = 0
+	var/r_limbs_missing = 0
+	for(var/zone in missing)
+		if(zone == BODY_ZONE_HEAD)
+			msg += "<span class='deadsay'><B>[t_His] [parse_zone(zone)] is missing!</B></span>\n"
+			continue
+		if(zone == BODY_ZONE_L_ARM || zone == BODY_ZONE_L_LEG)
+			l_limbs_missing++
+		else if(zone == BODY_ZONE_R_ARM || zone == BODY_ZONE_R_LEG)
+			r_limbs_missing++
+
+		msg += "<B>[t_His] [parse_zone(zone)] is missing!</B>\n"
+
+	if(l_limbs_missing >= 2 && r_limbs_missing == 0)
+		msg += "[t_He] look[p_s()] all right now.\n"
+	else if(l_limbs_missing == 0 && r_limbs_missing >= 2)
+		msg += "[t_He] really keep[p_s()] to the left.\n"
+	else if(l_limbs_missing >= 2 && r_limbs_missing >= 2)
+		msg += "[t_He] [p_do()]n't seem all there.\n"
+
+	if(is_bleeding())
+		var/list/obj/item/bodypart/bleeding_limbs = list()
+		var/list/obj/item/bodypart/grasped_limbs = list()
+
+		for(var/obj/item/bodypart/body_part as anything in bodyparts)
+			if(body_part.get_modified_bleed_rate())
+				bleeding_limbs += body_part
+			if(body_part.grasped_by)
+				grasped_limbs += body_part
+
+		var/list/bleed_text
+		if(appears_dead)
+			bleed_text = list("<span class='deadsay'><B>Blood is visible in [t_his]")
 		else
-			msg += "[t_He] [t_is] quite chubby.\n"
+			bleed_text = list("<B>[t_He] [t_is] bleeding from [t_his]")
+
+		var/list/bleeding_limb_names = list()
+		for(var/obj/item/bodypart/body_part as anything in bleeding_limbs)
+			bleeding_limb_names += body_part.plaintext_zone
+		bleed_text += " [english_list(bleeding_limb_names)]"
+
+		if(appears_dead)
+			bleed_text += ", but it has pooled and is not flowing.</B></span>\n"
+		else
+			if(reagents.has_reagent(/datum/reagent/toxin/heparin, needs_metabolizing = TRUE))
+				bleed_text += " incredibly quickly"
+
+			bleed_text += "!</B>\n"
+
+		if(length(grasped_limbs))
+			var/list/grasped_limb_names = list()
+			for(var/obj/item/bodypart/body_part as anything in grasped_limbs)
+				grasped_limb_names += body_part.plaintext_zone
+			bleed_text += "[t_He] [t_is] holding [t_his] [english_list(grasped_limb_names)] to slow the bleeding!\n"
+
+		msg += bleed_text.Join()
 
 	var/apparent_blood_volume = blood_volume
 	if(HAS_TRAIT(src, TRAIT_USES_SKINTONES) && (skin_tone == "albino"))
@@ -256,52 +285,6 @@
 		if(-INFINITY to BLOOD_VOLUME_BAD)
 			msg += "[span_deadsay("<b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b>")]\n"
 
-	if(is_bleeding())
-		var/list/obj/item/bodypart/bleeding_limbs = list()
-		var/list/obj/item/bodypart/grasped_limbs = list()
-
-		for(var/obj/item/bodypart/body_part as anything in bodyparts)
-			if(body_part.get_modified_bleed_rate())
-				bleeding_limbs += body_part
-			if(body_part.grasped_by)
-				grasped_limbs += body_part
-
-		var/num_bleeds = LAZYLEN(bleeding_limbs)
-
-		var/list/bleed_text
-		if(appears_dead)
-			bleed_text = list("<span class='deadsay'><B>Blood is visible in [t_his] open")
-		else
-			bleed_text = list("<B>[t_He] [t_is] bleeding from [t_his]")
-
-		switch(num_bleeds)
-			if(1 to 2)
-				bleed_text += " [bleeding_limbs[1].name][num_bleeds == 2 ? " and [bleeding_limbs[2].name]" : ""]"
-			if(3 to INFINITY)
-				for(var/i in 1 to (num_bleeds - 1))
-					var/obj/item/bodypart/body_part = bleeding_limbs[i]
-					bleed_text += " [body_part.name],"
-				bleed_text += " and [bleeding_limbs[num_bleeds].name]"
-
-		if(appears_dead)
-			bleed_text += ", but it has pooled and is not flowing.</span></B>\n"
-		else
-			if(reagents.has_reagent(/datum/reagent/toxin/heparin, needs_metabolizing = TRUE))
-				bleed_text += " incredibly quickly"
-
-			bleed_text += "!</B>\n"
-
-		for(var/obj/item/bodypart/grasped_part as anything in grasped_limbs)
-			bleed_text += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
-
-		msg += bleed_text.Join()
-
-	if(reagents.has_reagent(/datum/reagent/teslium, needs_metabolizing = TRUE))
-		msg += span_color("[t_He] [t_is] emitting a gentle blue glow!\n", COLOR_CYAN)
-
-	if(just_sleeping)
-		msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
-
 	if(!appears_dead)
 		var/mob/living/living_user = user
 		if(src != user)
@@ -312,10 +295,10 @@
 					msg += "[t_He] seem[p_s()] winded.\n"
 				if (getToxLoss() >= 10)
 					msg += "[t_He] seem[p_s()] sickly.\n"
-				if(mob_mood.sanity <= SANITY_DISTURBED)
+				if (mob_mood.sanity <= SANITY_DISTURBED)
 					msg += "[t_He] seem[p_s()] distressed.\n"
 					living_user.add_mood_event("empath", /datum/mood_event/sad_empath, src)
-				if(is_blind())
+				if (is_blind())
 					msg += "[t_He] appear[p_s()] to be staring off into space.\n"
 				if (HAS_TRAIT(src, TRAIT_DEAF))
 					msg += "[t_He] appear[p_s()] to not be responding to noises.\n"
@@ -334,13 +317,20 @@
 			if(SOFT_CRIT)
 				msg += "[t_He] [t_is] barely conscious.\n"
 			if(CONSCIOUS)
-				if(HAS_TRAIT(src, TRAIT_DUMB))
+				if(shoeonhead && HAS_TRAIT(src, TRAIT_DUMB))
 					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
-		if(!ai_controller && get_organ_by_type(/obj/item/organ/brain))
+
+		if(!ai_controller && get_organ_slot(ORGAN_SLOT_BRAIN))
 			if(!key)
 				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 			else if(!client)
 				msg += "[t_He] [t_has] a blank, absent-minded stare and appears completely unresponsive to anything. [t_He] may snap out of it soon.\n"
+	else
+		if(just_sleeping)
+			msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
+		else
+			msg += generate_death_examine_text()
+			msg += "\n"
 
 	var/scar_severity = 0
 	for(var/datum/scar/scar as anything in all_scars)
@@ -363,17 +353,15 @@
 		sane_msg = span_warning(sane_msg)
 		. += sane_msg
 
-	var/trait_exam = common_trait_examine()
-	if (!isnull(trait_exam))
-		. += trait_exam
-
 	var/perpname = get_face_name(get_id_name(""))
 	var/has_sec_hud = HAS_TRAIT(user, TRAIT_SECURITY_HUD)
 	var/has_med_hud = HAS_TRAIT(user, TRAIT_MEDICAL_HUD)
-	if(perpname && (has_sec_hud || has_med_hud))
+	if(perpname && (has_med_hud || has_sec_hud))
 		var/datum/record/crew/target_record = find_record(perpname)
 		if(target_record)
-			. += "<span class='deptradio'>Rank:</span> [target_record.rank]\n<a href='?src=[REF(src)];hud=1;photo_front=1;examine_time=[world.time]'>\[Front photo\]</a><a href='?src=[REF(src)];hud=1;photo_side=1;examine_time=[world.time]'>\[Side photo\]</a>"
+			. += "<span class='deptradio'>Rank:</span> [target_record.rank]\n\
+				<a href='?src=[REF(src)];hud=1;photo_front=1;examine_time=[world.time]'>\[Front photo\]</a>\
+				<a href='?src=[REF(src)];hud=1;photo_side=1;examine_time=[world.time]'>\[Side photo\]</a>"
 
 		if(has_med_hud)
 			var/cyberimp_detect
@@ -394,8 +382,7 @@
 			. += "<a href='?src=[REF(src)];hud=m;quirk=1;examine_time=[world.time]'>\[See quirks\]</a>"
 
 		if(has_sec_hud)
-			if(!user.stat && user != src)
-			//|| !user.canmove || user.restrained()) Fluff: Sechuds have eye-tracking technology and sets 'arrest' to people that the wearer looks and blinks at.
+			if((user != src) && (user.stat <= CONSCIOUS)) //Fluff: Sechuds have eye-tracking technology and sets 'arrest' to people that the wearer looks and blinks at.
 				var/wanted_status = WANTED_NONE
 				var/security_note = "None."
 
@@ -453,4 +440,4 @@
 			age_text = "very old"
 		if(101 to INFINITY)
 			age_text = "withering away"
-	. += list(span_notice("[p_they(TRUE)] appear[p_s()] to be [age_text]."))
+	. += span_notice("[p_they(TRUE)] appear[p_s()] to be [age_text].")

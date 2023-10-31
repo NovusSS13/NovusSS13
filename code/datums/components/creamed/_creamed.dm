@@ -102,7 +102,7 @@
 		overlays += normal_overlay
 
 /// Removes component when the head gets dismembered
-/datum/component/creamed/proc/lost_head(obj/item/bodypart/source, mob/living/carbon/owner, dismembered)
+/datum/component/creamed/proc/lost_head(obj/item/bodypart/source, mob/living/carbon/owner, special, dismembered)
 	SIGNAL_HANDLER
 
 	qdel(src)

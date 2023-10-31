@@ -135,12 +135,11 @@
 	for(var/obj/item/bodypart/BP in operation_order) //first we do non-essential limbs
 		BP.drop_limb()
 		C.emote("scream")
-		if(BP.body_zone != "chest")
+		if(BP.body_zone != BODY_ZONE_CHEST)
 			BP.forceMove(target)    //Move the limbs right next to it, except chest, that's a weird one
 			BP.drop_organs()
 		else
-			for(var/obj/item/organ/O in BP.dismember())
-				O.forceMove(target) //Some organs, like chest ones, are different so we need to manually move them
+			BP.drop_organs()
 		operation_order.Remove(BP)
 		break
 	use_power(active_power_usage)

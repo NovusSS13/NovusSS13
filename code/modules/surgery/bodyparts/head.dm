@@ -150,31 +150,33 @@
 		if(!tongue)
 			. += span_info("[real_name]'s tongue has been removed.")
 
-/obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/head/drop_organs(mob/user, violent_removal = FALSE)
 	. = ..()
 	if(brain)
 		if(user)
-			user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
+			user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), \
+								span_notice("You saw [src] open and pull out a brain."))
 		if(brainmob)
 			brainmob.container = null
 			brainmob.forceMove(brain)
 			brain.brainmob = brainmob
 			brainmob = null
-		if(violent_removal && prob(80)) //ghetto surgery can damage the brain.
-			to_chat(user, span_warning("[brain] was damaged in the process!"))
+		if(violent_removal && prob(80)) //ghetto surgery will likely damage the brain.
+			if(user)
+				to_chat(user, span_warning("\The [brain] was damaged in the process!"))
 			brain.set_organ_damage(brain.maxHealth)
 		brain = null
 	eyes = null
 	ears = null
 	tongue = null
 
-
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
 	if(owner)
-		real_name = owner.real_name
 		if(HAS_TRAIT(owner, TRAIT_HUSK))
 			real_name = "Unknown"
+		else
+			real_name = owner.real_name
 	update_hair_and_lips(dropping_limb, is_creating)
 
 /obj/item/bodypart/head/generate_icon_key()
