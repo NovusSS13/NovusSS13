@@ -109,8 +109,11 @@
 		skip = TRUE
 		//Adjust pixel offset to make splatters appear on the wall
 		var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(prev_loc)
-		final_splatter.pixel_x = (dir & EAST ? world.icon_size : (dir & WEST ? -world.icon_size : 0))
-		final_splatter.pixel_y = (dir & NORTH ? world.icon_size : (dir & SOUTH ? -world.icon_size : 0))
+		var/dir_to_wall = get_dir(src, bumped_atom)
+		final_splatter.pixel_x = (dir_to_wall & EAST ? world.icon_size : (dir_to_wall & WEST ? -world.icon_size : 0))
+		final_splatter.pixel_y = (dir_to_wall & NORTH ? world.icon_size : (dir_to_wall & SOUTH ? -world.icon_size : 0))
+		final_splatter.alpha = 0
+		animate(final_splatter, alpha = initial(final_splatter.alpha), time = 2)
 	else // This will only happen if prev_loc is not even a turf, which is highly unlikely.
 		abstract_move(bumped_atom)
 	qdel(src)
