@@ -1,0 +1,5 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - rscadd: "Blood squirts, movable physics on dismemberment and organ evisceration"
+  - spellcheck: "Blood descriptions have more soul now."
