@@ -116,12 +116,52 @@
 		item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
 		return item.worn_icon_avali
 
-/*
 	// uhhh, offset the default sprites??
-	if((item_slot == ITEM_SLOT_HEAD || item_slot == ITEM_SLOT_MASK) && default_worn_icon)
-		var/icon/icon = icon(default_worn_icon)
-		icon.pixel_x
+	if((item_slot in list(ITEM_SLOT_HEAD, ITEM_SLOT_EARS, ITEM_SLOT_MASK)) && default_worn_icon)
+		var/list/offsets_x = list(
+			"[ITEM_SLOT_HEAD]" = list("[NORTH]" = 1, "[SOUTH]" = 1, "[EAST]" = 1, "[WEST]" = -1),
+		)
+		var/list/offsets_y = list(
+			"[ITEM_SLOT_EARS]" = list("[NORTH]" = -4, "[SOUTH]" = -4, "[EAST]" = -4, "[WEST]" = -4),
+			"[ITEM_SLOT_HEAD]" = list("[NORTH]" = -4, "[SOUTH]" = -4, "[EAST]" = -4, "[WEST]" = -4),
+			"[ITEM_SLOT_MASK]" = list("[NORTH]" = -5, "[SOUTH]" = -5, "[EAST]" = -5, "[WEST]" = -5)
+		)
+/*
+		var/image/north = image(
+			default_worn_icon,
+			dir = NORTH,
+			pixel_x = offsets_x["[item_slot]"]?["[NORTH]"],
+			pixel_y = offsets_y["[item_slot]"]?["[NORTH]"]
+		)
+		var/image/south = image(
+			default_worn_icon,
+			dir = SOUTH,
+			pixel_x = offsets_x["[item_slot]"]?["[SOUTH]"],
+			pixel_y = offsets_y["[item_slot]"]?["[SOUTH]"]
+		)
+		var/image/east = image(
+			default_worn_icon,
+			dir = EAST,
+			pixel_x = offsets_x["[item_slot]"]?["[EAST]"],
+			pixel_y = offsets_y["[item_slot]"]?["[EAST]"]
+		)
+		var/image/west = image(
+			default_worn_icon,
+			dir = WEST,
+			pixel_x = offsets_x["[item_slot]"]?["[WEST]"],
+			pixel_y = offsets_y["[item_slot]"]?["[WEST]"]
+		)
 */
+
+		var/icon/icon = icon(default_worn_icon, "")
+		for(var/dir in GLOB.cardinals)
+			var/icon/dir_icon = icon(default_worn_icon, "", dir)
+			dir_icon.Shift(EAST, offsets_x["[item_slot]"]?["[dir]"])
+			dir_icon.Shift(NORTH,  offsets_y["[item_slot]"]?["[dir]"])
+			icon.Insert(dir_icon, "", dir)
+
+		item.worn_icon_avali = icon
+		return icon
 
 	// fuck it, we bail
 	return null
