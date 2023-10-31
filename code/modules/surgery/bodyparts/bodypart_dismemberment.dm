@@ -49,6 +49,8 @@
 /obj/item/bodypart/proc/fly_away(turf/open/owner_location, fly_angle = rand(0, 360))
 	if(!istype(owner_location))
 		return
+	pixel_x = -px_x
+	pixel_y = -px_y
 	return AddComponent(/datum/component/movable_physics, \
 		physics_flags = MPHYSICS_QDEL_WHEN_NO_MOVEMENT, \
 		angle = fly_angle, \
