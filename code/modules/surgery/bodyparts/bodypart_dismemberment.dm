@@ -149,7 +149,7 @@
 	phantom_owner.update_body()
 	phantom_owner.update_body_parts()
 
-	SEND_SIGNAL(phantom_owner, COMSIG_CARBON_POST_REMOVE_LIMB, src, dismembered)
+	SEND_SIGNAL(phantom_owner, COMSIG_CARBON_POST_REMOVE_LIMB, src, special, dismembered)
 	// drop_loc = null happens when a "dummy human" used for rendering icons on prefs screen gets its limbs replaced.
 	if(!drop_loc)
 		qdel(src)

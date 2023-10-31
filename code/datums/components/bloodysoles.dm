@@ -294,16 +294,16 @@
 	RegisterSignal(parent, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
 	RegisterSignal(parent, COMSIG_CARBON_UNEQUIP_SHOECOVER, PROC_REF(unequip_shoecover))
 	RegisterSignal(parent, COMSIG_CARBON_EQUIP_SHOECOVER, PROC_REF(equip_shoecover))
-	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(on_attach_limb))
-	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(on_remove_limb))
+	RegisterSignal(parent, COMSIG_CARBON_POST_ATTACH_LIMB, PROC_REF(on_attach_limb))
+	RegisterSignal(parent, COMSIG_CARBON_POST_REMOVE_LIMB, PROC_REF(on_remove_limb))
 
 /datum/component/bloodysoles/feet/UnregisterFromParent()
 	UnregisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT)
 	UnregisterSignal(parent, COMSIG_STEP_ON_BLOOD)
 	UnregisterSignal(parent, COMSIG_CARBON_UNEQUIP_SHOECOVER)
 	UnregisterSignal(parent, COMSIG_CARBON_EQUIP_SHOECOVER)
-	UnregisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB)
-	UnregisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB)
+	UnregisterSignal(parent, COMSIG_CARBON_POST_ATTACH_LIMB)
+	UnregisterSignal(parent, COMSIG_CARBON_POST_REMOVE_LIMB)
 	unregister()
 
 /datum/component/bloodysoles/feet/update_icon()
@@ -365,13 +365,13 @@
 
 	update_icon()
 
-/datum/component/bloodysoles/feet/proc/on_attach_limb(mob/living/carbon/source, obj/item/bodypart/limb, special)
+/datum/component/bloodysoles/feet/proc/on_attached_limb(mob/living/carbon/source, obj/item/bodypart/limb, special)
 	SIGNAL_HANDLER
 
 	if(istype(limb, /obj/item/bodypart/leg))
 		update_icon()
 
-/datum/component/bloodysoles/feet/proc/on_remove_limb(mob/living/carbon/source, obj/item/bodypart/limb, special, dismembered)
+/datum/component/bloodysoles/feet/proc/on_removed_limb(mob/living/carbon/source, obj/item/bodypart/limb, special, dismembered)
 	SIGNAL_HANDLER
 
 	if(istype(limb, /obj/item/bodypart/leg))
