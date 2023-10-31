@@ -54,10 +54,10 @@
 				var/mutable_appearance/existing_appearance = stacker.splat_overlays[1]
 				existing_appearance.pixel_x = src.pixel_x
 				existing_appearance.pixel_y = src.pixel_y
-			stacker.alpha = 0
-			animate(stacker, alpha = 255, time = 2)
 			stacker.bloodiness = src.bloodiness
 			stacker.update_appearance(UPDATE_ICON)
+			stacker.alpha = 0
+			animate(stacker, alpha = 255, time = 2)
 		else
 			var/obj/effect/decal/cleanable/blood/splatter/stacking/other_splatter = new splatter_type_floor()
 			if(messy_splatter)
@@ -66,9 +66,9 @@
 				existing_appearance.pixel_y = src.pixel_y
 			other_splatter.forceMove(loc)
 			other_splatter.bloodiness = src.bloodiness
+			other_splatter.update_appearance(UPDATE_ICON)
 			other_splatter.alpha = 0
 			animate(other_splatter, alpha = 255, time = 2)
-			other_splatter.update_appearance(UPDATE_ICON)
 			addtimer(CALLBACK(other_splatter, TYPE_PROC_REF(/obj/effect/decal/cleanable/blood/splatter/stacking, delayed_merge), stacker), 2)
 		splatter = stacker
 	var/list/our_blood_dna = GET_ATOM_BLOOD_DNA(src)
@@ -140,7 +140,11 @@
 /// Called so that a spawning animation can be performed by blood particles, after that is done we merge with merger
 /obj/effect/decal/cleanable/blood/splatter/stacking/proc/delayed_merge(obj/effect/decal/cleanable/blood/splatter/stacking/merger)
 	SIGNAL_HANDLER
-	if(!QDELETED(merger))
-		qdel(src)
-	else if(!QDELETED(src) && merge_decal(merger))
+	if(QDELETED(merger))
+		if(!QDELETED(src))
+			qdel(src)
+		return
+	if(QDELETED(src))
+		return
+	if(merge_decal(merger))
 		qdel(src)
