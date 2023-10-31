@@ -316,12 +316,13 @@
 			chosen_overlay = cummy_feet
 		if(BLOOD_STATE_FEMCUM)
 			chosen_overlay = femcummy_feet
-	if(bloody_shoes[last_blood_state] > 0 && !is_obscured() && human_wielder.num_legs >= 2)
-		wielder.remove_overlay(SHOES_LAYER)
-		wielder.overlays_standing[SHOES_LAYER] = chosen_overlay
-		wielder.apply_overlay(SHOES_LAYER)
+	if(bloody_shoes[last_blood_state] > 0 && !is_obscured())
+		human_wielder.remove_overlay(SHOES_LAYER)
+		if(human_wielder.num_legs >= 2)
+			human_wielder.overlays_standing[SHOES_LAYER] = chosen_overlay
+		human_wielder.apply_overlay(SHOES_LAYER)
 	else
-		wielder.update_worn_shoes()
+		human_wielder.update_worn_shoes()
 
 /datum/component/bloodysoles/feet/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/FP)
 	if(!ishuman(wielder))
@@ -370,7 +371,7 @@
 	if(istype(limb, /obj/item/bodypart/leg))
 		update_icon()
 
-/datum/component/bloodysoles/feet/proc/on_remove_limb(mob/living/carbon/source, obj/item/bodypart/limb, special)
+/datum/component/bloodysoles/feet/proc/on_remove_limb(mob/living/carbon/source, obj/item/bodypart/limb, special, dismembered)
 	SIGNAL_HANDLER
 
 	if(istype(limb, /obj/item/bodypart/leg))
