@@ -40,6 +40,7 @@
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
+	acceptable_bodytype = BODYTYPE_AVALI
 
 /obj/item/bodypart/chest/avali/Initialize(mapload)
 	worn_back_offset = new(
