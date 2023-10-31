@@ -15,7 +15,7 @@
 	fallback_icon = 'icons/obj/drinks/bottles.dmi'
 	fallback_icon_state = "beer"
 
-	liquid_evaporation_rate = 10
+	liquid_evaporation_rate = 15
 	liquid_fire_power = 10
 	liquid_fire_burn_rate = 0.1
 	/**

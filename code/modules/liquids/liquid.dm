@@ -107,7 +107,8 @@
 	var/has_oxygen = FALSE
 	if(isopenturf(my_turf))
 		var/turf/open/open_turf = my_turf
-		if(open_turf.air?.gases[GAS_O2] > 0)
+		var/datum/gas_mixture/air = open_turf.return_air()
+		if(air?.gases[GAS_O2] > 0)
 			has_oxygen = TRUE
 	var/total_burn_power = 0
 	for(var/datum/reagent/reagent_type as anything in reagent_list)

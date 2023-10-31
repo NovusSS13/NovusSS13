@@ -362,9 +362,9 @@
 	description = "An ubiquitous chemical substance that is composed of hydrogen and oxygen and oxygen." //intended intended
 	color = "#AAAAAA77" // rgb: 170, 170, 170, 77 (alpha)
 	taste_description = "burning water"
-	var/cooling_temperature = 2
 	ph = 6.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	var/cooling_temperature = 2
 
 /datum/glass_style/shot_glass/hydrogen_peroxide
 	required_drink_type = /datum/reagent/hydrogen_peroxide

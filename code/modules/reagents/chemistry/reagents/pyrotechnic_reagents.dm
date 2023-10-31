@@ -7,7 +7,7 @@
 	color = "#550000"
 	taste_description = "sweet tasting metal"
 
-	liquid_evaporation_rate = 0 //does not evaporate
+	liquid_evaporation_rate = 0 //does not evaporate ever
 	liquid_fire_power = 20
 	liquid_fire_burn_rate = 0.1
 	liquid_fire_needs_oxygen = FALSE //aunt google says unneeded
