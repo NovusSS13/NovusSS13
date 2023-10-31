@@ -394,7 +394,6 @@ GLOBAL_VAR(restart_counter)
 	if(config.splashtext)
 		new_status += "<br><i>[config.splashtext]</i>"
 
-	new_status += "<br>"
 	if(length(features))
 		new_status += "<br>\[[jointext(features, ", ")]\]"
 	var/roleplaylevel = CONFIG_GET(string/roleplaylevel)
