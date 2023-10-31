@@ -1027,7 +1027,7 @@
 	var/final_modification = 0
 	var/count = 0
 	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
-		if(!bodypart.speed_modifier)
+		if(isnull(bodypart.speed_modifier))
 			continue
 
 		final_modification += bodypart.speed_modifier
