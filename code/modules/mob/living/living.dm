@@ -934,7 +934,7 @@
 	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
 		active_storage.hide_contents(src)
 
-	if(. && !buckled && (body_position == LYING_DOWN) && prob(getBruteLoss() * 200/maxHealth))
+	if(. && !buckled && (body_position == LYING_DOWN) && prob(getBruteLoss() * MAX_LIVING_HEALTH/maxHealth))
 		var/trail_direction = get_dir(oldloc, newloc)
 		if(trail_direction in GLOB.cardinals)
 			makeTrail(newloc, oldloc, trail_direction)

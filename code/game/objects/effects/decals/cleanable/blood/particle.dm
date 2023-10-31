@@ -64,13 +64,16 @@
 				var/mutable_appearance/existing_appearance = other_splatter.splat_overlays[1]
 				existing_appearance.pixel_x = src.pixel_x
 				existing_appearance.pixel_y = src.pixel_y
+			other_splatter.forceMove(loc)
 			other_splatter.bloodiness = src.bloodiness
-			other_splatter.handle_merge_decal(stacker)
-			qdel(other_splatter)
+			other_splatter.alpha = 0
+			animate(other_splatter, alpha = 255, time = 2)
+			other_splatter.update_appearance(UPDATE_ICON)
+			addtimer(CALLBACK(other_splatter, TYPE_PROC_REF(/obj/effect/decal/cleanable/blood/splatter/stacking, delayed_merge), stacker), 2)
 		splatter = stacker
-	var/list/blood_dna = GET_ATOM_BLOOD_DNA(src)
-	if(blood_dna)
-		splatter.add_blood_DNA(blood_dna)
+	var/list/our_blood_dna = GET_ATOM_BLOOD_DNA(src)
+	if(our_blood_dna)
+		splatter.add_blood_DNA(our_blood_dna)
 	qdel(src)
 
 /obj/effect/decal/cleanable/blood/particle/proc/on_bump(atom/bumped_atom)
@@ -126,10 +129,18 @@
 		splat_overlays = splat_overlays.Splice(splat_length  - maximum_splats, splat_length)
 	. += splat_overlays
 
-/obj/effect/decal/cleanable/blood/splatter/stacking/handle_merge_decal(obj/effect/decal/cleanable/blood/splatter/stacking/merger)
+/obj/effect/decal/cleanable/blood/splatter/stacking/handle_merge_decal(obj/effect/decal/cleanable/merger)
 	. = ..()
 	if(istype(merger, /obj/effect/decal/cleanable/blood/splatter/stacking))
 		var/obj/effect/decal/cleanable/blood/splatter/stacking/stacker = merger
 		stacker.splat_overlays |= splat_overlays
 		stacker.get_timer() //reset drying time, ripbozo
 		stacker.update_appearance(UPDATE_ICON)
+
+/// Called so that a spawning animation can be performed by blood particles, after that is done we merge with merger
+/obj/effect/decal/cleanable/blood/splatter/stacking/proc/delayed_merge(obj/effect/decal/cleanable/blood/splatter/stacking/merger)
+	SIGNAL_HANDLER
+	if(!QDELETED(merger))
+		qdel(src)
+	else if(!QDELETED(src) && merge_decal(merger))
+		qdel(src)

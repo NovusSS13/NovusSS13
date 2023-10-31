@@ -26,9 +26,16 @@
 		return COMPONENT_INCOMPATIBLE
 	parent_atom = parent
 
+/datum/component/bloodysoles/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
+
+/datum/component/bloodysoles/UnregisterFromParent()
+	UnregisterFromParent(parent, COMSIG_ITEM_EQUIPPED)
+	UnregisterFromParent(parent, COMSIG_ITEM_DROPPED)
+	UnregisterFromParent(parent, COMSIG_COMPONENT_CLEAN_ACT)
+	unregister()
 
 /**
  * Unregisters from the wielder if necessary
@@ -282,21 +289,34 @@
 		femcummy_feet = mutable_appearance('icons/effects/femcum.dmi', "shoefemcum", SHOES_LAYER)
 		femcummy_feet.color = COLOR_FEMCUM
 
+/datum/component/bloodysoles/feet/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 	RegisterSignal(parent, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
 	RegisterSignal(parent, COMSIG_CARBON_UNEQUIP_SHOECOVER, PROC_REF(unequip_shoecover))
 	RegisterSignal(parent, COMSIG_CARBON_EQUIP_SHOECOVER, PROC_REF(equip_shoecover))
+	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(on_attach_limb))
+	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(on_remove_limb))
+
+/datum/component/bloodysoles/feet/UnregisterFromParent()
+	UnregisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT)
+	UnregisterSignal(parent, COMSIG_STEP_ON_BLOOD)
+	UnregisterSignal(parent, COMSIG_CARBON_UNEQUIP_SHOECOVER)
+	UnregisterSignal(parent, COMSIG_CARBON_EQUIP_SHOECOVER)
+	UnregisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB)
+	UnregisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB)
+	unregister()
 
 /datum/component/bloodysoles/feet/update_icon()
 	if(!ishuman(wielder) || HAS_TRAIT(wielder, TRAIT_NO_BLOOD_OVERLAY))
 		return
+	var/mob/living/carbon/human/human_wielder = wielder
 	var/chosen_overlay = bloody_feet
 	switch(last_blood_state)
 		if(BLOOD_STATE_CUM)
 			chosen_overlay = cummy_feet
 		if(BLOOD_STATE_FEMCUM)
 			chosen_overlay = femcummy_feet
-	if(bloody_shoes[last_blood_state] > 0 && !is_obscured())
+	if(bloody_shoes[last_blood_state] > 0 && !is_obscured() && human_wielder.num_legs >= 2)
 		wielder.remove_overlay(SHOES_LAYER)
 		wielder.overlays_standing[SHOES_LAYER] = chosen_overlay
 		wielder.apply_overlay(SHOES_LAYER)
@@ -343,3 +363,15 @@
 	SIGNAL_HANDLER
 
 	update_icon()
+
+/datum/component/bloodysoles/feet/proc/on_attach_limb(mob/living/carbon/source, obj/item/bodypart/limb, special)
+	SIGNAL_HANDLER
+
+	if(istype(limb, /obj/item/bodypart/leg))
+		update_icon()
+
+/datum/component/bloodysoles/feet/proc/on_remove_limb(mob/living/carbon/source, obj/item/bodypart/limb, special)
+	SIGNAL_HANDLER
+
+	if(istype(limb, /obj/item/bodypart/leg))
+		update_icon()

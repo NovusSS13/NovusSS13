@@ -117,7 +117,7 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 	LAZYNULL(streak_diseases)
 	return ..()
 
-/obj/effect/decal/cleanable/blood/gibs/replace_decal(obj/effect/decal/cleanable/C)
+/obj/effect/decal/cleanable/blood/gibs/replace_decal(obj/effect/decal/cleanable/merger)
 	return FALSE //Never fail to place us
 
 /obj/effect/decal/cleanable/blood/gibs/dry()
@@ -324,7 +324,9 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 			else
 				. += "[icon2html('icons/mob/species/human/bodyparts.dmi', user, "[species]_l_leg")] Some <B>[species] feet</B>."
 
-/obj/effect/decal/cleanable/blood/footprints/replace_decal(obj/effect/decal/cleanable/C)
-	if(blood_state != C.blood_state) //We only replace footprints of the same type as us
+/obj/effect/decal/cleanable/blood/footprints/replace_decal(obj/effect/decal/cleanable/merger)
+	. = ..()
+	if(!.)
+		return
+	if(blood_state != merger.blood_state) //We only replace footprints of the same type as us
 		return FALSE
-	return ..()
