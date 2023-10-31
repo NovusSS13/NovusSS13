@@ -144,7 +144,9 @@
 		if(!QDELETED(src))
 			qdel(src)
 		return
+
 	if(QDELETED(src))
 		return
+
 	if(merge_decal(merger))
 		qdel(src)
