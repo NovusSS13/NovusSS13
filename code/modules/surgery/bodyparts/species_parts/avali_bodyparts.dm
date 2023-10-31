@@ -81,7 +81,7 @@
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
-	speed_modifier = -0.475
+	speed_modifier = -0.2
 
 /obj/item/bodypart/leg/right/avali
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
@@ -89,7 +89,7 @@
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
-	speed_modifier = -0.475
+	speed_modifier = -0.2
 
 #undef AVALI_PUNCH_LOW
 #undef AVALI_PUNCH_HIGH

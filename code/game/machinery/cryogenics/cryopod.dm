@@ -79,7 +79,7 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	if(occupant.client)
-		say("Error: User is concious. External cryosleep request denied.")
+		say("Error: User is conscious. External cryosleep request denied.")
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	if(occupant.mind)

@@ -4,7 +4,7 @@
 	set desc = "Allows you to set a temporary flavor text."
 
 	if(stat != CONSCIOUS)
-		to_chat(usr, span_warning("You must be concious to do this!"))
+		to_chat(usr, span_warning("You must be conscious to do this!"))
 		return
 
 	examine_panel ||= new(src, client.prefs)

@@ -10,7 +10,9 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_LITERATE,
 		TRAIT_MUTANT_COLORS,
+		TRAIT_NO_UNDERSHIRT,
 		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_SOCKS,
 		TRAIT_HAS_MARKINGS,
 
 		TRAIT_EASILY_GRABBED,
@@ -30,7 +32,6 @@
 	exotic_blood = /datum/reagent/ammonia
 	digitigrade_customization = DIGITIGRADE_NEVER
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
-	payday_modifier = 0.75
 	mutanttongue = /obj/item/organ/tongue/avali
 	mutantears = /obj/item/organ/ears/avali
 	meat = /obj/item/food/meat/slab/chicken
