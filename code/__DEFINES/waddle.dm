@@ -11,3 +11,4 @@
 #define WADDLE_SOURCE_VENDING_MACHINE "vending_machine"
 #define WADDLE_SOURCE_CLOWN_CAR "clown_car"
 #define WADDLE_SOURCE_DUCKY_SHOES "ducky_shoes"
+#define WADDLE_SOURCE_GOLEM "golem"
