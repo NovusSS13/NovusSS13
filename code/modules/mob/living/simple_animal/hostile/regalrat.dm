@@ -41,7 +41,7 @@
 /mob/living/simple_animal/hostile/regalrat/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-	AddElement(/datum/element/waddling)
+	ADD_WADDLE(src, WADDLE_SOURCE_RAT)
 	AddComponent(\
 		/datum/component/ghost_direct_control,\
 		poll_candidates = poll_ghosts,\
