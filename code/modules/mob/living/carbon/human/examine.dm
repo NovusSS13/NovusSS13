@@ -317,8 +317,8 @@
 			if(SOFT_CRIT)
 				msg += "[t_He] [t_is] barely conscious.\n"
 			if(CONSCIOUS)
-				if(shoeonhead)
-					msg += "[t_He] [t_has] a stupid expression on [t_his] face."
+				if(shoeonhead && HAS_TRAIT(src, TRAIT_DUMB))
+					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
 
 		if(!ai_controller && get_organ_slot(ORGAN_SLOT_BRAIN))
 			if(!key)
@@ -330,6 +330,7 @@
 			msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
 		else
 			msg += generate_death_examine_text()
+			msg += "\n"
 
 	var/scar_severity = 0
 	for(var/datum/scar/scar as anything in all_scars)

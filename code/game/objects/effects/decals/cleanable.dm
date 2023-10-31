@@ -109,11 +109,7 @@
  * Checks if this decal is a valid decal that can be blood crawled in.
  */
 /obj/effect/decal/cleanable/proc/can_bloodcrawl_in()
-	var/static/list/valid_blood_states = list(
-		BLOOD_STATE_HUMAN,
-		BLOOD_STATE_XENO,
-	)
-	if(blood_state in valid_blood_states)
+	if(blood_state in GLOB.bloody_blood_states)
 		return bloodiness
 
 	return FALSE

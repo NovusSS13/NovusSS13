@@ -6,7 +6,7 @@
 	plane = GAME_PLANE
 	layer = BELOW_MOB_LAYER
 	should_dry = FALSE
-	bloodiness = BLOOD_AMOUNT_PER_DECAL * 0.2
+	bloodiness = BLOOD_AMOUNT_PER_DECAL * 0.1
 	mergeable_decal = FALSE
 	/// Splatter type we create when we bounce on the floor
 	var/obj/effect/decal/cleanable/splatter_type_floor = /obj/effect/decal/cleanable/blood/splatter/stacking
@@ -54,6 +54,8 @@
 				var/mutable_appearance/existing_appearance = stacker.splat_overlays[1]
 				existing_appearance.pixel_x = src.pixel_x
 				existing_appearance.pixel_y = src.pixel_y
+			stacker.alpha = 0
+			animate(stacker, alpha = 255, time = 2)
 			stacker.bloodiness = src.bloodiness
 			stacker.update_appearance(UPDATE_ICON)
 		else
@@ -86,15 +88,7 @@
 		qdel(src)
 	else if(istype(bumped_atom, /obj/structure/window))
 		var/obj/structure/window/the_window = bumped_atom
-		if(!the_window.fulltile)
-			return
-		if(the_window.bloodied)
-			qdel(src)
-			return
-		var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new splatter_type_wall()
-		final_splatter.forceMove(the_window)
-		the_window.vis_contents += final_splatter
-		the_window.bloodied = TRUE
+		the_window.become_bloodied(src)
 		qdel(src)
 
 /// subtype of splatter capable of doing proper "stacking" behavior
@@ -107,11 +101,13 @@
 /obj/effect/decal/cleanable/blood/splatter/stacking/Initialize(mapload)
 	. = ..()
 	var/mutable_appearance/our_appearance = mutable_appearance(src.icon, src.icon_state)
+	our_appearance.alpha = src.alpha
 	our_appearance.color = src.color
 	our_appearance.pixel_x = src.pixel_x
 	our_appearance.pixel_y = src.pixel_y
 	icon_state = null
 	color = null
+	alpha = 255
 	pixel_x = 0
 	pixel_y = 0
 	splat_overlays += our_appearance

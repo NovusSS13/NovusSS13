@@ -70,12 +70,16 @@
 		return FALSE
 	return drop_organs(violent_removal = TRUE)
 
-///empties the bodypart from its organs and other things inside it
-/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal)
+/**
+ * Eviscerates the bodypart, dropping all organs and items inside of it
+ * Arguments:
+ * * violent_removal: If TRUE, organs will be thrown out using proc/fly_away() and a splort sound is played
+ */
+/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/atom/drop_loc = drop_location()
-	if(IS_ORGANIC_LIMB(src))
+	if(IS_ORGANIC_LIMB(src) && violent_removal)
 		playsound(drop_loc, 'sound/misc/splort.ogg', 50, TRUE, -1)
 	seep_gauze(9999) // destroy any existing gauze if any exists
 	for(var/obj/item/organ/organ as anything in organs)

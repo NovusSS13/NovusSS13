@@ -277,7 +277,7 @@
 	else
 		. += span_info("It has a couple spots that still need to be <b>wired</b>.")
 
-/obj/item/bodypart/chest/robot/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/chest/robot/drop_organs(mob/user, violent_removal = FALSE)
 	. = ..()
 	cell = null
 	if(wired)
@@ -396,7 +396,7 @@
 		to_chat(user, span_warning("There is no flash to remove from [src]."))
 	return TRUE
 
-/obj/item/bodypart/head/robot/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/head/robot/drop_organs(mob/user, violent_removal = FALSE)
 	. = ..()
 	flash1 = null
 	flash2 = null
