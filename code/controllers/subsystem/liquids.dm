@@ -37,46 +37,39 @@ SUBSYSTEM_DEF(liquids)
 	if(run_type == SSLIQUIDS_RUN_TYPE_TURFS)
 		if(!currentrun_active_turfs.len && active_turfs.len)
 			currentrun_active_turfs = active_turfs.Copy()
-		for(var/tur in currentrun_active_turfs)
+		for(var/turf/active_turf as anything in currentrun_active_turfs)
 			if(MC_TICK_CHECK)
 				return
-			var/turf/T = tur
-			T.process_liquid_cell()
-			currentrun_active_turfs -= T //work off of index later
+			active_turf.process_liquid_cell()
+			currentrun_active_turfs -= active_turf //work off of index later
 		if(!currentrun_active_turfs.len)
 			run_type = SSLIQUIDS_RUN_TYPE_GROUPS
 	if (run_type == SSLIQUIDS_RUN_TYPE_GROUPS)
-		for(var/g in active_groups)
-			var/datum/liquid_group/LG = g
-			if(LG.dirty)
-				LG.share()
-				LG.dirty = FALSE
-			else if(!LG.amount_of_active_turfs)
-				LG.decay_counter++
-				if(LG.decay_counter >= LIQUID_GROUP_DECAY_TIME)
+		for(var/datum/liquid_group/group as anything in active_groups)
+			if(group.dirty)
+				group.share()
+				group.dirty = FALSE
+			else if(!group.amount_of_active_turfs)
+				group.decay_counter++
+				if(group.decay_counter >= LIQUID_GROUP_DECAY_TIME)
 					//Perhaps check if any turfs in here can spread before removing it? It's not unlikely they would
-					LG.break_group()
+					group.break_group()
 			if(MC_TICK_CHECK)
 				run_type = SSLIQUIDS_RUN_TYPE_IMMUTABLES //No currentrun here for now
 				return
 		run_type = SSLIQUIDS_RUN_TYPE_IMMUTABLES
+
 	if(run_type == SSLIQUIDS_RUN_TYPE_IMMUTABLES)
-		for(var/t in active_immutables)
-			var/turf/T = t
-			T.process_immutable_liquid()
-			/*
-			if(MC_TICK_CHECK)
-				return
-			*/
+		for(var/turf/active_turf as anything in active_immutables)
+			active_turf.process_immutable_liquid()
 		run_type = SSLIQUIDS_RUN_TYPE_EVAPORATION
 
 	if(run_type == SSLIQUIDS_RUN_TYPE_EVAPORATION)
 		evaporation_counter++
 		if(evaporation_counter >= REQUIRED_EVAPORATION_PROCESSES)
-			for(var/t in evaporation_queue)
-				var/turf/T = t
+			for(var/turf/active_turf in evaporation_queue)
 				if(prob(EVAPORATION_CHANCE))
-					T.liquids.process_evaporation()
+					active_turf.liquids.process_evaporation()
 				if(MC_TICK_CHECK)
 					return
 			evaporation_counter = 0
