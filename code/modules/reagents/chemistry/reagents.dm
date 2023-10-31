@@ -107,7 +107,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/restaurant_order = /datum/custom_order/reagent/drink
 
 	/// Rate at which this reagent will evaporate in a liquid puddle
-	var/liquid_evaporation_rate = 0
+	var/liquid_evaporation_rate = 0.5 //by default, reagents evaporate slooowly
 	/**
 	 * How much fire power does the liquid have, for burning on simulated liquids
 	 * Not enough fire power per unit of entire mixture may result in no fire

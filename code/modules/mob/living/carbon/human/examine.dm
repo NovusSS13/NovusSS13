@@ -135,9 +135,8 @@
 	//genital handling. not on organ/on_owner_examine() because i want a pretty list.
 	var/list/genital_strings = list()
 	for(var/obj/item/organ/genital/genital in organs)
-		if(!genital.bodypart_overlay?.can_draw_on_body(get_bodypart(genital.zone), src))
+		if(!genital.bodypart_overlay?.can_draw_on_body(get_bodypart(check_zone(genital.zone)), src))
 			continue
-
 		genital_strings += genital.get_genital_examine()
 	if(LAZYLEN(genital_strings))
 		. += span_notice("[t_He] [t_has] [english_list(genital_strings)], on full display.")

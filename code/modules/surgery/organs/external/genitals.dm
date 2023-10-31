@@ -386,6 +386,7 @@
 /datum/bodypart_overlay/mutant/genital/anus
 	// anuses are not meant to be visible, so no layers - this overlay basically only exists for the sake of calling can_draw_on_body()
 	layers = NONE
+	color_source = ORGAN_COLOR_NONE
 	feature_key = "anus"
 
 /datum/bodypart_overlay/mutant/genital/anus/get_global_feature_list()

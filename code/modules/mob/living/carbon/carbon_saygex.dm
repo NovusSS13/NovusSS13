@@ -39,7 +39,7 @@
 	else
 		. += "[p_is] partially clothed"
 	for(var/obj/item/organ/genital/genital in organs)
-		if(!genital.bodypart_overlay?.can_draw_on_body(get_bodypart(genital.zone), src))
+		if(!genital.bodypart_overlay?.can_draw_on_body(get_bodypart(check_zone(genital.zone)), src))
 			continue
 		. += "[p_has] [genital.get_genital_examine()]"
 
