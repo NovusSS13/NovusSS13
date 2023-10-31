@@ -10,10 +10,11 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_LITERATE,
 		TRAIT_MUTANT_COLORS,
+		TRAIT_HAS_MARKINGS,
+		TRAIT_NO_BLOOD_OVERLAY,
 		TRAIT_NO_UNDERSHIRT,
 		TRAIT_NO_UNDERWEAR,
 		TRAIT_NO_SOCKS,
-		TRAIT_HAS_MARKINGS,
 
 		TRAIT_EASILY_GRABBED,
 		TRAIT_EASILY_WOUNDED,
@@ -28,6 +29,7 @@
 		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
 	)
 
+	chat_color = "#c0965f"
 
 	exotic_blood = /datum/reagent/ammonia
 	digitigrade_customization = DIGITIGRADE_NEVER
@@ -153,12 +155,12 @@
 		)
 */
 
-		var/icon/icon = icon(default_worn_icon, "")
+		var/icon/icon = icon(default_worn_icon, default_worn_icon_state)
 		for(var/dir in GLOB.cardinals)
-			var/icon/dir_icon = icon(default_worn_icon, "", dir)
+			var/icon/dir_icon = icon(default_worn_icon, default_worn_icon_state, dir)
 			dir_icon.Shift(EAST, offsets_x["[item_slot]"]?["[dir]"])
 			dir_icon.Shift(NORTH,  offsets_y["[item_slot]"]?["[dir]"])
-			icon.Insert(dir_icon, "", dir)
+			icon.Insert(dir_icon, default_worn_icon_state, dir)
 
 		item.worn_icon_avali = icon
 		return icon

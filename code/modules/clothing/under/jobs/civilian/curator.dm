@@ -27,6 +27,7 @@
 	icon = 'icons/obj/clothing/under/civilian.dmi'
 	icon_state = "curator"
 	inhand_icon_state = null
+	worn_icon = 'icons/mob/clothing/under/civilian.dmi'
 
 /obj/item/clothing/under/rank/civilian/curator/nasa
 	name = "\improper NASA jumpsuit"
