@@ -567,7 +567,7 @@
 	key = "me"
 	key_third_person = "custom"
 	message = null
-	emote_type = EMOTE_VISIBLE
+	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /datum/emote/living/custom/can_run_emote(mob/user, status_check, intentional)
 	. = ..() && intentional
@@ -624,7 +624,7 @@
 	key = "subtle"
 	key_third_person = "subtle"
 	message = null
-	emote_type = EMOTE_SUBTLE | EMOTE_VISIBLE
+	emote_type = EMOTE_VISIBLE | EMOTE_SUBTLE
 
 /datum/emote/living/beep
 	key = "beep"
