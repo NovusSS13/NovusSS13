@@ -2,13 +2,15 @@
 	name = "\improper Brother"
 	antagpanel_category = "Brother"
 	job_rank = ROLE_BROTHER
-	var/special_role = ROLE_BROTHER
 	antag_hud_name = "brother"
 	hijack_speed = 0.5
 	ui_name = "AntagInfoBrother"
 	suicide_cry = "FOR MY BROTHER!!"
+	antag_moodlet = /datum/mood_event/brotherhoood
+	/// Brotherhood this antag belongs to
 	var/datum/team/brother_team/team
-	antag_moodlet = /datum/mood_event/focused
+	/// Telepathy spell for communicating with your bros
+	var/datum/action/cooldown/spell/brother_telepathy/telepathy
 
 /datum/antagonist/brother/create_team(datum/team/brother_team/new_team)
 	if(!new_team)
@@ -16,22 +18,40 @@
 	if(!istype(new_team))
 		stack_trace("Wrong team type passed to [type] initialization.")
 	team = new_team
+	return team
 
 /datum/antagonist/brother/get_team()
 	return team
 
 /datum/antagonist/brother/on_gain()
 	objectives += team.objectives
-	owner.special_role = special_role
+	owner.special_role = job_rank
 	finalize_brother()
 	return ..()
+
+/datum/antagonist/brother/apply_innate_effects(mob/living/mob_override)
+	var/mob/living/living_mob = mob_override || owner.current
+	telepathy = new(team)
+	telepathy.Grant(living_mob)
+	RegisterSignal(living_mob, COMSIG_LIVING_DEATH, PROC_REF(on_death))
+	RegisterSignal(living_mob, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
+	if(iscarbon(living_mob))
+		RegisterSignal(living_mob, COMSIG_CARBON_GAIN_TRAUMA, PROC_REF(on_gain_trauma))
+		RegisterSignal(living_mob, COMSIG_CARBON_LOSE_TRAUMA, PROC_REF(on_lose_trauma))
+
+/datum/antagonist/brother/remove_innate_effects(mob/living/mob_override)
+	var/mob/living/living_mob = mob_override || owner.current
+	telepathy?.Remove(living_mob)
+	UnregisterSignal(living_mob, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
+	if(iscarbon(living_mob))
+		UnregisterSignal(living_mob, list(COMSIG_CARBON_GAIN_TRAUMA, COMSIG_CARBON_LOSE_TRAUMA))
 
 /datum/antagonist/brother/on_removal()
 	owner.special_role = null
 	return ..()
 
 /datum/antagonist/brother/antag_panel_data()
-	return "Conspirators : [get_brother_names()]"
+	return "Conspirators: [get_brother_names()]"
 
 /datum/antagonist/brother/get_preview_icon()
 	var/mob/living/carbon/human/dummy/consistent/brother1 = new
@@ -62,32 +82,20 @@
 
 /datum/antagonist/brother/proc/get_brother_names()
 	var/list/brothers = team.members - owner
-	var/brother_text = ""
-	for(var/i = 1 to brothers.len)
-		var/datum/mind/M = brothers[i]
-		brother_text += M.name
-		if(i == brothers.len - 1)
-			brother_text += " and "
-		else if(i != brothers.len)
-			brother_text += ", "
-	return brother_text
-
-/datum/antagonist/brother/proc/give_meeting_area()
-	if(!owner.current || !team || !team.meeting_area)
-		return
-	to_chat(owner.current, "<span class='infoplain'><B>Your designated meeting area:</B> [team.meeting_area]</span>")
-	antag_memory += "<b>Meeting Area</b>: [team.meeting_area]<br>"
+	var/list/brother_names = list()
+	for(var/datum/mind/bro as anything in brothers)
+		brother_names += bro.name
+	return english_list(brother_names)
 
 /datum/antagonist/brother/greet()
 	var/brother_text = get_brother_names()
 	to_chat(owner.current, span_alertsyndie("You are the [owner.special_role] of [brother_text]."))
-	to_chat(owner.current, "The Syndicate only accepts those that have proven themselves. Prove yourself and prove your [team.member_name]s by completing your objectives together!")
+	to_chat(owner.current, "Brains united as one, you know that you are more capable than the rest of the crew. Complete your objectives to ensure the eventual takeover of the station by the brotherhood.")
 	owner.announce_objectives()
-	give_meeting_area()
 
 /datum/antagonist/brother/proc/finalize_brother()
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	team.update_name()
+	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/brotheralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /datum/antagonist/brother/admin_add(datum/mind/new_owner,mob/admin)
 	//show list of possible brothers
@@ -97,17 +105,16 @@
 			continue
 		candidates[L.mind.name] = L.mind
 
-	var/choice = input(admin,"Choose the blood brother.", "Brother") as null|anything in sort_names(candidates)
+	var/choice = input(admin, "Choose the blood brother.", "Brother") as null|anything in sort_names(candidates)
 	if(!choice)
 		return
 	var/datum/mind/bro = candidates[choice]
-	var/datum/team/brother_team/T = new
-	T.add_member(new_owner)
-	T.add_member(bro)
-	T.pick_meeting_area()
-	T.forge_brother_objectives()
-	new_owner.add_antag_datum(/datum/antagonist/brother,T)
-	bro.add_antag_datum(/datum/antagonist/brother, T)
+	var/datum/team/brother_team/team = new
+	team.add_member(new_owner)
+	team.add_member(bro)
+	team.forge_brother_objectives()
+	new_owner.add_antag_datum(/datum/antagonist/brother,team)
+	bro.add_antag_datum(/datum/antagonist/brother, team)
 	message_admins("[key_name_admin(admin)] made [key_name_admin(new_owner)] and [key_name_admin(bro)] into blood brothers.")
 	log_admin("[key_name(admin)] made [key_name(new_owner)] and [key_name(bro)] into blood brothers.")
 
@@ -118,27 +125,68 @@
 	data["brothers"] = get_brother_names()
 	return data
 
-/datum/team/brother_team
-	name = "\improper Blood Brothers"
-	member_name = "blood brother"
-	///Selected meeting area given to the team members
-	var/meeting_area
-	///List of meeting areas that are randomly selected.
-	var/static/meeting_areas = list(
-		"The Bar",
-		"Dorms",
-		"Escape Dock",
-		"Arrivals",
-		"Holodeck",
-		"Primary Tool Storage",
-		"Recreation Area",
-		"Chapel",
-		"Library",
-	)
+/datum/antagonist/brother/proc/on_death(mob/living/source, gibbed)
+	SIGNAL_HANDLER
 
-/datum/team/brother_team/proc/pick_meeting_area()
-	meeting_area = pick(meeting_areas)
-	meeting_areas -= meeting_area
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !brother_mind.current)
+			continue
+		var/mob/living/brother = brother_mind.current
+		to_chat(brother, span_userdanger("MY BROTHER! [uppertext(source.name)] HAS DIED!"))
+		INVOKE_ASYNC(brother, TYPE_PROC_REF(/mob, emote), "scream")
+		if(iscarbon(brother))
+			var/mob/living/carbon/traumatized = brother
+			if(!(locate(/datum/brain_trauma/severe/stroke/brother) in traumatized.get_traumas()))
+				traumatized.gain_trauma(/datum/brain_trauma/severe/stroke/brother)
+
+/datum/antagonist/brother/proc/on_revive(mob/living/source, full_heal_flags)
+	SIGNAL_HANDLER
+
+	var/no_dead_brothers = FALSE
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !brother_mind.current)
+			continue
+		var/mob/living/brother = brother_mind.current
+		to_chat(brother, span_boldnicegreen("[source] is alive again!"))
+		if(brother.stat >= DEAD)
+			no_dead_brothers = FALSE
+
+	if(!no_dead_brothers)
+		return
+
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if(!brother_mind.current || !iscarbon(brother_mind.current))
+			continue
+		var/mob/living/carbon/traumatized = brother_mind.current
+		for(var/datum/brain_trauma/trauma in traumatized.get_traumas())
+			if(istype(trauma, /datum/brain_trauma/severe/stroke/brother))
+				qdel(trauma)
+				break
+
+/datum/antagonist/brother/proc/on_gain_trauma(mob/living/carbon/source, datum/brain_trauma/trauma, resilience, list/arguments)
+	SIGNAL_HANDLER
+
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !iscarbon(brother_mind.current))
+			continue
+		var/mob/living/carbon/traumatized = brother_mind.current
+		traumatized.gain_trauma(trauma.type, resilience, arguments)
+
+/datum/antagonist/brother/proc/on_lose_trauma(mob/living/carbon/source, datum/brain_trauma/trauma)
+	SIGNAL_HANDLER
+
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !iscarbon(brother_mind.current))
+			continue
+		var/mob/living/carbon/traumatized = brother_mind.current
+		for(var/datum/brain_trauma/other_trauma in traumatized.get_traumas())
+			if(other_trauma.type != trauma.type)
+				continue
+			qdel(other_trauma)
+
+/datum/team/brother_team
+	name = "\improper Brotherhood"
+	member_name = "blood brother"
 
 /datum/team/brother_team/proc/update_name()
 	var/list/last_names = list()
@@ -165,6 +213,8 @@
 			add_objective(new /datum/objective/destroy, needs_target = TRUE)
 		else if(prob(30))
 			add_objective(new /datum/objective/maroon, needs_target = TRUE)
+		else if(prob(20)) //small chance to debrain due to new brother lore
+			add_objective(new /datum/objective/debrain, needs_target = TRUE)
 		else
 			add_objective(new /datum/objective/assassinate, needs_target = TRUE)
 	else

@@ -104,14 +104,14 @@
 
 /datum/brain_trauma/severe/paralysis/on_gain()
 	..()
-	for(var/X in paralysis_traits)
-		ADD_TRAIT(owner, X, TRAUMA_TRAIT)
+	for(var/paralysis_trait in paralysis_traits)
+		ADD_TRAIT(owner, paralysis_trait, TRAUMA_TRAIT)
 
 
 /datum/brain_trauma/severe/paralysis/on_lose()
 	..()
-	for(var/X in paralysis_traits)
-		REMOVE_TRAIT(owner, X, TRAUMA_TRAIT)
+	for(var/paralysis_trait in paralysis_traits)
+		REMOVE_TRAIT(owner, paralysis_trait, TRAUMA_TRAIT)
 
 
 /datum/brain_trauma/severe/paralysis/paraplegic
@@ -329,3 +329,27 @@
 /datum/brain_trauma/severe/dyslexia/on_lose()
 	REMOVE_TRAIT(owner, TRAIT_ILLITERATE, TRAUMA_TRAIT)
 	..()
+
+/datum/brain_trauma/severe/stroke
+	name = "Cerebral Infarction"
+	desc = "Part of the patient's brain tissue has become necrotic, and the brain is undergoing liquefactive necrosis."
+	scan_desc = "ischemic stroke"
+	gain_text = span_warning("Your head hurts really badly and your face feels numb!")
+	lose_text = span_notice("Your head no longer hurts and you can feel your whole face.")
+
+/datum/brain_trauma/severe/stroke/on_gain()
+	ADD_TRAIT(owner, TRAIT_STROKE, TRAUMA_TRAIT)
+	return ..()
+
+/datum/brain_trauma/severe/stroke/on_lose()
+	REMOVE_TRAIT(owner, TRAIT_STROKE, TRAUMA_TRAIT)
+	return ..()
+
+/datum/brain_trauma/severe/stroke/on_life(seconds_per_tick, times_fired)
+	. = ..()
+	brain?.apply_organ_damage(0.3 * seconds_per_tick) //50% worse than the brain tumor quirk
+
+//blood brother version of stroke trauma, only gets cured once all brothers are revived
+/datum/brain_trauma/severe/stroke/brother
+	random_gain = FALSE
+	resilience = TRAUMA_RESILIENCE_ABSOLUTE

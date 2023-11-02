@@ -477,7 +477,7 @@
 	add_trauma_to_traumas(actual_trauma)
 	if(owner)
 		actual_trauma.owner = owner
-		SEND_SIGNAL(owner, COMSIG_CARBON_GAIN_TRAUMA, trauma)
+		SEND_SIGNAL(owner, COMSIG_CARBON_GAIN_TRAUMA, actual_trauma, resilience, arguments)
 		actual_trauma.on_gain()
 	if(resilience)
 		actual_trauma.resilience = resilience
@@ -546,8 +546,12 @@
 	return active_hand
 
 /// Brains REALLY like ghosting people. we need special tricks to avoid that, namely removing the old brain with no_id_transfer
-/obj/item/organ/brain/replace_into(mob/living/carbon/new_owner)
+/obj/item/organ/brain/replace_into(mob/living/carbon/new_owner, drop_if_replaced = FALSE)
 	var/obj/item/organ/brain/old_brain = new_owner.get_organ_slot(ORGAN_SLOT_BRAIN)
-	old_brain.Remove(new_owner, special = TRUE, no_id_transfer = TRUE)
-	qdel(old_brain)
-	Insert(new_owner, special = TRUE, drop_if_replaced = FALSE, no_id_transfer = TRUE)
+	if(old_brain)
+		old_brain.Remove(new_owner, special = TRUE, no_id_transfer = TRUE)
+		if(drop_if_replaced)
+			old_brain.forceMove(new_owner.loc)
+		else
+			qdel(old_brain)
+	return Insert(new_owner, special = TRUE, drop_if_replaced = drop_if_replaced, no_id_transfer = TRUE)

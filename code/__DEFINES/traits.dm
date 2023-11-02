@@ -172,6 +172,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Allows you to mine with your bare hands
 #define TRAIT_FIST_MINING "fist_mining"
 #define TRAIT_DUMB "dumb"
+#define TRAIT_STROKE "stroke"
 /// Whether a mob is dexterous enough to use machines and certain items or not.
 #define TRAIT_ADVANCEDTOOLUSER "advancedtooluser"
 // Antagonizes the above.
@@ -364,6 +365,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_SPINNING_WEB_TURF "spinning_web_turf"
 #define TRAIT_ABDUCTOR_TRAINING "abductor-training"
 #define TRAIT_ABDUCTOR_SCIENTIST_TRAINING "abductor-scientist-training"
+/// Blood brother whose brother has died, should be removed when all brothers are revived
+#define TRAIT_DEAD_BROTHER "dead_brother"
 #define TRAIT_SURGEON "surgeon"
 #define TRAIT_STRONG_GRABBER "strong_grabber"
 #define TRAIT_SOOTHED_THROAT "soothed-throat"
