@@ -97,7 +97,7 @@
 		return
 
 	user.log_message(msg, LOG_EMOTE)
-	var/dchatmsg = "<b>[span_color("[user]", user.chat_color)]</b> [msg]"
+	var/dchatmsg = span_emote("<b>[span_color("[user]", user.chat_color)]</b> [msg]")
 
 	var/tmp_sound = get_sound(user)
 	if(tmp_sound && should_play_sound(user, intentional) && !TIMER_COOLDOWN_CHECK(user, type))
@@ -105,22 +105,25 @@
 		playsound(user, tmp_sound, 50, vary)
 
 	var/user_turf = get_turf(user)
-	if(user.client)
+	if(user.client && !(emote_type & EMOTE_SUBTLE))
 		for(var/mob/ghost as anything in GLOB.dead_mob_list)
 			if(!ghost.client || isnewplayer(ghost))
 				continue
 			if(ghost.client.prefs.chat_toggles & CHAT_GHOSTSIGHT && !(ghost in viewers(user_turf, null)))
 				ghost.show_message(span_emote("[FOLLOW_LINK(ghost, user)] [dchatmsg]"))
+	var/message_range = DEFAULT_MESSAGE_RANGE
+	if(emote_type & EMOTE_SUBTLE)
+		message_range = 1
 	if((emote_type & EMOTE_AUDIBLE) && (emote_type & EMOTE_VISIBLE)) //emote is audible and visible
-		user.audible_message(msg, deaf_message = msg, audible_message_flags = EMOTE_MESSAGE)
+		user.audible_message(msg, msg, hearing_distance = message_range, audible_message_flags = EMOTE_MESSAGE)
 	else if(emote_type & EMOTE_AUDIBLE)	//emote is only audible
-		user.audible_message(msg, audible_message_flags = EMOTE_MESSAGE)
+		user.audible_message(msg, hearing_distance = message_range, audible_message_flags = EMOTE_MESSAGE)
 	else if(emote_type & EMOTE_VISIBLE)	//emote is only visible
-		user.visible_message(msg, visible_message_flags = EMOTE_MESSAGE)
+		user.visible_message(msg, vision_distance = message_range, visible_message_flags = EMOTE_MESSAGE)
 	if(emote_type & EMOTE_IMPORTANT)
-		for(var/mob/living/viewer in viewers())
+		for(var/mob/living/viewer in viewers(message_range, user))
 			if(viewer.is_blind() && !viewer.can_hear())
-				to_chat(viewer, msg)
+				to_chat(viewer, span_emote("<b>[span_color("[user]", user.chat_color)]</b> [msg]"))
 
 /**
  * For handling emote cooldown, return true to allow the emote to happen.
