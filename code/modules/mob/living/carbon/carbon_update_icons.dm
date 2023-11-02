@@ -345,7 +345,9 @@
 		return fire_icon
 
 	remove_overlay(FIRE_LAYER)
-	return last_icon_state
+	overlays_standing[FIRE_LAYER] = null
+	apply_overlay(FIRE_LAYER)
+	return null
 
 /mob/living/carbon/update_damage_overlays()
 	remove_overlay(DAMAGE_LAYER)
