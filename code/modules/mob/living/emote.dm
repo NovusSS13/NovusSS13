@@ -1,4 +1,3 @@
-
 /* EMOTE DATUMS */
 /datum/emote/living
 	mob_type_allowed_typecache = /mob/living
@@ -181,18 +180,13 @@
 		return
 	return user.voice_pack?.get_sound_for_emote(src, user) || sound
 
-/datum/emote/living/gasp_shock
+/datum/emote/living/gasp/shock
 	key = "gaspshock"
 	key_third_person = "gaspsshock"
 	message = "gasps in shock!"
 	message_mime = "gasps in silent shock!"
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = SOFT_CRIT
-
-/datum/emote/living/gasp_shock/get_sound(mob/living/user)
-	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
-		return
-	return user.voice_pack?.get_sound_for_emote(src, user) || sound
 
 /datum/emote/living/giggle
 	key = "giggle"
