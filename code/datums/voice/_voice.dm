@@ -24,7 +24,7 @@
 				'sound/voice/human/gasp_female3.ogg',
 			),
 		),
-		/datum/emote/living/gasp_shock = list(
+		/datum/emote/living/gasp/shock = list(
 			MALE = list(
 				'sound/voice/human/gasp_male1.ogg',
 				'sound/voice/human/gasp_male2.ogg',
