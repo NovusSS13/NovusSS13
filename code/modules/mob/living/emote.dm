@@ -1,4 +1,3 @@
-
 /* EMOTE DATUMS */
 /datum/emote/living
 	mob_type_allowed_typecache = /mob/living
@@ -107,7 +106,7 @@
 		message_animal_or_basic = custom_message
 	. = ..()
 	message_animal_or_basic = initial(message_animal_or_basic)
-	var/death_sound = user.voice_pack?.get_sound_for_emote(src, user) || user.death_sound
+	var/death_sound = user.voice_pack?.get_sound_for_emote(src, user) || user.death_sound || sound
 	//stop the sound if oxyloss too high/cant speak
 	if(. && death_sound && user.can_speak() && (user.oxyloss < 50))
 		playsound(user, death_sound, 80, vary)
@@ -176,18 +175,18 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = HARD_CRIT
 
-/datum/emote/living/gasp_shock
+/datum/emote/living/gasp/get_sound(mob/living/user)
+	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
+		return
+	return user.voice_pack?.get_sound_for_emote(src, user) || sound
+
+/datum/emote/living/gasp/shock
 	key = "gaspshock"
 	key_third_person = "gaspsshock"
 	message = "gasps in shock!"
 	message_mime = "gasps in silent shock!"
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = SOFT_CRIT
-
-/datum/emote/living/gasp_shock/get_sound(mob/living/user)
-	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
-		return
-	return user.voice_pack?.get_sound_for_emote(src, user)
 
 /datum/emote/living/giggle
 	key = "giggle"
@@ -269,7 +268,7 @@
 	return ..() && user.can_speak(allow_mimes = TRUE)
 
 /datum/emote/living/laugh/get_sound(mob/living/user)
-	return user.voice_pack?.get_sound_for_emote(src, user)
+	return user.voice_pack?.get_sound_for_emote(src, user) || sound
 
 /datum/emote/living/look
 	key = "look"
@@ -567,6 +566,7 @@
 	key = "me"
 	key_third_person = "custom"
 	message = null
+	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
 /datum/emote/living/custom/can_run_emote(mob/user, status_check, intentional)
 	. = ..() && intentional
@@ -609,64 +609,21 @@
 			custom_emote_type = type_override
 	message = custom_emote
 	emote_type = custom_emote_type
+	if(initial(emote_type) & EMOTE_SUBTLE)
+		emote_type |= EMOTE_SUBTLE
 	. = ..()
 	message = null
-	emote_type = EMOTE_VISIBLE
+	emote_type = initial(emote_type)
 
 /datum/emote/living/custom/replace_pronouns(mob/user, message)
 	return message
 
 
-/datum/emote/living/subtle
+/datum/emote/living/custom/subtle
 	key = "subtle"
 	key_third_person = "subtle"
 	message = null
-
-/datum/emote/living/subtle/can_run_emote(mob/user, status_check, intentional)
-	return ..() && intentional
-
-/datum/emote/living/subtle/proc/check_invalid(mob/user, input)
-	var/static/regex/stop_bad_mime = regex(@"says|exclaims|yells|asks")
-	if(stop_bad_mime.Find(input, 1, 1))
-		to_chat(user, span_danger("Invalid emote."))
-		return TRUE
-	return FALSE
-
-/datum/emote/living/subtle/run_emote(mob/user, params, type_override = null, intentional = FALSE)
-	if(!can_run_emote(user, TRUE, intentional) || QDELETED(user))
-		return FALSE
-
-	if(is_banned_from(user.ckey, "Emote"))
-		to_chat(user, span_boldwarning("You cannot send custom emotes (banned)."))
-		return FALSE
-
-	if(user.client?.prefs.muted & MUTE_IC)
-		to_chat(user, span_boldwarning("You cannot send IC messages (muted)."))
-		return FALSE
-
-	params ||= tgui_input_text(user, "Choose an emote to display.", max_length = MAX_EMOTE_LEN, multiline = TRUE, encode = FALSE)
-	if(!params)
-		return FALSE
-
-	if(!intentional)
-		if(check_invalid(user, params))
-			return FALSE
-		params = html_encode(params)
-
-	user.log_message("(SUBTLE) [params]", LOG_EMOTE)
-
-	if(params[1] != " " && params[1] != "," && params[1] != "'")
-		params = " " + params
-
-	for(var/mob/receiver in range(1, src))
-		receiver.show_message("<b>[span_color("[user]", user.chat_color)]</b>[params]") //ghosts being included in this (and not being broadcasted globally) is intentional. subtle is SUBTLE after all.
-
-	return TRUE
-
-
-/datum/emote/living/subtle/replace_pronouns(mob/user, message)
-	return message
-
+	emote_type = EMOTE_VISIBLE | EMOTE_SUBTLE
 
 /datum/emote/living/beep
 	key = "beep"

@@ -45,6 +45,10 @@
 	QDEL_NULL(worn_neck_offset)
 	return ..()
 
+/obj/item/bodypart/chest/drop_organs(mob/user, violent_removal)
+	. = ..()
+	cavity_item = null
+
 /obj/item/bodypart/chest/generate_icon_key()
 	. = ..()
 	if(is_invisible || is_husked || !ishuman(owner))

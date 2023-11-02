@@ -124,31 +124,75 @@
 
 /obj/item/bodypart/head/examine(mob/user)
 	. = ..()
-	if(show_organs_on_examine && IS_ORGANIC_LIMB(src))
-		if(!brain)
-			. += span_info("The brain has been removed from [src].")
-		else if(brain.suicided || (brainmob && HAS_TRAIT(brainmob, TRAIT_SUICIDED)))
-			. += span_info("There's a miserable expression on [real_name]'s face; they must have really hated life. There's no hope of recovery.")
-		else if(brainmob?.health <= HEALTH_THRESHOLD_DEAD)
-			. += span_info("It's leaking some kind of... clear fluid? The brain inside must be in pretty bad shape.")
-		else if(brainmob)
-			if(brainmob.key || brainmob.get_ghost(FALSE, TRUE))
-				. += span_info("Its muscles are twitching slightly... It seems to have some life still in it.")
-			else
-				. += span_info("It's completely lifeless. Perhaps there'll be a chance for them later.")
-		else if(brain?.decoy_override)
-			. += span_info("It's completely lifeless. Perhaps there'll be a chance for them later.")
+	if(!show_organs_on_examine || !IS_ORGANIC_LIMB(src))
+		return
+	if(!brain)
+		. += span_deadsay("The brain has been removed from [src].")
+	else if(brain.suicided || (brainmob && HAS_TRAIT(brainmob, TRAIT_SUICIDED)))
+		. += span_warning("There's a miserable expression on [real_name]'s face; they must have really hated life. There's no hope of recovery.")
+	else if(brainmob?.health <= HEALTH_THRESHOLD_DEAD)
+		. += span_warning("It's leaking some kind of... clear fluid? The brain inside must be in pretty bad shape.")
+	else if(brainmob)
+		if(brainmob.key || brainmob.get_ghost(FALSE, TRUE))
+			. += span_notice("Its muscles are twitching slightly... It seems to have some life still in it.")
 		else
-			. += span_info("It's completely lifeless.")
+			. += span_deadsay("It's completely lifeless. Perhaps there'll be a chance for them later.")
+	else if(brain?.decoy_override)
+		. += span_deadsay("It's completely lifeless. Perhaps there'll be a chance for them later.")
+	else
+		. += span_deadsay("It's completely lifeless.")
 
-		if(!eyes)
-			. += span_info("[real_name]'s eyes have been removed.")
+	if(!eyes)
+		. += span_info("[real_name]'s eyes have been removed.")
 
-		if(!ears)
-			. += span_info("[real_name]'s ears have been removed.")
+	if(!ears)
+		. += span_info("[real_name]'s ears have been removed.")
 
-		if(!tongue)
-			. += span_info("[real_name]'s tongue has been removed.")
+	if(!tongue)
+		. += span_info("[real_name]'s tongue has been removed.")
+
+/obj/item/bodypart/head/try_attach_limb(mob/living/carbon/new_head_owner, special = FALSE)
+	// These are stored before calling super. This is so that if the head is from a different body, it persists its appearance.
+	var/old_real_name = src.real_name
+	. = ..()
+	if(!.)
+		return
+
+	if(old_real_name)
+		new_head_owner.real_name = old_real_name
+	real_name = new_head_owner.real_name
+
+	//Handle dental implants
+	for(var/obj/item/reagent_containers/pill/pill in src)
+		for(var/datum/action/item_action/hands_free/activate_pill/pill_action in pill.actions)
+			pill.forceMove(new_head_owner)
+			pill_action.Grant(new_head_owner)
+			break
+
+	///Transfer existing hair properties to the new human.
+	if(!special && ishuman(new_head_owner))
+		var/mob/living/carbon/human/sexy_chad = new_head_owner
+		sexy_chad.hairstyle = hairstyle
+		sexy_chad.hair_color = hair_color
+		sexy_chad.facial_hairstyle = facial_hairstyle
+		sexy_chad.facial_hair_color = facial_hair_color
+		sexy_chad.grad_style = gradient_styles?.Copy()
+		sexy_chad.grad_color = gradient_colors?.Copy()
+		sexy_chad.lip_style = lip_style
+		sexy_chad.lip_color = lip_color
+
+	new_head_owner.updatehealth()
+	new_head_owner.update_body()
+	new_head_owner.update_damage_overlays()
+
+/obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
+	. = ..()
+	if(owner)
+		if(HAS_TRAIT(owner, TRAIT_HUSK))
+			real_name = "Unknown"
+		else
+			real_name = owner.real_name
+	update_hair_and_lips(dropping_limb, is_creating)
 
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal = FALSE)
 	. = ..()
@@ -169,15 +213,6 @@
 	eyes = null
 	ears = null
 	tongue = null
-
-/obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
-	. = ..()
-	if(owner)
-		if(HAS_TRAIT(owner, TRAIT_HUSK))
-			real_name = "Unknown"
-		else
-			real_name = owner.real_name
-	update_hair_and_lips(dropping_limb, is_creating)
 
 /obj/item/bodypart/head/generate_icon_key()
 	. = ..()
