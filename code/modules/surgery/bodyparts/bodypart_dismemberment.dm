@@ -97,7 +97,7 @@
 	for(var/obj/item/item_in_bodypart in src)
 		item_in_bodypart.forceMove(drop_loc)
 		if(violent_removal && owner)
-			organ.transfer_mob_blood_dna(owner)
+			item_in_bodypart.transfer_mob_blood_dna(owner)
 
 	if(owner)
 		owner.update_body_parts()
