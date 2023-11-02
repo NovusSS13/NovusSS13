@@ -165,6 +165,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PHASING (1<<4)
 
 //Fire and Acid stuff, for resistance_flags
+/// 100% immune to lava
 #define LAVA_PROOF (1<<0)
 /// 100% immune to fire damage (but not necessarily to lava or heat)
 #define FIRE_PROOF (1<<1)
