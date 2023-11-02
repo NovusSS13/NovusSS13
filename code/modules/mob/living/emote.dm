@@ -107,7 +107,7 @@
 		message_animal_or_basic = custom_message
 	. = ..()
 	message_animal_or_basic = initial(message_animal_or_basic)
-	var/death_sound = user.voice_pack?.get_sound_for_emote(src, user) || user.death_sound
+	var/death_sound = user.voice_pack?.get_sound_for_emote(src, user) || user.death_sound || sound
 	//stop the sound if oxyloss too high/cant speak
 	if(. && death_sound && user.can_speak() && (user.oxyloss < 50))
 		playsound(user, death_sound, 80, vary)
@@ -176,6 +176,11 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = HARD_CRIT
 
+/datum/emote/living/gasp/get_sound(mob/living/user)
+	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
+		return
+	return user.voice_pack?.get_sound_for_emote(src, user) || sound
+
 /datum/emote/living/gasp_shock
 	key = "gaspshock"
 	key_third_person = "gaspsshock"
@@ -187,7 +192,7 @@
 /datum/emote/living/gasp_shock/get_sound(mob/living/user)
 	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
 		return
-	return user.voice_pack?.get_sound_for_emote(src, user)
+	return user.voice_pack?.get_sound_for_emote(src, user) || sound
 
 /datum/emote/living/giggle
 	key = "giggle"
@@ -269,7 +274,7 @@
 	return ..() && user.can_speak(allow_mimes = TRUE)
 
 /datum/emote/living/laugh/get_sound(mob/living/user)
-	return user.voice_pack?.get_sound_for_emote(src, user)
+	return user.voice_pack?.get_sound_for_emote(src, user) || sound
 
 /datum/emote/living/look
 	key = "look"
