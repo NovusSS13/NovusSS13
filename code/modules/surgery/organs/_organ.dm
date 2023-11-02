@@ -369,17 +369,17 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/examine(mob/user)
 	. = ..()
 
-	. += span_notice("It should be inserted in the [parse_zone(zone)].")
+	. += span_info("[p_they(TRUE)] should be inserted in the [parse_zone(zone)].")
 	if(organ_flags & ORGAN_FAILING)
 		if(IS_ROBOTIC_ORGAN(src))
-			. += span_warning("[src] seems to be broken.")
+			. += span_warning("[src] seem[p_s()] to be broken.")
 			return
-		. += span_warning("[src] has decayed for too long, and has turned a sickly color. It probably won't work without repairs.")
+		. += span_warning("[src] [p_have()] decayed for too long, and [p_have()] turned a sickly color. [p_they(TRUE)] probably won't work without repairs.")
 	else if(damage > high_threshold)
 		if(IS_ROBOTIC_ORGAN(src))
-			. += span_warning("[src] seems to be malfunctioning.")
+			. += span_warning("[src] seem[p_s()] to be malfunctioning.")
 			return
-		. += span_warning("[src] is starting to look discolored.")
+		. += span_warning("[src] [p_are()] starting to look discolored.")
 
 	var/list/visuals_examine = visuals_examine(user)
 	if(length(visuals_examine))

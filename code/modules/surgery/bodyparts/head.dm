@@ -124,31 +124,32 @@
 
 /obj/item/bodypart/head/examine(mob/user)
 	. = ..()
-	if(show_organs_on_examine && IS_ORGANIC_LIMB(src))
-		if(!brain)
-			. += span_info("The brain has been removed from [src].")
-		else if(brain.suicided || (brainmob && HAS_TRAIT(brainmob, TRAIT_SUICIDED)))
-			. += span_info("There's a miserable expression on [real_name]'s face; they must have really hated life. There's no hope of recovery.")
-		else if(brainmob?.health <= HEALTH_THRESHOLD_DEAD)
-			. += span_info("It's leaking some kind of... clear fluid? The brain inside must be in pretty bad shape.")
-		else if(brainmob)
-			if(brainmob.key || brainmob.get_ghost(FALSE, TRUE))
-				. += span_info("Its muscles are twitching slightly... It seems to have some life still in it.")
-			else
-				. += span_info("It's completely lifeless. Perhaps there'll be a chance for them later.")
-		else if(brain?.decoy_override)
-			. += span_info("It's completely lifeless. Perhaps there'll be a chance for them later.")
+	if(!show_organs_on_examine || !IS_ORGANIC_LIMB(src))
+		return
+	if(!brain)
+		. += span_deadsay("The brain has been removed from [src].")
+	else if(brain.suicided || (brainmob && HAS_TRAIT(brainmob, TRAIT_SUICIDED)))
+		. += span_warning("There's a miserable expression on [real_name]'s face; they must have really hated life. There's no hope of recovery.")
+	else if(brainmob?.health <= HEALTH_THRESHOLD_DEAD)
+		. += span_warning("It's leaking some kind of... clear fluid? The brain inside must be in pretty bad shape.")
+	else if(brainmob)
+		if(brainmob.key || brainmob.get_ghost(FALSE, TRUE))
+			. += span_notice("Its muscles are twitching slightly... It seems to have some life still in it.")
 		else
-			. += span_info("It's completely lifeless.")
+			. += span_deadsay("It's completely lifeless. Perhaps there'll be a chance for them later.")
+	else if(brain?.decoy_override)
+		. += span_deadsay("It's completely lifeless. Perhaps there'll be a chance for them later.")
+	else
+		. += span_deadsay("It's completely lifeless.")
 
-		if(!eyes)
-			. += span_info("[real_name]'s eyes have been removed.")
+	if(!eyes)
+		. += span_info("[real_name]'s eyes have been removed.")
 
-		if(!ears)
-			. += span_info("[real_name]'s ears have been removed.")
+	if(!ears)
+		. += span_info("[real_name]'s ears have been removed.")
 
-		if(!tongue)
-			. += span_info("[real_name]'s tongue has been removed.")
+	if(!tongue)
+		. += span_info("[real_name]'s tongue has been removed.")
 
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal = FALSE)
 	. = ..()

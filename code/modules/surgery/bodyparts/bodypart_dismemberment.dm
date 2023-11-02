@@ -91,9 +91,13 @@
 			organ.remove_from_limb(src)
 		organ.forceMove(drop_loc)
 		if(violent_removal)
+			if(owner)
+				organ.transfer_mob_blood_dna(owner)
 			organ.fly_away(drop_loc)
 	for(var/obj/item/item_in_bodypart in src)
 		item_in_bodypart.forceMove(drop_loc)
+		if(violent_removal && owner)
+			organ.transfer_mob_blood_dna(owner)
 
 	if(owner)
 		owner.update_body_parts()

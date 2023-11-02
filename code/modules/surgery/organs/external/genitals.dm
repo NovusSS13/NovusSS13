@@ -197,6 +197,7 @@
 	name = "testicles"
 	desc = "Some balls are held for charity, and some for fancy dress. \
 			But when they're held for pleasure, they're the balls that I like best."
+	gender = PLURAL
 	icon = 'icons/obj/medical/organs/genitals/testicles.dmi'
 	icon_state = "pair_2_s"
 
@@ -304,6 +305,7 @@
 /obj/item/organ/genital/breasts
 	name = "breasts"
 	desc = "Does not belong on reptiles."
+	gender = PLURAL
 	icon = 'icons/obj/medical/organs/genitals/breasts.dmi'
 	icon_state = "breasts_pair_c_s"
 
