@@ -1494,9 +1494,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	return fire_status.ignite(silent)
 
 /mob/living/proc/update_fire()
-	var/datum/status_effect/fire_handler/fire_handler = has_status_effect(/datum/status_effect/fire_handler)
-	if(fire_handler)
-		fire_handler.update_overlay()
+	var/datum/status_effect/fire_handler/fire_stacks/fire_status = has_status_effect(/datum/status_effect/fire_handler/fire_stacks)
+	if(fire_status)
+		fire_status.update_overlay()
 
 /**
  * Extinguish all fire on the mob
