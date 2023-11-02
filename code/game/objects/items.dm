@@ -390,23 +390,27 @@
 /obj/item/examine(mob/user) //This might be spammy. Remove?
 	. = ..()
 
-	. += "[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] item."
+	. += span_info("[p_they(TRUE)] [p_are()] a [weight_class_to_text(w_class)] item.")
 
 	if(item_flags & CRUEL_IMPLEMENT)
-		. += "[src] seems quite practical for particularly <font color='red'>morbid</font> procedures and experiments."
+		. += span_info("[src] seems quite practical for particularly [span_bloody("red")] procedures and experiments.")
 
 	if(resistance_flags & INDESTRUCTIBLE)
-		. += "[src] seems extremely robust! It'll probably withstand anything that could happen to it!"
+		. += span_info("[src] seem[p_s()] extremely robust! [p_they(TRUE)] will probably withstand anything that could happen to it!")
 	else
+		var/list/resistance_strings = list()
 		if(resistance_flags & LAVA_PROOF)
-			. += "[src] is made of an extremely heat-resistant material, it'd probably be able to withstand lava!"
+			resistance_strings += "lavaproof"
 		if(resistance_flags & (ACID_PROOF | UNACIDABLE))
-			. += "[src] looks pretty robust! It'd probably be able to withstand acid!"
+			resistance_strings += "acidproof"
 		if(resistance_flags & FREEZE_PROOF)
-			. += "[src] is made of cold-resistant materials."
+			resistance_strings += "cold-resistant"
 		if(resistance_flags & FIRE_PROOF)
-			. += "[src] is made of fire-retardant materials."
-		return
+			resistance_strings += "fire-retardant"
+		else if(resistance_flags & FLAMMABLE)
+			resistance_strings += "flammable"
+		if(length(resistance_strings))
+			. += span_info("[src] [p_are()] made of [english_list(resistance_strings)] materials.")
 
 /obj/item/examine_more(mob/user)
 	. = ..()

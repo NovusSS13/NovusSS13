@@ -46,7 +46,7 @@
 		bodypart_overlay.imprint_on_next_insertion = FALSE
 	else
 		bodypart_overlay.randomize_appearance()
-		//jank, but only imprint next insert if we are in nullspace
+		//jank, but only imprint next insert if we are created in nullspace
 		if(!loc)
 			bodypart_overlay.imprint_on_next_insertion = TRUE
 		else
@@ -64,7 +64,7 @@
 
 	if(bodypart_overlay)
 		if(bodypart_overlay.imprint_on_next_insertion)
-			. += span_info("Interesting... This organ has many stem cells, and will adapt to a new owner's DNA.")
+			. += span_info("Interesting... This organ has many ready stem cells, and will adapt to a new owner's DNA.")
 		if(bodypart_overlay.sprite_datum?.name)
 			. += span_info("This organ has a <em>\"[bodypart_overlay.sprite_datum.name]\"</em> style.")
 

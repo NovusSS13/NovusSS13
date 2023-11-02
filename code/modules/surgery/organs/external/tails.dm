@@ -23,27 +23,30 @@
 	/// A reference to the paired_spines, since for some fucking reason tail spines are tied to the spines themselves.
 	var/obj/item/organ/spines/paired_spines
 
-/obj/item/organ/tail/Insert(mob/living/carbon/receiver, special, drop_if_replaced)
+/obj/item/organ/tail/on_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
-	if(.)
-		RegisterSignal(receiver, COMSIG_ORGAN_WAG_TAIL, PROC_REF(wag))
-		original_owner ||= WEAKREF(receiver)
+	RegisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL, PROC_REF(wag))
+	original_owner ||= WEAKREF(organ_owner)
 
-		receiver.clear_mood_event("tail_lost")
-		receiver.clear_mood_event("tail_balance_lost")
+	organ_owner.clear_mood_event("tail_lost")
+	organ_owner.clear_mood_event("tail_balance_lost")
 
-		if(IS_WEAKREF_OF(receiver, original_owner))
-			receiver.clear_mood_event("wrong_tail_regained")
-		else if(receiver.dna.species.cosmetic_organs && (receiver.dna.species.cosmetic_organs[type] != SPRITE_ACCESSORY_NONE))
-			receiver.add_mood_event("wrong_tail_regained", /datum/mood_event/tail_regained_wrong)
+	if(IS_WEAKREF_OF(organ_owner, original_owner))
+		organ_owner.clear_mood_event("wrong_tail_regained")
+	else if(LAZYACCESS(organ_owner.dna.species.cosmetic_organs, type) && \
+		(organ_owner.dna.species.cosmetic_organs[type] != SPRITE_ACCESSORY_NONE))
+		organ_owner.add_mood_event("wrong_tail_regained", /datum/mood_event/tail_regained_wrong)
 
-		paired_spines = receiver.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
-		RegisterSignal(receiver, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_for_spines))
-		RegisterSignal(receiver, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_for_spines_loss))
+	paired_spines = organ_owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
+	RegisterSignal(organ_owner, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_for_spines))
+	RegisterSignal(organ_owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_for_spines_loss))
 
 /obj/item/organ/tail/Remove(mob/living/carbon/organ_owner, special, moving)
 	if(wag_flags & WAG_WAGGING)
 		wag(FALSE)
+	return ..()
+
+/obj/item/organ/tail/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	if(paired_spines)
 		paired_spines = null

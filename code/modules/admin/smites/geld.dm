@@ -22,10 +22,8 @@
 	genital.Remove(owner)
 	genital.add_mob_blood(owner)
 	genital.forceMove(owner.loc)
+	genital.fly_away(get_turf(owner))
 	owner.bleed(rand(20, 40))
-	var/direction = pick(GLOB.cardinals)
-	var/t_range = rand(2,max(genital.throw_range/2, 2))
-	genital.throw_at(get_ranged_target_turf(owner, direction, t_range), genital.throw_range, genital.throw_speed)
 	owner.Knockdown(4 SECONDS)
 	owner.visible_message(span_danger("[owner][owner.p_s()] [genital] flies off in an arc!"), \
 						span_userdanger("Your [genital] flies off in an arc!"))

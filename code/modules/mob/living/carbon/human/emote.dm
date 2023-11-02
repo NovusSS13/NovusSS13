@@ -64,7 +64,7 @@
 	vary = FALSE
 
 /datum/emote/living/carbon/human/scream/get_sound(mob/living/carbon/human/user)
-	return user.voice_pack?.get_sound_for_emote(src, user)
+	return user.voice_pack?.get_sound_for_emote(src, user) || sound
 
 /datum/emote/living/carbon/human/scream/screech //If a human tries to screech it'll just scream.
 	key = "screech"
