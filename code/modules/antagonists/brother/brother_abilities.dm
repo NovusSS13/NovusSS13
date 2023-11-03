@@ -6,7 +6,7 @@
 	background_icon_state = "bg_brother"
 	overlay_icon_state = "bg_brother_border"
 
-	cooldown_time = 5 SECONDS
+	cooldown_time = 10 SECONDS
 
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_MIND
 	antimagic_flags = MAGIC_RESISTANCE_MIND
@@ -31,12 +31,12 @@
 	if(!team)
 		return FALSE
 
-/datum/action/cooldown/spell/brother_telepathy/before_cast(atom/cast_on)
+/datum/action/cooldown/spell/brother_telepathy/before_cast(mob/living/cast_on)
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
 
-	message = tgui_input_text(owner, "What do you wish to tell to [team]?", "[src]")
+	message = tgui_input_text(owner, "What do you wish to say to [team]?", "[src]")
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(cast_on) || !can_cast_spell())
 		return . | SPELL_CANCEL_CAST
 	else if(!message)
@@ -47,7 +47,7 @@
 	. = ..()
 	cast_on.log_talk(message, LOG_SAY, tag = name)
 
-	to_chat(owner, "<span class='[telepathy_span]'><b>You transmit to [team.name]:</b> [message]</span>")
+	to_chat(owner, "<span class='[telepathy_span]'><b>You transmit to [team]:</b> [message]</span>")
 	var/datum/mind/caster_mind = cast_on.mind
 	for(var/datum/mind/brother as anything in (team.members - caster_mind))
 		if(!brother.current)

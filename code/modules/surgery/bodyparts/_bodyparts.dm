@@ -268,7 +268,6 @@
  * Modifies the check_list list with the resulting report of the limb's status.
  */
 /obj/item/bodypart/proc/check_for_injuries(mob/living/carbon/human/examiner, list/check_list)
-
 	var/list/limb_damage = list(BRUTE = brute_dam, BURN = burn_dam)
 
 	SEND_SIGNAL(src, COMSIG_BODYPART_CHECKED_FOR_INJURY, examiner, check_list, limb_damage)

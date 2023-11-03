@@ -471,7 +471,7 @@
 		actual_trauma = trauma
 
 	if(actual_trauma.brain) //we don't accept used traumas here
-		WARNING("gain_trauma was given an already active trauma.")
+		WARNING("brain_gain_trauma was given an already active trauma.")
 		return FALSE
 
 	add_trauma_to_traumas(actual_trauma)

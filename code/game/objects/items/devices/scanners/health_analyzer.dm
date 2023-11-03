@@ -198,7 +198,7 @@
 			if(advanced)
 				render_list += "<span class='info ml-1'>Subject Minor Disabilities: [carbontarget.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY)].</span>\n"
 
-	if (HAS_TRAIT(target, TRAIT_IRRADIATED))
+	if(HAS_TRAIT(target, TRAIT_IRRADIATED))
 		render_list += "<span class='alert ml-1'>Subject is irradiated. Supply toxin healing.</span>\n"
 
 	//Eyes and ears
@@ -248,10 +248,7 @@
 
 			if(mode == SCANNER_VERBOSE)
 				for(var/obj/item/bodypart/limb as anything in damaged)
-					if(limb.bodytype & BODYTYPE_ROBOTIC)
-						dmgreport += "<tr><td><font color='#cc3333'>[capitalize(limb.name)]:</font></td>"
-					else
-						dmgreport += "<tr><td><font color='#cc3333'>[capitalize(limb.plaintext_zone)]:</font></td>"
+					dmgreport += "<tr><td><font color='#cc3333'>[capitalize(limb.plaintext_zone)]:</font></td>"
 					dmgreport += "<td><font color='#cc3333'>[(limb.brute_dam > 0) ? "[CEILING(limb.brute_dam,1)]" : "0"]</font></td>"
 					dmgreport += "<td><font color='#ff9933'>[(limb.burn_dam > 0) ? "[CEILING(limb.burn_dam,1)]" : "0"]</font></td></tr>"
 			dmgreport += "</font></table>"
@@ -276,7 +273,7 @@
 				var/status = organ.get_status_text()
 				if (status != "")
 					render = TRUE
-					toReport += "<tr><td><font color='#cc3333'>[organ.name]:</font></td>\
+					toReport += "<tr><td><font color='#cc3333'>[capitalize(organ.name)]:</font></td>\
 						[advanced ? "<td><font color='#ff3333'>[CEILING(organ.damage,1)]</font></td>" : ""]\
 						<td>[status]</td></tr>"
 
@@ -301,7 +298,7 @@
 			if(length(missing_organs))
 				render = TRUE
 				for(var/organ in missing_organs)
-					toReport += "<tr><td><font color='#cc3333'>[organ]:</font></td>\
+					toReport += "<tr><td><font color='#cc3333'>[capitalize(organ)]:</font></td>\
 						[advanced ? "<td><font color='#ff3333'>["-"]</font></td>" : ""]\
 						<td><font color='#cc3333'>["Missing"]</font></td></tr>"
 

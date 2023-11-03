@@ -500,7 +500,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/proc/get_status_text()
 	var/status = ""
 	if(owner.has_reagent(/datum/reagent/inverse/technetium))
-		status = "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% damaged.</font>"
+		status = "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% Damaged</font>"
 	else if(organ_flags & ORGAN_FAILING)
 		status = "<font color='#cc3333'>Non-Functional</font>"
 	else if(damage > high_threshold)

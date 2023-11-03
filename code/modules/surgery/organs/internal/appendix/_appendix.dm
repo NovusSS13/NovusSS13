@@ -87,8 +87,7 @@
 /obj/item/organ/appendix/get_status_text()
 	if((!(organ_flags & ORGAN_FAILING)) && inflamation_stage)
 		return "<font color='#ff9933'>Inflamed</font>"
-	else
-		return ..()
+	return ..()
 
 #undef APPENDICITIS_PROB
 #undef INFLAMATION_ADVANCEMENT_PROB

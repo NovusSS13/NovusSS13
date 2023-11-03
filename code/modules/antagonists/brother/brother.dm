@@ -128,11 +128,12 @@
 /datum/antagonist/brother/proc/on_death(mob/living/source, gibbed)
 	SIGNAL_HANDLER
 
+	var/dead_brother = source.mind?.name || "[source.name]"
 	for(var/datum/mind/brother_mind as anything in team.members)
 		if((brother_mind == owner) || !brother_mind.current)
 			continue
 		var/mob/living/brother = brother_mind.current
-		to_chat(brother, span_userdanger("MY BROTHER! [uppertext(source.name)] HAS DIED!"))
+		to_chat(brother, span_userdanger("MY BROTHER! [uppertext(dead_brother)] HAS DIED!"))
 		INVOKE_ASYNC(brother, TYPE_PROC_REF(/mob, emote), "scream")
 		if(iscarbon(brother))
 			var/mob/living/carbon/traumatized = brother
@@ -142,12 +143,13 @@
 /datum/antagonist/brother/proc/on_revive(mob/living/source, full_heal_flags)
 	SIGNAL_HANDLER
 
-	var/no_dead_brothers = FALSE
+	var/no_dead_brothers = TRUE
+	var/live_brother = source.mind?.name || "[source.name]"
 	for(var/datum/mind/brother_mind as anything in team.members)
 		if((brother_mind == owner) || !brother_mind.current)
 			continue
 		var/mob/living/brother = brother_mind.current
-		to_chat(brother, span_boldnicegreen("[source] is alive again!"))
+		to_chat(brother, span_boldnicegreen(span_announce("[live_brother] is alive again!")))
 		if(brother.stat >= DEAD)
 			no_dead_brothers = FALSE
 
@@ -158,19 +160,21 @@
 		if(!brother_mind.current || !iscarbon(brother_mind.current))
 			continue
 		var/mob/living/carbon/traumatized = brother_mind.current
-		for(var/datum/brain_trauma/trauma in traumatized.get_traumas())
-			if(istype(trauma, /datum/brain_trauma/severe/stroke/brother))
-				qdel(trauma)
-				break
+		qdel(locate(/datum/brain_trauma/severe/stroke/brother) in traumatized.get_traumas())
 
 /datum/antagonist/brother/proc/on_gain_trauma(mob/living/carbon/source, datum/brain_trauma/trauma, resilience, list/arguments)
 	SIGNAL_HANDLER
+
+	if(!trauma.random_gain)
+		return
 
 	for(var/datum/mind/brother_mind as anything in team.members)
 		if((brother_mind == owner) || !iscarbon(brother_mind.current))
 			continue
 		var/mob/living/carbon/traumatized = brother_mind.current
-		traumatized.gain_trauma(trauma.type, resilience, arguments)
+		var/obj/item/organ/brain/brain = traumatized.get_organ_slot(ORGAN_SLOT_BRAIN)
+		if(brain)
+			brain.brain_gain_trauma(trauma.type, resilience, arguments)
 
 /datum/antagonist/brother/proc/on_lose_trauma(mob/living/carbon/source, datum/brain_trauma/trauma)
 	SIGNAL_HANDLER
