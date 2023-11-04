@@ -32,9 +32,9 @@
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 
 /datum/component/bloodysoles/UnregisterFromParent()
-	UnregisterFromParent(parent, COMSIG_ITEM_EQUIPPED)
-	UnregisterFromParent(parent, COMSIG_ITEM_DROPPED)
-	UnregisterFromParent(parent, COMSIG_COMPONENT_CLEAN_ACT)
+	UnregisterSignal(parent, COMSIG_ITEM_EQUIPPED)
+	UnregisterSignal(parent, COMSIG_ITEM_DROPPED)
+	UnregisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT)
 	unregister()
 
 /**
