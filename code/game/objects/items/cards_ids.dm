@@ -154,8 +154,12 @@
 	if (registered_account)
 		registered_account.bank_cards -= src
 	registered_account = null
-	if (my_store)
-		QDEL_NULL(my_store)
+
+	QDEL_NULL(my_store)
+
+	access.Cut()
+	wildcard_slots.Cut()
+
 	return ..()
 
 /obj/item/card/id/get_examine_string(mob/user, thats = FALSE)
@@ -170,6 +174,7 @@
 	src.id_card = id_card
 
 /datum/id_card_panel/Destroy(force)
+	id_card?.id_card_panel = null
 	id_card = null
 	return ..()
 
