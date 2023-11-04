@@ -296,10 +296,13 @@
 
 	if(gendercount[MALE] > (gendercount[FEMALE]+gendercount[PLURAL]))
 		hood_type = "Brotherhood"
+		member_name = "blood brother"
 	else if(gendercount[FEMALE] > (gendercount[MALE]+gendercount[PLURAL]))
 		hood_type = "Sisterhood"
+		member_name = "blood sister"
 	else
 		hood_type = "Siblinghood"
+		member_name = "blood sibling"
 
 	name = "\proper [hood_type] of " + last_names.Join(" & ")
 
