@@ -33,7 +33,7 @@
 	var/obscured = check_obscured_slots()
 
 	//lips
-	var/obj/item/bodypart/shoeonhead = get_bodypart(BODY_ZONE_HEAD)
+	var/obj/item/bodypart/head/shoeonhead = get_bodypart(BODY_ZONE_HEAD)
 	if(shoeonhead)
 		var/list/covered_lips = list()
 		for(var/component_type in subtypesof(/datum/component/creamed))
@@ -44,6 +44,8 @@
 			covered_lips += span_color("drool", "#b6e7f5")
 		if(LAZYLEN(covered_lips))
 			. += "Mmm, [t_his] lips are covered with [english_list(covered_lips)]!"
+		else if((shoeonhead.head_flags & HEAD_LIPS) && shoeonhead.lip_style)
+			. += "[t_He] [t_has] some lipstick on [t_his] lips."
 
 	//head
 	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
@@ -295,10 +297,10 @@
 			//i could not figure out a clean way to add the blood brother check here with signals and such, so i did
 			//this ugly mess
 			if(!empathy && mind && user.mind)
-				var/datum/antagonist/brother/brother = user.mind.has_antag_datum(/datum/antagonist/brother)
-				if(brother?.team && (mind in brother.team.members))
+				var/datum/antagonist/brother/brother = mind.has_antag_datum(/datum/antagonist/brother)
+				if(brother?.team && (user.mind in brother.team.members))
 					empathy = TRUE
-					msg += "[span_brother("[t_He] [t_is] your blood brother!")]\n"
+					msg += "[span_brother("[t_He] [t_is] your [uppertext(brother)]!")]\n"
 			if(empathy)
 				if (combat_mode)
 					msg += "[t_He] seem[p_s()] to be on guard.\n"
@@ -328,7 +330,7 @@
 					if(HAS_TRAIT(src, TRAIT_DUMB))
 						msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
 					if(HAS_TRAIT(src, TRAIT_STROKE))
-						msg += "[t_His] face is saggy and half of [t_his] mouth is drooping.\n"
+						msg += "[t_His] face is saggy and drooping to the side.\n"
 
 		if(!ai_controller && get_organ_slot(ORGAN_SLOT_BRAIN))
 			if(!key)

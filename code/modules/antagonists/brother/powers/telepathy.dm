@@ -1,6 +1,6 @@
-/datum/action/cooldown/spell/brother_telepathy
-	name = "Brotherhood Telepathy"
-	desc = "Telepathically transmits a message to your brothers."
+/datum/action/cooldown/spell/fraternal_telepathy
+	name = "Fraternal Telepathy"
+	desc = "Telepathically transmits a message to your blood siblings - They must be conscious to hear it."
 	button_icon = 'icons/mob/actions/actions_brother.dmi'
 	button_icon_state = "transmit"
 	background_icon_state = "bg_brother"
@@ -19,19 +19,19 @@
 	/// The span surrounding the telepathy message
 	var/telepathy_span = "brother"
 
-/datum/action/cooldown/spell/brother_telepathy/New(team)
+/datum/action/cooldown/spell/fraternal_telepathy/New(team)
 	. = ..()
 	if(team)
 		src.team = team
 	else
 		CRASH("[type] created without an associated team")
 
-/datum/action/cooldown/spell/brother_telepathy/can_cast_spell(feedback)
+/datum/action/cooldown/spell/fraternal_telepathy/can_cast_spell(feedback)
 	. = ..()
 	if(!team)
 		return FALSE
 
-/datum/action/cooldown/spell/brother_telepathy/before_cast(mob/living/cast_on)
+/datum/action/cooldown/spell/fraternal_telepathy/before_cast(mob/living/cast_on)
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
@@ -43,10 +43,12 @@
 		reset_spell_cooldown()
 		return . | SPELL_CANCEL_CAST
 
-/datum/action/cooldown/spell/brother_telepathy/cast(mob/living/cast_on)
+/datum/action/cooldown/spell/fraternal_telepathy/cast(mob/living/cast_on)
 	. = ..()
-	cast_on.log_talk(message, LOG_SAY, tag = name)
+	if(!message)
+		return
 
+	cast_on.log_talk(message, LOG_SAY, tag = name)
 	to_chat(owner, "<span class='[telepathy_span]'><b>You transmit to [team]:</b> [message]</span>")
 	var/datum/mind/caster_mind = cast_on.mind
 	for(var/datum/mind/brother as anything in (team.members - caster_mind))
@@ -58,7 +60,7 @@
 		//hear no evil
 		if(body.can_block_magic(antimagic_flags, charge_cost = 0))
 			continue
-		//brother has to be conscious to hear your message
+		//must be conscious
 		if(body.stat >= UNCONSCIOUS)
 			continue
 		to_chat(body, "<span class='[telepathy_span]'><b>[caster_mind.name] (to [team.name]):</b> [message]</span>")

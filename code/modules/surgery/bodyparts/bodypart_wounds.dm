@@ -121,11 +121,11 @@
 	for(var/datum/wound/existing_wound as anything in wounds)
 		if(existing_wound.wound_type == initial(potential_wound.wound_type))
 			if(existing_wound.severity < initial(potential_wound.severity)) // we only try if the existing one is inferior to the one we're trying to force
-				existing_wound.replace_wound(potential_wound, smited)
+				return existing_wound.replace_wound(potential_wound, smited)
 			return
 
 	var/datum/wound/new_wound = new potential_wound
-	new_wound.apply_wound(src, smited = smited, wound_source = wound_source)
+	return new_wound.apply_wound(src, smited = smited, wound_source = wound_source)
 
 /**
  * check_wounding_mods() is where we handle the various modifiers of a wound roll

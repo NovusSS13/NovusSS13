@@ -678,63 +678,40 @@
 /mob/living/carbon/human/check_self_for_injuries()
 	if(stat >= UNCONSCIOUS)
 		return
-	var/list/combined_msg = list()
 
-	visible_message(span_notice("[src] examines [p_them()]self."))
+	visible_message(span_notice("[src] examines [p_them()]self."), span_notice("You examine yourself."))
+	var/list/messages = print_injuries(src)
+	SEND_SIGNAL(src, COMSIG_CARBON_CHECK_SELF_FOR_INJURIES, messages)
+	if(!LAZYLEN(messages))
+		return
+	to_chat(src, examine_block(messages.Join("\n")))
 
-	combined_msg += span_notice("<b>You check yourself for injuries.</b>")
+/mob/living/carbon/human/print_injuries(mob/user)
+	var/list/combined_msg = list(span_info("<EM>Current health status:</EM>"))
 
-	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
-
-	for(var/obj/item/bodypart/body_part as anything in bodyparts)
-		missing -= body_part.body_zone
-		if(body_part.bodypart_flags & BODYPART_PSEUDOPART) //don't show injury text for fake bodyparts; ie chainsaw arms or synthetic armblades
-			continue
-
-		body_part.check_for_injuries(src, combined_msg)
-
-	for(var/t in missing)
-		combined_msg += span_boldannounce("Your [parse_zone(t)] is missing!")
-
-	if(is_bleeding())
-		var/list/obj/item/bodypart/bleeding_limbs = list()
-		for(var/obj/item/bodypart/part as anything in bodyparts)
-			if(part.get_modified_bleed_rate())
-				bleeding_limbs += part
-
-		var/num_bleeds = LAZYLEN(bleeding_limbs)
-		var/bleed_text = "<span class='danger'>You are bleeding from your"
-		switch(num_bleeds)
-			if(1 to 2)
-				bleed_text += " [bleeding_limbs[1].name][num_bleeds == 2 ? " and [bleeding_limbs[2].name]" : ""]"
-			if(3 to INFINITY)
-				for(var/i in 1 to (num_bleeds - 1))
-					var/obj/item/bodypart/BP = bleeding_limbs[i]
-					bleed_text += " [BP.name],"
-				bleed_text += " and [bleeding_limbs[num_bleeds].name]"
-		bleed_text += "!</span>"
-		combined_msg += bleed_text
-
-	if(getStaminaLoss())
-		if(getStaminaLoss() > 30)
+	if(HAS_TRAIT(src, TRAIT_SELF_AWARE))
+		var/tox_loss = getToxLoss()
+		if(tox_loss)
+			if(tox_loss > 10)
+				combined_msg += span_danger("You feel sick.")
+			else if(tox_loss > 20)
+				combined_msg += span_danger("You feel nauseated.")
+			else if(tox_loss > 40)
+				combined_msg += span_danger("You feel very unwell!")
+		var/oxy_loss = getOxyLoss()
+		if(oxy_loss)
+			if(oxy_loss > 10)
+				combined_msg += span_danger("You feel lightheaded.")
+			else if(oxy_loss > 20)
+				combined_msg += span_danger("Your thinking is clouded and distant.")
+			else if(oxy_loss > 30)
+				combined_msg += span_danger("You're choking!")
+	var/stamina_loss = getStaminaLoss()
+	if(stamina_loss)
+		if(stamina_loss > 30)
 			combined_msg += span_info("You're completely exhausted.")
 		else
 			combined_msg += span_info("You feel fatigued.")
-	if(HAS_TRAIT(src, TRAIT_SELF_AWARE))
-		if(toxloss)
-			if(toxloss > 10)
-				combined_msg += span_danger("You feel sick.")
-			else if(toxloss > 20)
-				combined_msg += span_danger("You feel nauseated.")
-			else if(toxloss > 40)
-				combined_msg += span_danger("You feel very unwell!")
-		if(oxyloss)
-			if(oxyloss > 10)
-				combined_msg += span_danger("You feel lightheaded.")
-			else if(oxyloss > 20)
-				combined_msg += span_danger("Your thinking is clouded and distant.")
-			else if(oxyloss > 30)
-				combined_msg += span_danger("You're choking!")
 
 	if(!HAS_TRAIT(src, TRAIT_NOHUNGER))
 		switch(nutrition)
@@ -751,52 +728,45 @@
 			if(0 to NUTRITION_LEVEL_STARVING)
 				combined_msg += span_danger("You're starving!")
 
-	//Compiles then shows the list of damaged organs and broken organs
+	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+	for(var/obj/item/bodypart/body_part as anything in bodyparts)
+		missing -= body_part.body_zone
+		if(body_part.bodypart_flags & BODYPART_PSEUDOPART) //don't show injury text for fake bodyparts; ie chainsaw arms or synthetic armblades
+			continue
+
+		combined_msg += body_part.check_for_injuries(user)
+
+	for(var/zone in missing)
+		combined_msg += "\t [span_boldannounce("Your [parse_zone(zone)] is missing!")]"
+
+	if(is_bleeding())
+		var/list/obj/item/bodypart/bleeding_limbs = list()
+		for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+			if(!bodypart.get_modified_bleed_rate())
+				continue
+			bleeding_limbs += bodypart.name
+
+		if(LAZYLEN(bleeding_limbs))
+			combined_msg += span_danger("You are bleeding from your [english_list(bleeding_limbs)]!")
+
+	//Compiles then shows the list of damaged and broken organs
 	var/list/broken = list()
 	var/list/damaged = list()
-	var/broken_message
-	var/damaged_message
-	var/broken_plural
-	var/damaged_plural
 	//Sets organs into their proper list
 	for(var/obj/item/organ/organ as anything in organs)
 		if(organ.organ_flags & ORGAN_FAILING)
-			if(broken.len)
-				broken += ", "
 			broken += organ.name
 		else if(organ.damage > organ.low_threshold)
-			if(damaged.len)
-				damaged += ", "
 			damaged += organ.name
-	//Checks to enforce proper grammar, inserts words as necessary into the list
-	if(broken.len)
-		if(broken.len > 1)
-			broken.Insert(broken.len, "and ")
-			broken_plural = TRUE
-		else
-			var/holder = broken[1] //our one and only element
-			if(holder[length(holder)] == "s")
-				broken_plural = TRUE
-		//Put the items in that list into a string of text
-		for(var/B in broken)
-			broken_message += B
-		combined_msg += span_warning("Your [broken_message] [broken_plural ? "are" : "is"] non-functional!")
-	if(damaged.len)
-		if(damaged.len > 1)
-			damaged.Insert(damaged.len, "and ")
-			damaged_plural = TRUE
-		else
-			var/holder = damaged[1]
-			if(holder[length(holder)] == "s")
-				damaged_plural = TRUE
-		for(var/D in damaged)
-			damaged_message += D
-		combined_msg += span_info("Your [damaged_message] [damaged_plural ? "are" : "is"] hurt.")
+	if(LAZYLEN(broken))
+		combined_msg += span_danger("Your [english_list(broken)] [broken.len > 1 ? "are" : "is"] non-functional!")
+	if(LAZYLEN(damaged))
+		combined_msg += span_warning("Your [english_list(damaged)] [broken.len > 1 ? "are" : "is"] hurt.")
 
-	if(quirks.len)
+	if(LAZYLEN(quirks))
 		combined_msg += span_notice("You have these quirks: [get_quirk_string(FALSE, CAT_QUIRK_ALL)].")
 
-	to_chat(src, examine_block(combined_msg.Join("\n")))
+	return combined_msg
 
 /mob/living/carbon/human/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
 	if(damage_type != BRUTE && damage_type != BURN)

@@ -537,21 +537,34 @@
 		return
 
 	var/embeds = FALSE
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/LB = X
-		for(var/obj/item/I in LB.embedded_objects)
-			if(!embeds)
-				embeds = TRUE
-				// this way, we only visibly try to examine ourselves if we have something embedded, otherwise we'll still hug ourselves :)
-				visible_message(span_notice("[src] examines [p_them()]self."), \
-					span_notice("You check yourself for shrapnel."))
-			if(I.isEmbedHarmless())
-				to_chat(src, "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] stuck to your [LB.name]!</a>")
-			else
-				to_chat(src, "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] embedded in your [LB.name]!</a>")
+	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+		for(var/obj/item/item as anything in bodypart.embedded_objects)
+			embeds = TRUE
+			break
+	// this way, we only visibly try to examine ourselves if we have something embedded, otherwise we'll still hug ourselves :)
+	if(!embeds)
+		return embeds
 
+	var/list/messages = print_injuries(src)
+	SEND_SIGNAL(src, COMSIG_CARBON_CHECK_SELF_FOR_INJURIES, messages)
+	if(!LAZYLEN(messages))
+		return embeds
+	visible_message(span_notice("[src] examines [p_them()]self."), \
+		span_notice("You check yourself for shrapnel."))
+	to_chat(src, examine_block(messages.Join("\n")))
 	return embeds
 
+/mob/living/carbon/proc/print_injuries(mob/user)
+	var/list/combined_msg = list(span_info("<EM>Current health status:</EM>"))
+
+	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+		for(var/obj/item/item as anything in bodypart.embedded_objects)
+			if(item.isEmbedHarmless())
+				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(item)];embedded_limb=[REF(bodypart)]' class='warning'>There is \a [item] stuck to your [bodypart.name]!</a>"
+			else
+				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(item)];embedded_limb=[REF(bodypart)]' class='warning'>There is \a [item] embedded in your [bodypart.name]!</a>"
+
+	return combined_msg
 
 /mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
 	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)

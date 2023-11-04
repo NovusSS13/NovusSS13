@@ -264,14 +264,14 @@
 
 /**
  * Called when a bodypart is checked for injuries.
- *
- * Modifies the check_list list with the resulting report of the limb's status.
+ * Returns the messages represeting the bodypart's injuries.
  */
-/obj/item/bodypart/proc/check_for_injuries(mob/living/carbon/human/examiner, list/check_list)
+/obj/item/bodypart/proc/check_for_injuries(mob/living/carbon/human/examiner)
+	var/list/messages = list()
 	var/list/limb_damage = list(BRUTE = brute_dam, BURN = burn_dam)
 
-	SEND_SIGNAL(src, COMSIG_BODYPART_CHECKED_FOR_INJURY, examiner, check_list, limb_damage)
-	SEND_SIGNAL(examiner, COMSIG_CARBON_CHECKING_BODYPART, src, check_list, limb_damage)
+	SEND_SIGNAL(src, COMSIG_BODYPART_CHECKED_FOR_INJURY, examiner, messages, limb_damage)
+	SEND_SIGNAL(examiner, COMSIG_CARBON_CHECKING_BODYPART, src, messages, limb_damage)
 
 	var/shown_brute = limb_damage[BRUTE]
 	var/shown_burn = limb_damage[BURN]
@@ -317,22 +317,23 @@
 		else
 			is_disabled += " and"
 
-	check_list += "\t <span class='[no_damage ? "notice" : "warning"]'>Your [name][is_disabled][self_aware ? " has " : " is "][status].</span>"
-
+	messages += "\t <span class='[no_damage ? "notice" : "warning"]'>Your [name][is_disabled][self_aware ? " has " : " is "][status].</span>"
 	for(var/datum/wound/wound as anything in wounds)
 		switch(wound.severity)
 			if(WOUND_SEVERITY_TRIVIAL)
-				check_list += "\t [span_danger("Your [name] is suffering [wound.a_or_from] [lowertext(wound.name)].")]"
+				messages += "\t [span_danger("Your [name] is suffering [wound.a_or_from] [lowertext(wound.name)].")]"
 			if(WOUND_SEVERITY_MODERATE)
-				check_list += "\t [span_warning("Your [name] is suffering [wound.a_or_from] [lowertext(wound.name)]!")]"
+				messages += "\t [span_warning("Your [name] is suffering [wound.a_or_from] [lowertext(wound.name)]!")]"
 			if(WOUND_SEVERITY_SEVERE)
-				check_list += "\t [span_boldwarning("Your [name] is suffering [wound.a_or_from] [lowertext(wound.name)]!!")]"
+				messages += "\t [span_boldwarning("Your [name] is suffering [wound.a_or_from] [lowertext(wound.name)]!!")]"
 			if(WOUND_SEVERITY_CRITICAL)
-				check_list += "\t [span_boldwarning("Your [name] is suffering [wound.a_or_from] [lowertext(wound.name)]!!!")]"
+				messages += "\t [span_boldwarning("Your [name] is suffering [wound.a_or_from] [lowertext(wound.name)]!!!")]"
 
 	for(var/obj/item/embedded_thing in embedded_objects)
 		var/stuck_word = embedded_thing.isEmbedHarmless() ? "stuck" : "embedded"
-		check_list += "\t <a href='?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]' class='warning'>There is \a [embedded_thing] [stuck_word] in your [name]!</a>"
+		messages += "\t <a href='?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]' class='warning'>There is \a [embedded_thing] [stuck_word] in your [name]!</a>"
+
+	return messages
 
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage, wound_bonus = CANT_WOUND)

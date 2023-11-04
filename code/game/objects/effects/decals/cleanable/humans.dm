@@ -212,13 +212,12 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drips of blood"
-	desc = "It's red."
+	desc = "Bleed for me, I've bled for you."
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
-	bloodiness = 0
+	bloodiness = BLOOD_AMOUNT_PER_DECAL * 0.1
 	dryname = "dried drips of blood"
-	drydesc = "It's red."
-	should_dry = FALSE
+	drydesc = "Embrace me, child, I'll see you through."
 	/// Amount of blood droplets we currently have
 	var/drips = 1
 
@@ -233,6 +232,7 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 	if(istype(merger, /obj/effect/decal/cleanable/blood/drip))
 		var/obj/effect/decal/cleanable/blood/drip/dripper = merger
 		dripper.drips += drips
+		get_timer()
 
 //BLOODY FOOTPRINTS
 /obj/effect/decal/cleanable/blood/footprints

@@ -211,9 +211,10 @@
 		return
 	var/mob/living/carbon/carbon_owner = owner.current
 	var/obj/item/organ/brain/not_ling_brain = carbon_owner.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(not_ling_brain && (not_ling_brain.decoy_override != initial(not_ling_brain.decoy_override)))
-		not_ling_brain.organ_flags |= ORGAN_VITAL
-		not_ling_brain.decoy_override = FALSE
+	if(not_ling_brain)
+		if(initial(not_ling_brain.organ_flags) & ORGAN_VITAL)
+			not_ling_brain.organ_flags |= ORGAN_VITAL
+		not_ling_brain.decoy_override = initial(not_ling_brain.decoy_override)
 	return ..()
 
 /datum/antagonist/changeling/farewell()

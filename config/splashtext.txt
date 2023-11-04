@@ -32,12 +32,12 @@ SPLASHTEXT 0 players online!
 SPLASHTEXT Also try Mojave Sun!
 SPLASHTEXT Now with 12% less jank!
 SPlASHTEXT Now with 12% more jank!
-SPLASHTEXT A small loan of a million markings..
+SPLASHTEXT A small loan of a million markings...
 SPLASHTEXT Make a change! PR a TG revert!
 SPLASHTEXT Better than the competition!
 SPLASHTEXT Smells like lemons.
 SPLASHTEXT Smells like racoons.
-SPLASHTEXT Smells like sepsis.. wait, what?
+SPLASHTEXT Smells like sepsis... wait, what?
 SPLASHTEXT Also try Desert Bus 13!
 SPLASHTEXT The OOC channel has been globally disabled.
 SPLASHTEXT Alright, but what's YOUR N game completion rate?
@@ -45,4 +45,5 @@ SPLASHTEXT Wake up. Get on E621. Sleep. Grindset.
 SPLASHTEXT You can now play as Luigi!
 SPLASHTEXT Now with 42% more soul!
 SPLASHTEXT The hidden ceiling room in maints is a lie.
-SPLASHTEXT This is just like 1984..
+SPLASHTEXT This is just like 1984...
+SPLASHTEXT A bond forged in blood!

@@ -62,12 +62,13 @@
 	mode = MODE_VOCALCORDS
 
 /datum/saymode/vocalcords/handle_message(mob/living/user, message, datum/language/language)
-	if(iscarbon(user))
-		var/mob/living/carbon/C = user
-		var/obj/item/organ/vocal_cords/V = C.get_organ_slot(ORGAN_SLOT_VOICE)
-		if(V?.can_speak_with())
-			V.handle_speech(message) //message
-			V.speak_with(message) //action
+	if(!iscarbon(user))
+		return FALSE
+	var/mob/living/carbon/carbon_user = user
+	var/obj/item/organ/vocal_cords/vocal_cords = carbon_user.get_organ_slot(ORGAN_SLOT_VOICE)
+	if(vocal_cords?.can_speak_with())
+		vocal_cords.handle_speech(message) //message
+		vocal_cords.speak_with(message) //action
 	return FALSE
 
 

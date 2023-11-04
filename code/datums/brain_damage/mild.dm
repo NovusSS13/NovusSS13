@@ -85,6 +85,9 @@
 	lose_text = span_notice("The pressure inside your head starts fading.")
 
 /datum/brain_trauma/mild/concussion/on_life(seconds_per_tick, times_fired)
+	. = ..()
+	if(HAS_TRAIT(owner, TRAIT_TUMOR_SUPPRESSED))
+		return
 	if(SPT_PROB(2.5, seconds_per_tick))
 		switch(rand(1,11))
 			if(1)
@@ -102,8 +105,6 @@
 			if(11)
 				to_chat(owner, span_warning("You faint."))
 				owner.Unconscious(80)
-
-	..()
 
 /datum/brain_trauma/mild/healthy
 	name = "Anosognosia"
@@ -134,7 +135,7 @@
 	var/fall_chance = 1
 	if(owner.m_intent == MOVE_INTENT_RUN)
 		fall_chance += 2
-	if(SPT_PROB(0.5 * fall_chance, seconds_per_tick) && owner.body_position == STANDING_UP)
+	if(SPT_PROB(0.5 * fall_chance, seconds_per_tick) && (owner.body_position == STANDING_UP))
 		to_chat(owner, span_warning("Your leg gives out!"))
 		owner.Paralyze(35)
 
@@ -148,7 +149,7 @@
 	else if(SPT_PROB(1.5, seconds_per_tick))
 		to_chat(owner, span_warning("You feel a sudden weakness in your muscles!"))
 		owner.adjustStaminaLoss(50)
-	..()
+	return ..()
 
 /datum/brain_trauma/mild/muscle_spasms
 	name = "Muscle Spasms"
@@ -159,11 +160,11 @@
 
 /datum/brain_trauma/mild/muscle_spasms/on_gain()
 	owner.apply_status_effect(/datum/status_effect/spasms)
-	..()
+	return ..()
 
 /datum/brain_trauma/mild/muscle_spasms/on_lose()
 	owner.remove_status_effect(/datum/status_effect/spasms)
-	..()
+	return ..()
 
 /datum/brain_trauma/mild/nervous_cough
 	name = "Nervous Cough"
@@ -181,7 +182,7 @@
 			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 6)
 			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 12)
 		owner.emote("cough")
-	..()
+	return ..()
 
 /datum/brain_trauma/mild/expressive_aphasia
 	name = "Expressive Aphasia"
@@ -270,7 +271,7 @@
 	name = "Achromatopsia"
 	desc = "Patient's occipital lobe is unable to recognize and interpret color, rendering the patient completely colorblind."
 	scan_desc = "colorblindness"
-	gain_text = span_warning("The world around you seems to lose its color.")
+	gain_text = span_warning("The world around you seems dull and lifeless.")
 	lose_text = span_notice("The world feels bright and colorful again.")
 
 /datum/brain_trauma/mild/color_blindness/on_gain()

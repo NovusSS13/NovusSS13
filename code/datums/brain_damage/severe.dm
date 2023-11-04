@@ -14,11 +14,11 @@
 
 /datum/brain_trauma/severe/mute/on_gain()
 	ADD_TRAIT(owner, TRAIT_MUTE, TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/mute/on_lose()
 	REMOVE_TRAIT(owner, TRAIT_MUTE, TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/aphasia
 	name = "Aphasia"
@@ -30,14 +30,14 @@
 /datum/brain_trauma/severe/aphasia/on_gain()
 	owner.add_blocked_language(subtypesof(/datum/language) - /datum/language/aphasia, source = LANGUAGE_APHASIA)
 	owner.grant_language(/datum/language/aphasia, source = LANGUAGE_APHASIA)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/aphasia/on_lose()
 	if(!QDELING(owner))
 		owner.remove_blocked_language(subtypesof(/datum/language), source = LANGUAGE_APHASIA)
 		owner.remove_language(/datum/language/aphasia, source = LANGUAGE_APHASIA)
 
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/blindness
 	name = "Cerebral Blindness"
@@ -48,11 +48,11 @@
 
 /datum/brain_trauma/severe/blindness/on_gain()
 	owner.become_blind(TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/blindness/on_lose()
 	owner.cure_blind(TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/paralysis
 	name = "Paralysis"
@@ -103,16 +103,14 @@
 	lose_text = span_notice("You can feel [subject] again!")
 
 /datum/brain_trauma/severe/paralysis/on_gain()
-	..()
 	for(var/paralysis_trait in paralysis_traits)
 		ADD_TRAIT(owner, paralysis_trait, TRAUMA_TRAIT)
-
+	return ..()
 
 /datum/brain_trauma/severe/paralysis/on_lose()
-	..()
 	for(var/paralysis_trait in paralysis_traits)
 		REMOVE_TRAIT(owner, paralysis_trait, TRAUMA_TRAIT)
-
+	return ..()
 
 /datum/brain_trauma/severe/paralysis/paraplegic
 	random_gain = FALSE
@@ -164,14 +162,14 @@
 	var/stress = 0
 
 /datum/brain_trauma/severe/monophobia/on_gain()
-	..()
+	. = ..()
 	if(check_alone())
 		to_chat(owner, span_warning("You feel really lonely..."))
 	else
 		to_chat(owner, span_notice("You feel safe, as long as you have people around you."))
 
 /datum/brain_trauma/severe/monophobia/on_life(seconds_per_tick, times_fired)
-	..()
+	. = ..()
 	if(check_alone())
 		stress = min(stress + 0.5, 100)
 		if(stress > 10 && SPT_PROB(2.5, seconds_per_tick))
@@ -183,8 +181,8 @@
 	var/check_radius = 7
 	if(owner.is_blind())
 		check_radius = 1
-	for(var/mob/M in oview(owner, check_radius))
-		if(!isliving(M)) //ghosts ain't people
+	for(var/mob/M in view(owner, check_radius))
+		if((M == owner) || !isliving(M)) //ghosts ain't people
 			continue
 		if(istype(M, /mob/living/simple_animal/pet) || istype(M, /mob/living/basic/pet) || M.ckey)
 			return FALSE
@@ -261,11 +259,11 @@
 
 /datum/brain_trauma/severe/pacifism/on_gain()
 	ADD_TRAIT(owner, TRAIT_PACIFISM, TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/pacifism/on_lose()
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/hypnotic_stupor
 	name = "Hypnotic Stupor"
@@ -275,11 +273,11 @@
 	lose_text = span_notice("You feel like a fog was lifted from your mind.")
 
 /datum/brain_trauma/severe/hypnotic_stupor/on_lose() //hypnosis must be cleared separately, but brain surgery should get rid of both anyway
-	..()
+	. = ..()
 	owner.remove_status_effect(/datum/status_effect/trance)
 
 /datum/brain_trauma/severe/hypnotic_stupor/on_life(seconds_per_tick, times_fired)
-	..()
+	. = ..()
 	if(SPT_PROB(0.5, seconds_per_tick) && !owner.has_status_effect(/datum/status_effect/trance))
 		owner.apply_status_effect(/datum/status_effect/trance, rand(100,300), FALSE)
 
@@ -293,12 +291,12 @@
 	var/trigger_phrase = "Nanotrasen"
 
 /datum/brain_trauma/severe/hypnotic_trigger/New(phrase)
-	..()
+	. = ..()
 	if(phrase)
 		trigger_phrase = phrase
 
 /datum/brain_trauma/severe/hypnotic_trigger/on_lose() //hypnosis must be cleared separately, but brain surgery should get rid of both anyway
-	..()
+	. = ..()
 	owner.remove_status_effect(/datum/status_effect/trance)
 
 /datum/brain_trauma/severe/hypnotic_trigger/handle_hearing(datum/source, list/hearing_args)
@@ -308,7 +306,7 @@
 	var/regex/reg = new("(\\b[REGEX_QUOTE(trigger_phrase)]\\b)","ig")
 
 	if(findtext(hearing_args[HEARING_RAW_MESSAGE], reg))
-		addtimer(CALLBACK(src, PROC_REF(hypnotrigger)), 10) //to react AFTER the chat message
+		addtimer(CALLBACK(src, PROC_REF(hypnotrigger)), 1 SECONDS) //to react AFTER the chat message
 		hearing_args[HEARING_RAW_MESSAGE] = reg.Replace(hearing_args[HEARING_RAW_MESSAGE], span_hypnophrase("*********"))
 
 /datum/brain_trauma/severe/hypnotic_trigger/proc/hypnotrigger()
@@ -324,18 +322,22 @@
 
 /datum/brain_trauma/severe/dyslexia/on_gain()
 	ADD_TRAIT(owner, TRAIT_ILLITERATE, TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/dyslexia/on_lose()
 	REMOVE_TRAIT(owner, TRAIT_ILLITERATE, TRAUMA_TRAIT)
-	..()
+	return ..()
 
 /datum/brain_trauma/severe/stroke
 	name = "Cerebral Infarction"
-	desc = "Part of the patient's brain tissue has become necrotic, and the brain is undergoing liquefactive necrosis."
-	scan_desc = "ischemic stroke"
+	desc = "An artery has burst in the patient's brain, the ensuing edema is causing worsening brain damage over time."
+	scan_desc = "hemorrhagic stroke"
 	gain_text = span_warning("Your head hurts really badly and your face feels numb!")
 	lose_text = span_notice("Your head no longer hurts and you can feel your whole face.")
+	/// Amount of organ damage caused per second
+	var/brain_damage = 0.2 //about as bad as brain tumor
+	/// Sometimes the patient gets a limb paralyzed
+	var/list/paralysis_traits
 
 /datum/brain_trauma/severe/stroke/on_gain()
 	ADD_TRAIT(owner, TRAIT_STROKE, TRAUMA_TRAIT)
@@ -343,13 +345,99 @@
 
 /datum/brain_trauma/severe/stroke/on_lose()
 	REMOVE_TRAIT(owner, TRAIT_STROKE, TRAUMA_TRAIT)
+	REMOVE_TRAIT(owner, TRAIT_ILLITERATE, STROKE_TRAIT)
+	REMOVE_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, STROKE_TRAIT)
+	var/static/list/paralysis_types = list(
+		TRAIT_PARALYSIS_R_ARM,
+		TRAIT_PARALYSIS_L_ARM,
+		TRAIT_PARALYSIS_R_LEG,
+		TRAIT_PARALYSIS_L_LEG,
+	)
+	remove_traits(list(TRAIT_PARALYSIS_R_ARM, TRAIT_PARALYSIS_L_ARM, TRAIT_PARALYSIS_R_LEG, TRAIT_PARALYSIS_L_LEG), TRAIT_STROKE)
 	return ..()
 
 /datum/brain_trauma/severe/stroke/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	brain?.apply_organ_damage(0.3 * seconds_per_tick) //50% worse than the brain tumor quirk
+	//no this is not a tumor, but lets give the user a break if he is tumor suppressed
+	if(HAS_TRAIT(owner, TRAIT_TUMOR_SUPPRESSED))
+		return
+	brain?.apply_organ_damage(brain_damage * seconds_per_tick)
+	if(SPT_PROB(5, seconds_per_tick))
+		owner.adjust_slurring(10 SECONDS)
+	if(SPT_PROB(2.5, seconds_per_tick))
+		switch(rand(1,13))
+			if(1)
+				owner.vomit(blood = TRUE, stun = TRUE)
+				owner.adjust_disgust_effect(35)
+			if(2,3)
+				owner.adjust_dizzy(10 SECONDS)
+			if(4,5)
+				var/obj/item/organ/ears/ears = owner.get_organ_slot(ORGAN_SLOT_EARS)
+				if(ears)
+					ears.adjustEarDamage(ddeaf = 10)
+			if(6,7)
+				owner.adjust_temp_blindness(5 SECONDS)
+				owner.set_eye_blur_if_lower(20 SECONDS)
+			if(8,9)
+				owner.adjust_confusion(10 SECONDS)
+				owner.set_eye_blur_if_lower(20 SECONDS)
+			if(10)
+				var/static/list/paralysis_dictionary = list(
+					TRAIT_PARALYSIS_R_ARM = BODY_ZONE_R_ARM,
+					TRAIT_PARALYSIS_L_ARM = BODY_ZONE_L_ARM,
+					TRAIT_PARALYSIS_R_LEG = BODY_ZONE_R_LEG,
+					TRAIT_PARALYSIS_L_LEG = BODY_ZONE_L_LEG,
+				)
+				var/paralyzed_trait = pick(paralysis_dictionary)
+				paralyze(owner, paralyzed_trait, 20 SECONDS)
+			if(11)
+				if(HAS_TRAIT(owner, TRAIT_NOBREATH))
+					return
+				owner.adjustOxyLoss(rand(20, 30))
+				INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob,emote), "gasp")
+				to_chat(owner, span_warning("You struggle to breathe!"))
+			if(12)
+				var/funny_trait = pick(TRAIT_UNINTELLIGIBLE_SPEECH, TRAIT_ILLITERATE)
+				ADD_TRAIT(owner, funny_trait, STROKE_TRAIT)
+				if(funny_trait == TRAIT_UNINTELLIGIBLE_SPEECH)
+					to_chat(owner, span_warning("You can't seem to speak properly."))
+				else
+					to_chat(owner, span_warning("You lose your grasp on the written word."))
+				addtimer(CALLBACK(src, PROC_REF(remove_funny_trait), owner, funny_trait), 20 SECONDS)
+			if(13)
+				to_chat(owner, span_warning("You faint."))
+				owner.Unconscious(80)
+
+/datum/brain_trauma/severe/stroke/proc/paralyze(mob/living/carbon/victim, list/paralysis, duration = 20 SECONDS)
+	if(!islist(paralysis))
+		paralysis = list(paralysis)
+	LAZYINITLIST(paralysis_traits)
+	for(var/paralysis_type in paralysis)
+		paralysis_traits |= paralysis_type
+		ADD_TRAIT(victim, paralysis_type, STROKE_TRAIT)
+	if(duration)
+		addtimer(CALLBACK(src, PROC_REF(unparalyze), victim, paralysis), duration)
+
+/datum/brain_trauma/severe/stroke/proc/unparalyze(mob/living/carbon/victim, list/paralysis)
+	if(QDELETED(victim) || QDELETED(src))
+		return
+	for(var/paralysis_type in paralysis)
+		LAZYREMOVE(paralysis_traits, paralysis_type)
+		REMOVE_TRAIT(victim, paralysis_type, STROKE_TRAIT)
+
+/datum/brain_trauma/severe/stroke/proc/remove_funny_trait(mob/living/carbon/victim, funny_trait)
+	if(QDELETED(victim) || QDELETED(src))
+		return
+	REMOVE_TRAIT(victim, funny_trait, STROKE_TRAIT)
+	if(funny_trait == TRAIT_UNINTELLIGIBLE_SPEECH)
+		if(!HAS_TRAIT(victim, TRAIT_UNINTELLIGIBLE_SPEECH))
+			to_chat(owner, span_notice("You can speak properly again."))
+	else
+		if(!HAS_TRAIT(victim, TRAIT_ILLITERATE))
+			to_chat(owner, span_notice("You regain your grasp on the written word."))
 
 //blood brother version of stroke trauma, only gets cured once all brothers are revived
 /datum/brain_trauma/severe/stroke/brother
 	random_gain = FALSE
 	resilience = TRAUMA_RESILIENCE_ABSOLUTE
+	brain_damage = 0.3 //50% worse than a brain tumor, revive your brother ASAP!

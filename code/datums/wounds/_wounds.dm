@@ -176,6 +176,7 @@
 	wound_injury(old_wound, attack_direction = attack_direction)
 	if(!demoted)
 		second_wind()
+	return src
 
 // Updates descriptive texts for the wound, in case it can get altered for whatever reason
 /datum/wound/proc/update_descriptions()
@@ -232,8 +233,8 @@
 	already_scarred = TRUE
 	remove_wound(replaced=TRUE)
 	new_wound.apply_wound(limb, old_wound = src, smited = smited, attack_direction = attack_direction, wound_source = wound_source)
-	. = new_wound
 	qdel(src)
+	return new_wound
 
 /// The immediate negative effects faced as a result of the wound
 /datum/wound/proc/wound_injury(datum/wound/old_wound = null, attack_direction = null)
