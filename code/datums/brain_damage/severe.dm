@@ -347,12 +347,6 @@
 	REMOVE_TRAIT(owner, TRAIT_STROKE, TRAUMA_TRAIT)
 	REMOVE_TRAIT(owner, TRAIT_ILLITERATE, STROKE_TRAIT)
 	REMOVE_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, STROKE_TRAIT)
-	var/static/list/paralysis_types = list(
-		TRAIT_PARALYSIS_R_ARM,
-		TRAIT_PARALYSIS_L_ARM,
-		TRAIT_PARALYSIS_R_LEG,
-		TRAIT_PARALYSIS_L_LEG,
-	)
 	owner.remove_traits(list(TRAIT_PARALYSIS_R_ARM, TRAIT_PARALYSIS_L_ARM, TRAIT_PARALYSIS_R_LEG, TRAIT_PARALYSIS_L_LEG), TRAIT_STROKE)
 	return ..()
 
@@ -382,13 +376,13 @@
 				owner.adjust_confusion(10 SECONDS)
 				owner.set_eye_blur_if_lower(20 SECONDS)
 			if(10)
-				var/static/list/paralysis_types = list(
+				var/list/possible_paralysis = list(
 					TRAIT_PARALYSIS_R_ARM,
 					TRAIT_PARALYSIS_L_ARM,
 					TRAIT_PARALYSIS_R_LEG,
 					TRAIT_PARALYSIS_L_LEG,
 				)
-				var/list/possible_paralysis = paralysis_types - paralysis_traits
+				possible_paralysis -= paralysis_traits
 				if(!length(possible_paralysis))
 					return
 				var/paralyzed_trait = pick(possible_paralysis)
