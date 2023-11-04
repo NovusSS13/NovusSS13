@@ -39,7 +39,7 @@
 		if(1 to 6)
 			victim.bleed(blood_bled)
 		if(7 to 13)
-			victim.visible_message(span_smalldanger("Blood droplets fly from the hole in [victim]'s [limb.plaintext_zone]"), \
+			victim.visible_message(span_smalldanger("Blood droplets fly from the hole in [victim]'s [limb.plaintext_zone]!"), \
 								span_danger("Blood droplets fly from the hole in your [limb.plaintext_zone]."), \
 								vision_distance = COMBAT_MESSAGE_RANGE)
 			victim.bleed(blood_bled)
