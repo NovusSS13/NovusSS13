@@ -1,6 +1,6 @@
 /datum/action/cooldown/spell/fraternal_telepathy
 	name = "Fraternal Telepathy"
-	desc = "Telepathically transmits a message to your blood siblings - They must be conscious to hear it."
+	desc = "Telepathically transmits a message to your blood siblings. They must be conscious to hear it."
 	button_icon = 'icons/mob/actions/actions_brother.dmi'
 	button_icon_state = "transmit"
 	background_icon_state = "bg_brother"
