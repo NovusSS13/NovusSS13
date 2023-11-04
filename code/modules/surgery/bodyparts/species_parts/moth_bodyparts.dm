@@ -5,7 +5,7 @@
 	limb_id = SPECIES_MOTH
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	head_flags = HEAD_ALL_FEATURES //what the fuck, moths have lips?
+	head_flags = HEAD_ALL_FLAGS & ~HEAD_EYECOLOR //what the fuck, moths have lips?
 
 /obj/item/bodypart/chest/moth
 	icon = 'icons/mob/species/moth/bodyparts.dmi'

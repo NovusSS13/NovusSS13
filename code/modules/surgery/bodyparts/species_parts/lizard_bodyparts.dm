@@ -33,7 +33,7 @@
 	limb_id = SPECIES_LIZARD
 
 /obj/item/bodypart/head/lizard/ashwalker
-	head_flags = HEAD_ALL_FEATURES & ~(HEAD_HAIR|HEAD_FACIAL_HAIR)
+	head_flags = HEAD_ALL_FLAGS & ~(HEAD_HAIR|HEAD_FACIAL_HAIR)
 
 /obj/item/bodypart/chest/lizard/ashwalker
 
