@@ -551,7 +551,7 @@
 		for(var/datum/reagent/reagent_type as anything in reagent_list)
 			var/reagent_name = initial(reagent_type.name)
 			volume = round(reagent_list[reagent_type], 0.01)
-			examine_list += "&bull; [volume] units of [reagent_name]"
+			examine_list += span_info("&bull; [volume] units of [reagent_name]")
 	examine_list += span_info("The solution has a temperature of [temperature]K.")
 
 /obj/effect/temp_visual/liquid_splash
