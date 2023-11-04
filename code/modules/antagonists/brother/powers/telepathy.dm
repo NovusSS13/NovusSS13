@@ -23,8 +23,12 @@
 	. = ..()
 	if(team)
 		src.team = team
-	else
-		CRASH("[type] created without an associated team")
+		return
+	CRASH("[type] created without an associated team")
+
+/datum/action/cooldown/spell/fraternal_telepathy/Destroy()
+	. = ..()
+	team = null
 
 /datum/action/cooldown/spell/fraternal_telepathy/can_cast_spell(feedback)
 	. = ..()
@@ -51,17 +55,25 @@
 	cast_on.log_talk(message, LOG_SAY, tag = name)
 	to_chat(owner, "<span class='[telepathy_span]'><b>You transmit to [team]:</b> [message]</span>")
 	var/datum/mind/caster_mind = cast_on.mind
-	for(var/datum/mind/brother as anything in (team.members - caster_mind))
-		if(!brother.current)
+	for(var/datum/mind/brother_mind as anything in (team.members - caster_mind))
+		if(!brother_mind.current)
 			continue
-		var/mob/body = brother.current
+		var/mob/body = brother_mind.current
 		if(!body.client)
 			continue
 		//hear no evil
 		if(body.can_block_magic(antimagic_flags, charge_cost = 0))
 			continue
-		//must be conscious
+		//must be conscious, otherwise you get complete garble
 		if(body.stat >= UNCONSCIOUS)
+			var/static/regex/word_boundaries = regex(@"\b[\S]+\b", "gi")
+			var/list/rearranged = list()
+			while(word_boundaries.Find(message))
+				var/word = word_boundaries.match
+				if(length(word))
+					rearranged += random_string(length(word), GLOB.alphabet_upper + GLOB.alphabet)
+			var/garbled = rearranged.Join(" ")
+			to_chat(body, "<span class='[telepathy_span]'><b>Unknown (to [team.name]):</b> [garbled]</span>")
 			continue
 		to_chat(body, "<span class='[telepathy_span]'><b>[caster_mind.name] (to [team.name]):</b> [message]</span>")
 

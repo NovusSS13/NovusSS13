@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { Section, Stack } from '../components';
+import { Box, Section, Stack } from '../components';
 import { BooleanLike } from 'common/react';
 import { Window } from '../layouts';
 
@@ -16,27 +16,44 @@ type Info = {
   antag_name: string;
   objectives: Objective[];
   brothers: string[];
+  brotherhood: string;
 };
 
 export const AntagInfoBrother = (props, context) => {
   const { data } = useBackend<Info>(context);
-  const { antag_name } = data;
+  const { antag_name, brotherhood } = data;
   return (
-    <Window width={620} height={250} theme="syndicate">
+    <Window width={620} height={400} theme="syndicate">
       <Window.Content style={{ 'background-image': 'none' }}>
-        <Section scrollable fill>
-          <Stack vertical>
-            <Stack.Item textColor="red" fontSize="20px">
-              You are the {antag_name}!
-            </Stack.Item>
-            <Stack.Item>
-              <BrotherPrintout />
-            </Stack.Item>
-            <Stack.Item>
+        <Stack vertical>
+          <Stack.Item>
+            <Stack>
+              <Stack.Item>
+                <Section title="Intro">
+                  <Box textColor="red" fontSize="20px" mb={1}>
+                    You are a {antag_name}!
+                  </Box>
+                  The {brotherhood} is your true allegiance. <br />
+                  Your brains have united been into one, becoming more than the
+                  sum of its parts.
+                  <br />
+                  Complete these objectives to ensure that you and your siblings
+                  can eventually take over the station.
+                </Section>
+              </Stack.Item>
+              <Stack.Item>
+                <Section title="Siblings" fill>
+                  <BrotherPrintout />
+                </Section>
+              </Stack.Item>
+            </Stack>
+          </Stack.Item>
+          <Stack.Item>
+            <Section title="Objectives" scrollable>
               <ObjectivePrintout />
-            </Stack.Item>
-          </Stack>
-        </Section>
+            </Section>
+          </Stack.Item>
+        </Stack>
       </Window.Content>
     </Window>
   );
@@ -47,13 +64,10 @@ const BrotherPrintout = (props, context) => {
   const { brothers } = data;
   return (
     <Stack vertical>
-      <Stack.Item bold>Your siblings:</Stack.Item>
-      <Stack.Item>
-        {(!brothers && 'None!') ||
-          brothers.map((sibling) => (
-            <Stack.Item key={sibling}>{sibling}</Stack.Item>
-          ))}
-      </Stack.Item>
+      {(!brothers && 'None!') ||
+        brothers.map((sibling) => (
+          <Stack.Item key={sibling}>{sibling}</Stack.Item>
+        ))}
     </Stack>
   );
 };
@@ -63,15 +77,12 @@ const ObjectivePrintout = (props, context) => {
   const { objectives } = data;
   return (
     <Stack vertical>
-      <Stack.Item bold>Your objectives:</Stack.Item>
-      <Stack.Item>
-        {(!objectives && 'None!') ||
-          objectives.map((objective) => (
-            <Stack.Item key={objective.count}>
-              #{objective.count}: {objective.explanation}
-            </Stack.Item>
-          ))}
-      </Stack.Item>
+      {(!objectives && 'None!') ||
+        objectives.map((objective) => (
+          <Stack.Item key={objective.count}>
+            #{objective.count}: {objective.explanation}
+          </Stack.Item>
+        ))}
     </Stack>
   );
 };

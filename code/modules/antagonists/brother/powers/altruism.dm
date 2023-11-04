@@ -21,8 +21,8 @@
 	. = ..()
 	if(team)
 		src.team = team
-	else
-		CRASH("[type] created without an associated team")
+		return
+	CRASH("[type] created without an associated team")
 
 /datum/action/cooldown/spell/fraternal_altruism/Destroy()
 	brother = null
@@ -40,10 +40,10 @@
 
 	var/list/possible_brothers = list()
 	var/datum/mind/caster_mind = cast_on.mind
-	for(var/datum/mind/brother as anything in (team.members - caster_mind))
-		if(!isliving(brother.current))
+	for(var/datum/mind/brother_mind as anything in (team.members - caster_mind))
+		if(!isliving(brother_mind.current))
 			continue
-		var/mob/living/body = brother.current
+		var/mob/living/body = brother_mind.current
 		//hear no evil
 		if(body.can_block_magic(antimagic_flags, charge_cost = 0))
 			continue
@@ -53,7 +53,7 @@
 		//they must be damaged
 		if(!check_ailments(body))
 			continue
-		possible_brothers[brother.name] = brother.current
+		possible_brothers[brother_mind.name] = brother_mind.current
 
 	if(!length(possible_brothers))
 		to_chat(cast_on, span_warning("All of your blood siblings either are unconscious, or have no ailments."))

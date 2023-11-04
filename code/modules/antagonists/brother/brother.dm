@@ -13,6 +13,8 @@
 	var/datum/action/cooldown/spell/fraternal_telepathy/telepathy
 	/// Altruism spell for healing your bros
 	var/datum/action/cooldown/spell/fraternal_altruism/altruism
+	/// Vision spell for spying on your bros
+	var/datum/action/cooldown/spell/fraternal_vision/vision
 
 /datum/antagonist/brother/create_team(datum/team/brother_team/new_team)
 	if(!new_team)
@@ -37,6 +39,8 @@
 	telepathy.Grant(living_mob)
 	altruism = new(team)
 	altruism.Grant(living_mob)
+	vision = new(team)
+	vision.Grant(living_mob)
 	RegisterSignal(living_mob, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 	RegisterSignal(living_mob, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
 	if(iscarbon(living_mob))
@@ -53,6 +57,9 @@
 	if(altruism)
 		altruism.Remove(living_mob)
 		QDEL_NULL(altruism)
+	if(vision)
+		vision.Remove(living_mob)
+		QDEL_NULL(vision)
 	UnregisterSignal(living_mob, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
 	if(iscarbon(living_mob))
 		UnregisterSignal(living_mob, list(COMSIG_CARBON_CHECK_SELF_FOR_INJURIES, COMSIG_CARBON_GAIN_TRAUMA, COMSIG_CARBON_LOSE_TRAUMA, COMSIG_CARBON_PRINT_MOOD))
@@ -119,6 +126,7 @@
 /datum/antagonist/brother/proc/finalize_brother()
 	update_name()
 	team.update_name()
+	suicide_cry = "FOR MY [uppertext(team.hood_type)]!"
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/brotheralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /datum/antagonist/brother/admin_add(datum/mind/new_owner,mob/admin)
@@ -158,6 +166,7 @@
 	data["antag_name"] = name
 	data["objectives"] = get_objectives()
 	data["brothers"] = get_brother_names()
+	data["brotherhood"] = team.name
 	return data
 
 /datum/antagonist/brother/proc/on_death(mob/living/source, gibbed)
@@ -268,6 +277,8 @@
 /datum/team/brother_team
 	name = "\improper Brotherhood"
 	member_name = "blood brother"
+	/// Brotherhood, sisterhood or siblinghood
+	var/hood_type
 
 /datum/team/brother_team/proc/update_name()
 	var/list/gendercount = list(MALE = 0, FEMALE = 0, PLURAL = 0)
@@ -283,15 +294,14 @@
 			purposeful_gender = PLURAL
 		gendercount[purposeful_gender]++
 
-	var/hood_type
 	if(gendercount[MALE] > (gendercount[FEMALE]+gendercount[PLURAL]))
-		hood_type = "\improper Brotherhood"
+		hood_type = "Brotherhood"
 	else if(gendercount[FEMALE] > (gendercount[MALE]+gendercount[PLURAL]))
-		hood_type = "\improper Sisterhood"
+		hood_type = "Sisterhood"
 	else
-		hood_type = "\improper Siblinghood"
+		hood_type = "Siblinghood"
 
-	name = "[hood_type] of " + last_names.Join(" & ")
+	name = "\proper [hood_type] of " + last_names.Join(" & ")
 
 /datum/team/brother_team/proc/forge_brother_objectives()
 	objectives = list()
