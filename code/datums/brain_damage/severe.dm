@@ -353,7 +353,7 @@
 		TRAIT_PARALYSIS_R_LEG,
 		TRAIT_PARALYSIS_L_LEG,
 	)
-	remove_traits(list(TRAIT_PARALYSIS_R_ARM, TRAIT_PARALYSIS_L_ARM, TRAIT_PARALYSIS_R_LEG, TRAIT_PARALYSIS_L_LEG), TRAIT_STROKE)
+	owner.remove_traits(list(TRAIT_PARALYSIS_R_ARM, TRAIT_PARALYSIS_L_ARM, TRAIT_PARALYSIS_R_LEG, TRAIT_PARALYSIS_L_LEG), TRAIT_STROKE)
 	return ..()
 
 /datum/brain_trauma/severe/stroke/on_life(seconds_per_tick, times_fired)
