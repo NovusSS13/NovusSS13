@@ -2,3 +2,8 @@
   ChungusGamer666:
   - rscadd: Blood squirts, movable physics on dismemberment and organ evisceration
   - spellcheck: Blood descriptions have more soul now.
+2023-11-03:
+  ChungusGamer666:
+  - bugfix: fixed up fire overlays but like actually
+  - qol: Subtle works better now and creates runechat messages
+  - sound: Gasping always makes a sound now
