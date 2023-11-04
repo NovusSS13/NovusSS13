@@ -329,14 +329,14 @@
 	return ..()
 
 /datum/brain_trauma/severe/stroke
-	name = "Cerebral Infarction"
+	name = "Hemorrhagic Stroke"
 	desc = "An artery has burst in the patient's brain, the ensuing edema is causing worsening brain damage over time."
 	scan_desc = "hemorrhagic stroke"
 	gain_text = span_warning("Your head hurts really badly and your face feels numb!")
 	lose_text = span_notice("Your head no longer hurts and you can feel your whole face.")
 	/// Amount of organ damage caused per second
-	var/brain_damage = 0.2 //about as bad as brain tumor
-	/// Sometimes the patient gets a limb paralyzed
+	var/brain_damage = 0.2 //as bad as the brain tumor quirk
+	/// Sometimes the patient gets a limb paralyzed, we need to know that
 	var/list/paralysis_traits
 
 /datum/brain_trauma/severe/stroke/on_gain()
@@ -382,13 +382,16 @@
 				owner.adjust_confusion(10 SECONDS)
 				owner.set_eye_blur_if_lower(20 SECONDS)
 			if(10)
-				var/static/list/paralysis_dictionary = list(
-					TRAIT_PARALYSIS_R_ARM = BODY_ZONE_R_ARM,
-					TRAIT_PARALYSIS_L_ARM = BODY_ZONE_L_ARM,
-					TRAIT_PARALYSIS_R_LEG = BODY_ZONE_R_LEG,
-					TRAIT_PARALYSIS_L_LEG = BODY_ZONE_L_LEG,
+				var/static/list/paralysis_types = list(
+					TRAIT_PARALYSIS_R_ARM,
+					TRAIT_PARALYSIS_L_ARM,
+					TRAIT_PARALYSIS_R_LEG,
+					TRAIT_PARALYSIS_L_LEG,
 				)
-				var/paralyzed_trait = pick(paralysis_dictionary)
+				var/list/possible_paralysis = paralysis_types - paralysis_traits
+				if(!length(possible_paralysis))
+					return
+				var/paralyzed_trait = pick(possible_paralysis)
 				paralyze(owner, paralyzed_trait, 20 SECONDS)
 			if(11)
 				if(HAS_TRAIT(owner, TRAIT_NOBREATH))
