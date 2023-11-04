@@ -427,8 +427,10 @@
 	if(QDELETED(victim) || QDELETED(src))
 		return
 	for(var/paralysis_type in paralysis)
-		LAZYREMOVE(paralysis_traits, paralysis_type)
+		paralysis_traits -= paralysis_type
 		REMOVE_TRAIT(victim, paralysis_type, STROKE_TRAIT)
+	if(!length(paralysis_traits))
+		paralysis_traits = null
 
 /datum/brain_trauma/severe/stroke/proc/remove_funny_trait(mob/living/carbon/victim, funny_trait)
 	if(QDELETED(victim) || QDELETED(src))
