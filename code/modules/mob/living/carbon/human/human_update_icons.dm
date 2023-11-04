@@ -104,19 +104,19 @@ There are several things that need to be remembered:
 		var/chest_bodytype = chest?.bodytype
 
 		//BEGIN SPECIES HANDLING
+		var/override_file
 		if((chest_bodytype & BODYTYPE_MONKEY) && (uniform.supports_variations_flags & CLOTHING_MONKEY_VARIATION))
-			icon_file = MONKEY_UNIFORM_FILE
+			override_file = 'icons/mob/species/monkey/uniform.dmi'
 		else if(chest_bodytype & BODYTYPE_AVALI) //no variation check since we're gonna try to cobble together an icon if there's none
-			var/datum/species/avali/species = new
-			icon_file = species.get_custom_worn_icon(uniform, ITEM_SLOT_ICLOTHING)
+			override_file = get_avali_worn_icon(uniform, ITEM_SLOT_ICLOTHING)
 		else if((bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
-			icon_file = DIGITIGRADE_UNIFORM_FILE
+			override_file = 'icons/mob/species/misc/digitigrade.dmi'
 		//Female sprites have lower priority than digitigrade sprites - Agggggggghhhhh!!!!!
 		else if(!HAS_TRAIT(src, TRAIT_AGENDER) && (chest_bodytype & BODYTYPE_HUMANOID) && (chest.limb_gender == "f") && !(uniform.female_sprite_flags & NO_FEMALE_UNIFORM))
 			woman = TRUE
 
-		if(!icon_file || !icon_exists(icon_file, uniform.worn_icon_state || uniform.icon_state))
-			icon_file = 'icons/mob/clothing/under/default.dmi'
+		if(!override_file || !icon_exists(icon_file, uniform.worn_icon_state || uniform.icon_state))
+			override_file = 'icons/mob/clothing/under/default.dmi'
 			handled_by_bodytype = FALSE
 
 		//END SPECIES HANDLING
@@ -129,8 +129,10 @@ There are several things that need to be remembered:
 			override_file = handled_by_bodytype ? icon_file : null,
 		)
 
-		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
-		my_chest?.worn_uniform_offset?.apply_offset(uniform_overlay)
+		if(isnull(override_file))
+			var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
+			my_chest?.worn_uniform_offset?.apply_offset(uniform_overlay)
+
 		overlays_standing[UNIFORM_LAYER] = uniform_overlay
 		apply_overlay(UNIFORM_LAYER)
 
@@ -153,8 +155,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(chesty?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_ID)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_ID)
 
 		id_overlay = wear_id.build_worn_icon(
 			default_layer = ID_LAYER,
@@ -165,7 +166,9 @@ There are several things that need to be remembered:
 		if(!id_overlay)
 			return
 
-		chesty?.worn_id_offset?.apply_offset(id_overlay)
+		if(isnull(override_file))
+			chesty?.worn_id_offset?.apply_offset(id_overlay)
+
 		overlays_standing[ID_LAYER] = id_overlay
 
 	apply_overlay(ID_LAYER)
@@ -206,8 +209,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(handy?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_GLOVES)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_GLOVES)
 
 		var/mutable_appearance/gloves_overlay = gloves.build_worn_icon(
 			default_layer = GLOVES_LAYER,
@@ -215,10 +217,12 @@ There are several things that need to be remembered:
 			override_file = override_file
 		)
 
-		var/list/glove_offset = handy?.worn_glove_offset?.get_offset()
-		var/feature_y_offset = glove_offset?["y"] || 0
+		if(isnull(override_file))
+			var/list/glove_offset = handy?.worn_glove_offset?.get_offset()
+			var/feature_y_offset = glove_offset?["y"] || 0
 
-		gloves_overlay.pixel_y += feature_y_offset
+			gloves_overlay.pixel_y += feature_y_offset
+
 		overlays_standing[GLOVES_LAYER] = gloves_overlay
 	apply_overlay(GLOVES_LAYER)
 
@@ -243,15 +247,17 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(headsy?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_EYES)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_EYES)
 
 		var/mutable_appearance/glasses_overlay = glasses.build_worn_icon(
 			default_layer = GLASSES_LAYER,
 			default_icon_file = 'icons/mob/clothing/eyes.dmi',
 			override_file = override_file
 		)
-		headsy.worn_glasses_offset?.apply_offset(glasses_overlay)
+
+		if(isnull(override_file))
+			headsy.worn_glasses_offset?.apply_offset(glasses_overlay)
+
 		overlays_standing[GLASSES_LAYER] = glasses_overlay
 
 	apply_overlay(GLASSES_LAYER)
@@ -277,8 +283,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(headsy?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_EARS)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_EARS)
 
 		var/mutable_appearance/ears_overlay = ears.build_worn_icon(
 			default_layer = EARS_LAYER,
@@ -286,7 +291,9 @@ There are several things that need to be remembered:
 			override_file = override_file
 		)
 
-		headsy.worn_ears_offset?.apply_offset(ears_overlay)
+		if(isnull(override_file))
+			headsy.worn_ears_offset?.apply_offset(ears_overlay)
+
 		overlays_standing[EARS_LAYER] = ears_overlay
 	apply_overlay(EARS_LAYER)
 
@@ -308,8 +315,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(chesty?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_NECK)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_NECK)
 
 		var/mutable_appearance/neck_overlay = worn_item.build_worn_icon(
 			default_layer = NECK_LAYER,
@@ -317,7 +323,9 @@ There are several things that need to be remembered:
 			override_file = override_file
 		)
 
-		chesty?.worn_belt_offset?.apply_offset(neck_overlay)
+		if(isnull(override_file))
+			chesty?.worn_belt_offset?.apply_offset(neck_overlay)
+
 		overlays_standing[NECK_LAYER] = neck_overlay
 
 	apply_overlay(NECK_LAYER)
@@ -344,8 +352,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(leggy.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_FEET)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_FEET)
 
 		var/mutable_appearance/shoes_overlay = shoes.build_worn_icon(
 			default_layer = SHOES_LAYER,
@@ -356,10 +363,12 @@ There are several things that need to be remembered:
 		if(!shoes_overlay)
 			return
 
-		var/list/foot_offset = leggy.worn_foot_offset?.get_offset()
-		var/feature_y_offset = foot_offset?["y"] || 0
+		if(isnull(override_file))
+			var/list/foot_offset = leggy.worn_foot_offset?.get_offset()
+			var/feature_y_offset = foot_offset?["y"] || 0
 
-		shoes_overlay.pixel_y += feature_y_offset
+			shoes_overlay.pixel_y += feature_y_offset
+
 		overlays_standing[SHOES_LAYER] = shoes_overlay
 
 	apply_overlay(SHOES_LAYER)
@@ -385,8 +394,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(chesty?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_SUITSTORE)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_SUITSTORE)
 
 		var/mutable_appearance/s_store_overlay = worn_item.build_worn_icon(
 			default_layer = SUIT_STORE_LAYER,
@@ -394,7 +402,9 @@ There are several things that need to be remembered:
 			override_file = override_file
 		)
 
-		chesty?.worn_suit_storage_offset?.apply_offset(s_store_overlay)
+		if(isnull(override_file))
+			chesty?.worn_suit_storage_offset?.apply_offset(s_store_overlay)
+
 		overlays_standing[SUIT_STORE_LAYER] = s_store_overlay
 	apply_overlay(SUIT_STORE_LAYER)
 
@@ -415,15 +425,17 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(heady?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_HEAD)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_HEAD)
 
 		var/mutable_appearance/head_overlay = head.build_worn_icon(
 			default_layer = HEAD_LAYER,
 			default_icon_file = 'icons/mob/clothing/head/default.dmi',
 			override_file = override_file
 		)
-		heady?.worn_head_offset?.apply_offset(head_overlay)
+
+		if(isnull(override_file))
+			heady?.worn_head_offset?.apply_offset(head_overlay)
+
 		overlays_standing[HEAD_LAYER] = head_overlay
 
 	update_mutant_bodyparts()
@@ -447,8 +459,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(chesty?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_BELT)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_BELT)
 
 		var/mutable_appearance/belt_overlay = belt.build_worn_icon(
 			default_layer = BELT_LAYER,
@@ -456,7 +467,9 @@ There are several things that need to be remembered:
 			override_file = override_file
 		)
 
-		chesty?.worn_belt_offset?.apply_offset(belt_overlay)
+		if(isnull(override_file))
+			chesty?.worn_belt_offset?.apply_offset(belt_overlay)
+
 		overlays_standing[BELT_LAYER] = belt_overlay
 
 	apply_overlay(BELT_LAYER)
@@ -476,8 +489,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(chesty?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_OCLOTHING)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_OCLOTHING)
 
 		var/mutable_appearance/suit_overlay = wear_suit.build_worn_icon(
 			default_layer = SUIT_LAYER,
@@ -485,7 +497,9 @@ There are several things that need to be remembered:
 			override_file = override_file
 		)
 
-		chesty?.worn_suit_offset?.apply_offset(suit_overlay)
+		if(isnull(override_file))
+			chesty?.worn_suit_offset?.apply_offset(suit_overlay)
+
 		overlays_standing[SUIT_LAYER] = suit_overlay
 	update_body_parts()
 	update_mutant_bodyparts()
@@ -534,8 +548,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(headsy?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_MASK)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_MASK)
 
 		var/mutable_appearance/mask_overlay = wear_mask.build_worn_icon(
 			default_layer = FACEMASK_LAYER,
@@ -543,7 +556,9 @@ There are several things that need to be remembered:
 			override_file = override_file
 		)
 
-		headsy.worn_mask_offset?.apply_offset(mask_overlay)
+		if(isnull(override_file))
+			headsy.worn_mask_offset?.apply_offset(mask_overlay)
+
 		overlays_standing[FACEMASK_LAYER] = mask_overlay
 
 	apply_overlay(FACEMASK_LAYER)
@@ -564,8 +579,7 @@ There are several things that need to be remembered:
 
 		var/override_file = null
 		if(chesty?.bodytype & BODYTYPE_AVALI)
-			var/datum/species/avali/species = new
-			override_file = species.get_custom_worn_icon(worn_item, ITEM_SLOT_BACK)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_BACK)
 
 		var/mutable_appearance/back_overlay = back.build_worn_icon(
 			default_layer = BACK_LAYER,
@@ -575,7 +589,9 @@ There are several things that need to be remembered:
 		if(!back_overlay)
 			return
 
-		chesty?.worn_back_offset?.apply_offset(back_overlay)
+		if(isnull(override_file))
+			chesty?.worn_back_offset?.apply_offset(back_overlay)
+
 		overlays_standing[BACK_LAYER] = back_overlay
 	apply_overlay(BACK_LAYER)
 
@@ -621,6 +637,7 @@ There are several things that need to be remembered:
 			default_icon_file = icon_file,
 			isinhands = TRUE
 		)
+
 		var/obj/item/bodypart/arm/held_in_hand = hand_bodyparts[held_index]
 		held_in_hand?.held_hand_offset?.apply_offset(hand_overlay)
 
@@ -818,6 +835,47 @@ generate/load female uniform sprites matching all previously decided variables
 	standing.color = color
 
 	return standing
+
+// yes, avali specific proc. generalize in the future if you want
+/proc/get_avali_worn_icon(obj/item/item, item_slot)
+	// do we have a specific icon/generated something already?
+	if(item.worn_icon_avali)
+		return item.worn_icon_avali
+
+	var/default_worn_icon = item.worn_icon || item.icon
+	var/default_worn_icon_state = item.worn_icon_state || item.icon_state
+
+	// allright, do we have a greyscale config we can use instead?
+	var/used_config = item.greyscale_config_worn_avali || item.greyscale_config_worn_avali_fallback
+	if(used_config)
+		var/expected_color_amount = SSgreyscale.configurations["[used_config]"].expected_colors
+		var/list/used_colors = SSgreyscale.ParseColorString(item.greyscale_colors)
+		if(length(used_colors) >= expected_color_amount)
+			used_colors.len = expected_color_amount // GAGS errors if we overshoot
+			item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
+			return item.worn_icon_avali
+
+		// not enough colors, gotta guess the rest
+		var/icon/final_human_icon = icon(default_worn_icon, default_worn_icon_state)
+		if(item.clothing_color_coords_key)
+			var/list/sampling_coords = GLOB.clothing_color_sample_coords[item.clothing_color_coords_key]
+			if(length(sampling_coords) * 0.5 < expected_color_amount) // someone didnt set the config properly
+				stack_trace("get_avali_worn_icon: sampling_coords length less than expected_color_amount!")
+				sampling_coords.len = expected_color_amount * 2 //this is BAD, mkay?
+
+			for(var/iter in (length(used_colors) + 1) to expected_color_amount)
+				var/index = ((iter - 1) * 2) + 1
+				used_colors += final_human_icon.GetPixel(sampling_coords[index], sampling_coords[index + 1]) || COLOR_DARK
+
+		else // why must you make this difficult
+			for(var/i in (length(used_colors) + 1) to expected_color_amount)
+				used_colors += COLOR_DARK
+
+		item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
+		return item.worn_icon_avali
+
+	// fuck it, we bail
+	return null
 
 /// Returns offsets used for equipped item overlays in list(px_offset,py_offset) form.
 /obj/item/proc/get_worn_offsets(isinhands)

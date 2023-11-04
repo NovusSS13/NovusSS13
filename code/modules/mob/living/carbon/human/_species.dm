@@ -2177,7 +2177,3 @@
 /datum/species/proc/get_voice_packs()
 	RETURN_TYPE(/list)
 	return GLOB.voice_packs
-
-/// Returns the custom icon file to use, if any. Return null to run the default build_worn_icon() code.
-/datum/species/proc/get_custom_worn_icon(obj/item/worn_item, item_slot)
-	return null

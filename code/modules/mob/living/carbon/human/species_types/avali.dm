@@ -6,11 +6,7 @@
 	name = "Avali"
 	id = SPECIES_AVALI
 	inherent_traits = list(
-		TRAIT_ADVANCEDTOOLUSER,
-		TRAIT_CAN_STRIP,
-		TRAIT_LITERATE,
 		TRAIT_MUTANT_COLORS,
-		TRAIT_HAS_MARKINGS,
 		TRAIT_NO_BLOOD_OVERLAY,
 		TRAIT_NO_UNDERSHIRT,
 		TRAIT_NO_UNDERWEAR,
@@ -80,93 +76,6 @@
 
 	regenerate_organs(avali, src, visual_only = TRUE)
 	avali.update_body(TRUE)
-
-/datum/species/avali/get_custom_worn_icon(obj/item/item, item_slot)
-	// do we have a specific icon/generated something already?
-	if(item.worn_icon_avali)
-		return item.worn_icon_avali
-
-	var/default_worn_icon = item.worn_icon || item.icon
-	var/default_worn_icon_state = item.worn_icon_state || item.icon_state
-
-	// allright, do we have a greyscale config we can use instead?
-	var/used_config = item.greyscale_config_worn_avali || item.greyscale_config_worn_avali_fallback
-	if(used_config)
-		var/expected_color_amount = SSgreyscale.configurations["[used_config]"].expected_colors
-		var/list/used_colors = SSgreyscale.ParseColorString(item.greyscale_colors)
-		if(length(used_colors) >= expected_color_amount)
-			used_colors.len = expected_color_amount // GAGS errors if we overshoot
-			item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
-			return item.worn_icon_avali
-
-		// not enough colors, gotta guess the rest
-		var/icon/final_human_icon = icon(default_worn_icon, default_worn_icon_state)
-		if(item.clothing_color_coords_key)
-			var/list/sampling_coords = GLOB.clothing_color_sample_coords[item.clothing_color_coords_key]
-			if(length(sampling_coords) * 0.5 < expected_color_amount) // someone didnt set the config properly
-				stack_trace("get_custom_worn_icon: sampling_coords length less than expected_color_amount!")
-				sampling_coords.len = expected_color_amount * 2 //this is BAD, mkay?
-
-			for(var/iter in (length(used_colors) + 1) to expected_color_amount)
-				var/index = ((iter - 1) * 2) + 1
-				used_colors += final_human_icon.GetPixel(sampling_coords[index], sampling_coords[index + 1]) || COLOR_DARK
-
-		else // why must you make this difficult
-			for(var/i in (length(used_colors) + 1) to expected_color_amount)
-				used_colors += COLOR_DARK
-
-		item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
-		return item.worn_icon_avali
-
-	// uhhh, offset the default sprites??
-	if((item_slot in list(ITEM_SLOT_HEAD, ITEM_SLOT_EARS, ITEM_SLOT_MASK)) && default_worn_icon)
-		var/list/offsets_x = list(
-			"[ITEM_SLOT_HEAD]" = list("[NORTH]" = 1, "[SOUTH]" = 1, "[EAST]" = 1, "[WEST]" = -1),
-		)
-		var/list/offsets_y = list(
-			"[ITEM_SLOT_EARS]" = list("[NORTH]" = -4, "[SOUTH]" = -4, "[EAST]" = -4, "[WEST]" = -4),
-			"[ITEM_SLOT_HEAD]" = list("[NORTH]" = -4, "[SOUTH]" = -4, "[EAST]" = -4, "[WEST]" = -4),
-			"[ITEM_SLOT_MASK]" = list("[NORTH]" = -5, "[SOUTH]" = -5, "[EAST]" = -5, "[WEST]" = -5)
-		)
-/*
-		var/image/north = image(
-			default_worn_icon,
-			dir = NORTH,
-			pixel_x = offsets_x["[item_slot]"]?["[NORTH]"],
-			pixel_y = offsets_y["[item_slot]"]?["[NORTH]"]
-		)
-		var/image/south = image(
-			default_worn_icon,
-			dir = SOUTH,
-			pixel_x = offsets_x["[item_slot]"]?["[SOUTH]"],
-			pixel_y = offsets_y["[item_slot]"]?["[SOUTH]"]
-		)
-		var/image/east = image(
-			default_worn_icon,
-			dir = EAST,
-			pixel_x = offsets_x["[item_slot]"]?["[EAST]"],
-			pixel_y = offsets_y["[item_slot]"]?["[EAST]"]
-		)
-		var/image/west = image(
-			default_worn_icon,
-			dir = WEST,
-			pixel_x = offsets_x["[item_slot]"]?["[WEST]"],
-			pixel_y = offsets_y["[item_slot]"]?["[WEST]"]
-		)
-*/
-
-		var/icon/icon = icon(default_worn_icon, default_worn_icon_state)
-		for(var/dir in GLOB.cardinals)
-			var/icon/dir_icon = icon(default_worn_icon, default_worn_icon_state, dir)
-			dir_icon.Shift(EAST, offsets_x["[item_slot]"]?["[dir]"])
-			dir_icon.Shift(NORTH,  offsets_y["[item_slot]"]?["[dir]"])
-			icon.Insert(dir_icon, default_worn_icon_state, dir)
-
-		item.worn_icon_avali = icon
-		return icon
-
-	// fuck it, we bail
-	return null
 
 #undef AVALI_TEMP_OFFSET
 #undef AVALI_HEATMOD

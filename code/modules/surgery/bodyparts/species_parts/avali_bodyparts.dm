@@ -12,7 +12,6 @@
 	brute_modifier = AVALI_BRUTE_MODIFIER
 	burn_modifier = AVALI_BURN_MODIFIER
 
-/*
 /obj/item/bodypart/head/avali/Initialize(mapload)
 	worn_ears_offset = new(
 		attached_part = src,
@@ -22,7 +21,7 @@
 	worn_head_offset = new(
 		attached_part = src,
 		feature_key = OFFSET_HEAD,
-		offset_x = list("north" = 1, "south" = 1, "east" = 1, "west" = -1, "northwest" = -1, "southwest" = -1),
+		offset_x = list("north" = 1, "south" = 1, "east" = 1, "west" = -1),
 		offset_y = list("north" = -4, "south" = -4, "east" = -4, "west" = -4),
 	)
 	worn_mask_offset = new(
@@ -31,7 +30,6 @@
 		offset_y = list("north" = -5, "south" = -5, "east" = -5, "west" = -5),
 	)
 	return ..()
-*/
 
 
 /obj/item/bodypart/chest/avali
@@ -74,7 +72,6 @@
 	unarmed_damage_low = AVALI_PUNCH_LOW
 	unarmed_damage_high = AVALI_PUNCH_HIGH
 
-//
 
 /obj/item/bodypart/leg/left/avali
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
