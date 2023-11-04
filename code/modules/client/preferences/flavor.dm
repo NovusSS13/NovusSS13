@@ -109,3 +109,21 @@
 /datum/preference/text/flavor/headshot_link/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	var/datum/flavor_holder/flavor_holder = get_or_create_flavor_holder(target.real_name)
 	flavor_holder?.headshot_link = value
+
+
+/datum/preference/text/flavor/security_record_notes
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	savefile_key = "security_record_notes"
+	savefile_identifier = PREFERENCE_CHARACTER
+
+/datum/preference/text/flavor/security_record_notes/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
+	return //we apply these differently
+
+
+/datum/preference/text/flavor/medical_record_notes
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	savefile_key = "medical_record_notes"
+	savefile_identifier = PREFERENCE_CHARACTER
+
+/datum/preference/text/flavor/medical_record_notes/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
+	return
