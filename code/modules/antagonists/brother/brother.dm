@@ -183,11 +183,11 @@
 		var/mob/living/brother = brother_mind.current
 		to_chat(brother, span_userdanger("MY [uppertext(brother_type)]! [uppertext(brother_name)] HAS DIED!"))
 		INVOKE_ASYNC(brother, TYPE_PROC_REF(/mob, emote), "scream")
+		brother.add_mood_event("brother_death", /datum/mood_event/dead_brother, brother_type, brother_name)
 		if(iscarbon(brother))
 			var/mob/living/carbon/traumatized = brother
 			if(!(locate(/datum/brain_trauma/severe/stroke/brother) in traumatized.get_traumas()))
 				traumatized.gain_trauma(/datum/brain_trauma/severe/stroke/brother)
-			traumatized.add_mood_event("brother_death", /datum/mood_event/dead_brother, brother_type, brother_name)
 
 /datum/antagonist/brother/proc/on_revive(mob/living/source, full_heal_flags)
 	SIGNAL_HANDLER
@@ -206,11 +206,14 @@
 		return
 
 	for(var/datum/mind/brother_mind as anything in team.members)
-		if(!brother_mind.current || !iscarbon(brother_mind.current))
+		if(!brother_mind.current)
 			continue
-		var/mob/living/carbon/traumatized = brother_mind.current
+		var/mob/living/brother = brother_mind.current
+		brother.clear_mood_event("brother_death")
+		if(!iscarbon(brother))
+			continue
+		var/mob/living/carbon/traumatized = brother
 		qdel(locate(/datum/brain_trauma/severe/stroke/brother) in traumatized.get_traumas())
-		traumatized.clear_mood_event("brother_death")
 
 /datum/antagonist/brother/proc/on_gain_trauma(mob/living/carbon/source, datum/brain_trauma/trauma, resilience, list/arguments)
 	SIGNAL_HANDLER
