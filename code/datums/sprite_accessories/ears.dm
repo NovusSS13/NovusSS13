@@ -3,7 +3,7 @@
 	default_colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
 
 /datum/sprite_accessory/ears/human
-	icon = 'icons/mob/species/human/cat_features.dmi'
+	icon = 'icons/mob/human/sprite_accessory/cat_features.dmi'
 	color_amount = 1
 
 /datum/sprite_accessory/ears/human/cat
@@ -12,7 +12,7 @@
 	hasinner = TRUE
 
 /datum/sprite_accessory/ears/human/fox
-	icon = 'icons/mob/species/human/fox_features.dmi'
+	icon = 'icons/mob/human/sprite_accessory/fox_features.dmi'
 	name = "Fox"
 	icon_state = "fox"
 	hasinner = TRUE
@@ -20,11 +20,11 @@
 
 // MUTANT EARS
 /datum/sprite_accessory/ears/mutant
-	icon = 'icons/mob/species/sprite_accessory/ears_mutant.dmi'
+	icon = 'icons/mob/human/species/mutant/ears_mutant.dmi'
 	color_amount = 3
 
 /datum/sprite_accessory/ears/mutant/big
-	icon = 'icons/mob/species/sprite_accessory/ears_mutant_big.dmi'
+	icon = 'icons/mob/human/species/mutant/ears_mutant_big.dmi'
 
 /datum/sprite_accessory/ears/mutant/axolotl
 	name = "Axolotl"

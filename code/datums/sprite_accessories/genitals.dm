@@ -6,7 +6,7 @@
 
 
 /datum/sprite_accessory/genital/penis
-	icon = 'icons/mob/species/sprite_accessory/genitals/penis_onmob.dmi'
+	icon = 'icons/mob/human/sprite_accessory/genitals/penis_onmob.dmi'
 	center = TRUE
 
 /datum/sprite_accessory/genital/penis/human
@@ -51,7 +51,7 @@
 
 
 /datum/sprite_accessory/genital/testicles
-	icon = 'icons/mob/species/sprite_accessory/genitals/testicles_onmob.dmi'
+	icon = 'icons/mob/human/sprite_accessory/genitals/testicles_onmob.dmi'
 
 /datum/sprite_accessory/genital/testicles/pair
 	name = "Pair"
@@ -59,7 +59,7 @@
 
 
 /datum/sprite_accessory/genital/vagina
-	icon = 'icons/mob/species/sprite_accessory/genitals/vagina_onmob.dmi'
+	icon = 'icons/mob/human/sprite_accessory/genitals/vagina_onmob.dmi'
 
 /datum/sprite_accessory/genital/vagina/human
 	name = "Human"
@@ -96,7 +96,7 @@
 
 
 /datum/sprite_accessory/genital/breasts
-	icon = 'icons/mob/species/sprite_accessory/genitals/breasts_onmob.dmi'
+	icon = 'icons/mob/human/sprite_accessory/genitals/breasts_onmob.dmi'
 	/// Maximum size this titty accessory can reach, visually at least
 	var/max_size = 16
 
@@ -118,7 +118,7 @@
 	examine_name_override = "a sextuplet"
 
 /datum/sprite_accessory/genital/anus
-	icon = 'icons/mob/species/sprite_accessory/genitals/anus_onmob.dmi'
+	icon = 'icons/mob/human/sprite_accessory/genitals/anus_onmob.dmi'
 
 /datum/sprite_accessory/genital/anus/human
 	name = "Human"

@@ -98,8 +98,8 @@ GLOBAL_LIST_INIT(pref_bodypart_names, list(
 ))
 
 GLOBAL_LIST_INIT(pref_bodypart_id_to_icon, list(
-	SPECIES_MUTANT = 'icons/mob/species/mutant/mutant_bodyparts.dmi',
-	SPECIES_LIZARD = 'icons/mob/species/lizard/bodyparts.dmi',
+	SPECIES_MUTANT = 'icons/mob/human/species/mutant/bodyparts.dmi',
+	SPECIES_LIZARD = 'icons/mob/human/species/lizard/bodyparts.dmi',
 ))
 
 	//Markings

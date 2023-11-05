@@ -99,7 +99,7 @@
 	if(!is_husked && lip_style && (head_flags & HEAD_LIPS))
 		//not a sprite accessory, don't ask
 		//Overlay
-		lip_overlay = image('icons/mob/species/sprite_accessory/human_face.dmi', "lips_[lip_style]", -BODY_LAYER)
+		lip_overlay = image('icons/mob/human/sprite_accessory/human_face.dmi', "lips_[lip_style]", -BODY_LAYER)
 		lip_overlay.color = lip_color
 		lip_overlay.dir = image_dir
 		//Offsets
@@ -197,11 +197,11 @@
 	var/image/left_eye
 	var/image/right_eye
 	if(can_rotate)
-		left_eye = mutable_appearance('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER)
-		right_eye = mutable_appearance('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER)
+		left_eye = mutable_appearance('icons/mob/human/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER)
+		right_eye = mutable_appearance('icons/mob/human/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER)
 	else
-		left_eye = image('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
-		right_eye = image('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
+		left_eye = image('icons/mob/human/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
+		right_eye = image('icons/mob/human/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
 	if(head_flags & HEAD_EYECOLOR)
 		left_eye.color = eyeballs.eye_color_left
 		right_eye.color = eyeballs.eye_color_right
@@ -229,7 +229,7 @@
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
 	RETURN_TYPE(/image)
-	var/eyeless_icon = 'icons/mob/species/sprite_accessory/human_face.dmi'
+	var/eyeless_icon = 'icons/mob/human/sprite_accessory/human_face.dmi'
 	var/eyeless_icon_state = "eyes_missing"
 
 	var/image/eyeless_overlay
@@ -243,16 +243,16 @@
 /// Returns an appropriate debrained overlay
 /obj/item/bodypart/head/proc/get_debrain_overlay(can_rotate = TRUE)
 	RETURN_TYPE(/image)
-	var/debrain_icon = 'icons/mob/species/sprite_accessory/human_face.dmi'
+	var/debrain_icon = 'icons/mob/human/sprite_accessory/human_face.dmi'
 	var/debrain_icon_state = "debrained"
 	if(bodytype & BODYTYPE_ALIEN)
-		debrain_icon = 'icons/mob/species/alien/bodyparts.dmi'
+		debrain_icon = 'icons/mob/human/species/alien/bodyparts.dmi'
 		debrain_icon_state = "debrained_alien"
 	else if(bodytype & BODYTYPE_LARVA)
-		debrain_icon = 'icons/mob/species/alien/bodyparts.dmi'
+		debrain_icon = 'icons/mob/human/species/alien/bodyparts.dmi'
 		debrain_icon_state = "debrained_larva"
 	else if(bodytype & BODYTYPE_GOLEM)
-		debrain_icon = 'icons/mob/species/golem/golems.dmi'
+		debrain_icon = 'icons/mob/human/species/golem/bodyparts.dmi'
 
 	var/image/debrain_overlay
 	if(can_rotate)

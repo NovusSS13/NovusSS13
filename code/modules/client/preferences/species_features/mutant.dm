@@ -77,12 +77,12 @@
 /datum/preference/choiced/mutant/frills/icon_for(value)
 	var/static/icon/head_icon
 	if (isnull(head_icon))
-		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", EAST)
+		head_icon = icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_head", EAST)
 		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", EAST)
+		var/icon/eyes = icon('icons/mob/human/sprite_accessory/human_face.dmi', "eyes", EAST)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		head_icon.Blend(eyes, ICON_OVERLAY)
-		var/icon/snout = icon('icons/mob/species/sprite_accessory/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", EAST)
+		var/icon/snout = icon('icons/mob/human/species/mutant/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", EAST)
 		snout.Blend(COLOR_WHITE, ICON_MULTIPLY)
 		head_icon.Blend(snout, ICON_OVERLAY)
 
@@ -131,17 +131,17 @@
 /datum/preference/choiced/mutant/horns/icon_for(value)
 	var/static/icon/head_icon
 	if (isnull(head_icon))
-		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", EAST)
+		head_icon = icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_head", EAST)
 		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", EAST)
+		var/icon/eyes = icon('icons/mob/human/sprite_accessory/human_face.dmi', "eyes", EAST)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		head_icon.Blend(eyes, ICON_OVERLAY)
-		var/icon/snout = icon('icons/mob/species/sprite_accessory/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", EAST)
+		var/icon/snout = icon('icons/mob/human/species/mutant/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", EAST)
 		snout.Blend(COLOR_WHITE, ICON_MULTIPLY)
 		head_icon.Blend(snout, ICON_OVERLAY)
-		var/icon/ears = icon('icons/mob/species/sprite_accessory/ears_mutant.dmi', "m_ears_bigwolfinner_FRONT", EAST)
+		var/icon/ears = icon('icons/mob/human/species/mutant/ears_mutant.dmi', "m_ears_bigwolfinner_FRONT", EAST)
 		ears.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		ears.Blend(icon('icons/mob/species/sprite_accessory/ears_mutant.dmi', "m_earsinner_bigwolfinner_FRONT", EAST), ICON_OVERLAY)
+		ears.Blend(icon('icons/mob/human/species/mutant/ears_mutant.dmi', "m_earsinner_bigwolfinner_FRONT", EAST), ICON_OVERLAY)
 		head_icon.Blend(ears, ICON_OVERLAY)
 
 	var/static/icon/head_icon_cropped
@@ -192,12 +192,12 @@
 /datum/preference/choiced/mutant/ears/icon_for(value)
 	var/static/icon/head_icon
 	if (isnull(head_icon))
-		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", SOUTH)
+		head_icon = icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_head", SOUTH)
 		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", SOUTH)
+		var/icon/eyes = icon('icons/mob/human/sprite_accessory/human_face.dmi', "eyes", SOUTH)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		head_icon.Blend(eyes, ICON_OVERLAY)
-		var/icon/snout = icon('icons/mob/species/sprite_accessory/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", SOUTH)
+		var/icon/snout = icon('icons/mob/human/species/mutant/snouts_mutant.dmi', "m_snout_ntajaran_ADJ", SOUTH)
 		snout.Blend(COLOR_WHITE, ICON_MULTIPLY)
 		head_icon.Blend(snout, ICON_OVERLAY)
 
@@ -249,14 +249,14 @@
 /datum/preference/choiced/mutant/snout/icon_for(value)
 	var/static/icon/head_icon
 	if (isnull(head_icon))
-		head_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_head", SOUTH)
+		head_icon = icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_head", SOUTH)
 		head_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", SOUTH)
+		var/icon/eyes = icon('icons/mob/human/sprite_accessory/human_face.dmi', "eyes", SOUTH)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		head_icon.Blend(eyes, ICON_OVERLAY)
-		var/icon/ears = icon('icons/mob/species/sprite_accessory/ears_mutant.dmi', "m_ears_bigwolfinner_FRONT", SOUTH)
+		var/icon/ears = icon('icons/mob/human/species/mutant/ears_mutant.dmi', "m_ears_bigwolfinner_FRONT", SOUTH)
 		ears.Blend(COLOR_ORANGE, ICON_MULTIPLY)
-		ears.Blend(icon('icons/mob/species/sprite_accessory/ears_mutant.dmi', "m_earsinner_bigwolfinner_FRONT", SOUTH), ICON_OVERLAY)
+		ears.Blend(icon('icons/mob/human/species/mutant/ears_mutant.dmi', "m_earsinner_bigwolfinner_FRONT", SOUTH), ICON_OVERLAY)
 		head_icon.Blend(ears, ICON_OVERLAY)
 
 	var/static/icon/head_icon_cropped
@@ -307,9 +307,9 @@
 /datum/preference/choiced/mutant/tail/icon_for(value)
 	var/static/icon/groin_icon
 	if (isnull(groin_icon))
-		groin_icon = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_chest_m", EAST)
-		groin_icon.Blend(icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_l_leg", EAST), ICON_UNDERLAY)
-		groin_icon.Blend(icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_r_leg", EAST), ICON_OVERLAY)
+		groin_icon = icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_chest_m", EAST)
+		groin_icon.Blend(icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_l_leg", EAST), ICON_UNDERLAY)
+		groin_icon.Blend(icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_r_leg", EAST), ICON_OVERLAY)
 		groin_icon.Blend(COLOR_ORANGE, ICON_MULTIPLY)
 
 	var/static/icon/groin_icon_cropped
@@ -360,12 +360,12 @@
 /datum/preference/choiced/mutant/spines/icon_for(value)
 	var/static/icon/groin_with_tail
 	if (isnull(groin_with_tail))
-		groin_with_tail = icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_chest_m", EAST)
-		groin_with_tail.Blend(icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_l_leg", EAST), ICON_UNDERLAY)
-		groin_with_tail.Blend(icon('icons/mob/species/mutant/mutant_bodyparts.dmi', "mutant_r_leg", EAST), ICON_OVERLAY)
+		groin_with_tail = icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_chest_m", EAST)
+		groin_with_tail.Blend(icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_l_leg", EAST), ICON_UNDERLAY)
+		groin_with_tail.Blend(icon('icons/mob/human/species/mutant/bodyparts.dmi', "mutant_r_leg", EAST), ICON_OVERLAY)
 		groin_with_tail.Blend(COLOR_ORANGE, ICON_MULTIPLY)
 
-		var/icon/tail = icon('icons/mob/species/lizard/lizard_tails.dmi', "m_tail_lizard_smooth_BEHIND", EAST)
+		var/icon/tail = icon('icons/mob/human/species/lizard/lizard_tails.dmi', "m_tail_lizard_smooth_BEHIND", EAST)
 		tail.Blend(COLOR_ORANGE, ICON_MULTIPLY)
 		groin_with_tail.Blend(tail, ICON_OVERLAY)
 

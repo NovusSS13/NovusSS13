@@ -1,5 +1,5 @@
 /datum/sprite_accessory/moth_antennae //Finally splitting the sprite
-	icon = 'icons/mob/species/moth/moth_antennae.dmi'
+	icon = 'icons/mob/human/species/moth/moth_antennae.dmi'
 	color_amount = 0
 	default_color = 1
 	default_colors = list(COLOR_WHITE, COLOR_OFF_WHITE, COLOR_VERY_LIGHT_GRAY)

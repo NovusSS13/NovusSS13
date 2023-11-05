@@ -3,7 +3,7 @@
 	gender_specific = TRUE
 
 /datum/sprite_accessory/body_markings/mutant/primary
-	icon = 'icons/mob/species/sprite_accessory/body_markings/primary_markings.dmi'
+	icon = 'icons/mob/human/sprite_accessory/body_markings/primary_markings.dmi'
 	default_color = 1
 
 /datum/sprite_accessory/body_markings/mutant/primary/drake_bone
@@ -100,7 +100,7 @@
 	allowed_bodyparts = LEG_RIGHT | LEG_LEFT
 
 /datum/sprite_accessory/body_markings/mutant/secondary
-	icon = 'icons/mob/species/sprite_accessory/body_markings/secondary_markings.dmi'
+	icon = 'icons/mob/human/sprite_accessory/body_markings/secondary_markings.dmi'
 	default_color = 2
 
 /datum/sprite_accessory/body_markings/mutant/secondary/tajaran
@@ -344,7 +344,7 @@
 	allowed_bodyparts = HEAD | CHEST | ARM_LEFT | ARM_RIGHT | HAND_LEFT | HAND_RIGHT | LEG_RIGHT | LEG_LEFT
 
 /datum/sprite_accessory/body_markings/mutant/tertiary
-	icon = 'icons/mob/species/sprite_accessory/body_markings/tertiary_markings.dmi'
+	icon = 'icons/mob/human/sprite_accessory/body_markings/tertiary_markings.dmi'
 	default_color = 3
 
 /datum/sprite_accessory/body_markings/mutant/tertiary/redpanda

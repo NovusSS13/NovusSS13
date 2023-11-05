@@ -1,7 +1,7 @@
 //NUKE THIS FILE WHEN WINGS INEVITABLY GET MERGED AS ONE
 
 /datum/sprite_accessory/moth_wings
-	icon = 'icons/mob/species/moth/moth_wings.dmi'
+	icon = 'icons/mob/human/species/moth/moth_wings.dmi'
 
 /datum/sprite_accessory/moth_wings/plain
 	name = "Plain"

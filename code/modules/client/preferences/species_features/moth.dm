@@ -14,9 +14,9 @@
 	var/static/icon/moth_head
 
 	if (isnull(moth_head))
-		moth_head = icon('icons/mob/species/moth/bodyparts.dmi', "moth_head", SOUTH)
-		moth_head.Blend(icon('icons/mob/species/sprite_accessory/human_face.dmi', "motheyes_l", SOUTH), ICON_OVERLAY)
-		moth_head.Blend(icon('icons/mob/species/sprite_accessory/human_face.dmi', "motheyes_r", SOUTH), ICON_OVERLAY)
+		moth_head = icon('icons/mob/human/species/moth/bodyparts.dmi', "moth_head", SOUTH)
+		moth_head.Blend(icon('icons/mob/human/sprite_accessory/human_face.dmi', "motheyes_l", SOUTH), ICON_OVERLAY)
+		moth_head.Blend(icon('icons/mob/human/sprite_accessory/human_face.dmi', "motheyes_r", SOUTH), ICON_OVERLAY)
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.moth_antennae_list[value]
 	if (!is_valid_rendering_sprite_accessory(sprite_accessory))
@@ -46,7 +46,7 @@
 	var/static/icon/moth_chest
 
 	if (isnull(moth_chest))
-		moth_chest = icon('icons/mob/species/moth/bodyparts.dmi', "moth_chest_m", NORTH)
+		moth_chest = icon('icons/mob/human/species/moth/bodyparts.dmi', "moth_chest_m", NORTH)
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.moth_wings_list[value]
 	if (!is_valid_rendering_sprite_accessory(sprite_accessory))

@@ -3,7 +3,7 @@
 	default_colors = list(COLOR_WHITE, LIGHT_COLOR_LIGHT_CYAN, COLOR_SOFT_RED)
 
 /datum/sprite_accessory/snouts/lizard
-	icon = 'icons/mob/species/lizard/lizard_features.dmi'
+	icon = 'icons/mob/human/species/lizard/lizard_features.dmi'
 
 /datum/sprite_accessory/snouts/lizard/sharp
 	name = "Sharp"
@@ -22,7 +22,7 @@
 	icon_state = "roundlight"
 
 /datum/sprite_accessory/snouts/mutant
-	icon = 'icons/mob/species/sprite_accessory/snouts_mutant.dmi'
+	icon = 'icons/mob/human/species/mutant/snouts_mutant.dmi'
 	color_amount = 3
 
 /datum/sprite_accessory/snouts/mutant/bird

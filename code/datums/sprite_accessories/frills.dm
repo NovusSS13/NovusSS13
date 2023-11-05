@@ -3,7 +3,7 @@
 	default_colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
 
 /datum/sprite_accessory/frills/lizard
-	icon = 'icons/mob/species/lizard/lizard_features.dmi'
+	icon = 'icons/mob/human/species/lizard/lizard_features.dmi'
 
 /datum/sprite_accessory/frills/lizard/simple
 	name = "Simple"

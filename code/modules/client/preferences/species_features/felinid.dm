@@ -18,11 +18,11 @@
 /datum/preference/choiced/mutant/felinid_tail/icon_for(value)
 	var/static/icon/groin
 	if (isnull(groin))
-		groin = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_chest_m", EAST)
-		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg", EAST), ICON_UNDERLAY)
-		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg", EAST), ICON_OVERLAY)
-		groin.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_head_m", EAST), ICON_OVERLAY)
-		var/icon/hair = icon('icons/mob/species/sprite_accessory/human_face.dmi', "hair_long", EAST)
+		groin = icon('icons/mob/human/bodyparts_greyscale.dmi', "human_chest_m", EAST)
+		groin.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_leg", EAST), ICON_UNDERLAY)
+		groin.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_leg", EAST), ICON_OVERLAY)
+		groin.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_head_m", EAST), ICON_OVERLAY)
+		var/icon/hair = icon('icons/mob/human/sprite_accessory/human_face.dmi', "hair_long", EAST)
 		hair.Blend(COLOR_PINK, ICON_MULTIPLY)
 		groin.Blend(hair, ICON_OVERLAY)
 
@@ -76,11 +76,11 @@
 /datum/preference/choiced/mutant/felinid_ears/icon_for(value)
 	var/static/icon/head_icon
 	if (isnull(head_icon))
-		head_icon = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_head_f", SOUTH)
-		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", SOUTH)
+		head_icon = icon('icons/mob/human/bodyparts_greyscale.dmi', "human_head_f", SOUTH)
+		var/icon/eyes = icon('icons/mob/human/sprite_accessory/human_face.dmi', "eyes", SOUTH)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		head_icon.Blend(eyes, ICON_OVERLAY)
-		var/icon/hair = icon('icons/mob/species/sprite_accessory/human_face.dmi', "hair_long", SOUTH)
+		var/icon/hair = icon('icons/mob/human/sprite_accessory/human_face.dmi', "hair_long", SOUTH)
 		hair.Blend(COLOR_PINK, ICON_MULTIPLY)
 		head_icon.Blend(hair, ICON_OVERLAY)
 

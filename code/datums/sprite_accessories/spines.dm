@@ -8,7 +8,7 @@
 	var/can_wag = FALSE
 
 /datum/sprite_accessory/spines/lizard
-	icon = 'icons/mob/species/lizard/lizard_spines.dmi'
+	icon = 'icons/mob/human/species/lizard/lizard_spines.dmi'
 	color_amount = 1
 	can_wag = TRUE
 

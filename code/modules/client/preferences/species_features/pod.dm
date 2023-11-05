@@ -12,7 +12,7 @@
 /datum/preference/choiced/mutant/pod_hair/icon_for(value)
 	var/static/icon/icon_with_hair
 	if (isnull(icon_with_hair))
-		icon_with_hair = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "pod_head_m")
+		icon_with_hair = icon('icons/mob/human/bodyparts_greyscale.dmi', "pod_head_m")
 
 	var/datum/sprite_accessory/sprite_accessory = GLOB.pod_hair_list[value]
 	if (!is_valid_rendering_sprite_accessory(sprite_accessory))

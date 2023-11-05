@@ -1,9 +1,9 @@
 /proc/generate_lizard_side_shot(datum/sprite_accessory/sprite_accessory, bodypart_overlay_type = /datum/bodypart_overlay/mutant, include_snout = TRUE, color_accessory = TRUE)
 	var/static/icon/lizard
 	if (isnull(lizard))
-		lizard = icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_head", EAST)
+		lizard = icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_head", EAST)
 		lizard.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-		var/icon/eyes = icon('icons/mob/species/sprite_accessory/human_face.dmi', "eyes", EAST)
+		var/icon/eyes = icon('icons/mob/human/sprite_accessory/human_face.dmi', "eyes", EAST)
 		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
 		lizard.Blend(eyes, ICON_OVERLAY)
 
@@ -16,7 +16,7 @@
 	var/static/icon/lizard_with_snout
 	if (isnull(lizard_with_snout))
 		lizard_with_snout = icon(lizard)
-		var/icon/snout = icon('icons/mob/species/lizard/lizard_features.dmi', "m_snout_round_ADJ", EAST)
+		var/icon/snout = icon('icons/mob/human/species/lizard/lizard_features.dmi', "m_snout_round_ADJ", EAST)
 		snout.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
 		lizard_with_snout.Blend(snout, ICON_OVERLAY)
 
@@ -143,9 +143,9 @@
 /datum/preference/choiced/mutant/lizard_tail/icon_for(value)
 	var/static/icon/groin_icon
 	if (isnull(groin_icon))
-		groin_icon = icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_chest_m", EAST)
-		groin_icon.Blend(icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_l_leg", EAST), ICON_UNDERLAY)
-		groin_icon.Blend(icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_r_leg", EAST), ICON_OVERLAY)
+		groin_icon = icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_chest_m", EAST)
+		groin_icon.Blend(icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_l_leg", EAST), ICON_UNDERLAY)
+		groin_icon.Blend(icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_r_leg", EAST), ICON_OVERLAY)
 		groin_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
 
 	var/static/icon/groin_icon_cropped
@@ -197,12 +197,12 @@
 /datum/preference/choiced/mutant/lizard_spines/icon_for(value)
 	var/static/icon/groin_with_tail
 	if (isnull(groin_with_tail))
-		groin_with_tail = icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_chest_m", EAST)
-		groin_with_tail.Blend(icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_l_leg", EAST), ICON_UNDERLAY)
-		groin_with_tail.Blend(icon('icons/mob/species/lizard/bodyparts.dmi', "lizard_r_leg", EAST), ICON_OVERLAY)
+		groin_with_tail = icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_chest_m", EAST)
+		groin_with_tail.Blend(icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_l_leg", EAST), ICON_UNDERLAY)
+		groin_with_tail.Blend(icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_r_leg", EAST), ICON_OVERLAY)
 		groin_with_tail.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
 
-		var/icon/tail = icon('icons/mob/species/lizard/lizard_tails.dmi', "m_tail_lizard_smooth_BEHIND", EAST)
+		var/icon/tail = icon('icons/mob/human/species/lizard/lizard_tails.dmi', "m_tail_lizard_smooth_BEHIND", EAST)
 		tail.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
 		groin_with_tail.Blend(tail, ICON_OVERLAY)
 

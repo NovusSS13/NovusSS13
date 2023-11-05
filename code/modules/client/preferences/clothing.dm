@@ -118,8 +118,8 @@
 	var/static/icon/lower_half
 
 	if (isnull(lower_half))
-		lower_half = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg")
-		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
+		lower_half = icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_leg")
+		lower_half.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
 		lower_half.Blend(skintone2hex("caucasian1"), ICON_MULTIPLY)
 
 	//stupid byond goof, icon(icon_file, nonexistent_icon_state) == icon_file
@@ -160,13 +160,13 @@
 /datum/preference/choiced/undershirt/icon_for(value)
 	var/static/icon/body
 	if (isnull(body))
-		body = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg")
-		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_arm"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_arm"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_hand"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_hand"), ICON_OVERLAY)
-		body.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_chest_m"), ICON_OVERLAY)
+		body = icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_leg")
+		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_arm"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_arm"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_hand"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_hand"), ICON_OVERLAY)
+		body.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_chest_m"), ICON_OVERLAY)
 		body.Blend(skintone2hex("caucasian1"), ICON_MULTIPLY)
 
 	var/icon/icon_with_undershirt = icon(body)
@@ -213,9 +213,9 @@
 	var/static/icon/lower_half
 
 	if (isnull(lower_half))
-		lower_half = icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_chest_m")
-		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_r_leg"), ICON_OVERLAY)
-		lower_half.Blend(icon('icons/mob/species/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
+		lower_half = icon('icons/mob/human/bodyparts_greyscale.dmi', "human_chest_m")
+		lower_half.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_r_leg"), ICON_OVERLAY)
+		lower_half.Blend(icon('icons/mob/human/bodyparts_greyscale.dmi', "human_l_leg"), ICON_OVERLAY)
 		lower_half.Blend(skintone2hex("caucasian1"), ICON_MULTIPLY)
 
 	//stupid byond goof, icon(icon_file, nonexistent_icon_state) == icon_file

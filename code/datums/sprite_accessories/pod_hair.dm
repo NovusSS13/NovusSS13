@@ -1,5 +1,5 @@
 /datum/sprite_accessory/pod_hair
-	icon = 'icons/mob/species/sprite_accessory/podperson_hair.dmi'
+	icon = 'icons/mob/human/sprite_accessory/podperson_hair.dmi'
 
 /datum/sprite_accessory/pod_hair/ivy
 	name = "Ivy"

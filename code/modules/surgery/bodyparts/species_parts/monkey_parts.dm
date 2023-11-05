@@ -1,7 +1,7 @@
 /obj/item/bodypart/head/monkey
-	icon = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_static = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_husk = 'icons/mob/species/monkey/bodyparts.dmi'
+	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_static = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_husk = 'icons/mob/human/species/monkey/bodyparts.dmi'
 	husk_type = "monkey"
 	icon_state = "default_monkey_head"
 	limb_id = SPECIES_MONKEY
@@ -12,9 +12,9 @@
 	head_flags = HEAD_LIPS|HEAD_DEBRAIN
 
 /obj/item/bodypart/chest/monkey
-	icon = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_static = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_husk = 'icons/mob/species/monkey/bodyparts.dmi'
+	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_static = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_husk = 'icons/mob/human/species/monkey/bodyparts.dmi'
 	husk_type = "monkey"
 	top_offset = -5
 	icon_state = "default_monkey_chest"
@@ -27,9 +27,9 @@
 	dmg_overlay_type = SPECIES_MONKEY
 
 /obj/item/bodypart/arm/left/monkey
-	icon = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_static = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_husk = 'icons/mob/species/monkey/bodyparts.dmi'
+	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_static = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_husk = 'icons/mob/human/species/monkey/bodyparts.dmi'
 	husk_type = "monkey"
 	icon_state = "default_monkey_l_arm"
 	limb_id = SPECIES_MONKEY
@@ -44,9 +44,9 @@
 	unarmed_stun_threshold = 3
 
 /obj/item/bodypart/arm/right/monkey
-	icon = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_static = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_husk = 'icons/mob/species/monkey/bodyparts.dmi'
+	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_static = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_husk = 'icons/mob/human/species/monkey/bodyparts.dmi'
 	husk_type = "monkey"
 	icon_state = "default_monkey_r_arm"
 	limb_id = SPECIES_MONKEY
@@ -61,9 +61,9 @@
 	unarmed_stun_threshold = 3
 
 /obj/item/bodypart/leg/left/monkey
-	icon = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_static = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_husk = 'icons/mob/species/monkey/bodyparts.dmi'
+	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_static = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_husk = 'icons/mob/human/species/monkey/bodyparts.dmi'
 	husk_type = "monkey"
 	top_offset = -3
 	icon_state = "default_monkey_l_leg"
@@ -78,9 +78,9 @@
 	unarmed_stun_threshold = 4
 
 /obj/item/bodypart/leg/right/monkey
-	icon = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_static = 'icons/mob/species/monkey/bodyparts.dmi'
-	icon_husk = 'icons/mob/species/monkey/bodyparts.dmi'
+	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_static = 'icons/mob/human/species/monkey/bodyparts.dmi'
+	icon_husk = 'icons/mob/human/species/monkey/bodyparts.dmi'
 	husk_type = "monkey"
 	top_offset = -3
 	icon_state = "default_monkey_r_leg"

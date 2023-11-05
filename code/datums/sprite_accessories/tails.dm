@@ -8,7 +8,7 @@
 	var/can_wag = FALSE
 
 /datum/sprite_accessory/tails/lizard
-	icon = 'icons/mob/species/lizard/lizard_tails.dmi'
+	icon = 'icons/mob/human/species/lizard/lizard_tails.dmi'
 	feature_suffix = "lizard"
 	color_amount = 1
 	can_wag = TRUE
@@ -30,7 +30,7 @@
 	icon_state = "spikes"
 
 /datum/sprite_accessory/tails/human
-	icon = 'icons/mob/species/human/cat_features.dmi'
+	icon = 'icons/mob/human/sprite_accessory/cat_features.dmi'
 	color_amount = 1
 
 /datum/sprite_accessory/tails/human/cat
@@ -44,13 +44,13 @@
 
 /datum/sprite_accessory/tails/monkey/default
 	name = "Monkey"
-	icon = 'icons/mob/species/monkey/monkey_tail.dmi'
+	icon = 'icons/mob/human/species/monkey/monkey_tail.dmi'
 	icon_state = "default"
 
 /// MUTANT SPRITES
 
 /datum/sprite_accessory/tails/mutant
-	icon = 'icons/mob/species/sprite_accessory/tails_mutant.dmi'
+	icon = 'icons/mob/human/species/mutant/tails_mutant.dmi'
 	color_amount = 3
 
 /datum/sprite_accessory/tails/mutant/wagging
@@ -59,7 +59,7 @@
 	*/
 
 /datum/sprite_accessory/tails/mutant/wagging/big
-	icon = 'icons/mob/species/sprite_accessory/tails_mutant_big.dmi'
+	icon = 'icons/mob/human/species/mutant/tails_mutant_big.dmi'
 	dimension_x = 64
 	center = TRUE
 

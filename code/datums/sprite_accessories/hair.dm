@@ -3,7 +3,7 @@
 // Hair Definitions //
 //////////////////////
 /datum/sprite_accessory/hair
-	icon = 'icons/mob/species/sprite_accessory/human_face.dmi'   // default icon for all hairs
+	icon = 'icons/mob/human/sprite_accessory/human_face.dmi'   // default icon for all hairs
 
 	// please make sure they're sorted alphabetically and, where needed, categorized
 	// try to capitalize the names please~
@@ -747,7 +747,7 @@
 /////////////////////////////
 
 /datum/sprite_accessory/facial_hair
-	icon = 'icons/mob/species/sprite_accessory/human_face.dmi'
+	icon = 'icons/mob/human/sprite_accessory/human_face.dmi'
 	gender = MALE // barf (unless you're a dorf, dorfs dig chix w/ beards :P)
 
 // please make sure they're sorted alphabetically and categorized
@@ -913,7 +913,7 @@
 /////////////////////////////////////
 */
 /datum/sprite_accessory/gradient
-	icon = 'icons/mob/species/sprite_accessory/hair_gradients.dmi'
+	icon = 'icons/mob/human/sprite_accessory/hair_gradients.dmi'
 	///whether this gradient applies to hair and/or beards. Some gradients do not work well on beards.
 	var/gradient_category = GRADIENT_APPLIES_TO_HAIR|GRADIENT_APPLIES_TO_FACIAL_HAIR
 
