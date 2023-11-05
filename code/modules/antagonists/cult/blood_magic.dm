@@ -721,11 +721,11 @@
 					new /obj/effect/temp_visual/cult/sparks(get_turf(H))
 					user.Beam(H, icon_state="sendbeam", time = 15)
 			else
-				if(H.stat == DEAD)
-					to_chat(user,span_warning("[H.p_their(TRUE)] blood has stopped flowing, you'll have to find another way to extract it."))
+				if(human_bloodbag.stat == DEAD)
+					to_chat(user,span_warning("[human_bloodbag.p_Their()] blood has stopped flowing, you'll have to find another way to extract it."))
 					return
-				if(H.has_status_effect(/datum/status_effect/speech/slurring/cult))
-					to_chat(user,span_danger("[H.p_their(TRUE)] blood has been tainted by an even stronger form of blood magic, it's no use to us like this!"))
+				if(human_bloodbag.has_status_effect(/datum/status_effect/speech/slurring/cult))
+					to_chat(user,span_danger("[human_bloodbag.p_Their()] blood has been tainted by an even stronger form of blood magic, it's no use to us like this!"))
 					return
 				if(H.blood_volume > BLOOD_VOLUME_SAFE)
 					H.blood_volume -= 100
@@ -736,7 +736,7 @@
 					to_chat(user,span_cultitalic("Your blood rite gains 50 charges from draining [H]'s blood."))
 					new /obj/effect/temp_visual/cult/sparks(get_turf(H))
 				else
-					to_chat(user,span_warning("[H.p_theyre(TRUE)] missing too much blood - you cannot drain [H.p_them()] further!"))
+					to_chat(user,span_warning("[human_bloodbag.p_Theyre()] missing too much blood - you cannot drain [human_bloodbag.p_them()] further!"))
 					return
 		if(isconstruct(target))
 			var/mob/living/simple_animal/M = target

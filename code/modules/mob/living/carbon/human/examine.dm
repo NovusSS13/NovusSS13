@@ -1,7 +1,7 @@
 /mob/living/carbon/human/examine(mob/user)
 	//this is very slightly better than it was because you can use it more places. still can't do \his[src] though.
-	var/t_He = p_they(TRUE)
-	var/t_His = p_their(TRUE)
+	var/t_He = p_They()
+	var/t_His = p_Their()
 	var/t_his = p_their()
 	var/t_him = p_them()
 	var/t_has = p_have()
@@ -438,6 +438,7 @@
 	. = ..()
 	if ((wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE)))
 		return
+
 	var/age_text
 	switch(age)
 		if(-INFINITY to 25)
@@ -452,4 +453,5 @@
 			age_text = "very old"
 		if(101 to INFINITY)
 			age_text = "withering away"
-	. += span_notice("[p_they(TRUE)] appear[p_s()] to be [age_text].")
+
+	. += span_notice("[p_They()] appear[p_s()] to be [age_text].")
