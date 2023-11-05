@@ -39,7 +39,7 @@
 	/// Replacement name
 	var/real_name = ""
 	/// Flags related to appearance, such as hair, lips, etc
-	var/head_flags = HEAD_ALL_FEATURES
+	var/head_flags = HEAD_ALL_FLAGS
 
 	/// Custom icon for the eyes overlay.
 	var/custom_eyes_icon = null

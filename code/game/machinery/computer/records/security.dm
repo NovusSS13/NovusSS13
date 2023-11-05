@@ -58,7 +58,7 @@
 				if(3)
 					target.age = rand(5, 85)
 				if(4)
-					target.wanted_status = pick(WANTED_STATUSES())
+					target.wanted_status = pick(WANTED_STATUSES)
 				if(5)
 					target.species = pick(get_selectable_species())
 			continue
@@ -87,7 +87,7 @@
 /obj/machinery/computer/records/security/ui_data(mob/user)
 	var/list/data = ..()
 
-	data["available_statuses"] = WANTED_STATUSES()
+	data["available_statuses"] = WANTED_STATUSES
 	data["current_user"] = user.name
 	data["higher_access"] = has_armory_access(user)
 
@@ -180,7 +180,7 @@
 
 		if("set_wanted")
 			var/wanted_status = params["status"]
-			if(!wanted_status || !(wanted_status in WANTED_STATUSES()))
+			if(!wanted_status || !(wanted_status in WANTED_STATUSES))
 				return FALSE
 			if(wanted_status == WANTED_ARREST && !length(target.crimes))
 				return FALSE
@@ -460,7 +460,7 @@
 /obj/item/circuit_component/arrest_console_arrest/populate_options()
 	if(!attached_console)
 		return
-	var/list/available_statuses = WANTED_STATUSES()
+	var/list/available_statuses = WANTED_STATUSES
 	new_status = add_option_port("Arrest Options", available_statuses)
 
 /obj/item/circuit_component/arrest_console_arrest/populate_ports()

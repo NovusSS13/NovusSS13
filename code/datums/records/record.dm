@@ -102,6 +102,8 @@
 	physical_status = PHYSICAL_ACTIVE,
 	mental_status = MENTAL_STABLE,
 	quirk_notes,
+	medical_notes,
+	security_note
 )
 	. = ..()
 	src.lock_ref = lock_ref
@@ -112,6 +114,8 @@
 	src.physical_status = physical_status
 	src.mental_status = mental_status
 	src.quirk_notes = quirk_notes
+	src.medical_notes = medical_notes
+	src.security_note = security_note
 
 	GLOB.manifest.general += src
 
