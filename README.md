@@ -39,13 +39,13 @@ On **2021-01-04** we have changed the way to compile the codebase.
 **[How to compile in VSCode and other build options](tools/build/README.md).**
 
 ## Contributors
-[Guides for Contributors](.github/CONTRIBUTING.md)
+~~[Guides for Contributors](.github/CONTRIBUTING.md)~~
 
-[/tg/station HACKMD account](https://hackmd.io/@tgstation) - Design documentation here
+~~[/tg/station HACKMD account](https://hackmd.io/@tgstation) - Design documentation here~~
 
-[Interested in some starting lore?](https://github.com/tgstation/common_core)
+~~[Interested in some starting lore?](https://github.com/tgstation/common_core)~~
 
-WE DON'T ACTUALLY USE THESE BTW!
+### WE DON'T ACTUALLY USE THESE!
 
 ## LICENSE
 
