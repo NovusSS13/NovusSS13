@@ -237,7 +237,7 @@
 /obj/item/mayhem
 	name = "mayhem in a bottle"
 	desc = "A magically infused bottle of blood, the scent of which will drive anyone nearby into a murderous frenzy."
-	icon = 'icons/obj/wizard.dmi'
+	icon = 'icons/obj/lavaland/artefacts.dmi'
 	icon_state = "vial"
 
 /obj/item/mayhem/attack_self(mob/user)
@@ -709,7 +709,7 @@
 /obj/item/dragons_blood
 	name = "bottle of dragons blood"
 	desc = "You're not actually going to drink this, are you?"
-	icon = 'icons/obj/wizard.dmi'
+	icon = 'icons/obj/lavaland/artefacts.dmi'
 	icon_state = "vial"
 
 /obj/item/dragons_blood/attack_self(mob/living/carbon/human/user)
