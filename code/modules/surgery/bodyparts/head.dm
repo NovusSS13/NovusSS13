@@ -195,7 +195,7 @@
 		return
 
 	// Handle dental implants
-	for(var/datum/action/item_action/hands_free/activate_pill/pill_action in owner.actions)
+	for(var/datum/action/item_action/hands_free/activate_pill/pill_action in head_owner.actions)
 		pill_action.Remove(owner)
 		var/obj/pill = pill_action.target
 		if(pill)
