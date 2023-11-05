@@ -321,13 +321,15 @@
 
 	SEND_SIGNAL(src, COMSIG_LIVING_START_PULL, AM, state, force)
 
+	var/hard_grab = !src.combat_mode && (HAS_TRAIT(src, TRAIT_STRONG_GRABBER) || (HAS_TRAIT(AM, TRAIT_EASILY_GRABBED) && !HAS_TRAIT(src, TRAIT_EASILY_GRABBED)))
+
 	if(!supress_message)
 		var/sound_to_play = 'sound/weapons/thudswoosh.ogg'
 		if(ishuman(src))
 			var/mob/living/carbon/human/H = src
 			if(H.dna.species.grab_sound)
 				sound_to_play = H.dna.species.grab_sound
-			if(HAS_TRAIT(H, TRAIT_STRONG_GRABBER) || HAS_TRAIT(AM, TRAIT_EASILY_GRABBED))
+			if(hard_grab)
 				sound_to_play = null
 		playsound(src.loc, sound_to_play, 50, TRUE, -1)
 	update_pull_hud_icon()
@@ -336,16 +338,22 @@
 		var/mob/M = AM
 
 		log_combat(src, M, "grabbed", addition="passive grab")
-		if(!supress_message && !(iscarbon(AM) && (HAS_TRAIT(src, TRAIT_STRONG_GRABBER) || HAS_TRAIT(M, TRAIT_EASILY_GRABBED))))
+		if(!supress_message && !(iscarbon(AM) && hard_grab))
 			if(ishuman(M))
 				var/mob/living/carbon/human/grabbed_human = M
 				var/grabbed_by_hands = (zone_selected == "l_arm" || zone_selected == "r_arm") && grabbed_human.usable_hands > 0
-				M.visible_message(span_warning("[src] grabs [M] [grabbed_by_hands ? "by their hands":"passively"]!"), \
-								span_warning("[src] grabs you [grabbed_by_hands ? "by your hands":"passively"]!"), null, null, src)
+				M.visible_message(
+					span_warning("[src] grabs [M] [grabbed_by_hands ? "by their hands":"passively"]!"),
+					span_warning("[src] grabs you [grabbed_by_hands ? "by your hands":"passively"]!"),
+					null, null, src
+				)
 				to_chat(src, span_notice("You grab [M] [grabbed_by_hands ? "by their hands":"passively"]!"))
 			else
-				M.visible_message(span_warning("[src] grabs [M] passively!"), \
-								span_warning("[src] grabs you passively!"), null, null, src)
+				M.visible_message(
+					span_warning("[src] grabs [M] passively!"),
+					span_warning("[src] grabs you passively!"),
+					null, null, src
+				)
 				to_chat(src, span_notice("You grab [M] passively!"))
 
 		if(!iscarbon(src))
@@ -369,7 +377,7 @@
 
 			if(iscarbon(L))
 				var/mob/living/carbon/C = L
-				if(HAS_TRAIT(src, TRAIT_STRONG_GRABBER) || HAS_TRAIT(C, TRAIT_EASILY_GRABBED))
+				if(hard_grab)
 					C.grippedby(src)
 
 			update_pull_movespeed()
