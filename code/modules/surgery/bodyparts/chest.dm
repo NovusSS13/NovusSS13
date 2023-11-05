@@ -45,6 +45,12 @@
 	QDEL_NULL(worn_neck_offset)
 	return ..()
 
+//chests are special snowflakes because instakills aren't fun
+/obj/item/bodypart/chest/can_dismember(damage_source)
+	if(owner.stat < HARD_CRIT || !LAZYLEN(organs))
+		return FALSE
+	return ..()
+
 /obj/item/bodypart/chest/drop_organs(mob/user, violent_removal)
 	. = ..()
 	cavity_item = null

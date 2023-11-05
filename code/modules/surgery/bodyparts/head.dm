@@ -185,14 +185,31 @@
 	new_head_owner.update_body()
 	new_head_owner.update_damage_overlays()
 
-/obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
+/obj/item/bodypart/head/drop_limb(special, dismembered)
+	var/mob/living/carbon/head_owner = owner
+	if(head_owner)
+		// Update the name of the head to reflect the owner's real name
+		name = "[owner.real_name]'s head"
 	. = ..()
-	if(owner)
-		if(HAS_TRAIT(owner, TRAIT_HUSK))
-			real_name = "Unknown"
-		else
-			real_name = owner.real_name
-	update_hair_and_lips(dropping_limb, is_creating)
+	if(special || !head_owner)
+		return
+
+	// Handle dental implants
+	for(var/datum/action/item_action/hands_free/activate_pill/pill_action in owner.actions)
+		pill_action.Remove(owner)
+		var/obj/pill = pill_action.target
+		if(pill)
+			pill.forceMove(src)
+
+	// Drop all worn head items
+	for(var/obj/item/head_item in list(head_owner.glasses, head_owner.ears, head_owner.wear_mask, head_owner.head))
+		head_owner.dropItemToGround(head_item, force = TRUE)
+
+//heads are special snowflakes because instakills aren't fun
+/obj/item/bodypart/head/can_dismember(damage_source)
+	if(owner.stat < HARD_CRIT)
+		return FALSE
+	return ..()
 
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal = FALSE)
 	. = ..()
@@ -213,6 +230,15 @@
 	eyes = null
 	ears = null
 	tongue = null
+
+/obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
+	. = ..()
+	if(owner)
+		if(HAS_TRAIT(owner, TRAIT_HUSK))
+			real_name = "Unknown"
+		else
+			real_name = owner.real_name
+	update_hair_and_lips(dropping_limb, is_creating)
 
 /obj/item/bodypart/head/generate_icon_key()
 	. = ..()

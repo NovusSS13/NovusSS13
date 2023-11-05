@@ -91,6 +91,10 @@
 	if(iscarbon(brother) && iscarbon(cast_on))
 		var/mob/living/carbon/carbon_caster = cast_on
 		var/mob/living/carbon/carbon_brother = brother
+		//radiation is tied to toxin damage, deal with it before moving on to toxin down the line
+		var/brother_rads = brother.GetComponent(/datum/component/irradiated)
+		if(brother_rads && !HAS_TRAIT(carbon_caster, TRAIT_RADIMMUNE))
+			carbon_caster.AddComponent(/datum/component/irradiated)
 		//gives our brother our blood
 		if(carbon_brother.blood_volume < BLOOD_VOLUME_NORMAL)
 			var/given_blood = carbon_caster.blood_volume - carbon_brother.blood_volume
@@ -99,6 +103,8 @@
 				carbon_caster.blood_volume = max(carbon_caster.blood_volume - given_blood, 0)
 		//loops through every limb to accurately transfer brute and burn damage
 		for(var/obj/item/bodypart/brother_part as anything in carbon_brother.bodyparts)
+			if(!brother_part.brute_dam && !brother_part.burn_dam && !LAZYLEN(brother_part.wounds) && !LAZYLEN(brother_part.embedded_objects))
+				continue
 			var/obj/item/bodypart/caster_part = carbon_caster.get_bodypart(brother_part.body_zone)
 			if(!caster_part)
 				continue
@@ -126,8 +132,17 @@
 			caster_part.drop_limb()
 			if(!caster_part.try_attach_limb(carbon_brother))
 				caster_part.try_attach_limb(carbon_caster)
-		//i also wanted to try and give the brother our organs, but i don't believe there is a reasonable way to do this
-		//because organ code is much crazier than bodypart code
+		//loop through every organ to transfer damage
+		for(var/obj/item/organ/brother_organ as anything in carbon_brother.organs)
+			if(!brother_organ.damage)
+				continue
+			var/obj/item/organ/caster_organ = carbon_caster.get_organ_slot(brother_organ.slot)
+			if(!caster_organ)
+				continue
+			var/damage_before = caster_organ.damage
+			caster_organ.apply_organ_damage(brother_organ.damage)
+			brother_organ.apply_organ_damage(min(-(caster_organ.damage - damage_before), 0))
+		//i also wanted to try and give the brother missing organs, but organ code is wack and i don't want to deal with it
 	else
 		var/brother_brute = brother.getBruteLoss()
 		if(brother_brute)
@@ -143,6 +158,7 @@
 	if(brother_tox)
 		var/damage_before = cast_on.getToxLoss()
 		cast_on.adjustToxLoss(brother_tox)
+		//remember: radiation is tied to toxin damage, if all of it got healed the rads will go away too
 		brother.adjustToxLoss(min(-(cast_on.getToxLoss() - damage_before), 0))
 	var/brother_oxy = brother.getOxyLoss()
 	if(brother_oxy)

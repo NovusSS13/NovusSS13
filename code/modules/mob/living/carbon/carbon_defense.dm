@@ -789,7 +789,7 @@
 
 	var/obj/item/bodypart/new_part = pick(GLOB.bioscrambler_valid_parts)
 	var/obj/item/bodypart/picked_user_part = get_bodypart(initial(new_part.body_zone))
-	if (picked_user_part && BODYTYPE_CAN_BE_BIOSCRAMBLED(picked_user_part.bodytype))
+	if (!picked_user_part || (!IS_ROBOTIC_LIMB(picked_user_part) && BODYTYPE_CAN_BE_BIOSCRAMBLED(picked_user_part.bodytype)))
 		changed_something = TRUE
 		new_part = new new_part()
 		new_part.replace_limb(src, special = TRUE)
@@ -799,21 +799,21 @@
 	if (!changed_something)
 		to_chat(src, span_notice("Your augmented body protects you from [scramble_source]!"))
 		return FALSE
-	update_body(TRUE)
-	balloon_alert(src, "something has changed about you")
+	to_chat(src, span_userdanger("Something about you has been changed..."))
+	update_body(is_creating = TRUE)
 	return TRUE
 
 /// Fill in the lists of things we can bioscramble into people
-/mob/living/carbon/proc/init_bioscrambler_lists()
-	var/list/body_parts = typesof(/obj/item/bodypart/chest) + typesof(/obj/item/bodypart/head) + subtypesof(/obj/item/bodypart/arm) + subtypesof(/obj/item/bodypart/leg)
-	for(var/obj/item/bodypart/part as anything in body_parts)
-		if(!is_type_in_typecache(part, GLOB.bioscrambler_parts_blacklist) && BODYTYPE_CAN_BE_BIOSCRAMBLED(initial(part.bodytype)))
+/proc/init_bioscrambler_lists()
+	var/list/bodyparts = typesof(/obj/item/bodypart/chest) + typesof(/obj/item/bodypart/head) + subtypesof(/obj/item/bodypart/arm) + subtypesof(/obj/item/bodypart/leg)
+	for(var/obj/item/bodypart/bodypart_type as anything in bodyparts)
+		if(!is_type_in_typecache(bodypart_type, GLOB.bioscrambler_parts_blacklist) && BODYTYPE_CAN_BE_BIOSCRAMBLED(initial(bodypart_type.bodytype)))
 			continue
-		body_parts -= part
-	GLOB.bioscrambler_valid_parts = body_parts
+		bodyparts -= part
+	GLOB.bioscrambler_valid_parts = bodyparts
 
-	for (var/obj/item/organ/organ_type as anything in subtypesof(/obj/item/organ))
-		if (!is_type_in_typecache(organ_type, GLOB.bioscrambler_organs_blacklist) && !(initial(organ_type.organ_flags) & ORGAN_ROBOTIC))
+	for(var/obj/item/organ/organ_type as anything in subtypesof(/obj/item/organ))
+		if(!is_type_in_typecache(organ_type, GLOB.bioscrambler_organs_blacklist) && !(initial(organ_type.organ_flags) & ORGAN_ROBOTIC))
 			continue
 		organs -= organ_type
 	GLOB.bioscrambler_valid_organs = organs
