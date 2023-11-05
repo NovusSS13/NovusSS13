@@ -100,13 +100,6 @@
 	var/payday_modifier = 1
 	///Base electrocution coefficient.  Basically a multiplier for damage from electrocutions.
 	var/siemens_coeff = 1
-<<<<<<< HEAD
-=======
-	///To use MUTCOLOR with a fixed color that's independent of the mcolor feature in DNA.
-	var/fixed_mut_color = ""
-	///A fixed hair color that's independent of the mcolor feature in DNA.
-	var/fixed_hair_color = ""
->>>>>>> 6184c4d2ed2... Fixes ethereals' hair. Separates fixed hair color from the 'fixed_mut_color' var (#76930)
 	///Special mutation that can be found in the genepool exclusively in this species. Dont leave empty or changing species will be a headache
 	var/inert_mutation = /datum/mutation/human/dwarfism
 	///Used to set the mob's death_sound upon species change
