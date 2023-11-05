@@ -6,7 +6,7 @@
 /obj/item/bodypart/head/avali
 	custom_eyes_icon = 'icons/mob/species/avali/avali_eyes.dmi'
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_AVALI
+	bodytype = BODYTYPE_ORGANIC | BODYTYPE_AVALI
 	head_flags = HEAD_EYESPRITES | HEAD_EYECOLOR | HEAD_EYEHOLES | HEAD_DEBRAIN
 	limb_id = SPECIES_AVALI
 	brute_modifier = AVALI_BRUTE_MODIFIER
