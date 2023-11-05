@@ -13,7 +13,7 @@
 * ~~**Codedocs:** https://codedocs.tgstation13.org/~~
 * ~~**/tg/station Discord:** https://tgstation13.org/phpBB/viewforum.php?f=60~~
 * ~~**Coderbus Discord:** https://discord.gg/Vh8TJp9~~
-* **Novus Discord (ONLY ONE THAT MATTERS!):** https://discord.gg/GpvRamEghk
+* **Novus Discord (ONLY ONE THAT MATTERS!):** https://discord.gg/ybpNyDztkj
 
 This is the codebase for the Novus flavoured fork of SpaceStation 13.
 
