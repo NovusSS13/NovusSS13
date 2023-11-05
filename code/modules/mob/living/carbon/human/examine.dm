@@ -33,17 +33,19 @@
 	var/obscured = check_obscured_slots()
 
 	//lips
-	var/obj/item/bodypart/shoeonhead = get_bodypart(BODY_ZONE_HEAD)
+	var/obj/item/bodypart/head/shoeonhead = get_bodypart(BODY_ZONE_HEAD)
 	if(shoeonhead)
 		var/list/covered_lips = list()
 		for(var/component_type in subtypesof(/datum/component/creamed))
 			var/datum/component/creamed/coom = GetComponent(component_type)
 			if(coom?.cover_lips)
 				covered_lips += coom.cover_lips
-		if((stat <= CONSCIOUS) && ((!client && !ai_controller) || HAS_TRAIT(src, TRAIT_DUMB)))
+		if((stat < UNCONSCIOUS) && ((!client && !ai_controller) || HAS_TRAIT(src, TRAIT_DUMB) || HAS_TRAIT(src, TRAIT_STROKE)))
 			covered_lips += span_color("drool", "#b6e7f5")
 		if(LAZYLEN(covered_lips))
 			. += "Mmm, [t_his] lips are covered with [english_list(covered_lips)]!"
+		else if((shoeonhead.head_flags & HEAD_LIPS) && shoeonhead.lip_style)
+			. += "[t_He] [t_has] some lipstick on [t_his] lips."
 
 	//head
 	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
@@ -287,7 +289,19 @@
 	if(!appears_dead)
 		var/mob/living/living_user = user
 		if(src != user)
-			if(HAS_TRAIT(user, TRAIT_EMPATH))
+			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
+				msg += span_notice("[t_He] [t_has] a holy aura about [t_him].\n")
+				living_user.add_mood_event("religious_comfort", /datum/mood_event/religiously_comforted)
+
+			var/empathy = HAS_TRAIT(user, TRAIT_EMPATH)
+			//i could not figure out a clean way to add the blood brother check here with signals and such, so i did
+			//this ugly mess
+			if(!empathy && mind && user.mind)
+				var/datum/antagonist/brother/brother = mind.has_antag_datum(/datum/antagonist/brother)
+				if(brother?.team && (user.mind in brother.team.members))
+					empathy = TRUE
+					msg += "[span_brother("[t_He] [t_is] your [uppertext(brother)]!")]\n"
+			if(empathy)
 				if (combat_mode)
 					msg += "[t_He] seem[p_s()] to be on guard.\n"
 				if (getOxyLoss() >= 10)
@@ -306,18 +320,17 @@
 				if (bodytemperature < dna.species.bodytemp_cold_damage_limit)
 					msg += "[t_He] [t_is] shivering.\n"
 
-			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
-				msg += "[t_He] [t_has] a holy aura about [t_him].\n"
-				living_user.add_mood_event("religious_comfort", /datum/mood_event/religiously_comforted)
-
 		switch(stat)
 			if(UNCONSCIOUS, HARD_CRIT)
 				msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
 			if(SOFT_CRIT)
 				msg += "[t_He] [t_is] barely conscious.\n"
 			if(CONSCIOUS)
-				if(shoeonhead && HAS_TRAIT(src, TRAIT_DUMB))
-					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
+				if(shoeonhead)
+					if(HAS_TRAIT(src, TRAIT_DUMB))
+						msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
+					if(HAS_TRAIT(src, TRAIT_STROKE))
+						msg += "[t_His] face is saggy and drooping to the side.\n"
 
 		if(!ai_controller && get_organ_slot(ORGAN_SLOT_BRAIN))
 			if(!key)

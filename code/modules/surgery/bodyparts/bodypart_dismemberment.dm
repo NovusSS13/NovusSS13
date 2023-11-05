@@ -3,16 +3,6 @@
 		return FALSE
 	return TRUE
 
-/obj/item/bodypart/chest/can_dismember(damage_source)
-	if(owner.stat < HARD_CRIT || !organs)
-		return FALSE
-	return ..()
-
-/obj/item/bodypart/head/can_dismember(damage_source)
-	if(owner.stat < HARD_CRIT)
-		return FALSE
-	return ..()
-
 /// Remove target limb from it's owner, with side effects.
 /obj/item/bodypart/proc/dismember(dam_type = BRUTE, silent = TRUE)
 	if(!owner || (bodypart_flags & BODYPART_UNREMOVABLE))
@@ -41,7 +31,7 @@
 	if(dam_type == BURN)
 		burn()
 		return TRUE
-	add_mob_blood(limb_owner)
+	transfer_mob_blood_dna(limb_owner)
 	fly_away(limb_owner.drop_location())
 	return TRUE
 
@@ -73,38 +63,9 @@
 	return drop_organs(violent_removal = TRUE)
 
 /**
- * Eviscerates the bodypart, dropping all organs and items inside of it
- * Arguments:
- * * violent_removal: If TRUE, organs will be thrown out using proc/fly_away() and a splort sound is played
+ * Standard limb removal.
+ * The "special" argument is used for swapping a limb with a new one without the effects of losing a limb kicking in.
  */
-/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal = FALSE)
-	SHOULD_CALL_PARENT(TRUE)
-
-	var/atom/drop_loc = drop_location()
-	if(IS_ORGANIC_LIMB(src) && violent_removal)
-		playsound(drop_loc, 'sound/misc/splort.ogg', 50, TRUE, -1)
-	seep_gauze(9999) // destroy any existing gauze if any exists
-	for(var/obj/item/organ/organ as anything in organs)
-		if(owner)
-			organ.Remove(owner)
-		else
-			organ.remove_from_limb(src)
-		organ.forceMove(drop_loc)
-		if(violent_removal)
-			if(owner)
-				organ.transfer_mob_blood_dna(owner)
-			organ.fly_away(drop_loc)
-	for(var/obj/item/item_in_bodypart in src)
-		item_in_bodypart.forceMove(drop_loc)
-		if(violent_removal && owner)
-			item_in_bodypart.transfer_mob_blood_dna(owner)
-
-	if(owner)
-		owner.update_body_parts()
-	else
-		update_icon_dropped()
-
-///limb removal. The "special" argument is used for swapping a limb with a new one without the effects of losing a limb kicking in.
 /obj/item/bodypart/proc/drop_limb(special, dismembered)
 	if(!owner)
 		return
@@ -123,7 +84,7 @@
 		LAZYREMOVE(owner.all_scars, scar)
 
 	for(var/obj/item/organ/organ as anything in organs)
-		organ.transfer_to_limb(src, special) //Null is the second arg because the bodypart is being removed from it's owner.
+		organ.transfer_to_limb(src, special)
 
 	var/mob/living/carbon/phantom_owner = set_owner(null) // so we can still refer to the guy who lost their limb after said limb forgets 'em
 
@@ -162,6 +123,36 @@
 		qdel(src)
 		return
 	forceMove(drop_loc)
+
+/**
+ * Eviscerates the bodypart, dropping all organs and items inside of it
+ * Arguments:
+ * * violent_removal: If TRUE, organs will be thrown out using proc/fly_away() and a splort sound is played
+ */
+/obj/item/bodypart/proc/drop_organs(mob/user, violent_removal = FALSE)
+	SHOULD_CALL_PARENT(TRUE)
+
+	var/atom/drop_loc = drop_location()
+	if(IS_ORGANIC_LIMB(src) && violent_removal)
+		playsound(drop_loc, 'sound/misc/splort.ogg', 50, TRUE, -1)
+	seep_gauze(9999) // destroy any existing gauze if any exists
+	for(var/obj/item/organ/organ as anything in organs)
+		if(owner)
+			organ.Remove(owner)
+		else
+			organ.remove_from_limb(src)
+		organ.forceMove(drop_loc)
+		if(violent_removal)
+			organ.fly_away(drop_loc)
+	for(var/obj/item/item_in_bodypart in src)
+		item_in_bodypart.forceMove(drop_loc)
+		if(violent_removal && owner)
+			item_in_bodypart.transfer_mob_blood_dna(owner)
+
+	if(owner)
+		owner.update_body_parts()
+	else
+		update_icon_dropped()
 
 /**
  * get_mangled_state() is relevant for flesh and bone bodyparts, and returns whether this bodypart has mangled skin, mangled bone, or both (or neither i guess)
@@ -207,15 +198,14 @@
 		return dismembering.apply_dismember(src, wounding_type)
 
 /obj/item/bodypart/chest/drop_limb(special)
-	if(special)
-		return ..()
 	//if this is not a special drop, this is a mistake
-	return FALSE
+	if(!special)
+		return FALSE
+	return ..()
 
 /obj/item/bodypart/arm/drop_limb(special)
 	var/mob/living/carbon/arm_owner = owner
 	. = ..()
-
 	if(special || !arm_owner)
 		return
 
@@ -224,44 +214,28 @@
 		// This catches situations where limbs are "hot-swapped" such as augmentations and roundstart prosthetics.
 		arm_owner.dropItemToGround(arm_owner.get_item_for_held_index(held_index), 1)
 	if(arm_owner.handcuffed)
-		arm_owner.handcuffed.forceMove(drop_location())
-		arm_owner.handcuffed.dropped(arm_owner)
+		arm_owner.dropItemToGround(arm_owner.handcuffed, force = TRUE)
 		arm_owner.set_handcuffed(null)
 		arm_owner.update_handcuffed()
 	if(arm_owner.hud_used)
 		var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]
 		associated_hand?.update_appearance()
 	if(arm_owner.gloves)
-		arm_owner.dropItemToGround(arm_owner.gloves, TRUE)
+		arm_owner.dropItemToGround(arm_owner.gloves, force = TRUE)
 	arm_owner.update_worn_gloves() //to remove the bloody hands overlay
 
 /obj/item/bodypart/leg/drop_limb(special)
-	if(owner && !special)
-		if(owner.legcuffed)
-			owner.legcuffed.forceMove(owner.drop_location()) //At this point bodypart is still in nullspace
-			owner.legcuffed.dropped(owner)
-			owner.legcuffed = null
-			owner.update_worn_legcuffs()
-		if(owner.shoes)
-			owner.dropItemToGround(owner.shoes, TRUE)
-	return ..()
+	var/mob/living/carbon/leg_owner = owner
+	. = ..()
+	if(special || !leg_owner)
+		return
 
-/obj/item/bodypart/head/drop_limb(special, dismembered)
-	if(!special)
-		// Drop all worn head items
-		for(var/obj/item/head_item as anything in list(owner.glasses, owner.ears, owner.wear_mask, owner.head))
-			owner.dropItemToGround(head_item, force = TRUE)
-
-	// Handle dental implants
-	for(var/datum/action/item_action/hands_free/activate_pill/pill_action in owner.actions)
-		pill_action.Remove(owner)
-		var/obj/pill = pill_action.target
-		if(pill)
-			pill.forceMove(src)
-
-	// Update the name of the head to reflect the owner's real name
-	name = "[owner.real_name]'s head"
-	return ..()
+	if(leg_owner.legcuffed)
+		leg_owner.dropItemToGround(owner.legcuffed, force = TRUE)
+		leg_owner.legcuffed = null
+		leg_owner.update_worn_legcuffs()
+	if(leg_owner.shoes)
+		leg_owner.dropItemToGround(owner.shoes, force = TRUE)
 
 /// Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails
 /obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner, special = FALSE, keep_old_organs = TRUE)
@@ -329,7 +303,7 @@
 				break
 
 	for(var/obj/item/organ/organ as anything in organs)
-		organ.remove_from_limb(src) //fucking ass
+		organ.remove_from_limb(src) //fucking ass, but insert will set us as the bodypart again
 		organ.Insert(new_limb_owner, special)
 
 	for(var/datum/wound/wound as anything in wounds)

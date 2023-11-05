@@ -19,6 +19,7 @@
 	// Handles our references with our brain
 	brain?.remove_trauma_from_traumas(src)
 	if(owner)
+		SEND_SIGNAL(owner, COMSIG_CARBON_LOSE_TRAUMA, src)
 		on_lose()
 		owner = null
 	return ..()

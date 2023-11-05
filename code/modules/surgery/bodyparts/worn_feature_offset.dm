@@ -18,6 +18,7 @@
 	list/offset_x = list("south" = 0),
 	list/offset_y = list("south" = 0),
 )
+	LAZYINITLIST(attached_part.feature_offsets)
 	attached_part.feature_offsets[feature_key] = src
 	owner = attached_part.owner
 	src.attached_part = attached_part

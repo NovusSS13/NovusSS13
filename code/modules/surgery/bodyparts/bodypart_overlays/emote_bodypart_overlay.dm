@@ -17,7 +17,7 @@
 
 /datum/bodypart_overlay/simple/emote/added_to_limb(obj/item/bodypart/limb)
 	attached_bodypart = WEAKREF(limb)
-	if (offset_key in limb.feature_offsets)
+	if(offset_key in limb.feature_offsets)
 		feature_offset = limb.feature_offsets[offset_key]
 
 /datum/bodypart_overlay/simple/emote/removed_from_limb(obj/item/bodypart/limb)

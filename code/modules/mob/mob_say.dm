@@ -216,7 +216,7 @@
 		else if(key == "," && !mods[LANGUAGE_EXTENSION])
 			for(var/ld in GLOB.all_languages)
 				var/datum/language/LD = ld
-				if(initial(LD.key) == message[1 + length(message[1])])
+				if(initial(LD.key) == message[1 + length(initial(LD.key))])
 					// No, you cannot speak in xenocommon just because you know the key
 					if(!can_speak_language(LD))
 						return message

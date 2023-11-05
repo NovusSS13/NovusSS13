@@ -540,7 +540,7 @@
 			client.perspective = EYE_PERSPECTIVE
 			client.set_eye(loc)
 	/// Signal sent after the eye has been successfully updated, with the client existing.
-	SEND_SIGNAL(src, COMSIG_MOB_RESET_PERSPECTIVE)
+	SEND_SIGNAL(src, COMSIG_MOB_RESET_PERSPECTIVE, new_eye)
 	return TRUE
 
 /**

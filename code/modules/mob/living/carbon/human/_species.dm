@@ -314,7 +314,7 @@
  * * visual_only - boolean, only load organs that change how the species looks. Do not use for normal gameplay stuff
  */
 /datum/species/proc/regenerate_organs(mob/living/carbon/organ_holder, datum/species/old_species, replace_current = TRUE, list/excluded_zones, visual_only = FALSE)
-	//what should be put in if there is no mutantorgan (brains handled separately)
+	//what should be put in if there is no mutantorgan (brains are handled in a special way)
 	var/static/list/organ_slots = list(
 		ORGAN_SLOT_BRAIN,
 		ORGAN_SLOT_HEART,
@@ -692,13 +692,11 @@
 		if(ITEM_SLOT_FEET)
 			if(H.num_legs < 2)
 				return FALSE
-			/* Readd this later if necessary, digitigrade work in progress
 			if((H.bodytype & BODYTYPE_DIGITIGRADE) && !(I.item_flags & IGNORE_DIGITIGRADE))
 				if(!(I.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)))
 					if(!disable_warning)
 						to_chat(H, span_warning("The footwear around here isn't compatible with your feet!"))
 					return FALSE
-			*/
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
 		if(ITEM_SLOT_BELT)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)

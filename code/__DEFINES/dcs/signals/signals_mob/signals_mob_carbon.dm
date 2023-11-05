@@ -94,6 +94,8 @@
 #define COMSIG_CARBON_UPDATING_HEALTH_HUD "carbon_health_hud_update"
 	/// Return if you override the carbon's health hud with something else
 	#define COMPONENT_OVERRIDE_HEALTH_HUD (1<<0)
+///Called when a carbon prints their own injuries
+#define COMSIG_CARBON_CHECK_SELF_FOR_INJURIES "human_check_self_for_injuries"
 ///Called when a carbon updates their sanity (source = carbon)
 #define COMSIG_CARBON_SANITY_UPDATE "carbon_sanity_update"
 ///Called when a carbon attempts to breath, before the breath has actually occured
@@ -104,6 +106,8 @@
 #define COMSIG_CARBON_PRE_BREATHE "carbon_pre_breathe"
 ///Called when a carbon updates their mood
 #define COMSIG_CARBON_MOOD_UPDATE "carbon_mood_update"
+///Called when a carbon prints their mood
+#define COMSIG_CARBON_PRINT_MOOD "carbon_print_mood"
 ///Called when a carbon attempts to eat (eating)
 #define COMSIG_CARBON_ATTEMPT_EAT "carbon_attempt_eat"
 	// Prevents the breath

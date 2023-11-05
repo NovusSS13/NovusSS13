@@ -500,7 +500,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/proc/get_status_text()
 	var/status = ""
 	if(owner.has_reagent(/datum/reagent/inverse/technetium))
-		status = "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% damaged.</font>"
+		status = "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% Damaged</font>"
 	else if(organ_flags & ORGAN_FAILING)
 		status = "<font color='#cc3333'>Non-Functional</font>"
 	else if(damage > high_threshold)
@@ -511,8 +511,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return status
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target
-/obj/item/organ/proc/replace_into(mob/living/carbon/new_owner)
-	Insert(new_owner, special = TRUE, drop_if_replaced = FALSE)
+/obj/item/organ/proc/replace_into(mob/living/carbon/new_owner, drop_if_replaced = FALSE)
+	return Insert(new_owner, special = TRUE, drop_if_replaced = drop_if_replaced)
 
 /// Called on drop_organs for the organ to "fly away" using movable physics
 /obj/item/organ/proc/fly_away(turf/open/owner_location, fly_angle = rand(0, 360))

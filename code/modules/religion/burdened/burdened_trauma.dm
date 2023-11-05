@@ -226,7 +226,7 @@
 		update_burden(increase = FALSE)
 
 /// Signal to increase burden_level (see update_burden proc) if a trauma is added
-/datum/brain_trauma/special/burdened/proc/trauma_added_burden(mob/living/carbon/burdened, datum/brain_trauma/trauma_added)
+/datum/brain_trauma/special/burdened/proc/trauma_added_burden(mob/living/carbon/burdened, datum/brain_trauma/trauma_added, resilience, arguments)
 	SIGNAL_HANDLER
 
 	if(istype(trauma_added, /datum/brain_trauma/severe))

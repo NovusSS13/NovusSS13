@@ -295,7 +295,7 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "garbage"
 	plane = GAME_PLANE
-	layer = FLOOR_CLEAN_LAYER //To display the decal over wires.
+	layer = CLEANABLE_UPPER_LAYER //To display the decal over wires.
 	beauty = -150
 	clean_type = CLEAN_TYPE_HARD_DECAL
 

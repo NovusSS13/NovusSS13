@@ -172,6 +172,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Allows you to mine with your bare hands
 #define TRAIT_FIST_MINING "fist_mining"
 #define TRAIT_DUMB "dumb"
+#define TRAIT_STROKE "stroke"
 /// Whether a mob is dexterous enough to use machines and certain items or not.
 #define TRAIT_ADVANCEDTOOLUSER "advancedtooluser"
 // Antagonizes the above.
@@ -852,6 +853,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define OBESITY "obesity"
 #define MAGIC_TRAIT "magic"
 #define TRAUMA_TRAIT "trauma"
+#define STROKE_TRAIT "stroke"
 #define FLIGHTPOTION_TRAIT "flightpotion"
 /// Trait inherited by experimental surgeries
 #define EXPERIMENTAL_SURGERY_TRAIT "experimental_surgery"

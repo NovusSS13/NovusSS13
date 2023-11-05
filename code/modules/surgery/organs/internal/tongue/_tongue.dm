@@ -422,7 +422,7 @@
 	//Hacks
 	var/message = speech_args[SPEECH_MESSAGE]
 	var/mob/living/carbon/human/user = source
-	var/rendered = span_abductor("<b>[user.real_name]:</b> [message]")
+	var/rendered = span_abductor("<b>[user.real_name] (to [mothership]):</b> [message]")
 	user.log_talk(message, LOG_SAY, tag=SPECIES_ABDUCTOR)
 	for(var/mob/living/carbon/human/living_mob in GLOB.alive_mob_list)
 		var/obj/item/organ/tongue/abductor/tongue = living_mob.get_organ_slot(ORGAN_SLOT_TONGUE)
@@ -432,6 +432,8 @@
 			to_chat(living_mob, rendered)
 
 	for(var/mob/dead_mob in GLOB.dead_mob_list)
+		if(!isobserver(dead_mob))
+			continue
 		var/link = FOLLOW_LINK(dead_mob, user)
 		to_chat(dead_mob, "[link] [rendered]")
 

@@ -196,7 +196,6 @@
 	shown_mood = 0
 
 	SEND_SIGNAL(mob_parent, COMSIG_CARBON_MOOD_UPDATE)
-
 	for(var/category in mood_events)
 		var/datum/mood_event/the_event = mood_events[category]
 		mood += the_event.mood_change
@@ -304,63 +303,77 @@
 
 /// Prints the users mood, sanity, and moodies to chat
 /datum/mood/proc/print_mood(mob/user)
-	var/msg = "[span_info("<EM>My current mental status:</EM>")]\n"
-	msg += span_notice("My current sanity: ") //Long term
+	var/list/messages = list(span_info("<EM>My current mental status:</EM>"))
+	messages += (span_notice("My current sanity: ") + get_sanity_string()) //Long term
+	messages += (span_notice("My current mood: ") + get_mood_string()) //Short term
+	messages += span_notice("Moodlets:")
+	messages += get_moodlet_descriptions()
+
+	SEND_SIGNAL(user, COMSIG_CARBON_PRINT_MOOD, user, messages)
+	if(LAZYLEN(messages))
+		to_chat(user, examine_block(messages.Join("\n")))
+
+/// Returns a string representing our current sanity
+/datum/mood/proc/get_sanity_string()
 	switch(sanity)
 		if(SANITY_GREAT to INFINITY)
-			msg += "[span_boldnicegreen("My mind feels like a temple!")]\n"
+			return span_boldnicegreen("My mind feels like a temple!")
 		if(SANITY_NEUTRAL to SANITY_GREAT)
-			msg += "[span_nicegreen("I have been feeling great lately!")]\n"
+			return span_nicegreen("I have been feeling great lately!")
 		if(SANITY_DISTURBED to SANITY_NEUTRAL)
-			msg += "[span_nicegreen("I have felt quite decent lately.")]\n"
+			return span_grey("I have felt quite decent lately.")
 		if(SANITY_UNSTABLE to SANITY_DISTURBED)
-			msg += "[span_warning("I'm feeling a little bit unhinged...")]\n"
+			return span_warning("I'm feeling a little bit unhinged...")
 		if(SANITY_CRAZY to SANITY_UNSTABLE)
-			msg += "[span_warning("I'm freaking out!!")]\n"
+			return span_warning("I'm freaking out!!")
 		if(SANITY_INSANE to SANITY_CRAZY)
-			msg += "[span_boldwarning("AHAHAHAHAHAHAHAHAHAH!!")]\n"
+			return span_boldwarning("AHAHAHAHAHAHAHAHAHAH!!")
+	return span_grey("I am placid.")
 
-	msg += span_notice("My current mood: ") //Short term
+/// Returns a string representing our current mood
+/datum/mood/proc/get_mood_string()
 	switch(mood_level)
 		if(MOOD_LEVEL_SAD4)
-			msg += "[span_boldwarning("I wish I was dead!")]\n"
+			return span_boldwarning("I wish I was dead!")
 		if(MOOD_LEVEL_SAD3)
-			msg += "[span_boldwarning("I feel terrible...")]\n"
+			return span_boldwarning("I feel terrible...")
 		if(MOOD_LEVEL_SAD2)
-			msg += "[span_boldwarning("I feel very upset.")]\n"
+			return span_boldwarning("I feel very upset.")
 		if(MOOD_LEVEL_SAD1)
-			msg += "[span_warning("I'm a bit sad.")]\n"
+			return span_warning("I'm a bit sad.")
 		if(MOOD_LEVEL_NEUTRAL)
-			msg += "[span_grey("I'm alright.")]\n"
+			return span_grey("I'm alright.")
 		if(MOOD_LEVEL_HAPPY1)
-			msg += "[span_nicegreen("I feel pretty okay.")]\n"
+			return span_nicegreen("I feel pretty okay.")
 		if(MOOD_LEVEL_HAPPY2)
-			msg += "[span_boldnicegreen("I feel pretty good.")]\n"
+			return span_boldnicegreen("I feel pretty good.")
 		if(MOOD_LEVEL_HAPPY3)
-			msg += "[span_boldnicegreen("I feel amazing!")]\n"
+			return span_boldnicegreen("I feel amazing!")
 		if(MOOD_LEVEL_HAPPY4)
-			msg += "[span_boldnicegreen("I love life!")]\n"
+			return span_boldnicegreen("I love life!")
+	return span_grey("I'm alright.")
 
-	msg += "[span_notice("Moodlets:")]\n"//All moodlets
-	if(mood_events.len)
+/// Returns a list of properly formatted mood event descriptions
+/datum/mood/proc/get_moodlet_descriptions()
+	if(LAZYLEN(mood_events))
+		var/list/mood_descriptions = list()
 		for(var/category in mood_events)
 			var/datum/mood_event/event = mood_events[category]
 			switch(event.mood_change)
 				if(-INFINITY to MOOD_SAD2)
-					msg += span_boldwarning(event.description + "\n")
+					mood_descriptions += span_boldwarning(event.description)
 				if(MOOD_SAD2 to MOOD_SAD1)
-					msg += span_warning(event.description + "\n")
+					mood_descriptions += span_warning(event.description)
 				if(MOOD_SAD1 to MOOD_NEUTRAL)
-					msg += span_grey(event.description + "\n")
+					mood_descriptions += span_grey(event.description)
 				if(MOOD_NEUTRAL to MOOD_HAPPY1)
-					msg += span_info(event.description + "\n")
+					mood_descriptions += span_info(event.description)
 				if(MOOD_HAPPY1 to MOOD_HAPPY2)
-					msg += span_nicegreen(event.description + "\n")
+					mood_descriptions += span_nicegreen(event.description)
 				if(MOOD_HAPPY2 to INFINITY)
-					msg += span_boldnicegreen(event.description + "\n")
-	else
-		msg += "[span_grey("I don't have much of a reaction to anything right now.")]\n"
-	to_chat(user, examine_block(msg))
+					mood_descriptions += span_boldnicegreen(event.description)
+		return mood_descriptions
+	return list(span_grey("I don't have much of a reaction to anything right now."))
 
 /// Updates the mob's moodies, if the area provides a mood bonus
 /datum/mood/proc/check_area_mood(datum/source, area/new_area)

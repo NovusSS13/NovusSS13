@@ -967,7 +967,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	return uppertext(pick(GLOB.alphabet))
 
 /proc/unintelligize(message)
-	var/regex/word_boundaries = regex(@"\b[\S]+\b", "g")
+	var/static/regex/word_boundaries = regex(@"\b[\S]+\b", "gi")
 	var/prefix = message[1]
 	if(prefix == ";")
 		message = copytext(message, 1 + length(prefix))

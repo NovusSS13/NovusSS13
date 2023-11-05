@@ -914,6 +914,11 @@ h2.alert {
   color: #298f85;
 }
 
+.brother {
+  color: #b31a1a;
+  font-style: italic;
+}
+
 .upside_down {
   display: inline;
   -moz-transform: scale(-1, -1);
@@ -1010,6 +1015,10 @@ h2.alert {
   border: 1px solid #111a27;
   margin: 0.5em;
   padding: 0.5em 0.75em;
+}
+
+.examine_divider {
+  border-color: #111a27;
 }
 
 .tooltip {

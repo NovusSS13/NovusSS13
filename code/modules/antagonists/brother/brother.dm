@@ -1,14 +1,20 @@
 /datum/antagonist/brother
-	name = "\improper Brother"
+	name = "\improper Blood Brother"
 	antagpanel_category = "Brother"
 	job_rank = ROLE_BROTHER
-	var/special_role = ROLE_BROTHER
 	antag_hud_name = "brother"
 	hijack_speed = 0.5
 	ui_name = "AntagInfoBrother"
-	suicide_cry = "FOR MY BROTHER!!"
+	suicide_cry = "FOR MY BROTHERS AND SISTERS!!"
+	antag_moodlet = /datum/mood_event/brotherhoood
+	/// Brotherhood this antag belongs to
 	var/datum/team/brother_team/team
-	antag_moodlet = /datum/mood_event/focused
+	/// Telepathy spell for communicating with your bros
+	var/datum/action/cooldown/spell/fraternal_telepathy/telepathy
+	/// Altruism spell for healing your bros
+	var/datum/action/cooldown/spell/fraternal_altruism/altruism
+	/// Vision spell for spying on your bros
+	var/datum/action/cooldown/spell/fraternal_vision/vision
 
 /datum/antagonist/brother/create_team(datum/team/brother_team/new_team)
 	if(!new_team)
@@ -16,22 +22,55 @@
 	if(!istype(new_team))
 		stack_trace("Wrong team type passed to [type] initialization.")
 	team = new_team
+	return team
 
 /datum/antagonist/brother/get_team()
 	return team
 
 /datum/antagonist/brother/on_gain()
 	objectives += team.objectives
-	owner.special_role = special_role
+	owner.special_role = job_rank
 	finalize_brother()
 	return ..()
 
+/datum/antagonist/brother/apply_innate_effects(mob/living/mob_override)
+	var/mob/living/living_mob = mob_override || owner.current
+	telepathy = new(team)
+	telepathy.Grant(living_mob)
+	altruism = new(team)
+	altruism.Grant(living_mob)
+	vision = new(team)
+	vision.Grant(living_mob)
+	RegisterSignal(living_mob, COMSIG_LIVING_DEATH, PROC_REF(on_death))
+	RegisterSignal(living_mob, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
+	if(iscarbon(living_mob))
+		RegisterSignal(living_mob, COMSIG_CARBON_CHECK_SELF_FOR_INJURIES, PROC_REF(on_check_self_for_injuries))
+		RegisterSignal(living_mob, COMSIG_CARBON_GAIN_TRAUMA, PROC_REF(on_gain_trauma))
+		RegisterSignal(living_mob, COMSIG_CARBON_LOSE_TRAUMA, PROC_REF(on_lose_trauma))
+		RegisterSignal(living_mob, COMSIG_CARBON_PRINT_MOOD, PROC_REF(on_print_mood))
+
+/datum/antagonist/brother/remove_innate_effects(mob/living/mob_override)
+	var/mob/living/living_mob = mob_override || owner.current
+	if(telepathy)
+		telepathy.Remove(living_mob)
+		QDEL_NULL(telepathy)
+	if(altruism)
+		altruism.Remove(living_mob)
+		QDEL_NULL(altruism)
+	if(vision)
+		vision.Remove(living_mob)
+		QDEL_NULL(vision)
+	UnregisterSignal(living_mob, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
+	if(iscarbon(living_mob))
+		UnregisterSignal(living_mob, list(COMSIG_CARBON_CHECK_SELF_FOR_INJURIES, COMSIG_CARBON_GAIN_TRAUMA, COMSIG_CARBON_LOSE_TRAUMA, COMSIG_CARBON_PRINT_MOOD))
+
 /datum/antagonist/brother/on_removal()
 	owner.special_role = null
+	owner.current.clear_mood_event("brother_death")
 	return ..()
 
 /datum/antagonist/brother/antag_panel_data()
-	return "Conspirators : [get_brother_names()]"
+	return "<b>Siblings:</b> [english_list(get_brother_names())]"
 
 /datum/antagonist/brother/get_preview_icon()
 	var/mob/living/carbon/human/dummy/consistent/brother1 = new
@@ -62,32 +101,33 @@
 
 /datum/antagonist/brother/proc/get_brother_names()
 	var/list/brothers = team.members - owner
-	var/brother_text = ""
-	for(var/i = 1 to brothers.len)
-		var/datum/mind/M = brothers[i]
-		brother_text += M.name
-		if(i == brothers.len - 1)
-			brother_text += " and "
-		else if(i != brothers.len)
-			brother_text += ", "
-	return brother_text
-
-/datum/antagonist/brother/proc/give_meeting_area()
-	if(!owner.current || !team || !team.meeting_area)
-		return
-	to_chat(owner.current, "<span class='infoplain'><B>Your designated meeting area:</B> [team.meeting_area]</span>")
-	antag_memory += "<b>Meeting Area</b>: [team.meeting_area]<br>"
+	var/list/brother_names = list()
+	for(var/datum/mind/brother_mind as anything in brothers)
+		brother_names += brother_mind.name
+	return brother_names
 
 /datum/antagonist/brother/greet()
-	var/brother_text = get_brother_names()
-	to_chat(owner.current, span_alertsyndie("You are the [owner.special_role] of [brother_text]."))
-	to_chat(owner.current, "The Syndicate only accepts those that have proven themselves. Prove yourself and prove your [team.member_name]s by completing your objectives together!")
+	to_chat(owner.current, span_alertsyndie("You are the [name] of [english_list(get_brother_names())]."))
+	to_chat(owner.current, "Brains united as one, you know that you are more capable than the rest of the crew. Complete your objectives to ensure the eventual takeover of the station by the brotherhood.")
 	owner.announce_objectives()
-	give_meeting_area()
+
+/datum/antagonist/brother/proc/update_name()
+	if(!owner.current)
+		return name
+	switch(owner.current.gender)
+		if(MALE)
+			name = "\improper Blood Brother"
+		else if(FEMALE)
+			name = "\improper Blood Sister"
+		else
+			name = "\improper Blood Sibling"
+	return name
 
 /datum/antagonist/brother/proc/finalize_brother()
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
+	update_name()
 	team.update_name()
+	suicide_cry = "FOR MY [uppertext(team.hood_type)]!"
+	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/brotheralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /datum/antagonist/brother/admin_add(datum/mind/new_owner,mob/admin)
 	//show list of possible brothers
@@ -97,56 +137,177 @@
 			continue
 		candidates[L.mind.name] = L.mind
 
-	var/choice = input(admin,"Choose the blood brother.", "Brother") as null|anything in sort_names(candidates)
+	var/choice = input(admin, "Choose the blood brother.", "Brother") as null|anything in sort_names(candidates)
 	if(!choice)
 		return
-	var/datum/mind/bro = candidates[choice]
-	var/datum/team/brother_team/T = new
-	T.add_member(new_owner)
-	T.add_member(bro)
-	T.pick_meeting_area()
-	T.forge_brother_objectives()
-	new_owner.add_antag_datum(/datum/antagonist/brother,T)
-	bro.add_antag_datum(/datum/antagonist/brother, T)
-	message_admins("[key_name_admin(admin)] made [key_name_admin(new_owner)] and [key_name_admin(bro)] into blood brothers.")
-	log_admin("[key_name(admin)] made [key_name(new_owner)] and [key_name(bro)] into blood brothers.")
+	var/datum/team/brother_team/team = new
+	team.add_member(new_owner)
+	team.add_member(candidates[choice])
+	var/more_brothers = input(admin, "Add more brothers?", "Yes") as null|anything in list("Yes", "No")
+	if(more_brothers == "Yes")
+		while(choice)
+			for(var/datum/mind/brother_mind in team.members)
+				candidates -= brother_mind.name
+			choice = input(admin, "Choose the blood brother.", "Brother") as null|anything in sort_names(candidates)
+			if(!choice)
+				more_brothers = "No"
+				break
+			team.add_member(candidates[choice])
+	team.forge_brother_objectives()
+	var/list/brothers_list = list()
+	for(var/datum/mind/brother_mind as anything in team.members)
+		brother_mind.add_antag_datum(/datum/antagonist/brother,team)
+		brothers_list += key_name_admin(brother_mind)
+	message_admins("[key_name_admin(admin)] made [english_list(brothers_list)] into blood brothers.")
+	log_admin("[key_name(admin)] made [english_list(brothers_list)] into blood brothers.")
 
 /datum/antagonist/brother/ui_static_data(mob/user)
 	var/list/data = list()
 	data["antag_name"] = name
 	data["objectives"] = get_objectives()
 	data["brothers"] = get_brother_names()
+	data["brotherhood"] = team.name
 	return data
 
-/datum/team/brother_team
-	name = "\improper Blood Brothers"
-	member_name = "blood brother"
-	///Selected meeting area given to the team members
-	var/meeting_area
-	///List of meeting areas that are randomly selected.
-	var/static/meeting_areas = list(
-		"The Bar",
-		"Dorms",
-		"Escape Dock",
-		"Arrivals",
-		"Holodeck",
-		"Primary Tool Storage",
-		"Recreation Area",
-		"Chapel",
-		"Library",
-	)
+/datum/antagonist/brother/proc/on_death(mob/living/source, gibbed)
+	SIGNAL_HANDLER
 
-/datum/team/brother_team/proc/pick_meeting_area()
-	meeting_area = pick(meeting_areas)
-	meeting_areas -= meeting_area
+	var/brother_name = source.mind?.name || "[source.name]"
+	var/brother_type = name
+	var/datum/antagonist/brother/fellow_brother = source.mind?.has_antag_datum(/datum/antagonist/brother)
+	if(fellow_brother)
+		brother_type = fellow_brother.name
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !isliving(brother_mind.current))
+			continue
+		var/mob/living/brother = brother_mind.current
+		to_chat(brother, span_userdanger("MY [uppertext(brother_type)]! [uppertext(brother_name)] HAS DIED!"))
+		INVOKE_ASYNC(brother, TYPE_PROC_REF(/mob, emote), "scream")
+		brother.add_mood_event("brother_death", /datum/mood_event/dead_brother, brother_type, brother_name)
+		if(iscarbon(brother))
+			var/mob/living/carbon/traumatized = brother
+			if(!(locate(/datum/brain_trauma/severe/stroke/brother) in traumatized.get_traumas()))
+				traumatized.gain_trauma(/datum/brain_trauma/severe/stroke/brother)
+
+/datum/antagonist/brother/proc/on_revive(mob/living/source, full_heal_flags)
+	SIGNAL_HANDLER
+
+	var/no_dead_brothers = TRUE
+	var/live_brother = source.mind?.name || "[source.name]"
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !isliving(brother_mind.current))
+			continue
+		var/mob/living/brother = brother_mind.current
+		to_chat(brother, span_announce(span_boldnicegreen("[live_brother] is alive again!")))
+		if(brother.stat >= DEAD)
+			no_dead_brothers = FALSE
+
+	if(!no_dead_brothers)
+		return
+
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if(!brother_mind.current)
+			continue
+		var/mob/living/brother = brother_mind.current
+		brother.clear_mood_event("brother_death")
+		if(!iscarbon(brother))
+			continue
+		var/mob/living/carbon/traumatized = brother
+		qdel(locate(/datum/brain_trauma/severe/stroke/brother) in traumatized.get_traumas())
+
+/datum/antagonist/brother/proc/on_gain_trauma(mob/living/carbon/source, datum/brain_trauma/trauma, resilience, list/arguments)
+	SIGNAL_HANDLER
+
+	if(!trauma.random_gain)
+		return
+
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !iscarbon(brother_mind.current))
+			continue
+		var/mob/living/carbon/traumatized = brother_mind.current
+		var/obj/item/organ/brain/brain = traumatized.get_organ_slot(ORGAN_SLOT_BRAIN)
+		if(brain)
+			brain.brain_gain_trauma(trauma.type, resilience, arguments)
+
+/datum/antagonist/brother/proc/on_lose_trauma(mob/living/carbon/source, datum/brain_trauma/trauma)
+	SIGNAL_HANDLER
+
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !iscarbon(brother_mind.current))
+			continue
+		var/mob/living/carbon/traumatized = brother_mind.current
+		for(var/datum/brain_trauma/other_trauma in traumatized.get_traumas())
+			if(other_trauma.type != trauma.type)
+				continue
+			qdel(other_trauma)
+
+/datum/antagonist/brother/proc/on_print_mood(datum/mood/source, mob/living/carbon/user, list/messages)
+	SIGNAL_HANDLER
+
+	if(!messages)
+		return
+
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !iscarbon(brother_mind.current))
+			continue
+		var/mob/living/carbon/moody = brother_mind.current
+		if(!moody.mob_mood)
+			continue
+		messages += "\n<hr class='examine_divider'>"
+		messages += span_info("<EM>[brother_mind.name]'s current mental status:</EM>")
+		messages += (span_notice("[brother_mind.name]'s current sanity: ") + moody.mob_mood.get_sanity_string()) //Long term
+		messages += (span_notice("[brother_mind.name]'s current mood: ") + moody.mob_mood.get_mood_string()) //Short term
+		messages += span_notice("Moodlets:")
+		messages += moody.mob_mood.get_moodlet_descriptions()
+
+/datum/antagonist/brother/proc/on_check_self_for_injuries(mob/living/carbon/source, list/messages)
+	SIGNAL_HANDLER
+
+	if(!messages)
+		return
+	for(var/datum/mind/brother_mind as anything in team.members)
+		if((brother_mind == owner) || !iscarbon(brother_mind.current))
+			continue
+		var/mob/living/carbon/hurt = brother_mind.current
+		messages += "\n<hr class='examine_divider'>"
+		var/list/brother_injuries = hurt.print_injuries(hurt)
+		var/current_status_index = brother_injuries.Find(span_info("<EM>Current health status:</EM>"))
+		if(current_status_index)
+			brother_injuries.Cut(current_status_index, current_status_index+1)
+			brother_injuries.Insert(current_status_index, span_info("<EM>[brother_mind.name]'s current health status:</EM>"))
+		messages += brother_injuries
+
+/datum/team/brother_team
+	name = "\improper Brotherhood"
+	member_name = "blood brother"
+	/// Brotherhood, sisterhood or siblinghood
+	var/hood_type
 
 /datum/team/brother_team/proc/update_name()
+	var/list/gendercount = list(MALE = 0, FEMALE = 0, PLURAL = 0)
 	var/list/last_names = list()
-	for(var/datum/mind/team_minds as anything in members)
-		var/list/split_name = splittext(team_minds.name," ")
+	var/static/regex/hyphen_or_space = regex(@"[ -]", "gi")
+	for(var/datum/mind/brother_mind as anything in members)
+		var/list/split_name = splittext(brother_mind.name, hyphen_or_space)
 		last_names += split_name[split_name.len]
+		if(!brother_mind.current)
+			continue
+		var/purposeful_gender = brother_mind.current.gender
+		if(!(purposeful_gender in gendercount))
+			purposeful_gender = PLURAL
+		gendercount[purposeful_gender]++
 
-	name = "[initial(name)] of " + last_names.Join(" & ")
+	if(gendercount[MALE] > (gendercount[FEMALE]+gendercount[PLURAL]))
+		hood_type = "Brotherhood"
+		member_name = "blood brother"
+	else if(gendercount[FEMALE] > (gendercount[MALE]+gendercount[PLURAL]))
+		hood_type = "Sisterhood"
+		member_name = "blood sister"
+	else
+		hood_type = "Siblinghood"
+		member_name = "blood sibling"
+
+	name = "\proper [hood_type] of " + last_names.Join(" & ")
 
 /datum/team/brother_team/proc/forge_brother_objectives()
 	objectives = list()
@@ -165,6 +326,8 @@
 			add_objective(new /datum/objective/destroy, needs_target = TRUE)
 		else if(prob(30))
 			add_objective(new /datum/objective/maroon, needs_target = TRUE)
+		else if(prob(20)) //small chance to debrain due to new brother lore
+			add_objective(new /datum/objective/debrain, needs_target = TRUE)
 		else
 			add_objective(new /datum/objective/assassinate, needs_target = TRUE)
 	else

@@ -537,21 +537,34 @@
 		return
 
 	var/embeds = FALSE
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/LB = X
-		for(var/obj/item/I in LB.embedded_objects)
-			if(!embeds)
-				embeds = TRUE
-				// this way, we only visibly try to examine ourselves if we have something embedded, otherwise we'll still hug ourselves :)
-				visible_message(span_notice("[src] examines [p_them()]self."), \
-					span_notice("You check yourself for shrapnel."))
-			if(I.isEmbedHarmless())
-				to_chat(src, "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] stuck to your [LB.name]!</a>")
-			else
-				to_chat(src, "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] embedded in your [LB.name]!</a>")
+	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+		for(var/obj/item/item as anything in bodypart.embedded_objects)
+			embeds = TRUE
+			break
+	// this way, we only visibly try to examine ourselves if we have something embedded, otherwise we'll still hug ourselves :)
+	if(!embeds)
+		return embeds
 
+	var/list/messages = print_injuries(src)
+	SEND_SIGNAL(src, COMSIG_CARBON_CHECK_SELF_FOR_INJURIES, messages)
+	if(!LAZYLEN(messages))
+		return embeds
+	visible_message(span_notice("[src] examines [p_them()]self."), \
+		span_notice("You check yourself for shrapnel."))
+	to_chat(src, examine_block(messages.Join("\n")))
 	return embeds
 
+/mob/living/carbon/proc/print_injuries(mob/user)
+	var/list/combined_msg = list(span_info("<EM>Current health status:</EM>"))
+
+	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+		for(var/obj/item/item as anything in bodypart.embedded_objects)
+			if(item.isEmbedHarmless())
+				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(item)];embedded_limb=[REF(bodypart)]' class='warning'>There is \a [item] stuck to your [bodypart.name]!</a>"
+			else
+				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(item)];embedded_limb=[REF(bodypart)]' class='warning'>There is \a [item] embedded in your [bodypart.name]!</a>"
+
+	return combined_msg
 
 /mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
 	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
@@ -776,7 +789,7 @@
 
 	var/obj/item/bodypart/new_part = pick(GLOB.bioscrambler_valid_parts)
 	var/obj/item/bodypart/picked_user_part = get_bodypart(initial(new_part.body_zone))
-	if (picked_user_part && BODYTYPE_CAN_BE_BIOSCRAMBLED(picked_user_part.bodytype))
+	if (!picked_user_part || (!IS_ROBOTIC_LIMB(picked_user_part) && BODYTYPE_CAN_BE_BIOSCRAMBLED(picked_user_part.bodytype)))
 		changed_something = TRUE
 		new_part = new new_part()
 		new_part.replace_limb(src, special = TRUE)
@@ -786,21 +799,22 @@
 	if (!changed_something)
 		to_chat(src, span_notice("Your augmented body protects you from [scramble_source]!"))
 		return FALSE
-	update_body(TRUE)
-	balloon_alert(src, "something has changed about you")
+	to_chat(src, span_userdanger("Something about you has been changed..."))
+	update_body(is_creating = TRUE)
 	return TRUE
 
 /// Fill in the lists of things we can bioscramble into people
-/mob/living/carbon/proc/init_bioscrambler_lists()
-	var/list/body_parts = typesof(/obj/item/bodypart/chest) + typesof(/obj/item/bodypart/head) + subtypesof(/obj/item/bodypart/arm) + subtypesof(/obj/item/bodypart/leg)
-	for(var/obj/item/bodypart/part as anything in body_parts)
-		if(!is_type_in_typecache(part, GLOB.bioscrambler_parts_blacklist) && BODYTYPE_CAN_BE_BIOSCRAMBLED(initial(part.bodytype)))
+/proc/init_bioscrambler_lists()
+	var/list/bodyparts = typesof(/obj/item/bodypart/chest) + typesof(/obj/item/bodypart/head) + subtypesof(/obj/item/bodypart/arm) + subtypesof(/obj/item/bodypart/leg)
+	for(var/obj/item/bodypart/bodypart_type as anything in bodyparts)
+		if(!is_type_in_typecache(bodypart_type, GLOB.bioscrambler_parts_blacklist) && BODYTYPE_CAN_BE_BIOSCRAMBLED(initial(bodypart_type.bodytype)))
 			continue
-		body_parts -= part
-	GLOB.bioscrambler_valid_parts = body_parts
+		bodyparts -= bodypart_type
+	GLOB.bioscrambler_valid_parts = bodyparts
 
-	for (var/obj/item/organ/organ_type as anything in subtypesof(/obj/item/organ))
-		if (!is_type_in_typecache(organ_type, GLOB.bioscrambler_organs_blacklist) && !(initial(organ_type.organ_flags) & ORGAN_ROBOTIC))
+	var/list/organs = subtypesof(/obj/item/organ)
+	for(var/obj/item/organ/organ_type as anything in organs)
+		if(!is_type_in_typecache(organ_type, GLOB.bioscrambler_organs_blacklist) && !(initial(organ_type.organ_flags) & ORGAN_ROBOTIC))
 			continue
 		organs -= organ_type
 	GLOB.bioscrambler_valid_organs = organs

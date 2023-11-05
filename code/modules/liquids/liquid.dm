@@ -531,28 +531,28 @@
 		return
 
 	var/liquid_state_template = liquid_state_messages["[liquid_state]"]
-	if(examiner.can_see_reagents())
-		if(length(reagent_list) == 1)
-			// Single reagent text.
-			var/datum/reagent/reagent_type = reagent_list[1]
-			var/reagent_name = initial(reagent_type.name)
-			var/volume = round(reagent_list[reagent_type], 0.01)
+	// Show the liquid state
+	examine_list += span_notice("There is [replacetext(liquid_state_template, "%LIQUID", "liquid")] here.")
 
-			examine_list += "There is [replacetext(liquid_state_template, "%LIQUID", "[volume] units of [reagent_name]")] here."
-		else
-			// Show each individual reagent
-			examine_list += "There is [replacetext(liquid_state_template, "%LIQUID", "the following")] here:"
-
-			for(var/datum/reagent/reagent_type as anything in reagent_list)
-				var/reagent_name = initial(reagent_type.name)
-				var/volume = round(reagent_list[reagent_type], 0.01)
-				examine_list += "&bull; [volume] units of [reagent_name]"
-
-		examine_list += span_notice("The solution has a temperature of [temperature]K.")
+	// Showing specific reagents if possible
+	if(!examiner.can_see_reagents())
 		return
 
-	// Otherwise, just show the total volume
-	examine_list += span_notice("There is [replacetext(liquid_state_template, "%LIQUID", "liquid")] here.")
+	if(length(reagent_list) == 1)
+		// Single reagent text
+		var/datum/reagent/reagent_type = reagent_list[1]
+		var/reagent_name = initial(reagent_type.name)
+		var/volume = round(reagent_list[reagent_type], 0.01)
+		examine_list += span_info("There is [replacetext(liquid_state_template, "%LIQUID", "[volume] units of [reagent_name]")] here.")
+	else
+		// Show each individual reagent
+		var/volume = round(total_reagents, 0.01)
+		examine_list += span_info("There is [replacetext(liquid_state_template, "%LIQUID", "[volume] units of the following")] here:")
+		for(var/datum/reagent/reagent_type as anything in reagent_list)
+			var/reagent_name = initial(reagent_type.name)
+			volume = round(reagent_list[reagent_type], 0.01)
+			examine_list += span_info("&bull; [volume] units of [reagent_name]")
+	examine_list += span_info("The solution has a temperature of [temperature]K.")
 
 /obj/effect/temp_visual/liquid_splash
 	icon = 'icons/effects/liquid.dmi'

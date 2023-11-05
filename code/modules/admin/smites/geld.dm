@@ -20,7 +20,6 @@
 /datum/smite/geld/proc/geld(obj/item/organ/genital/genital, mob/living/carbon/owner)
 	playsound(get_turf(owner), 'sound/effects/dismember.ogg', 80, TRUE)
 	genital.Remove(owner)
-	genital.add_mob_blood(owner)
 	genital.forceMove(owner.loc)
 	genital.fly_away(get_turf(owner))
 	owner.bleed(rand(20, 40))

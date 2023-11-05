@@ -19,7 +19,7 @@
 				return
 			organ_to_grant = organs[organ_to_grant]
 			organ_to_grant = new organ_to_grant
-			if(!organ_to_grant.Insert(carbon_victim))
+			if(!organ_to_grant.replace_into(carbon_victim))
 				to_chat(usr, span_notice("[carbon_victim] is unable to carry this organ!"))
 				qdel(organ_to_grant)
 				return

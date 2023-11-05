@@ -887,6 +887,11 @@ em {
   color: #298f85;
 }
 
+.brother {
+  color: #b31a1a;
+  font-style: italic;
+}
+
 .upside_down {
   display: inline;
   -moz-transform: scale(-1, -1);
@@ -982,6 +987,10 @@ em {
   border: 1px solid #a4bad6;
   margin: 0.5em;
   padding: 0.5em 0.75em;
+}
+
+.examine_divider {
+  border-color: #a4bad6;
 }
 
 .tooltip {
