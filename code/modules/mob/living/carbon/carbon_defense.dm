@@ -813,7 +813,7 @@
 	GLOB.bioscrambler_valid_parts = bodyparts
 
 	var/list/organs = subtypesof(/obj/item/organ)
-	for(var/obj/item/organ/organ_type as anything in subtypesof(/obj/item/organ))
+	for(var/obj/item/organ/organ_type as anything in organs)
 		if(!is_type_in_typecache(organ_type, GLOB.bioscrambler_organs_blacklist) && !(initial(organ_type.organ_flags) & ORGAN_ROBOTIC))
 			continue
 		organs -= organ_type
