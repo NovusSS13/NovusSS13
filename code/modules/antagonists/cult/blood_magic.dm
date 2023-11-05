@@ -676,50 +676,50 @@
 /obj/item/melee/blood_magic/manipulator/afterattack(atom/target, mob/living/carbon/human/user, proximity)
 	if(proximity)
 		if(ishuman(target))
-			var/mob/living/carbon/human/H = target
-			if(HAS_TRAIT(H, TRAIT_NOBLOOD))
+			var/mob/living/carbon/human/human_bloodbag = target
+			if(HAS_TRAIT(human_bloodbag, TRAIT_NOBLOOD))
 				to_chat(user,span_warning("Blood rites do not work on people with no blood!"))
 				return
-			if(IS_CULTIST(H))
-				if(H.stat == DEAD)
+			if(IS_CULTIST(human_bloodbag))
+				if(human_bloodbag.stat == DEAD)
 					to_chat(user,span_warning("Only a revive rune can bring back the dead!"))
 					return
-				if(H.blood_volume < BLOOD_VOLUME_SAFE)
-					var/restore_blood = BLOOD_VOLUME_SAFE - H.blood_volume
+				if(human_bloodbag.blood_volume < BLOOD_VOLUME_SAFE)
+					var/restore_blood = BLOOD_VOLUME_SAFE - human_bloodbag.blood_volume
 					if(uses*2 < restore_blood)
-						H.blood_volume += uses*2
+						human_bloodbag.blood_volume += uses*2
 						to_chat(user,span_danger("You use the last of your blood rites to restore what blood you could!"))
 						uses = 0
 						return ..()
 					else
-						H.blood_volume = BLOOD_VOLUME_SAFE
+						human_bloodbag.blood_volume = BLOOD_VOLUME_SAFE
 						uses -= round(restore_blood/2)
-						to_chat(user,span_warning("Your blood rites have restored [H == user ? "your" : "[H.p_their()]"] blood to safe levels!"))
-				var/overall_damage = H.getBruteLoss() + H.getFireLoss() + H.getToxLoss() + H.getOxyLoss()
+						to_chat(user,span_warning("Your blood rites have restored [human_bloodbag == user ? "your" : "[human_bloodbag.p_their()]"] blood to safe levels!"))
+				var/overall_damage = human_bloodbag.getBruteLoss() + human_bloodbag.getFireLoss() + human_bloodbag.getToxLoss() + human_bloodbag.getOxyLoss()
 				if(overall_damage == 0)
 					to_chat(user,span_cult("That cultist doesn't require healing!"))
 				else
 					var/ratio = uses/overall_damage
-					if(H == user)
+					if(human_bloodbag == user)
 						to_chat(user,span_cult("<b>Your blood healing is far less efficient when used on yourself!</b>"))
 						ratio *= 0.35 // Healing is half as effective if you can't perform a full heal
 						uses -= round(overall_damage) // Healing is 65% more "expensive" even if you can still perform the full heal
 					if(ratio>1)
 						ratio = 1
 						uses -= round(overall_damage)
-						H.visible_message(span_warning("[H] is fully healed by [H == user ? "[H.p_their()]":"[H]'s"] blood magic!"))
+						human_bloodbag.visible_message(span_warning("[human_bloodbag] is fully healed by [human_bloodbag == user ? "[human_bloodbag.p_their()]":"[human_bloodbag]'s"] blood magic!"))
 					else
-						H.visible_message(span_warning("[H] is partially healed by [H == user ? "[H.p_their()]":"[H]'s"] blood magic."))
+						human_bloodbag.visible_message(span_warning("[human_bloodbag] is partially healed by [human_bloodbag == user ? "[human_bloodbag.p_their()]":"[human_bloodbag]'s"] blood magic."))
 						uses = 0
 					ratio *= -1
-					H.adjustOxyLoss((overall_damage*ratio) * (H.getOxyLoss() / overall_damage), 0)
-					H.adjustToxLoss((overall_damage*ratio) * (H.getToxLoss() / overall_damage), 0)
-					H.adjustFireLoss((overall_damage*ratio) * (H.getFireLoss() / overall_damage), 0)
-					H.adjustBruteLoss((overall_damage*ratio) * (H.getBruteLoss() / overall_damage), 0)
-					H.updatehealth()
-					playsound(get_turf(H), 'sound/magic/staff_healing.ogg', 25)
-					new /obj/effect/temp_visual/cult/sparks(get_turf(H))
-					user.Beam(H, icon_state="sendbeam", time = 15)
+					human_bloodbag.adjustOxyLoss((overall_damage*ratio) * (human_bloodbag.getOxyLoss() / overall_damage), 0)
+					human_bloodbag.adjustToxLoss((overall_damage*ratio) * (human_bloodbag.getToxLoss() / overall_damage), 0)
+					human_bloodbag.adjustFireLoss((overall_damage*ratio) * (human_bloodbag.getFireLoss() / overall_damage), 0)
+					human_bloodbag.adjustBruteLoss((overall_damage*ratio) * (human_bloodbag.getBruteLoss() / overall_damage), 0)
+					human_bloodbag.updatehealth()
+					playsound(get_turf(human_bloodbag), 'sound/magic/staff_healing.ogg', 25)
+					new /obj/effect/temp_visual/cult/sparks(get_turf(human_bloodbag))
+					user.Beam(human_bloodbag, icon_state="sendbeam", time = 15)
 			else
 				if(human_bloodbag.stat == DEAD)
 					to_chat(user,span_warning("[human_bloodbag.p_Their()] blood has stopped flowing, you'll have to find another way to extract it."))
@@ -727,14 +727,14 @@
 				if(human_bloodbag.has_status_effect(/datum/status_effect/speech/slurring/cult))
 					to_chat(user,span_danger("[human_bloodbag.p_Their()] blood has been tainted by an even stronger form of blood magic, it's no use to us like this!"))
 					return
-				if(H.blood_volume > BLOOD_VOLUME_SAFE)
-					H.blood_volume -= 100
+				if(human_bloodbag.blood_volume > BLOOD_VOLUME_SAFE)
+					human_bloodbag.blood_volume -= 100
 					uses += 50
-					user.Beam(H, icon_state="drainbeam", time = 1 SECONDS)
-					playsound(get_turf(H), 'sound/magic/enter_blood.ogg', 50)
-					H.visible_message(span_danger("[user] drains some of [H]'s blood!"))
-					to_chat(user,span_cultitalic("Your blood rite gains 50 charges from draining [H]'s blood."))
-					new /obj/effect/temp_visual/cult/sparks(get_turf(H))
+					user.Beam(human_bloodbag, icon_state="drainbeam", time = 1 SECONDS)
+					playsound(get_turf(human_bloodbag), 'sound/magic/enter_blood.ogg', 50)
+					human_bloodbag.visible_message(span_danger("[user] drains some of [human_bloodbag]'s blood!"))
+					to_chat(user,span_cultitalic("Your blood rite gains 50 charges from draining [human_bloodbag]'s blood."))
+					new /obj/effect/temp_visual/cult/sparks(get_turf(human_bloodbag))
 				else
 					to_chat(user,span_warning("[human_bloodbag.p_Theyre()] missing too much blood - you cannot drain [human_bloodbag.p_them()] further!"))
 					return

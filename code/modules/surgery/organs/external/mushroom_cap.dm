@@ -10,7 +10,7 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	use_mob_sprite_as_obj_sprite = TRUE
+	use_bodypart_overlay_as_sprite = TRUE
 	dna_block = DNA_MUSHROOM_CAPS_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_PLANT //i know mushrooms are not plants but whatever, close enough
 

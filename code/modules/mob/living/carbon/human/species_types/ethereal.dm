@@ -63,7 +63,6 @@
 		return
 	var/mob/living/carbon/human/ethereal = new_ethereal
 	default_color = tricolor_to_hex(ethereal.dna.features["ethcolor"])
-	fixed_hair_color = default_color
 	r1 = GETREDPART(default_color)
 	g1 = GETGREENPART(default_color)
 	b1 = GETBLUEPART(default_color)
@@ -123,7 +122,6 @@
 		ethereal_light.set_light_range_power_color(1 + (2 * healthpercent), 1 + (1 * healthpercent), current_color)
 		ethereal_light.set_light_on(TRUE)
 		fixed_mut_color = current_color
-		fixed_hair_color = current_color
 		ethereal.update_body()
 		ethereal.set_facial_haircolor(current_color, override = TRUE, update = FALSE)
 		ethereal.set_haircolor(current_color, override = TRUE,  update = TRUE)
@@ -131,7 +129,6 @@
 		ethereal_light.set_light_on(FALSE)
 		var/dead_color = rgb(128,128,128)
 		fixed_mut_color = dead_color
-		fixed_hair_color = dead_color
 		ethereal.update_body()
 		ethereal.set_facial_haircolor(dead_color, override = TRUE, update = FALSE)
 		ethereal.set_haircolor(dead_color, override = TRUE, update = TRUE)

@@ -11,7 +11,7 @@
 /datum/preference/choiced/ai_emote_display/icon_for(value)
 	if (value == "Random")
 		return icon('icons/mob/silicon/ai.dmi', "questionmark")
-	return icon('icons/obj/status_display.dmi', GLOB.ai_status_display_emotes[value])
+	return icon('icons/obj/machines/status_display.dmi', GLOB.ai_status_display_emotes[value])
 
 /datum/preference/choiced/ai_emote_display/is_accessible(datum/preferences/preferences)
 	if (!..(preferences))

@@ -10,7 +10,7 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	use_mob_sprite_as_obj_sprite = TRUE
+	use_bodypart_overlay_as_sprite = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/wings
 
 ///Checks if the wings can soften short falls
