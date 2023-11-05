@@ -108,7 +108,7 @@
 	var/list/target_interactor = list()
 	target_interactor["name"] = target.name
 	target_interactor["qualities"] = get_qualities()
-	target_interactor["pronoun"] = target.p_they(TRUE)
+	target_interactor["pronoun"] = target.p_They()
 	var/mob/living/living_target = target
 	target_interactor["lust"] = istype(living_target) ? living_target.get_lust() : 0
 

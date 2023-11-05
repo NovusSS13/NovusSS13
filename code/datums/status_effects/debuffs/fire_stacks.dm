@@ -158,7 +158,7 @@
 	var/moblight_type = /obj/effect/dummy/lighting_obj/moblight/fire
 
 /datum/status_effect/fire_handler/fire_stacks/get_examine_text()
-	return span_warning("[owner.p_theyre(TRUE)] covered in something flammable.")
+	return span_warning("[owner.p_Theyre()] covered in something flammable.")
 
 /datum/status_effect/fire_handler/fire_stacks/tick(seconds_per_tick, times_fired)
 	if(stacks <= 0)
@@ -303,7 +303,7 @@
 	stack_modifier = -1
 
 /datum/status_effect/fire_handler/wet_stacks/get_examine_text()
-	return span_info("[owner.p_they(TRUE)] look[p_s()] a little soaked.")
+	return span_info("[owner.p_They()] look[p_s()] a little soaked.")
 
 /datum/status_effect/fire_handler/wet_stacks/tick(seconds_per_tick)
 	adjust_stacks(-0.5 * seconds_per_tick)

@@ -53,7 +53,7 @@
 	var/mob/living/carbon/human/human_target = target.parent
 	if(istype(human_target) && !human_target.get_bodypart(BODY_ZONE_HEAD))
 		if(!silent)
-			to_chat(user, span_warning("[human_target.p_they(TRUE)] have no head!"))
+			to_chat(user, span_warning("[human_target.p_They()] have no head!"))
 		return FALSE
 
 /*

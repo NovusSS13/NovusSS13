@@ -26,7 +26,7 @@
 	var/mob/living/carbon/human/human_target = target.parent
 	if(istype(human_target) && !human_target.get_bodypart(BODY_ZONE_HEAD))
 		if(!silent)
-			to_chat(user, span_warning("[human_target.p_they(TRUE)] have no head!"))
+			to_chat(user, span_warning("[human_target.p_They()] have no head!"))
 		return FALSE
 
 /datum/interaction/romance/kisscheeks/evaluate_target(datum/component/interactable/user, datum/component/interactable/target, silent)
@@ -36,7 +36,7 @@
 	var/mob/living/carbon/human/human_target = target.parent
 	if(istype(human_target) && !human_target.get_bodypart(BODY_ZONE_HEAD))
 		if(!silent)
-			to_chat(user, span_warning("[human_target.p_they(TRUE)] have no head!"))
+			to_chat(user, span_warning("[human_target.p_They()] have no head!"))
 		return FALSE
 
 /datum/interaction/romance/kiss
@@ -73,9 +73,9 @@
 	if(istype(human_target))
 		if(!human_target.get_bodypart(BODY_ZONE_HEAD))
 			if(!silent)
-				to_chat(user, span_warning("[human_target.p_they(TRUE)] have no head!"))
+				to_chat(user, span_warning("[human_target.p_They()] have no head!"))
 			return FALSE
 		if(human_target.is_mouth_covered())
 			if(!silent)
-				to_chat(user, span_warning("[human_target.p_their(TRUE)] mouth is covered!"))
+				to_chat(user, span_warning("[human_target.p_Their()] mouth is covered!"))
 			return FALSE

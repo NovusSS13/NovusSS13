@@ -380,7 +380,7 @@
 /mob/proc/common_trait_examine()
 	RETURN_TYPE(/list)
 	. = list()
-	var/t_He = p_they(TRUE)
+	var/t_He = p_They()
 	var/t_has = p_have()
 	var/t_is = p_are()
 	if(HAS_TRAIT(src, TRAIT_SUICIDED))

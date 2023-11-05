@@ -390,13 +390,13 @@
 /obj/item/examine(mob/user) //This might be spammy. Remove?
 	. = ..()
 
-	. += span_info("[p_they(TRUE)] [p_are()] a [weight_class_to_text(w_class)] item.")
+	. += span_info("[p_They()] [p_are()] a [weight_class_to_text(w_class)] item.")
 
 	if(item_flags & CRUEL_IMPLEMENT)
 		. += span_info("[src] seems quite practical for particularly [span_bloody("red")] procedures and experiments.")
 
 	if(resistance_flags & INDESTRUCTIBLE)
-		. += span_info("[src] seem[p_s()] extremely robust! [p_they(TRUE)] will probably withstand anything that could happen to it!")
+		. += span_info("[src] seem[p_s()] extremely robust! [p_They()] will probably withstand anything that could happen to it!")
 	else
 		var/list/resistance_strings = list()
 		if(resistance_flags & LAVA_PROOF)

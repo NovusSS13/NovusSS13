@@ -212,7 +212,7 @@ Behavior that's still missing from this component that original food items had t
 
 	if(foodtypes)
 		var/list/types = bitfield_to_list(foodtypes, FOOD_FLAGS)
-		examine_list += span_info("[parent.p_they(TRUE)] [parent.p_are()] [lowertext(english_list(types))].")
+		examine_list += span_info("[parent.p_They()] [parent.p_are()] [lowertext(english_list(types))].")
 
 	var/datum/mind/mind = user.mind
 	if(mind && HAS_TRAIT_FROM(parent, TRAIT_FOOD_CHEF_MADE, REF(mind)))
