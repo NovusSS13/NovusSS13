@@ -357,7 +357,7 @@
 		return
 	brain?.apply_organ_damage(brain_damage * seconds_per_tick)
 	if(SPT_PROB(5, seconds_per_tick))
-		owner.adjust_slurring(10 SECONDS)
+		owner.set_slurring_if_lower(10 SECONDS)
 	if(SPT_PROB(2.5, seconds_per_tick))
 		switch(rand(1,13))
 			if(1)
@@ -370,7 +370,7 @@
 				if(ears)
 					ears.adjustEarDamage(ddeaf = 10)
 			if(6,7)
-				owner.adjust_temp_blindness(5 SECONDS)
+				owner.adjust_temp_blindness(10 SECONDS)
 				owner.set_eye_blur_if_lower(20 SECONDS)
 			if(8,9)
 				owner.adjust_confusion(10 SECONDS)
