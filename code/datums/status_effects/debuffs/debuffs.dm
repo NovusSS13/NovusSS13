@@ -257,7 +257,7 @@
 	if(checked_flags & STASIS_FLAG_REAGENTS)
 		owner.reagents?.end_metabolization(owner, FALSE)
 
-	existing |= stasis_flags //pass our flags along before we return to parent
+	existing.stasis_flags |= stasis_flags //pass our flags along before we return to parent
 	return ..()
 
 /datum/status_effect/grouped/stasis/before_remove(source)
