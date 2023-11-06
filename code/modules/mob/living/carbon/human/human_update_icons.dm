@@ -97,7 +97,6 @@ There are several things that need to be remembered:
 		//"override_file = handled_by_bodytype ? icon_file : null" MUST be added to the arguments of build_worn_icon()
 		//Friendly reminder that icon_exists(file, state, scream = TRUE) is your friend when debugging this code.
 		var/handled_by_bodytype = TRUE
-		var/icon_file
 		var/woman
 
 		var/obj/item/bodypart/chest = get_bodypart(BODY_ZONE_CHEST)
@@ -115,18 +114,18 @@ There are several things that need to be remembered:
 		else if(!HAS_TRAIT(src, TRAIT_AGENDER) && (chest_bodytype & BODYTYPE_HUMANOID) && (chest.limb_gender == "f") && !(uniform.female_sprite_flags & NO_FEMALE_UNIFORM))
 			woman = TRUE
 
-		if(!override_file || !icon_exists(icon_file, uniform.worn_icon_state || uniform.icon_state))
+		if(!override_file || !icon_exists(override_file, uniform.worn_icon_state || uniform.icon_state))
 			override_file = 'icons/mob/clothing/under/default.dmi'
 			handled_by_bodytype = FALSE
 
 		//END SPECIES HANDLING
 		uniform_overlay = uniform.build_worn_icon(
 			default_layer = UNIFORM_LAYER,
-			default_icon_file = icon_file,
+			default_icon_file = override_file,
 			isinhands = FALSE,
 			female_uniform = woman ? uniform.female_sprite_flags : null,
 			override_state = target_overlay,
-			override_file = handled_by_bodytype ? icon_file : null,
+			override_file = handled_by_bodytype ? override_file : null,
 		)
 
 		if(isnull(override_file))
