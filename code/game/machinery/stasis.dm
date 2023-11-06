@@ -52,7 +52,7 @@
 /obj/machinery/stasis/Exited(atom/movable/gone, direction)
 	if(gone == occupant)
 		var/mob/living/L = gone
-		if(IS_IN_STASIS(L))
+		if(L.has_status_effect(/datum/status_effect/grouped/stasis))
 			thaw_them(L)
 	return ..()
 
@@ -108,14 +108,14 @@
 		return
 	var/freq = rand(24750, 26550)
 	playsound(src, 'sound/effects/spray.ogg', 5, TRUE, 2, frequency = freq)
-	target.apply_status_effect(/datum/status_effect/grouped/stasis, STASIS_MACHINE_EFFECT)
-	ADD_TRAIT(target, TRAIT_TUMOR_SUPPRESSED, TRAIT_GENERIC)
+	target.apply_status_effect(/datum/status_effect/grouped/stasis, type, ALL) //ALL THE STASISINGS!!!
+	target.add_traits(list(TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), type) //oh yeah also fuck them
 	target.extinguish_mob()
 	update_use_power(ACTIVE_POWER_USE)
 
 /obj/machinery/stasis/proc/thaw_them(mob/living/target)
-	target.remove_status_effect(/datum/status_effect/grouped/stasis, STASIS_MACHINE_EFFECT)
-	REMOVE_TRAIT(target, TRAIT_TUMOR_SUPPRESSED, TRAIT_GENERIC)
+	target.remove_status_effect(/datum/status_effect/grouped/stasis, type)
+	target.remove_traits(list(TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), type)
 	if(target == occupant)
 		update_use_power(IDLE_POWER_USE)
 
@@ -139,9 +139,9 @@
 		return
 	var/mob/living/L_occupant = occupant
 	if(stasis_running())
-		if(!IS_IN_STASIS(L_occupant))
+		if(!L_occupant.has_status_effect(/datum/status_effect/grouped/stasis))
 			chill_out(L_occupant)
-	else if(IS_IN_STASIS(L_occupant))
+	else if(L_occupant.has_status_effect(/datum/status_effect/grouped/stasis))
 		thaw_them(L_occupant)
 
 /obj/machinery/stasis/screwdriver_act(mob/living/user, obj/item/I)

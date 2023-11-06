@@ -33,7 +33,7 @@
 	caster_mob.mind?.transfer_to(owner)
 	caster_mob.forceMove(owner)
 	caster_mob.notransform = TRUE
-	caster_mob.apply_status_effect(/datum/status_effect/grouped/stasis, STASIS_SHAPECHANGE_EFFECT)
+	caster_mob.apply_status_effect(/datum/status_effect/grouped/stasis, "shapechange", ALL)
 
 	RegisterSignal(owner, COMSIG_LIVING_PRE_WABBAJACKED, PROC_REF(on_wabbajacked))
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(on_shape_death))
@@ -78,7 +78,7 @@
 
 	caster_mob.forceMove(owner.loc)
 	caster_mob.notransform = FALSE
-	caster_mob.remove_status_effect(/datum/status_effect/grouped/stasis, STASIS_SHAPECHANGE_EFFECT)
+	caster_mob.remove_status_effect(/datum/status_effect/grouped/stasis, "shapechange")
 	owner.mind?.transfer_to(caster_mob)
 
 	if(kill_caster_after)

@@ -273,12 +273,12 @@
 		if(BLEED_OVERLAY_LOW to BLEED_OVERLAY_MED)
 			new_bleed_icon = "[body_zone]_1"
 		if(BLEED_OVERLAY_MED to BLEED_OVERLAY_GUSH)
-			if(owner.body_position == LYING_DOWN || IS_IN_STASIS(owner) || owner.stat == DEAD)
+			if(owner.body_position == LYING_DOWN || HAS_STASIS_FLAG(owner, STASIS_FLAG_WOUNDS) || owner.stat == DEAD)
 				new_bleed_icon = "[body_zone]_2s"
 			else
 				new_bleed_icon = "[body_zone]_2"
 		if(BLEED_OVERLAY_GUSH to INFINITY)
-			if(IS_IN_STASIS(owner) || owner.stat == DEAD)
+			if(HAS_STASIS_FLAG(owner, STASIS_FLAG_WOUNDS) || owner.stat == DEAD)
 				new_bleed_icon = "[body_zone]_2s"
 			else
 				new_bleed_icon = "[body_zone]_3"

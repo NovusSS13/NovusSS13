@@ -40,7 +40,8 @@
 		owner = new_owner
 	if(QDELETED(owner) || !on_apply())
 		qdel(src)
-		return
+		return FALSE
+
 	if(owner)
 		LAZYADD(owner.status_effects, src)
 		RegisterSignal(owner, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(remove_effect_on_heal))

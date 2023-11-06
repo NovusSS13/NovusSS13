@@ -602,14 +602,14 @@
 /datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(HAS_TRAIT(liver, TRAIT_ENGINEER_METABOLISM))
-		ADD_TRAIT(drinker, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
+		drinker.apply_status_effect(/datum/status_effect/grouped/stasis, type, STASIS_FLAG_RADIATION)
 		if (HAS_TRAIT(drinker, TRAIT_IRRADIATED))
 			drinker.adjustToxLoss(-2 * REM * seconds_per_tick, required_biotype = affected_biotype)
 
 	return ..()
 
 /datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_end_metabolize(mob/living/drinker)
-	REMOVE_TRAIT(drinker, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
+	drinker.remove_status_effect(/datum/status_effect/grouped/stasis, type)
 	return ..()
 
 /datum/reagent/consumable/ethanol/booger

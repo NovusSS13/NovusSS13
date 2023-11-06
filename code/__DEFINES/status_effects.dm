@@ -13,6 +13,26 @@
 ///This is slower and better for more intensive status effects - 1s between ticks
 #define STATUS_EFFECT_NORMAL_PROCESS 1
 
+//Stasis flags - aka how much of Life() do we skip
+/// Skip reagent processing
+#define STASIS_FLAG_REAGENTS (1<<0)
+/// Skip processing organs (and their decaying)
+#define STASIS_FLAG_ORGANS (1<<1)
+/// Skip processing radiation
+#define STASIS_FLAG_RADIATION (1<<2)
+/// Skip processing brain damages of any kind
+#define STASIS_FLAG_BRAIN_DAMAGE (1<<3)
+/// Skip processing mutations
+#define STASIS_FLAG_MUTATIONS (1<<4)
+/// Skip processing body decay..?
+#define STASIS_FLAG_BODY_DECAY (1<<5)
+/// Skip processing body temperature
+#define STASIS_FLAG_TEMPERATURE (1<<6)
+/// Skip processing wounds
+#define STASIS_FLAG_WOUNDS (1<<7)
+/// Skip processing basically all of Life(). Don't use directly, only via the ALL macro.
+#define STASIS_FLAG_LIFE (1<<8)
+
 //several flags for the Necropolis curse status effect
 ///makes the edges of the target's screen obscured
 #define CURSE_BLINDING (1<<0)
@@ -26,18 +46,8 @@
 //Incapacitated status effect flags
 /// If the incapacitated status effect will ignore a mob in restraints (handcuffs)
 #define IGNORE_RESTRAINTS (1<<0)
-/// If the incapacitated status effect will ignore a mob in stasis (stasis beds)
-#define IGNORE_STASIS (1<<1)
 /// If the incapacitated status effect will ignore a mob being agressively grabbed
-#define IGNORE_GRAB (1<<2)
-
-// Grouped effect sources, see also code/__DEFINES/traits.dm
-
-#define STASIS_MACHINE_EFFECT "stasis_machine"
-
-#define STASIS_CHEMICAL_EFFECT "stasis_chemical"
-
-#define STASIS_SHAPECHANGE_EFFECT "stasis_shapechange"
+#define IGNORE_GRAB (1<<1)
 
 /// Causes the mob to become blind via the passed source
 #define become_blind(source) apply_status_effect(/datum/status_effect/grouped/blindness, source)

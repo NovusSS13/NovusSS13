@@ -2,13 +2,13 @@
 /datum/status_effect/grouped
 	// Grouped effects adds itself to [var/sources] and destroys itself if one exists already, there are never actually multiple
 	status_type = STATUS_EFFECT_MULTIPLE
-	/// A list of all sources applying this status effect. Sources are a list of keys
+	/// Assoc list of all sources applying this status effect, to the arguments passed over.
 	var/list/sources = list()
 
-/datum/status_effect/grouped/on_creation(mob/living/new_owner, source)
+/datum/status_effect/grouped/on_creation(mob/living/new_owner, source, ...)
 	var/datum/status_effect/grouped/existing = new_owner.has_status_effect(type)
 	if(existing)
-		existing.sources |= source
+		existing.sources[source] = args.Copy(3) //copy args
 		qdel(src)
 		return FALSE
 

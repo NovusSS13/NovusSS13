@@ -222,6 +222,8 @@
 		return
 	if(mob_occupant.stat == DEAD) // We don't bother with dead people.
 		return
+
+	mob_occupant.apply_status_effect(/datum/status_effect/grouped/stasis, type, (ALL & ~(STASIS_FLAG_LIFE|STASIS_FLAG_REAGENTS)))
 	if(mob_occupant.get_organic_health() >= mob_occupant.getMaxHealth()) // Don't bother with fully healed people.
 		if(iscarbon(mob_occupant))
 			var/mob/living/carbon/C = mob_occupant
@@ -315,8 +317,10 @@
 /obj/machinery/atmospherics/components/unary/cryo_cell/open_machine(drop = FALSE, density_to_set = FALSE)
 	if(!state_open && !panel_open)
 		set_on(FALSE)
-	for(var/mob/M in contents) //only drop mobs
-		M.forceMove(get_turf(src))
+	for(var/mob/living/mob_occupant in contents) //only drop mobs
+		mob_occupant.remove_status_effect(/datum/status_effect/grouped/stasis, type)
+		mob_occupant.forceMove(get_turf(src))
+
 	set_occupant(null)
 	flick("pod-open-anim", src)
 	return ..()

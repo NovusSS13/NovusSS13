@@ -1267,7 +1267,6 @@
 		"cryo_grenade",
 		"cryotube",
 		"splitbeaker",
-		"stasis",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2000)
 

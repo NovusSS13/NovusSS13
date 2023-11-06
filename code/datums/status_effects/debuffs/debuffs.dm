@@ -229,6 +229,7 @@
 	id = "stasis"
 	duration = -1
 	alert_type = /atom/movable/screen/alert/status_effect/stasis
+	var/stasis_flags = NONE
 	var/last_dead_time
 
 /datum/status_effect/grouped/stasis/proc/update_time_of_death()
@@ -241,11 +242,33 @@
 	if(owner.stat == DEAD)
 		last_dead_time = world.time
 
-/datum/status_effect/grouped/stasis/on_creation(mob/living/new_owner, set_duration)
+/datum/status_effect/grouped/stasis/on_creation(mob/living/new_owner, source, stasis_flags)
+	if(!new_owner)
+		return ..()
+
+	var/datum/status_effect/grouped/stasis/existing = new_owner.has_status_effect(/datum/status_effect/grouped/stasis)
+	var/checked_flags = stasis_flags
+	if(existing)
+		checked_flags = (~(existing.stasis_flags & stasis_flags) & stasis_flags) //we get the flags that need updating
+
+	if(checked_flags & STASIS_FLAG_BODY_DECAY)
+		update_time_of_death()
+
+	if(checked_flags & STASIS_FLAG_REAGENTS)
+		owner.reagents?.end_metabolization(owner, FALSE)
+
+	existing |= stasis_flags //pass our flags along before we return to parent
+	return ..()
+
+/datum/status_effect/grouped/stasis/before_remove(source)
 	. = ..()
 	if(.)
-		update_time_of_death()
-		owner.reagents?.end_metabolization(owner, FALSE)
+		return
+
+	stasis_flags = NONE
+	for(var/reapplied in sources)
+		stasis_flags |= sources[reapplied][1]
+
 
 /datum/status_effect/grouped/stasis/on_apply()
 	. = ..()

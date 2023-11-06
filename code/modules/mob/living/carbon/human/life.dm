@@ -24,13 +24,23 @@
 	if(QDELETED(src))
 		return FALSE
 
+	var/stasis_flags = has_status_effect(/datum/status_effect/grouped/stasis)?:stasis_flags
+
 	//Body temperature stability and damage
-	dna.species.handle_body_temperature(src, seconds_per_tick, times_fired)
-	if(!IS_IN_STASIS(src))
-		if(stat != DEAD)
-			//handle active mutations
+	if(!(stasis_flags & STASIS_FLAG_TEMPERATURE))
+		dna.species.handle_body_temperature(src, seconds_per_tick, times_fired)
+
+	if(stasis_flags & STASIS_FLAG_WOUNDS|STASIS_FLAG_LIFE)
+		for(var/datum/wound/iter_wound as anything in all_wounds)
+			iter_wound.on_stasis(seconds_per_tick, times_fired)
+
+	if(stat != DEAD)
+		//handle active mutations
+		if(!(stasis_flags & STASIS_FLAG_MUTATIONS))
 			for(var/datum/mutation/human/human_mutation as anything in dna.mutations)
 				human_mutation.on_life(seconds_per_tick, times_fired)
+
+		if(!(stasis_flags & STASIS_FLAG_ORGANS))
 			//heart attack stuff - this should be handled by the heart organ when one exists, but isn't currently
 			handle_heart(seconds_per_tick, times_fired)
 			//handles liver failure effects, if we lack a liver
@@ -38,11 +48,9 @@
 			//handles hunger, if we lack a stomach
 			handle_stomach(seconds_per_tick, times_fired)
 
-		// for special species interactions
-		dna.species.spec_life(src, seconds_per_tick, times_fired)
-	else
-		for(var/datum/wound/iter_wound as anything in all_wounds)
-			iter_wound.on_stasis(seconds_per_tick, times_fired)
+	// for special species interactions
+	dna.species.spec_life(src, seconds_per_tick, times_fired)
+
 
 	//Update our name based on whether our face is obscured/disfigured
 	name = get_visible_name()

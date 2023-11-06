@@ -854,16 +854,6 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
 
-/datum/design/board/stasis
-	name = "Lifeform Stasis Unit Board"
-	desc = "The circuit board for a stasis unit."
-	id = "stasis"
-	build_path = /obj/item/circuitboard/machine/stasis
-	category = list(
-		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_MEDICAL
-	)
-	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
-
 /datum/design/board/spaceship_navigation_beacon
 	name = "Bluespace Navigation Gigabeacon Board"
 	desc = "The circuit board for a Bluespace Navigation Gigabeacon."

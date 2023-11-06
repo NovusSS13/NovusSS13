@@ -6,13 +6,20 @@
 		damageoverlaytemp = 0
 		update_damage_hud()
 
-	if(IS_IN_STASIS(src))
+	var/stasis_flags = has_status_effect(/datum/status_effect/grouped/stasis)?:stasis_flags
+	if(stasis_flags & STASIS_FLAG_LIFE)
 		. = ..()
 		reagents.handle_stasis_chems(src, seconds_per_tick, times_fired)
+
 	else
 		//Reagent processing needs to come before breathing, to prevent edge cases.
-		handle_dead_metabolization(seconds_per_tick, times_fired) //Dead metabolization first since it can modify life metabolization.
-		handle_organs(seconds_per_tick, times_fired)
+		if(stasis_flags & STASIS_FLAG_REAGENTS)
+			reagents.handle_stasis_chems(src, seconds_per_tick, times_fired)
+		else
+			handle_dead_metabolization(seconds_per_tick, times_fired) //Dead metabolization first since it can modify life metabolization.
+
+		if(!(stasis_flags & STASIS_FLAG_ORGANS))
+			handle_organs(seconds_per_tick, times_fired)
 
 		. = ..()
 		if(QDELETED(src))
@@ -21,8 +28,13 @@
 		if(.) //not dead
 			handle_blood(seconds_per_tick, times_fired)
 
-		if(stat != DEAD)
+		if(stat != DEAD && !(stasis_flags & STASIS_FLAG_BRAIN_DAMAGE))
 			handle_brain_damage(seconds_per_tick, times_fired)
+
+		if(. && mind && !(stasis_flags & STASIS_FLAG_REAGENTS)) //not dead
+			for(var/key in mind.addiction_points)
+				var/datum/addiction/addiction = SSaddiction.all_addictions[key]
+				addiction.process_addiction(src, seconds_per_tick, times_fired)
 
 	if(stat == DEAD)
 		stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -34,10 +46,6 @@
 		if(bprv & BODYPART_LIFE_UPDATE_HEALTH)
 			updatehealth()
 
-	if(. && mind) //. == not dead
-		for(var/key in mind.addiction_points)
-			var/datum/addiction/addiction = SSaddiction.all_addictions[key]
-			addiction.process_addiction(src, seconds_per_tick, times_fired)
 	if(stat != DEAD)
 		return TRUE
 

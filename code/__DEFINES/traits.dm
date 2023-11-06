@@ -417,8 +417,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_SILENT_FOOTSTEPS "silent_footsteps"
 /// hnnnnnnnggggg..... you're pretty good....
 #define TRAIT_NICE_SHOT "nice_shot"
-/// prevents the damage done by a brain tumor
-#define TRAIT_TUMOR_SUPPRESSED "brain_tumor_suppressed"
 /// Prevents hallucinations from the hallucination brain trauma (RDS)
 #define TRAIT_RDS_SUPPRESSED "rds_suppressed"
 /// overrides the update_fire proc to always add fire (for lava)
@@ -1109,9 +1107,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Marks that this object is irradiated
 #define TRAIT_IRRADIATED "iraddiated"
-
-/// Harmful radiation effects, the toxin damage and the burns, will not occur while this trait is active
-#define TRAIT_HALT_RADIATION_EFFECTS "halt_radiation_effects"
 
 /// This clothing protects the user from radiation.
 /// This should not be used on clothing_traits, but should be applied to the clothing itself.

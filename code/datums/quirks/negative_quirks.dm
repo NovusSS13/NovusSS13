@@ -145,7 +145,7 @@
 	if(quirk_holder.stat == DEAD)
 		return
 
-	if(HAS_TRAIT(quirk_holder, TRAIT_TUMOR_SUPPRESSED))
+	if(HAS_STASIS_FLAG(quirk_holder, STASIS_FLAG_BRAIN_DAMAGE))
 		return
 
 	quirk_holder.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2 * seconds_per_tick)
@@ -1210,7 +1210,7 @@
 	if(!iscarbon(quirk_holder))
 		return
 
-	if(IS_IN_STASIS(quirk_holder))
+	if(HAS_STASIS_FLAG(quirk_holder, STASIS_FLAG_REAGENTS))
 		return
 
 	if(quirk_holder.stat == DEAD)

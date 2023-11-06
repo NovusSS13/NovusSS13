@@ -39,11 +39,13 @@
 	if(!loc)
 		return
 
-	if(!IS_IN_STASIS(src))
-
+	var/stasis_flags = has_status_effect(/datum/status_effect/grouped/stasis)?:stasis_flags
+	if(!(stasis_flags & STASIS_FLAG_LIFE))
 		if(stat != DEAD)
 			//Mutations and radiation
-			handle_mutations(seconds_per_tick, times_fired)
+			if(!(stasis_flags & STASIS_FLAG_MUTATIONS)) //why is this in /living
+				handle_mutations(seconds_per_tick, times_fired)
+
 			//Breathing, if applicable
 			handle_breathing(seconds_per_tick, times_fired)
 

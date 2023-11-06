@@ -78,7 +78,7 @@
 
 /datum/status_effect/disgust/tick(seconds_per_tick, times_fired)
 	// Disgust value does not decrease while in stasis
-	if(IS_IN_STASIS(owner))
+	if(HAS_STASIS_FLAG(owner, STASIS_FLAG_REAGENTS))
 		return
 
 	var/mob/living/carbon/carbon_owner = owner

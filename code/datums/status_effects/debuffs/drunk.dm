@@ -63,7 +63,7 @@
 
 /datum/status_effect/inebriated/tick(seconds_per_tick, times_fired)
 	// Drunk value does not decrease while dead or in stasis
-	if(owner.stat == DEAD || IS_IN_STASIS(owner))
+	if(owner.stat == DEAD || HAS_STASIS_FLAG(owner, STASIS_FLAG_REAGENTS))
 		return
 
 	// Every tick, the drunk value decrases by

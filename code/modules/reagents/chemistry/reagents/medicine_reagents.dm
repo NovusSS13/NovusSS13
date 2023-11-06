@@ -485,10 +485,10 @@
 
 /datum/reagent/medicine/potass_iodide/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
-	ADD_TRAIT(affected_mob, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
+	affected_mob.apply_status_effect(/datum/status_effect/grouped/stasis, type, STASIS_FLAG_RADIATION)
 
 /datum/reagent/medicine/potass_iodide/on_mob_end_metabolize(mob/living/affected_mob)
-	REMOVE_TRAIT(affected_mob, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
+	affected_mob.remove_status_effect(/datum/status_effect/grouped/stasis, type)
 	return ..()
 
 /datum/reagent/medicine/potass_iodide/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -508,10 +508,10 @@
 
 /datum/reagent/medicine/pen_acid/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
-	ADD_TRAIT(affected_mob, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
+	affected_mob.apply_status_effect(/datum/status_effect/grouped/stasis, type, STASIS_FLAG_RADIATION)
 
 /datum/reagent/medicine/pen_acid/on_mob_end_metabolize(mob/living/affected_mob)
-	REMOVE_TRAIT(affected_mob, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
+	affected_mob.remove_status_effect(/datum/status_effect/grouped/stasis, type)
 	return ..()
 
 /datum/reagent/medicine/pen_acid/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -1004,11 +1004,11 @@
 //Having mannitol in you will pause the brain damage from brain tumor (so it heals an even 2 brain damage instead of 1.8)
 /datum/reagent/medicine/mannitol/on_mob_metabolize(mob/living/carbon/affected_mob)
 	. = ..()
-	ADD_TRAIT(affected_mob, TRAIT_TUMOR_SUPPRESSED, TRAIT_GENERIC)
+	affected_mob.apply_status_effect(/datum/status_effect/grouped/stasis, type, STASIS_FLAG_BRAIN_DAMAGE)
 
 /datum/reagent/medicine/mannitol/on_mob_end_metabolize(mob/living/carbon/affected_mob)
-	REMOVE_TRAIT(affected_mob, TRAIT_TUMOR_SUPPRESSED, TRAIT_GENERIC)
-	. = ..()
+	affected_mob.remove_status_effect(/datum/status_effect/grouped/stasis, type)
+	return ..()
 
 /datum/reagent/medicine/mannitol/overdose_start(mob/living/affected_mob)
 	to_chat(affected_mob, span_notice("You suddenly feel <span class='purple'>E N L I G H T E N E D!</span>"))
