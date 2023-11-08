@@ -90,6 +90,7 @@
 #include "armor_verification.dm"
 #include "atmospherics_sanity.dm"
 #include "autowiki.dm"
+#include "avali.dm"
 #include "barsigns.dm"
 #include "baseturfs.dm"
 #include "bespoke_id.dm"

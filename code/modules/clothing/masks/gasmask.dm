@@ -111,6 +111,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	desc = "Improved gas mask utilized by atmospheric technicians. It's flameproof!"
 	icon_state = "gas_atmos"
 	inhand_icon_state = "gas_atmos"
+	worn_icon_avali = null
 	armor_type = /datum/armor/gas_atmos
 	resistance_flags = FIRE_PROOF
 	max_filters = 3
@@ -146,6 +147,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	name = "welding mask"
 	desc = "A gas mask with built-in welding goggles and a face shield. Looks like a skull - clearly designed by a nerd."
 	icon_state = "weldingmask"
+	worn_icon_avali = null
 	flash_protect = FLASH_PROTECTION_WELDER
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT*2, /datum/material/glass=SHEET_MATERIAL_AMOUNT)
 	tint = 2
@@ -180,10 +182,11 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	name = "plague doctor mask"
 	desc = "A modernised version of the classic design, this mask will not only filter out toxins but it can also be connected to an air supply."
 	icon_state = "plaguedoctor"
-	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT|HIDEHAIR
 	inhand_icon_state = "gas_mask"
-	has_fov = FALSE
+	worn_icon_avali = null
 	flags_cover = MASKCOVERSEYES
+	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT|HIDEHAIR
+	has_fov = FALSE
 
 /obj/item/clothing/mask/gas/syndicate
 	name = "syndicate mask"
@@ -245,11 +248,12 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 /obj/item/clothing/mask/gas/sexyclown
 	name = "sexy-clown wig and mask"
 	desc = "A feminine clown mask for the dabbling crossdressers or female entertainers."
-	clothing_flags = MASKINTERNALS
 	icon_state = "sexyclown"
 	inhand_icon_state = "sexyclown_hat"
+	worn_icon_avali = null
 	lefthand_file = 'icons/mob/inhands/clothing/hats_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/hats_righthand.dmi'
+	clothing_flags = MASKINTERNALS
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
 	has_fov = FALSE
@@ -304,11 +308,12 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 /obj/item/clothing/mask/gas/monkeymask
 	name = "monkey mask"
 	desc = "A mask used when acting as a monkey."
-	clothing_flags = MASKINTERNALS
 	icon_state = "monkeymask"
 	inhand_icon_state = "owl_mask"
-	flags_cover = MASKCOVERSEYES
+	worn_icon_avali = null
 	resistance_flags = FLAMMABLE
+	flags_cover = MASKCOVERSEYES
+	clothing_flags = MASKINTERNALS
 	has_fov = FALSE
 
 /obj/item/clothing/mask/gas/sexymime
@@ -326,18 +331,20 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	name = "cyborg visor"
 	desc = "Beep boop."
 	icon_state = "death"
+	worn_icon_avali = null
 	resistance_flags = FLAMMABLE
-	has_fov = FALSE
 	flags_cover = MASKCOVERSEYES
+	has_fov = FALSE
 
 /obj/item/clothing/mask/gas/owl_mask
 	name = "owl mask"
 	desc = "Twoooo!"
 	icon_state = "owl"
 	inhand_icon_state = "owl_mask"
-	clothing_flags = MASKINTERNALS
-	flags_cover = MASKCOVERSEYES
+	worn_icon_avali = null
 	resistance_flags = FLAMMABLE
+	flags_cover = MASKCOVERSEYES
+	clothing_flags = MASKINTERNALS
 	has_fov = FALSE
 
 /obj/item/clothing/mask/gas/carp
@@ -345,6 +352,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	desc = "Gnash gnash."
 	icon_state = "carp_mask"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	has_fov = FALSE
 	flags_cover = MASKCOVERSEYES
 
@@ -353,6 +361,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	desc = "A creepy wooden mask. Surprisingly expressive for a poorly carved bit of wood."
 	icon_state = "tiki_eyebrow"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 1.25)
 	resistance_flags = FLAMMABLE
 	has_fov = FALSE
@@ -399,6 +408,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	desc = "A custom tactical mask with decals added."
 	icon_state = "hunter"
 	inhand_icon_state = "gas_atmos"
+	worn_icon_avali = null
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	flags_inv = HIDEFACIALHAIR|HIDEFACE|HIDEEYES|HIDEEARS|HIDEHAIR|HIDESNOUT
 	has_fov = FALSE
@@ -408,6 +418,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	desc = "A prop gas mask designed for appearance. Unlike a normal gas mask this does not filter gasses or protect against pepper spray."
 	icon_state = "gas_prop"
 	inhand_icon_state = "gas_prop"
+	worn_icon_avali = null
 	clothing_flags = NONE
 	flags_cover = MASKCOVERSMOUTH
 	resistance_flags = FLAMMABLE
@@ -419,6 +430,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	worn_icon_state = "gas_prop_atmos"
 	icon_state = "gas_atmos"
 	inhand_icon_state = "gas_atmos"
+	worn_icon_avali = null
 	clothing_flags = NONE
 	flags_cover = MASKCOVERSMOUTH
 	resistance_flags = FLAMMABLE
@@ -428,6 +440,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	name = "driscoll mask"
 	desc = "Great for train hijackings. Works like a normal full face gas mask, but won't conceal your identity."
 	icon_state = "driscoll_mask"
+	worn_icon_avali = null
 	flags_inv = HIDEFACIALHAIR
 	w_class = WEIGHT_CLASS_NORMAL
 	inhand_icon_state = null

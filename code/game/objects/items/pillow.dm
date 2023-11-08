@@ -151,13 +151,14 @@
 /obj/item/clothing/suit/pillow_suit
 	name = "pillow suit"
 	desc = "Part man, part pillow. All CARNAGE!"
+	icon = 'icons/obj/pillow.dmi'
+	icon_state = "pillow_suit"
+	worn_icon = 'icons/mob/clothing/suits/pillow.dmi'
+	worn_icon_avali = null
+	armor_type = /datum/armor/suit_pillow_suit
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS|FEET
 	cold_protection = CHEST|GROIN|ARMS|LEGS //a pillow suit must be hella warm
 	allowed = list(/obj/item/pillow) //moar pillow carnage
-	icon = 'icons/obj/pillow.dmi'
-	worn_icon = 'icons/mob/clothing/suits/pillow.dmi'
-	icon_state = "pillow_suit"
-	armor_type = /datum/armor/suit_pillow_suit
 	var/obj/item/pillow/unstoppably_plushed
 
 /datum/armor/suit_pillow_suit
@@ -175,11 +176,12 @@
 
 /obj/item/clothing/head/pillow_hood
 	name = "pillow hood"
-	desc = "The final piece of the pillow juggernaut"
-	body_parts_covered = HEAD
+	desc = "The final piece of the pillow juggernaut."
 	icon = 'icons/obj/pillow.dmi'
-	worn_icon = 'icons/mob/clothing/suits/pillow.dmi'
 	icon_state = "pillowcase_hat"
+	worn_icon = 'icons/mob/clothing/suits/pillow.dmi'
+	worn_icon_avali = null
+	body_parts_covered = HEAD
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEEARS
 	armor_type = /datum/armor/head_pillow_hood
@@ -194,6 +196,7 @@
 	icon = 'icons/obj/pillow.dmi'
 	icon_state = "pillow_tag"
 	worn_icon = 'icons/mob/clothing/neck.dmi'
+	worn_icon_avali = null
 	worn_icon_state = "pillow_tag"
 	body_parts_covered = NECK
 

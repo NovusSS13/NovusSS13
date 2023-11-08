@@ -174,11 +174,12 @@ Striking a noncultist, however, will tear their flesh."}
 
 /obj/item/clothing/head/hooded/cult_hoodie
 	name = "ancient cultist hood"
+	desc = "A torn, dust-caked hood. Strange letters line the inside."
 	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
 	icon_state = "culthood"
 	inhand_icon_state = "culthood"
-	desc = "A torn, dust-caked hood. Strange letters line the inside."
+	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
+	worn_icon_avali = null
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEEARS
 	flags_cover = HEADCOVERSEYES
 	armor_type = /datum/armor/hooded_cult_hoodie
@@ -200,10 +201,11 @@ Striking a noncultist, however, will tear their flesh."}
 /obj/item/clothing/suit/hooded/cultrobes
 	name = "ancient cultist robes"
 	desc = "A ragged, dusty set of robes. Strange letters line the inside."
-	icon_state = "cultrobes"
 	icon = 'icons/obj/clothing/suits/armor.dmi'
-	worn_icon = 'icons/mob/clothing/suits/armor.dmi'
+	icon_state = "cultrobes"
 	inhand_icon_state = "cultrobes"
+	worn_icon = 'icons/mob/clothing/suits/armor.dmi'
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	allowed = list(/obj/item/tome, /obj/item/melee/cultblade)
 	armor_type = /datum/armor/hooded_cultrobes
@@ -276,10 +278,11 @@ Striking a noncultist, however, will tear their flesh."}
 /obj/item/clothing/suit/magusred
 	name = "magus robes"
 	desc = "A set of armored robes worn by the followers of Nar'Sie."
-	icon_state = "magusred"
 	icon = 'icons/obj/clothing/suits/wizard.dmi'
-	worn_icon = 'icons/mob/clothing/suits/wizard.dmi'
+	icon_state = "magusred"
 	inhand_icon_state = null
+	worn_icon = 'icons/mob/clothing/suits/wizard.dmi'
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	allowed = list(/obj/item/tome, /obj/item/melee/cultblade)
 	armor_type = /datum/armor/suit_magusred

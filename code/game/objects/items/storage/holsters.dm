@@ -4,6 +4,7 @@
 	desc = "A rather plain but still cool looking holster that can hold a handgun."
 	icon_state = "holster"
 	inhand_icon_state = "holster"
+	worn_icon_avali = null
 	worn_icon_state = "holster"
 	alternate_worn_layer = UNDER_SUIT_LAYER
 	w_class = WEIGHT_CLASS_BULKY

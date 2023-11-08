@@ -2,6 +2,7 @@
 /obj/item/clothing/glasses
 	name = "glasses"
 	icon = 'icons/obj/clothing/glasses.dmi'
+	worn_icon_avali = 'icons/mob/species/avali/clothing/eyes.dmi'
 	lefthand_file = 'icons/mob/inhands/clothing/glasses_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/glasses_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
@@ -12,6 +13,10 @@
 	resistance_flags = NONE
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT*2.5)
 	gender = PLURAL
+
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/glasses
+	clothing_color_coords_key = "glasses"
+
 	var/vision_flags = 0
 	var/invis_view = SEE_INVISIBLE_LIVING // Admin only for now
 	/// Override to allow glasses to set higher than normal see_invis
@@ -137,6 +142,7 @@
 	desc = "Do the impossible, see the invisible!"
 	icon_state = "gar_meson"
 	inhand_icon_state = "gar_meson"
+	worn_icon_avali = null
 	alternate_worn_layer = ABOVE_BODY_FRONT_HEAD_LAYER
 	force = 10
 	throwforce = 10
@@ -151,10 +157,11 @@
 	desc = "A pair of snazzy goggles used to protect against chemical spills. Fitted with an analyzer for scanning items and reagents."
 	icon_state = "purple"
 	inhand_icon_state = "glasses"
-	glass_colour_type = /datum/client_colour/glass_colour/purple
-	resistance_flags = ACID_PROOF
+	worn_icon_avali = null
 	armor_type = /datum/armor/glasses_science
+	resistance_flags = ACID_PROOF
 	clothing_traits = list(TRAIT_REAGENT_SCANNER, TRAIT_RESEARCH_SCANNER)
+	glass_colour_type = /datum/client_colour/glass_colour/purple
 
 /datum/armor/glasses_science
 	fire = 80
@@ -206,6 +213,7 @@
 	icon_state = "eyepatch_medical"
 	base_icon_state = "eyepatch_medical"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /// wizard version
 /obj/item/clothing/glasses/eyepatch/medical/chuuni
@@ -234,6 +242,7 @@
 	desc = "Such a dapper eyepiece!"
 	icon_state = "monocle"
 	inhand_icon_state = "headset" // lol
+	worn_icon_avali = null
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 
@@ -242,6 +251,7 @@
 	desc = "Very confusing glasses."
 	icon_state = "material"
 	inhand_icon_state = "glasses"
+	worn_icon_avali = null
 	vision_flags = SEE_OBJS
 	glass_colour_type = /datum/client_colour/glass_colour/lightblue
 
@@ -271,6 +281,7 @@
 	desc = "Made by Nerd. Co."
 	icon_state = "glasses_regular"
 	inhand_icon_state = "glasses"
+	worn_icon_avali = null
 	clothing_traits = list(TRAIT_NEARSIGHTED_CORRECTED)
 
 /obj/item/clothing/glasses/regular/Initialize(mapload)
@@ -352,8 +363,9 @@
 
 /obj/item/clothing/glasses/sunglasses/reagent
 	name = "beer goggles"
-	icon_state = "sunhudbeer"
 	desc = "A pair of sunglasses outfitted with apparatus to scan reagents, as well as providing an innate understanding of liquid viscosity while in motion."
+	icon_state = "sunhudbeer"
+	worn_icon_avali = null
 	clothing_traits = list(TRAIT_BOOZE_SLIDER, TRAIT_REAGENT_SCANNER)
 
 /obj/item/clothing/glasses/sunglasses/chemical
@@ -367,6 +379,7 @@
 	desc = "Go beyond impossible and kick reason to the curb!"
 	icon_state = "gar_black"
 	inhand_icon_state = "gar_black"
+	worn_icon_avali = null
 	alternate_worn_layer = ABOVE_BODY_FRONT_HEAD_LAYER
 	force = 10
 	throwforce = 10
@@ -381,6 +394,7 @@
 	desc = "Just who the hell do you think I am?!"
 	icon_state = "gar"
 	inhand_icon_state = "gar"
+	worn_icon_avali = null
 	glass_colour_type = /datum/client_colour/glass_colour/orange
 
 /obj/item/clothing/glasses/sunglasses/gar/giga
@@ -395,6 +409,7 @@
 	desc = "We evolve past the person we were a minute before. Little by little we advance with each turn. That's how a drill works!"
 	icon_state = "gigagar_red"
 	inhand_icon_state = "gar"
+	worn_icon_avali = null
 	glass_colour_type = /datum/client_colour/glass_colour/red
 
 /obj/item/clothing/glasses/welding
@@ -431,12 +446,14 @@
 	desc = "A see-through blindfold perfect for cheating at games like pin the stun baton on the clown."
 	icon_state = "trickblindfold"
 	inhand_icon_state = "blindfold"
+	worn_icon_avali = null
 
 /obj/item/clothing/glasses/blindfold/white
 	name = "blind personnel blindfold"
 	desc = "Indicates that the wearer suffers from blindness."
 	icon_state = "blindfoldwhite"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	var/colored_before = FALSE
 
 /obj/item/clothing/glasses/blindfold/white/visual_equipped(mob/living/carbon/human/user, slot)
@@ -466,12 +483,14 @@
 	desc = "Strangely ancient technology used to help provide rudimentary eye cover. Larger than average enhanced shielding blocks flashes."
 	icon_state = "bigsunglasses"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/glasses/thermal
 	name = "optical thermal scanner"
 	desc = "Thermals in the shape of glasses."
 	icon_state = "thermal"
 	inhand_icon_state = "glasses"
+	worn_icon_avali = null
 	vision_flags = SEE_MOBS
 	// Going for an orange color here
 	color_cutoffs = list(25, 8, 5)
@@ -552,12 +571,14 @@
 	desc = "A pair of goggles meant for low temperatures."
 	icon_state = "cold"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/glasses/heat
 	name = "heat goggles"
 	desc = "A pair of goggles meant for high temperatures."
 	icon_state = "heat"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/glasses/orange
 	name = "orange glasses"
@@ -571,17 +592,20 @@
 	desc = "Hey, you're looking good, senpai!"
 	icon_state = "redglasses"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	glass_colour_type = /datum/client_colour/glass_colour/red
 
 /obj/item/clothing/glasses/geist_gazers
 	name = "geist gazers"
 	icon_state = "geist_gazers"
+	worn_icon_avali = null
 	worn_icon_state = "geist_gazers"
 	glass_colour_type = /datum/client_colour/glass_colour/green
 
 /obj/item/clothing/glasses/psych
 	name = "psych glasses"
 	icon_state = "psych_glasses"
+	worn_icon_avali = null
 	worn_icon_state = "psych_glasses"
 	glass_colour_type = /datum/client_colour/glass_colour/red
 
@@ -644,6 +668,7 @@
 	desc = "A pair of glasses with uniquely colored lenses. The frame is inscribed with 'Best Salesman 1997'."
 	icon_state = "salesman"
 	inhand_icon_state = "salesman"
+	worn_icon_avali = null
 	///Tells us who the current wearer([BIGSHOT]) is.
 	var/mob/living/carbon/human/bigshot
 
@@ -677,6 +702,7 @@
 	desc = "They give off a putrid stench. Seemingly no effect on anything."
 	icon_state = "nightmare"
 	inhand_icon_state = "glasses"
+	worn_icon_avali = null
 	glass_colour_type = /datum/client_colour/glass_colour/nightmare
 	forced_glass_color = TRUE
 	lighting_cutoff = LIGHTING_CUTOFF_FULLBRIGHT
@@ -712,9 +738,11 @@
 	desc = "There's no such thing as good news! Just bad news and... weird news.."
 	icon_state = "osi_glasses"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/glasses/phantom
 	name = "Phantom Thief Mask"
 	desc = "Lookin' cool."
 	icon_state = "phantom_glasses"
 	inhand_icon_state = null
+	worn_icon_avali = null

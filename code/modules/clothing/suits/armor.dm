@@ -14,6 +14,9 @@
 	resistance_flags = NONE
 	armor_type = /datum/armor/suit_armor
 
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/armor
+	clothing_color_coords_key = "armor"
+
 /datum/armor/suit_armor
 	melee = 35
 	bullet = 30
@@ -41,6 +44,7 @@
 	desc = "A Type I armored vest that provides decent protection against most types of damage."
 	icon_state = "armor"
 	inhand_icon_state = "armor"
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/armor/vest/alt/sec
 	icon_state = "armor_sec"
@@ -50,13 +54,14 @@
 	desc = "A set of the finest mass produced, stamped plasteel armor plates, containing an environmental protection unit for all-condition door kicking."
 	icon_state = "marine_command"
 	inhand_icon_state = "armor"
+	worn_icon_avali = null
+	armor_type = /datum/armor/vest_marine
+	resistance_flags = FIRE_PROOF | ACID_PROOF
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	armor_type = /datum/armor/vest_marine
 	cold_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
-	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT_OFF
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	resistance_flags = FIRE_PROOF | ACID_PROOF
+	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT_OFF
 
 /datum/armor/vest_marine
 	melee = 50
@@ -82,28 +87,33 @@
 /obj/item/clothing/suit/armor/vest/marine/security
 	name = "large tactical armor vest"
 	icon_state = "marine_security"
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/armor/vest/marine/engineer
 	name = "tactical utility armor vest"
 	icon_state = "marine_engineer"
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/armor/vest/marine/medic
 	name = "tactical medic's armor vest"
 	icon_state = "marine_medic"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN
 
 /obj/item/clothing/suit/armor/vest/marine/pmc
 	desc = "A set of the finest mass produced, stamped plasteel armor plates, for an all-around door-kicking and ass-smashing."
-	min_cold_protection_temperature = HELMET_MIN_TEMP_PROTECT
-	max_heat_protection_temperature = HELMET_MAX_TEMP_PROTECT
-	clothing_flags = THICKMATERIAL
+	worn_icon_avali = null
 	armor_type = /datum/armor/pmc
+	clothing_flags = THICKMATERIAL
+	max_heat_protection_temperature = HELMET_MAX_TEMP_PROTECT
+	min_cold_protection_temperature = HELMET_MIN_TEMP_PROTECT
 
 /obj/item/clothing/suit/armor/vest/old
 	name = "degrading armor vest"
 	desc = "Older generation Type 1 armored vest. Due to degradation over time the vest is far less maneuverable to move in."
 	icon_state = "armor"
 	inhand_icon_state = "armor"
+	worn_icon_avali = null
 	slowdown = 1
 
 /obj/item/clothing/suit/armor/vest/blueshirt
@@ -111,6 +121,7 @@
 	desc = "A large, yet comfortable piece of armor, protecting you from some threats."
 	icon_state = "blueshift"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	custom_premium_price = PAYCHECK_COMMAND
 
 /obj/item/clothing/suit/armor/vest/cuirass
@@ -118,6 +129,7 @@
 	desc = "A lighter plate armor used to still keep out those pesky arrows, while retaining the ability to move."
 	icon_state = "cuirass"
 	inhand_icon_state = "armor"
+	worn_icon_avali = null
 	dog_fashion = null
 
 /obj/item/clothing/suit/armor/hos
@@ -125,6 +137,7 @@
 	desc = "A greatcoat enhanced with a special alloy for some extra protection and style for those with a commanding presence."
 	icon_state = "hos"
 	inhand_icon_state = "greatcoat"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	armor_type = /datum/armor/armor_hos
 	cold_protection = CHEST|GROIN|LEGS|ARMS
@@ -146,6 +159,7 @@
 	desc = "A trenchcoat enhanced with a special lightweight kevlar. The epitome of tactical plainclothes."
 	icon_state = "hostrench"
 	inhand_icon_state = "hostrench"
+	worn_icon_avali = 'icons/mob/species/avali/clothing/suit.dmi'
 	flags_inv = 0
 	strip_delay = 80
 
@@ -153,6 +167,7 @@
 	name = "head of security's winter trenchcoat"
 	desc = "A trenchcoat enhanced with a special lightweight kevlar, padded with wool on the collar and inside. You feel strangely lonely wearing this coat."
 	icon_state = "hoswinter"
+	worn_icon_avali = null
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 
 /obj/item/clothing/suit/armor/hos/hos_formal
@@ -171,6 +186,7 @@
 	desc = "A navy-blue armored jacket with blue shoulder designations and '/Warden/' stitched into one of the chest pockets."
 	icon_state = "warden_alt"
 	inhand_icon_state = "armor"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS
 	cold_protection = CHEST|GROIN|ARMS|HANDS
 	heat_protection = CHEST|GROIN|ARMS|HANDS
@@ -188,6 +204,7 @@
 	desc = "Lightly armored leather overcoat meant as casual wear for high-ranking officers. Bears the crest of Nanotrasen Security."
 	icon_state = "leathercoat-sec"
 	inhand_icon_state = "hostrench"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	cold_protection = CHEST|GROIN|LEGS|ARMS
 	heat_protection = CHEST|GROIN|LEGS|ARMS
@@ -198,6 +215,7 @@
 	desc = "A fireproof armored chestpiece reinforced with ceramic plates and plasteel pauldrons to provide additional protection whilst still offering maximum mobility and flexibility. Issued only to the station's finest, although it does chafe your nipples."
 	icon_state = "capcarapace"
 	inhand_icon_state = "armor"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN
 	armor_type = /datum/armor/vest_capcarapace
 	dog_fashion = null
@@ -217,12 +235,14 @@
 	name = "syndicate captain's vest"
 	desc = "A sinister looking vest of advanced armor worn over a black and red fireproof jacket. The gold collar and shoulders denote that this belongs to a high ranking syndicate officer."
 	icon_state = "syndievest"
+	worn_icon_avali = 'icons/mob/species/avali/clothing/suit.dmi'
 
 /obj/item/clothing/suit/armor/vest/capcarapace/captains_formal
 	name = "captain's parade coat"
 	desc = "For when an armoured vest isn't fashionable enough."
 	icon_state = "capformal"
 	inhand_icon_state = null
+	worn_icon_avali = 'icons/mob/species/avali/clothing/suit.dmi'
 	body_parts_covered = CHEST|GROIN|ARMS
 
 /obj/item/clothing/suit/armor/vest/capcarapace/captains_formal/Initialize(mapload)
@@ -256,6 +276,7 @@
 	desc = "A tribal armor plate, crafted from animal bone."
 	icon_state = "bonearmor"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	blood_overlay_type = "armor"
 	armor_type = /datum/armor/armor_bone
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS
@@ -275,6 +296,7 @@
 	desc = "A Type III heavy bulletproof vest that excels in protecting the wearer against traditional projectile weaponry and explosives to a minor extent."
 	icon_state = "bulletproof"
 	inhand_icon_state = "armor"
+	worn_icon_avali = null
 	blood_overlay_type = "armor"
 	armor_type = /datum/armor/armor_bulletproof
 	strip_delay = 70
@@ -295,6 +317,7 @@
 	desc = "A vest that excels in protecting the wearer against energy projectiles, as well as occasionally reflecting them."
 	icon_state = "armor_reflec"
 	inhand_icon_state = "armor_reflec"
+	worn_icon_avali = null
 	blood_overlay_type = "armor"
 	body_parts_covered = CHEST|GROIN|ARMS
 	cold_protection = CHEST|GROIN|ARMS
@@ -321,6 +344,7 @@
 	name = "detective's flak vest"
 	desc = "An armored vest with a detective's badge on it."
 	icon_state = "detective-armor"
+	worn_icon_avali = null
 	resistance_flags = FLAMMABLE
 	dog_fashion = null
 
@@ -333,6 +357,7 @@
 	desc = "A tactical suit first developed in a joint effort by the defunct IS-ERI and Nanotrasen in 2321 for military operations. It has a minor slowdown, but offers decent protection."
 	icon_state = "heavy"
 	inhand_icon_state = "swat_suit"
+	worn_icon_avali = null
 	armor_type = /datum/armor/armor_swat
 	strip_delay = 120
 	resistance_flags = FIRE_PROOF | ACID_PROOF
@@ -362,6 +387,7 @@
 	desc = "A heavily armored suit that protects against moderate damage."
 	icon_state = "heavy"
 	inhand_icon_state = "swat_suit"
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_BULKY
 	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -380,12 +406,13 @@
 	acid = 90
 
 /obj/item/clothing/suit/armor/tdome
+	worn_icon_avali = null
+	armor_type = /datum/armor/armor_tdome
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	clothing_flags = THICKMATERIAL
 	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	armor_type = /datum/armor/armor_tdome
 
 /datum/armor/armor_tdome
 	melee = 80
@@ -434,6 +461,7 @@
 	desc = "A classic suit of plate armour, highly effective at stopping melee attacks."
 	icon_state = "knight_green"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	allowed = list(
 		/obj/item/banner,
 		/obj/item/claymore,
@@ -467,6 +495,7 @@
 	desc = "A vest made of durathread with strips of leather acting as trauma plates."
 	icon_state = "durathread"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	strip_delay = 60
 	equip_delay_other = 40
 	max_integrity = 200
@@ -488,6 +517,7 @@
 	desc = "A bulletproof vest with forest camo. Good thing there's plenty of forests to hide in around here, right?"
 	icon_state = "rus_armor"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	armor_type = /datum/armor/vest_russian
 	dog_fashion = null
 
@@ -505,6 +535,7 @@
 	desc = "Used in extremly cold fronts, made out of real bears."
 	icon_state = "rus_coat"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
@@ -527,8 +558,9 @@
 	desc = "A superb armor made with the toughest and rarest materials available to man."
 	icon_state = "h2armor"
 	inhand_icon_state = null
-	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS//Can change color and add prefix
+	worn_icon_avali = null
 	armor_type = /datum/armor/armor_elder_atmosian
+	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS //Can change color and add prefix
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -577,6 +609,7 @@
 	desc = "A stylish coat given to a Head of Personnel."
 	icon_state = "hop_coat"
 	inhand_icon_state = "b_suit"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS
 	dog_fashion = null
 
@@ -585,6 +618,7 @@
 	desc = "A well worn uniform used by militia across the frontier, it's thick padding useful for cushioning blows."
 	icon_state = "militia"
 	inhand_icon_state = "b_suit"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS
 	cold_protection = CHEST|GROIN|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT

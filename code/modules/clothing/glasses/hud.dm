@@ -68,6 +68,7 @@
 	desc = "An advanced medical heads-up display that allows doctors to find patients in complete darkness."
 	icon_state = "healthhudnight"
 	inhand_icon_state = "glasses"
+	worn_icon_avali = null
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 	// Blue green, dark
 	color_cutoffs = list(5, 15, 30)
@@ -96,6 +97,7 @@
 	name = "diagnostic HUD"
 	desc = "A heads-up display capable of analyzing the integrity and status of robotics and exosuits."
 	icon_state = "diagnostichud"
+	worn_icon_avali = null
 	hud_type = DATA_HUD_DIAGNOSTIC_BASIC
 	hud_trait = TRAIT_DIAGNOSTIC_HUD
 	glass_colour_type = /datum/client_colour/glass_colour/lightorange
@@ -122,6 +124,7 @@
 	name = "security HUD"
 	desc = "A heads-up display that scans the humanoids in view and provides accurate data about their ID status and security records."
 	icon_state = "securityhud"
+	worn_icon_avali = null
 	hud_type = DATA_HUD_SECURITY_ADVANCED
 	hud_trait = TRAIT_SECURITY_HUD
 	glass_colour_type = /datum/client_colour/glass_colour/red
@@ -235,6 +238,7 @@
 	name = "thermal HUD scanner"
 	desc = "Thermal imaging HUD in the shape of glasses."
 	icon_state = "thermal"
+	worn_icon_avali = null
 	hud_type = DATA_HUD_SECURITY_ADVANCED
 	vision_flags = SEE_MOBS
 	color_cutoffs = list(25, 8, 5)
@@ -268,6 +272,7 @@
 	name = "police aviators"
 	desc = "For thinking you look cool while brutalizing protestors and minorities."
 	icon_state = "bigsunglasses"
+	worn_icon_avali = null
 	flash_protect = FLASH_PROTECTION_FLASH
 	tint = 1
 	glass_colour_type = /datum/client_colour/glass_colour/gray

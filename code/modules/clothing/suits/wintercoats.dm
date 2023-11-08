@@ -128,6 +128,7 @@
 	desc = "A luxurious winter coat woven in the bright green and gold colours of Central Command. It has a small pin in the shape of the Nanotrasen logo for a zipper."
 	icon_state = "coatcentcom"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	armor_type = /datum/armor/wintercoat_centcom
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/centcom
 
@@ -147,6 +148,7 @@
 
 /obj/item/clothing/head/hooded/winterhood/centcom
 	icon_state = "hood_centcom"
+	worn_icon_avali = null
 	armor_type = /datum/armor/winterhood_centcom
 
 // Captain
@@ -167,6 +169,7 @@
 			Extremely lavish, and extremely durable."
 	icon_state = "coatcaptain"
 	inhand_icon_state = "coatcaptain"
+	worn_icon_avali = null
 	armor_type = /datum/armor/wintercoat_captain
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/captain
 
@@ -184,6 +187,7 @@
 
 /obj/item/clothing/head/hooded/winterhood/captain
 	icon_state = "hood_captain"
+	worn_icon_avali = null
 	armor_type = /datum/armor/winterhood_captain
 
 // Head of Personnel
@@ -266,6 +270,7 @@
 	desc = "A red, armour-padded winter coat. It glitters with a mild ablative coating and a robust air of authority.  The zipper tab is a pair of jingly little handcuffs that get annoying after the first ten seconds."
 	icon_state = "coatsecurity"
 	inhand_icon_state = "coatsecurity"
+	worn_icon_avali = null
 	armor_type = /datum/armor/wintercoat_security
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/security
 
@@ -284,6 +289,7 @@
 /obj/item/clothing/head/hooded/winterhood/security
 	desc = "A red, armour-padded winter hood. Definitely not bulletproof, especially not the part where your face goes."
 	icon_state = "hood_security"
+	worn_icon_avali = null
 	armor_type = /datum/armor/winterhood_security
 
 // Medical Doctor
@@ -379,6 +385,7 @@
 	desc = "A winter coat made with acid resistant polymers, used when the cold dead bodies are too much."
 	icon_state = "coatcoroner"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/coroner
 
 /obj/item/clothing/suit/hooded/wintercoat/medical/coroner/Initialize(mapload)
@@ -388,6 +395,7 @@
 /obj/item/clothing/head/hooded/winterhood/medical/coroner
 	desc = "A white winter coat hood."
 	icon_state = "hood_coroner"
+	worn_icon_avali = null
 
 // Virologist
 /obj/item/clothing/suit/hooded/wintercoat/medical/viro

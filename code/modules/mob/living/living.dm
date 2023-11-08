@@ -321,13 +321,15 @@
 
 	SEND_SIGNAL(src, COMSIG_LIVING_START_PULL, AM, state, force)
 
+	var/hard_grab = !src.combat_mode && (HAS_TRAIT(src, TRAIT_STRONG_GRABBER) || (HAS_TRAIT(AM, TRAIT_EASILY_GRABBED) && !HAS_TRAIT(src, TRAIT_EASILY_GRABBED)))
+
 	if(!supress_message)
 		var/sound_to_play = 'sound/weapons/thudswoosh.ogg'
 		if(ishuman(src))
 			var/mob/living/carbon/human/H = src
 			if(H.dna.species.grab_sound)
 				sound_to_play = H.dna.species.grab_sound
-			if(HAS_TRAIT(H, TRAIT_STRONG_GRABBER))
+			if(hard_grab)
 				sound_to_play = null
 		playsound(src.loc, sound_to_play, 50, TRUE, -1)
 	update_pull_hud_icon()
@@ -336,16 +338,22 @@
 		var/mob/M = AM
 
 		log_combat(src, M, "grabbed", addition="passive grab")
-		if(!supress_message && !(iscarbon(AM) && HAS_TRAIT(src, TRAIT_STRONG_GRABBER)))
+		if(!supress_message && !(iscarbon(AM) && hard_grab))
 			if(ishuman(M))
 				var/mob/living/carbon/human/grabbed_human = M
 				var/grabbed_by_hands = (zone_selected == "l_arm" || zone_selected == "r_arm") && grabbed_human.usable_hands > 0
-				M.visible_message(span_warning("[src] grabs [M] [grabbed_by_hands ? "by their hands":"passively"]!"), \
-								span_warning("[src] grabs you [grabbed_by_hands ? "by your hands":"passively"]!"), null, null, src)
+				M.visible_message(
+					span_warning("[src] grabs [M] [grabbed_by_hands ? "by their hands":"passively"]!"),
+					span_warning("[src] grabs you [grabbed_by_hands ? "by your hands":"passively"]!"),
+					null, null, src
+				)
 				to_chat(src, span_notice("You grab [M] [grabbed_by_hands ? "by their hands":"passively"]!"))
 			else
-				M.visible_message(span_warning("[src] grabs [M] passively!"), \
-								span_warning("[src] grabs you passively!"), null, null, src)
+				M.visible_message(
+					span_warning("[src] grabs [M] passively!"),
+					span_warning("[src] grabs you passively!"),
+					null, null, src
+				)
 				to_chat(src, span_notice("You grab [M] passively!"))
 
 		if(!iscarbon(src))
@@ -369,7 +377,7 @@
 
 			if(iscarbon(L))
 				var/mob/living/carbon/C = L
-				if(HAS_TRAIT(src, TRAIT_STRONG_GRABBER))
+				if(hard_grab)
 					C.grippedby(src)
 
 			update_pull_movespeed()
@@ -1068,9 +1076,9 @@
 
 /mob/living/resist_grab(moving_resist)
 	. = TRUE
-	if(pulledby.grab_state || body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
+	if(pulledby.grab_state || body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_CONSCIOUS_GRAB))
 		var/altered_grab_state = pulledby.grab_state
-		if((body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_GRABWEAKNESS)) && pulledby.grab_state < GRAB_KILL) //If prone, resisting out of a grab is equivalent to 1 grab state higher. won't make the grab state exceed the normal max, however
+		if((body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_CONSCIOUS_GRAB)) && pulledby.grab_state < GRAB_KILL) //If prone, resisting out of a grab is equivalent to 1 grab state higher. won't make the grab state exceed the normal max, however
 			altered_grab_state++
 		var/resist_chance = BASE_GRAB_RESIST_CHANCE /// see defines/combat.dm, this should be baseline 60%
 		resist_chance = (resist_chance/altered_grab_state) ///Resist chance divided by the value imparted by your grab state. It isn't until you reach neckgrab that you gain a penalty to escaping a grab.
@@ -1973,7 +1981,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/turf/ceiling = get_step_multiz(src, UP)
 	if(!ceiling) //We are at the highest z-level.
 		if (prob(0.1))
-			to_chat(src, span_warning("You gaze out into the infinite vastness of deep space, for a moment, you have the impulse to continue travelling, out there, out into the deep beyond, before your conciousness reasserts itself and you decide to stay within travelling distance of the station."))
+			to_chat(src, span_warning("You gaze out into the infinite vastness of deep space, for a moment, you have the impulse to continue travelling, out there, out into the deep beyond, before your consciousness reasserts itself and you decide to stay within travelling distance of the station."))
 			return
 		to_chat(src, span_warning("There's nothing interesting up there."))
 		return

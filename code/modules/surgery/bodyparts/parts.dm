@@ -179,6 +179,7 @@
 	unarmed_damage_low = 2
 	unarmed_damage_high = 15
 	unarmed_stun_threshold = 10
+	speed_modifier = 0
 	/// Datum describing how to offset things worn on the foot of this leg, note that an x offset won't do anything here
 	var/datum/worn_feature_offset/worn_foot_offset
 

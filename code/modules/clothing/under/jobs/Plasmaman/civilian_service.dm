@@ -2,10 +2,11 @@
 /obj/item/clothing/under/plasmaman
 	name = "plasma envirosuit"
 	desc = "A special containment suit that allows plasma-based lifeforms to exist safely in an oxygenated environment, and automatically extinguishes them in a crisis. Despite being airtight, it's not spaceworthy."
+	icon = 'icons/obj/clothing/under/plasmaman.dmi'
 	icon_state = "plasmaman"
 	inhand_icon_state = "plasmaman"
-	icon = 'icons/obj/clothing/under/plasmaman.dmi'
 	worn_icon = 'icons/mob/clothing/under/plasmaman.dmi'
+	worn_icon_avali = null
 	clothing_flags = PLASMAMAN_PREVENT_IGNITION
 	armor_type = /datum/armor/clothing_under/plasmaman
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS

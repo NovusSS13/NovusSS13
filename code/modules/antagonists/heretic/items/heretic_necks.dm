@@ -2,6 +2,7 @@
 	name = "Amber Focus"
 	desc = "An amber focusing glass that provides a link to the world beyond. The necklace seems to twitch, but only when you look at it from the corner of your eye."
 	icon_state = "eldritch_necklace"
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FIRE_PROOF
 
@@ -14,6 +15,7 @@
 	desc = "A strange medallion. Peering through the crystalline surface, the world around you melts away. You see your own beating heart, and the pulsing of a thousand others."
 	icon = 'icons/obj/eldritch.dmi'
 	icon_state = "eye_medalion"
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	/// A secondary clothing trait only applied to heretics.
@@ -49,4 +51,5 @@
 	desc = "A strange medallion, which makes its wearer look like they're part of some cult."
 	icon = 'icons/obj/eldritch.dmi'
 	icon_state = "eye_medalion"
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_SMALL

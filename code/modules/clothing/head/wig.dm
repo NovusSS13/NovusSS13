@@ -2,12 +2,13 @@
 	name = "wig"
 	desc = "A bunch of hair without a head attached."
 	icon = 'icons/mob/species/sprite_accessory/human_face.dmi'   // default icon for all hairs
-	worn_icon = 'icons/mob/clothing/head/costume.dmi'
 	icon_state = "hair_vlong"
 	inhand_icon_state = "pwig"
+	worn_icon = 'icons/mob/clothing/head/costume.dmi'
+	worn_icon_avali = null
 	worn_icon_state = "wig"
-	flags_inv = HIDEHAIR
 	color = "#000000"
+	flags_inv = HIDEHAIR
 	var/hairstyle = "Very Long Hair"
 	var/adjustablecolor = TRUE //can color be changed manually?
 

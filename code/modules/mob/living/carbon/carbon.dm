@@ -1027,8 +1027,17 @@
 ///Updates the bodypart speed modifier based on our bodyparts.
 /mob/living/carbon/proc/update_bodypart_speed_modifier()
 	var/final_modification = 0
+	var/count = 0
 	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+		if(isnull(bodypart.speed_modifier))
+			continue
+
 		final_modification += bodypart.speed_modifier
+		count++
+
+	if(count)
+		final_modification /= count
+
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bodypart, update = TRUE, multiplicative_slowdown = final_modification)
 
 /mob/living/carbon/proc/create_internal_organs()

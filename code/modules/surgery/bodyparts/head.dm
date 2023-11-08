@@ -41,6 +41,9 @@
 	/// Flags related to appearance, such as hair, lips, etc
 	var/head_flags = HEAD_ALL_FLAGS
 
+	/// Custom icon for the eyes overlay.
+	var/custom_eyes_icon = null
+
 	/// Hair style
 	var/hairstyle = "Bald"
 	/// Hair colour and style

@@ -1,6 +1,7 @@
 /obj/item/clothing/under/costume
 	icon = 'icons/obj/clothing/under/costume.dmi'
 	worn_icon = 'icons/mob/clothing/under/costume.dmi'
+	worn_icon_avali = null
 
 /obj/item/clothing/under/costume/roman
 	name = "\improper Roman armor"

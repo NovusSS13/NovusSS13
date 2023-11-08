@@ -1,10 +1,11 @@
 /obj/item/clothing/under/abductor
-	desc = "The most advanced form of jumpsuit known to reality, looks uncomfortable."
 	name = "alien jumpsuit"
+	desc = "The most advanced form of jumpsuit known to reality, looks uncomfortable."
 	icon = 'icons/obj/clothing/under/syndicate.dmi'
 	icon_state = "abductor"
 	inhand_icon_state = "bl_suit"
 	worn_icon = 'icons/mob/clothing/under/syndicate.dmi'
+	worn_icon_avali = null
 	armor_type = /datum/armor/clothing_under/abductor
 	can_adjust = FALSE
 
@@ -18,6 +19,7 @@
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "vest_stealth"
 	inhand_icon_state = "armor"
+	worn_icon_avali = null
 	blood_overlay_type = "armor"
 	armor_type = /datum/armor/abductor_vest
 	actions_types = list(/datum/action/item_action/hands_free/activate)

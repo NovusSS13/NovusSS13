@@ -14,6 +14,7 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	))
 
 /obj/item/clothing/mask/animal
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_SMALL
 	clothing_flags = VOICEBOX_TOGGLABLE
 	modifies_speech = TRUE

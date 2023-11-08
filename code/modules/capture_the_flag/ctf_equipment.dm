@@ -195,14 +195,15 @@
 	name = "white shielded vest"
 	desc = "Standard issue vest for playing capture the flag."
 	icon = 'icons/mob/clothing/suits/ctf.dmi'
-	worn_icon = 'icons/mob/clothing/suits/ctf.dmi'
 	icon_state = "standard"
+	worn_icon = 'icons/mob/clothing/suits/ctf.dmi'
+	worn_icon_avali = null
+	greyscale_colors = "#ffffff"
+	greyscale_config = /datum/greyscale_config/ctf_standard
+	greyscale_config_worn = /datum/greyscale_config/ctf_standard_worn
 	// Adding TRAIT_NODROP is done when the CTF spawner equips people
 	armor_type = /datum/armor/none
 	allowed = null
-	greyscale_config = /datum/greyscale_config/ctf_standard
-	greyscale_config_worn = /datum/greyscale_config/ctf_standard_worn
-	greyscale_colors = "#ffffff"
 
 	///Icon state to be fed into the shielded component
 	var/team_shield_icon = "shield-old"

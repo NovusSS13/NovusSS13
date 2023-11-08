@@ -4,6 +4,7 @@
 	icon = 'icons/obj/clothing/suits/ethereal.dmi'
 	icon_state = "eth_raincoat"
 	worn_icon = 'icons/mob/clothing/suits/ethereal.dmi'
+	worn_icon_avali = null
 	greyscale_config = /datum/greyscale_config/eth_raincoat
 	greyscale_config_worn = /datum/greyscale_config/eth_raincoat_worn
 	greyscale_colors = "#4e7cc7"
@@ -43,5 +44,6 @@
 	icon = 'icons/obj/clothing/head/ethereal.dmi'
 	icon_state = "eth_rainhood"
 	worn_icon = 'icons/mob/clothing/head/ethereal.dmi'
+	worn_icon_avali = null
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEEARS|HIDEFACIALHAIR

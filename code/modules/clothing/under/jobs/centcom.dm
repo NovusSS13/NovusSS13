@@ -1,6 +1,7 @@
 /obj/item/clothing/under/rank/centcom
 	icon = 'icons/obj/clothing/under/centcom.dmi'
 	worn_icon = 'icons/mob/clothing/under/centcom.dmi'
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/centcom/commander
 	name = "\improper CentCom commander's suit"

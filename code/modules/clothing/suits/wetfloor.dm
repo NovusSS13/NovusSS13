@@ -4,6 +4,7 @@
 	icon = 'icons/obj/clothing/suits/utility.dmi'
 	icon_state = "caution"
 	worn_icon = 'icons/mob/clothing/suits/utility.dmi'
+	worn_icon_avali = null
 	lefthand_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
 	force = 1

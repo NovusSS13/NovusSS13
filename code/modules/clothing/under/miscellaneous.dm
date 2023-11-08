@@ -1,6 +1,7 @@
 /obj/item/clothing/under/misc
 	icon = 'icons/obj/clothing/under/misc.dmi'
 	worn_icon = 'icons/mob/clothing/under/misc.dmi'
+	worn_icon_avali = null
 
 /obj/item/clothing/under/misc/pj
 	name = "\improper PJs"

@@ -173,3 +173,17 @@
 /obj/item/organ/tail/lizard/fake
 	name = "fabricated lizard tail"
 	desc = "A fabricated severed lizard tail. This one's made of synthflesh. Probably not usable for lizard wine."
+
+/obj/item/organ/tail/avali
+	name = "avali tail"
+	desc = "A severed avali tail. If you had more of these you could probably stitch them into some crude jump rope."
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/avali
+	wag_flags = WAG_ABLE
+
+/// Cat tail bodypart overlay
+/datum/bodypart_overlay/mutant/tail/avali
+	required_bodytype = BODYTYPE_AVALI
+
+/datum/bodypart_overlay/mutant/tail/avali/get_global_feature_list()
+	return GLOB.tails_list_avali

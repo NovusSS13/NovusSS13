@@ -40,6 +40,7 @@
 	desc = "This is a nice holiday, my son."
 	icon_state = "holidaypriest"
 	inhand_icon_state = "w_suit"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDEJUMPSUIT
 
@@ -48,6 +49,7 @@
 	desc = "Maximum piety in this star system."
 	icon_state = "nun"
 	inhand_icon_state = "nun"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS|HANDS
 	flags_inv = HIDEJUMPSUIT
 
@@ -56,6 +58,7 @@
 	desc = "Glad to see the tithes you collected were well spent."
 	icon_state = "bishoprobe"
 	inhand_icon_state = "bishoprobe"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDEJUMPSUIT
 
@@ -64,6 +67,7 @@
 	desc = "The uniform of a bygone institute of learning."
 	icon_state = "studentuni"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	body_parts_covered = ARMS|CHEST
 
 /obj/item/clothing/suit/chaplainsuit/armor/witchhunter
@@ -71,15 +75,17 @@
 	desc = "This worn outfit saw much use back in the day."
 	icon_state = "witchhunter"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 
 /obj/item/clothing/suit/hooded/chaplainsuit/monkhabit
 	name = "monk's habit"
 	desc = "A few steps above rended sackcloth."
-	icon_state = "monkfrock"
 	icon = 'icons/obj/clothing/suits/chaplain.dmi'
-	worn_icon = 'icons/mob/clothing/suits/chaplain.dmi'
+	icon_state = "monkfrock"
 	inhand_icon_state = "monkfrock"
+	worn_icon = 'icons/mob/clothing/suits/chaplain.dmi'
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	hoodtype = /obj/item/clothing/head/hooded/monkhabit
 
@@ -87,9 +93,10 @@
 	name = "monk's hood"
 	desc = "For when a man wants to cover up his tonsure."
 	icon = 'icons/obj/clothing/head/chaplain.dmi'
-	worn_icon = 'icons/mob/clothing/head/chaplain.dmi'
 	icon_state = "monkhood"
 	inhand_icon_state = null
+	worn_icon = 'icons/mob/clothing/head/chaplain.dmi'
+	worn_icon_avali = null
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEEARS
 
@@ -98,6 +105,7 @@
 	desc = "Best combined with a shaved head."
 	icon_state = "monkrobeeast"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	body_parts_covered = GROIN|LEGS
 	flags_inv = HIDEJUMPSUIT
 
@@ -106,6 +114,7 @@
 	desc = "Good for clerics and sleepy crewmembers."
 	icon_state = "whiterobe"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDEJUMPSUIT
 
@@ -114,6 +123,7 @@
 	desc = "Meant for a clown of the cloth."
 	icon_state = "clownpriest"
 	inhand_icon_state = "clownpriest"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDEJUMPSUIT
 	allowed = list(/obj/item/megaphone/clown, /obj/item/soap, /obj/item/food/pie/cream, /obj/item/bikehorn, /obj/item/bikehorn/golden, /obj/item/bikehorn/airhorn, /obj/item/instrument/bikehorn, /obj/item/reagent_containers/cup/soda_cans/canned_laughter, /obj/item/toy/crayon, /obj/item/toy/crayon/spraycan, /obj/item/toy/crayon/spraycan/lubecan, /obj/item/grown/bananapeel, /obj/item/food/grown/banana)
@@ -123,6 +133,7 @@
 	desc = "It has the unyielding gaze of a god eternally forgotten."
 	icon_state = "clockwork_helmet"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	armor_type = /datum/armor/chaplain_clock
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
@@ -142,6 +153,7 @@
 	desc = "It sounds like hissing steam, ticking cogs, gone silent, It looks like a dead machine, trying to tick with life."
 	icon_state = "clockwork_cuirass"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	slowdown = 0
 	clothing_flags = NONE
 
@@ -171,6 +183,7 @@
 	desc = "God wills it!"
 	icon_state = "knight_templar"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	slowdown = 0
 	clothing_flags = NONE
 
@@ -187,12 +200,14 @@
 	desc = "None may pass!"
 	icon_state = "knight_ancient"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/chaplainsuit/armor/ancient
 	name = "ancient armour"
 	desc = "Defend the treasure..."
 	icon_state = "knight_ancient"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/head/helmet/chaplain/witchunter_hat
 	name = "witchunter hat"
@@ -207,6 +222,7 @@
 	desc = "Its only heretical when others do it."
 	icon_state = "crusader"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	flags_cover = HEADCOVERSEYES
 	flags_inv = HIDEHAIR|HIDEFACE|HIDEEARS
 
@@ -215,11 +231,13 @@
 	desc = "The ideal outfit for burning the unfaithful."
 	icon_state = "crusader"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/chaplainsuit/armor/crusader
 	name = "Crusader's Armour"
 	desc = "Armour that's comprised of metal and cloth."
 	icon_state = "crusader"
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_BULKY
 	slowdown = 2.0 //gotta pretend we're balanced.
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -243,10 +261,11 @@
 /obj/item/clothing/suit/hooded/chaplain_hoodie
 	name = "follower hoodie"
 	desc = "Hoodie made for acolytes of the chaplain."
-	icon_state = "chaplain_hoodie"
 	icon = 'icons/obj/clothing/suits/chaplain.dmi'
-	worn_icon = 'icons/mob/clothing/suits/chaplain.dmi'
+	icon_state = "chaplain_hoodie"
 	inhand_icon_state = null
+	worn_icon = 'icons/mob/clothing/suits/chaplain.dmi'
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	allowed = null
 	hoodtype = /obj/item/clothing/head/hooded/chaplain_hood
@@ -259,8 +278,9 @@
 	name = "follower hood"
 	desc = "Hood made for acolytes of the chaplain."
 	icon = 'icons/obj/clothing/head/chaplain.dmi'
-	worn_icon = 'icons/mob/clothing/head/chaplain.dmi'
 	icon_state = "chaplain_hood"
+	worn_icon = 'icons/mob/clothing/head/chaplain.dmi'
+	worn_icon_avali = null
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEFACE|HIDEEARS
 
@@ -281,5 +301,6 @@
 	desc = "Won't help you communicate with spirits, but you'll certainly look the part."
 	icon_state = "shrinehand"
 	inhand_icon_state = "shrinehand"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDEJUMPSUIT

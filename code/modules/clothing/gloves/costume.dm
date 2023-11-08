@@ -9,4 +9,5 @@
 	name = "aerostatic gloves"
 	desc = "Breathable red gloves for expert handling of a pen and notebook."
 	icon_state = "aerostatic_gloves"
+	worn_icon_avali = null
 	greyscale_colors = "#a63814"

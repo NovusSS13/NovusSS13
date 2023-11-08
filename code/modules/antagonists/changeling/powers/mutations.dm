@@ -573,6 +573,7 @@
 	desc = "A tough, hard covering of black chitin."
 	icon_state = "lingarmor"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	item_flags = DROPDEL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	armor_type = /datum/armor/armor_changeling

@@ -21,5 +21,6 @@
 	name = "enchanted gloves"
 	desc = "These gloves have been enchanted with a spell that makes them electrically insulated and fireproof."
 	icon_state = "wizard"
-	greyscale_colors = null
 	inhand_icon_state = null
+	worn_icon_avali = null
+	greyscale_colors = null

@@ -5,6 +5,7 @@
 	desc = "It's an amish looking hat."
 	icon_state = "tophat"
 	inhand_icon_state = "that"
+	worn_icon_avali = null
 	dog_fashion = /datum/dog_fashion/head
 	throwforce = 1
 	/// Cooldown for how often we can pull rabbits out of here

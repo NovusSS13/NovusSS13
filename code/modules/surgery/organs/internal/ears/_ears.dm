@@ -149,6 +149,35 @@
 /datum/bodypart_overlay/mutant/ears/cat/get_global_feature_list()
 	return GLOB.ears_list_human
 
+/obj/item/organ/ears/avali
+	name = "avali ears"
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
+	icon_state = "ears-fluffy"
+	damage_multiplier = 2
+
+	visual = TRUE
+	dna_block = DNA_EARS_BLOCK
+	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/avali
+
+/obj/item/organ/ears/penguin/on_insert(mob/living/carbon/human/ear_owner)
+	. = ..()
+	if(istype(ear_owner))
+		to_chat(ear_owner, span_notice("You suddenly feel like you've lost your balance."))
+		ADD_WADDLE(ear_owner, WADDLE_SOURCE_AVALI)
+
+/obj/item/organ/ears/penguin/on_remove(mob/living/carbon/human/ear_owner)
+	. = ..()
+	if(istype(ear_owner))
+		to_chat(ear_owner, span_notice("Your sense of balance comes back to you."))
+		REMOVE_WADDLE(ear_owner, WADDLE_SOURCE_AVALI)
+
+
+/datum/bodypart_overlay/mutant/ears/avali
+	required_bodytype = BODYTYPE_AVALI
+
+/datum/bodypart_overlay/mutant/ears/avali/get_global_feature_list()
+	return GLOB.ears_list_avali
+
 /obj/item/organ/ears/penguin
 	name = "penguin ears"
 	desc = "The source of a penguin's happy feet."

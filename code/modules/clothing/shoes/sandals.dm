@@ -3,6 +3,7 @@
 	name = "sandals"
 	icon_state = "wizard"
 	inhand_icon_state = "wizshoe"
+	worn_icon_avali = null
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 0.5)
 	resistance_flags = FLAMMABLE
 	strip_delay = 5

@@ -99,6 +99,7 @@
 	name = "coroner jumpsuit"
 	icon_state = "coroner"
 	inhand_icon_state = "w_suit"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/medical/coroner/skirt
 	name = "coroner jumpskirt"
@@ -114,6 +115,7 @@
 	name = "coroner scrubs"
 	desc = "It's made of a special fiber that provides minor protection against biohazards. This one is as dark as an emo's poetry."
 	icon_state = "scrubsblack"
+	worn_icon_avali = null
 
 /obj/item/clothing/under/rank/medical/chemist
 	desc = "It's made of a special fiber that gives special protection against biohazards. It has a chemist rank stripe on it."
@@ -157,6 +159,7 @@
 	name = "nurse's suit"
 	icon_state = "nursesuit"
 	inhand_icon_state = "w_suit"
+	worn_icon_avali = null
 	body_parts_covered = CHEST|GROIN|ARMS
 	female_sprite_flags = NO_FEMALE_UNIFORM
 	can_adjust = FALSE

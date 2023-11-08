@@ -1,9 +1,9 @@
 /obj/item/clothing/suit
 	name = "suit"
 	icon = 'icons/obj/clothing/suits/default.dmi'
+	worn_icon_avali = 'icons/mob/species/avali/clothing/suit.dmi'
 	lefthand_file = 'icons/mob/inhands/clothing/suits_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/suits_righthand.dmi'
-	var/fire_resist = T0C+100
 	allowed = list(
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
@@ -13,8 +13,13 @@
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	slot_flags = ITEM_SLOT_OCLOTHING
-	var/blood_overlay_type = "suit"
 	limb_integrity = 0 // disabled for most exo-suits
+
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/coat
+	clothing_color_coords_key = "suit"
+
+	var/blood_overlay_type = "suit"
+	var/fire_resist = T0C+100
 
 /obj/item/clothing/suit/Initialize(mapload)
 	. = ..()

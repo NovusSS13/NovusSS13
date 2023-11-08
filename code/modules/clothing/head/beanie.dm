@@ -7,14 +7,16 @@
 	name = "beanie"
 	desc = "A stylish beanie. The perfect winter accessory for those with a keen fashion sense, and those who just can't handle a cold breeze on their heads."
 	icon = 'icons/obj/clothing/head/beanie.dmi'
-	worn_icon = 'icons/mob/clothing/head/beanie.dmi'
 	icon_state = "beanie"
-	icon_preview = 'icons/obj/previews.dmi'
-	icon_state_preview = "beanie_cloth"
-	custom_price = PAYCHECK_CREW * 1.2
+	worn_icon = 'icons/mob/clothing/head/beanie.dmi'
+	worn_icon_avali = null
 	greyscale_colors = "#EEEEEE#EEEEEE"
 	greyscale_config = /datum/greyscale_config/beanie
 	greyscale_config_worn = /datum/greyscale_config/beanie_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/beret //this is ass, yes
+	icon_preview = 'icons/obj/previews.dmi'
+	icon_state_preview = "beanie_cloth"
+	custom_price = PAYCHECK_CREW * 1.2
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/head/beanie/black
@@ -53,15 +55,17 @@
 	name = "rastacap"
 	desc = "Perfect for tucking in those dreadlocks."
 	icon = 'icons/obj/clothing/head/beanie.dmi'
-	worn_icon = 'icons/mob/clothing/head/beanie.dmi'
 	icon_state = "beanierasta"
+	worn_icon = 'icons/mob/clothing/head/beanie.dmi'
+	worn_icon_avali = null
 
 /obj/item/clothing/head/waldo
 	name = "red striped bobble hat"
 	desc = "If you're going on a worldwide hike, you'll need some cold protection."
 	icon = 'icons/obj/clothing/head/beanie.dmi'
-	worn_icon = 'icons/mob/clothing/head/beanie.dmi'
 	icon_state = "waldo_hat"
+	worn_icon = 'icons/mob/clothing/head/beanie.dmi'
+	worn_icon_avali = null
 
 //No dog fashion sprites yet :(  poor Ian can't be dope like the rest of us yet
 

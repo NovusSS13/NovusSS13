@@ -32,31 +32,38 @@
 /obj/item/clothing/suit/space
 	name = "space suit"
 	desc = "A suit that protects against low pressure environments. Has a big 13 on the back."
-	icon_state = "spaceold"
 	icon = 'icons/obj/clothing/suits/spacesuit.dmi'
+	icon_state = "spaceold"
+	inhand_icon_state = "s_suit"
+	worn_icon = 'icons/mob/clothing/suits/spacesuit.dmi'
+	worn_icon_avali = null
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/spacesuit
+
+	armor_type = /datum/armor/suit_space
+	resistance_flags = NONE
+	actions_types = list(/datum/action/item_action/toggle_spacesuit)
+	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
+	clothing_color_coords_key = "spacesuit"
+	cold_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
+	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
+	equip_delay_other = 80
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	lefthand_file = 'icons/mob/inhands/clothing/suits_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/suits_righthand.dmi'
-	worn_icon = 'icons/mob/clothing/suits/spacesuit.dmi'
-	inhand_icon_state = "s_suit"
+	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
+	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT_OFF
+	slowdown = 1
+	strip_delay = 80
 	w_class = WEIGHT_CLASS_BULKY
+
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL
-	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	allowed = list(
 		/obj/item/flashlight,
 		/obj/item/tank/internals,
 		/obj/item/tank/jetpack/oxygen/captain,
 		)
-	slowdown = 1
-	armor_type = /datum/armor/suit_space
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
-	cold_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
-	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT_OFF
-	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
-	strip_delay = 80
-	equip_delay_other = 80
-	resistance_flags = NONE
-	actions_types = list(/datum/action/item_action/toggle_spacesuit)
+
+
 	var/temperature_setting = BODYTEMP_NORMAL /// The default temperature setting
 	var/obj/item/stock_parts/cell/cell = /obj/item/stock_parts/cell/high /// If this is a path, this gets created as an object in Initialize.
 	var/cell_cover_open = FALSE /// Status of the cell cover on the suit

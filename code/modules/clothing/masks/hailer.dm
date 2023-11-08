@@ -48,6 +48,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	actions_types = list(/datum/action/item_action/halt, /datum/action/item_action/adjust)
 	icon_state = "sechailer"
 	inhand_icon_state = "sechailer"
+	worn_icon_avali = null
 	clothing_flags = BLOCK_GAS_SMOKE_EFFECT | MASKINTERNALS | GAS_FILTERING
 	flags_inv = HIDEFACIALHAIR | HIDEFACE | HIDESNOUT
 	w_class = WEIGHT_CLASS_SMALL
@@ -192,6 +193,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	desc = "A police whistle for when you need to make sure the criminals hear you."
 	icon_state = "whistle"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	slot_flags = ITEM_SLOT_MASK|ITEM_SLOT_NECK
 	custom_price = PAYCHECK_COMMAND * 1.5
 	w_class = WEIGHT_CLASS_SMALL
@@ -213,6 +215,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	desc = "A paper tube used at parties that makes a noise when blown into."
 	icon_state = "party_horn"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	w_class = WEIGHT_CLASS_SMALL
 	actions_types = list(/datum/action/item_action/toot)
 	COOLDOWN_DECLARE(horn_cooldown)

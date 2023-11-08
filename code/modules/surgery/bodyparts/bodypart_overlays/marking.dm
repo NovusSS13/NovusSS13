@@ -3,6 +3,7 @@
  * Requires feature_key and feature_key_color to be set on new, or manually
  */
 /datum/bodypart_overlay/mutant/marking
+	required_bodytype = BODYTYPE_HUMANOID|BODYTYPE_AVALI
 	layers = EXTERNAL_ADJACENT
 	color_source = ORGAN_COLOR_DNA
 	/// Body zone we are currently on, VERY IMPORTANT otherwise we won't get the proper icon state!

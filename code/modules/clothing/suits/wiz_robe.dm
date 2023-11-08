@@ -27,24 +27,28 @@
 	name = "red wizard hat"
 	desc = "Strange-looking red hat-wear that most certainly belongs to a real magic user."
 	icon_state = "redwizard"
+	worn_icon_avali = null
 	dog_fashion = /datum/dog_fashion/head/red_wizard
 
 /obj/item/clothing/head/wizard/yellow
 	name = "yellow wizard hat"
 	desc = "Strange-looking yellow hat-wear that most certainly belongs to a powerful magic user."
 	icon_state = "yellowwizard"
+	worn_icon_avali = null
 	dog_fashion = null
 
 /obj/item/clothing/head/wizard/black
 	name = "black wizard hat"
 	desc = "Strange-looking black hat-wear that most certainly belongs to a real skeleton. Spooky."
 	icon_state = "blackwizard"
+	worn_icon_avali = null
 	dog_fashion = null
 
 /obj/item/clothing/head/wizard/fake
 	name = "wizard hat"
 	desc = "It has WIZZARD written across it in sequins. Comes with a cool beard."
 	icon_state = "wizard-fake"
+	worn_icon_avali = null
 	armor_type = /datum/armor/none
 	resistance_flags = FLAMMABLE
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
@@ -53,6 +57,7 @@
 	name = "witch hat"
 	desc = "Strange-looking hat-wear. Makes you want to cast fireballs."
 	icon_state = "witch_hat"
+	worn_icon_avali = null
 	greyscale_colors = "#343640#e0cab8#e0cab8"
 	greyscale_config = /datum/greyscale_config/witch_hat
 	greyscale_config_worn = /datum/greyscale_config/witch_hat_worn
@@ -64,6 +69,7 @@
 	desc = "A magically attuned hat made exclusively from duct tape. You can barely see."
 	icon_state = "tapehat"
 	inhand_icon_state = "tapehat"
+	worn_icon_avali = null
 	dog_fashion = null
 	worn_y_offset = 6
 	body_parts_covered = HEAD //this used to also cover HAIR, but that was never valid code as HAIR is not actually a body_part define!
@@ -74,6 +80,7 @@
 	desc = "A mysterious helmet that hums with an unearthly power."
 	icon_state = "magus"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	dog_fashion = null
 
 /obj/item/clothing/head/wizard/santa
@@ -81,12 +88,14 @@
 	desc = "Ho ho ho. Merrry X-mas!"
 	icon_state = "santahat"
 	inhand_icon_state = "santahat"
+	worn_icon_avali = null
 	flags_inv = HIDEHAIR|HIDEFACIALHAIR
 	dog_fashion = null
 
 /obj/item/clothing/head/wizard/hood
 	name = "wizard hood"
 	icon_state = "wizhood"
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/wizrobe
 	name = "wizard robe"
@@ -94,6 +103,7 @@
 	icon = 'icons/obj/clothing/suits/wizard.dmi'
 	icon_state = "wizard"
 	worn_icon = 'icons/mob/clothing/suits/wizard.dmi'
+	worn_icon_avali = null
 	inhand_icon_state = "wizrobe"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	armor_type = /datum/armor/suit_wizrobe
@@ -138,6 +148,7 @@
 	desc = "Magic is all about the spell power, ZE!"
 	icon_state = "marisa"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/wizrobe/tape
 	name = "tape robe"
@@ -150,12 +161,14 @@
 	desc = "A set of armored robes that seem to radiate a dark power."
 	icon_state = "magusblue"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/wizrobe/magusred
 	name = "\improper Magus robe"
 	desc = "A set of armored robes that seem to radiate a dark power."
 	icon_state = "magusred"
 	inhand_icon_state = null
+	worn_icon_avali = null
 
 /obj/item/clothing/suit/wizrobe/santa
 	name = "Santa's suit"
@@ -168,6 +181,7 @@
 	desc = "A rather dull blue robe meant to mimic real wizard robes."
 	icon_state = "wizard-fake"
 	inhand_icon_state = "wizrobe"
+	worn_icon_avali = null
 	armor_type = /datum/armor/none
 	resistance_flags = FLAMMABLE
 
@@ -201,8 +215,9 @@
 	desc = "A robe held together by various bits of clear-tape and paste."
 	icon_state = "wizard-paper"
 	inhand_icon_state = null
-	var/robe_charge = TRUE
+	worn_icon_avali = null
 	actions_types = list(/datum/action/item_action/stickmen)
+	var/robe_charge = TRUE
 
 
 /obj/item/clothing/suit/wizrobe/paper/ui_action_click(mob/user, action)

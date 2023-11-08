@@ -572,6 +572,8 @@
 		new_profile.worn_icon_state_list[slot] = clothing_item.worn_icon_state
 		new_profile.exists_list[slot] = 1
 
+		new_profile.worn_icon_avali_list[slot] = clothing_item.worn_icon_avali
+
 	new_profile.voice = target.voice
 	new_profile.voice_filter = target.voice_filter
 
@@ -844,6 +846,8 @@
 		new_flesh_item.worn_icon = chosen_profile.worn_icon_list[slot]
 		new_flesh_item.worn_icon_state = chosen_profile.worn_icon_state_list[slot]
 
+		new_flesh_item.worn_icon_avali = chosen_profile.worn_icon_avali_list[slot]
+
 		if(istype(new_flesh_item, /obj/item/changeling/id) && chosen_profile.id_icon)
 			var/obj/item/changeling/id/flesh_id = new_flesh_item
 			flesh_id.hud_icon = chosen_profile.id_icon
@@ -885,6 +889,8 @@
 	var/list/inhand_icon_state_list = list()
 	/// Assoc list of item slot to file - stores the worn icon file of the item in that slot
 	var/list/worn_icon_list = list()
+	/// Assoc list of item slot to file - stores the worn avali icon file of the item in that slot
+	var/list/worn_icon_avali_list = list()
 	/// Assoc list of item slot to string - stores the worn icon state of the item in that slot
 	var/list/worn_icon_state_list = list()
 	/// The underwear worn by the profile source
@@ -907,6 +913,8 @@
 	var/age
 	/// The body type of the profile source.
 	var/physique
+
+
 	/// The quirks of the profile source.
 	var/list/quirks = list()
 	/// The hair and facial hair gradient styles of the profile source.
@@ -957,6 +965,8 @@
 	new_profile.grad_color = LAZYLISTDUPLICATE(grad_color)
 	new_profile.voice = voice
 	new_profile.voice_filter = voice_filter
+
+	new_profile.worn_icon_avali_list = worn_icon_avali_list.Copy()
 
 /datum/antagonist/changeling/roundend_report()
 	var/list/parts = list()

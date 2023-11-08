@@ -1,6 +1,8 @@
 /obj/item/clothing/gloves/color
-	dying_key = DYE_REGISTRY_GLOVES
+	worn_icon_avali = null
 	greyscale_colors = null
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/gloves
+	dying_key = DYE_REGISTRY_GLOVES
 
 /obj/item/clothing/gloves/color/yellow
 	name = "insulated gloves"
@@ -101,6 +103,7 @@
 	name = "fingerless insulated gloves"
 	icon_state = "yellowcut"
 	inhand_icon_state = "ygloves"
+	worn_icon_avali = null
 	greyscale_colors = null
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 
@@ -112,6 +115,7 @@
 	name = "advanced insulated gloves"
 	icon_state = "ce_insuls"
 	inhand_icon_state = null
+	resistance_flags = FIRE_PROOF
 	greyscale_colors = null
 	siemens_coefficient = 0
 	cold_protection = HANDS

@@ -115,7 +115,6 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	set desc = "Local OOC, seen only by those in view."
 	set category = "OOC"
 
-
 	if(!mob)
 		return
 
@@ -143,7 +142,7 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 			to_chat(src, "<B>Advertising other servers is not allowed.</B>")
 			log_admin("[key_name(src)] has attempted to advertise in LOOC: [msg]") //inb4 byond://trollface ascii
 			return
-		if(mob.stat == DEAD) //this shou;dl include unconciousees
+		if(mob.stat == DEAD) //this shou;dl include unconsciousees
 			to_chat(src, span_danger("You cannot use LOOC while dead.")) //includes ghosts
 			return
 	if(is_banned_from(mob, "OOC"))

@@ -1,10 +1,14 @@
 /obj/item/clothing/neck
 	name = "necklace"
 	icon = 'icons/obj/clothing/neck.dmi'
+	worn_icon_avali = 'icons/mob/species/avali/clothing/neck.dmi'
 	body_parts_covered = NECK
 	slot_flags = ITEM_SLOT_NECK
 	strip_delay = 40
 	equip_delay_other = 40
+
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/scarf
+	clothing_color_coords_key = "necklace"
 
 /obj/item/clothing/neck/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
@@ -31,12 +35,18 @@
 	icon = 'icons/obj/clothing/neck.dmi'
 	icon_state = "tie_greyscale_tied"
 	inhand_icon_state = "" //no inhands
-	w_class = WEIGHT_CLASS_SMALL
-	custom_price = PAYCHECK_CREW
+	worn_icon_avali = null
+	clothing_color_coords_key = "tie"
 	greyscale_config = /datum/greyscale_config/ties
 	greyscale_config_worn = /datum/greyscale_config/ties_worn
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/tie
 	greyscale_colors = "#4d4e4e"
+
 	flags_1 = IS_PLAYER_COLORABLE_1
+	w_class = WEIGHT_CLASS_SMALL
+	custom_price = PAYCHECK_CREW
+
+
 	/// All ties start untied unless otherwise specified
 	var/is_tied = FALSE
 	/// How long it takes to tie the tie
@@ -180,6 +190,7 @@
 	name = "stethoscope"
 	desc = "An outdated medical apparatus for listening to the sounds of the human body. It also makes you look like you know what you're doing."
 	icon_state = "stethoscope"
+	worn_icon_avali = null
 
 /obj/item/clothing/neck/stethoscope/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] puts \the [src] to [user.p_their()] chest! It looks like [user.p_they()] won't hear much!"))
@@ -312,16 +323,18 @@
 
 /obj/item/clothing/neck/scarf
 	name = "scarf"
-	icon_state = "scarf"
-	icon_preview = 'icons/obj/previews.dmi'
-	icon_state_preview = "scarf_cloth"
 	desc = "A stylish scarf. The perfect winter accessory for those with a keen fashion sense, and those who just can't handle a cold breeze on their necks."
-	w_class = WEIGHT_CLASS_TINY
-	custom_price = PAYCHECK_CREW
+	icon_state = "scarf"
+	worn_icon_avali = null
 	greyscale_colors = "#EEEEEE#EEEEEE"
 	greyscale_config = /datum/greyscale_config/scarf
 	greyscale_config_worn = /datum/greyscale_config/scarf_worn
+	w_class = WEIGHT_CLASS_TINY
+	custom_price = PAYCHECK_CREW
 	flags_1 = IS_PLAYER_COLORABLE_1
+
+	icon_preview = 'icons/obj/previews.dmi'
+	icon_state_preview = "scarf_cloth"
 
 /obj/item/clothing/neck/scarf/black
 	name = "black scarf"
@@ -370,12 +383,13 @@
 /obj/item/clothing/neck/large_scarf
 	name = "large scarf"
 	icon_state = "large_scarf"
-	w_class = WEIGHT_CLASS_TINY
-	custom_price = PAYCHECK_CREW
+	worn_icon_avali = null
 	greyscale_colors = "#C6C6C6#EEEEEE"
 	greyscale_config = /datum/greyscale_config/large_scarf
 	greyscale_config_worn = /datum/greyscale_config/large_scarf_worn
 	flags_1 = IS_PLAYER_COLORABLE_1
+	w_class = WEIGHT_CLASS_TINY
+	custom_price = PAYCHECK_CREW
 
 /obj/item/clothing/neck/large_scarf/red
 	name = "large red scarf"
@@ -398,17 +412,19 @@
 /obj/item/clothing/neck/infinity_scarf
 	name = "infinity scarf"
 	icon_state = "infinity_scarf"
-	w_class = WEIGHT_CLASS_TINY
-	custom_price = PAYCHECK_CREW
+	worn_icon_avali = null
 	greyscale_colors = "#EEEEEE"
 	greyscale_config = /datum/greyscale_config/infinity_scarf
 	greyscale_config_worn = /datum/greyscale_config/infinity_scarf_worn
+	w_class = WEIGHT_CLASS_TINY
+	custom_price = PAYCHECK_CREW
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/neck/petcollar
 	name = "pet collar"
 	desc = "It's for pets."
 	icon_state = "petcollar"
+	worn_icon_avali = null
 	var/tagname = null
 
 /datum/armor/large_scarf_syndie
@@ -433,6 +449,7 @@
 	desc = "Damn, it feels good to be a gangster."
 	icon = 'icons/obj/clothing/neck.dmi'
 	icon_state = "bling"
+	worn_icon_avali = null
 
 /obj/item/clothing/neck/necklace/dope/merchant
 	desc = "Don't ask how it works, the proof is in the holochips!"
@@ -470,6 +487,7 @@
 	desc = "A cheap, plastic bead necklace. Show team spirit! Collect them! Throw them away! The posibilites are endless!"
 	icon = 'icons/obj/clothing/neck.dmi'
 	icon_state = "beads"
+	worn_icon_avali = null
 	color = "#ffffff"
 	custom_price = PAYCHECK_CREW * 0.2
 	custom_materials = (list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT*5))

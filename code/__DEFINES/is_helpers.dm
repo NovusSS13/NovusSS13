@@ -94,6 +94,7 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 #define isandroid(A) (is_species(A, /datum/species/android))
 #define isnightmare(A) (is_species(A, /datum/species/shadow/nightmare))
 
+#define isavali(A) (is_species(A, /datum/species/avali))
 
 //More carbon mobs
 #define isalien(A) (istype(A, /mob/living/carbon/alien))

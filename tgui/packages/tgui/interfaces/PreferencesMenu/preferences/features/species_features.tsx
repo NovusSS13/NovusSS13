@@ -76,6 +76,34 @@ export const feature_felinid_tail_color: FeatureChoiced = {
   component: FeatureTriColorInput,
 };
 
+export const feature_avali_ears: FeatureChoiced = {
+  name: 'Ears',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
+export const feature_avali_ears_color: FeatureChoiced = {
+  name: 'Ears color',
+  component: FeatureTriColorInput,
+};
+
+export const feature_avali_tail: FeatureChoiced = {
+  name: 'Tail',
+  component: (
+    props: FeatureValueProps<string, string, FeatureChoicedServerData>
+  ) => {
+    return <FeatureDropdownInput buttons {...props} />;
+  },
+};
+
+export const feature_avali_tail_color: FeatureChoiced = {
+  name: 'Tail color',
+  component: FeatureTriColorInput,
+};
+
 export const feature_bodypart_type: FeatureChoiced = {
   name: 'Bodypart type',
   component: FeatureDropdownInput,

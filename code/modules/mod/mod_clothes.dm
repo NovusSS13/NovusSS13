@@ -5,6 +5,7 @@
 	icon_state = "standard-helmet"
 	base_icon_state = "helmet"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
+	worn_icon_avali = null
 	armor_type = /datum/armor/none
 	body_parts_covered = HEAD
 	heat_protection = HEAD
@@ -18,6 +19,7 @@
 	icon_state = "standard-chestplate"
 	base_icon_state = "chestplate"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
+	worn_icon_avali = null
 	blood_overlay_type = "armor"
 	allowed = list(
 		/obj/item/tank/internals,
@@ -30,6 +32,9 @@
 	cold_protection = CHEST|GROIN
 	obj_flags = IMMUTABLE_SLOW
 
+	greyscale_config_worn_avali = /datum/greyscale_config/avali/hardsuit
+	clothing_color_coords_key = "modsuit"
+
 /obj/item/clothing/gloves/mod
 	name = "MOD gauntlets"
 	desc = "A pair of gauntlets for a MODsuit."
@@ -37,6 +42,7 @@
 	icon_state = "standard-gauntlets"
 	base_icon_state = "gauntlets"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
+	worn_icon_avali = null
 	armor_type = /datum/armor/none
 	body_parts_covered = HANDS|ARMS
 	heat_protection = HANDS|ARMS
@@ -50,6 +56,7 @@
 	icon_state = "standard-boots"
 	base_icon_state = "boots"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
+	worn_icon_avali = null
 	armor_type = /datum/armor/none
 	body_parts_covered = FEET|LEGS
 	heat_protection = FEET|LEGS

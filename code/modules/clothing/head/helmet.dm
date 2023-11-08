@@ -2,9 +2,10 @@
 	name = "helmet"
 	desc = "Standard Security gear. Protects the head from impacts."
 	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
 	icon_state = "helmet"
 	inhand_icon_state = "helmet"
+	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
+	worn_icon_avali = null
 	armor_type = /datum/armor/head_helmet
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_TEMP_PROTECT

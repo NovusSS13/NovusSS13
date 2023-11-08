@@ -23,6 +23,7 @@
 	desc = "To silence those pesky patients before putting them under."
 	icon_state = "breathmuzzle"
 	inhand_icon_state = "breathmuzzle"
+	worn_icon_avali = null
 	lefthand_file = 'icons/mob/inhands/clothing/masks_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/masks_righthand.dmi'
 	body_parts_covered = NONE
@@ -34,15 +35,17 @@
 	name = "tape piece"
 	desc = "A piece of tape that can be put over someone's mouth."
 	icon_state = "tape_piece"
-	worn_icon_state = "tape_piece_worn"
 	inhand_icon_state = null
-	w_class = WEIGHT_CLASS_TINY
-	clothing_flags = INEDIBLE_CLOTHING|BLOCKS_SPEECH
-	equip_delay_other = 40
-	strip_delay = 40
+	worn_icon_avali = null
+	worn_icon_state = "tape_piece_worn"
 	greyscale_config = /datum/greyscale_config/tape_piece
 	greyscale_config_worn = /datum/greyscale_config/tape_piece/worn
 	greyscale_colors = "#B2B2B2"
+
+	equip_delay_other = 40
+	strip_delay = 40
+	w_class = WEIGHT_CLASS_TINY
+	clothing_flags = INEDIBLE_CLOTHING|BLOCKS_SPEECH
 	///Dertermines whether the tape piece does damage when ripped off of someone.
 	var/harmful_strip = FALSE
 	///The ammount of damage dealt when the tape piece is ripped off of someone.

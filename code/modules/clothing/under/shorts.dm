@@ -2,6 +2,7 @@
 	name = "shorts"
 	desc = "A pair of comfy shorts."
 	icon_state = "shorts"
+	worn_icon_avali = null
 	greyscale_config = /datum/greyscale_config/shorts
 	greyscale_config_worn = /datum/greyscale_config/shorts_worn
 	greyscale_colors = "#575757#3E3E3E#75634F"

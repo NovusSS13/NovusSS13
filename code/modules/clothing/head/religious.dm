@@ -6,21 +6,25 @@
 	name = "Hat of the Honkmother"
 	desc = "It's hard for parishoners to see a banana peel on the floor when they're looking up at your glorious chapeau."
 	icon_state = "clownmitre"
+	worn_icon_avali = null
 
 /obj/item/clothing/head/chaplain/kippah
 	name = "kippah"
 	desc = "Signals that you follow the Jewish Halakha. Keeps the head covered and the soul extra-Orthodox."
 	icon_state = "kippah"
+	worn_icon_avali = null
 
 /obj/item/clothing/head/chaplain/medievaljewhat
 	name = "medieval Jewish hat"
 	desc = "A silly looking hat, intended to be placed on the heads of the station's oppressed religious minorities."
 	icon_state = "medievaljewhat"
+	worn_icon_avali = null
 
 /obj/item/clothing/head/chaplain/taqiyah/white
 	name = "white taqiyah"
 	desc = "An extra-mustahabb way of showing your devotion to Allah."
 	icon_state = "taqiyahwhite"
+	worn_icon_avali = null
 
 /obj/item/clothing/head/chaplain/taqiyah/white/Initialize(mapload)
 	. = ..()
@@ -31,6 +35,7 @@
 	name = "red taqiyah"
 	desc = "An extra-mustahabb way of showing your devotion to Allah."
 	icon_state = "taqiyahred"
+	worn_icon_avali = null
 
 /obj/item/clothing/head/chaplain/taqiyah/red/Initialize(mapload)
 	. = ..()

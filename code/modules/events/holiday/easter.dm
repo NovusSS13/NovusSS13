@@ -68,10 +68,11 @@
 /obj/item/clothing/suit/costume/bunnysuit
 	name = "Easter Bunny Suit"
 	desc = "Hop Hop Hop!"
-	icon_state = "bunnysuit"
 	icon = 'icons/obj/clothing/suits/costume.dmi'
-	worn_icon = 'icons/mob/clothing/suits/costume.dmi'
+	icon_state = "bunnysuit"
 	inhand_icon_state = null
+	worn_icon = 'icons/mob/clothing/suits/costume.dmi'
+	worn_icon_avali = null
 	slowdown = -0.3
 	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS

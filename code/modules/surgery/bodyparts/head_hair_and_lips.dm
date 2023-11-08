@@ -88,7 +88,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 	. = list()
-	if(!(bodytype & BODYTYPE_HUMANOID) || is_invisible)
+	if(!(bodytype & (BODYTYPE_HUMANOID|BODYTYPE_AVALI)) || is_invisible)
 		return .
 
 	var/atom/location = loc || owner || src
@@ -195,14 +195,17 @@
 	if(!eyeballs)
 		CRASH("[type] called get_eyes_overlays() while having no eyes!")
 
+	custom_eyes_icon ||= 'icons/mob/species/sprite_accessory/eyes.dmi'
+
 	var/image/left_eye
 	var/image/right_eye
 	if(can_rotate)
-		left_eye = mutable_appearance('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER)
-		right_eye = mutable_appearance('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER)
+		left_eye = mutable_appearance(custom_eyes_icon, "[eyeballs.eye_icon_state]_l", -BODY_LAYER)
+		right_eye = mutable_appearance(custom_eyes_icon, "[eyeballs.eye_icon_state]_r", -BODY_LAYER)
 	else
-		left_eye = image('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
-		right_eye = image('icons/mob/species/sprite_accessory/eyes.dmi', "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
+		left_eye = image(custom_eyes_icon, "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
+		right_eye = image(custom_eyes_icon, "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
+
 	if(head_flags & HEAD_EYECOLOR)
 		left_eye.color = eyeballs.eye_color_left
 		right_eye.color = eyeballs.eye_color_right
@@ -230,7 +233,7 @@
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
 	RETURN_TYPE(/image)
-	var/eyeless_icon = 'icons/mob/species/sprite_accessory/human_face.dmi'
+	var/eyeless_icon = (custom_eyes_icon ||= 'icons/mob/species/sprite_accessory/human_face.dmi')
 	var/eyeless_icon_state = "eyes_missing"
 
 	var/image/eyeless_overlay

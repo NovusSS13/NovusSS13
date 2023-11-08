@@ -1,4 +1,17 @@
 /obj/item/clothing/mask/bandana
+	name = "bandana"
+	desc = "A fine bandana with nanotech lining."
+	icon_state = "bandana"
+	icon_state_preview = "bandana_cloth"
+	inhand_icon_state = "greyscale_bandana"
+	worn_icon_avali = null
+	worn_icon_state = "bandana_worn"
+	greyscale_config = /datum/greyscale_config/bandana
+	greyscale_config_worn = /datum/greyscale_config/bandana_worn
+	greyscale_config_inhand_left = /datum/greyscale_config/bandana_inhands_left
+	greyscale_config_inhand_right = /datum/greyscale_config/bandana_inhands_right
+	greyscale_colors = "#2e2e2e"
+
 	w_class = WEIGHT_CLASS_TINY
 	flags_cover = MASKCOVERSMOUTH
 	flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
@@ -9,17 +22,7 @@
 	species_exception = list(/datum/species/golem)
 	dying_key = DYE_REGISTRY_BANDANA
 	flags_1 = IS_PLAYER_COLORABLE_1
-	name = "bandana"
-	desc = "A fine bandana with nanotech lining."
-	icon_state = "bandana"
-	icon_state_preview = "bandana_cloth"
-	inhand_icon_state = "greyscale_bandana"
-	worn_icon_state = "bandana_worn"
-	greyscale_config = /datum/greyscale_config/bandana
-	greyscale_config_worn = /datum/greyscale_config/bandana_worn
-	greyscale_config_inhand_left = /datum/greyscale_config/bandana_inhands_left
-	greyscale_config_inhand_right = /datum/greyscale_config/bandana_inhands_right
-	greyscale_colors = "#2e2e2e"
+
 
 /obj/item/clothing/mask/bandana/examine(mob/user)
 	. = ..()

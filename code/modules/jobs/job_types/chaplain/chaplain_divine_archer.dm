@@ -8,6 +8,7 @@
 	desc = "Inner garb for divine archers."
 	icon_state = "archergarb"
 	inhand_icon_state = "archergarb"
+	worn_icon_avali = null
 	can_adjust = TRUE
 
 /// suit
@@ -48,6 +49,7 @@
 	desc = "Bracers, a wise choice for archers who do not want their outfit to get in the way of drawing and firing their weapon."
 	icon_state = "archerbracers"
 	inhand_icon_state = "archerbracers"
+	worn_icon_avali = null
 	strip_delay = 40
 	equip_delay_other = 20
 	resistance_flags = NONE
@@ -58,6 +60,7 @@
 	desc = "Boots, For steady footing while aiming."
 	icon_state = "archerboots"
 	inhand_icon_state = "archerboots"
+	worn_icon_avali = null
 	strip_delay = 30
 	equip_delay_other = 50
 	resistance_flags = NONE

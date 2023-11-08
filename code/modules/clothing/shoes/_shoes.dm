@@ -1,9 +1,10 @@
 /obj/item/clothing/shoes
 	name = "shoes"
+	desc = "Comfortable-looking shoes."
 	icon = 'icons/obj/clothing/shoes.dmi'
+	worn_icon_avali = 'icons/mob/species/avali/clothing/feet.dmi'
 	lefthand_file = 'icons/mob/inhands/clothing/shoes_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/shoes_righthand.dmi'
-	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 
 	body_parts_covered = FEET
@@ -12,6 +13,10 @@
 	armor_type = /datum/armor/clothing_shoes
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
+
+	greyscale_config_worn_avali_fallback = /datum/greyscale_config/avali/shoes
+	clothing_color_coords_key = "shoes"
+
 	var/offset = 0
 	var/equipped_before_drop = FALSE
 	///Whether these shoes have laces that can be tied/untied

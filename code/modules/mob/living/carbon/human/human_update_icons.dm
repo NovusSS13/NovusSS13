@@ -1,5 +1,3 @@
-#define RESOLVE_ICON_STATE(worn_item) (worn_item.worn_icon_state || worn_item.icon_state)
-
 	///////////////////////
 	//UPDATE_ICONS SYSTEM//
 	///////////////////////
@@ -99,37 +97,41 @@ There are several things that need to be remembered:
 		//"override_file = handled_by_bodytype ? icon_file : null" MUST be added to the arguments of build_worn_icon()
 		//Friendly reminder that icon_exists(file, state, scream = TRUE) is your friend when debugging this code.
 		var/handled_by_bodytype = TRUE
-		var/icon_file
 		var/woman
 
 		var/obj/item/bodypart/chest = get_bodypart(BODY_ZONE_CHEST)
 		var/chest_bodytype = chest?.bodytype
 
 		//BEGIN SPECIES HANDLING
+		var/override_file
 		if((chest_bodytype & BODYTYPE_MONKEY) && (uniform.supports_variations_flags & CLOTHING_MONKEY_VARIATION))
-			icon_file = MONKEY_UNIFORM_FILE
+			override_file = 'icons/mob/species/monkey/uniform.dmi'
+		else if(chest_bodytype & BODYTYPE_AVALI) //no variation check since we're gonna try to cobble together an icon if there's none
+			override_file = get_avali_worn_icon(uniform, ITEM_SLOT_ICLOTHING)
 		else if((bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
-			icon_file = DIGITIGRADE_UNIFORM_FILE
+			override_file = 'icons/mob/species/misc/digitigrade.dmi'
 		//Female sprites have lower priority than digitigrade sprites - Agggggggghhhhh!!!!!
 		else if(!HAS_TRAIT(src, TRAIT_AGENDER) && (chest_bodytype & BODYTYPE_HUMANOID) && (chest.limb_gender == "f") && !(uniform.female_sprite_flags & NO_FEMALE_UNIFORM))
 			woman = TRUE
 
-		if(!icon_exists(icon_file, RESOLVE_ICON_STATE(uniform)))
-			icon_file = DEFAULT_UNIFORM_FILE
+		if(!override_file || !icon_exists(override_file, uniform.worn_icon_state || uniform.icon_state))
+			override_file = 'icons/mob/clothing/under/default.dmi'
 			handled_by_bodytype = FALSE
 
 		//END SPECIES HANDLING
 		uniform_overlay = uniform.build_worn_icon(
 			default_layer = UNIFORM_LAYER,
-			default_icon_file = icon_file,
+			default_icon_file = override_file,
 			isinhands = FALSE,
 			female_uniform = woman ? uniform.female_sprite_flags : null,
 			override_state = target_overlay,
-			override_file = handled_by_bodytype ? icon_file : null,
+			override_file = handled_by_bodytype ? override_file : null,
 		)
 
-		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
-		my_chest?.worn_uniform_offset?.apply_offset(uniform_overlay)
+		if(isnull(override_file))
+			var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
+			my_chest?.worn_uniform_offset?.apply_offset(uniform_overlay)
+
 		overlays_standing[UNIFORM_LAYER] = uniform_overlay
 		apply_overlay(UNIFORM_LAYER)
 
@@ -147,15 +149,25 @@ There are several things that need to be remembered:
 	if(wear_id)
 		var/obj/item/worn_item = wear_id
 		update_hud_id(worn_item)
-		var/icon_file = 'icons/mob/clothing/id.dmi'
 
-		id_overlay = wear_id.build_worn_icon(default_layer = ID_LAYER, default_icon_file = icon_file)
+		var/obj/item/bodypart/chest/chesty = get_bodypart(BODY_ZONE_CHEST)
+
+		var/override_file = null
+		if(chesty?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_ID)
+
+		id_overlay = wear_id.build_worn_icon(
+			default_layer = ID_LAYER,
+			default_icon_file = 'icons/mob/clothing/id.dmi',
+			override_file = override_file
+		)
 
 		if(!id_overlay)
 			return
 
-		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
-		my_chest?.worn_id_offset?.apply_offset(id_overlay)
+		if(isnull(override_file))
+			chesty?.worn_id_offset?.apply_offset(id_overlay)
+
 		overlays_standing[ID_LAYER] = id_overlay
 
 	apply_overlay(ID_LAYER)
@@ -191,18 +203,25 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_GLOVES)
 			return
 
-		var/icon_file = 'icons/mob/clothing/hands.dmi'
+		//if someone wanted to expand this in the future to make each hand have a separate overlay, all of this will need a re-do anyways
+		var/obj/item/bodypart/arm/handy = locate(/obj/item/bodypart/arm) in hand_bodyparts
 
-		var/mutable_appearance/gloves_overlay = gloves.build_worn_icon(default_layer = GLOVES_LAYER, default_icon_file = icon_file)
+		var/override_file = null
+		if(handy?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_GLOVES)
 
-		var/feature_y_offset = 0
-		//needs to be typed, hand_bodyparts can have nulls
-		for (var/obj/item/bodypart/arm/my_hand in hand_bodyparts)
-			var/list/glove_offset = my_hand.worn_glove_offset?.get_offset()
-			if (glove_offset && (!feature_y_offset || glove_offset["y"] > feature_y_offset))
-				feature_y_offset = glove_offset["y"]
+		var/mutable_appearance/gloves_overlay = gloves.build_worn_icon(
+			default_layer = GLOVES_LAYER,
+			default_icon_file = 'icons/mob/clothing/hands.dmi',
+			override_file = override_file
+		)
 
-		gloves_overlay.pixel_y += feature_y_offset
+		if(isnull(override_file))
+			var/list/glove_offset = handy?.worn_glove_offset?.get_offset()
+			var/feature_y_offset = glove_offset?["y"] || 0
+
+			gloves_overlay.pixel_y += feature_y_offset
+
 		overlays_standing[GLOVES_LAYER] = gloves_overlay
 	apply_overlay(GLOVES_LAYER)
 
@@ -210,8 +229,8 @@ There are several things that need to be remembered:
 /mob/living/carbon/human/update_worn_glasses()
 	remove_overlay(GLASSES_LAYER)
 
-	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
-	if(isnull(my_head)) //decapitated
+	var/obj/item/bodypart/head/headsy = get_bodypart(BODY_ZONE_HEAD)
+	if(isnull(headsy)) //decapitated
 		return
 
 	if(client && hud_used)
@@ -225,19 +244,29 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_EYES)
 			return
 
-		var/icon_file = 'icons/mob/clothing/eyes.dmi'
+		var/override_file = null
+		if(headsy?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_EYES)
 
-		var/mutable_appearance/glasses_overlay = glasses.build_worn_icon(default_layer = GLASSES_LAYER, default_icon_file = icon_file)
-		my_head.worn_glasses_offset?.apply_offset(glasses_overlay)
+		var/mutable_appearance/glasses_overlay = glasses.build_worn_icon(
+			default_layer = GLASSES_LAYER,
+			default_icon_file = 'icons/mob/clothing/eyes.dmi',
+			override_file = override_file
+		)
+
+		if(isnull(override_file))
+			headsy.worn_glasses_offset?.apply_offset(glasses_overlay)
+
 		overlays_standing[GLASSES_LAYER] = glasses_overlay
+
 	apply_overlay(GLASSES_LAYER)
 
 
 /mob/living/carbon/human/update_inv_ears()
 	remove_overlay(EARS_LAYER)
 
-	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
-	if(isnull(my_head)) //decapitated
+	var/obj/item/bodypart/head/headsy = get_bodypart(BODY_ZONE_HEAD)
+	if(isnull(headsy)) //decapitated
 		return
 
 	if(client && hud_used)
@@ -251,10 +280,19 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_EARS)
 			return
 
-		var/icon_file = 'icons/mob/clothing/ears.dmi'
+		var/override_file = null
+		if(headsy?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_EARS)
 
-		var/mutable_appearance/ears_overlay = ears.build_worn_icon(default_layer = EARS_LAYER, default_icon_file = icon_file)
-		my_head.worn_ears_offset?.apply_offset(ears_overlay)
+		var/mutable_appearance/ears_overlay = ears.build_worn_icon(
+			default_layer = EARS_LAYER,
+			default_icon_file = 'icons/mob/clothing/ears.dmi',
+			override_file = override_file
+		)
+
+		if(isnull(override_file))
+			headsy.worn_ears_offset?.apply_offset(ears_overlay)
+
 		overlays_standing[EARS_LAYER] = ears_overlay
 	apply_overlay(EARS_LAYER)
 
@@ -272,11 +310,21 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_NECK)
 			return
 
-		var/icon_file = 'icons/mob/clothing/neck.dmi'
+		var/obj/item/bodypart/chest/chesty = get_bodypart(BODY_ZONE_CHEST)
 
-		var/mutable_appearance/neck_overlay = worn_item.build_worn_icon(default_layer = NECK_LAYER, default_icon_file = icon_file)
-		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
-		my_chest?.worn_belt_offset?.apply_offset(neck_overlay)
+		var/override_file = null
+		if(chesty?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_NECK)
+
+		var/mutable_appearance/neck_overlay = worn_item.build_worn_icon(
+			default_layer = NECK_LAYER,
+			default_icon_file = 'icons/mob/clothing/neck.dmi',
+			override_file = override_file
+		)
+
+		if(isnull(override_file))
+			chesty?.worn_belt_offset?.apply_offset(neck_overlay)
+
 		overlays_standing[NECK_LAYER] = neck_overlay
 
 	apply_overlay(NECK_LAYER)
@@ -298,22 +346,28 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_FEET)
 			return
 
-		var/icon_file = DEFAULT_SHOES_FILE
+		//same deal as with arms. also if this ever fails despite the previous num_legs check i WILL kill someone
+		var/obj/item/bodypart/leg/leggy = locate(/obj/item/bodypart/leg) in bodyparts
 
-		var/mutable_appearance/shoes_overlay = shoes.build_worn_icon(default_layer = SHOES_LAYER, default_icon_file = icon_file)
+		var/override_file = null
+		if(leggy.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_FEET)
+
+		var/mutable_appearance/shoes_overlay = shoes.build_worn_icon(
+			default_layer = SHOES_LAYER,
+			default_icon_file = 'icons/mob/clothing/feet.dmi',
+			override_file = override_file
+		)
+
 		if(!shoes_overlay)
 			return
 
-		var/feature_y_offset = 0
-		for (var/body_zone in list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
-			var/obj/item/bodypart/leg/my_leg = get_bodypart(body_zone)
-			if(isnull(my_leg))
-				continue
-			var/list/foot_offset = my_leg.worn_foot_offset?.get_offset()
-			if (foot_offset && foot_offset["y"] > feature_y_offset)
-				feature_y_offset = foot_offset["y"]
+		if(isnull(override_file))
+			var/list/foot_offset = leggy.worn_foot_offset?.get_offset()
+			var/feature_y_offset = foot_offset?["y"] || 0
 
-		shoes_overlay.pixel_y += feature_y_offset
+			shoes_overlay.pixel_y += feature_y_offset
+
 		overlays_standing[SHOES_LAYER] = shoes_overlay
 
 	apply_overlay(SHOES_LAYER)
@@ -335,9 +389,21 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_SUITSTORE)
 			return
 
-		var/mutable_appearance/s_store_overlay = worn_item.build_worn_icon(default_layer = SUIT_STORE_LAYER, default_icon_file = 'icons/mob/clothing/belt_mirror.dmi')
-		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
-		my_chest?.worn_suit_storage_offset?.apply_offset(s_store_overlay)
+		var/obj/item/bodypart/chest/chesty = get_bodypart(BODY_ZONE_CHEST)
+
+		var/override_file = null
+		if(chesty?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_SUITSTORE)
+
+		var/mutable_appearance/s_store_overlay = worn_item.build_worn_icon(
+			default_layer = SUIT_STORE_LAYER,
+			default_icon_file = 'icons/mob/clothing/belt_mirror.dmi',
+			override_file = override_file
+		)
+
+		if(isnull(override_file))
+			chesty?.worn_suit_storage_offset?.apply_offset(s_store_overlay)
+
 		overlays_standing[SUIT_STORE_LAYER] = s_store_overlay
 	apply_overlay(SUIT_STORE_LAYER)
 
@@ -354,11 +420,21 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_HEAD)
 			return
 
-		var/icon_file = 'icons/mob/clothing/head/default.dmi'
+		var/obj/item/bodypart/head/heady = get_bodypart(BODY_ZONE_HEAD)
 
-		var/mutable_appearance/head_overlay = head.build_worn_icon(default_layer = HEAD_LAYER, default_icon_file = icon_file)
-		var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
-		my_head?.worn_head_offset?.apply_offset(head_overlay)
+		var/override_file = null
+		if(heady?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_HEAD)
+
+		var/mutable_appearance/head_overlay = head.build_worn_icon(
+			default_layer = HEAD_LAYER,
+			default_icon_file = 'icons/mob/clothing/head/default.dmi',
+			override_file = override_file
+		)
+
+		if(isnull(override_file))
+			heady?.worn_head_offset?.apply_offset(head_overlay)
+
 		overlays_standing[HEAD_LAYER] = head_overlay
 
 	update_mutant_bodyparts()
@@ -378,11 +454,21 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_BELT)
 			return
 
-		var/icon_file = 'icons/mob/clothing/belt.dmi'
+		var/obj/item/bodypart/chest/chesty = get_bodypart(BODY_ZONE_CHEST)
 
-		var/mutable_appearance/belt_overlay = belt.build_worn_icon(default_layer = BELT_LAYER, default_icon_file = icon_file)
-		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
-		my_chest?.worn_belt_offset?.apply_offset(belt_overlay)
+		var/override_file = null
+		if(chesty?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_BELT)
+
+		var/mutable_appearance/belt_overlay = belt.build_worn_icon(
+			default_layer = BELT_LAYER,
+			default_icon_file = 'icons/mob/clothing/belt.dmi',
+			override_file = override_file
+		)
+
+		if(isnull(override_file))
+			chesty?.worn_belt_offset?.apply_offset(belt_overlay)
+
 		overlays_standing[BELT_LAYER] = belt_overlay
 
 	apply_overlay(BELT_LAYER)
@@ -397,11 +483,22 @@ There are several things that need to be remembered:
 	if(wear_suit)
 		var/obj/item/worn_item = wear_suit
 		update_hud_wear_suit(worn_item)
-		var/icon_file = DEFAULT_SUIT_FILE
 
-		var/mutable_appearance/suit_overlay = wear_suit.build_worn_icon(default_layer = SUIT_LAYER, default_icon_file = icon_file)
-		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
-		my_chest?.worn_suit_offset?.apply_offset(suit_overlay)
+		var/obj/item/bodypart/chest/chesty = get_bodypart(BODY_ZONE_CHEST)
+
+		var/override_file = null
+		if(chesty?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_OCLOTHING)
+
+		var/mutable_appearance/suit_overlay = wear_suit.build_worn_icon(
+			default_layer = SUIT_LAYER,
+			default_icon_file = 'icons/mob/clothing/suits/default.dmi',
+			override_file = override_file
+		)
+
+		if(isnull(override_file))
+			chesty?.worn_suit_offset?.apply_offset(suit_overlay)
+
 		overlays_standing[SUIT_LAYER] = suit_overlay
 	update_body_parts()
 	update_mutant_bodyparts()
@@ -433,8 +530,8 @@ There are several things that need to be remembered:
 /mob/living/carbon/human/update_worn_mask()
 	remove_overlay(FACEMASK_LAYER)
 
-	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
-	if(isnull(my_head)) //Decapitated
+	var/obj/item/bodypart/head/headsy = get_bodypart(BODY_ZONE_HEAD)
+	if(isnull(headsy)) //Decapitated
 		return
 
 	if(client && hud_used && hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_MASK) + 1])
@@ -448,10 +545,19 @@ There are several things that need to be remembered:
 		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_MASK)
 			return
 
-		var/icon_file = 'icons/mob/clothing/mask.dmi'
+		var/override_file = null
+		if(headsy?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_MASK)
 
-		var/mutable_appearance/mask_overlay = wear_mask.build_worn_icon(default_layer = FACEMASK_LAYER, default_icon_file = icon_file)
-		my_head.worn_mask_offset?.apply_offset(mask_overlay)
+		var/mutable_appearance/mask_overlay = wear_mask.build_worn_icon(
+			default_layer = FACEMASK_LAYER,
+			default_icon_file = 'icons/mob/clothing/mask.dmi',
+			override_file = override_file
+		)
+
+		if(isnull(override_file))
+			headsy.worn_mask_offset?.apply_offset(mask_overlay)
+
 		overlays_standing[FACEMASK_LAYER] = mask_overlay
 
 	apply_overlay(FACEMASK_LAYER)
@@ -466,16 +572,25 @@ There are several things that need to be remembered:
 
 	if(back)
 		var/obj/item/worn_item = back
-		var/mutable_appearance/back_overlay
 		update_hud_back(worn_item)
-		var/icon_file = 'icons/mob/clothing/back.dmi'
 
-		back_overlay = back.build_worn_icon(default_layer = BACK_LAYER, default_icon_file = icon_file)
+		var/obj/item/bodypart/chest/chesty = get_bodypart(BODY_ZONE_CHEST)
 
+		var/override_file = null
+		if(chesty?.bodytype & BODYTYPE_AVALI)
+			override_file = get_avali_worn_icon(worn_item, ITEM_SLOT_BACK)
+
+		var/mutable_appearance/back_overlay = back.build_worn_icon(
+			default_layer = BACK_LAYER,
+			default_icon_file = 'icons/mob/clothing/back.dmi',
+			override_file = override_file
+		)
 		if(!back_overlay)
 			return
-		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
-		my_chest?.worn_back_offset?.apply_offset(back_overlay)
+
+		if(isnull(override_file))
+			chesty?.worn_back_offset?.apply_offset(back_overlay)
+
 		overlays_standing[BACK_LAYER] = back_overlay
 	apply_overlay(BACK_LAYER)
 
@@ -516,7 +631,12 @@ There are several things that need to be remembered:
 
 		var/mutable_appearance/hand_overlay
 		var/icon_file = held_index % 2 == 0 ? worn_item.righthand_file : worn_item.lefthand_file
-		hand_overlay = worn_item.build_worn_icon(default_layer = HANDS_LAYER, default_icon_file = icon_file, isinhands = TRUE)
+		hand_overlay = worn_item.build_worn_icon(
+			default_layer = HANDS_LAYER,
+			default_icon_file = icon_file,
+			isinhands = TRUE
+		)
+
 		var/obj/item/bodypart/arm/held_in_hand = hand_bodyparts[held_index]
 		held_in_hand?.held_hand_offset?.apply_offset(hand_overlay)
 
@@ -656,6 +776,7 @@ generate/load female uniform sprites matching all previously decided variables
 	female_uniform = NO_FEMALE_UNIFORM,
 	override_state = null,
 	override_file = null,
+	mutant_type = null
 )
 
 	//Find a valid icon_state from variables+arguments
@@ -666,13 +787,10 @@ generate/load female uniform sprites matching all previously decided variables
 		t_state = !isinhands ? (worn_icon_state ? worn_icon_state : icon_state) : (inhand_icon_state ? inhand_icon_state : icon_state)
 
 	//Find a valid icon file from variables+arguments
-	var/file2use
-	if(override_file)
-		file2use = override_file
-	else
-		file2use = !isinhands ? (worn_icon ? worn_icon : default_icon_file) : default_icon_file
+	var/file2use = override_file || (!isinhands && worn_icon) || default_icon_file
+
 	//Find a valid layer from variables+arguments
-	var/layer2use = alternate_worn_layer ? alternate_worn_layer : default_layer
+	var/layer2use = alternate_worn_layer || default_layer
 
 	var/mutable_appearance/standing
 	if(female_uniform)
@@ -716,6 +834,47 @@ generate/load female uniform sprites matching all previously decided variables
 	standing.color = color
 
 	return standing
+
+// yes, avali specific proc. generalize in the future if you want
+/proc/get_avali_worn_icon(obj/item/item, item_slot)
+	// do we have a specific icon/generated something already?
+	if(item.worn_icon_avali)
+		return item.worn_icon_avali
+
+	var/default_worn_icon = item.worn_icon || item.icon
+	var/default_worn_icon_state = item.worn_icon_state || item.icon_state
+
+	// allright, do we have a greyscale config we can use instead?
+	var/used_config = item.greyscale_config_worn_avali || item.greyscale_config_worn_avali_fallback
+	if(used_config)
+		var/expected_color_amount = SSgreyscale.configurations["[used_config]"].expected_colors
+		var/list/used_colors = SSgreyscale.ParseColorString(item.greyscale_colors)
+		if(length(used_colors) >= expected_color_amount)
+			used_colors.len = expected_color_amount // GAGS errors if we overshoot
+			item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
+			return item.worn_icon_avali
+
+		// not enough colors, gotta guess the rest
+		var/icon/final_human_icon = icon(default_worn_icon, default_worn_icon_state)
+		if(item.clothing_color_coords_key)
+			var/list/sampling_coords = GLOB.clothing_color_sample_coords[item.clothing_color_coords_key]
+			if(length(sampling_coords) * 0.5 < expected_color_amount) // someone didnt set the config properly
+				stack_trace("get_avali_worn_icon: sampling_coords length less than expected_color_amount!")
+				sampling_coords.len = expected_color_amount * 2 //this is BAD, mkay?
+
+			for(var/iter in (length(used_colors) + 1) to expected_color_amount)
+				var/index = ((iter - 1) * 2) + 1
+				used_colors += final_human_icon.GetPixel(sampling_coords[index], sampling_coords[index + 1]) || COLOR_DARK
+
+		else // why must you make this difficult
+			for(var/i in (length(used_colors) + 1) to expected_color_amount)
+				used_colors += COLOR_DARK
+
+		item.worn_icon_avali = SSgreyscale.GetColoredIconByType(used_config, used_colors.Join(""))
+		return item.worn_icon_avali
+
+	// fuck it, we bail
+	return null
 
 /// Returns offsets used for equipped item overlays in list(px_offset,py_offset) form.
 /obj/item/proc/get_worn_offsets(isinhands)
@@ -861,5 +1020,3 @@ generate/load female uniform sprites matching all previously decided variables
 			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 2))
 
 	return appearance
-
-#undef RESOLVE_ICON_STATE

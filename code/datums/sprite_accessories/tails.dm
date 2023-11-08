@@ -47,7 +47,27 @@
 	icon = 'icons/mob/species/monkey/monkey_tail.dmi'
 	icon_state = "default"
 
-/// MUTANT SPRITES
+
+// AVALI SPRITES
+
+/datum/sprite_accessory/tails/avali
+	icon = 'icons/mob/species/avali/avali_tails.dmi'
+	color_amount = 3
+	//recommended_species = list(SPECIES_AVALI)
+
+/datum/sprite_accessory/tails/avali/default
+	name = "Avali (Default)"
+	icon_state = "avali_default"
+
+/datum/sprite_accessory/tails/avali/fluffy
+	name = "Avali (Fluffy)"
+	icon_state = "avali_fluffy"
+
+/datum/sprite_accessory/tails/avali/thin
+	name = "Avali (Thin)"
+	icon_state = "avali_thin"
+
+// MUTANT SPRITES
 
 /datum/sprite_accessory/tails/mutant
 	icon = 'icons/mob/species/sprite_accessory/tails_mutant.dmi'

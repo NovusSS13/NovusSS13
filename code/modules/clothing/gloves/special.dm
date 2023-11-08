@@ -3,6 +3,7 @@
 	name = "\improper H.A.U.L. gauntlets"
 	desc = "These clunky gauntlets allow you to drag things with more confidence on them not getting nabbed from you."
 	icon_state = "haul_gauntlet"
+	worn_icon_avali = null
 	greyscale_colors = "#2f2e31"
 	equip_delay_self = 3 SECONDS
 	equip_delay_other = 4 SECONDS
@@ -54,6 +55,7 @@
 	desc = "Just looking at these fills you with an urge to beat the shit out of people."
 	icon_state = "rapid"
 	inhand_icon_state = null
+	worn_icon_avali = null
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 
 /obj/item/clothing/gloves/rapid/Initialize(mapload)
@@ -99,6 +101,7 @@
 	desc = "Cheap sterile gloves made from latex. Provides quicker carrying from a good grip."
 	icon_state = "latex"
 	inhand_icon_state = "latex_gloves"
+	worn_icon_avali = null
 	greyscale_colors = null
 	siemens_coefficient = 0.3
 	armor_type = /datum/armor/latex_gloves
@@ -130,8 +133,9 @@
 /obj/item/clothing/gloves/tinkerer
 	name = "tinker's gloves"
 	desc = "Overdesigned engineering gloves that have automated construction subrutines dialed in, allowing for faster construction while worn."
-	inhand_icon_state = "greyscale_gloves"
 	icon_state = "clockwork_gauntlets"
+	inhand_icon_state = "greyscale_gloves"
+	worn_icon_avali = null
 	greyscale_colors = "#db6f05"
 	siemens_coefficient = 0.8
 	armor_type = /datum/armor/tinker_gloves
@@ -146,6 +150,7 @@
 	name = "atmospheric extrication gloves"
 	desc = "Heavy duty gloves for firefighters. These are thick, non-flammable and let you carry people faster."
 	icon_state = "atmos"
+	worn_icon_avali = null
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	heat_protection = HANDS

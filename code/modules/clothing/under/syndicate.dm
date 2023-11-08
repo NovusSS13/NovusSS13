@@ -58,6 +58,7 @@
 	desc = "Just looking at it makes you want to buy an SKS, go into the woods, and -operate-."
 	icon_state = "tactifool"
 	inhand_icon_state = "bl_suit"
+	worn_icon_avali = null
 	has_sensor = HAS_SENSORS
 	armor_type = /datum/armor/clothing_under/syndicate_tacticool
 	stubborn_stains = TRUE
@@ -69,7 +70,7 @@
 /obj/item/clothing/under/syndicate/tacticool/examine(mob/user)
 	. = ..()
 	. += "It has a label that says cleaning this 'genuine' Waffle Corp. product with cleaning solutions other than Grime Liberator telelocational podcrystals will void the warranty."
-	. += "What on earth is a <font color='red'>tele</font>locational pod<font color='red'>crystal</font>?"
+	. += "What on earth is a telelocational podcrystal?"
 
 /obj/item/clothing/under/syndicate/tacticool/dye_item(dye_color, dye_key_override)
 	if(dye_color == DYE_SYNDICATE)
@@ -105,12 +106,14 @@
 	desc = "A green military camouflage uniform."
 	icon_state = "camogreen"
 	inhand_icon_state = "g_suit"
+	worn_icon_avali = null
 	can_adjust = FALSE
 
 /obj/item/clothing/under/syndicate/soviet
 	name = "Ratnik 5 tracksuit"
 	desc = "Badly translated labels tell you to clean this in Vodka. Great for squatting in."
 	icon_state = "trackpants"
+	worn_icon_avali = null
 	can_adjust = FALSE
 	armor_type = /datum/armor/clothing_under/syndicate_soviet
 	resistance_flags = NONE
@@ -128,6 +131,7 @@
 	name = "advanced military tracksuit"
 	desc = "Military grade tracksuits for frontline squatting."
 	icon_state = "rus_under"
+	worn_icon_avali = null
 	can_adjust = FALSE
 	armor_type = /datum/armor/clothing_under/syndicate_rus_army
 	resistance_flags = NONE

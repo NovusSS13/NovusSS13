@@ -1072,3 +1072,6 @@
 
 /mob/living/carbon/human/species/mutant
 	race = /datum/species/mutant
+
+/mob/living/carbon/human/species/avali
+	race = /datum/species/avali

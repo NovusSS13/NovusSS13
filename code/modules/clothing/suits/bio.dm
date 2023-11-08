@@ -3,9 +3,10 @@
 	name = "bio hood"
 	desc = "A hood that protects the head and face from biological contaminants."
 	icon = 'icons/obj/clothing/head/bio.dmi'
-	worn_icon = 'icons/mob/clothing/head/bio.dmi'
 	icon_state = "bio"
 	inhand_icon_state = "bio_hood"
+	worn_icon = 'icons/mob/clothing/head/bio.dmi'
+	worn_icon_avali = null
 	clothing_flags = THICKMATERIAL | BLOCK_GAS_SMOKE_EFFECT | SNUG_FIT | PLASMAMAN_HELMET_EXEMPT | HEADINTERNALS
 	armor_type = /datum/armor/head_bio_hood
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
@@ -127,6 +128,7 @@
 	desc = "It protected doctors from the Black Death, back then. You bet your arse it's gonna help you against viruses."
 	icon_state = "plaguedoctor"
 	inhand_icon_state = "bio_suit"
+	worn_icon_avali = null
 	strip_delay = 40
 	equip_delay_other = 20
 

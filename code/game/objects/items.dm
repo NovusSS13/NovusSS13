@@ -22,22 +22,28 @@
 	///Icon file for right inhand overlays
 	var/righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 
-	///Icon file for mob worn overlays.
+	// Icon files for mob worn overlays.
 	var/icon/worn_icon
+	var/icon/worn_icon_avali
+
 	///Icon state for mob worn overlays, if null the normal icon_state will be used.
 	var/worn_icon_state
 	///Icon state for the belt overlay, if null the normal icon_state will be used.
 	var/belt_icon_state
 	///Forced mob worn layer instead of the standard preferred size.
 	var/alternate_worn_layer
-	///The config type to use for greyscaled worn sprites. Both this and greyscale_colors must be assigned to work.
+
+	//The config types to use for greyscaled sprites. Both this and greyscale_colors must be assigned to work.
 	var/greyscale_config_worn
-	///The config type to use for greyscaled left inhand sprites. Both this and greyscale_colors must be assigned to work.
+	var/greyscale_config_worn_avali
+	/// If we cant find ANYTHING, just use a generic "close enough" icon. Get rid of this if possible.
+	var/greyscale_config_worn_avali_fallback
 	var/greyscale_config_inhand_left
-	///The config type to use for greyscaled right inhand sprites. Both this and greyscale_colors must be assigned to work.
 	var/greyscale_config_inhand_right
-	///The config type to use for greyscaled belt overlays. Both this and greyscale_colors must be assigned to work.
 	var/greyscale_config_belt
+
+	/// if greyscale_colors is undefined, use this as key in GLOB.clothing_color_sample_coords to get the fallback.
+	var/clothing_color_coords_key
 
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 
@@ -363,6 +369,7 @@
 	. = ..()
 	if(!greyscale_colors)
 		return
+
 	if(greyscale_config_worn)
 		worn_icon = SSgreyscale.GetColoredIconByType(greyscale_config_worn, greyscale_colors)
 	if(greyscale_config_inhand_left)
