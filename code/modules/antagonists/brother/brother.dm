@@ -326,7 +326,7 @@
 			add_objective(new /datum/objective/destroy, needs_target = TRUE)
 		if(prob(20)) //small chance to debrain due to new brother lore
 			add_objective(new /datum/objective/debrain, needs_target = TRUE)
-		else if(prob(30))
+		else if(prob(50))
 			add_objective(new /datum/objective/maroon, needs_target = TRUE)
 		else
 			add_objective(new /datum/objective/assassinate, needs_target = TRUE)
