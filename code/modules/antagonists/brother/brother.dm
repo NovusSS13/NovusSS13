@@ -324,7 +324,7 @@
 	if(prob(50))
 		if(LAZYLEN(active_ais()) && prob(100/GLOB.joined_player_list.len))
 			add_objective(new /datum/objective/destroy, needs_target = TRUE)
-		if(prob(20)) //small chance to debrain due to new brother lore
+		else if(prob(20)) //small chance to debrain due to new brother lore
 			add_objective(new /datum/objective/debrain, needs_target = TRUE)
 		else if(prob(50))
 			add_objective(new /datum/objective/maroon, needs_target = TRUE)
