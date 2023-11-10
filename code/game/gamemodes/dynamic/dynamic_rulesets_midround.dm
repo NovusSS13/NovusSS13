@@ -247,9 +247,61 @@
 	log_dynamic("[key_name(M)] was selected by the [name] ruleset and has been made into a midround traitor.")
 	return TRUE
 
+/// Midround Traitor Ruleset (From Living)
+/datum/dynamic_ruleset/midround/from_living/autobrothers
+	name = "Awakened Blood Brothers"
+	midround_ruleset_style = MIDROUND_RULESET_STYLE_LIGHT
+	antag_datum = /datum/antagonist/brother
+	antag_flag = ROLE_BROTHER_MIDROUND
+	antag_flag_override = ROLE_BROTHER
+	protected_roles = list(
+		JOB_CAPTAIN,
+		JOB_DETECTIVE,
+		JOB_HEAD_OF_PERSONNEL,
+		JOB_HEAD_OF_SECURITY,
+		JOB_PRISONER,
+		JOB_SECURITY_OFFICER,
+		JOB_WARDEN,
+	)
+	restricted_roles = list(
+		JOB_AI,
+		JOB_CYBORG,
+		ROLE_POSITRONIC_BRAIN,
+	)
+	required_candidates = 2
+	weight = 10
+	cost = 5
+	requirements = list(40,30,30,20,20,15,15,15,10,10)
+	repeatable = TRUE
+
+/datum/dynamic_ruleset/midround/from_living/autobrothers/trim_candidates()
+	..()
+	candidates = living_players
+	for(var/mob/living/player in candidates)
+		if(issilicon(player)) // Your assigned role doesn't change when you are turned into a silicon.
+			candidates -= player
+		else if(is_centcom_level(player.z))
+			candidates -= player // We don't autotator people in CentCom
+		else if(player.mind && (player.mind.special_role || player.mind.antag_datums?.len > 0))
+			candidates -= player // We don't autotator people with roles already
+
+/datum/dynamic_ruleset/midround/from_living/autobrothers/execute()
+	var/team_size = prob(10) ? min(3, candidates.len) : 2
+	var/datum/team/brother_team/team = new
+	for(var/i in 1 to team_size)
+		var/mob/brother = pick_n_take(candidates)
+		team.add_member(brother.mind)
+		brother.mind.special_role = ROLE_BROTHER
+		message_admins("[ADMIN_LOOKUPFLW(brother)] was selected by the [name] ruleset and has been made into a midround brother.")
+		log_dynamic("[key_name(brother)] was selected by the [name] ruleset and has been made into a midround brother.")
+	team.forge_brother_objectives()
+	for(var/datum/mind/brother_mind in team.members)
+		brother_mind.add_antag_datum(/datum/antagonist/brother, team)
+	return TRUE
+
 /// Midround Malf AI Ruleset (From Living)
 /datum/dynamic_ruleset/midround/malf
-	name = "Malfunctioning AI"
+	name = "Sudden Malfunctioning AI"
 	midround_ruleset_style = MIDROUND_RULESET_STYLE_HEAVY
 	antag_datum = /datum/antagonist/malf_ai
 	antag_flag = ROLE_MALF_MIDROUND
@@ -305,7 +357,7 @@
 
 /// Midround Wizard Ruleset (From Ghosts)
 /datum/dynamic_ruleset/midround/from_ghosts/wizard
-	name = "Wizard"
+	name = "Wandering Wizard"
 	midround_ruleset_style = MIDROUND_RULESET_STYLE_HEAVY
 	antag_datum = /datum/antagonist/wizard
 	antag_flag = ROLE_WIZARD_MIDROUND
