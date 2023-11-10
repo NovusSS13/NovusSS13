@@ -288,15 +288,18 @@
 /datum/dynamic_ruleset/midround/from_living/autobrothers/execute()
 	var/team_size = prob(10) ? min(3, candidates.len) : 2
 	var/datum/team/brother_team/team = new
+	var/list/brothers_lookupflw = list()
+	var/list/brothers_keyname = list()
 	for(var/i in 1 to team_size)
 		var/mob/brother = pick_n_take(candidates)
 		team.add_member(brother.mind)
-		brother.mind.special_role = ROLE_BROTHER
-		message_admins("[ADMIN_LOOKUPFLW(brother)] was selected by the [name] ruleset and has been made into a midround brother.")
-		log_dynamic("[key_name(brother)] was selected by the [name] ruleset and has been made into a midround brother.")
+		brothers_lookupflw += "[ADMIN_LOOKUPFLW(brother)]"
+		brothers_keyname += "[key_name(brother)]"
 	team.forge_brother_objectives()
 	for(var/datum/mind/brother_mind in team.members)
 		brother_mind.add_antag_datum(/datum/antagonist/brother, team)
+	message_admins("[english_list(brothers_lookupflw)] were selected by the [name] ruleset and have been made into a midround brother.")
+	log_dynamic("[english_list(brothers_keyname)] were selected by the [name] ruleset and have been made into a midround brother.")
 	return TRUE
 
 /// Midround Malf AI Ruleset (From Living)
