@@ -132,7 +132,7 @@
 			var/mob/bro = pick_n_take(candidates)
 			assigned += bro.mind
 			team.add_member(bro.mind)
-			bro.mind.special_role = "brother"
+			bro.mind.special_role = ROLE_BROTHER
 			bro.mind.restricted_roles = restricted_roles
 			GLOB.pre_setup_antags += bro.mind
 		pre_brother_teams += team
@@ -144,7 +144,6 @@
 		for(var/datum/mind/M in team.members)
 			M.add_antag_datum(/datum/antagonist/brother, team)
 			GLOB.pre_setup_antags -= M
-		team.update_name()
 	return TRUE
 
 //////////////////////////////////////////////

@@ -20,6 +20,7 @@
 // Midround roles
 #define ROLE_ABDUCTOR "Abductor"
 #define ROLE_ALIEN "Xenomorph"
+#define ROLE_BROTHER_MIDROUND "Blood Brother (Midround)"
 #define ROLE_BLOB "Blob"
 #define ROLE_BLOB_INFECTION "Blob Infection"
 #define ROLE_CHANGELING_MIDROUND "Changeling (Midround)"
