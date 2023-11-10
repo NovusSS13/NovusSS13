@@ -14,7 +14,8 @@
 	"Roundstart": {
 		"Traitor": {
 			"weight": 5,
-			"cost": 10
+			"cost": 10,
+			"minimum_players": 7
 		},
 		"Malfunctioning AI": {
 			"weight": 1,
@@ -60,7 +61,8 @@
 	"Latejoin": {
 		"Syndicate Infiltrator": {
 			"weight": 10,
-			"cost": 7
+			"cost": 7,
+			"minimum_players": 7
 		},
 		"Provocateur": {
 			"weight": 2,
@@ -81,7 +83,8 @@
 	"Midround": {
 		"Syndicate Sleeper Agent": {
 			"weight": 35,
-			"cost": 7
+			"cost": 7,
+			"minimum_players": 5
 		},
 		"Sudden Malfunctioning AI": {
 			"weight": 2,
