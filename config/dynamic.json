@@ -62,7 +62,7 @@
 		"Syndicate Infiltrator": {
 			"weight": 10,
 			"cost": 7,
-			"minimum_players": 7
+			"minimum_players": 6
 		},
 		"Provocateur": {
 			"weight": 2,
