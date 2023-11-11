@@ -263,6 +263,9 @@
 	if(locate(/datum/wound/burn) in wounds)
 		. += span_warning("The flesh on this limb appears badly cooked.")
 
+/obj/item/bodypart/setDir(newdir)
+	SHOULD_CALL_PARENT(FALSE)
+	return //always face south
 /**
  * Called when a bodypart is checked for injuries.
  * Returns the messages represeting the bodypart's injuries.
