@@ -1229,11 +1229,10 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		// not necessary to do anything else in this case
 		if(sat_shift == 1 && lum_shift == 1)
 			return GLOB.chat_colors[string]
-		var/list/hsv_color = rgb2num(GLOB.chat_colors[string], COLORSPACE_HSV)
-		var/h = hsv_color[1]
-		var/s = clamp(hsv_color[2] * clamp(sat_shift, 0, 1), 0, 255)
-		var/l = clamp(hsv_color[3] * clamp(lum_shift, 0, 1), 0, 255)
-		return rgb(h=h, s=s, l=l)
+		var/list/hsl_color = rgb2num(GLOB.chat_colors[string], COLORSPACE_HSL)
+		return rgb(h = hsl_color[1], \
+				s = clamp(hsl_color[2] * clamp(sat_shift, 0, 1), 0, 255), \
+				l = clamp(hsl_color[3] * clamp(lum_shift, 0, 1), 0, 255))
 
 	// seed to help randomness
 	var/static/rseed = rand(1,26)

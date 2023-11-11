@@ -120,7 +120,7 @@
 	var/image_dir = NONE
 	if(dropped)
 		image_dir = SOUTH
-		if(dmg_overlay_type)
+		if(dmg_overlay_type && (bodytype & BODYTYPE_HUMANOID))
 			if(brutestate)
 				. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
 				if(aux_zone)

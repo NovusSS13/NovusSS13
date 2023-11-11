@@ -294,6 +294,7 @@
 	scar_keyword = "slashmoderate"
 
 /datum/wound/slash/moderate/update_descriptions()
+	. = ..()
 	if(no_bleeding)
 		occur_text = "is cut open"
 
@@ -315,6 +316,7 @@
 	scar_keyword = "slashsevere"
 
 /datum/wound/slash/severe/update_descriptions()
+	. = ..()
 	if(no_bleeding)
 		occur_text = "is ripped open"
 
@@ -351,5 +353,6 @@
 	clot_rate = 0.01
 
 /datum/wound/slash/critical/cleave/update_descriptions()
+	. = ..()
 	if(no_bleeding)
 		occur_text = "is ruptured"

@@ -1671,12 +1671,11 @@
  * Returns a list, or null if they have no diet.
  */
 /datum/species/proc/get_species_diet()
-	if((TRAIT_NOHUNGER in inherent_traits) || !mutanttongue)
+	if(!mutanttongue || !(TRAIT_NOHUNGER in get_all_traits()))
 		return null
 
-	var/static/list/food_flags = FOOD_FLAGS
+	var/static/list/food_flags = FOOD_FLAGS_IC
 	var/obj/item/organ/tongue/fake_tongue = mutanttongue
-
 	return list(
 		"liked_food" = bitfield_to_list(initial(fake_tongue.liked_foodtypes), food_flags),
 		"disliked_food" = bitfield_to_list(initial(fake_tongue.disliked_foodtypes), food_flags),
@@ -1877,7 +1876,7 @@
 	var/list/to_add = list()
 
 	// TRAIT_NOBLOOD takes priority by default
-	if(TRAIT_NOBLOOD in inherent_traits)
+	if(TRAIT_NOBLOOD in get_all_traits())
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "tint-slash",
@@ -1913,7 +1912,8 @@
 /datum/species/proc/create_pref_traits_perks()
 	var/list/to_add = list()
 
-	if(TRAIT_LIMBATTACHMENT in inherent_traits)
+	var/list/all_traits = get_all_traits()
+	if(TRAIT_LIMBATTACHMENT in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "user-plus",
@@ -1922,7 +1922,7 @@
 				require surgery to restore. Simply pick it up and pop it back in, champ!",
 		))
 
-	if(TRAIT_EASYDISMEMBER in inherent_traits)
+	if(TRAIT_EASYDISMEMBER in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "user-times",
@@ -1930,7 +1930,7 @@
 			SPECIES_PERK_DESC = "[plural_form] limbs are not secured well, and as such they are easily dismembered.",
 		))
 
-	if(TRAIT_EASILY_WOUNDED in inherent_traits)
+	if(TRAIT_EASILY_WOUNDED in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "user-times",
@@ -1938,7 +1938,7 @@
 			SPECIES_PERK_DESC = "[plural_form] skin is very weak and fragile. They are much easier to apply serious wounds to.",
 		))
 
-	if(TRAIT_TOXINLOVER in inherent_traits)
+	if(TRAIT_TOXINLOVER in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "syringe",
@@ -1947,7 +1947,7 @@
 				causing toxins will instead cause healing. Be careful around purging chemicals!",
 		))
 
-	if(TRAIT_GENELESS in inherent_traits)
+	if(TRAIT_GENELESS in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "dna",
@@ -1955,7 +1955,7 @@
 			SPECIES_PERK_DESC = "[plural_form] have no genes, making genetic scrambling a useless weapon, but also locking them out from getting genetic powers.",
 		))
 
-	if(TRAIT_NOBREATH in inherent_traits)
+	if(TRAIT_NOBREATH in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "wind",
@@ -2160,6 +2160,35 @@
 			new_part.replace_limb(target, special = TRUE, keep_old_organs = TRUE)
 			new_part.update_limb(is_creating = TRUE)
 		qdel(old_part)
+
+/**
+ * Returns all of a species traits, including ones handled by bodyparts and organs.
+ */
+/datum/species/proc/get_all_traits()
+	var/list/traits = inherent_traits.Copy()
+
+	for(var/zone in bodypart_overrides)
+		var/obj/item/bodypart/fake_bodypart = GLOB.bodyparts_by_path[bodypart_overrides[zone]]
+		if(!fake_bodypart)
+			continue
+		traits |= fake_bodypart.bodypart_traits
+
+	//this is stupid, organ unification when?
+	var/list/organ_types = list()
+	for(var/other_organ in list(mutantbrain,mutantheart,mutantlungs,mutanteyes,mutantears,mutanttongue,mutantliver,mutantstomach,mutantappendix))
+		if(other_organ)
+			organ_types += other_organ
+	for(var/cosmetic_organ in cosmetic_organs)
+		organ_types += cosmetic_organ
+	for(var/mutant_organ in mutant_organs)
+		organ_types += mutant_organ
+	for(var/organ_path in organ_types)
+		var/obj/item/organ/fake_organ = GLOB.organs_by_path[organ_path]
+		if(!fake_organ)
+			continue
+		traits |= fake_organ.organ_traits
+
+	return traits
 
 /**
  * Checks if the species has a head with these head flags, by default.

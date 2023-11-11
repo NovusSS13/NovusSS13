@@ -14,8 +14,6 @@
 	chat_color = COLOR_HEALING_CYAN
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
-		TRAIT_TOXINLOVER,
-		TRAIT_NOBLOOD,
 	)
 	cosmetic_organs = list(
 		/obj/item/organ/genital/penis = SPRITE_ACCESSORY_NONE,

@@ -92,6 +92,7 @@
 	init_sprite_accessories()
 	init_hair_gradients()
 	init_bodyparts_lists()
+	init_organs_lists()
 	init_species_list()
 	init_voice_packs()
 	init_keybindings()

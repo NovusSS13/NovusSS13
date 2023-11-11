@@ -13,6 +13,7 @@
 	limb_id = SPECIES_AVALI
 	custom_eyes_icon = 'icons/mob/species/avali/avali_eyes.dmi'
 	head_flags = HEAD_EYESPRITES | HEAD_EYECOLOR | HEAD_EYEHOLES | HEAD_DEBRAIN
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 /obj/item/bodypart/head/avali/Initialize(mapload)
 	worn_ears_offset = new(
@@ -43,6 +44,12 @@
 	icon_husk = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
 	limb_id = SPECIES_AVALI
 	acceptable_bodytype = BODYTYPE_AVALI
+	bodypart_traits = list(
+		TRAIT_NO_BLOOD_OVERLAY,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_SOCKS,
+	)
 
 /obj/item/bodypart/chest/avali/Initialize(mapload)
 	worn_back_offset = new(
@@ -68,6 +75,7 @@
 	icon_husk = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
 	unarmed_damage_high = AVALI_PUNCH_HIGH
 	unarmed_damage_low = AVALI_PUNCH_LOW
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 /obj/item/bodypart/arm/right/avali
 	bodytype = BODYTYPE_ORGANIC | BODYTYPE_AVALI
@@ -79,7 +87,7 @@
 	icon_husk = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
 	unarmed_damage_low = AVALI_PUNCH_LOW
 	unarmed_damage_high = AVALI_PUNCH_HIGH
-
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 /obj/item/bodypart/leg/left/avali
 	bodytype = BODYTYPE_ORGANIC | BODYTYPE_AVALI
@@ -90,6 +98,7 @@
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
 	icon_husk = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
 	speed_modifier = -0.2
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 /obj/item/bodypart/leg/right/avali
 	bodytype = BODYTYPE_ORGANIC | BODYTYPE_AVALI
@@ -100,6 +109,7 @@
 	icon_greyscale = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
 	icon_husk = 'icons/mob/species/avali/bodyparts_greyscale.dmi'
 	speed_modifier = -0.2
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 #undef AVALI_PUNCH_LOW
 #undef AVALI_PUNCH_HIGH

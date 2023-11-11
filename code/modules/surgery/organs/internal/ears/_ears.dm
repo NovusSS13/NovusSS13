@@ -143,6 +143,7 @@
 	visual = TRUE
 	dna_block = DNA_EARS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/cat
+	organ_traits = list(TRAIT_HATED_BY_DOGS)
 
 /datum/bodypart_overlay/mutant/ears/cat
 
@@ -159,13 +160,13 @@
 	dna_block = DNA_EARS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/avali
 
-/obj/item/organ/ears/penguin/on_insert(mob/living/carbon/human/ear_owner)
+/obj/item/organ/ears/avali/on_insert(mob/living/carbon/human/ear_owner)
 	. = ..()
 	if(istype(ear_owner))
 		to_chat(ear_owner, span_notice("You suddenly feel like you've lost your balance."))
 		ADD_WADDLE(ear_owner, WADDLE_SOURCE_AVALI)
 
-/obj/item/organ/ears/penguin/on_remove(mob/living/carbon/human/ear_owner)
+/obj/item/organ/ears/avali/on_remove(mob/living/carbon/human/ear_owner)
 	. = ..()
 	if(istype(ear_owner))
 		to_chat(ear_owner, span_notice("Your sense of balance comes back to you."))

@@ -11,11 +11,8 @@
 	exotic_bloodtype = "LE"
 	siemens_coeff = 0.5 //They thrive on energy
 	inherent_traits = list(
-		TRAIT_NO_UNDERWEAR,
-		TRAIT_NO_UNDERSHIRT,
-		TRAIT_NO_SOCKS,
-		TRAIT_MUTANT_COLORS,
 		TRAIT_FIXED_MUTANT_COLORS,
+		TRAIT_MUTANT_COLORS,
 		TRAIT_AGENDER,
 	)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT

@@ -68,9 +68,10 @@
 			data[species_id]["lore"] = species.get_species_lore()
 			data[species_id]["is_selectable"] = TRUE
 
+		var/list/all_traits = species.get_all_traits()
 		data[species_id]["icon"] = sanitize_css_class_name(species.name)
-		data[species_id]["sexes"] = !(TRAIT_AGENDER in species.inherent_traits)
-		data[species_id]["use_skintones"] = (TRAIT_USES_SKINTONES in species.inherent_traits)
+		data[species_id]["sexes"] = !(TRAIT_AGENDER in all_traits)
+		data[species_id]["use_skintones"] = (TRAIT_USES_SKINTONES in all_traits)
 		data[species_id]["enabled_features"] = species.get_features()
 		data[species_id]["perks"] = species.get_species_perks()
 		data[species_id]["diet"] =  species.get_species_diet()

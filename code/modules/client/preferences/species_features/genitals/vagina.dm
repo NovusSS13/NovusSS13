@@ -71,7 +71,7 @@
 
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = new species_type
-	return (TRAIT_USES_SKINTONES in species.inherent_traits)
+	return (TRAIT_USES_SKINTONES in species.get_all_traits())
 
 /datum/preference/toggle/vagina_uses_skintone/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	var/obj/item/organ/genital/vagina = target.get_organ_slot(ORGAN_SLOT_VAGINA)

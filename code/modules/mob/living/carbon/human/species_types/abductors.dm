@@ -4,14 +4,8 @@
 	chat_color = "#d5d5d5"
 	inherent_traits = list(
 		TRAIT_AGENDER,
-		TRAIT_CHUNKYFINGERS_IGNORE_BATON,
-		TRAIT_NOBLOOD,
 		TRAIT_NOHUNGER,
-		TRAIT_NO_UNDERWEAR,
-		TRAIT_NO_UNDERSHIRT,
-		TRAIT_NO_SOCKS,
 		TRAIT_NOBREATH,
-		TRAIT_VIRUSIMMUNE,
 	)
 	mutanttongue = /obj/item/organ/tongue/abductor
 	mutantstomach = null

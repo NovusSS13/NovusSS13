@@ -68,7 +68,8 @@
 			other_splatter.bloodiness = src.bloodiness
 			other_splatter.update_appearance(UPDATE_ICON)
 			other_splatter.alpha = 0
-			animate(other_splatter, alpha = 255, time = 2)
+			animate(other_splatter, alpha = stacker.alpha, time = 2)
+			animate(other_splatter, color = stacker.color, time = 2)
 			addtimer(CALLBACK(other_splatter, TYPE_PROC_REF(/obj/effect/decal/cleanable/blood/splatter/stacking, delayed_merge), stacker), 2)
 		splatter = stacker
 	var/list/our_blood_dna = GET_ATOM_BLOOD_DNA(src)
@@ -139,7 +140,6 @@
 
 /// Called so that a spawning animation can be performed by blood particles, after that is done we merge with merger
 /obj/effect/decal/cleanable/blood/splatter/stacking/proc/delayed_merge(obj/effect/decal/cleanable/blood/splatter/stacking/merger)
-	SIGNAL_HANDLER
 	if(QDELETED(merger))
 		if(!QDELETED(src))
 			qdel(src)

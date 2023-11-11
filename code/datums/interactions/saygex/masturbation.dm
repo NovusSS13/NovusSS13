@@ -33,7 +33,10 @@
 	. = ..()
 	var/mob/living/carbon/human/human_user = user.parent
 	var/obj/item/organ/genital/penis/penis = human_user.get_organ_slot(ORGAN_SLOT_PENIS)
-	if(!penis?.bodypart_overlay?.can_draw_on_body(human_user.get_bodypart(check_zone(penis.zone)), human_user))
+	if(!penis.bodypart_overlay)
+		return FALSE
+	var/datum/bodypart_overlay/mutant/genital/genital_overlay = penis.bodypart_overlay
+	if(!genital_overlay.is_genital_visible(human_user.get_bodypart(check_zone(penis.zone)), human_user))
 		return FALSE
 
 /datum/interaction/saygex/jerkoff/perform_interaction_animation(datum/component/interactable/user, datum/component/interactable/target)
@@ -88,7 +91,10 @@
 	. = ..()
 	var/mob/living/carbon/human/human_user = user.parent
 	var/obj/item/organ/genital/vagina/vagina = human_user.get_organ_slot(ORGAN_SLOT_VAGINA)
-	if(!vagina?.bodypart_overlay?.can_draw_on_body(human_user.get_bodypart(check_zone(vagina.zone)), human_user))
+	if(!vagina.bodypart_overlay)
+		return FALSE
+	var/datum/bodypart_overlay/mutant/genital/genital_overlay = vagina.bodypart_overlay
+	if(!genital_overlay.is_genital_visible(human_user.get_bodypart(check_zone(vagina.zone)), human_user))
 		return FALSE
 
 /datum/interaction/saygex/finger_self_vagina/perform_interaction_animation(datum/component/interactable/user, datum/component/interactable/target)
@@ -141,7 +147,10 @@
 	. = ..()
 	var/mob/living/carbon/human/human_user = user.parent
 	var/obj/item/organ/genital/anus/anus = human_user.get_organ_slot(ORGAN_SLOT_ANUS)
-	if(!anus?.bodypart_overlay?.can_draw_on_body(human_user.get_bodypart(check_zone(anus.zone)), human_user))
+	if(!anus.bodypart_overlay)
+		return FALSE
+	var/datum/bodypart_overlay/mutant/genital/genital_overlay = anus.bodypart_overlay
+	if(!genital_overlay.is_genital_visible(human_user.get_bodypart(check_zone(anus.zone)), human_user))
 		return FALSE
 
 /datum/interaction/saygex/finger_self_anus/perform_interaction_animation(datum/component/interactable/user, datum/component/interactable/target)

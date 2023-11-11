@@ -6,7 +6,6 @@
 	chat_color = COLOR_GREEN_GRAY
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
-		TRAIT_PLANT_SAFE,
 	)
 	cosmetic_organs = list(
 		/obj/item/organ/pod_hair = SPRITE_ACCESSORY_NONE,
