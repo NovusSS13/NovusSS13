@@ -197,11 +197,11 @@
 	on = active
 	if(on)
 		update_use_power(ACTIVE_POWER_USE)
-		warned_doctors = FALSE
+		bugged_doctors = FALSE
 	else
 		update_use_power(IDLE_POWER_USE)
-		var/mob/living/occupant = occupant
-		occupant?.remove_status_effect(/datum/status_effect/grouped/stasis, type)
+		var/mob/living/fuck_him = occupant
+		fuck_him?.remove_status_effect(/datum/status_effect/grouped/stasis, type)
 
 	update_appearance()
 
