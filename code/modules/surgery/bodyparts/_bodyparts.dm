@@ -264,10 +264,8 @@
 		. += span_warning("The flesh on this limb appears badly cooked.")
 
 /obj/item/bodypart/setDir(newdir)
-	var/old_dir = dir
-	. = ..()
-	dir = old_dir //never actually change dir, that shit fucks dropped bodypart rendering
-
+	SHOULD_CALL_PARENT(FALSE)
+	return //always face south
 /**
  * Called when a bodypart is checked for injuries.
  * Returns the messages represeting the bodypart's injuries.
