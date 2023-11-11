@@ -31,7 +31,7 @@
 
 	showpipe = FALSE
 
-	var/autoeject = TRUE
+	var/autoeject = FALSE
 	var/volume = 100
 
 	var/efficiency = 1
@@ -55,6 +55,8 @@
 	var/message_cooldown
 	///Cryo will continue to treat people with 0 damage but existing wounds, but will sound off when damage healing is done in case doctors want to directly treat the wounds instead
 	var/treating_wounds = FALSE
+	/// Anti spam measures.
+	var/bugged_doctors = FALSE
 	fair_market_price = 10
 	payment_department = ACCOUNT_MED
 
@@ -195,8 +197,12 @@
 	on = active
 	if(on)
 		update_use_power(ACTIVE_POWER_USE)
+		warned_doctors = FALSE
 	else
 		update_use_power(IDLE_POWER_USE)
+		var/mob/living/occupant = occupant
+		occupant?.remove_status_effect(/datum/status_effect/grouped/stasis, type)
+
 	update_appearance()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/on_set_is_operational(old_value)
@@ -223,7 +229,9 @@
 	if(mob_occupant.stat == DEAD) // We don't bother with dead people.
 		return
 
-	mob_occupant.apply_status_effect(/datum/status_effect/grouped/stasis, type, (ALL & ~(STASIS_FLAG_LIFE|STASIS_FLAG_REAGENTS)))
+	// so we actually apply our own stasis if we already have some diff one
+	mob_occupant.apply_status_effect(/datum/status_effect/grouped/stasis, type, ~(STASIS_FLAG_LIFE|STASIS_FLAG_REAGENTS))
+
 	if(mob_occupant.get_organic_health() >= mob_occupant.getMaxHealth()) // Don't bother with fully healed people.
 		if(iscarbon(mob_occupant))
 			var/mob/living/carbon/C = mob_occupant
@@ -236,13 +244,16 @@
 			else // otherwise if we were only treating wounds and now we don't have any, turn off treating_wounds so we can boot 'em out
 				treating_wounds = FALSE
 
-		if(!treating_wounds)
-			set_on(FALSE)
+		if(!treating_wounds && !bugged_doctors)
+			bugged_doctors = TRUE
 			playsound(src, 'sound/machines/cryo_warning.ogg', volume) // Bug the doctors.
 			var/msg = "Patient fully restored."
 			if(autoeject) // Eject if configured.
+				set_on(FALSE)
 				msg += " Auto ejecting patient now."
 				open_machine()
+			else
+				msg += " Maintaining patient in stasis."
 			radio.talk_into(src, msg, radio_channel)
 			return
 
