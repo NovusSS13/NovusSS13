@@ -87,11 +87,11 @@
 
 /obj/machinery/space_heater/examine(mob/user)
 	. = ..()
-	. += "\The [src] is [on ? "on" : "off"], and the hatch is [panel_open ? "open" : "closed"]."
+	. += span_info("\The [src] is [on ? "on" : "off"], and the hatch is [panel_open ? "open" : "closed"].")
 	if(cell)
-		. += "The charge meter reads [cell ? round(cell.percent(), 1) : 0]%."
+		. += span_info("The charge meter reads [cell ? round(cell.percent(), 1) : 0]%.")
 	else
-		. += "There is no power cell installed."
+		. += span_warning("There is no power cell installed.")
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Temperature range at <b>[settable_temperature_range]°C</b>.<br>Heating power at <b>[siunit(heating_power, "W", 1)]</b>.<br>Power consumption at <b>[(efficiency*-0.0025)+150]%</b>.") //100%, 75%, 50%, 25%
 		. += span_notice("<b>Right-click</b> to toggle [on ? "off" : "on"].")

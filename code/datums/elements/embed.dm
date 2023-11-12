@@ -120,13 +120,13 @@
 	Detach(weapon)
 
 ///Someone inspected our embeddable item
-/datum/element/embed/proc/examined(obj/item/I, mob/user, list/examine_list)
+/datum/element/embed/proc/examined(obj/item/weapon, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	if(I.isEmbedHarmless())
-		examine_list += "[I] feels sticky, and could probably get stuck to someone if thrown properly!"
+	if(weapon.isEmbedHarmless())
+		examine_list += span_info("[weapon] feels sticky, and could probably get stuck to someone if thrown properly!")
 	else
-		examine_list += "[I] has a fine point, and could probably embed in someone if thrown properly!"
+		examine_list += span_info("[weapon] has a fine point, and could probably embed in someone if thrown properly!")
 
 /**
  * checkEmbedProjectile() is what we get when a projectile with a defined shrapnel_type impacts a target.
