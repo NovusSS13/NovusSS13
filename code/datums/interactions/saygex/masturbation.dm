@@ -33,7 +33,7 @@
 	. = ..()
 	var/mob/living/carbon/human/human_user = user.parent
 	var/obj/item/organ/genital/penis/penis = human_user.get_organ_slot(ORGAN_SLOT_PENIS)
-	if(!penis.bodypart_overlay)
+	if(!penis?.bodypart_overlay)
 		return FALSE
 	var/datum/bodypart_overlay/mutant/genital/genital_overlay = penis.bodypart_overlay
 	if(!genital_overlay.is_genital_visible(human_user.get_bodypart(check_zone(penis.zone)), human_user))
@@ -91,7 +91,7 @@
 	. = ..()
 	var/mob/living/carbon/human/human_user = user.parent
 	var/obj/item/organ/genital/vagina/vagina = human_user.get_organ_slot(ORGAN_SLOT_VAGINA)
-	if(!vagina.bodypart_overlay)
+	if(!vagina?.bodypart_overlay)
 		return FALSE
 	var/datum/bodypart_overlay/mutant/genital/genital_overlay = vagina.bodypart_overlay
 	if(!genital_overlay.is_genital_visible(human_user.get_bodypart(check_zone(vagina.zone)), human_user))
@@ -147,7 +147,7 @@
 	. = ..()
 	var/mob/living/carbon/human/human_user = user.parent
 	var/obj/item/organ/genital/anus/anus = human_user.get_organ_slot(ORGAN_SLOT_ANUS)
-	if(!anus.bodypart_overlay)
+	if(!anus?.bodypart_overlay)
 		return FALSE
 	var/datum/bodypart_overlay/mutant/genital/genital_overlay = anus.bodypart_overlay
 	if(!genital_overlay.is_genital_visible(human_user.get_bodypart(check_zone(anus.zone)), human_user))
