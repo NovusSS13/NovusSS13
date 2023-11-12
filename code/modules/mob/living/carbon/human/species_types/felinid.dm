@@ -28,6 +28,8 @@
 	ass_image = 'icons/ass/asscat.png'
 	voice_pack = /datum/voice/human/felinid
 
+	payday_modifier = 1 //fuck you mangy cats
+
 	/// When false, this is a felinid created by mass-purrbation
 	var/original_felinid = TRUE
 

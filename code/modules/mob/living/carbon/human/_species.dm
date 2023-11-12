@@ -1671,7 +1671,7 @@
  * Returns a list, or null if they have no diet.
  */
 /datum/species/proc/get_species_diet()
-	if(!mutanttongue || !(TRAIT_NOHUNGER in get_all_traits()))
+	if(!mutanttongue || (TRAIT_NOHUNGER in get_all_traits()))
 		return null
 
 	var/static/list/food_flags = FOOD_FLAGS_IC

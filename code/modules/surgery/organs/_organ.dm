@@ -101,7 +101,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/ex_act(severity, target)
 	if(istype(loc, /obj/item/bodypart))
 		return
-	return
+	return ..()
 
 /*
  * Insert the organ into the select mob.
@@ -376,13 +376,21 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(organ_flags & ORGAN_FAILING)
 		if(IS_ROBOTIC_ORGAN(src))
 			. += span_warning("[src] seem[p_s()] to be broken.")
-			return
-		. += span_warning("[src] [p_have()] decayed for too long, and [p_have()] turned a sickly color. [p_they(TRUE)] probably won't work without repairs.")
+			if(organ_flags & ORGAN_DESTROYED)
+				. += span_danger("[src] [p_are()] destroyed beyond any relief... You can't use [p_them()] anymore.")
+			else
+				. += span_warning("[src] will require repairs to be saved.")
+		else
+			. += span_warning("[src] [p_are()] very damaged, and [p_have()] turned a sickly color.")
+			if(organ_flags & ORGAN_DESTROYED)
+				. += span_danger("[src] [p_are()] destroyed beyond any relief... You can't use [p_them()] anymore.")
+			else
+				. += span_warning("[src] will require healing to be saved.")
 	else if(damage > high_threshold)
 		if(IS_ROBOTIC_ORGAN(src))
 			. += span_warning("[src] seem[p_s()] to be malfunctioning.")
-			return
-		. += span_warning("[src] [p_are()] starting to look discolored.")
+		else
+			. += span_warning("[src] [p_are()] starting to look discolored.")
 
 	var/list/visuals_examine = visuals_examine(user)
 	if(length(visuals_examine))
@@ -419,9 +427,10 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 
 	damage = clamp(damage + damage_amount, 0, maximum)
-	if((damage >= maxHealth || (organ_flags & ORGAN_DESTROYED)) && !(organ_flags & ORGAN_FAILING))
+	var/is_failing = (damage >= maxHealth || (organ_flags & ORGAN_DESTROYED))
+	if(is_failing && !(organ_flags & ORGAN_FAILING))
 		become_failing()
-	else if(organ_flags & ORGAN_FAILING)
+	else if(!is_failing && (organ_flags & ORGAN_FAILING))
 		clear_failing()
 
 	var/mess = check_damage_thresholds(owner)
@@ -436,7 +445,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	var/static/list/failing_matrix = list(
 		255, //hue
 		128, //saturation
-		192, //luminance
+		224, //luminance
 	)
 	//apply failing organ filter
 	add_filter("organ_failure", 1, color_matrix_filter(failing_matrix, space = COLORSPACE_HSL))

@@ -34,6 +34,11 @@
 			//yes, absolutely no checks whatsoever
 			. += bodypart_overlay.get_overlays(external_layer, ownerlimb)
 
+/obj/item/organ/setDir(newdir)
+	if(use_mob_sprite_as_obj_sprite)
+		return //always face south
+	return ..()
+
 /// Initializes visual elements of an organ
 /obj/item/organ/proc/initialize_visuals()
 	//we don't need to initialize shit if we don't have a bodypart_overlay path

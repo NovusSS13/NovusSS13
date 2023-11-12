@@ -67,13 +67,14 @@
 
 /// Launches all bodyparts away from the mob. skip_head will keep the head attached.
 /mob/living/carbon/spread_bodyparts(skip_head = FALSE)
+	var/atom/Tsec = drop_location()
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		if(skip_head && part.body_zone == BODY_ZONE_HEAD)
 			continue
 		else if(part.body_zone == BODY_ZONE_CHEST)
 			continue
 		part.drop_limb()
-		part.fly_away()
+		part.fly_away(Tsec, horizontal_multiplier = 2, vertical_multiplier = 1.2)
 
 /mob/living/carbon/set_suicide(suicide_state) //you thought that box trick was pretty clever, didn't you? well now hardmode is on, boyo.
 	. = ..()

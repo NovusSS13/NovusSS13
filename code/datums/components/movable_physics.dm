@@ -158,31 +158,35 @@
 	if(physics_flags & MPHYSICS_PAUSED)
 		return
 
-	// this component was designed to tick every 1/20 seconds, so we have to always account for that
+	//this component was designed to tick every 1/20 seconds, so we have to always account for that
 	var/tick_amount = 20 * seconds_per_tick
 	//this code basically only makes sense if we only move at most a single tile per tick, it is absolutely fucked otherwise
 	while(tick_amount > 0)
 		tick_amount--
+
+		//we need to know if we have gravity right now to apply friction and such, yeah
+		var/has_gravity = moving_atom.has_gravity()
+
 		moving_atom.pixel_x = round(moving_atom.pixel_x + (horizontal_velocity * sin(angle)), MOVABLE_PHYSICS_PRECISION)
 		moving_atom.pixel_y = round(moving_atom.pixel_y + (horizontal_velocity * cos(angle)), MOVABLE_PHYSICS_PRECISION)
 
-		moving_atom.pixel_z = round(max(z_floor, moving_atom.pixel_z + vertical_velocity), MOVABLE_PHYSICS_PRECISION)
+		//pixel_z has to be clamped because of space, otherwise the atom will shoot out into infinity with no control whatsoever
+		moving_atom.pixel_z = round(clamp(moving_atom.pixel_z + vertical_velocity, z_floor, world.icon_size), MOVABLE_PHYSICS_PRECISION)
 
 		moving_atom.adjust_visual_angle(round(visual_angle_velocity, 1))
 
-		horizontal_velocity = max(0, horizontal_velocity - horizontal_friction)
-		// we are not on the floor, apply friction
-		if(moving_atom.pixel_z > z_floor)
-			vertical_velocity -= vertical_friction
-		// we are on the floor, try to bounce if we have any vertical velocity
-		else if(moving_atom.pixel_z <= z_floor && vertical_velocity)
-			z_floor_bounce(moving_atom)
-
-		// z_floor_bounce could have deleted us
-		if(QDELETED(src))
-			return
-
-		visual_angle_velocity = max(0, visual_angle_velocity - visual_angle_friction)
+		if(has_gravity)
+			visual_angle_velocity = max(0, visual_angle_velocity - visual_angle_friction)
+			horizontal_velocity = max(0, horizontal_velocity - horizontal_friction)
+			// we are not on the floor, apply friction
+			if(moving_atom.pixel_z > z_floor)
+				vertical_velocity -= vertical_friction
+			// we are on the floor, try to bounce if we have any vertical velocity
+			else if(moving_atom.pixel_z <= z_floor && vertical_velocity)
+				z_floor_bounce(moving_atom)
+				// z_floor_bounce could have deleted us
+				if(QDELETED(src))
+					return
 
 		var/move_direction = NONE
 		var/effective_pixel_x = moving_atom.pixel_x - moving_atom.base_pixel_x
