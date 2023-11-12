@@ -47,13 +47,14 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 		bloodiness -= BLOOD_AMOUNT_PER_DECAL
 		get_timer()
 		return FALSE
-	else
-		name = dryname
-		desc = drydesc
-		bloodiness = 0
-		color = COLOR_GRAY //not all blood splatters have their own sprites... It still looks pretty nice
-		STOP_PROCESSING(SSobj, src)
-		return TRUE
+	name = dryname
+	desc = drydesc
+	bloodiness = 0
+	var/list/old_color_hsl = rgb2num(color || COLOR_WHITE, COLORSPACE_HSL)
+	//not all blood splatters have their own sprites... It still looks pretty nice
+	color = rgb(old_color_hsl[1], old_color_hsl[2], old_color_hsl[3] * 0.5, LAZYACCESS(old_color_hsl, 4), space = COLORSPACE_HSL)
+	STOP_PROCESSING(SSobj, src)
+	return TRUE
 
 /obj/effect/decal/cleanable/blood/handle_merge_decal(obj/effect/decal/cleanable/merger)
 	. = ..()

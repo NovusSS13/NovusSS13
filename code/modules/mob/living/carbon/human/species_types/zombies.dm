@@ -10,28 +10,22 @@
 		// SHARED WITH ALL ZOMBIES
 		TRAIT_AGENDER,
 		TRAIT_EASILY_WOUNDED,
-		TRAIT_EASYDISMEMBER,
-		TRAIT_FAKEDEATH,
-		TRAIT_LIMBATTACHMENT,
 		TRAIT_LIVERLESS_METABOLISM,
 		TRAIT_NOBREATH,
 		TRAIT_NOCLONELOSS,
 		TRAIT_NODEATH,
 		TRAIT_NOHUNGER,
-		TRAIT_NO_TRANSFORMATION_STING,
-		TRAIT_RADIMMUNE,
 		TRAIT_RESISTCOLD,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_TOXIMMUNE,
+		TRAIT_HEARTLESS_PUMPING,
 		// HIGH FUNCTIONING UNIQUE
-		TRAIT_NOBLOOD,
 		TRAIT_SUCCUMB_OVERRIDE,
 	)
 
+	mutantheart = /obj/item/organ/heart/zombie
 	mutanttongue = /obj/item/organ/tongue/zombie
 	mutantstomach = null
-	mutantheart = null
 	mutantliver = null
 	mutantlungs = null
 
@@ -97,29 +91,21 @@
 	damage_modifier = 20 // 120 damage to KO a zombie, which kills it
 	mutanteyes = /obj/item/organ/eyes/zombie
 	mutantbrain = /obj/item/organ/brain/zombie
-	mutanttongue = /obj/item/organ/tongue/zombie
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 
 	inherent_traits = list(
 		// SHARED WITH ALL ZOMBIES
 		TRAIT_AGENDER,
 		TRAIT_EASILY_WOUNDED,
-		TRAIT_EASYDISMEMBER,
-		TRAIT_FAKEDEATH,
-		TRAIT_LIMBATTACHMENT,
 		TRAIT_LIVERLESS_METABOLISM,
 		TRAIT_NOBREATH,
 		TRAIT_NOCLONELOSS,
 		TRAIT_NODEATH,
 		TRAIT_NOHUNGER,
-		TRAIT_NO_TRANSFORMATION_STING,
-		TRAIT_RADIMMUNE,
 		TRAIT_RESISTCOLD,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_TOXIMMUNE,
-		// INFECTIOUS UNIQUE
-		TRAIT_STABLEHEART, // Replacement for noblood. Infectious zombies can bleed but don't need their heart.
+		TRAIT_HEARTLESS_PUMPING,
 	)
 
 	// Infectious zombies have slow legs
@@ -194,9 +180,8 @@
 		infection = new()
 		infection.Insert(C)
 
-// Your skin falls off
+// Your skin fell off!
 /datum/species/human/krokodil_addict
-	name = "\improper Human"
 	id = SPECIES_ZOMBIE_KROKODIL
 	examine_limb_id = SPECIES_HUMAN
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN

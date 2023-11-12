@@ -130,7 +130,7 @@
 /obj/item/organ/liver/on_life(seconds_per_tick, times_fired)
 	. = ..()
 	//If your liver is failing, or you have forced liverless metabolism, then we use the liverless version of metabolize
-	if((organ_flags & ORGAN_FAILING) || HAS_TRAIT(owner, TRAIT_LIVERLESS_METABOLISM))
+	if(((organ_flags & ORGAN_FAILING) && !HAS_TRAIT(owner, TRAIT_STABLELIVER)) || HAS_TRAIT(owner, TRAIT_LIVERLESS_METABOLISM))
 		owner.reagents.metabolize(owner, seconds_per_tick, times_fired, can_overdose = TRUE, liverless = TRUE)
 		return
 
@@ -162,7 +162,7 @@
 		to_chat(owner, span_warning("You feel a dull pain in your abdomen."))
 
 /obj/item/organ/liver/handle_failing_organ(seconds_per_tick)
-	if(!owner.needs_liver())
+	if(HAS_TRAIT(owner, TRAIT_STABLELIVER) || !owner.needs_liver())
 		return
 	return ..()
 

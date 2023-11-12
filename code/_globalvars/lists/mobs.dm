@@ -113,22 +113,17 @@ GLOBAL_LIST_INIT(construct_radial_images, list(
 		M.update_config_movespeed()
 
 /proc/init_emote_list()
-	. = list()
+	var/list/emotes = list()
 	for(var/path in subtypesof(/datum/emote))
-		var/datum/emote/E = new path()
-		if(E.key)
-			if(!.[E.key])
-				.[E.key] = list(E)
-			else
-				.[E.key] += E
-		else if(E.message) //Assuming all non-base emotes have this
-			stack_trace("Keyless emote: [E.type]")
+		var/datum/emote/emote = new path()
+		if(emote.key)
+			LAZYADD(emotes[emote.key], emote)
+		else if(emote.message) //Assuming all non-base emotes have this
+			stack_trace("Keyless emote: [emote.type]")
 
-		if(E.key_third_person) //This one is optional
-			if(!.[E.key_third_person])
-				.[E.key_third_person] = list(E)
-			else
-				.[E.key_third_person] |= E
+		if(emote.key_third_person) //This one is optional
+			LAZYADD(emotes[emote.key_third_person], emote)
+	GLOB.emote_list = emotes
 
 /proc/get_crewmember_minds()
 	var/list/minds = list()

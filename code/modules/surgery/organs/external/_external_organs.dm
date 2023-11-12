@@ -17,6 +17,8 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/antennae
 
+	organ_traits = list(TRAIT_ANTENNAE)
+
 	///Are we burned?
 	var/burnt = FALSE
 	///Store our old datum here for if our antennae are healed
@@ -97,6 +99,8 @@
 	restyle_flags = EXTERNAL_RESTYLE_PLANT
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/pod_hair
+
+	organ_traits = list(TRAIT_PLANT_SAFE)
 
 /// Podperson bodypart overlay, with special coloring functionality to render the flowers in the inverse color
 /datum/bodypart_overlay/mutant/pod_hair

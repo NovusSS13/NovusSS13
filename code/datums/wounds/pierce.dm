@@ -179,6 +179,7 @@
 	scar_keyword = "piercemoderate"
 
 /datum/wound/pierce/moderate/update_descriptions()
+	. = ..()
 	if(no_bleeding)
 		examine_desc = "has a small, circular hole"
 		occur_text = "splits a small hole open"
@@ -201,6 +202,7 @@
 	scar_keyword = "piercesevere"
 
 /datum/wound/pierce/severe/update_descriptions()
+	. = ..()
 	if(no_bleeding)
 		occur_text = "tears a hole open"
 

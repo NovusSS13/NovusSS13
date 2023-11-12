@@ -15,10 +15,11 @@
 	now_fixed = "<span class='info'>Your heart begins to beat again.</span>"
 	high_threshold_cleared = "<span class='info'>The pain in your chest has died down, and your breathing becomes more relaxed.</span>"
 
-	// Heart attack code is in code/modules/mob/living/carbon/human/life.dm
-	var/beating = TRUE
 	attack_verb_continuous = list("beats", "thumps")
 	attack_verb_simple = list("beat", "thump")
+
+	// Heart attack code is in code/modules/mob/living/carbon/human/life.dm
+	var/beating = TRUE
 	var/beat = BEAT_NONE//is this mob having a heatbeat sound played? if so, which?
 	var/failed = FALSE //to prevent constantly running failing code
 	var/operated = FALSE //whether the heart's been operated on to fix some of its damages
@@ -46,7 +47,7 @@
 	if(!owner.needs_heart())
 		return
 
-	if((organ_flags & ORGAN_FAILING) && owner.can_heartattack()) //heart broke, stopped beating, death imminent... unless you have veins that pump blood without a heart
+	if(!failed && (organ_flags & ORGAN_FAILING) && owner.can_heartattack()) //heart broke, stopped beating, death imminent... unless you have veins that pump blood without a heart
 		if(owner.stat <= SOFT_CRIT)
 			owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"), \
 				span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
@@ -54,10 +55,10 @@
 		failed = TRUE
 
 	if(owner.client && beating)
-		failed = FALSE
-		var/sound/slowbeat = sound('sound/health/slowbeat.ogg', repeat = TRUE)
-		var/sound/fastbeat = sound('sound/health/fastbeat.ogg', repeat = TRUE)
+		var/static/sound/slowbeat = sound('sound/health/slowbeat.ogg', channel = CHANNEL_HEARTBEAT, repeat = TRUE)
+		var/static/sound/fastbeat = sound('sound/health/fastbeat.ogg', channel = CHANNEL_HEARTBEAT, repeat = TRUE)
 
+		failed = FALSE
 		if(owner.health <= owner.crit_threshold && beat != BEAT_SLOW)
 			beat = BEAT_SLOW
 			owner.playsound_local(get_turf(owner), slowbeat, 40, 0, channel = CHANNEL_HEARTBEAT, use_reverb = FALSE)
@@ -70,7 +71,6 @@
 			if(owner.health > HEALTH_THRESHOLD_FULLCRIT && (!beat || beat == BEAT_SLOW))
 				owner.playsound_local(get_turf(owner), fastbeat, 40, 0, channel = CHANNEL_HEARTBEAT, use_reverb = FALSE)
 				beat = BEAT_FAST
-
 		else if(beat == BEAT_FAST)
 			owner.stop_sound_channel(CHANNEL_HEARTBEAT)
 			beat = BEAT_NONE
@@ -289,11 +289,24 @@
 		if(owner.reagents.get_reagent_amount(/datum/reagent/medicine/ephedrine) < 20)
 			owner.reagents.add_reagent(/datum/reagent/medicine/ephedrine, 10)
 
+/obj/item/organ/heart/zombie
+	name = "zombie heart"
+	desc = "An absolutely rotten, unbeating heart. It will do absolutely nothing for you."
+	icon_state = "heart-x"
+	base_icon_state = "heart-x"
+	organ_flags = ORGAN_ORGANIC | ORGAN_DESTROYED
+	beating = FALSE
+	decay_factor = 5 * STANDARD_ORGAN_DECAY //fuck you, fails after a lovely 3 minutes
+
+/obj/item/organ/heart/zombie/update_appearance(updates)
+	return ..(updates & ~(UPDATE_ICON)) //don't set icon thank you
+
 /obj/item/organ/heart/ethereal
 	name = "crystal core"
-	icon_state = "ethereal_heart" //Welp. At least it's more unique in functionaliy.
-	visual = TRUE //This is used by the ethereal species for color
 	desc = "A crystal-like organ that functions similarly to a heart for Ethereals. It can revive its owner."
+	icon_state = "ethereal_heart" //Welp. At least it's more unique in functionaliy.
+
+	visual = TRUE //This is used by the ethereal species for color
 
 	///Cooldown for the next time we can crystalize
 	COOLDOWN_DECLARE(crystalize_cooldown)

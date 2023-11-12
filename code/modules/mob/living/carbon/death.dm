@@ -48,10 +48,11 @@
 					qdel(organ) //so the brain isn't transfered to the head when the head drops.
 					continue
 				var/org_zone = check_zone(organ.zone) //both groin and chest organs.
-				if(org_zone == BODY_ZONE_CHEST)
-					organ.Remove(src)
-					organ.forceMove(Tsec)
-					organ.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),5)
+				if(org_zone != BODY_ZONE_CHEST)
+					continue
+				organ.Remove(src)
+				organ.forceMove(Tsec)
+				organ.fly_away(Tsec, horizontal_multiplier = 2, vertical_multiplier = 1.2)
 	else
 		for(var/obj/item/organ/organ as anything in organs)
 			if(no_brain && istype(organ, /obj/item/organ/brain))
@@ -62,17 +63,18 @@
 				continue
 			organ.Remove(src)
 			organ.forceMove(Tsec)
-			organ.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),5)
+			organ.fly_away(Tsec, horizontal_multiplier = 2, vertical_multiplier = 1.2)
 
 /// Launches all bodyparts away from the mob. skip_head will keep the head attached.
 /mob/living/carbon/spread_bodyparts(skip_head = FALSE)
+	var/atom/Tsec = drop_location()
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		if(skip_head && part.body_zone == BODY_ZONE_HEAD)
 			continue
 		else if(part.body_zone == BODY_ZONE_CHEST)
 			continue
 		part.drop_limb()
-		part.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1,3), 5)
+		part.fly_away(Tsec, horizontal_multiplier = 2, vertical_multiplier = 1.2)
 
 /mob/living/carbon/set_suicide(suicide_state) //you thought that box trick was pretty clever, didn't you? well now hardmode is on, boyo.
 	. = ..()

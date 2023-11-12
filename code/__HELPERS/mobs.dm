@@ -96,6 +96,8 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
 	if(!length(GLOB.wings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
+	if(!length(GLOB.wings_open_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/wings_open, GLOB.wings_open_list)
 	if(!length(GLOB.moth_wings_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	if(!length(GLOB.moth_antennae_list))

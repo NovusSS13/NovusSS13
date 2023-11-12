@@ -70,7 +70,7 @@
 /obj/item/clothing/under/syndicate/tacticool/examine(mob/user)
 	. = ..()
 	. += "It has a label that says cleaning this 'genuine' Waffle Corp. product with cleaning solutions other than Grime Liberator telelocational podcrystals will void the warranty."
-	. += "What on earth is a telelocational podcrystal?"
+	. += "What on earth is a " + span_red("telelocational podcrystal") + "?"
 
 /obj/item/clothing/under/syndicate/tacticool/dye_item(dye_color, dye_key_override)
 	if(dye_color == DYE_SYNDICATE)

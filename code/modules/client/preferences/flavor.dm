@@ -59,7 +59,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "custom_species_name"
 
-	maximum_value_length = 2048
+	maximum_value_length = 64
 
 /datum/preference/text/flavor/custom_species_name/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
 	var/datum/flavor_holder/flavor_holder = get_or_create_flavor_holder(target.real_name)
@@ -112,18 +112,22 @@
 
 
 /datum/preference/text/flavor/security_record_notes
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_key = "security_record_notes"
 	savefile_identifier = PREFERENCE_CHARACTER
+
+	maximum_value_length = 512
 
 /datum/preference/text/flavor/security_record_notes/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
 	return //we apply these differently
 
 
 /datum/preference/text/flavor/medical_record_notes
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	category = PREFERENCE_CATEGORY_BACKGROUND
 	savefile_key = "medical_record_notes"
 	savefile_identifier = PREFERENCE_CHARACTER
 
+	maximum_value_length = 512
+
 /datum/preference/text/flavor/medical_record_notes/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/prefs)
-	return
+	return //we apply these differently

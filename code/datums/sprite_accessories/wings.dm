@@ -18,7 +18,6 @@
 	dimension_x = 46
 	center = TRUE
 	dimension_y = 34
-	locked = TRUE
 
 /datum/sprite_accessory/wings_open/angel
 	name = "Angel"

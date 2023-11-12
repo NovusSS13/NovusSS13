@@ -22,6 +22,11 @@
 	dmg_overlay_type = null
 	brute_modifier = 1.5 //Plasmemes are weak
 	burn_modifier = 1.5 //Plasmemes are weak
+	bodypart_traits = list(
+		TRAIT_NOBLOOD,
+		TRAIT_NO_TRANSFORMATION_STING,
+		TRAIT_RADIMMUNE,
+	)
 
 /obj/item/bodypart/arm/left/plasmaman
 	icon = 'icons/mob/species/plasmaman/bodyparts.dmi'

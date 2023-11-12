@@ -22,7 +22,7 @@
 		/obj/item/organ/brain/goliath,
 		/obj/item/organ/eyes/night_vision/goliath,
 		/obj/item/organ/heart/goliath,
-		/obj/item/organ/lungs/lavaland/goliath,
+		/obj/item/organ/lungs/lizard/lavaland/goliath,
 	)
 	infusion_desc = "armored tendril-like"
 	tier = DNA_MUTANT_TIER_ONE

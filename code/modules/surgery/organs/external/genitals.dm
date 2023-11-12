@@ -41,7 +41,7 @@
 	if(istype(genital_overlay))
 		genital_overlay.arousal_state = 0
 		genital_overlay.genital_visibility = GENITAL_VISIBILITY_CLOTHING
-	update_appearance()
+		update_appearance()
 
 /obj/item/organ/genital/on_life(seconds_per_tick, times_fired)
 	. = ..()
@@ -112,13 +112,20 @@
 	/// Arousal options that can be selected by the user
 	var/list/arousal_options
 
-/datum/bodypart_overlay/mutant/genital/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+/// Separate proc for visibility, because this isn't just about drawing but also examine
+/datum/bodypart_overlay/mutant/genital/proc/is_genital_visible(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	switch(genital_visibility)
 		if(GENITAL_VISIBILITY_NEVER)
 			return FALSE //duh
 		if(GENITAL_VISIBILITY_ALWAYS)
 			return TRUE //duher
 	return TRUE // GENITAL_VISIBILITY_CLOTHING is handled by subtypes
+
+/datum/bodypart_overlay/mutant/genital/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+	. = ..()
+	if(!.)
+		return
+	return is_genital_visible(ownerlimb, owner)
 
 /datum/bodypart_overlay/mutant/genital/inherit_color(obj/item/bodypart/ownerlimb, force = FALSE)
 	. = ..()
@@ -127,7 +134,6 @@
 	//skintone handling, a bit silly but i don't really want to change the color source for... reasons
 	if(uses_skintone && (color_source == ORGAN_COLOR_DNA))
 		draw_color = ownerlimb.draw_color
-
 
 /obj/item/organ/genital/penis
 	name = "penis"
@@ -177,7 +183,7 @@
 	feature_color_key = "penis_color"
 	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
-/datum/bodypart_overlay/mutant/genital/penis/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+/datum/bodypart_overlay/mutant/genital/penis/is_genital_visible(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return
@@ -243,7 +249,7 @@
 /datum/bodypart_overlay/mutant/genital/testicles/get_global_feature_list()
 	return GLOB.testicles_list
 
-/datum/bodypart_overlay/mutant/genital/testicles/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+/datum/bodypart_overlay/mutant/genital/testicles/is_genital_visible(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return
@@ -293,7 +299,7 @@
 /datum/bodypart_overlay/mutant/genital/vagina/get_global_feature_list()
 	return GLOB.vagina_list
 
-/datum/bodypart_overlay/mutant/genital/vagina/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+/datum/bodypart_overlay/mutant/genital/vagina/is_genital_visible(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return
@@ -356,7 +362,7 @@
 /datum/bodypart_overlay/mutant/genital/breasts/get_global_feature_list()
 	return GLOB.breasts_list
 
-/datum/bodypart_overlay/mutant/genital/breasts/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+/datum/bodypart_overlay/mutant/genital/breasts/is_genital_visible(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return
@@ -394,7 +400,7 @@
 /datum/bodypart_overlay/mutant/genital/anus/get_global_feature_list()
 	return GLOB.anus_list
 
-/datum/bodypart_overlay/mutant/genital/anus/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
+/datum/bodypart_overlay/mutant/genital/anus/is_genital_visible(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	. = ..()
 	if(!.)
 		return

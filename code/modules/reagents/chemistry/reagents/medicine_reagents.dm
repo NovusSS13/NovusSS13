@@ -1402,11 +1402,11 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
 
 /datum/reagent/medicine/cordiolis_hepatico/on_mob_add(mob/living/affected_mob)
-	..()
+	. = ..()
 	affected_mob.add_traits(list(TRAIT_STABLELIVER, TRAIT_STABLEHEART), type)
 
 /datum/reagent/medicine/cordiolis_hepatico/on_mob_end_metabolize(mob/living/affected_mob)
-	..()
+	. = ..()
 	affected_mob.remove_traits(list(TRAIT_STABLELIVER, TRAIT_STABLEHEART), type)
 
 /datum/reagent/medicine/muscle_stimulant

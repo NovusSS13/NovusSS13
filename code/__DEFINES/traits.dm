@@ -204,9 +204,13 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_AIRLOCK_SHOCKIMMUNE "airlock_shock_immunity"
 /// Is this atom being actively shocked? Used to prevent repeated shocks.
 #define TRAIT_BEING_SHOCKED "shocked"
+/// You need blood, you don't need a heart to pump it
+#define TRAIT_HEARTLESS_PUMPING "heartless_pumping"
+/// Your heart can't fail, but you still need one
 #define TRAIT_STABLEHEART "stable_heart"
 /// Prevents you from leaving your corpse
 #define TRAIT_CORPSELOCKED "corpselocked"
+/// Your liver can't fail, but you still need one
 #define TRAIT_STABLELIVER "stable_liver"
 #define TRAIT_VATGROWN "vatgrown"
 #define TRAIT_RESISTHEAT "resist_heat"
@@ -278,7 +282,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Mob is immune to oxygen damage, does not need to breathe
 #define TRAIT_NOBREATH "no_breath"
 /// One can breath under water, you get me?
-#define TRAIT_WATER_BREATHING "water_breathing"
+#define TRAIT_UNDERWATER_BREATHING "underwater_breathing"
 /// Use when you want a mob to be able to metabolize plasma temporarily (e.g. plasma fixation disease symptom)
 #define TRAIT_PLASMA_LOVER_METABOLISM "plasma_lover_metabolism"
 #define TRAIT_EASYDISMEMBER "easy_dismember"
@@ -496,6 +500,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Trait which prevents you from becoming overweight
 #define TRAIT_NOFAT "cant_get_fat"
 
+/// Trait which allows you to eat clothing
+#define TRAIT_CLOTHING_EATER "clothing_eater"
 /// Trait which allows you to eat rocks
 #define TRAIT_ROCK_EATER "rock_eater"
 /// Trait which allows you to gain bonuses from consuming rocks
@@ -871,6 +877,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define ADMIN_TRAIT "admin"
 /// Any traits given through a smite.
 #define SMITE_TRAIT "smite"
+#define BROTHER_TRAIT "brother"
 #define CHANGELING_TRAIT "changeling"
 #define CULT_TRAIT "cult"
 #define LICH_TRAIT "lich"

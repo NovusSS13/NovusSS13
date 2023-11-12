@@ -40,7 +40,7 @@
 			var/datum/component/creamed/coom = GetComponent(component_type)
 			if(coom?.cover_lips)
 				covered_lips += coom.cover_lips
-		if((stat < UNCONSCIOUS) && ((!client && !ai_controller) || HAS_TRAIT(src, TRAIT_DUMB) || HAS_TRAIT(src, TRAIT_STROKE)))
+		if((stat < HARD_CRIT) && ((!client && !ai_controller) || HAS_TRAIT(src, TRAIT_DUMB) || HAS_TRAIT(src, TRAIT_STROKE)))
 			covered_lips += span_color("drool", "#b6e7f5")
 		if(LAZYLEN(covered_lips))
 			. += "Mmm, [t_his] lips are covered with [english_list(covered_lips)]!"
@@ -50,6 +50,7 @@
 	//head
 	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head."
+
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))
 		//accessory
@@ -73,7 +74,7 @@
 	//hands
 	if(!(obscured & ITEM_SLOT_HANDS))
 		for(var/obj/item/held_thing in held_items)
-			if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
+			if(held_thing.item_flags & (ABSTRACT | EXAMINE_SKIP | HAND_ITEM))
 				continue
 			. += "[t_He] [t_is] holding [held_thing.get_examine_string(user)] in [t_his] [get_held_index_name(get_held_index_of_item(held_thing))]."
 
@@ -106,7 +107,7 @@
 
 	//eyes
 	if(!(obscured & ITEM_SLOT_EYES))
-		if(glasses  && !(glasses.item_flags & EXAMINE_SKIP))
+		if(glasses && !(glasses.item_flags & EXAMINE_SKIP))
 			. += "[t_He] [t_has] [glasses.get_examine_string(user)] covering [t_his] eyes."
 		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
 			. += span_warning("<B>[t_His] eyes are glowing with an [span_red("unnatural red aura")]!</B>")
@@ -118,7 +119,7 @@
 		. += "[t_He] [t_has] [ears.get_examine_string(user)] on [t_his] ears."
 
 	//ID
-	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
+	if(wear_id && !(obscured & ITEM_SLOT_ID) && !(wear_id.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]."
 		var/list/id_examine_strings = wear_id.get_id_examine_strings(user)
 		if(LAZYLEN(id_examine_strings))
@@ -126,18 +127,21 @@
 
 	//Common traits
 	var/list/trait_examines = common_trait_examine()
-	if (LAZYLEN(trait_examines))
+	if(LAZYLEN(trait_examines))
 		. += trait_examines
 
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()
-	if (LAZYLEN(status_examines))
+	if(LAZYLEN(status_examines))
 		. += status_examines
 
 	//genital handling. not on organ/on_owner_examine() because i want a pretty list.
 	var/list/genital_strings = list()
 	for(var/obj/item/organ/genital/genital in organs)
-		if(!genital.bodypart_overlay?.can_draw_on_body(get_bodypart(check_zone(genital.zone)), src))
+		if(!genital.bodypart_overlay)
+			continue
+		var/datum/bodypart_overlay/mutant/genital/genital_overlay = genital.bodypart_overlay
+		if(!genital_overlay.is_genital_visible(get_bodypart(check_zone(genital.zone)), src))
 			continue
 		genital_strings += genital.get_genital_examine()
 	if(LAZYLEN(genital_strings))

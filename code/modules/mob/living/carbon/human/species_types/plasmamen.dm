@@ -9,9 +9,6 @@
 		TRAIT_AGENDER,
 		TRAIT_GENELESS,
 		TRAIT_HARDLY_WOUNDED,
-		TRAIT_NOBLOOD,
-		TRAIT_NO_TRANSFORMATION_STING,
-		TRAIT_RADIMMUNE,
 		TRAIT_RESISTCOLD,
 	)
 	inherent_biotypes = MOB_HUMANOID|MOB_MINERAL
@@ -164,12 +161,6 @@
 			SPECIES_PERK_ICON = "user-shield",
 			SPECIES_PERK_NAME = "Protected",
 			SPECIES_PERK_DESC = "Plasmamen are immune to radiation, poisons, and most diseases.",
-		),
-		list(
-			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "bone",
-			SPECIES_PERK_NAME = "Wound Resistance",
-			SPECIES_PERK_DESC = "Plasmamen have higher tolerance for damage that would wound others.",
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,

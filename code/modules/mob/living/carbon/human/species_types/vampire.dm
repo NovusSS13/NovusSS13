@@ -11,7 +11,6 @@
 	chat_color = LIGHT_COLOR_BLOOD_MAGIC
 	inherent_traits = list(
 		TRAIT_BLOOD_CLANS,
-		TRAIT_DRINKS_BLOOD,
 		TRAIT_NOBREATH,
 		TRAIT_NOHUNGER,
 		TRAIT_USES_SKINTONES,
@@ -142,6 +141,7 @@
 	name = "vampire tongue"
 	actions_types = list(/datum/action/item_action/organ_action/vampire)
 	color = "#1C1C1C"
+	organ_traits = list(TRAIT_DRINKS_BLOOD)
 	COOLDOWN_DECLARE(drain_cooldown)
 
 /datum/action/item_action/organ_action/vampire

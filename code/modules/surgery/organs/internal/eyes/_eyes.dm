@@ -225,6 +225,7 @@
 	low_light_cutoff = list(0, 15, 20)
 	medium_light_cutoff = list(0, 20, 35)
 	high_light_cutoff = list(0, 40, 50)
+	organ_traits = list(TRAIT_NOFLASH)
 
 /obj/item/organ/eyes/zombie
 	name = "undead eyes"

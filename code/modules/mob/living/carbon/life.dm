@@ -109,14 +109,10 @@
 
 			else if(isturf(loc)) //Breathe from loc as turf
 				//Underwater breathing
-				var/turf/T = loc
-				if(T.liquids && !HAS_TRAIT(src, TRAIT_NOBREATH) && ((body_position == LYING_DOWN && T.liquids.liquid_state >= LIQUID_STATE_WAIST) || (body_position == STANDING_UP && T.liquids.liquid_state >= LIQUID_STATE_FULLTILE)))
-					//Officially trying to breathe underwater
-					if(HAS_TRAIT(src, TRAIT_WATER_BREATHING))
-						failed_last_breath = FALSE
-						clear_alert("not_enough_oxy")
-						return
-
+				var/turf/breath_turf = loc
+				if(breath_turf.liquids && !HAS_TRAIT(src, TRAIT_UNDERWATER_BREATHING) && \
+					((body_position == LYING_DOWN && breath_turf.liquids.liquid_state >= LIQUID_STATE_WAIST) || \
+					(breath_turf.liquids.liquid_state >= LIQUID_STATE_FULLTILE)))
 					adjustOxyLoss(3)
 					failed_last_breath = TRUE
 					if(oxyloss <= OXYGEN_DAMAGE_CHOKING_THRESHOLD && stat == CONSCIOUS)
@@ -124,7 +120,7 @@
 						return
 
 					//Try and drink water#]
-					var/datum/reagents/turf_reagents = T.liquids.take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_BREATH_AMOUNT)
+					var/datum/reagents/turf_reagents = breath_turf.liquids.take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_BREATH_AMOUNT)
 					turf_reagents.trans_to(src, turf_reagents.total_volume, methods = INGEST)
 					qdel(turf_reagents)
 					visible_message(span_warning("[src] chokes on water!"), span_userdanger("You're choking on water!"))
@@ -725,7 +721,7 @@
 
 /// Check to see if we actually need to have a liver
 /mob/living/carbon/proc/needs_liver()
-	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_LIVERLESS_METABOLISM))
+	if(HAS_TRAIT(src, TRAIT_LIVERLESS_METABOLISM))
 		return FALSE
 	return TRUE
 
@@ -763,12 +759,12 @@
 /////////
 
 /mob/living/carbon/proc/needs_heart()
-	if(HAS_TRAIT(src, TRAIT_STABLEHEART) || HAS_TRAIT(src, TRAIT_NOBLOOD))
+	if(HAS_TRAIT(src, TRAIT_HEARTLESS_PUMPING) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/proc/can_heartattack()
-	if(!needs_heart())
+	if(!needs_heart() || HAS_TRAIT(src, TRAIT_STABLEHEART))
 		return FALSE
 	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
 	if(!heart || IS_ROBOTIC_ORGAN(heart))
@@ -783,10 +779,10 @@
  * related situations (i.e not just cardiac arrest)
  */
 /mob/living/carbon/proc/undergoing_cardiac_arrest()
-	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
-	if(istype(heart) && heart.beating)
+	if(!needs_heart())
 		return FALSE
-	else if(!needs_heart())
+	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
+	if(istype(heart) && (heart.beating || HAS_TRAIT(src, TRAIT_STABLEHEART)))
 		return FALSE
 	return TRUE
 

@@ -9,6 +9,11 @@
 	limb_id = SPECIES_SNAIL
 	is_dimorphic = FALSE
 	burn_modifier = 2
+	bodypart_traits = list(
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+	)
 
 /obj/item/bodypart/arm/left/snail
 	limb_id = SPECIES_SNAIL
@@ -29,12 +34,14 @@
 	unarmed_damage_high = 0.5
 	burn_modifier = 2
 	speed_modifier = 6 //disgustingly slow
+	bodypart_traits = list(TRAIT_NO_SLIP_ALL)
 
 /obj/item/bodypart/leg/right/snail
 	limb_id = SPECIES_SNAIL
 	unarmed_damage_high = 0.5
 	burn_modifier = 2
 	speed_modifier = 6 //disgustingly slow
+	bodypart_traits = list(TRAIT_NO_SLIP_ALL)
 
 ///ABDUCTOR
 /obj/item/bodypart/head/abductor
@@ -49,18 +56,31 @@
 	limb_id = SPECIES_ABDUCTOR
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
+	bodypart_traits = list(
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+		TRAIT_NOBLOOD,
+		TRAIT_VIRUSIMMUNE,
+	)
 
 /obj/item/bodypart/arm/left/abductor
 	biological_state = BIO_INORGANIC
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
-	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
+	bodypart_traits = list(
+		TRAIT_CHUNKYFINGERS,
+		TRAIT_CHUNKYFINGERS_IGNORE_BATON,
+	)
 
 /obj/item/bodypart/arm/right/abductor
 	biological_state = BIO_INORGANIC
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
-	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
+	bodypart_traits = list(
+		TRAIT_CHUNKYFINGERS,
+		TRAIT_CHUNKYFINGERS_IGNORE_BATON,
+	)
 
 /obj/item/bodypart/leg/left/abductor
 	biological_state = BIO_INORGANIC
@@ -87,6 +107,10 @@
 	is_dimorphic = TRUE
 	dmg_overlay_type = null
 	burn_modifier = 0.5 // = 1/2x generic burn damage
+	bodypart_traits = list(
+		TRAIT_TOXINLOVER,
+		TRAIT_NOBLOOD,
+	)
 
 /obj/item/bodypart/arm/left/jelly
 	biological_state = BIO_INORGANIC
@@ -174,11 +198,19 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	head_flags = HEAD_EYESPRITES|HEAD_DEBRAIN
+	bodypart_traits = list(TRAIT_FAKEDEATH)
 
 /obj/item/bodypart/chest/zombie
 	limb_id = SPECIES_ZOMBIE
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
+	bodypart_traits = list(
+		TRAIT_EASYDISMEMBER,
+		TRAIT_LIMBATTACHMENT,
+		TRAIT_NO_TRANSFORMATION_STING,
+		TRAIT_RADIMMUNE,
+		TRAIT_TOXIMMUNE,
+	)
 
 /obj/item/bodypart/arm/left/zombie
 	limb_id = SPECIES_ZOMBIE
@@ -212,11 +244,13 @@
 	is_dimorphic = TRUE
 	burn_modifier = 1.25
 	head_flags = HEAD_EYESPRITES|HEAD_EYECOLOR|HEAD_EYEHOLES|HEAD_DEBRAIN
+	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/chest/pod
 	limb_id = SPECIES_PODPERSON
 	is_dimorphic = TRUE
 	burn_modifier = 1.25
+	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/arm/left/pod
 	limb_id = SPECIES_PODPERSON
@@ -225,6 +259,7 @@
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 	burn_modifier = 1.25
+	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/arm/right/pod
 	limb_id = SPECIES_PODPERSON
@@ -233,14 +268,17 @@
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 	burn_modifier = 1.25
+	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/leg/left/pod
 	limb_id = SPECIES_PODPERSON
 	burn_modifier = 1.25
+	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/leg/right/pod
 	limb_id = SPECIES_PODPERSON
 	burn_modifier = 1.25
+	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 ///FLY
 /obj/item/bodypart/head/fly
@@ -285,6 +323,14 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	burn_modifier = 1.5
+	bodypart_traits = list(
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+		TRAIT_NOBLOOD,
+		TRAIT_RADIMMUNE,
+		TRAIT_VIRUSIMMUNE,
+	)
 
 /obj/item/bodypart/arm/left/shadow
 	biological_state = BIO_INORGANIC
@@ -310,11 +356,30 @@
 	should_draw_greyscale = FALSE
 	burn_modifier = 1.5
 
+/obj/item/bodypart/head/shadow/nightmare
+
+/obj/item/bodypart/chest/shadow/nightmare
+	bodypart_traits = list(
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+		TRAIT_NOBLOOD,
+		TRAIT_NODISMEMBER,
+		TRAIT_NO_DNA_COPY,
+		TRAIT_NO_TRANSFORMATION_STING,
+		TRAIT_RADIMMUNE,
+		TRAIT_VIRUSIMMUNE,
+	)
+
 /obj/item/bodypart/arm/left/shadow/nightmare
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
 /obj/item/bodypart/arm/right/shadow/nightmare
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
+
+/obj/item/bodypart/leg/left/shadow/nightmare
+
+/obj/item/bodypart/leg/right/shadow/nightmare
 
 ///SKELETON
 /obj/item/bodypart/head/skeleton
@@ -324,6 +389,7 @@
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
 	head_flags = NONE
+	bodypart_traits = list(TRAIT_FAKEDEATH)
 
 /obj/item/bodypart/chest/skeleton
 	biological_state = BIO_BONE
@@ -331,6 +397,19 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
+	bodypart_traits = list(
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+		TRAIT_EASYDISMEMBER,
+		TRAIT_LIMBATTACHMENT,
+		TRAIT_NOBLOOD,
+		TRAIT_NO_DNA_COPY,
+		TRAIT_NO_TRANSFORMATION_STING,
+		TRAIT_RADIMMUNE,
+		TRAIT_TOXIMMUNE,
+		TRAIT_XENO_IMMUNE,
+	)
 
 /obj/item/bodypart/arm/left/skeleton
 	biological_state = BIO_BONE
@@ -366,8 +445,13 @@
 /obj/item/bodypart/chest/mushroom
 	limb_id = SPECIES_MUSHROOM
 	is_dimorphic = TRUE
-	bodypart_traits = list(TRAIT_NO_JUMPSUIT)
 	burn_modifier = 1.25
+	bodypart_traits = list(
+		TRAIT_NO_JUMPSUIT,
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+	)
 
 /obj/item/bodypart/arm/left/mushroom
 	limb_id = SPECIES_MUSHROOM
@@ -448,7 +532,18 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	bodypart_traits = list(TRAIT_NO_JUMPSUIT)
+	bodypart_traits = list(
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+		TRAIT_NO_JUMPSUIT,
+		TRAIT_NOBLOOD,
+		TRAIT_NODISMEMBER,
+		TRAIT_NOFIRE,
+		TRAIT_NO_AUGMENTS,
+		TRAIT_NO_DNA_COPY,
+		TRAIT_NO_TRANSFORMATION_STING,
+	)
 
 /obj/item/bodypart/chest/golem/Initialize(mapload)
 	worn_belt_offset = new(

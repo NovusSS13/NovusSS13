@@ -6,7 +6,6 @@
 	inherent_traits = list(
 		TRAIT_CAN_USE_FLIGHT_POTION,
 		TRAIT_TACKLING_WINGED_ATTACKER,
-		TRAIT_ANTENNAE,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_BUG
 

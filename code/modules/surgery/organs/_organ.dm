@@ -80,9 +80,12 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			volume = reagent_vol,\
 			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)))
 	if(process_death)
-		START_PROCESSING(SSobj, src)
+		START_PROCESSING(SSobj, src) //we'll stop processing if necessary, do not worry
 	// Sets up visual elements of the organ
 	initialize_visuals()
+	// Makes the organ fail immediately if it's a destroyed organ
+	if(organ_flags & ORGAN_DESTROYED)
+		become_failing()
 
 /obj/item/organ/Destroy(force)
 	if(owner)
@@ -98,7 +101,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/ex_act(severity, target)
 	if(istype(loc, /obj/item/bodypart))
 		return
-	return
+	return ..()
 
 /*
  * Insert the organ into the select mob.
@@ -373,13 +376,21 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(organ_flags & ORGAN_FAILING)
 		if(IS_ROBOTIC_ORGAN(src))
 			. += span_warning("[src] seem[p_s()] to be broken.")
-			return
-		. += span_warning("[src] [p_have()] decayed for too long, and [p_have()] turned a sickly color. [p_they(TRUE)] probably won't work without repairs.")
+			if(organ_flags & ORGAN_DESTROYED)
+				. += span_danger("[src] [p_are()] destroyed beyond any relief... You can't use [p_them()] anymore.")
+			else
+				. += span_warning("[src] will require repairs to be saved.")
+		else
+			. += span_warning("[src] [p_are()] very damaged, and [p_have()] turned a sickly color.")
+			if(organ_flags & ORGAN_DESTROYED)
+				. += span_danger("[src] [p_are()] destroyed beyond any relief... You can't use [p_them()] anymore.")
+			else
+				. += span_warning("[src] will require healing to be saved.")
 	else if(damage > high_threshold)
 		if(IS_ROBOTIC_ORGAN(src))
 			. += span_warning("[src] seem[p_s()] to be malfunctioning.")
-			return
-		. += span_warning("[src] [p_are()] starting to look discolored.")
+		else
+			. += span_warning("[src] [p_are()] starting to look discolored.")
 
 	var/list/visuals_examine = visuals_examine(user)
 	if(length(visuals_examine))
@@ -397,7 +408,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Ensures that bitten organs cannot be used for well, anything
 /obj/item/organ/proc/OnEatFrom(eater, feeder)
-	organ_flags |= ORGAN_FAILING | ORGAN_DESTROYED
+	organ_flags |= ORGAN_DESTROYED
+	if(!(organ_flags & ORGAN_FAILING))
+		become_failing()
 
 //so we don't grant the organ's action to mobs who pick up the organ
 /obj/item/organ/item_action_slot_check(slot,mob/user)
@@ -412,17 +425,36 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 	if(required_organ_flag && !(organ_flags & required_organ_flag))
 		return
+
 	damage = clamp(damage + damage_amount, 0, maximum)
+	var/is_failing = (damage >= maxHealth || (organ_flags & ORGAN_DESTROYED))
+	if(is_failing && !(organ_flags & ORGAN_FAILING))
+		become_failing()
+	else if(!is_failing && (organ_flags & ORGAN_FAILING))
+		clear_failing()
+
 	var/mess = check_damage_thresholds(owner)
-	prev_damage = damage
-
-	if(damage >= maxHealth || (organ_flags & ORGAN_DESTROYED))
-		organ_flags |= ORGAN_FAILING
-	else
-		organ_flags &= ~ORGAN_FAILING
-
 	if(mess && owner && (owner.stat <= SOFT_CRIT))
 		to_chat(owner, mess)
+
+	prev_damage = damage
+
+/// Things that should happen when an organ becomes failing
+/obj/item/organ/proc/become_failing()
+	organ_flags |= ORGAN_FAILING
+	var/static/list/failing_matrix = list(
+		255, //hue
+		128, //saturation
+		224, //luminance
+	)
+	if(IS_ORGANIC_ORGAN(src))
+		//apply failing organ filter
+		add_filter("organ_failure", 1, color_matrix_filter(failing_matrix, space = COLORSPACE_HSL))
+
+/// Things that should clear up when an organ is no longer failing
+/obj/item/organ/proc/clear_failing()
+	organ_flags &= ~ORGAN_FAILING
+	remove_filter("organ_failure")
 
 /// Sets an organ's damage to the amount "damage_amount", and in doing so clears or sets the failing flag, good for when you have an effect that should fix an organ if broken
 /obj/item/organ/proc/set_organ_damage(damage_amount, required_organ_flag = NONE) //use mostly for admin heals
@@ -515,14 +547,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return Insert(new_owner, special = TRUE, drop_if_replaced = drop_if_replaced)
 
 /// Called on drop_organs for the organ to "fly away" using movable physics
-/obj/item/organ/proc/fly_away(turf/open/owner_location, fly_angle = rand(0, 360))
+/obj/item/organ/proc/fly_away(turf/open/owner_location, fly_angle = rand(0, 360), horizontal_multiplier = 1, vertical_multiplier = 1)
 	if(!istype(owner_location))
 		return
 	return AddComponent(/datum/component/movable_physics, \
 		physics_flags = MPHYSICS_QDEL_WHEN_NO_MOVEMENT, \
 		angle = fly_angle, \
-		horizontal_velocity = rand(2.5 * 100, 6 * 100) * 0.01, \
-		vertical_velocity = rand(4 * 100, 4.5 * 100) * 0.01, \
+		horizontal_velocity = rand(2.5 * 100, 6 * 100) * horizontal_multiplier * 0.01, \
+		vertical_velocity = rand(4 * 100, 4.5 * 100) * vertical_multiplier * 0.01, \
 		horizontal_friction = rand(0.24 * 100, 0.3 * 100) * 0.01, \
 		vertical_friction = 10 * 0.05, \
 		horizontal_conservation_of_momentum = 0.5, \

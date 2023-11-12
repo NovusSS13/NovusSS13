@@ -1,19 +1,24 @@
 /**
  * Bone liver
- * Gives the owner liverless metabolism, makes them vulnerable to bone hurting juice and
+ * Gives the owner stable liver, makes them vulnerable to bone hurting juice and
  * makes milk heal them through meme magic.
- **/
+ */
 /obj/item/organ/liver/bone
 	name = "mass of bones"
 	desc = "You have no idea what this strange ball of bones does."
 	icon_state = "liver-bone"
 	organ_traits = list(TRAIT_STABLELIVER)
+	/// Var for brute healing via milk
+	var/milk_brute_healing = 2.5
+	/// Var for burn healing via milk
+	var/milk_burn_healing = 2.5
 
 /obj/item/organ/liver/bone/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick, times_fired)
 	. = ..()
 	// parent returned COMSIG_MOB_STOP_REAGENT_CHECK or we are failing
 	if((. & COMSIG_MOB_STOP_REAGENT_CHECK) || (organ_flags & ORGAN_FAILING))
 		return
+
 	if(istype(chem, /datum/reagent/toxin/bonehurtingjuice))
 		organ_owner.adjustStaminaLoss(7.5 * REM * seconds_per_tick, 0)
 		organ_owner.adjustBruteLoss(0.5 * REM * seconds_per_tick, 0)
@@ -43,7 +48,7 @@
 		if(chem.volume > 50)
 			organ_owner.reagents.remove_reagent(chem.type, (chem.volume - 50))
 			to_chat(organ_owner, span_warning("The excess milk is dripping off your bones!"))
-		organ_owner.heal_bodypart_damage(2.5 * REM * seconds_per_tick)
+		organ_owner.heal_bodypart_damage(milk_brute_healing * REM * seconds_per_tick, milk_burn_healing * REM * seconds_per_tick)
 		for(var/datum/wound/iter_wound as anything in organ_owner.all_wounds)
 			iter_wound.on_xadone(1 * REM * seconds_per_tick)
 		return // Do normal metabolism

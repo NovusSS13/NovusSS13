@@ -412,10 +412,10 @@
 			resistance_strings += "acidproof"
 		if(resistance_flags & FREEZE_PROOF)
 			resistance_strings += "cold-resistant"
-		if(resistance_flags & FIRE_PROOF)
-			resistance_strings += "fire-retardant"
-		else if(resistance_flags & FLAMMABLE)
+		if(resistance_flags & FLAMMABLE)
 			resistance_strings += "flammable"
+		else if(resistance_flags & FIRE_PROOF)
+			resistance_strings += "flame-retardant"
 		if(length(resistance_strings))
 			. += span_info("[src] [p_are()] made of [english_list(resistance_strings)] materials.")
 

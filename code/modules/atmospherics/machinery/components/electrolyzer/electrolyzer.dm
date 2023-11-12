@@ -65,12 +65,12 @@
 
 /obj/machinery/electrolyzer/examine(mob/user)
 	. = ..()
-	. += "\The [src] is [on ? "on" : "off"], and the panel is [panel_open ? "open" : "closed"]."
+	. += span_info("\The [src] is [on ? "on" : "off"], and the panel is [panel_open ? "open" : "closed"].")
 
 	if(cell)
-		. += "The charge meter reads [cell ? round(cell.percent(), 1) : 0]%."
+		. += span_info("The charge meter reads [cell ? round(cell.percent(), 1) : 0]%.")
 	else
-		. += "There is no power cell installed."
+		. += span_warning("There is no power cell installed.")
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("<b>Alt-click</b> to toggle [on ? "off" : "on"].")
 		. += span_notice("<b>Anchor</b> to drain power from APC instead of cell")

@@ -11,7 +11,7 @@
 
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = new species_type
-	return !(TRAIT_FIXED_MUTANT_COLORS in species.inherent_traits)
+	return !(TRAIT_FIXED_MUTANT_COLORS in species.get_all_traits())
 
 /datum/preference/tricolor/mutant/mutant_color/create_default_value()
 	var/random_color = sanitize_hexcolor("[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]", include_crunch = TRUE)
@@ -47,8 +47,8 @@
 		bodypart_id_to_zone_to_dimorphic = list()
 		for(var/pref_name in GLOB.pref_bodypart_names)
 			var/limb_id = GLOB.pref_bodypart_names[pref_name]
-			for(var/path in GLOB.bodyparts_by_limb_id[limb_id])
-				var/obj/item/bodypart/bodypart = GLOB.bodyparts_by_limb_id[limb_id][path]
+			for(var/path in SSbodyparts.bodyparts_by_limb_id[limb_id])
+				var/obj/item/bodypart/bodypart = SSbodyparts.bodyparts_by_limb_id[limb_id][path]
 				if(!bodypart.body_zone)
 					continue
 				LAZYSET(bodypart_id_to_zone_to_dimorphic[limb_id], bodypart.body_zone, bodypart.is_dimorphic)

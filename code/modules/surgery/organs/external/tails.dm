@@ -138,6 +138,7 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat
 	wag_flags = WAG_ABLE
+	organ_traits = list(TRAIT_HATED_BY_DOGS)
 
 /// Cat tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/cat

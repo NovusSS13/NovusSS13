@@ -14,7 +14,7 @@
 ///goliath eyes, simple night vision
 /obj/item/organ/eyes/night_vision/goliath
 	name = "goliath eyes"
-	desc = "goliath DNA infused into what was once some normal eyes."
+	desc = "Goliath DNA infused into what was once some normal eyes."
 
 	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
 	icon_state = "eyes"
@@ -35,16 +35,17 @@
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/goliath)
 
 ///goliath lungs! You can breathe lavaland air mix but can't breath pure O2 from a tank anymore.
-/obj/item/organ/lungs/lavaland/goliath
-	name = "mutated goliath-lungs"
-	desc = "goliath DNA infused into what was once some normal lungs."
+/obj/item/organ/lungs/lizard/lavaland/goliath
+	name = "mutated goliath lungs"
+	desc = "Goliath DNA infused into what was once some normal lungs."
 
 	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
 	icon_state = "lungs"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = GOLIATH_COLORS
+	organ_traits = null //I am gonna be real, i don't think goliaths are adapted to living underwater
 
-/obj/item/organ/lungs/lavaland/goliath/Initialize(mapload)
+/obj/item/organ/lungs/lizard/lavaland/goliath/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "back is covered in small tendrils.", BODY_ZONE_CHEST)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/goliath)
@@ -52,7 +53,7 @@
 ///goliath brain. you can't use gloves but one of your arms becomes a tendril hammer that can be used to mine!
 /obj/item/organ/brain/goliath
 	name = "mutated goliath-brain"
-	desc = "goliath DNA infused into what was once a normal brain."
+	desc = "Goliath DNA infused into what was once a normal brain."
 
 	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
 	icon_state = "brain"
@@ -158,8 +159,8 @@
 
 /// goliath heart gives you the ability to survive ash storms.
 /obj/item/organ/heart/goliath
-	name = "mutated goliath-heart"
-	desc = "goliath DNA infused into what was once a normal heart."
+	name = "mutated goliath heart"
+	desc = "Goliath DNA infused into what was once a normal heart."
 
 	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
 	icon_state = "heart"
