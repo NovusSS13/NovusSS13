@@ -447,8 +447,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		128, //saturation
 		224, //luminance
 	)
-	//apply failing organ filter
-	add_filter("organ_failure", 1, color_matrix_filter(failing_matrix, space = COLORSPACE_HSL))
+	if(IS_ORGANIC_ORGAN(src))
+		//apply failing organ filter
+		add_filter("organ_failure", 1, color_matrix_filter(failing_matrix, space = COLORSPACE_HSL))
 
 /// Things that should clear up when an organ is no longer failing
 /obj/item/organ/proc/clear_failing()
