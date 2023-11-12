@@ -172,7 +172,7 @@
 		moving_atom.pixel_x = round(moving_atom.pixel_x + (horizontal_velocity * sin(angle)), MOVABLE_PHYSICS_PRECISION)
 		moving_atom.pixel_y = round(moving_atom.pixel_y + (horizontal_velocity * cos(angle)), MOVABLE_PHYSICS_PRECISION)
 
-		//pixel_z has to be clamped because of space, otherwise the atom will shoot out into infinity with no control whatsoever
+		//pixel_z has to be clamped because of no gravity, otherwise the atom will shoot out into infinity with no control whatsoever
 		moving_atom.pixel_z = round(clamp(moving_atom.pixel_z + vertical_velocity, z_floor, world.icon_size), MOVABLE_PHYSICS_PRECISION)
 
 		moving_atom.adjust_visual_angle(round(visual_angle_velocity, 1))
