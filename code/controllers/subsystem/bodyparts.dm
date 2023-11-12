@@ -33,8 +33,8 @@ SUBSYSTEM_DEF(bodyparts)
 		bodyparts_by_path[path] = bodypart
 		if(bodypart.limb_id)
 			LAZYADDASSOC(bodyparts_by_limb_id[bodypart.limb_id], path, bodypart)
-	bodyparts_by_path = sort_list(GLOB.bodyparts_by_path, GLOBAL_PROC_REF(cmp_typepaths_asc))
-	bodyparts_by_limb_id = sort_list(GLOB.bodyparts_by_limb_id, GLOBAL_PROC_REF(cmp_text_asc))
+	bodyparts_by_path = sort_list(bodyparts_by_path, GLOBAL_PROC_REF(cmp_typepaths_asc))
+	bodyparts_by_limb_id = sort_list(bodyparts_by_limb_id, GLOBAL_PROC_REF(cmp_text_asc))
 	for(var/limb_id in bodyparts_by_limb_id)
 		bodyparts_by_limb_id[limb_id] = sort_list(bodyparts_by_limb_id[limb_id], GLOBAL_PROC_REF(cmp_typepaths_asc))
 
