@@ -2098,7 +2098,7 @@
 			var/perk_type = (difference_positive) ? SPECIES_NEGATIVE_PERK : SPECIES_POSITIVE_PERK
 			var/perk_icon = (difference_positive) ? "wine-glass" : "wine-glass-empty"
 			var/perk_name = "Alcohol " + ((difference_positive) ? "Weakness" : "Tolerance")
-			var/percent_difference = (1 - alcohol_tolerance / initial(base_liver.alcohol_tolerance)) * 100
+			var/percent_difference = abs(1 - (alcohol_tolerance / initial(base_liver.alcohol_tolerance))) * 100
 
 			to_add += list(list(
 				SPECIES_PERK_TYPE = perk_type,
@@ -2253,6 +2253,7 @@
  * Returns all of a species traits, including ones handled by bodyparts and organs.
  */
 /datum/species/proc/get_all_traits()
+	RETURN_TYPE(/list)
 	var/list/traits = inherent_traits.Copy()
 
 	for(var/zone in bodypart_overrides)

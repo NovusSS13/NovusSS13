@@ -7,5 +7,5 @@ GLOBAL_LIST_EMPTY(organs_by_path)
 	for(var/path in subtypesof(/obj/item/organ))
 		var/obj/item/organ/organ = new path
 		GLOB.organs += organ
-		GLOB.organs_by_path[path] = path
+		GLOB.organs_by_path[path] = organ
 	GLOB.organs_by_path = sort_list(GLOB.organs_by_path, GLOBAL_PROC_REF(cmp_typepaths_asc))

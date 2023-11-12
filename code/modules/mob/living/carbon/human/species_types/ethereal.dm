@@ -195,8 +195,8 @@
 	to_add += list(
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "bolt",
-			SPECIES_PERK_NAME = "Shockingly Tasty",
+			SPECIES_PERK_ICON = "plug",
+			SPECIES_PERK_NAME = "Pull the Plug",
 			SPECIES_PERK_DESC = "Ethereals can feed on electricity from APCs, and do not otherwise need to eat.",
 		),
 		list(
