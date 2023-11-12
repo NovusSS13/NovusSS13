@@ -4,7 +4,7 @@ GLOBAL_LIST_EMPTY(organs)
 GLOBAL_LIST_EMPTY(organs_by_path)
 
 /proc/init_organs_lists()
-	for(var/path in subtypesof(/obj/item/bodypart))
+	for(var/path in subtypesof(/obj/item/organ))
 		var/obj/item/organ/organ = new path
 		GLOB.organs += organ
 		GLOB.organs_by_path[path] = path

@@ -2264,8 +2264,9 @@
 	//this is stupid, organ unification when?
 	var/list/organ_types = list()
 	for(var/other_organ in list(mutantbrain,mutantheart,mutantlungs,mutanteyes,mutantears,mutanttongue,mutantliver,mutantstomach,mutantappendix))
-		if(other_organ)
-			organ_types += other_organ
+		if(!other_organ)
+			continue
+		organ_types += other_organ
 	for(var/cosmetic_organ in cosmetic_organs)
 		organ_types += cosmetic_organ
 	for(var/mutant_organ in mutant_organs)
