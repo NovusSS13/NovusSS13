@@ -282,7 +282,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Mob is immune to oxygen damage, does not need to breathe
 #define TRAIT_NOBREATH "no_breath"
 /// One can breath under water, you get me?
-#define TRAIT_WATER_BREATHING "water_breathing"
+#define TRAIT_UNDERWATER_BREATHING "underwater_breathing"
 /// Use when you want a mob to be able to metabolize plasma temporarily (e.g. plasma fixation disease symptom)
 #define TRAIT_PLASMA_LOVER_METABOLISM "plasma_lover_metabolism"
 #define TRAIT_EASYDISMEMBER "easy_dismember"
@@ -500,6 +500,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Trait which prevents you from becoming overweight
 #define TRAIT_NOFAT "cant_get_fat"
 
+/// Trait which allows you to eat clothing
+#define TRAIT_CLOTHING_EATER "clothing_eater"
 /// Trait which allows you to eat rocks
 #define TRAIT_ROCK_EATER "rock_eater"
 /// Trait which allows you to gain bonuses from consuming rocks

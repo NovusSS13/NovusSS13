@@ -35,7 +35,7 @@
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/goliath)
 
 ///goliath lungs! You can breathe lavaland air mix but can't breath pure O2 from a tank anymore.
-/obj/item/organ/lungs/lavaland/goliath
+/obj/item/organ/lungs/lizard/lavaland/goliath
 	name = "mutated goliath-lungs"
 	desc = "goliath DNA infused into what was once some normal lungs."
 
@@ -44,7 +44,7 @@
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = GOLIATH_COLORS
 
-/obj/item/organ/lungs/lavaland/goliath/Initialize(mapload)
+/obj/item/organ/lungs/lizard/lavaland/goliath/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "back is covered in small tendrils.", BODY_ZONE_CHEST)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/goliath)

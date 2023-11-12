@@ -657,6 +657,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	liked_foodtypes = VEGETABLES | DAIRY | CLOTH
 	disliked_foodtypes = FRUIT | GROSS | BUGS | GORE
 	toxic_foodtypes = MEAT | RAW | SEAFOOD
+	organ_traits = list(TRAIT_CLOTHING_EATER)
 
 /obj/item/organ/tongue/zombie
 	name = "rotting tongue"

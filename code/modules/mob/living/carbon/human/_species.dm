@@ -87,8 +87,8 @@
 
 	/**
 	 * Percentage modifier for overall defense of the race, or less defense, if it's negative
-	 * THIS MODIFIES ALL DAMAGE TYPES.
-	 **/
+	 * THIS MODIFIES ALL DAMAGE TYPES! NO EXCEPTIONS.
+	 */
 	var/damage_modifier = 0
 	///multiplier for damage from cold temperature
 	var/coldmod = 1
@@ -96,10 +96,10 @@
 	var/heatmod = 1
 	///multiplier for stun durations
 	var/stunmod = 1
-	///multiplier for money paid at payday
-	var/payday_modifier = 1
 	///Base electrocution coefficient.  Basically a multiplier for damage from electrocutions.
 	var/siemens_coeff = 1
+	///multiplier for money paid at payday
+	var/payday_modifier = 1
 	///Special mutation that can be found in the genepool exclusively in this species. Dont leave empty or changing species will be a headache
 	var/inert_mutation = /datum/mutation/human/dwarfism
 	///Used to set the mob's death_sound upon species change
@@ -634,7 +634,10 @@
 	body_marking_set.apply_markings_to_dna(human_mob, body_marking_set.assemble_body_markings_list(human_mob.dna.features["mcolor"]))
 	human_mob.regenerate_markings(update = FALSE)
 
-///Proc that randomizes all the appearance elements (external organs, markings, hair etc.) of a species' associated mob. Function set by child procs
+/**
+ * Proc that randomizes all the appearance elements (external organs, markings, hair etc.) of a species' associated mob
+ * Function should be set by child procs.
+ */
 /datum/species/proc/randomize_features(mob/living/carbon/human/human_mob)
 	return
 
@@ -1796,14 +1799,14 @@
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "burn",
-			SPECIES_PERK_NAME = "Burn Weakness",
+			SPECIES_PERK_NAME = "Burning Weakness",
 			SPECIES_PERK_DESC = "[plural_form] are weak to burn damage.",
 		))
 	else if(initial(fake_chest.burn_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "burn",
-			SPECIES_PERK_NAME = "Burn Resilience",
+			SPECIES_PERK_NAME = "Burning Resilience",
 			SPECIES_PERK_DESC = "[plural_form] are resilient to burn damage.",
 		))
 
@@ -2127,7 +2130,7 @@
 			SPECIES_PERK_DESC = "[plural_form] must breathe [breathid] to survive. You receive a tank when you arrive.",
 		))
 
-	if(TRAIT_WATER_BREATHING in all_traits)
+	if(TRAIT_UNDERWATER_BREATHING in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "fish",

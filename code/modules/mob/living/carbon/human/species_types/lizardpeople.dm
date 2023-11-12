@@ -10,6 +10,7 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
+	mutantlungs = /obj/item/organ/lungs/lizard //underwater breathing baby!
 	cosmetic_organs = list(
 		/obj/item/organ/horns/lizard = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/frills/lizard = SPRITE_ACCESSORY_NONE,
@@ -140,7 +141,7 @@ Lizard subspecies: ASHWALKERS
 	id = SPECIES_LIZARD_ASH
 	examine_limb_id = SPECIES_LIZARD
 	chat_color = COLOR_MAROON
-	mutantlungs = /obj/item/organ/lungs/lavaland
+	mutantlungs = /obj/item/organ/lungs/lizard/lavaland
 	mutantbrain = /obj/item/organ/brain/primitive
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,

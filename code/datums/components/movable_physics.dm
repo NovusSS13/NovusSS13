@@ -133,6 +133,7 @@
 	cached_transform = null
 
 /datum/component/movable_physics/RegisterWithParent()
+	RegisterSignal(parent, COMSIG_MOVABLE_NEWTONIAN_MOVE, .proc/on_newtonian_move)
 	RegisterSignal(parent, COMSIG_MOVABLE_BUMP, .proc/on_bump)
 	if(isitem(parent))
 		RegisterSignal(parent, COMSIG_ITEM_PICKUP, .proc/on_item_pickup)
@@ -142,6 +143,7 @@
 		qdel(src)
 
 /datum/component/movable_physics/UnregisterFromParent()
+	UnregisterSignal(parent, COMSIG_MOVABLE_NEWTONIAN_MOVE)
 	UnregisterSignal(parent, COMSIG_MOVABLE_IMPACT)
 	if(isitem(parent))
 		UnregisterSignal(parent, COMSIG_ITEM_PICKUP)
@@ -278,6 +280,12 @@
 	vertical_velocity = abs(vertical_velocity * vertical_conservation_of_momentum)
 	if(bounce_callback)
 		bounce_callback.Invoke()
+
+/// We do not EVER want newtonian movement while handling movement ourselves, so block it!
+/datum/component/movable_physics/proc/on_newtonian_move(atom/movable/source, direction, start_delay)
+	SIGNAL_HANDLER
+
+	return COMPONENT_MOVABLE_NEWTONIAN_BLOCK
 
 /// Basically handles bumping on a solid object and ricocheting away according to a dose of Newton's third law
 /datum/component/movable_physics/proc/on_bump(atom/movable/source, atom/bumped_atom)

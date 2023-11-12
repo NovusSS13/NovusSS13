@@ -109,14 +109,10 @@
 
 			else if(isturf(loc)) //Breathe from loc as turf
 				//Underwater breathing
-				var/turf/T = loc
-				if(T.liquids && !HAS_TRAIT(src, TRAIT_NOBREATH) && ((body_position == LYING_DOWN && T.liquids.liquid_state >= LIQUID_STATE_WAIST) || (body_position == STANDING_UP && T.liquids.liquid_state >= LIQUID_STATE_FULLTILE)))
-					//Officially trying to breathe underwater
-					if(HAS_TRAIT(src, TRAIT_WATER_BREATHING))
-						failed_last_breath = FALSE
-						clear_alert("not_enough_oxy")
-						return
-
+				var/turf/breath_turf = loc
+				if(breath_turf.liquids && !HAS_TRAIT(src, TRAIT_UNDERWATER_BREATHING) &&
+					((body_position == LYING_DOWN && T.liquids.liquid_state >= LIQUID_STATE_WAIST) || \
+					(breath_turf.liquids.liquid_state >= LIQUID_STATE_FULLTILE)))
 					adjustOxyLoss(3)
 					failed_last_breath = TRUE
 					if(oxyloss <= OXYGEN_DAMAGE_CHOKING_THRESHOLD && stat == CONSCIOUS)

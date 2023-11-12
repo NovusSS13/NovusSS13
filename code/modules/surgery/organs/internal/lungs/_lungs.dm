@@ -869,8 +869,13 @@
 	. = ..()
 	AddElement(/datum/element/dangerous_surgical_removal)
 
-/obj/item/organ/lungs/lavaland
-	name = "blackened frilled lungs" // blackened from necropolis exposure
+/obj/item/organ/lungs/lizard
+	name = "gilled lungs"
+	desc = "Lungs capable of adapating to an underwater environment."
+	organ_traits = list(TRAIT_UNDERWATER_BREATHING)
+
+/obj/item/organ/lungs/lizard/lavaland
+	name = "blackened gilles lungs" // blackened from necropolis exposure
 	desc = "Exposure to the necropolis has mutated these lungs to breathe the air of Indecipheres, the lava-covered moon."
 	icon_state = "lungs-ashwalker"
 
@@ -878,7 +883,7 @@
 // to 16 kPa. So it follows that ashwalkers, as humanoids, follow the same rules.
 #define GAS_TOLERANCE 5
 
-/obj/item/organ/lungs/lavaland/Initialize(mapload)
+/obj/item/organ/lungs/lizard/lavaland/Initialize(mapload)
 	var/datum/gas_mixture/immutable/planetary/mix = SSair.planetary[LAVALAND_DEFAULT_ATMOS]
 
 	if(!mix?.total_moles()) // this typically means we didn't load lavaland, like if we're using the LOWMEMORYMODE define

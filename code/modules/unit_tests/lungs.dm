@@ -62,7 +62,7 @@
 /datum/unit_test/lungs/lungs_sanity_ashwalker/Run()
 	// Gas mix resembling one cell of lavaland's atmosphere.
 	var/datum/gas_mixture/lavaland_test_mix = create_lavaland_mix()
-	var/obj/item/organ/lungs/lavaland/test_lungs = allocate(/obj/item/organ/lungs/lavaland)
+	var/obj/item/organ/lungs/lizard/lavaland/test_lungs = allocate(/obj/item/organ/lungs/lizard/lavaland)
 	var/mob/living/carbon/human/lab_rat = allocate(/mob/living/carbon/human/consistent)
 	// Test one breath of Lavaland gas mix on Ashwalker lungs.
 	lungs_test_check_breath("Lavaland air mixture", lab_rat, test_lungs, lavaland_test_mix)
