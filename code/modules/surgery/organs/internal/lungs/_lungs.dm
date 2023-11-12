@@ -875,7 +875,7 @@
 	organ_traits = list(TRAIT_UNDERWATER_BREATHING)
 
 /obj/item/organ/lungs/lizard/lavaland
-	name = "blackened gilles lungs" // blackened from necropolis exposure
+	name = "blackened gilled lungs" // blackened from necropolis exposure
 	desc = "Exposure to the necropolis has mutated these lungs to breathe the air of Indecipheres, the lava-covered moon."
 	icon_state = "lungs-ashwalker"
 
