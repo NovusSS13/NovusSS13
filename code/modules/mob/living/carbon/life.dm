@@ -110,8 +110,8 @@
 			else if(isturf(loc)) //Breathe from loc as turf
 				//Underwater breathing
 				var/turf/breath_turf = loc
-				if(breath_turf.liquids && !HAS_TRAIT(src, TRAIT_UNDERWATER_BREATHING) &&
-					((body_position == LYING_DOWN && T.liquids.liquid_state >= LIQUID_STATE_WAIST) || \
+				if(breath_turf.liquids && !HAS_TRAIT(src, TRAIT_UNDERWATER_BREATHING) && \
+					((body_position == LYING_DOWN && breath_turf.liquids.liquid_state >= LIQUID_STATE_WAIST) || \
 					(breath_turf.liquids.liquid_state >= LIQUID_STATE_FULLTILE)))
 					adjustOxyLoss(3)
 					failed_last_breath = TRUE
@@ -120,7 +120,7 @@
 						return
 
 					//Try and drink water#]
-					var/datum/reagents/turf_reagents = T.liquids.take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_BREATH_AMOUNT)
+					var/datum/reagents/turf_reagents = breath_turf.liquids.take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_BREATH_AMOUNT)
 					turf_reagents.trans_to(src, turf_reagents.total_volume, methods = INGEST)
 					qdel(turf_reagents)
 					visible_message(span_warning("[src] chokes on water!"), span_userdanger("You're choking on water!"))
