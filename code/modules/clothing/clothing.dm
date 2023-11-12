@@ -296,11 +296,11 @@
 
 	switch (max_heat_protection_temperature)
 		if (400 to 1000)
-			. += "[src] offers the wearer limited protection from fire."
+			. += span_info("[src] offers the wearer limited protection from fire.")
 		if (1001 to 1600)
-			. += "[src] offers the wearer some protection from fire."
+			. += span_info("[src] offers the wearer some protection from fire.")
 		if (1601 to 35000)
-			. += "[src] offers the wearer robust protection from fire."
+			. += span_info("[src] offers the wearer robust protection from fire.")
 
 	for(var/zone in damage_by_parts)
 		var/pct_damage_part = damage_by_parts[zone] / limb_integrity * 100
@@ -314,21 +314,18 @@
 				. += span_danger("The [zone_name] is partially shredded.")
 
 	if(atom_storage)
-		var/list/how_cool_are_your_threads = list("<span class='notice'>")
 		if(atom_storage.attack_hand_interact)
-			how_cool_are_your_threads += "[src]'s storage opens when clicked.\n"
+			. += span_notice("[src]'s storage opens when clicked.")
 		else
-			how_cool_are_your_threads += "[src]'s storage opens when dragged to yourself.\n"
+			. += span_notice("[src]'s storage opens when dragged to yourself.")
 		if (atom_storage.can_hold?.len) // If pocket type can hold anything, vs only specific items
-			how_cool_are_your_threads += "[src] can store [atom_storage.max_slots] <a href='?src=[REF(src)];show_valid_pocket_items=1'>item\s</a>.\n"
+			. += span_notice("[src] can store [atom_storage.max_slots] <a href='?src=[REF(src)];show_valid_pocket_items=1'>item\s</a>.")
 		else
-			how_cool_are_your_threads += "[src] can store [atom_storage.max_slots] item\s that are [weight_class_to_text(atom_storage.max_specific_storage)] or smaller.\n"
+			. += span_notice("[src] can store [atom_storage.max_slots] item\s that are [weight_class_to_text(atom_storage.max_specific_storage)] or smaller.")
 		if(atom_storage.quickdraw)
-			how_cool_are_your_threads += "You can quickly remove an item from [src] using Right-Click.\n"
+			. += span_notice("You can quickly remove an item from [src] using Right-Click.")
 		if(atom_storage.silent)
-			how_cool_are_your_threads += "Adding or removing items from [src] makes no noise.\n"
-		how_cool_are_your_threads += "</span>"
-		. += how_cool_are_your_threads.Join()
+			. += span_notice("Adding or removing items from [src] makes no noise.")
 
 	if(get_armor().has_any_armor() || (flags_cover & (HEADCOVERSMOUTH|PEPPERPROOF)))
 		. += span_notice("It has a <a href='?src=[REF(src)];list_armor=1'>tag</a> listing its protection classes.")
