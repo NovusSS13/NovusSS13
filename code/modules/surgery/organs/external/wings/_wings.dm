@@ -22,6 +22,9 @@
 	layers = EXTERNAL_BEHIND | EXTERNAL_ADJACENT | EXTERNAL_FRONT
 	feature_key = "wings"
 
+/datum/bodypart_overlay/mutant/wings/get_global_feature_list()
+	return GLOB.wings_list
+
 /datum/bodypart_overlay/mutant/wings/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
 	if(owner.wear_suit)
 		if(!(owner.wear_suit.flags_inv & HIDEJUMPSUIT))
