@@ -104,19 +104,38 @@
 	//We are not on fire and werent ignited by a hotspot exposure, no fire pls
 	if(!hotspotted && !fire_state)
 		return FALSE
-	var/has_oxygen = FALSE
-	if(isopenturf(my_turf))
-		var/turf/open/open_turf = my_turf
-		var/datum/gas_mixture/air = open_turf.return_air()
-		if(air?.gases[GAS_O2] > 0)
-			has_oxygen = TRUE
+
 	var/total_burn_power = 0
+	var/datum/gas_mixture/air = my_turf.return_air()
+	air?.assert_gases(/datum/gas/oxygen, /datum/gas/carbon_dioxide)
 	for(var/datum/reagent/reagent_type as anything in reagent_list)
 		var/burn_power = initial(reagent_type.liquid_fire_power)
-		if(burn_power && (has_oxygen || !initial(reagent_type.liquid_fire_needs_oxygen)))
-			total_burn_power += burn_power * reagent_list[reagent_type]
+		if(!burn_power)
+			continue
+
+		if(initial(reagent_type.liquid_fire_needs_oxygen))
+			if(!air)
+				continue
+
+			var/oxygen_amount = air.gases[/datum/gas/oxygen][MOLES]
+			if(oxygen_amount <= 0)
+				continue
+
+			var/burn_rate = burn_power * 0.05
+			var/burnt = min(oxygen_amount, burn_rate)
+
+			air.gases[/datum/gas/oxygen][MOLES] -= burnt
+			air.gases[/datum/gas/carbon_dioxide][MOLES] += burnt
+
+			burn_power *= (burnt / burn_rate)
+
+		total_burn_power += burn_power * reagent_list[reagent_type]
+
+	air?.garbage_collect()
+
 	if(!total_burn_power)
 		return FALSE
+
 	total_burn_power /= total_reagents //We get burn power per unit.
 	if(total_burn_power <= REQUIRED_FIRE_POWER_PER_UNIT)
 		return FALSE

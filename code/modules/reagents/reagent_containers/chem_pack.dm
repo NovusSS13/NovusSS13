@@ -16,7 +16,7 @@
 	if(user.can_perform_action(src, NEED_DEXTERITY) && !sealed)
 		if(iscarbon(user) && (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50)))
 			to_chat(user, span_warning("Uh... whoops! You accidentally spill the content of the bag onto yourself."))
-			SplashReagents(user)
+			SplashReagents(user, user)
 			return
 
 		reagents.flags = NONE

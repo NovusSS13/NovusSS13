@@ -152,7 +152,7 @@
 	var/obj/item/reagent_containers/stored_beaker = stored
 	if(!stored_beaker)
 		return ..()
-	stored_beaker.SplashReagents(drop_location(user))
+	stored_beaker.SplashReagents(drop_location(user), src)
 	loc.visible_message(span_notice("[user] spills the contents of [stored_beaker] all over the ground."))
 	return ..()
 

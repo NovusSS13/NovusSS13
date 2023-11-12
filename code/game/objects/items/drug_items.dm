@@ -67,6 +67,6 @@
 	playsound(src, SFX_SHATTER, 40, TRUE)
 	transfer_fingerprints_to(ampoule_shard)
 	spillable = TRUE
-	SplashReagents(hit_atom, TRUE)
+	SplashReagents(hit_atom, throwingdatum.thrower)
 	qdel(src)
 	hit_atom.Bumped(ampoule_shard)

@@ -24,7 +24,7 @@
 		return
 	if(bartender_check(target) && ranged)
 		return
-	SplashReagents(target, ranged, override_spillable = TRUE)
+	SplashReagents(target, thrower, override_spillable = TRUE)
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target, break_top)
 	qdel(src)
@@ -388,7 +388,7 @@
 /obj/item/reagent_containers/cup/glass/bottle/juice/smallcarton/smash(atom/target, mob/thrower, ranged = FALSE)
 	if(bartender_check(target) && ranged)
 		return
-	SplashReagents(target, ranged, override_spillable = TRUE)
+	SplashReagents(target, thrower, override_spillable = TRUE)
 	var/obj/item/broken_bottle/bottle_shard = new (loc)
 	bottle_shard.mimic_broken(src, target)
 	qdel(src)

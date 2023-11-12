@@ -195,7 +195,7 @@
 /obj/item/reagent_containers/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum, do_splash = TRUE)
 	. = ..()
 	if(do_splash)
-		SplashReagents(hit_atom, TRUE)
+		SplashReagents(hit_atom, throwingdatum.thrower)
 
 /obj/item/reagent_containers/proc/bartender_check(atom/target)
 	. = FALSE
@@ -203,7 +203,7 @@
 	if(target.CanPass(src, get_dir(target, src)) && thrown_by && HAS_TRAIT(thrown_by, TRAIT_BOOZE_SLIDER))
 		. = TRUE
 
-/obj/item/reagent_containers/proc/SplashReagents(atom/target, thrown = FALSE, override_spillable = FALSE)
+/obj/item/reagent_containers/proc/SplashReagents(atom/target, mob/user = null, override_spillable = FALSE)
 	if(!reagents?.total_volume || (!spillable && !override_spillable))
 		return
 
@@ -211,26 +211,25 @@
 		visible_message(span_notice("[src] lands onto \the [target] without spilling a single drop."))
 		return
 
-	var/mob/thrown_by = thrownby?.resolve()
 	if(ismovable(target))
 		target.visible_message(
 			span_danger("[target] is splashed with something!"),
 			span_userdanger("[target] is splashed with something!")
 		)
 		var/list/logged_reagents = list()
-		for(var/datum/reagent/A in reagents.reagent_list)
-			logged_reagents += "[A.type]  ([num2text(A.volume)])"
+		for(var/datum/reagent/reagent as anything in reagents.reagent_list)
+			logged_reagents += "[reagent.type]  ([num2text(reagent.volume)])"
 
-		if(thrown_by)
-			log_combat(thrown_by, target, "splashed", english_list(logged_reagents))
+		if(user)
+			log_combat(user, target, "splashed", english_list(logged_reagents))
 
 		var/splash_multiplier = 0
 		if(target.reagents)
 			splash_multiplier = 0.1 * rand(5,10)
 			reagents.expose(target, TOUCH, splash_multiplier)
 
-		var/turf/target_turf = get_turf(target)
-		reagents.expose(target_turf, TOUCH, (1 - splash_multiplier)) // 1 - splash_multiplier because it's what didn't hit the target
+		var/turf/target_turf = target.density ? get_step(src, get_cardinal_dir(user, src)) : get_turf(target)
+		target_turf.add_liquid_from_reagents(reagents)
 
 	else
 		var/turf/target_turf = target
@@ -238,10 +237,10 @@
 			stack_trace("how the fuck did you manage to SplashReagents on an AREA")
 			return
 
-		if(thrown_by)
-			log_combat(thrown_by, target, "splashed (thrown) [english_list(reagents.reagent_list)]", "in [AREACOORD(target)]")
-			thrown_by.log_message("splashed (thrown) [english_list(reagents.reagent_list)] on [target].", LOG_ATTACK)
-			message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
+		if(user)
+			log_combat(user, target, "splashed (thrown) [english_list(reagents.reagent_list)]", "in [AREACOORD(target)]")
+			user.log_message("splashed (thrown) [english_list(reagents.reagent_list)] on [target].", LOG_ATTACK)
+			message_admins("[ADMIN_LOOKUPFLW(user)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
 
 		visible_message(span_notice("[src] spills its contents all over [target]."))
 		target_turf.add_liquid_from_reagents(reagents)
