@@ -158,7 +158,7 @@
 /obj/item/organ/wings/functional/angel
 	name = "angel wings"
 	desc = "Holier-than-thou attitude not included."
-	sprite_accessory_override = /datum/sprite_accessory/wings_open/angel
+	sprite_accessory_override = /datum/sprite_accessory/wings/angel
 
 	organ_traits = list(TRAIT_HOLY)
 

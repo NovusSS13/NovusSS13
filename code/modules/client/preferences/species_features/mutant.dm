@@ -45,6 +45,8 @@
 	var/static/list/bodypart_id_to_zone_to_dimorphic
 	if(!length(bodypart_id_to_zone_to_dimorphic))
 		bodypart_id_to_zone_to_dimorphic = list()
+		if(!length(GLOB.bodyparts))
+			init_bodyparts_lists()
 		for(var/pref_name in GLOB.pref_bodypart_names)
 			var/limb_id = GLOB.pref_bodypart_names[pref_name]
 			for(var/path in GLOB.bodyparts_by_limb_id[limb_id])

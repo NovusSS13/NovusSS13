@@ -6,6 +6,8 @@
         "midround_lower_bound": 18000,
 		"midround_upper_bound": 60000,
         "midround_heavy_lower_bound": 36000,
+		"low_pop_maximum_threat": 20,
+		"low_pop_player_threshold": 25,
 		"threat_per_midround_roll": 10,
         "latejoin_delay_min": 9000,
         "latejoin_delay_max": 24000,

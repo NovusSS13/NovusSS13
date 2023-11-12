@@ -2127,15 +2127,15 @@
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "lungs",
 			SPECIES_PERK_NAME = "[capitalize(breathid)] Respiration",
-			SPECIES_PERK_DESC = "[plural_form] must breathe [breathid] to survive. You receive a tank when you arrive.",
+			SPECIES_PERK_DESC = "[plural_form] must breathe [capitalize(breathid)] to survive. You receive a tank when you arrive.",
 		))
 
 	if(TRAIT_UNDERWATER_BREATHING in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "fish",
-			SPECIES_PERK_NAME = "Underwater Respiration",
-			SPECIES_PERK_DESC = "[plural_form] are capable of breathing underwater. They still need [breathid], though.",
+			SPECIES_PERK_NAME = "Fish out of Water",
+			SPECIES_PERK_DESC = "[plural_form] are capable of breathing underwater. They still need [capitalize(breathid)], though.",
 		))
 
 	return to_add
@@ -2257,7 +2257,7 @@
 	var/list/traits = inherent_traits.Copy()
 
 	for(var/zone in bodypart_overrides)
-		var/obj/item/bodypart/fake_bodypart = GLOB.bodyparts_by_path[bodypart_overrides[zone]]
+		var/obj/item/bodypart/fake_bodypart = SSbodyparts.bodyparts_by_path[bodypart_overrides[zone]]
 		if(!fake_bodypart)
 			continue
 		traits |= fake_bodypart.bodypart_traits
@@ -2272,8 +2272,9 @@
 		organ_types += cosmetic_organ
 	for(var/mutant_organ in mutant_organs)
 		organ_types += mutant_organ
+
 	for(var/organ_path in organ_types)
-		var/obj/item/organ/fake_organ = GLOB.organs_by_path[organ_path]
+		var/obj/item/organ/fake_organ = SSbodyparts.organs_by_path[organ_path]
 		if(!fake_organ)
 			continue
 		traits |= fake_organ.organ_traits
