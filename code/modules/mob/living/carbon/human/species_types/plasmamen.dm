@@ -164,12 +164,6 @@
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "bone",
-			SPECIES_PERK_NAME = "Wound Resistance",
-			SPECIES_PERK_DESC = "Plasmamen have higher tolerance for damage that would wound others.",
-		),
-		list(
-			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "wind",
 			SPECIES_PERK_NAME = "Plasma Healing",
 			SPECIES_PERK_DESC = "Plasmamen can heal wounds by consuming plasma.",

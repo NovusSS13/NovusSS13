@@ -18,14 +18,14 @@
 		TRAIT_RESISTCOLD,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_STABLEHEART,
+		TRAIT_HEARTLESS_PUMPING,
 		// HIGH FUNCTIONING UNIQUE
 		TRAIT_SUCCUMB_OVERRIDE,
 	)
 
+	mutantheart = /obj/item/organ/heart/zombie
 	mutanttongue = /obj/item/organ/tongue/zombie
 	mutantstomach = null
-	mutantheart = /obj/item/organ/heart/zombie
 	mutantliver = null
 	mutantlungs = null
 
@@ -91,7 +91,6 @@
 	damage_modifier = 20 // 120 damage to KO a zombie, which kills it
 	mutanteyes = /obj/item/organ/eyes/zombie
 	mutantbrain = /obj/item/organ/brain/zombie
-	mutanttongue = /obj/item/organ/tongue/zombie
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 
 	inherent_traits = list(
@@ -106,7 +105,7 @@
 		TRAIT_RESISTCOLD,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_STABLEHEART,
+		TRAIT_HEARTLESS_PUMPING,
 	)
 
 	// Infectious zombies have slow legs

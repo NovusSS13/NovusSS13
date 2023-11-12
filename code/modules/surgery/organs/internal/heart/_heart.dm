@@ -47,7 +47,7 @@
 	if(!owner.needs_heart())
 		return
 
-	if((organ_flags & ORGAN_FAILING) && owner.can_heartattack()) //heart broke, stopped beating, death imminent... unless you have veins that pump blood without a heart
+	if(!failed && (organ_flags & ORGAN_FAILING) && owner.can_heartattack()) //heart broke, stopped beating, death imminent... unless you have veins that pump blood without a heart
 		if(owner.stat <= SOFT_CRIT)
 			owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"), \
 				span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
@@ -55,10 +55,10 @@
 		failed = TRUE
 
 	if(owner.client && beating)
-		failed = FALSE
-		var/sound/slowbeat = sound('sound/health/slowbeat.ogg', repeat = TRUE)
-		var/sound/fastbeat = sound('sound/health/fastbeat.ogg', repeat = TRUE)
+		var/static/sound/slowbeat = sound('sound/health/slowbeat.ogg', channel = CHANNEL_HEARTBEAT, repeat = TRUE)
+		var/static/sound/fastbeat = sound('sound/health/fastbeat.ogg', channel = CHANNEL_HEARTBEAT, repeat = TRUE)
 
+		failed = FALSE
 		if(owner.health <= owner.crit_threshold && beat != BEAT_SLOW)
 			beat = BEAT_SLOW
 			owner.playsound_local(get_turf(owner), slowbeat, 40, 0, channel = CHANNEL_HEARTBEAT, use_reverb = FALSE)
@@ -71,7 +71,6 @@
 			if(owner.health > HEALTH_THRESHOLD_FULLCRIT && (!beat || beat == BEAT_SLOW))
 				owner.playsound_local(get_turf(owner), fastbeat, 40, 0, channel = CHANNEL_HEARTBEAT, use_reverb = FALSE)
 				beat = BEAT_FAST
-
 		else if(beat == BEAT_FAST)
 			owner.stop_sound_channel(CHANNEL_HEARTBEAT)
 			beat = BEAT_NONE

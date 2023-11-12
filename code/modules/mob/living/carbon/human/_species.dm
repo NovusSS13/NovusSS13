@@ -815,7 +815,7 @@
  * Return null continue running the normal on_mob_life() for that reagent.
  * Return COMSIG_MOB_STOP_REAGENT_CHECK to not run the normal metabolism effects.
  *
- * NOTE: If you return COMSIG_MOB_STOP_REAGENT_CHECK, that reagent will not be removed liike normal! You must handle it manually.
+ * NOTE: If you return COMSIG_MOB_STOP_REAGENT_CHECK, that reagent will not be removed like normal! You must handle it manually.
  **/
 /datum/species/proc/handle_chemical(datum/reagent/chem, mob/living/carbon/human/affected, seconds_per_tick, times_fired)
 	SHOULD_CALL_PARENT(TRUE)
@@ -1674,7 +1674,7 @@
 	if(!mutanttongue || (TRAIT_NOHUNGER in get_all_traits()))
 		return null
 
-	var/static/list/food_flags = FOOD_FLAGS_IC
+	var/static/list/food_flags = FOOD_FLAGS
 	var/obj/item/organ/tongue/fake_tongue = mutanttongue
 	return list(
 		"liked_food" = bitfield_to_list(initial(fake_tongue.liked_foodtypes), food_flags),
@@ -1706,14 +1706,14 @@
 	// Let us get every perk we can concieve of in one big list.
 	// The order these are called (kind of) matters.
 	// Species unique perks first, as they're more important than genetic perks,
-	// and language perk last, as it comes at the end of the perks list
+	// and payday perks last, since they matter least.
 	species_perks += create_pref_unique_perks()
 	species_perks += create_pref_blood_perks()
 	species_perks += create_pref_damage_perks()
-	species_perks += create_pref_temperature_perks()
 	species_perks += create_pref_traits_perks()
-	species_perks += create_pref_biotypes_perks()
 	species_perks += create_pref_organs_perks()
+	species_perks += create_pref_temperature_perks()
+	species_perks += create_pref_biotypes_perks()
 	species_perks += create_pref_language_perk()
 	species_perks += create_pref_payday_perk()
 
@@ -1786,7 +1786,7 @@
 	else if(initial(fake_chest.brute_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "shield-alt",
+			SPECIES_PERK_ICON = "band-aid",
 			SPECIES_PERK_NAME = "Brutal Resilience",
 			SPECIES_PERK_DESC = "[plural_form] are resilient to brute damage.",
 		))
@@ -1802,25 +1802,41 @@
 	else if(initial(fake_chest.burn_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "shield-alt",
+			SPECIES_PERK_ICON = "burn",
 			SPECIES_PERK_NAME = "Burn Resilience",
 			SPECIES_PERK_DESC = "[plural_form] are resilient to burn damage.",
 		))
 
+	var/list/all_traits = get_all_traits()
+	if(TRAIT_NOCLONELOSS in all_traits)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "dna",
+			SPECIES_PERK_NAME = "Cellular Stability",
+			SPECIES_PERK_DESC = "[plural_form] are immune to cellular damage.",
+		))
+
 	// Shock damage
-	if(siemens_coeff > 1)
+	if(TRAIT_SHOCKIMMUNE in all_traits)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "bolt",
+			SPECIES_PERK_NAME = "Ride the Lightning",
+			SPECIES_PERK_DESC = "[plural_form] are immune to electrical shocks.",
+		))
+	else if(siemens_coeff > 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "bolt",
 			SPECIES_PERK_NAME = "Shock Vulnerability",
-			SPECIES_PERK_DESC = "[plural_form] are vulnerable to being shocked.",
+			SPECIES_PERK_DESC = "[plural_form] are shockingly vulnerable to electricity.",
 		))
 	else if(siemens_coeff < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "shield-alt",
+			SPECIES_PERK_ICON = "bolt",
 			SPECIES_PERK_NAME = "Shock Resilience",
-			SPECIES_PERK_DESC = "[plural_form] are resilient to being shocked.",
+			SPECIES_PERK_DESC = "[plural_form] are shockingly resilient to electricity.",
 		))
 
 	return to_add
@@ -1886,12 +1902,19 @@
 			SPECIES_PERK_DESC = "[plural_form] do not have blood.",
 		))
 	else
-		if(TRAIT_STABLEHEART in all_traits)
+		if(TRAIT_HEARTLESS_PUMPING in all_traits)
 			to_add += list(list(
 				SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-				SPECIES_PERK_ICON = "heart-pulse",
-				SPECIES_PERK_NAME = "Stable Heart",
+				SPECIES_PERK_ICON = "heart-broken",
+				SPECIES_PERK_NAME = "Heartless Bastard",
 				SPECIES_PERK_DESC = "[plural_form] do not need a heart to survive, although they still need blood.",
+			))
+		else if(TRAIT_STABLEHEART in all_traits)
+			to_add += list(list(
+				SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+				SPECIES_PERK_ICON = "heartbeat",
+				SPECIES_PERK_NAME = "Powerful Coronaries",
+				SPECIES_PERK_DESC = "[plural_form] need a heart to survive, but their hearts are stable and they will not suffer heart attacks.",
 			))
 
 		// Check if their exotic blood is a valid typepath
@@ -1922,38 +1945,44 @@
 	var/list/to_add = list()
 
 	var/list/all_traits = get_all_traits()
-	if(TRAIT_LIMBATTACHMENT in all_traits)
+
+	if(TRAIT_NODISMEMBER in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "user-plus",
-			SPECIES_PERK_NAME = "Easily Reattached",
-			SPECIES_PERK_DESC = "[plural_form] limbs are easily readded, and as such do not \
-				require surgery to restore. Simply pick it up and pop it back in, champ!",
+			SPECIES_PERK_ICON = "anchor",
+			SPECIES_PERK_NAME = "No Dismemberment",
+			SPECIES_PERK_DESC = "[plural_form] limbs are secured very well, dismemberment is not possible whatsoever.",
 		))
-
-	if(TRAIT_EASYDISMEMBER in all_traits)
-		to_add += list(list(
-			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-			SPECIES_PERK_ICON = "user-times",
-			SPECIES_PERK_NAME = "Easily Dismembered",
-			SPECIES_PERK_DESC = "[plural_form] limbs are not secured well, and as such they are easily dismembered.",
-		))
+	else
+		if(TRAIT_LIMBATTACHMENT in all_traits)
+			to_add += list(list(
+				SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+				SPECIES_PERK_ICON = "user-plus",
+				SPECIES_PERK_NAME = "Easily Reattached",
+				SPECIES_PERK_DESC = "[plural_form] limbs are easily readded, and as such do not \
+					require surgery to restore. Simply pick it up and pop it back in, champ!",
+			))
+		if(TRAIT_EASYDISMEMBER in all_traits)
+			to_add += list(list(
+				SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+				SPECIES_PERK_ICON = "user-times",
+				SPECIES_PERK_NAME = "Easily Dismembered",
+				SPECIES_PERK_DESC = "[plural_form] limbs are not secured well, and as such they are easily dismembered.",
+			))
 
 	if(TRAIT_EASILY_WOUNDED in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "user-times",
 			SPECIES_PERK_NAME = "Easily Wounded",
-			SPECIES_PERK_DESC = "[plural_form] skin is very weak and fragile. They are much easier to apply serious wounds to.",
+			SPECIES_PERK_DESC = "[plural_form] are very weak and fragile. They are much easier to apply serious wounds to.",
 		))
-
-	if(TRAIT_TOXINLOVER in all_traits)
+	else if(TRAIT_HARDLY_WOUNDED in all_traits)
 		to_add += list(list(
-			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-			SPECIES_PERK_ICON = "syringe",
-			SPECIES_PERK_NAME = "Toxins Lover",
-			SPECIES_PERK_DESC = "Toxins damage dealt to [plural_form] are reversed - healing toxins will instead cause harm, and \
-				causing toxins will instead cause healing. Be careful around purging chemicals!",
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "user-plus",
+			SPECIES_PERK_NAME = "Hardly Wounded",
+			SPECIES_PERK_DESC = "[plural_form] are very tough and durable. They are much harder to apply serious wounds to.",
 		))
 
 	if(TRAIT_GENELESS in all_traits)
@@ -1962,14 +1991,6 @@
 			SPECIES_PERK_ICON = "dna",
 			SPECIES_PERK_NAME = "No Genes",
 			SPECIES_PERK_DESC = "[plural_form] have no genes, making genetic scrambling a useless weapon, but also locking them out from getting genetic powers.",
-		))
-
-	if(TRAIT_NOBREATH in all_traits)
-		to_add += list(list(
-			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "wind",
-			SPECIES_PERK_NAME = "No Respiration",
-			SPECIES_PERK_DESC = "[plural_form] have no need to breathe!",
 		))
 
 	return to_add
@@ -2014,38 +2035,74 @@
 
 	var/list/to_add = list()
 
-	var/alcohol_tolerance = initial(mutantliver.alcohol_tolerance)
+	var/list/all_traits = get_all_traits()
+	if(TRAIT_LIVERLESS_METABOLISM in all_traits)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "flask-vial",
+			SPECIES_PERK_NAME = "Liverless Metabolism",
+			SPECIES_PERK_DESC = "[plural_form] metabolize reagents without a liver. In most scenarios, this is a good thing!",
+		))
+	else if(TRAIT_STABLELIVER in all_traits)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "flask",
+			SPECIES_PERK_NAME = "Stable Liver",
+			SPECIES_PERK_DESC = "[plural_form] need a liver to survive, but their livers are stable and will not suffer liver failure.",
+		))
+
 	var/obj/item/organ/liver/base_liver = /obj/item/organ/liver
-	var/tolerance_difference = alcohol_tolerance - initial(base_liver.alcohol_tolerance)
 
-	if (tolerance_difference != 0)
-		var/difference_positive = (tolerance_difference > 0)
-		var/more_or_less = (difference_positive) ? "more" : "less"
-		var/perk_type = (difference_positive) ? SPECIES_NEGATIVE_PERK : SPECIES_POSITIVE_PERK
-		var/perk_name = "Alcohol " + ((difference_positive) ? "Weakness" : "Tolerance")
-		var/percent_difference = (alcohol_tolerance / initial(base_liver.alcohol_tolerance)) * 100
-
+	if(TRAIT_TOXIMMUNE in all_traits)
 		to_add += list(list(
-			SPECIES_PERK_TYPE = perk_type,
-			SPECIES_PERK_ICON = "wine-glass",
-			SPECIES_PERK_NAME = perk_name,
-			SPECIES_PERK_DESC = "[name] livers are [more_or_less] susceptable to alcohol than human livers, by about [percent_difference]%."
-		))
-
-	var/tox_shrugging = initial(mutantliver.toxTolerance)
-	var/shrugging_difference = tox_shrugging - initial(base_liver.toxTolerance)
-	if (shrugging_difference != 0)
-		var/difference_positive = (shrugging_difference > 0)
-		var/more_or_less = (difference_positive) ? "more" : "less"
-		var/perk_type = (difference_positive) ? SPECIES_POSITIVE_PERK : SPECIES_NEGATIVE_PERK
-		var/perk_name = ("Toxin " + ((difference_positive) ? "Resistant" : "Vulnerable")) + " Liver"
-
-		to_add += list(list(
-			SPECIES_PERK_TYPE = perk_type,
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "biohazard",
-			SPECIES_PERK_NAME = perk_name,
-			SPECIES_PERK_DESC = "[name] livers are capable of rapidly shrugging off [tox_shrugging]u of toxins, which is [more_or_less] than humans."
+			SPECIES_PERK_NAME = "Toxin Immunity",
+			SPECIES_PERK_DESC = "[plural_form] are completely immune to toxin damage."
 		))
+	else
+		if(TRAIT_TOXINLOVER in all_traits)
+			to_add += list(list(
+				SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+				SPECIES_PERK_ICON = "syringe",
+				SPECIES_PERK_NAME = "Toxin Lover",
+				SPECIES_PERK_DESC = "Toxin damage dealt to [plural_form] is reversed - Healing toxins will instead cause harm, and \
+					causing toxins will instead cause healing. Be careful around purging chemicals!",
+			))
+
+		if(mutantliver)
+			var/tox_shrugging = initial(mutantliver.toxTolerance)
+			var/shrugging_difference = tox_shrugging - initial(base_liver.toxTolerance)
+			if (shrugging_difference != 0)
+				var/difference_positive = (shrugging_difference > 0)
+				var/more_or_less = (difference_positive) ? "more" : "less"
+				var/perk_type = (difference_positive) ? SPECIES_POSITIVE_PERK : SPECIES_NEGATIVE_PERK
+				var/perk_name = ("Toxin " + ((difference_positive) ? "Resistant" : "Vulnerable")) + " Liver"
+
+				to_add += list(list(
+					SPECIES_PERK_TYPE = perk_type,
+					SPECIES_PERK_ICON = "biohazard",
+					SPECIES_PERK_NAME = perk_name,
+					SPECIES_PERK_DESC = "[name] livers are capable of rapidly shrugging off [tox_shrugging]u of toxins, which is [more_or_less] than humans."
+				))
+
+	if(mutantliver)
+		var/alcohol_tolerance = initial(mutantliver.alcohol_tolerance)
+		var/tolerance_difference = alcohol_tolerance - initial(base_liver.alcohol_tolerance)
+		if (tolerance_difference != 0)
+			var/difference_positive = (tolerance_difference > 0)
+			var/more_or_less = (difference_positive) ? "more" : "less"
+			var/perk_type = (difference_positive) ? SPECIES_NEGATIVE_PERK : SPECIES_POSITIVE_PERK
+			var/perk_icon = (difference_positive) ? "wine-glass" : "wine-glass-empty"
+			var/perk_name = "Alcohol " + ((difference_positive) ? "Weakness" : "Tolerance")
+			var/percent_difference = (1 - alcohol_tolerance / initial(base_liver.alcohol_tolerance)) * 100
+
+			to_add += list(list(
+				SPECIES_PERK_TYPE = perk_type,
+				SPECIES_PERK_ICON = perk_icon,
+				SPECIES_PERK_NAME = perk_name,
+				SPECIES_PERK_DESC = "[name] livers are [more_or_less] susceptible to alcohol than human livers, by about [percent_difference]%."
+			))
 
 	return to_add
 
@@ -2054,12 +2111,28 @@
 
 	var/list/to_add = list()
 
-	if (breathid != GAS_O2)
+	var/list/all_traits = get_all_traits()
+	if(TRAIT_NOBREATH in all_traits)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "lungs",
+			SPECIES_PERK_NAME = "No Respiration",
+			SPECIES_PERK_DESC = "[plural_form] have no need to breathe!",
+		))
+	else if(breathid != GAS_O2)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-			SPECIES_PERK_ICON = "wind",
-			SPECIES_PERK_NAME = "[capitalize(breathid)] Breathing",
+			SPECIES_PERK_ICON = "lungs",
+			SPECIES_PERK_NAME = "[capitalize(breathid)] Respiration",
 			SPECIES_PERK_DESC = "[plural_form] must breathe [breathid] to survive. You receive a tank when you arrive.",
+		))
+
+	if(TRAIT_WATER_BREATHING in all_traits)
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "fish",
+			SPECIES_PERK_NAME = "Underwater Respiration",
+			SPECIES_PERK_DESC = "[plural_form] are capable of breathing underwater. They still need [breathid], though.",
 		))
 
 	return to_add
@@ -2089,7 +2162,7 @@
 	if(common_language in basic_holder.spoken_languages)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "comment",
+			SPECIES_PERK_ICON = "comments",
 			SPECIES_PERK_NAME = "Native Speaker",
 			SPECIES_PERK_DESC = "Alongside [initial(common_language.name)], [plural_form] gain the ability to speak [english_list(bonus_languages)].",
 		))
@@ -2110,6 +2183,9 @@
  */
 /datum/species/proc/create_pref_payday_perk()
 	RETURN_TYPE(/list)
+
+	if(payday_modifier == 1)
+		return //you're boring
 
 	var/list/to_add = list()
 	if(payday_modifier > 1)

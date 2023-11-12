@@ -323,17 +323,20 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	burn_modifier = 1.5
+	bodypart_traits = list(
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+		TRAIT_NOBLOOD,
+		TRAIT_RADIMMUNE,
+		TRAIT_VIRUSIMMUNE,
+	)
 
 /obj/item/bodypart/arm/left/shadow
 	biological_state = BIO_INORGANIC
 	limb_id = SPECIES_SHADOW
 	should_draw_greyscale = FALSE
 	burn_modifier = 1.5
-	bodypart_traits = list(
-		TRAIT_NOBLOOD,
-		TRAIT_RADIMMUNE,
-		TRAIT_VIRUSIMMUNE,
-	)
 
 /obj/item/bodypart/arm/right/shadow
 	biological_state = BIO_INORGANIC
@@ -353,11 +356,30 @@
 	should_draw_greyscale = FALSE
 	burn_modifier = 1.5
 
+/obj/item/bodypart/head/shadow/nightmare
+
+/obj/item/bodypart/chest/shadow/nightmare
+	bodypart_traits = list(
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+		TRAIT_NOBLOOD,
+		TRAIT_NODISMEMBER,
+		TRAIT_NO_DNA_COPY,
+		TRAIT_NO_TRANSFORMATION_STING,
+		TRAIT_RADIMMUNE,
+		TRAIT_VIRUSIMMUNE,
+	)
+
 /obj/item/bodypart/arm/left/shadow/nightmare
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
 /obj/item/bodypart/arm/right/shadow/nightmare
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
+
+/obj/item/bodypart/leg/left/shadow/nightmare
+
+/obj/item/bodypart/leg/right/shadow/nightmare
 
 ///SKELETON
 /obj/item/bodypart/head/skeleton
@@ -517,6 +539,7 @@
 		TRAIT_NO_JUMPSUIT,
 		TRAIT_NOBLOOD,
 		TRAIT_NODISMEMBER,
+		TRAIT_NOFIRE,
 		TRAIT_NO_AUGMENTS,
 		TRAIT_NO_DNA_COPY,
 		TRAIT_NO_TRANSFORMATION_STING,

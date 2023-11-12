@@ -48,6 +48,7 @@
 		RegisterSignal(living_mob, COMSIG_CARBON_GAIN_TRAUMA, PROC_REF(on_gain_trauma))
 		RegisterSignal(living_mob, COMSIG_CARBON_LOSE_TRAUMA, PROC_REF(on_lose_trauma))
 		RegisterSignal(living_mob, COMSIG_CARBON_PRINT_MOOD, PROC_REF(on_print_mood))
+	ADD_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST, BROTHER_TRAIT)
 
 /datum/antagonist/brother/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/living_mob = mob_override || owner.current
@@ -63,6 +64,7 @@
 	UnregisterSignal(living_mob, list(COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
 	if(iscarbon(living_mob))
 		UnregisterSignal(living_mob, list(COMSIG_CARBON_CHECK_SELF_FOR_INJURIES, COMSIG_CARBON_GAIN_TRAUMA, COMSIG_CARBON_LOSE_TRAUMA, COMSIG_CARBON_PRINT_MOOD))
+	REMOVE_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST, BROTHER_TRAIT)
 
 /datum/antagonist/brother/on_removal()
 	owner.special_role = null

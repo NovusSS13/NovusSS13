@@ -3,7 +3,8 @@
 #define AVALI_COLDMOD 0.67 // Except cold.
 
 /datum/species/avali
-	name = "Avali"
+	name = "\improper Avali"
+	plural_form = "Avali"
 	id = SPECIES_AVALI
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,

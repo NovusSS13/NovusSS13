@@ -10,6 +10,7 @@
 	dmg_overlay_type = SPECIES_MONKEY
 	is_dimorphic = FALSE
 	head_flags = HEAD_LIPS|HEAD_DEBRAIN
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 /obj/item/bodypart/chest/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -25,6 +26,15 @@
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	acceptable_bodytype = BODYTYPE_MONKEY
 	dmg_overlay_type = SPECIES_MONKEY
+	bodypart_traits = list(
+		TRAIT_NO_BLOOD_OVERLAY,
+		TRAIT_NO_UNDERWEAR,
+		TRAIT_NO_UNDERSHIRT,
+		TRAIT_NO_SOCKS,
+		TRAIT_NO_AUGMENTS,
+		TRAIT_NO_TRANSFORMATION_STING,
+		TRAIT_VENTCRAWLER_NUDE,
+	)
 
 /obj/item/bodypart/arm/left/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -42,6 +52,7 @@
 	unarmed_damage_low = 1 /// monkey punches must be really weak, considering they bite people instead and their bites are weak as hell.
 	unarmed_damage_high = 2
 	unarmed_stun_threshold = 3
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY, TRAIT_GUN_NATURAL)
 
 /obj/item/bodypart/arm/right/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -59,6 +70,7 @@
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2
 	unarmed_stun_threshold = 3
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY, TRAIT_GUN_NATURAL)
 
 /obj/item/bodypart/leg/left/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -76,6 +88,7 @@
 	unarmed_damage_low = 2
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 /obj/item/bodypart/leg/right/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -93,3 +106,4 @@
 	unarmed_damage_low = 2
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4
+	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)

@@ -204,9 +204,13 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_AIRLOCK_SHOCKIMMUNE "airlock_shock_immunity"
 /// Is this atom being actively shocked? Used to prevent repeated shocks.
 #define TRAIT_BEING_SHOCKED "shocked"
+/// You need blood, you don't need a heart to pump it
+#define TRAIT_HEARTLESS_PUMPING "heartless_pumping"
+/// Your heart can't fail, but you still need one
 #define TRAIT_STABLEHEART "stable_heart"
 /// Prevents you from leaving your corpse
 #define TRAIT_CORPSELOCKED "corpselocked"
+/// Your liver can't fail, but you still need one
 #define TRAIT_STABLELIVER "stable_liver"
 #define TRAIT_VATGROWN "vatgrown"
 #define TRAIT_RESISTHEAT "resist_heat"
@@ -871,6 +875,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define ADMIN_TRAIT "admin"
 /// Any traits given through a smite.
 #define SMITE_TRAIT "smite"
+#define BROTHER_TRAIT "brother"
 #define CHANGELING_TRAIT "changeling"
 #define CULT_TRAIT "cult"
 #define LICH_TRAIT "lich"

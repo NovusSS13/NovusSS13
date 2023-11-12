@@ -506,7 +506,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	/// List of traits to add/remove from our subject when we are in their system
 	var/static/list/subject_traits = list(
-		TRAIT_STABLEHEART,
+		TRAIT_HEARTLESS_PUMPING,
 		TRAIT_NOHARDCRIT,
 		TRAIT_NOSOFTCRIT,
 		TRAIT_NOCRITDAMAGE,

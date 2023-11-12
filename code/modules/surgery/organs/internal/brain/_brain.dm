@@ -291,7 +291,7 @@
 		if(prob(damage_delta * (1 + max(0, (damage - BRAIN_DAMAGE_MILD)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1% //learn how to do your bloody math properly goddamnit
 			gain_trauma_type(BRAIN_TRAUMA_MILD, natural_gain = TRUE)
 
-	var/is_boosted = (owner && HAS_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST))
+	var/is_boosted = (owner && HAS_MIND_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST))
 	if(damage > BRAIN_DAMAGE_SEVERE)
 		if(prob(damage_delta * (1 + max(0, (damage - BRAIN_DAMAGE_SEVERE)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1%
 			if(prob(20 + (is_boosted * 30)))
@@ -299,20 +299,19 @@
 			else
 				gain_trauma_type(BRAIN_TRAUMA_SEVERE, natural_gain = TRUE)
 
-	if (owner)
-		if(owner.stat < UNCONSCIOUS) //conscious or soft-crit
-			var/brain_message
-			if(prev_damage < BRAIN_DAMAGE_MILD && damage >= BRAIN_DAMAGE_MILD)
-				brain_message = span_warning("You feel lightheaded.")
-			else if(prev_damage < BRAIN_DAMAGE_SEVERE && damage >= BRAIN_DAMAGE_SEVERE)
-				brain_message = span_warning("You feel less in control of your thoughts.")
-			else if(prev_damage < (BRAIN_DAMAGE_DEATH - 20) && damage >= (BRAIN_DAMAGE_DEATH - 20))
-				brain_message = span_warning("You can feel your mind flickering on and off...")
+	if(owner && (owner.stat < UNCONSCIOUS)) //conscious or soft-crit
+		var/brain_message
+		if(prev_damage < BRAIN_DAMAGE_MILD && damage >= BRAIN_DAMAGE_MILD)
+			brain_message = span_warning("You feel lightheaded.")
+		else if(prev_damage < BRAIN_DAMAGE_SEVERE && damage >= BRAIN_DAMAGE_SEVERE)
+			brain_message = span_warning("You feel less in control of your thoughts.")
+		else if(prev_damage < (BRAIN_DAMAGE_DEATH - 20) && damage >= (BRAIN_DAMAGE_DEATH - 20))
+			brain_message = span_warning("You can feel your mind flickering on and off...")
 
-			if(.)
-				. += "\n[brain_message]"
-			else
-				return brain_message
+		if(.)
+			. += "\n[brain_message]"
+		else
+			return brain_message
 
 /obj/item/organ/brain/before_organ_replacement(obj/item/organ/replacement)
 	. = ..()
@@ -371,7 +370,7 @@
 	name = "alien brain"
 	desc = "We barely understand the brains of terrestial animals. Who knows what we may find in the brain of such an advanced species?"
 	icon_state = "brain-x"
-	organ_traits = list(TRAIT_CAN_STRIP)
+	organ_traits = list(TRAIT_CAN_STRIP, TRAIT_PRIMITIVE)
 
 /obj/item/organ/brain/primitive //No like books and stompy metal men
 	name = "primitive brain"
@@ -390,7 +389,7 @@
 	name = "lustrous brain"
 	desc = "This is your brain on bluespace dust. Not even once."
 	icon_state = "random_fly_4"
-	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_SPECIAL_TRAUMA_BOOST)
 
 /obj/item/organ/brain/lustrous/before_organ_replacement(mob/living/carbon/organ_owner, special)
 	. = ..()

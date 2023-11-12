@@ -52,7 +52,7 @@ GLOBAL_LIST_INIT(bloody_blood_states, list(BLOOD_STATE_HUMAN, BLOOD_STATE_XENO))
 	bloodiness = 0
 	var/list/old_color_hsl = rgb2num(color || COLOR_WHITE, COLORSPACE_HSL)
 	//not all blood splatters have their own sprites... It still looks pretty nice
-	color = rgb(h = old_color_hsl[1], s = old_color_hsl[2], l = old_color_hsl[3] * 0.5, a = LAZYACCESS(old_color_hsl, 4))
+	color = rgb(old_color_hsl[1], old_color_hsl[2], old_color_hsl[3] * 0.5, LAZYACCESS(old_color_hsl, 4), space = COLORSPACE_HSL)
 	STOP_PROCESSING(SSobj, src)
 	return TRUE
 

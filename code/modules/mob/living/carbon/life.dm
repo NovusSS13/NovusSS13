@@ -725,7 +725,7 @@
 
 /// Check to see if we actually need to have a liver
 /mob/living/carbon/proc/needs_liver()
-	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_LIVERLESS_METABOLISM))
+	if(HAS_TRAIT(src, TRAIT_LIVERLESS_METABOLISM))
 		return FALSE
 	return TRUE
 
@@ -763,12 +763,12 @@
 /////////
 
 /mob/living/carbon/proc/needs_heart()
-	if(HAS_TRAIT(src, TRAIT_STABLEHEART) || HAS_TRAIT(src, TRAIT_NOBLOOD))
+	if(HAS_TRAIT(src, TRAIT_HEARTLESS_PUMPING) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/proc/can_heartattack()
-	if(!needs_heart())
+	if(!needs_heart() || HAS_TRAIT(src, TRAIT_STABLEHEART))
 		return FALSE
 	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
 	if(!heart || IS_ROBOTIC_ORGAN(heart))
@@ -786,7 +786,7 @@
 	if(!needs_heart())
 		return FALSE
 	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
-	if(istype(heart) && heart.beating)
+	if(istype(heart) && (heart.beating || HAS_TRAIT(src, TRAIT_STABLEHEART)))
 		return FALSE
 	return TRUE
 

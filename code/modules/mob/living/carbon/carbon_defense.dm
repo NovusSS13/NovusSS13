@@ -671,12 +671,9 @@
 	. = ..()
 	check_passout(.)
 
-/mob/living/carbon/proc/get_interaction_efficiency(zone)
-	var/obj/item/bodypart/limb = get_bodypart(zone)
-	if(!limb)
-		return
-
 /mob/living/carbon/setOxyLoss(amount, updating_health = TRUE, forced, required_biotype, required_respiration_type)
+	if(!forced && HAS_TRAIT(src, TRAIT_NOBREATH))
+		amount = min(amount, 0) //Prevents oxy damage but not healing
 	. = ..()
 	check_passout(.)
 
