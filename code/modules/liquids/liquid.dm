@@ -531,11 +531,11 @@
 		return
 
 	var/liquid_state_template = liquid_state_messages["[liquid_state]"]
-	// Show the liquid state
-	examine_list += span_notice("There is [replacetext(liquid_state_template, "%LIQUID", "liquid")] here.")
 
 	// Showing specific reagents if possible
 	if(!examiner.can_see_reagents())
+		// Show the liquid state
+		examine_list += span_info("There is [replacetext(liquid_state_template, "%LIQUID", "liquid")] here.")
 		return
 
 	if(length(reagent_list) == 1)
