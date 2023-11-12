@@ -22,7 +22,7 @@
 
 /obj/item/organ/brain/psyker/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	var/obj/item/bodypart/head/psyker/psyker_head = owner.get_bodypart(zone)
+	var/obj/item/bodypart/head/psyker/psyker_head = owner.get_bodypart(check_zone(zone))
 	if(istype(psyker_head))
 		return
 	if(!SPT_PROB(2, seconds_per_tick))

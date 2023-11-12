@@ -25,7 +25,7 @@
 
 	mutanttongue = /obj/item/organ/tongue/zombie
 	mutantstomach = null
-	mutantheart = null
+	mutantheart = /obj/item/organ/heart/zombie
 	mutantliver = null
 	mutantlungs = null
 
@@ -181,9 +181,8 @@
 		infection = new()
 		infection.Insert(C)
 
-// Your skin falls off
+// Your skin fell off!
 /datum/species/human/krokodil_addict
-	name = "\improper Human"
 	id = SPECIES_ZOMBIE_KROKODIL
 	examine_limb_id = SPECIES_HUMAN
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN

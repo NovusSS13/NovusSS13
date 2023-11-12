@@ -619,7 +619,7 @@
 			human_mob.dna.features["[overlay.feature_key]"] = new_accessory.name
 			if(overlay.feature_color_key)
 				human_mob.dna.features["[overlay.feature_color_key]"] = mutant_color
-			overlay.inherit_color(human_mob.get_bodypart(randomized_organ.zone), force = TRUE)
+			overlay.inherit_color(human_mob.get_bodypart(check_zone(randomized_organ.zone)), force = TRUE)
 			overlay.set_appearance(new_accessory.type)
 
 ///Proc that will randomize all the markings of a species' associated mob
@@ -1875,32 +1875,41 @@
 /datum/species/proc/create_pref_blood_perks()
 	var/list/to_add = list()
 
+	var/list/all_traits = get_all_traits()
+
 	// TRAIT_NOBLOOD takes priority by default
-	if(TRAIT_NOBLOOD in get_all_traits())
+	if(TRAIT_NOBLOOD in all_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "tint-slash",
 			SPECIES_PERK_NAME = "Bloodletted",
 			SPECIES_PERK_DESC = "[plural_form] do not have blood.",
 		))
+	else
+		if(TRAIT_STABLEHEART in all_traits)
+			to_add += list(list(
+				SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+				SPECIES_PERK_ICON = "heart-pulse",
+				SPECIES_PERK_NAME = "Stable Heart",
+				SPECIES_PERK_DESC = "[plural_form] do not need a heart to survive, although they still need blood.",
+			))
 
-	// Otherwise, check if their exotic blood is a valid typepath
-	else if(ispath(exotic_blood))
-		to_add += list(list(
-			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = "[initial(exotic_blood.name)] Blood",
-			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_blood.name)], which can make receiving medical treatment harder.",
-		))
-
-	// Otherwise otherwise, see if they have an exotic bloodtype set
-	else if(exotic_bloodtype)
-		to_add += list(list(
-			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = "Exotic Blood",
-			SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make receiving medical treatment harder.",
-		))
+		// Check if their exotic blood is a valid typepath
+		if(ispath(exotic_blood))
+			to_add += list(list(
+				SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+				SPECIES_PERK_ICON = "tint",
+				SPECIES_PERK_NAME = "[initial(exotic_blood.name)] Blood",
+				SPECIES_PERK_DESC = "[name] blood is [initial(exotic_blood.name)], which can make receiving medical treatment harder.",
+			))
+		// Otherwise see if they have an exotic bloodtype set
+		else if(exotic_bloodtype)
+			to_add += list(list(
+				SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+				SPECIES_PERK_ICON = "tint",
+				SPECIES_PERK_NAME = "Exotic Blood",
+				SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make receiving medical treatment harder.",
+			))
 
 	return to_add
 

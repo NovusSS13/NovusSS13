@@ -5,9 +5,10 @@
 	visual = TRUE
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_PARASITE_EGG
+	organ_traits = list(TRAIT_XENO_HOST, TRAIT_XENO_IMMUNE)
 
 /obj/item/organ/body_egg/on_find(mob/living/finder)
-	..()
+	. = ..()
 	to_chat(finder, span_warning("You found an unknown alien organism in [owner]'s [zone]!"))
 
 /obj/item/organ/body_egg/Initialize(mapload)
@@ -19,13 +20,11 @@
 	. = ..()
 	if(!.)
 		return
-	egg_owner.add_traits(list(TRAIT_XENO_HOST, TRAIT_XENO_IMMUNE), ORGAN_TRAIT)
 	egg_owner.med_hud_set_status()
 	INVOKE_ASYNC(src, PROC_REF(AddInfectionImages), egg_owner)
 
 /obj/item/organ/body_egg/Remove(mob/living/carbon/egg_owner, special = FALSE)
 	. = ..()
-	egg_owner.remove_traits(list(TRAIT_XENO_HOST, TRAIT_XENO_IMMUNE), ORGAN_TRAIT)
 	egg_owner.med_hud_set_status()
 	INVOKE_ASYNC(src, PROC_REF(RemoveInfectionImages), egg_owner)
 

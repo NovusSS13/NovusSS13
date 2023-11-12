@@ -33,9 +33,7 @@
 /mob/living/carbon/get_organs_for_zone(zone, include_children = FALSE)
 	var/valid_organs = list()
 	for(var/obj/item/organ/organ as anything in organs)
-		if(zone == organ.zone)
-			valid_organs += organ
-		else if(include_children && zone == check_zone(organ.zone))
+		if(zone == organ.zone || (include_children && zone == check_zone(organ.zone)))
 			valid_organs += organ
 	return valid_organs
 

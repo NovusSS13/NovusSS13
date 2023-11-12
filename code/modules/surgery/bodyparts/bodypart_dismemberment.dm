@@ -36,7 +36,7 @@
 	return TRUE
 
 /// Proc called to initialize movable physics when a bodypart gets dismembered
-/obj/item/bodypart/proc/fly_away(turf/open/owner_location, fly_angle = rand(0, 360))
+/obj/item/bodypart/proc/fly_away(turf/open/owner_location, fly_angle = rand(0, 360), horizontal_multiplier = 1, vertical_multiplier = 1)
 	if(!istype(owner_location))
 		return
 	pixel_x = -px_x
@@ -44,8 +44,8 @@
 	return AddComponent(/datum/component/movable_physics, \
 		physics_flags = MPHYSICS_QDEL_WHEN_NO_MOVEMENT, \
 		angle = fly_angle, \
-		horizontal_velocity = rand(2.5 * 100, 6 * 100) * 0.01, \
-		vertical_velocity = rand(4 * 100, 4.5 * 100) * 0.01, \
+		horizontal_velocity = rand(2.5 * 100, 6 * 100) * horizontal_multiplier * 0.01, \
+		vertical_velocity = rand(4 * 100, 4.5 * 100) * vertical_multiplier * 0.01, \
 		horizontal_friction = rand(0.24 * 100, 0.3 * 100) * 0.01, \
 		vertical_friction = 10 * 0.05, \
 		horizontal_conservation_of_momentum = 0.5, \
@@ -360,7 +360,7 @@
 		//fucking stupid shit to be honest
 		for(var/obj/item/organ/organ_path as anything in dna.species.cosmetic_organs)
 			//Load a persons preferences from DNA
-			var/zone = initial(organ_path.zone)
+			var/zone = check_zone(initial(organ_path.zone))
 			if(zone != limb_zone)
 				continue
 			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
