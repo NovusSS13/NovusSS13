@@ -1,7 +1,7 @@
 {
 	"Dynamic": {
 		"threat_curve_centre": 0,
-		"threat_curve_width": 1.2,
+		"threat_curve_width": 1.4,
         "midround_roll_distance": 3000,
         "midround_lower_bound": 18000,
 		"midround_upper_bound": 60000,
