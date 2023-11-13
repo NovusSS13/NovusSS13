@@ -1,7 +1,0 @@
-author: "ChungusGamer666"
-delete-after: True
-changes:
-  - balance: "A bunch of species traits are now tied to bodyparts or organs instead. Most notably, augmenting yourself with a cyborg chest makes you immune to toxin damage, and makes you have no blood."
-  - qol: "Dried blood looks better now in general."
-  - qol: "Failing organs are now visually desaturated and darker!"
-  - qol: "Gibbing looks better (by using movable physics)"
