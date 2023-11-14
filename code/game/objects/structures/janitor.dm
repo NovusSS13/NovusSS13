@@ -38,7 +38,7 @@
 /obj/structure/mop_bucket/attackby_secondary(obj/item/weapon, mob/user, params)
 	if(istype(weapon, /obj/item/mop))
 		. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-		if(weapon.reagents.total_volume < 1)
+		if(round(weapon.reagents.total_volume, CHEMICAL_VOLUME_ROUNDING) <= 0)
 			if(reagents.total_volume < 1)
 				balloon_alert(user, "empty!")
 				return
@@ -46,7 +46,7 @@
 			balloon_alert(user, "doused mop")
 			reagents.trans_to(weapon, weapon.reagents.maximum_volume, transfered_by = user)
 
-		else if(weapon.reagents.total_volume < weapon.reagents.maximum_volume)
+		else if(round(weapon.reagents.maximum_volume - weapon.reagents.total_volume, CHEMICAL_VOLUME_ROUNDING) > 0)
 			if(reagents.total_volume < 1)
 				balloon_alert(user, "squeezed mop")
 				weapon.reagents.trans_to(src, reagents.maximum_volume, transfered_by = user)
@@ -56,7 +56,7 @@
 				reagents.trans_to(weapon, weapon.reagents.maximum_volume, transfered_by = user)
 
 		else
-			if(reagents.total_volume >= reagents.maximum_volume)
+			if(round(reagents.maximum_volume - reagents.total_volume, CHEMICAL_VOLUME_ROUNDING) <= 0)
 				balloon_alert(user, "cart full!")
 				return
 
