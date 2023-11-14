@@ -562,11 +562,13 @@
 	return active_hand
 
 /// This proc is used to jumpscare the victim with stroke images in certain scenarios
-/obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim)
+/obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim, silent = FALSE)
 	var/atom/movable/screen/stroke = victim.overlay_fullscreen("stroke", /atom/movable/screen/fullscreen/stroke, rand(1, 9))
 	stroke.alpha = 0
 	animate(stroke, alpha = 255, easing = ELASTIC_EASING | EASE_IN | EASE_OUT)
 	addtimer(CALLBACK(src, PROC_REF(clear_stroke_screen), victim), 0.5 SECONDS)
+	if(!silent)
+		victim.playsound_local(victim.loc, "sound/hallucinations/lobotomy[rand(1,3)].ogg", vol = 80, vary = FALSE)
 
 /// This clears the victim's screen from the stroke image, if not qdeleted
 /obj/item/organ/brain/proc/clear_stroke_screen(mob/living/victim)

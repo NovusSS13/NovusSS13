@@ -1,5 +1,23 @@
 GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 
+/obj/item/disk/surgery/mkultra
+	name = "\"MKUltra\" Surgical Procedures"
+	desc = "A disk containing a bunch of unethical surgical procedures."
+	surgeries = list(
+		/datum/surgery/advanced/hemispherectomy,
+		/datum/surgery/advanced/lobotomy,
+		/datum/surgery/advanced/pacify,
+	)
+	blocks_emissive = EMISSIVE_BLOCK_NONE
+
+/obj/item/disk/surgery/mkultra/Initialize(mapload)
+	. = ..()
+	add_filter("glowie", 1, outline_filter(size = 2, color = COLOR_JADE)) //they glow in the dark
+
+/obj/item/disk/surgery/mkultra/update_overlays()
+	. = ..()
+	. += emissive_appearance(icon, icon_state, src) //they glow in the dark
+
 /datum/surgery/advanced/hemispherectomy
 	name = "Hemispherectomy"
 	desc = "A highly invasive and unethical surgical procedure, capable of curing not just brain traumas, but also anti-social personality traits. \

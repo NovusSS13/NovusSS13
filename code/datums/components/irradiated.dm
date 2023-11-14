@@ -151,7 +151,7 @@
 	if (!istype(parent_movable))
 		return
 
-	parent_movable.add_filter("rad_glow", 2, list("type" = "outline", "color" = "#39ff1430", "size" = 2))
+	parent_movable.add_filter("rad_glow", 2, outline_filter(size = 2, color = "#39ff1430"))
 	addtimer(CALLBACK(src, PROC_REF(start_glow_loop), parent_movable), rand(0.1 SECONDS, 1.9 SECONDS)) // Things should look uneven
 
 /datum/component/irradiated/proc/start_glow_loop(atom/movable/parent_movable)
