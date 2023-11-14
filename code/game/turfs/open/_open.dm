@@ -27,11 +27,12 @@
 		to_chat(user, span_warning("The puddle is too shallow to scoop anything up!"))
 		return TRUE
 
-	var/desired_transfer = min(container.amount_per_transfer_from_this, round(container.reagents.maximum_volume - container.reagents.total_volume, CHEMICAL_VOLUME_ROUNDING))
-	if(desired_transfer <= 0)
+	var/free_space = round(container.reagents.maximum_volume - container.reagents.total_volume, CHEMICAL_VOLUME_ROUNDING)
+	if(free_space <= 0)
 		to_chat(user, span_warning("You can't fit any more liquids inside [src]!"))
 		return TRUE
 
+	var/desired_transfer = min(container.amount_per_transfer_from_this, free_space, liquids.total_reagents)
 	var/datum/reagents/turf_reagents = liquids.take_reagents_flat(desired_transfer)
 	turf_reagents.trans_to(container.reagents, turf_reagents.total_volume)
 	qdel(turf_reagents)
