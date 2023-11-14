@@ -106,32 +106,23 @@
 		return FALSE
 
 	var/total_burn_power = 0
+
+	var/has_oxygen = FALSE
 	var/datum/gas_mixture/air = my_turf.return_air()
-	air?.assert_gases(/datum/gas/oxygen, /datum/gas/carbon_dioxide)
+	if(air)
+		air.assert_gas(/datum/gas/oxygen) //this code used to actually convert oxygen into co2
+		has_oxygen = (air.gases[/datum/gas/oxygen][MOLES] >= 1) //sadly that made fires end stupidly fast
+		air.garbage_collect() //idc to fine tune it, if someone wants to do it for me, go ahead
+
 	for(var/datum/reagent/reagent_type as anything in reagent_list)
 		var/burn_power = initial(reagent_type.liquid_fire_power)
 		if(!burn_power)
 			continue
 
-		if(initial(reagent_type.liquid_fire_needs_oxygen))
-			if(!air)
-				continue
-
-			var/oxygen_amount = air.gases[/datum/gas/oxygen][MOLES]
-			if(oxygen_amount <= 0)
-				continue
-
-			var/burn_rate = burn_power * 0.05
-			var/burnt = min(oxygen_amount, burn_rate)
-
-			air.gases[/datum/gas/oxygen][MOLES] -= burnt
-			air.gases[/datum/gas/carbon_dioxide][MOLES] += burnt
-
-			burn_power *= (burnt / burn_rate)
+		if(initial(reagent_type.liquid_fire_needs_oxygen) && !has_oxygen)
+			continue
 
 		total_burn_power += burn_power * reagent_list[reagent_type]
-
-	air?.garbage_collect()
 
 	if(!total_burn_power)
 		return FALSE

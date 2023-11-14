@@ -1184,17 +1184,6 @@
 	..()
 	return TRUE
 
-/datum/reagent/fuel/expose_turf(turf/exposed_turf, reac_volume)
-	. = ..()
-
-	if(!istype(exposed_turf) || isspaceturf(exposed_turf))
-		return
-
-	if((reac_volume < 5))
-		return
-
-	new /obj/effect/decal/cleanable/fuel_pool(exposed_turf, round(reac_volume / 5))
-
 /datum/reagent/space_cleaner
 	name = "Space Cleaner"
 	description = "A compound used to clean things. Now with 50% more sodium hypochlorite!"
