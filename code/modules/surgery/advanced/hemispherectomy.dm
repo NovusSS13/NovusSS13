@@ -13,6 +13,9 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 /obj/item/disk/surgery/mkultra/Initialize(mapload)
 	. = ..()
 	add_filter("glowie", 1, outline_filter(size = 2, color = COLOR_JADE)) //they glow in the dark
+	var/glow_filter = get_filter("glowie")
+	animate(glowie, alpha = 110, time = 1.5 SECONDS, loop = -1)
+	animate(alpha = 40, time = 2.5 SECONDS)
 
 /obj/item/disk/surgery/mkultra/update_overlays()
 	. = ..()
