@@ -217,6 +217,7 @@
 	var/list/logged_reagents = list()
 	for(var/datum/reagent/reagent as anything in reagents.reagent_list)
 		logged_reagents += "[reagent.type]  ([num2text(reagent.volume)])"
+	logged_reagents = jointext(english_list(logged_reagents), "")
 
 	if(user)
 		log_combat(user, target, "splashed (thrown) [logged_reagents]", "in [AREACOORD(target)]")

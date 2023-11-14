@@ -63,8 +63,9 @@
 			balloon_alert(user, "squeezed mop")
 			weapon.reagents.trans_to(src, reagents.maximum_volume, transfered_by = user)
 
-		balloon_alert(user, "doused mop")
 		playsound(src, 'sound/effects/slosh.ogg', 25, vary = TRUE)
+		update_appearance(UPDATE_OVERLAYS)
+		return SECONDARY_ATTACK_CONTINUE_CHAIN // skip attack animations when refilling cart
 
 	if(istype(weapon, /obj/item/reagent_containers) || istype(weapon, /obj/item/mop))
 		update_appearance(UPDATE_OVERLAYS)
