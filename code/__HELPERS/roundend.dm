@@ -611,7 +611,7 @@
 		result += " "//newline between teams
 		CHECK_TICK
 
-	var/currrent_category
+	var/current_category
 	var/datum/antagonist/previous_category
 
 	sortTim(all_antagonists, GLOBAL_PROC_REF(cmp_antag_category))
@@ -619,13 +619,13 @@
 	for(var/datum/antagonist/antagonists in all_antagonists)
 		if(!antagonists.show_in_roundend)
 			continue
-		if(antagonists.roundend_category != currrent_category)
+		if(antagonists.roundend_category != current_category)
 			if(previous_category)
 				result += previous_category.roundend_report_footer()
 				result += "</div>"
 			result += "<div class='panel redborder'>"
 			result += antagonists.roundend_report_header()
-			currrent_category = antagonists.roundend_category
+			current_category = antagonists.roundend_category
 			previous_category = antagonists
 		result += antagonists.roundend_report()
 		result += "<br><br>"
@@ -635,6 +635,15 @@
 		var/datum/antagonist/last = all_antagonists[all_antagonists.len]
 		result += last.roundend_report_footer()
 		result += "</div>"
+
+	if(LAZYLEN(GLOB.hemispherectomy_victims))
+		var/hemispherectomy_report = "<div class='panel redborder'>"
+		hemispherectomy_report += "<span class='header'>The hemispherectomized were...</span>"
+		for(var/mind_name in GLOB.hemispherectomy_victims)
+			hemispherectomy_report += "<br>"
+			hemispherectomy_report += span_redtext("<b>[mind_name]</b> was \a <b>[english_list(GLOB.hemispherectomy_victims[mind_name])]</b> before being \"cured\"")
+		hemispherectomy_report += "</div>"
+		result += hemispherectomy_report
 
 	return result.Join()
 

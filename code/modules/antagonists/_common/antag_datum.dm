@@ -51,7 +51,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 	/// The typepath for the outfit to show in the preview for the preferences menu.
 	var/preview_outfit
 	/// Flags for antags to turn on or off and check!
-	var/antag_flags = FLAG_ANTAG_CAN_BE_INDUCTED
+	var/antag_flags = FLAG_ANTAG_CAN_BE_INDUCTED | FLAG_ANTAG_HEMISPHERECTOMIZABLE
 
 	//ANTAG UI
 

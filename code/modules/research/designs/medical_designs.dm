@@ -885,6 +885,15 @@
 	surgery = /datum/surgery/advanced/lobotomy
 	research_icon_state = "surgery_head"
 
+/datum/design/surgery/hemispherectomy
+	name = "Lobotomy"
+	desc = "A highly invasive and unethical surgical procedure, capable of curing not just brain traumas, but also anti-social personality traits. \
+			This surgery has been commonly used to \"treat\" high-risk prisoners and psychotic patients, \
+			even though it is known to cause horrifying side effects."
+	id = "surgery_hemispherectomy"
+	surgery = /datum/surgery/advanced/hemispherectomy
+	research_icon_state = "surgery_head"
+
 /datum/design/surgery/pacify
 	name = "Pacification"
 	desc = "A surgical procedure which permanently inhibits the aggression center of the brain, making the patient unwilling to cause direct harm."

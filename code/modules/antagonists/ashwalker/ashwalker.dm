@@ -7,7 +7,7 @@
 	antagpanel_category = ANTAG_GROUP_ASHWALKERS
 	suicide_cry = "I HAVE NO IDEA WHAT THIS THING DOES!!"
 	count_against_dynamic_roll_chance = FALSE
-	antag_flags = FLAG_ANTAG_SAFE_TO_CRYO //no FLAG_ANTAG_CAN_BE_INDUCTED
+	antag_flags = FLAG_ANTAG_SAFE_TO_CRYO | FLAG_ANTAG_HEMISPHERECTOMIZABLE //no FLAG_ANTAG_CAN_BE_INDUCTED
 	var/datum/team/ashwalkers/ashie_team
 
 /datum/antagonist/ashwalker/create_team(datum/team/ashwalkers/ashwalker_team)

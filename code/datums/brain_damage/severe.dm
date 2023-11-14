@@ -341,6 +341,7 @@
 
 /datum/brain_trauma/severe/stroke/on_gain()
 	ADD_TRAIT(owner, TRAIT_STROKE, TRAUMA_TRAIT)
+	brain.flash_stroke_screen(owner)
 	return ..()
 
 /datum/brain_trauma/severe/stroke/on_lose()

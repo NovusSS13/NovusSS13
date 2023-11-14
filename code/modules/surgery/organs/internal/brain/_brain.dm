@@ -219,20 +219,22 @@
 
 /obj/item/organ/brain/examine(mob/user)
 	. = ..()
-	if(length(skillchips))
+	if(LAZYLEN(skillchips))
 		. += span_info("It has a skillchip embedded in it.")
+	if(HAS_TRAIT(src, TRAIT_HEMISPHERECTOMIZED))
+		. += span_bolddanger("Oh no... This brain has been split in half...")
 	if(suicided)
-		. += span_info("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
+		. += span_deadsay("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
 		return
 	if((brainmob && (brainmob.client || brainmob.get_ghost())) || decoy_override)
 		if(organ_flags & ORGAN_FAILING)
-			. += span_info("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>mannitol</b>.")
-		else if(damage >= BRAIN_DAMAGE_DEATH*0.5)
-			. += span_info("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>mannitol</b>.")
+			. += span_notice("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>mannitol</b>.")
+		else if(damage >= maxHealth*0.5)
+			. += span_notice("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>mannitol</b>.")
 		else
-			. += span_info("You can feel the small spark of life still left in this one.")
+			. += span_notice("You can feel the small spark of life still left in this one.")
 	else
-		. += span_info("This one is completely devoid of life.")
+		. += span_deadsay("This one is completely devoid of life.")
 
 /obj/item/organ/brain/attack(mob/living/carbon/C, mob/user)
 	if(!istype(C))
@@ -286,26 +288,30 @@
 	//if we're not more injured than before, return without gambling for a trauma
 	if(damage <= prev_damage)
 		return
-	damage_delta = damage - prev_damage
-	if(damage > BRAIN_DAMAGE_MILD)
-		if(prob(damage_delta * (1 + max(0, (damage - BRAIN_DAMAGE_MILD)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1% //learn how to do your bloody math properly goddamnit
-			gain_trauma_type(BRAIN_TRAUMA_MILD, natural_gain = TRUE)
 
 	var/is_boosted = (owner && HAS_MIND_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST))
-	if(damage > BRAIN_DAMAGE_SEVERE)
-		if(prob(damage_delta * (1 + max(0, (damage - BRAIN_DAMAGE_SEVERE)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1%
+	var/effective_prev_damage = (prev_damage/maxHealth * BRAIN_DAMAGE_DEATH)
+	var/effective_damage = (damage/maxHealth * BRAIN_DAMAGE_DEATH)
+	damage_delta = effective_damage - effective_prev_damage
+	if(effective_damage >= BRAIN_DAMAGE_SEVERE)
+		//Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1%
+		if(prob(damage_delta * (1 + max(0, (effective_damage - BRAIN_DAMAGE_SEVERE)/100))))
 			if(prob(20 + (is_boosted * 30)))
 				gain_trauma_type(BRAIN_TRAUMA_SPECIAL, is_boosted ? TRAUMA_RESILIENCE_SURGERY : null, natural_gain = TRUE)
 			else
 				gain_trauma_type(BRAIN_TRAUMA_SEVERE, natural_gain = TRUE)
+	else if(effective_damage >= BRAIN_DAMAGE_MILD)
+		//Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1% //learn how to do your bloody math properly goddamnit
+		if(prob(damage_delta * (1 + max(0, (effective_damage - BRAIN_DAMAGE_MILD)/100))))
+			gain_trauma_type(BRAIN_TRAUMA_MILD, natural_gain = TRUE)
 
 	if(owner && (owner.stat < UNCONSCIOUS)) //conscious or soft-crit
 		var/brain_message
-		if(prev_damage < BRAIN_DAMAGE_MILD && damage >= BRAIN_DAMAGE_MILD)
+		if(effective_prev_damage < BRAIN_DAMAGE_MILD && effective_damage >= BRAIN_DAMAGE_MILD)
 			brain_message = span_warning("You feel lightheaded.")
-		else if(prev_damage < BRAIN_DAMAGE_SEVERE && damage >= BRAIN_DAMAGE_SEVERE)
+		else if(effective_prev_damage < BRAIN_DAMAGE_SEVERE && effective_damage >= BRAIN_DAMAGE_SEVERE)
 			brain_message = span_warning("You feel less in control of your thoughts.")
-		else if(prev_damage < (BRAIN_DAMAGE_DEATH - 20) && damage >= (BRAIN_DAMAGE_DEATH - 20))
+		else if(effective_prev_damage < (BRAIN_DAMAGE_DEATH - 20) && effective_damage >= (BRAIN_DAMAGE_DEATH - 20))
 			brain_message = span_warning("You can feel your mind flickering on and off...")
 
 		if(.)
@@ -527,22 +533,14 @@
 	. = ..()
 	if(!owner)
 		return
-	if(damage >= 60)
+	if(damage >= (maxHealth * 0.3))
 		owner.add_mood_event("brain_damage", /datum/mood_event/brain_damage)
 	else
 		owner.clear_mood_event("brain_damage")
-	if(damage >= BRAIN_DAMAGE_DEATH && (owner.stat < DEAD)) //rip
+	if(damage >= maxHealth && (owner.stat < DEAD)) //rip
 		to_chat(owner, span_userdanger("The last spark of life in your brain fizzles out..."))
 		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
 		owner.death()
-
-/// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
-/obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
-	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
-	if(target.body_position == LYING_DOWN && owner.usable_legs)
-		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
-		return found_bodypart || active_hand
-	return active_hand
 
 /// Brains REALLY like ghosting people. we need special tricks to avoid that, namely removing the old brain with no_id_transfer
 /obj/item/organ/brain/replace_into(mob/living/carbon/new_owner, drop_if_replaced = FALSE)
@@ -554,3 +552,24 @@
 		else
 			qdel(old_brain)
 	return Insert(new_owner, special = TRUE, drop_if_replaced = drop_if_replaced, no_id_transfer = TRUE)
+
+/// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
+/obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
+	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
+	if(target.body_position == LYING_DOWN && owner.usable_legs)
+		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
+		return found_bodypart || active_hand
+	return active_hand
+
+/// This proc is used to jumpscare the victim with stroke images in certain scenarios
+/obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim)
+	var/atom/movable/screen/stroke = victim.overlay_fullscreen("stroke", /atom/movable/screen/fullscreen/stroke, rand(1, 9))
+	stroke.alpha = 0
+	animate(stroke, alpha = 255, easing = ELASTIC_EASING | EASE_IN | EASE_OUT)
+	addtimer(CALLBACK(src, PROC_REF(clear_stroke_screen), victim), 0.5 SECONDS)
+
+/// This clears the victim's screen from the stroke image, if not qdeleted
+/obj/item/organ/brain/proc/clear_stroke_screen(mob/living/victim)
+	if(QDELETED(victim))
+		return
+	victim.clear_fullscreen("stroke")

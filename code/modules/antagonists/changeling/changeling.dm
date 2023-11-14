@@ -11,6 +11,7 @@
 	hijack_speed = 0.5
 	ui_name = "AntagInfoChangeling"
 	suicide_cry = "FOR THE HIVE!!"
+	antag_flags = FLAG_ANTAG_CAN_BE_INDUCTED //changelings are one of the few antagonists that cannot be cured via hemispherectomy
 	/// Whether to give this changeling objectives or not
 	var/give_objectives = TRUE
 	/// Weather we assign objectives which compete with other lings
