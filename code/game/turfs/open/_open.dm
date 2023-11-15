@@ -36,7 +36,7 @@
 	var/datum/reagents/turf_reagents = liquids.take_reagents_flat(desired_transfer)
 	turf_reagents.trans_to(container.reagents, turf_reagents.total_volume)
 	qdel(turf_reagents)
-	to_chat(user, span_notice("You scoop up around [desired_transfer] units of liquids with [src]."))
+	to_chat(user, span_notice("You scoop up around [CEILING(desired_transfer, 1)] units of liquids with [src]."))
 	user.changeNext_move(CLICK_CD_MELEE)
 	return TRUE
 
