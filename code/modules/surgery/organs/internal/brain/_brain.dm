@@ -605,7 +605,7 @@
 
 /// Proc used to hemispherectomize the brain, and create the hemisphere object, plus remove any extra hemispheres
 /obj/item/organ/brain/proc/hemispherectomize(mob/living/user, harmful = TRUE)
-	var/atom/drop_location = drop_location()
+	var/atom/drop_location = owner?.drop_location() || drop_location()
 	if(!hemispherectomized)
 		maxHealth *= 0.5
 		low_threshold *= 0.5
@@ -655,8 +655,38 @@
 	LAZYADD(extra_hemispheres, hemisphere)
 	update_appearance()
 
+/// Proc shared between the hemispherectomy smite and surgery
+/obj/item/organ/brain/proc/traumatic_hemispherectomy(mob/living/carbon/victim, silent = FALSE)
+	victim ||= owner
+	if(!owner)
+		return
+	if(victim.mind)
+		var/list/antagonist_names = list()
+		for(var/datum/antagonist/antagonist as anything in victim.mind.antag_datums)
+			if(!(antagonist.antag_flags & FLAG_ANTAG_HEMISPHERECTOMIZABLE))
+				continue
+			antagonist_names += antagonist.name
+			victim.mind.remove_antag_datum(antagonist)
+		GLOB.hemispherectomy_victims[victim.mind.name] = antagonist_names
+		victim.mind.wipe_memory()
+	if(victim.client)
+		victim.client.nuke_chat()
+	flash_stroke_screen(victim)
+	if(!silent)
+		to_chat(victim, span_userdanger(pick(GLOB.brain_injury_messages)))
+	// Half of your brain is gone, let's see what kind of crippling brain damage you got as a gift!
+	var/traumatic_events = pick(6;1, 3;2, 1;0)
+	for(var/i in 1 to traumatic_events)
+		if(HAS_MIND_TRAIT(victim, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
+			victim.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+		else
+			victim.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
+
 /// This proc is used to jumpscare the victim with stroke images in certain scenarios
 /obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim, fade_in = 1 SECONDS, fade_out = 1 SECONDS, silent = FALSE)
+	victim ||= owner
+	if(!victim)
+		return
 	var/atom/movable/screen/stroke = victim.overlay_fullscreen("stroke", /atom/movable/screen/fullscreen/stroke, rand(1, 9))
 	stroke.alpha = 0
 	animate(stroke, alpha = 255, easing = CIRCULAR_EASING | EASE_IN | EASE_OUT)

@@ -65,45 +65,8 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(target_brain)
 		target_brain.hemispherectomize(user)
-	if(target.mind)
-		var/list/antagonist_names = list()
-		for(var/datum/antagonist/antagonist as anything in target.mind.antag_datums)
-			if(!(antagonist.antag_flags & FLAG_ANTAG_HEMISPHERECTOMIZABLE))
-				continue
-			antagonist_names += antagonist.name
-			target.mind.remove_antag_datum(antagonist)
-		GLOB.hemispherectomy_victims[target.mind.name] = antagonist_names
-		target.mind.wipe_memory()
-	if(target.client)
-		target.client.nuke_chat()
-
-	var/static/list/confusion = list(
-		"WHO AM I?",
-		"WHAT AM I?",
-		"WHERE AM I?",
-		"GOD IS REAL!",
-		"GOD IS DEAD!",
-		"GOD IS COMING!",
-		"BORN AGAIN!?",
-		"TORN IN TWAIN!",
-		"HOPE ERADICATED.",
-		"God is not a man, that he should lie, nor a son of man, that he should change his mind.",
-		"If your hand causes you to stumble, cut it off; it is better for you to enter life crippled, than, \
-		having your two hands, to go into hell, into the unquenchable fire.",
-		"All its land is brimstone and salt, a burning waste, unsown and unproductive, and no grass grows in it, \
-		like the overthrow of Sodom and Gomorrah, Admah and Zeboiim, which the Lord overthrew in His anger and in His wrath.",
-	)
-	display_pain(target, pick(confusion)) //ensure confusion gets displayed after chat nuke
-
-	// Half of your brain is gone, let's see what kind of crippling brain damage you got as a gift!
-	var/traumatic_events = pick(6;1, 3;2, 1;0)
-	for(var/i in 1 to traumatic_events)
-		if(HAS_MIND_TRAIT(target, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
-			target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
-		else
-			target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
-	if(target_brain)
-		target_brain.flash_stroke_screen(target)
+		target_brain.traumatic_hemispherectomy(target, silent = TRUE)
+	display_pain(target, pick(GLOB.brain_injury_messages)) //ensuring pain message gets displayed after chat nuke
 	return ..()
 
 /datum/surgery_step/hemispherectomize/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)

@@ -2471,6 +2471,7 @@
 #include "code\modules\admin\smites\geld.dm"
 #include "code\modules\admin\smites\ghost_control.dm"
 #include "code\modules\admin\smites\gib.dm"
+#include "code\modules\admin\smites\hemispherectomy.dm"
 #include "code\modules\admin\smites\imaginary_friend_special.dm"
 #include "code\modules\admin\smites\immerse.dm"
 #include "code\modules\admin\smites\knot_shoes.dm"
