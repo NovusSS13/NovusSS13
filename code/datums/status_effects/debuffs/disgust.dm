@@ -14,9 +14,11 @@
 /datum/status_effect/disgust/on_creation(mob/living/new_owner, disgust_value = 0)
 	. = ..()
 	set_disgust_value(disgust_value)
-	RegisterSignal(new_owner, COMSIG_LIVING_DEATH, PROC_REF(you_are_dead))
 
 /datum/status_effect/disgust/on_apply()
+	. = ..()
+	if(!.)
+		return FALSE
 	//doesn't make sense if you don't feel hunger
 	if(HAS_TRAIT(owner, TRAIT_NOHUNGER))
 		return FALSE
@@ -26,7 +28,7 @@
 	//this is pointless for non-carbons, they can't puke
 	if(!iscarbon(owner))
 		return FALSE
-	return TRUE
+	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(you_are_dead))
 
 /datum/status_effect/disgust/on_remove()
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
@@ -77,8 +79,8 @@
 			owner.add_mood_event("disgust", /datum/mood_event/disgusted)
 
 /datum/status_effect/disgust/tick(seconds_per_tick, times_fired)
-	// Disgust value does not decrease while in stasis
-	if(IS_IN_STASIS(owner))
+	// Disgust value does not decrease while in stasis or dead
+	if(owner.stat >= DEAD || IS_IN_STASIS(owner))
 		return
 
 	var/mob/living/carbon/carbon_owner = owner
@@ -101,7 +103,7 @@
 			carbon_owner.set_eye_blur_if_lower(6 SECONDS)
 
 	var/obj/item/organ/stomach/stomach = carbon_owner.get_organ_slot(ORGAN_SLOT_STOMACH)
-	var/disgust_decrease = 0.25 * seconds_per_tick
+	var/disgust_decrease = 0.25
 	if(stomach && !(stomach.organ_flags & ORGAN_FAILING))
 		disgust_decrease *= stomach.disgust_metabolism
 	else
