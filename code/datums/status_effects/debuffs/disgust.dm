@@ -78,7 +78,7 @@
 
 /datum/status_effect/disgust/tick(seconds_per_tick, times_fired)
 	// Disgust value does not decrease while in stasis
-	if(IS_IN_STASIS(owner))
+	if(owner.stat >= DEAD || IS_IN_STASIS(owner))
 		return
 
 	var/mob/living/carbon/carbon_owner = owner
@@ -101,7 +101,7 @@
 			carbon_owner.set_eye_blur_if_lower(6 SECONDS)
 
 	var/obj/item/organ/stomach/stomach = carbon_owner.get_organ_slot(ORGAN_SLOT_STOMACH)
-	var/disgust_decrease = 0.25 * seconds_per_tick
+	var/disgust_decrease = 0.25
 	if(stomach && !(stomach.organ_flags & ORGAN_FAILING))
 		disgust_decrease *= stomach.disgust_metabolism
 	else
