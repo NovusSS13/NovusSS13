@@ -95,15 +95,13 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 	)
 	display_pain(target, pick(confusion)) //ensure confusion gets displayed after chat nuke
 
-	var/traumatic_events = 1
-	if(!HAS_MIND_TRAIT(target, TRAIT_SPECIAL_TRAUMA_BOOST))
-		traumatic_events = rand(1, 2)
+	// Half of your brain is gone, let's see what kind of crippling brain damage you got as a gift!
+	var/traumatic_events = pick(6;1, 3;2, 1;0)
 	for(var/i in 1 to traumatic_events)
-		if(prob(80)) // Half of your brain is gone, let's see what kind of crippling brain damage you got as a gift!
-			if(HAS_MIND_TRAIT(target, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
-				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
-			else
-				target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
+		if(HAS_MIND_TRAIT(target, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
+			target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+		else
+			target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
 	if(target_brain)
 		target_brain.flash_stroke_screen(target)
 	return ..()
