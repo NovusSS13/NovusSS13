@@ -10,7 +10,7 @@
 	)
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_SPECIAL_TRAUMA_BOOST, TRAIT_ANTIMAGIC_NO_SELFBLOCK)
 	hemispherectomy_overlay = null
-	hemisphere_type = /obj/item/organ/hemisphere/psyker
+	hemisphere_type = /obj/item/hemisphere/psyker
 
 /obj/item/organ/brain/psyker/on_insert(mob/living/carbon/inserted_into)
 	. = ..()
