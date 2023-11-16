@@ -97,7 +97,7 @@
 		return
 
 	user.log_message(msg, LOG_EMOTE)
-	var/dchatmsg = span_emote("<b>[span_color("[user]", user.chat_color)]</b> [msg]")
+	var/dchatmsg = span_emote("<b>[span_name(span_color("[user]", user.chat_color))]</b> [msg]")
 
 	var/tmp_sound = get_sound(user)
 	if(tmp_sound && should_play_sound(user, intentional) && !TIMER_COOLDOWN_CHECK(user, type))
@@ -123,7 +123,7 @@
 	if(emote_type & EMOTE_IMPORTANT)
 		for(var/mob/living/viewer in viewers(message_range, user))
 			if(viewer.is_blind() && !viewer.can_hear())
-				to_chat(viewer, span_emote("<b>[span_color("[user]", user.chat_color)]</b> [msg]"))
+				to_chat(viewer, span_emote("<b>[span_name(span_color("[user]", user.chat_color))]</b> [msg]"))
 
 /**
  * For handling emote cooldown, return true to allow the emote to happen.
@@ -303,7 +303,7 @@
 
 	log_message(text, LOG_EMOTE)
 
-	var/ghost_text = "<b>[span_color("[src]", chat_color)]</b> [text]"
+	var/ghost_text = "<b>[span_name(span_color("[src]", chat_color))]</b> [text]"
 
 	var/origin_turf = get_turf(src)
 	if(client)
