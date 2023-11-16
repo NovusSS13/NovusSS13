@@ -669,8 +669,6 @@
 			victim.mind.remove_antag_datum(antagonist)
 		GLOB.hemispherectomy_victims[victim.mind.name] = antagonist_names
 		victim.mind.wipe_memory()
-	if(victim.client)
-		victim.client.nuke_chat()
 	flash_stroke_screen(victim)
 	if(!silent)
 		to_chat(victim, span_userdanger(pick(GLOB.brain_injury_messages)))
