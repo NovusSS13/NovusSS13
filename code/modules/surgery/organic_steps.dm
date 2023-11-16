@@ -206,6 +206,7 @@
 		TOOL_SCREWDRIVER = 25,
 		/obj/item/kitchen/spoon = 20)
 	time = 30
+	preop_sound = 'sound/surgery/drill1.ogg'
 
 /datum/surgery_step/drill/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(

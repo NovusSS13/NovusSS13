@@ -2,13 +2,15 @@
 	name = "psyker brain"
 	desc = "This brain is blue, split into two hemispheres, and has immense psychic powers. What kind of monstrosity would use that?"
 	icon_state = "brain-psyker"
+	w_class = WEIGHT_CLASS_NORMAL
 	actions_types = list(
 		/datum/action/cooldown/spell/pointed/psychic_projection,
 		/datum/action/cooldown/spell/charged/psychic_booster,
 		/datum/action/cooldown/spell/forcewall/psychic_wall,
 	)
-	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_ANTIMAGIC_NO_SELFBLOCK)
-	w_class = WEIGHT_CLASS_NORMAL
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_SPECIAL_TRAUMA_BOOST, TRAIT_ANTIMAGIC_NO_SELFBLOCK)
+	hemispherectomy_overlay = null
+	hemisphere_type = /obj/item/organ/hemisphere/psyker
 
 /obj/item/organ/brain/psyker/on_insert(mob/living/carbon/inserted_into)
 	. = ..()
@@ -22,31 +24,28 @@
 
 /obj/item/organ/brain/psyker/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	var/obj/item/bodypart/head/psyker/psyker_head = owner.get_bodypart(check_zone(zone))
-	if(istype(psyker_head))
+	if(HAS_TRAIT(owner, TRAIT_BIG_SKULL))
 		return
 	if(!SPT_PROB(2, seconds_per_tick))
 		return
-	to_chat(owner, span_userdanger("Your head hurts... It can't fit your brain!"))
+	var/head_name = "head"
+	var/obj/item/bodypart/head = owner.get_bodypart(BODY_ZONE_HEAD)
+	if(head)
+		head_name = head.name
+	to_chat(owner, span_userdanger("Your [head_name] hurts... It can't fit your brain!"))
 	owner.adjust_disgust_effect(33 * seconds_per_tick)
 	apply_organ_damage(5 * seconds_per_tick, 199)
+
+/obj/item/organ/hemisphere/psyker
+	icon_state = "hemisphere-greyscale"
+	color = COLOR_BRIGHT_BLUE
 
 /obj/item/bodypart/head/psyker
 	limb_id = BODYPART_ID_PSYKER
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodypart_traits = list(TRAIT_DISFIGURED, TRAIT_BALD, TRAIT_SHAVED)
-	head_flags = HEAD_LIPS|HEAD_EYEHOLES|HEAD_DEBRAIN
-
-/obj/item/bodypart/head/psyker/try_attach_limb(mob/living/carbon/new_head_owner, special, abort)
-	. = ..()
-	if(!.)
-		return
-	new_head_owner.become_blind(bodypart_trait_source)
-
-/obj/item/bodypart/head/psyker/drop_limb(special, dismembered)
-	owner.cure_blind(bodypart_trait_source)
-	return ..()
+	bodypart_traits = list(TRAIT_DISFIGURED, TRAIT_BIG_SKULL)
+	head_flags = HEAD_LIPS|HEAD_DEBRAIN
 
 /// flavorful variant of psykerizing that deals damage and sends messages before calling psykerize()
 /mob/living/carbon/human/proc/slow_psykerize()
@@ -79,14 +78,14 @@
 	var/obj/item/bodypart/head/psyker/psyker_head = new()
 	if(!psyker_head.replace_limb(src, special = TRUE))
 		return FALSE
-	qdel(old_head)
 	var/obj/item/organ/brain/psyker/psyker_brain = new()
-	old_brain.before_organ_replacement(psyker_brain)
-	old_brain.Remove(src, special = TRUE, no_id_transfer = TRUE)
-	qdel(old_brain)
-	psyker_brain.Insert(src, special = TRUE, drop_if_replaced = FALSE)
+	psyker_brain.replace_into(src, drop_if_replaced = FALSE)
 	if(old_eyes)
-		qdel(old_eyes)
+		var/atom/Tsec = drop_location()
+		old_eyes.Remove(src, special = FALSE)
+		old_eyes.forceMove(drop_location())
+		old_eyes.fly_away(Tsec)
+	qdel(old_head)
 	return TRUE
 
 /datum/religion_rites/nullrod_transformation

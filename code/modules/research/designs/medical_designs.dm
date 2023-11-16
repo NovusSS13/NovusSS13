@@ -876,17 +876,19 @@
 	id = "surgery_parent"
 	research_icon = 'icons/obj/medical/surgery_ui.dmi'
 	research_icon_state = "surgery_any"
+	/// Typepath to the surgery datum this design unlocks
 	var/surgery
 
 /datum/design/surgery/lobotomy
 	name = "Lobotomy"
-	desc = "An invasive surgical procedure which guarantees removal of almost all brain traumas, but might cause another permanent trauma in return."
+	desc = "An invasive surgical procedure which guarantees removal of almost all brain traumas...\
+			But might cause another permanent trauma in return."
 	id = "surgery_lobotomy"
 	surgery = /datum/surgery/advanced/lobotomy
 	research_icon_state = "surgery_head"
 
 /datum/design/surgery/hemispherectomy
-	name = "Lobotomy"
+	name = "Hemispherectomy"
 	desc = "A highly invasive and unethical surgical procedure, capable of curing not just brain traumas, but also anti-social personality traits. \
 			This surgery has been commonly used to \"treat\" high-risk prisoners and psychotic patients, \
 			even though it is known to cause horrifying side effects."

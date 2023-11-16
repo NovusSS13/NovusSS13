@@ -102,6 +102,6 @@
 		species_color = eth_holder.current_color
 
 /obj/item/bodypart/head/ethereal/lustrous
-	icon_state = "lustrous_head"
 	limb_id = SPECIES_ETHEREAL_LUSTROUS
+	bodypart_traits = list(TRAIT_BIG_SKULL)
 	head_flags = NONE

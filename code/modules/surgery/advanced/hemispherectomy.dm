@@ -1,26 +1,5 @@
 GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 
-/obj/item/disk/surgery/mkultra
-	name = "\"MKUltra\" Surgical Procedures"
-	desc = "A disk containing a bunch of unethical surgical procedures."
-	surgeries = list(
-		/datum/surgery/advanced/hemispherectomy,
-		/datum/surgery/advanced/lobotomy,
-		/datum/surgery/advanced/pacify,
-	)
-	blocks_emissive = EMISSIVE_BLOCK_NONE
-
-/obj/item/disk/surgery/mkultra/Initialize(mapload)
-	. = ..()
-	add_filter("glowie", 1, outline_filter(size = 2, color = COLOR_JADE)) //they glow in the dark
-	var/glow_filter = get_filter("glowie")
-	animate(glowie, alpha = 110, time = 1.5 SECONDS, loop = -1)
-	animate(alpha = 40, time = 2.5 SECONDS)
-
-/obj/item/disk/surgery/mkultra/update_overlays()
-	. = ..()
-	. += emissive_appearance(icon, icon_state, src) //they glow in the dark
-
 /datum/surgery/advanced/hemispherectomy
 	name = "Hemispherectomy"
 	desc = "A highly invasive and unethical surgical procedure, capable of curing not just brain traumas, but also anti-social personality traits. \
@@ -43,7 +22,7 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 	if(!.)
 		return FALSE
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(!target_brain || HAS_TRAIT(target_brain, TRAIT_HEMISPHERECTOMIZED))
+	if(!target_brain || HAS_TRAIT(target_brain, TRAIT_HEMISPHERECTOMITE) || HAS_TRAIT(target_brain, TRAIT_HEMISPHEREADDECTOMITE))
 		return FALSE
 	return TRUE
 
@@ -61,7 +40,7 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 	failure_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/hemispherectomize/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !tool.get_sharpness())
+	if(implement_type == /obj/item && !(tool.get_sharpness() & SHARP_EDGED))
 		return FALSE
 	return TRUE
 
@@ -85,12 +64,7 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 	)
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(target_brain)
-		target_brain.maxHealth *= 0.5
-		target_brain.set_organ_damage(target_brain.damage/2)
-		target_brain.low_threshold *= 0.5
-		target_brain.high_threshold *= 0.5
-		target_brain.apply_organ_damage(60)
-		ADD_TRAIT(target_brain, TRAIT_HEMISPHERECTOMIZED, EXPERIMENTAL_SURGERY_TRAIT)
+		target_brain.hemispherectomize(user, trait_source = EXPERIMENTAL_SURGERY_TRAIT)
 	target.cure_all_traumas(TRAUMA_RESILIENCE_LOBOTOMY)
 	if(target.mind)
 		var/list/antagonist_names = list()

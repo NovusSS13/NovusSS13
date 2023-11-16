@@ -403,8 +403,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_GUNFLIP "gunflip"
 /// Increases chance of getting special traumas, makes them harder to cure
 #define TRAIT_SPECIAL_TRAUMA_BOOST "special_trauma_boost"
-/// You have suffered a hemispherectomy. Good job!
-#define TRAIT_HEMISPHERECTOMIZED "hemispherectomized"
+/// Capable of handling having a psyker brain
+#define TRAIT_BIG_SKULL "big_skull"
 #define TRAIT_SPACEWALK "spacewalk"
 /// Sanity trait to keep track of when we're in hyperspace and add the appropriate element if we werent
 #define TRAIT_HYPERSPACED "hyperspaced"
@@ -576,7 +576,13 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_MAINTENANCE_METABOLISM "maintenance_metabolism"
 #define TRAIT_CORONER_METABOLISM "coroner_metabolism"
 
-//LUNG TRAITS
+// BRAIN TRAITS
+/// Suffered a hemispherectomy. Good job!
+#define TRAIT_HEMISPHERECTOMITE "hemispherectomite"
+/// Suffered the opposite of a hemispherectomy, a hemisphereaddectomy. Bad job!
+#define TRAIT_HEMISPHEREADDECTOMITE "hemisphereaddectomite"
+
+// LUNG TRAITS
 /// Lungs always breathe normally when in vacuum/space.
 #define TRAIT_SPACEBREATHING "spacebreathing"
 
@@ -605,7 +611,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_KNOW_ENGI_WIRES "know_engi_wires"
 #define TRAIT_ENTRAILS_READER "entrails_reader"
 #define TRAIT_SABRAGE_PRO "sabrage_pro"
-/// this skillchip trait lets you wash brains in washing machines to heal them
+/// This skillchip trait lets you wash brains in washing machines to heal them
 #define TRAIT_BRAINWASHING "brainwashing"
 /// Allows chef's to chefs kiss their food, to make them with love
 #define TRAIT_CHEF_KISS "chefs_kiss"

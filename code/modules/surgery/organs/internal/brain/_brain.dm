@@ -1,6 +1,7 @@
 /obj/item/organ/brain
 	name = "brain"
 	desc = "A piece of juicy meat found in a person's head."
+	icon = 'icons/obj/medical/organs/brain.dmi'
 	icon_state = "brain"
 	throw_speed = 3
 	throw_range = 5
@@ -38,6 +39,20 @@
 	var/max_skillchip_complexity = 3
 	/// Maximum skillchip slots available. Do not reference this var directly and instead call get_max_skillchip_slots()
 	var/max_skillchip_slots = 5
+
+	/// Overlay state we use when hemispherectomized, if any
+	var/hemispherectomy_overlay = "hemispherectomy"
+	/// Stored mutable overlay for when we suffer a hemisphereaddectomy
+	var/mutable_appearance/hemisphereaddectomy_overlay
+	/// The hemisphere object we create when we get hemispherectomized
+	var/obj/item/hemisphere/hemisphere_type = /obj/item/hemisphere
+
+/obj/item/organ/brain/update_overlays()
+	. = ..()
+	if(hemispherectomy_overlay && HAS_TRAIT(src, TRAIT_HEMISPHERECTOMITE))
+		. += hemispherectomy_overlay
+	else if(hemisphereaddectomy_overlay && HAS_TRAIT(src, TRAIT_HEMISPHEREADDECTOMITE))
+		. += hemisphereaddectomy_overlay
 
 /obj/item/organ/brain/Insert(mob/living/carbon/receiver, special = FALSE, drop_if_replaced = TRUE, no_id_transfer = FALSE)
 	. = ..()
@@ -221,8 +236,10 @@
 	. = ..()
 	if(LAZYLEN(skillchips))
 		. += span_info("It has a skillchip embedded in it.")
-	if(HAS_TRAIT(src, TRAIT_HEMISPHERECTOMIZED))
-		. += span_bolddanger("Oh no... This brain has been split in half...")
+	if(HAS_TRAIT(src, TRAIT_HEMISPHERECTOMITE))
+		. += span_bolddanger("Oh no... This brain has been mutilated...")
+	else if(HAS_TRAIT(src, TRAIT_HEMISPHEREADDECTOMITE))
+		. += span_bolddanger("Oh no... This brain has an additional chunk stitched onto it?")
 	if(suicided)
 		. += span_deadsay("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
 		return
@@ -369,14 +386,20 @@
 /obj/item/organ/brain/zombie
 	name = "zombie brain"
 	desc = "This glob of green mass can't have much intelligence inside it."
-	icon_state = "brain-x"
+	icon_state = "brain-greyscale"
+	color = COLOR_GREEN_GRAY
 	organ_traits = list(TRAIT_CAN_STRIP, TRAIT_PRIMITIVE)
+	hemispherectomy_overlay = "hemispherectomy-greyscale"
+	hemisphere_type = /obj/item/hemisphere/zombie
 
 /obj/item/organ/brain/alien
 	name = "alien brain"
 	desc = "We barely understand the brains of terrestial animals. Who knows what we may find in the brain of such an advanced species?"
-	icon_state = "brain-x"
+	icon_state = "brain-greyscale"
+	color = COLOR_GREEN_GRAY
 	organ_traits = list(TRAIT_CAN_STRIP, TRAIT_PRIMITIVE)
+	hemispherectomy_overlay = "hemispherectomy-greyscale"
+	hemisphere_type = /obj/item/hemisphere/alien
 
 /obj/item/organ/brain/primitive //No like books and stompy metal men
 	name = "primitive brain"
@@ -386,16 +409,20 @@
 /obj/item/organ/brain/golem
 	name = "crystalline matrix"
 	desc = "This collection of sparkling gems somehow allows a golem to think."
-	icon_state = "adamantine_resonator"
+	icon_state = "brain-golem"
 	color = COLOR_GOLEM_GRAY
 	organ_flags = ORGAN_MINERAL
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_ROCK_METAMORPHIC)
+	hemispherectomy_overlay = "hemispherectomy-golem"
+	hemisphere_type = /obj/item/hemisphere/golem
 
 /obj/item/organ/brain/lustrous
 	name = "lustrous brain"
 	desc = "This is your brain on bluespace dust. Not even once."
-	icon_state = "random_fly_4"
+	icon_state = "brain-bluespace"
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_SPECIAL_TRAUMA_BOOST)
+	hemispherectomy_overlay = "hemispherectomy-bluespace"
+	hemisphere_type = /obj/item/hemisphere/lustrous
 
 /obj/item/organ/brain/lustrous/before_organ_replacement(mob/living/carbon/organ_owner, special)
 	. = ..()
@@ -560,6 +587,23 @@
 		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
 		return found_bodypart || active_hand
 	return active_hand
+
+/// Proc used to hemispherectomize the brain, and create the hemisphere object
+/obj/item/organ/brain/proc/hemispherectomize(mob/living/user, trait_source = EXPERIMENTAL_SURGERY_TRAIT, harmful = TRUE)
+	if(HAS_TRAIT_FROM(src, TRAIT_HEMISPHERECTOMITE, trait_source))
+		return
+	maxHealth *= 0.5
+	set_organ_damage(src.damage * 0.5)
+	low_threshold *= 0.5
+	high_threshold *= 0.5
+	if(hemisphere_type && !HAS_TRAIT(src, TRAIT_HEMISPHERECTOMITE))
+		var/obj/item/hemisphere = new hemisphere_type(drop_location(), src)
+		if(user)
+			user.put_in_hands(hemisphere)
+	ADD_TRAIT(src, TRAIT_HEMISPHERECTOMITE, trait_source)
+	if(harmful)
+		apply_organ_damage(60)
+	update_appearance()
 
 /// This proc is used to jumpscare the victim with stroke images in certain scenarios
 /obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim, silent = FALSE)

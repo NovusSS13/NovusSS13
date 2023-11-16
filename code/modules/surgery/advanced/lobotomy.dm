@@ -1,6 +1,7 @@
 /datum/surgery/advanced/lobotomy
 	name = "Lobotomy"
-	desc = "An invasive surgical procedure which guarantees removal of almost all brain traumas, but might cause another permanent trauma in return."
+	desc = "An invasive surgical procedure which guarantees removal of almost all brain traumas...\
+			But might cause another permanent trauma in return."
 	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_MORBID_CURIOSITY
 	possible_locs = list(BODY_ZONE_HEAD)
 	requires_bodypart_type = NONE
@@ -23,21 +24,21 @@
 	return TRUE
 
 /datum/surgery_step/lobotomize
-	name = "perform lobotomy (scalpel)"
+	name = "perform lobotomy (drill)"
 	implements = list(
-		TOOL_SCALPEL = 85,
-		/obj/item/melee/energy/sword = 55,
-		/obj/item/knife = 35,
-		/obj/item/shard = 25,
+		TOOL_DRILL = 85,
+		TOOL_SCREWDRIVER = 70,
+		/obj/item/screwdriver/power = 65,
+		/obj/item/pickaxe/drill = 40,
+		/obj/item/kitchen/spoon = 20,
 		/obj/item = 20,
 	)
 	time = 100
-	preop_sound = 'sound/surgery/scalpel1.ogg'
-	success_sound = 'sound/surgery/scalpel2.ogg'
+	preop_sound = 'sound/surgery/drill1.ogg'
 	failure_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/lobotomize/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !tool.get_sharpness())
+	if(implement_type == /obj/item && !(tool.get_sharpness() & SHARP_POINTY))
 		return FALSE
 	return TRUE
 
