@@ -340,7 +340,7 @@
 	if(get_bodypart(limb_zone))
 		return FALSE
 
-	limb = newBodyPart(limb_zone, 0, 0)
+	limb = newBodyPart(limb_zone)
 	if(limb)
 		if(!limb.try_attach_limb(src, special = TRUE))
 			qdel(limb)
@@ -352,7 +352,7 @@
 
 		//Copied from /datum/species/proc/on_species_gain()
 		//fucking stupid shit to be honest
-		for(var/obj/item/organ/organ_path as anything in dna.species.cosmetic_organs)
+		for(var/obj/item/organ/organ_path as anything in dna?.species.cosmetic_organs)
 			//Load a persons preferences from DNA
 			var/zone = check_zone(initial(organ_path.zone))
 			if(zone != limb_zone)
