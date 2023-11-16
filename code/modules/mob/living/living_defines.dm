@@ -178,6 +178,7 @@
 	var/worn_slot_flags = NONE
 
 	var/ventcrawl_layer = PIPING_LAYER_DEFAULT
+	/// How many ticks of choking we have left - TURN THIS INTO A FUCKING STATUS EFFECT
 	var/losebreath = 0
 
 	//List of active diseases
