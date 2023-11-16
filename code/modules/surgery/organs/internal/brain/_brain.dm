@@ -61,8 +61,8 @@
 		var/pix_x = -hemispheres
 		for(var/obj/item/hemisphere/hemisphere as anything in extra_hemispheres)
 			var/mutable_appearance/hemisphere_appearance = mutable_appearance(hemisphere.icon, hemisphere.icon_state)
-			pix_x += 2
 			hemisphere_appearance.pixel_x = pix_x
+			pix_x += 2
 			. += hemisphere_appearance
 
 /obj/item/organ/brain/Insert(mob/living/carbon/receiver, special = FALSE, drop_if_replaced = TRUE, no_id_transfer = FALSE)
