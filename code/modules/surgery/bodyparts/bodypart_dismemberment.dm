@@ -197,13 +197,7 @@
 		var/datum/wound/loss/dismembering = new
 		return dismembering.apply_dismember(src, wounding_type)
 
-/obj/item/bodypart/chest/drop_limb(special)
-	//if this is not a special drop, this is a mistake
-	if(!special)
-		return FALSE
-	return ..()
-
-/obj/item/bodypart/arm/drop_limb(special)
+/obj/item/bodypart/arm/drop_limb(special, dismembered)
 	var/mob/living/carbon/arm_owner = owner
 	. = ..()
 	if(special || !arm_owner)
@@ -224,7 +218,7 @@
 		arm_owner.dropItemToGround(arm_owner.gloves, force = TRUE)
 	arm_owner.update_worn_gloves() //to remove the bloody hands overlay
 
-/obj/item/bodypart/leg/drop_limb(special)
+/obj/item/bodypart/leg/drop_limb(special, dismembered)
 	var/mob/living/carbon/leg_owner = owner
 	. = ..()
 	if(special || !leg_owner)

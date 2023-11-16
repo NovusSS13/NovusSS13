@@ -54,6 +54,12 @@
 		return FALSE
 	return ..()
 
+/obj/item/bodypart/chest/drop_limb(special, dismembered)
+	//if this is not a special drop, this is a mistake
+	if(!special)
+		return FALSE
+	return ..()
+
 /obj/item/bodypart/chest/drop_organs(mob/user, violent_removal)
 	. = ..()
 	cavity_item = null
