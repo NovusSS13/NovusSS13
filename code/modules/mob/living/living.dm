@@ -861,15 +861,21 @@
 		setBruteLoss(0, FALSE, TRUE)
 	if(heal_flags & HEAL_BURN)
 		setFireLoss(0, FALSE, TRUE)
+		//a bit silly to put it here, but i feel like it's the best place for it
+		var/static/list/relevant_husk_sources = list(
+			BURN,
+			CHANGELING_DRAIN,
+		)
+		for(var/husk_source in relevant_husk_sources)
+			cure_husk(husk_source)
 	if(heal_flags & HEAL_STAM)
 		setStaminaLoss(0, FALSE, TRUE)
 
 	// I don't really care to keep this under a flag
 	set_nutrition(NUTRITION_LEVEL_FED + 50)
 
-	// These should be tracked by status effects
+	// This should be tracked by status effects, shit pisses me off
 	losebreath = 0
-	cure_husk()
 
 	if(heal_flags & HEAL_TEMP)
 		bodytemperature = get_body_temp_normal(apply_change = FALSE)

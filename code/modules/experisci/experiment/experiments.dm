@@ -339,3 +339,49 @@
 	description = "As an extension of testing exosuit damage results, scanning examples of complete structural failure will accelerate our material stress simulations."
 	possible_types = list(/obj/structure/mecha_wreckage)
 	total_requirement = 2
+
+/datum/experiment/scanning/random/organs/easy
+	name = "Low Grade Organ Scanning Experiment"
+	description = "Medical science requires a deep understanding of the human body down to it's basic components. Help us understand how some of these organs work by destroying every single cell on them."
+	total_requirement = 3
+	max_requirement_per_type = 3
+	possible_types = list(
+		/obj/item/organ/heart,
+		/obj/item/organ/lungs,
+		/obj/item/organ/liver,
+		/obj/item/organ/stomach,
+	) //no need to destroy a brain here, and all necessary organs are in the chest
+	allow_failing = TRUE
+	allow_robotic = TRUE
+
+/datum/experiment/scanning/random/organs/medium
+	name = "Medium Grade Organ Scanning Experiment"
+	description = "Producing prosthetic organs is a great, life saving technology. But we need to go further and produce completely biological ones too. Dematerialize some 100% organic, GMO free organs."
+	total_requirement = 4
+	max_requirement_per_type = 2
+	possible_types = list(
+		/obj/item/organ/eyes,
+		/obj/item/organ/ears,
+		/obj/item/organ/tongue,
+		/obj/item/organ/heart,
+		/obj/item/organ/lungs,
+		/obj/item/organ/liver,
+		/obj/item/organ/stomach,
+		/obj/item/organ/appendix,
+	) //every organ but a brain
+	allow_failing = TRUE
+	allow_robotic = FALSE
+
+/datum/experiment/scanning/random/organs/hard
+	name = "High Grade Organ Scanning Experiment"
+	description = "Some organs are undeniably more complex than others. To truly understand the human body, one must master the nervous system. Scan functional, organic sensory or nervous organs."
+	possible_types = list(
+		/obj/item/organ/brain,
+		/obj/item/organ/eyes,
+		/obj/item/organ/ears,
+		/obj/item/organ/tongue,
+	)
+	total_requirement = 4
+	max_requirement_per_type = 1
+	allow_failing = FALSE
+	allow_robotic = FALSE

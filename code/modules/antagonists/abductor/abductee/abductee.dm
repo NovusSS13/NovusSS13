@@ -9,7 +9,7 @@
 	roundend_category = "abductees"
 	antagpanel_category = ANTAG_GROUP_ABDUCTORS
 	antag_hud_name = "abductee"
-	antag_flags = FLAG_ANTAG_SAFE_TO_CRYO
+	antag_flags = FLAG_ANTAG_SAFE_TO_CRYO | FLAG_ANTAG_HEMISPHERECTOMIZABLE
 
 /datum/antagonist/abductee/on_gain()
 	give_objective()

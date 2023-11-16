@@ -35,7 +35,7 @@
 		.["userburn"] = mod.wearer?.getFireLoss() || 0
 		.["usertoxin"] = mod.wearer?.getToxLoss() || 0
 		.["useroxy"] = mod.wearer?.getOxyLoss() || 0
-		
+
 	return .
 
 /obj/item/mod/module/health_analyzer/on_select_use(atom/target)
@@ -57,7 +57,7 @@
 	. = ..()
 	.["mode"] = add_ui_configuration("Scan Mode", "list", mode, modes)
 	.["show_vitals"] = add_ui_configuration("Self Vitals Display", "bool", show_vitals)
-	
+
 	return .
 
 /obj/item/mod/module/health_analyzer/configure_edit(key, value)
@@ -400,8 +400,8 @@
 
 /obj/item/surgical_processor/mod/preloaded
 	loaded_surgeries = list(
-		/datum/surgery/advanced/pacify,
 		/datum/surgery/healing/combo/upgraded/femto,
+		/datum/surgery/advanced/pacify,
 		/datum/surgery/advanced/brainwashing,
 		/datum/surgery/advanced/bioware/nerve_splicing,
 		/datum/surgery/advanced/bioware/nerve_grounding,

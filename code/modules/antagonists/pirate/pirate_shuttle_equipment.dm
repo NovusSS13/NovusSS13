@@ -132,11 +132,11 @@
 	desc = "A disk that contains advanced surgery procedures, must be loaded into an Operating Console."
 	surgeries = list(
 		/datum/surgery/advanced/lobotomy,
+		/datum/surgery/advanced/pacify,
 		/datum/surgery/advanced/bioware/vein_threading,
 		/datum/surgery/advanced/bioware/nerve_splicing,
-		/datum/surgery_step/heal/combo/upgraded,
-		/datum/surgery_step/pacify,
-		/datum/surgery_step/revive,
+		/datum/surgery/healing/combo/upgraded,
+		/datum/surgery/revival,
 	)
 
 /obj/machinery/loot_locator/interact(mob/user)

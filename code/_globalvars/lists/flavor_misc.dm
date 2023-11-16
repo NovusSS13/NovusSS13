@@ -423,6 +423,9 @@ GLOBAL_LIST_INIT(admiral_messages, list(
 
 GLOBAL_LIST_INIT(junkmail_messages, world.file2list("strings/junkmail.txt"))
 
+// Messages displayed when very specific brain injuries occur
+GLOBAL_LIST_INIT(brain_injury_messages, world.file2list("strings/brain_injury.txt"))
+
 // All valid inputs to status display post_status
 GLOBAL_LIST_INIT(status_display_approved_pictures, list(
 	"blank",

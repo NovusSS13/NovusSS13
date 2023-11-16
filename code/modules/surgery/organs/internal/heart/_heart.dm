@@ -25,8 +25,8 @@
 	var/operated = FALSE //whether the heart's been operated on to fix some of its damages
 
 /obj/item/organ/heart/update_icon_state()
+	. = ..()
 	icon_state = "[base_icon_state]-[beating ? "on" : "off"]"
-	return ..()
 
 /obj/item/organ/heart/attack_self(mob/user)
 	. = ..()
@@ -210,9 +210,9 @@
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
+
 	// Some effects are byassed if our owner (should it exist) doesn't need a heart
 	var/owner_needs_us = owner?.needs_heart()
-
 	if(owner_needs_us && !COOLDOWN_FINISHED(src, severe_cooldown)) //So we cant just spam emp to kill people.
 		owner.set_dizzy_if_lower(20 SECONDS)
 		owner.losebreath += 10
@@ -298,13 +298,15 @@
 	beating = FALSE
 	decay_factor = 5 * STANDARD_ORGAN_DECAY //fuck you, fails after a lovely 3 minutes
 
-/obj/item/organ/heart/zombie/update_appearance(updates)
-	return ..(updates & ~(UPDATE_ICON)) //don't set icon thank you
+/obj/item/organ/heart/zombie/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/update_icon_blocker)
 
 /obj/item/organ/heart/ethereal
 	name = "crystal core"
 	desc = "A crystal-like organ that functions similarly to a heart for Ethereals. It can revive its owner."
 	icon_state = "ethereal_heart" //Welp. At least it's more unique in functionaliy.
+	base_icon_state = "ethereal_heart"
 
 	visual = TRUE //This is used by the ethereal species for color
 
@@ -337,6 +339,10 @@
 	stop_crystalization_process(heart_owner)
 	QDEL_NULL(current_crystal)
 	return ..()
+
+/obj/item/organ/heart/ethereal/update_icon_state()
+	. = ..()
+	icon_state = base_icon_state
 
 /obj/item/organ/heart/ethereal/update_overlays()
 	. = ..()
@@ -499,13 +505,13 @@
 	add_atom_colour(ethereal_heart.ethereal_color, FIXED_COLOUR_PRIORITY)
 	crystal_heal_timer = addtimer(CALLBACK(src, PROC_REF(heal_ethereal)), CRYSTALIZE_HEAL_TIME, TIMER_STOPPABLE)
 	set_light(4, 10, ethereal_heart.ethereal_color)
-	update_icon()
+	update_appearance()
 	flick("ethereal_crystal_forming", src)
 	addtimer(CALLBACK(src, PROC_REF(start_crystalization)), 1 SECONDS)
 
 /obj/structure/ethereal_crystal/proc/start_crystalization()
 	being_built = FALSE
-	update_icon()
+	update_appearance()
 
 
 /obj/structure/ethereal_crystal/atom_destruction(damage_flag)

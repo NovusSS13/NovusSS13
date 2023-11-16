@@ -167,6 +167,7 @@
 	desc = "A disk that contains advanced surgery procedures, must be loaded into an Operating Console."
 	icon_state = "datadisk1"
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT * 3, /datum/material/glass=SMALL_MATERIAL_AMOUNT)
+	/// List of typepaths for surgeries that this disk contains
 	var/list/surgeries
 
 /obj/item/disk/surgery/debug
@@ -182,6 +183,32 @@
 	for(var/datum/surgery/beep as anything in req_tech_surgeries)
 		if(initial(beep.requires_tech))
 			surgeries += beep
+
+/obj/item/disk/surgery/mkultra
+	name = "\"MKUltra\" Surgical Procedures"
+	desc = "A disk containing a bunch of unethical surgical procedures."
+	surgeries = list(
+		/datum/surgery/advanced/hemispherectomy,
+		/datum/surgery/advanced/hemisphereaddectomy,
+		/datum/surgery/advanced/lobotomy,
+		/datum/surgery/advanced/pacify,
+	)
+	blocks_emissive = EMISSIVE_BLOCK_NONE //they glow in the dark
+
+/obj/item/disk/surgery/mkultra/Initialize(mapload)
+	. = ..()
+	update_appearance()
+	add_filter("glowie", 1, outline_filter(size = 1, color = COLOR_JADE)) //they glow in the dark
+	var/filter = get_filter("glowie")
+	if(!filter)
+		return
+
+	animate(filter, alpha = 110, time = 2 SECONDS, loop = -1)
+	animate(alpha = 40, time = 2 SECONDS)
+
+/obj/item/disk/surgery/mkultra/update_overlays()
+	. = ..()
+	. += emissive_appearance(icon, icon_state, src) //they glow in the dark
 
 //INFO
 //Check /mob/living/carbon/attackby for how surgery progresses, and also /mob/living/carbon/attack_hand.

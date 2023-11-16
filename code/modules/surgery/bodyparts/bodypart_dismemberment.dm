@@ -197,13 +197,7 @@
 		var/datum/wound/loss/dismembering = new
 		return dismembering.apply_dismember(src, wounding_type)
 
-/obj/item/bodypart/chest/drop_limb(special)
-	//if this is not a special drop, this is a mistake
-	if(!special)
-		return FALSE
-	return ..()
-
-/obj/item/bodypart/arm/drop_limb(special)
+/obj/item/bodypart/arm/drop_limb(special, dismembered)
 	var/mob/living/carbon/arm_owner = owner
 	. = ..()
 	if(special || !arm_owner)
@@ -224,7 +218,7 @@
 		arm_owner.dropItemToGround(arm_owner.gloves, force = TRUE)
 	arm_owner.update_worn_gloves() //to remove the bloody hands overlay
 
-/obj/item/bodypart/leg/drop_limb(special)
+/obj/item/bodypart/leg/drop_limb(special, dismembered)
 	var/mob/living/carbon/leg_owner = owner
 	. = ..()
 	if(special || !leg_owner)
@@ -235,7 +229,7 @@
 		leg_owner.legcuffed = null
 		leg_owner.update_worn_legcuffs()
 	if(leg_owner.shoes)
-		leg_owner.dropItemToGround(owner.shoes, force = TRUE)
+		leg_owner.dropItemToGround(leg_owner.shoes, force = TRUE)
 
 /// Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails
 /obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner, special = FALSE, keep_old_organs = TRUE)
@@ -346,7 +340,7 @@
 	if(get_bodypart(limb_zone))
 		return FALSE
 
-	limb = newBodyPart(limb_zone, 0, 0)
+	limb = newBodyPart(limb_zone)
 	if(limb)
 		if(!limb.try_attach_limb(src, special = TRUE))
 			qdel(limb)
@@ -358,7 +352,7 @@
 
 		//Copied from /datum/species/proc/on_species_gain()
 		//fucking stupid shit to be honest
-		for(var/obj/item/organ/organ_path as anything in dna.species.cosmetic_organs)
+		for(var/obj/item/organ/organ_path as anything in dna?.species.cosmetic_organs)
 			//Load a persons preferences from DNA
 			var/zone = check_zone(initial(organ_path.zone))
 			if(zone != limb_zone)

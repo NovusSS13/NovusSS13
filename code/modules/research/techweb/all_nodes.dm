@@ -510,12 +510,24 @@
 		"surgery_muscled_veins",
 		"surgery_nerve_ground",
 		"surgery_nerve_splice",
-		"surgery_pacify",
 		"surgery_vein_thread",
 		"surgery_viral_bond",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 7500)
 	discount_experiments = list(/datum/experiment/scanning/random/plants/traits = 4500)
+
+/datum/techweb_node/unethical_surgery
+	id = "unethical_surgery"
+	display_name = "Unethical Surgery"
+	description = "Throw the hippocratic oath right out of the window! Sometimes medicine is about fixing, not healing."
+	prereq_ids = list("exp_surgery")
+	design_ids = list(
+		"surgery_pacify",
+		"surgery_hemispherectomy",
+		"surgery_hemisphereaddectomy",
+	)
+	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 7500)
+	discount_experiments = list(/datum/experiment/scanning/random/organs/hard = 4500)
 
 /datum/techweb_node/alien_surgery
 	id = "alien_surgery"

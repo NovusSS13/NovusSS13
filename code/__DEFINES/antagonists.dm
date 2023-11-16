@@ -329,11 +329,13 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 #define ANTAG_GROUP_HUNTERS "Bounty Hunters"
 #define ANTAG_GROUP_PARADOX "Spacetime Aberrations"
 
-
-// If this flag is enabled the antagonist datum allows the antagonist to be inducted into a nuclear operative team.
+// antag_flags on the antagonist datum
+/// If this flag is enabled the antagonist datum allows the antagonist to be inducted into a nuclear operative team.
 #define FLAG_ANTAG_CAN_BE_INDUCTED (1<<0)
-// Should we not warn the user if they're going cryo?
+/// Should we not warn the user if they're going cryo?
 #define FLAG_ANTAG_SAFE_TO_CRYO (1<<1)
+/// This antagonist datum can be removed via hemispherectomies
+#define FLAG_ANTAG_HEMISPHERECTOMIZABLE (1<<2)
 
 #define HUNTER_PACK_COPS "Spacepol Fugitive Hunters"
 #define HUNTER_PACK_RUSSIAN "Russian Fugitive Hunters"

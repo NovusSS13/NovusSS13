@@ -7,8 +7,10 @@
 /obj/item/organ/brain/shadow/nightmare
 	name = "tumorous mass"
 	desc = "A fleshy growth that was dug out of the skull of a Nightmare."
-	icon = 'icons/obj/medical/organs/organs.dmi'
-	icon_state = "brain-x-d"
+	icon_state = "brain-greyscale"
+	color = COLOR_BLACK
+	hemispherectomy_overlay = "hemispherectomy-greyscale"
+	hemisphere_type = /obj/item/hemisphere/shadow/nightmare
 	///Our associated shadow jaunt spell, for all nightmares
 	var/datum/action/cooldown/spell/jaunt/shadow_walk/our_jaunt
 	///Our associated terrorize spell, for antagonist nightmares
@@ -27,6 +29,10 @@
 		terrorize_spell = new(src)
 		terrorize_spell.Grant(brain_owner)
 
+/obj/item/hemisphere/shadow/nightmare
+	icon_state = "hemisphere-greyscale"
+	color = COLOR_BLACK
+
 /obj/item/organ/brain/shadow/nightmare/on_remove(mob/living/carbon/brain_owner)
 	. = ..()
 	QDEL_NULL(our_jaunt)
@@ -37,6 +43,7 @@
 	desc = "An alien organ that twists and writhes when exposed to light."
 	icon = 'icons/obj/medical/organs/organs.dmi'
 	icon_state = "demon_heart-on"
+	base_icon_state = "demon_heart"
 	visual = TRUE
 	color = "#1C1C1C"
 	decay_factor = 0
@@ -46,8 +53,8 @@
 	var/obj/item/light_eater/blade
 
 /obj/item/organ/heart/nightmare/Initialize(mapload)
+	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
-	return ..()
 
 /obj/item/organ/heart/nightmare/attack(mob/M, mob/living/carbon/user, obj/target)
 	if(M != user)

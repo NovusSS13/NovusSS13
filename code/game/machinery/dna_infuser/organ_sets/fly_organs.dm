@@ -122,9 +122,10 @@
 	name = odd_organ_name()
 	icon_state = FLY_INFUSED_ORGAN_ICON
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fly)
+	AddElement(/datum/element/update_icon_blocker)
 
 /obj/item/organ/appendix/fly/update_appearance(updates=ALL)
-	return ..(updates & ~(UPDATE_NAME|UPDATE_ICON)) //don't set name or icon thank you
+	return ..(updates & ~(UPDATE_NAME)) //don't set name thank you
 
 //useless organs we throw in just to fuck with surgeons a bit more. they aren't part of a bonus, just the (absolute) state of flies
 /obj/item/organ/fly

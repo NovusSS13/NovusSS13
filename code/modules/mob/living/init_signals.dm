@@ -1,5 +1,8 @@
 /// Called on [/mob/living/Initialize(mapload)], for the mob to register to relevant signals.
 /mob/living/proc/register_init_signals()
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_HUSK), PROC_REF(on_husk_trait_gain))
+	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_HUSK), PROC_REF(on_husk_trait_loss))
+
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), PROC_REF(on_knockedout_trait_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(on_knockedout_trait_loss))
 
@@ -83,6 +86,18 @@
 /mob/living/proc/on_deathcoma_trait_loss(datum/source)
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, TRAIT_DEATHCOMA)
+
+/// Called when [TRAIT_HUSK] is added to the mob.
+/mob/living/proc/on_husk_trait_gain(datum/source)
+	SIGNAL_HANDLER
+	ADD_TRAIT(src, TRAIT_DISFIGURED, TRAIT_HUSK)
+	update_body()
+
+/// Called when [TRAIT_HUSK] is removed from the mob.
+/mob/living/proc/on_husk_trait_loss(datum/source)
+	SIGNAL_HANDLER
+	REMOVE_TRAIT(src, TRAIT_DISFIGURED, TRAIT_HUSK)
+	update_body()
 
 /// Updates medhud when recieving relevant signals.
 /mob/living/proc/update_medhud_on_signal(datum/source)

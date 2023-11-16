@@ -13,7 +13,7 @@
 	blocks_emissive = EMISSIVE_BLOCK_NONE
 	///List of [/obj/item/organ] in the mob. They don't go in the contents for some reason I don't want to know.
 	var/list/obj/item/organ/organs = list()
-	///Same as [above][/mob/living/carbon/var/organs], but stores "slot ID" - "organ" pairs for easy access.
+	///Same as above [/mob/living/carbon/var/organs], but stores "slot ID" - "organ" pairs for easy access.
 	var/list/organs_slot = list()
 	///How many dream images we have left to send
 	var/dreaming = 0
@@ -49,14 +49,14 @@
 
 	///This is used to determine if the mob failed a breath. If they did fail a brath, they will attempt to breathe each tick, otherwise just once per 4 ticks.
 	var/failed_last_breath = FALSE
-	/// Used in [carbon/proc/check_breath] and [lungs/proc/check_breath]]
+	/// Used in [carbon/proc/check_breath] and [lungs/proc/check_breath] - TURN THIS INTO A FUCKING STATUS EFFECT
 	var/co2overloadtime = null
 
 	var/obj/item/food/meat/slab/type_of_meat = /obj/item/food/meat/slab
 
 	var/gib_type = /obj/effect/decal/cleanable/blood/gibs
 
-	var/rotate_on_lying = 1
+	var/rotate_on_lying = TRUE // stupid fucking variable that ought to be a trait instead
 
 	/// Gets filled up in [/datum/species/proc/replace_body].
 	/// Will either contain a list of typepaths if nothing has been created yet,
@@ -100,12 +100,12 @@
 	var/list/all_scars
 
 	/// Simple modifier for whether this mob can handle greater or lesser skillchip complexity. See /datum/mutation/human/biotechcompat/ for example.
-	var/skillchip_complexity_modifier = 0
+	var/skillchip_complexity_modifier = 0 //this is fucking stupid and should be in physiology or whatever
 
 	/// Can other carbons be shoved into this one to make it fall?
 	var/can_be_shoved_into = FALSE
 
-	/// Only load in visual organs
+	/// Only loads in visual organs if TRUE
 	var/visual_only_organs = FALSE
 
 	/// A bitfield of "bodytypes", updated by /obj/item/bodypart/proc/synchronize_bodytypes()

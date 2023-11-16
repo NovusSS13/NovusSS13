@@ -1,6 +1,7 @@
 /obj/item/organ/brain
 	name = "brain"
-	desc = "A piece of juicy meat found in a person's head."
+	desc = "Insane in the membrane, insane in the brain."
+	icon = 'icons/obj/medical/organs/brain.dmi'
 	icon_state = "brain"
 	throw_speed = 3
 	throw_range = 5
@@ -38,6 +39,31 @@
 	var/max_skillchip_complexity = 3
 	/// Maximum skillchip slots available. Do not reference this var directly and instead call get_max_skillchip_slots()
 	var/max_skillchip_slots = 5
+
+	/// Whether or not we have suffered a hemispherectomy
+	var/hemispherectomized = FALSE
+	/// Overlay state we use when hemispherectomized, if any
+	var/hemispherectomy_overlay = "hemispherectomy"
+	/// The hemisphere object we create when we get hemispherectomized
+	var/obj/item/hemisphere/hemisphere_type = /obj/item/hemisphere
+
+	/// Stored hemispheres, in case we get a hemisphereaddectomy
+	var/list/obj/item/hemisphere/extra_hemispheres
+	/// Hemisphereaddectomies are shartcode, so we need to keep track of the organ traits before we got another fucking hemisphere
+	var/list/old_organ_traits
+
+/obj/item/organ/brain/update_overlays()
+	. = ..()
+	if(hemispherectomized && hemispherectomy_overlay)
+		. += hemispherectomy_overlay
+	var/hemispheres = LAZYLEN(extra_hemispheres)
+	if(hemispheres)
+		var/pix_x = -hemispheres
+		for(var/obj/item/hemisphere/hemisphere as anything in extra_hemispheres)
+			var/mutable_appearance/hemisphere_appearance = mutable_appearance(hemisphere.icon, hemisphere.icon_state)
+			hemisphere_appearance.pixel_x = pix_x
+			pix_x += 2
+			. += hemisphere_appearance
 
 /obj/item/organ/brain/Insert(mob/living/carbon/receiver, special = FALSE, drop_if_replaced = TRUE, no_id_transfer = FALSE)
 	. = ..()
@@ -219,20 +245,25 @@
 
 /obj/item/organ/brain/examine(mob/user)
 	. = ..()
-	if(length(skillchips))
+	if(LAZYLEN(skillchips))
 		. += span_info("It has a skillchip embedded in it.")
+	if(hemispherectomized)
+		. += span_bolddanger("Oh no... This brain has been mutilated...")
+	else if(LAZYLEN(extra_hemispheres))
+		for(var/hemisphere in extra_hemispheres)
+			. += span_bolddanger("It has \a [hemisphere] grafted onto it...")
 	if(suicided)
-		. += span_info("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
+		. += span_deadsay("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
 		return
 	if((brainmob && (brainmob.client || brainmob.get_ghost())) || decoy_override)
 		if(organ_flags & ORGAN_FAILING)
-			. += span_info("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>mannitol</b>.")
-		else if(damage >= BRAIN_DAMAGE_DEATH*0.5)
-			. += span_info("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>mannitol</b>.")
+			. += span_notice("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>mannitol</b>.")
+		else if(damage >= maxHealth*0.5)
+			. += span_notice("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>mannitol</b>.")
 		else
-			. += span_info("You can feel the small spark of life still left in this one.")
+			. += span_notice("You can feel the small spark of life still left in this one.")
 	else
-		. += span_info("This one is completely devoid of life.")
+		. += span_deadsay("This one is completely devoid of life.")
 
 /obj/item/organ/brain/attack(mob/living/carbon/C, mob/user)
 	if(!istype(C))
@@ -275,6 +306,7 @@
 	if(brainmob)
 		QDEL_NULL(brainmob)
 	QDEL_LIST(traumas)
+	QDEL_LIST(extra_hemispheres)
 
 	destroy_all_skillchips()
 	if(owner?.mind) //You aren't allowed to return to brains that don't exist
@@ -286,26 +318,30 @@
 	//if we're not more injured than before, return without gambling for a trauma
 	if(damage <= prev_damage)
 		return
-	damage_delta = damage - prev_damage
-	if(damage > BRAIN_DAMAGE_MILD)
-		if(prob(damage_delta * (1 + max(0, (damage - BRAIN_DAMAGE_MILD)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1% //learn how to do your bloody math properly goddamnit
-			gain_trauma_type(BRAIN_TRAUMA_MILD, natural_gain = TRUE)
 
 	var/is_boosted = (owner && HAS_MIND_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST))
-	if(damage > BRAIN_DAMAGE_SEVERE)
-		if(prob(damage_delta * (1 + max(0, (damage - BRAIN_DAMAGE_SEVERE)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1%
+	var/effective_prev_damage = (prev_damage/maxHealth * BRAIN_DAMAGE_DEATH)
+	var/effective_damage = (damage/maxHealth * BRAIN_DAMAGE_DEATH)
+	damage_delta = effective_damage - effective_prev_damage
+	if(effective_damage >= BRAIN_DAMAGE_SEVERE)
+		//Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1%
+		if(prob(damage_delta * (1 + max(0, (effective_damage - BRAIN_DAMAGE_SEVERE)/100))))
 			if(prob(20 + (is_boosted * 30)))
 				gain_trauma_type(BRAIN_TRAUMA_SPECIAL, is_boosted ? TRAUMA_RESILIENCE_SURGERY : null, natural_gain = TRUE)
 			else
 				gain_trauma_type(BRAIN_TRAUMA_SEVERE, natural_gain = TRUE)
+	else if(effective_damage >= BRAIN_DAMAGE_MILD)
+		//Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1% //learn how to do your bloody math properly goddamnit
+		if(prob(damage_delta * (1 + max(0, (effective_damage - BRAIN_DAMAGE_MILD)/100))))
+			gain_trauma_type(BRAIN_TRAUMA_MILD, natural_gain = TRUE)
 
 	if(owner && (owner.stat < UNCONSCIOUS)) //conscious or soft-crit
 		var/brain_message
-		if(prev_damage < BRAIN_DAMAGE_MILD && damage >= BRAIN_DAMAGE_MILD)
+		if(effective_prev_damage < BRAIN_DAMAGE_MILD && effective_damage >= BRAIN_DAMAGE_MILD)
 			brain_message = span_warning("You feel lightheaded.")
-		else if(prev_damage < BRAIN_DAMAGE_SEVERE && damage >= BRAIN_DAMAGE_SEVERE)
+		else if(effective_prev_damage < BRAIN_DAMAGE_SEVERE && effective_damage >= BRAIN_DAMAGE_SEVERE)
 			brain_message = span_warning("You feel less in control of your thoughts.")
-		else if(prev_damage < (BRAIN_DAMAGE_DEATH - 20) && damage >= (BRAIN_DAMAGE_DEATH - 20))
+		else if(effective_prev_damage < (BRAIN_DAMAGE_DEATH - 20) && effective_damage >= (BRAIN_DAMAGE_DEATH - 20))
 			brain_message = span_warning("You can feel your mind flickering on and off...")
 
 		if(.)
@@ -363,14 +399,20 @@
 /obj/item/organ/brain/zombie
 	name = "zombie brain"
 	desc = "This glob of green mass can't have much intelligence inside it."
-	icon_state = "brain-x"
+	icon_state = "brain-greyscale"
+	color = COLOR_GREEN_GRAY
 	organ_traits = list(TRAIT_CAN_STRIP, TRAIT_PRIMITIVE)
+	hemispherectomy_overlay = "hemispherectomy-greyscale"
+	hemisphere_type = /obj/item/hemisphere/zombie
 
 /obj/item/organ/brain/alien
 	name = "alien brain"
 	desc = "We barely understand the brains of terrestial animals. Who knows what we may find in the brain of such an advanced species?"
-	icon_state = "brain-x"
+	icon_state = "brain-greyscale"
+	color = COLOR_GREEN_GRAY
 	organ_traits = list(TRAIT_CAN_STRIP, TRAIT_PRIMITIVE)
+	hemispherectomy_overlay = "hemispherectomy-greyscale"
+	hemisphere_type = /obj/item/hemisphere/alien
 
 /obj/item/organ/brain/primitive //No like books and stompy metal men
 	name = "primitive brain"
@@ -380,16 +422,20 @@
 /obj/item/organ/brain/golem
 	name = "crystalline matrix"
 	desc = "This collection of sparkling gems somehow allows a golem to think."
-	icon_state = "adamantine_resonator"
+	icon_state = "brain-golem"
 	color = COLOR_GOLEM_GRAY
 	organ_flags = ORGAN_MINERAL
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_ROCK_METAMORPHIC)
+	hemispherectomy_overlay = "hemispherectomy-golem"
+	hemisphere_type = /obj/item/hemisphere/golem
 
 /obj/item/organ/brain/lustrous
 	name = "lustrous brain"
 	desc = "This is your brain on bluespace dust. Not even once."
-	icon_state = "random_fly_4"
+	icon_state = "brain-bluespace"
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_SPECIAL_TRAUMA_BOOST)
+	hemispherectomy_overlay = "hemispherectomy-bluespace"
+	hemisphere_type = /obj/item/hemisphere/lustrous
 
 /obj/item/organ/brain/lustrous/before_organ_replacement(mob/living/carbon/organ_owner, special)
 	. = ..()
@@ -441,6 +487,8 @@
 			max_traumas = TRAUMA_LIMIT_LOBOTOMY
 		if(TRAUMA_RESILIENCE_MAGIC)
 			max_traumas = TRAUMA_LIMIT_MAGIC
+		if(TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+			max_traumas = TRAUMA_LIMIT_HEMISPHERECTOMY
 		if(TRAUMA_RESILIENCE_ABSOLUTE)
 			max_traumas = TRAUMA_LIMIT_ABSOLUTE
 
@@ -527,24 +575,16 @@
 	. = ..()
 	if(!owner)
 		return
-	if(damage >= 60)
+	if(damage >= (maxHealth * 0.3))
 		owner.add_mood_event("brain_damage", /datum/mood_event/brain_damage)
 	else
 		owner.clear_mood_event("brain_damage")
-	if(damage >= BRAIN_DAMAGE_DEATH && (owner.stat < DEAD)) //rip
+	if(damage >= maxHealth && (owner.stat < DEAD)) //rip
 		to_chat(owner, span_userdanger("The last spark of life in your brain fizzles out..."))
 		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
 		owner.death()
 
-/// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
-/obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
-	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
-	if(target.body_position == LYING_DOWN && owner.usable_legs)
-		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
-		return found_bodypart || active_hand
-	return active_hand
-
-/// Brains REALLY like ghosting people. we need special tricks to avoid that, namely removing the old brain with no_id_transfer
+/// Brains REALLY like ghosting people - we need special tricks to avoid that, namely removing the old brain with no_id_transfer
 /obj/item/organ/brain/replace_into(mob/living/carbon/new_owner, drop_if_replaced = FALSE)
 	var/obj/item/organ/brain/old_brain = new_owner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(old_brain)
@@ -554,3 +594,106 @@
 		else
 			qdel(old_brain)
 	return Insert(new_owner, special = TRUE, drop_if_replaced = drop_if_replaced, no_id_transfer = TRUE)
+
+/// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
+/obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
+	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
+	if(target.body_position == LYING_DOWN && owner.usable_legs)
+		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
+		return found_bodypart || active_hand
+	return active_hand
+
+/// Proc used to hemispherectomize the brain, and create the hemisphere object, plus remove any extra hemispheres
+/obj/item/organ/brain/proc/hemispherectomize(mob/living/user, harmful = TRUE)
+	var/atom/drop_location = owner?.drop_location() || drop_location()
+	if(!hemispherectomized)
+		maxHealth *= 0.5
+		low_threshold *= 0.5
+		high_threshold *= 0.5
+		set_organ_damage(src.damage * 0.5)
+		if(hemisphere_type)
+			var/obj/item/hemisphere = new hemisphere_type(drop_location, src)
+			if(user)
+				user.put_in_hands(hemisphere)
+	if(harmful)
+		apply_organ_damage(60)
+	//this cures all traumas caused by hemisphereaddectomies, as well as lobotomy ones
+	cure_all_traumas(TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+	for(var/obj/item/hemisphere/hemisphere as anything in extra_hemispheres)
+		//remove the old brain traits, but don't bother with traumas because we just cure everything up to hemisphereaddectomy resilience
+		for(var/trait in hemisphere.brain_traits)
+			if(trait in old_organ_traits)
+				continue
+			remove_organ_trait(trait)
+		hemisphere.forceMove(drop_location)
+		if(user)
+			user.put_in_hands(hemisphere)
+	extra_hemispheres = null
+	old_organ_traits = null
+	hemispherectomized = TRUE
+	update_appearance()
+
+/// Proc used to merge a hemisphere into the brain, opposite of hemispherectomize basically
+/obj/item/organ/brain/proc/hemisphereaddectomize(mob/living/user, obj/item/hemisphere/hemisphere, harmful = TRUE)
+	// hemispherectomizing is a one way street, you can't go back!
+	if(hemispherectomized)
+		return
+	if(!LAZYLEN(extra_hemispheres))
+		old_organ_traits = LAZYCOPY(organ_traits)
+	if(harmful)
+		apply_organ_damage(60)
+	cure_all_traumas(TRAUMA_RESILIENCE_LOBOTOMY)
+	for(var/trait in hemisphere.brain_traits)
+		if(trait in organ_traits)
+			continue
+		add_organ_trait(trait)
+	for(var/trauma_type in hemisphere.brain_traumas)
+		if(!can_gain_trauma(trauma_type, TRAUMA_RESILIENCE_HEMISPHERECTOMY))
+			continue
+		gain_trauma(trauma_type, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+	hemisphere.forceMove(src)
+	LAZYADD(extra_hemispheres, hemisphere)
+	update_appearance()
+
+/// Proc shared between the hemispherectomy smite and surgery
+/obj/item/organ/brain/proc/traumatic_hemispherectomy(mob/living/carbon/victim, silent = FALSE)
+	victim ||= owner
+	if(!owner)
+		return
+	if(victim.mind)
+		var/list/antagonist_names = list()
+		for(var/datum/antagonist/antagonist as anything in victim.mind.antag_datums)
+			if(!(antagonist.antag_flags & FLAG_ANTAG_HEMISPHERECTOMIZABLE))
+				continue
+			antagonist_names += antagonist.name
+			victim.mind.remove_antag_datum(antagonist)
+		GLOB.hemispherectomy_victims[victim.mind.name] = antagonist_names
+		victim.mind.wipe_memory()
+	flash_stroke_screen(victim)
+	if(!silent)
+		to_chat(victim, span_userdanger(pick(GLOB.brain_injury_messages)))
+	// Half of your brain is gone, let's see what kind of crippling brain damage you got as a gift!
+	var/traumatic_events = pick(6;1, 3;2, 1;0)
+	for(var/i in 1 to traumatic_events)
+		if(HAS_MIND_TRAIT(victim, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
+			victim.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+		else
+			victim.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
+
+/// This proc is used to jumpscare the victim with stroke images in certain scenarios
+/obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim, fade_in = 1 SECONDS, fade_out = 1 SECONDS, silent = FALSE)
+	victim ||= owner
+	if(!victim)
+		return
+	var/atom/movable/screen/stroke = victim.overlay_fullscreen("stroke", /atom/movable/screen/fullscreen/stroke, rand(1, 9))
+	stroke.alpha = 0
+	animate(stroke, alpha = 255, time = fade_in, easing = BOUNCE_EASING | EASE_IN | EASE_OUT)
+	addtimer(CALLBACK(src, PROC_REF(clear_stroke_screen), victim, fade_out), fade_in)
+	if(!silent)
+		victim.playsound_local(victim.loc, "sound/hallucinations/lobotomy[rand(1,4)].ogg", vol = 80, vary = FALSE)
+
+/// This clears the victim's screen from the stroke image, if not qdeleted
+/obj/item/organ/brain/proc/clear_stroke_screen(mob/living/victim, duration = 1 SECONDS)
+	if(QDELETED(victim))
+		return
+	victim.clear_fullscreen("stroke", duration)

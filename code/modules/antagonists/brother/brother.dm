@@ -127,7 +127,6 @@
 
 /datum/antagonist/brother/proc/finalize_brother()
 	update_name()
-	team.update_name()
 	suicide_cry = "FOR MY [uppertext(team.hood_type)]!"
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/brotheralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
@@ -284,6 +283,18 @@
 	member_name = "blood brother"
 	/// Brotherhood, sisterhood or siblinghood
 	var/hood_type
+
+/datum/team/brother_team/add_member(datum/mind/new_member)
+	. = ..()
+	update_name()
+
+/datum/team/brother_team/remove_member(datum/mind/member)
+	. = ..()
+	for(var/datum/mind/brother_mind as anything in (members - member))
+		if(!brother_mind.current)
+			continue
+		to_chat(brother_mind.current, span_userdanger("No... [member.name] is no longer part of the [uppertext(hood_type)]!"))
+	update_name()
 
 /datum/team/brother_team/proc/update_name()
 	var/list/gendercount = list(MALE = 0, FEMALE = 0, PLURAL = 0)

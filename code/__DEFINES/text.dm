@@ -98,5 +98,5 @@
 #define HALLUCINATION_FILE "hallucination.json"
 /// File location for ninja lines
 #define NINJA_FILE "ninja.json"
-/// File loation for title splashes
+/// File location for title splash screen description
 #define SPLASH_FILE "splashes.json"

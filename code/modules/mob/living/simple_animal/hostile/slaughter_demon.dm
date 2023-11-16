@@ -153,11 +153,12 @@
 	desc = "Still it beats furiously, emanating an aura of utter hate."
 	icon = 'icons/obj/medical/organs/organs.dmi'
 	icon_state = "demon_heart-on"
+	base_icon_state = "demon_heart"
 	decay_factor = 0
 
 /obj/item/organ/heart/demon/Initialize(mapload)
+	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
-	return ..()
 
 /obj/item/organ/heart/demon/attack(mob/M, mob/living/carbon/user, obj/target)
 	if(M != user)

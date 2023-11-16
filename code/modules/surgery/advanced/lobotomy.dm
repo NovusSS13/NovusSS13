@@ -1,6 +1,8 @@
 /datum/surgery/advanced/lobotomy
 	name = "Lobotomy"
-	desc = "An invasive surgical procedure which guarantees removal of almost all brain traumas, but might cause another permanent trauma in return."
+	desc = "An invasive surgical procedure which guarantees removal of almost all brain traumas...\
+			But might cause another permanent trauma in return."
+	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_MORBID_CURIOSITY
 	possible_locs = list(BODY_ZONE_HEAD)
 	requires_bodypart_type = NONE
 	steps = list(
@@ -22,21 +24,21 @@
 	return TRUE
 
 /datum/surgery_step/lobotomize
-	name = "perform lobotomy (scalpel)"
+	name = "perform lobotomy (drill)"
 	implements = list(
-		TOOL_SCALPEL = 85,
-		/obj/item/melee/energy/sword = 55,
-		/obj/item/knife = 35,
-		/obj/item/shard = 25,
+		TOOL_DRILL = 85,
+		TOOL_SCREWDRIVER = 70,
+		/obj/item/screwdriver/power = 65,
+		/obj/item/pickaxe/drill = 40,
+		/obj/item/kitchen/spoon = 20,
 		/obj/item = 20,
 	)
 	time = 100
-	preop_sound = 'sound/surgery/scalpel1.ogg'
-	success_sound = 'sound/surgery/scalpel2.ogg'
+	preop_sound = 'sound/surgery/drill1.ogg'
 	failure_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/lobotomize/tool_check(mob/user, obj/item/tool)
-	if(implement_type == /obj/item && !tool.get_sharpness())
+	if(implement_type == /obj/item && !(tool.get_sharpness() & SHARP_POINTY))
 		return FALSE
 	return TRUE
 
@@ -66,14 +68,17 @@
 	if(prob(75)) // 75% chance to get a trauma from this
 		switch(rand(1, 3))//Now let's see what hopefully-not-important part of the brain we cut off
 			if(1)
-				target.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_MAGIC)
+				target.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 			if(2)
 				if(HAS_MIND_TRAIT(target, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
-					target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+					target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 				else
-					target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
+					target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 			if(3)
-				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
+	if(target_brain)
+		target_brain.flash_stroke_screen(target)
 	return ..()
 
 /datum/surgery_step/lobotomize/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -90,14 +95,15 @@
 		target_brain.apply_organ_damage(80)
 		switch(rand(1,3))
 			if(1)
-				target.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_MAGIC)
+				target.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 			if(2)
 				if(HAS_MIND_TRAIT(target, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
-					target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+					target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 				else
-					target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
+					target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 			if(3)
-				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+		target_brain.flash_stroke_screen(target)
 	else
 		user.visible_message(span_warning("[user] suddenly notices that the brain [user.p_they()] [user.p_were()] working on is not there anymore."), span_warning("You suddenly notice that the brain you were working on is not there anymore."))
 	return FALSE

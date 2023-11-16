@@ -135,6 +135,10 @@
 	icon_state = "ivanov"
 	alpha = 180
 
+/atom/movable/screen/fullscreen/stroke
+	icon = 'icons/hud/screen_stroke.dmi'
+	icon_state = "stroke"
+
 /atom/movable/screen/fullscreen/impaired
 	icon_state = "impairedoverlay"
 

@@ -5,7 +5,7 @@
 	prevent_roundtype_conversion = FALSE
 	suicide_cry = "FOR MY LOVE!!"
 	// Not 'true' antags, cannot induct
-	antag_flags = NONE
+	antag_flags = FLAG_ANTAG_SAFE_TO_CRYO | FLAG_ANTAG_HEMISPHERECTOMIZABLE
 	var/datum/mind/date
 	count_against_dynamic_roll_chance = FALSE
 

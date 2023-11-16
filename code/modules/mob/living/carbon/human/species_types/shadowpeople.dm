@@ -86,19 +86,25 @@
 /obj/item/organ/brain/shadow
 	name = "shadowling tumor"
 	desc = "Something that was once a brain, before being remolded by a shadowling. It has adapted to the dark, irreversibly."
-	icon = 'icons/obj/medical/organs/shadow_organs.dmi'
+	icon_state = "brain-shadow"
+	hemispherectomy_overlay = "hemispherectomy-greyscale"
+	hemisphere_type = /obj/item/hemisphere/shadow
 
 /obj/item/organ/brain/shadow/on_life(seconds_per_tick, times_fired)
 	. = ..()
 	var/turf/owner_turf = owner.loc
 	if(!isturf(owner_turf))
 		return
-	var/light_amount = owner_turf.get_lumcount()
 
+	var/light_amount = owner_turf.get_lumcount()
 	if(light_amount > SHADOW_SPECIES_LIGHT_THRESHOLD) //if there's enough light, start dying
 		owner.take_overall_damage(brute = 0.5 * seconds_per_tick, burn = 0.5 * seconds_per_tick, required_bodytype = BODYTYPE_ORGANIC)
-	else if (light_amount < SHADOW_SPECIES_LIGHT_THRESHOLD) //heal in the dark
+	else if(light_amount < SHADOW_SPECIES_LIGHT_THRESHOLD) //heal in the dark
 		owner.heal_overall_damage(brute = 0.5 * seconds_per_tick, burn = 0.5 * seconds_per_tick, required_bodytype = BODYTYPE_ORGANIC)
+
+/obj/item/hemisphere/shadow
+	icon_state = "hemisphere-shadow"
+	base_icon_state = "hemisphere-shadow"
 
 /obj/item/organ/eyes/shadow
 	name = "burning red eyes"

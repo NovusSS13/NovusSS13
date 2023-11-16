@@ -1,3 +1,5 @@
+#define NO_GRAVITY_CONSERVATION_OF_MOMENTUM 0.9
+
 /**
  * MOVABLE PHYSICS COMPONENT - By ma44, bob joga and pyroshark (https://github.com/DaedalusDock/daedalusdock/pull/96/)
  *
@@ -277,7 +279,7 @@
 	moving_atom.pixel_z = round(z_floor, MOVABLE_PHYSICS_PRECISION)
 	if(bounce_spin_speed && !visual_angle_velocity && !visual_angle_friction)
 		moving_atom.SpinAnimation(speed = bounce_spin_speed, loops = max(0, bounce_spin_loops))
-	vertical_velocity = abs(vertical_velocity * vertical_conservation_of_momentum)
+	vertical_velocity = abs(vertical_velocity * (moving_atom.has_gravity() ? vertical_conservation_of_momentum : max(vertical_conservation_of_momentum, NO_GRAVITY_CONSERVATION_OF_MOMENTUM)))
 	if(bounce_callback)
 		bounce_callback.Invoke()
 
@@ -291,7 +293,7 @@
 /datum/component/movable_physics/proc/on_bump(atom/movable/source, atom/bumped_atom)
 	SIGNAL_HANDLER
 
-	horizontal_velocity = horizontal_velocity * horizontal_conservation_of_momentum
+	horizontal_velocity = horizontal_velocity * (source.has_gravity() ? horizontal_conservation_of_momentum : max(horizontal_conservation_of_momentum, NO_GRAVITY_CONSERVATION_OF_MOMENTUM))
 	var/face_direction = get_dir(bumped_atom, source)
 	var/face_angle = dir2angle(face_direction)
 	var/incidence = GET_ANGLE_OF_INCIDENCE(face_angle, angle + 180)
@@ -331,3 +333,5 @@
 		visual_angle_velocity = rand(1 * 100, 3 * 100) * 0.01, \
 		visual_angle_friction = 0.1, \
 	)
+
+#undef NO_GRAVITY_CONSERVATION_OF_MOMENTUM
