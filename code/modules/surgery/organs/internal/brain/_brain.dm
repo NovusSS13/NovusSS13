@@ -1,6 +1,6 @@
 /obj/item/organ/brain
 	name = "brain"
-	desc = "A piece of juicy meat found in a person's head."
+	desc = "Insane in the membrane, insane in the brain."
 	icon = 'icons/obj/medical/organs/brain.dmi'
 	icon_state = "brain"
 	throw_speed = 3
@@ -659,7 +659,7 @@
 /obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim, fade_in = 1 SECONDS, fade_out = 1 SECONDS, silent = FALSE)
 	var/atom/movable/screen/stroke = victim.overlay_fullscreen("stroke", /atom/movable/screen/fullscreen/stroke, rand(1, 9))
 	stroke.alpha = 0
-	animate(stroke, alpha = 255, easing = ELASTIC_EASING | EASE_IN | EASE_OUT)
+	animate(stroke, alpha = 255, easing = CIRCULAR_EASING | EASE_IN | EASE_OUT)
 	addtimer(CALLBACK(src, PROC_REF(clear_stroke_screen), victim, fade_out), fade_in)
 	if(!silent)
 		victim.playsound_local(victim.loc, "sound/hallucinations/lobotomy[rand(1,4)].ogg", vol = 80, vary = FALSE)
