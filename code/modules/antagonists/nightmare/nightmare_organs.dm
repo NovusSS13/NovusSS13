@@ -7,7 +7,6 @@
 /obj/item/organ/brain/shadow/nightmare
 	name = "tumorous mass"
 	desc = "A fleshy growth that was dug out of the skull of a Nightmare."
-	icon = 'icons/obj/medical/organs/organs.dmi'
 	icon_state = "brain-greyscale"
 	color = COLOR_BLACK
 	hemispherectomy_overlay = "hemispherectomy-greyscale"
