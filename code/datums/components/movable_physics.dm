@@ -334,4 +334,4 @@
 		visual_angle_friction = 0.1, \
 	)
 
-#undef
+#undef NO_GRAVITY_CONSERVATION_OF_MOMENTUM
