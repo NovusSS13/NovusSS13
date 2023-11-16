@@ -424,27 +424,7 @@ GLOBAL_LIST_INIT(admiral_messages, list(
 GLOBAL_LIST_INIT(junkmail_messages, world.file2list("strings/junkmail.txt"))
 
 // Messages displayed when very specific brain injuries occur
-GLOBAL_LIST_INIT(brain_injury_messages, list(
-	"WHO AM I?",
-	"WHAT AM I?",
-	"WHERE AM I?",
-	"GOD IS REAL!",
-	"GOD IS DEAD!",
-	"GOD IS COMING!",
-	"BORN AGAIN!?",
-	"HOPE ERADICATED.",
-	"God is not a man, that he should lie, nor a son of man, that he should change his mind.",
-	"If your hand causes you to stumble, cut it off; it is better for you to enter life crippled, than, \
-	having your two hands, to go into hell, into the unquenchable fire.",
-	"All its land is brimstone and salt, a burning waste, unsown and unproductive, and no grass grows in it, \
-	like the overthrow of Sodom and Gomorrah, Admah and Zeboiim, which the Lord overthrew in His anger and in His wrath.",
-	"The King is coming!!!!",
-	"We are in the last moments of the end of days.",
-	"The New World Order aka The Great Reset aka Communism is about to infiltrate the whole world",
-	"To be saved you must be born again.",
-	"JESUS IS THE ONLY WAY TO SALVATION.",
-	"GOD is in control!",
-))
+GLOBAL_LIST_INIT(brain_injury_messages, world.file2list("strings/brain_injury.txt"))
 
 // All valid inputs to status display post_status
 GLOBAL_LIST_INIT(status_display_approved_pictures, list(
