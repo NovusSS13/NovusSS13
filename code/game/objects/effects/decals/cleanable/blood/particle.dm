@@ -91,11 +91,10 @@
 		var/list/blood_dna = GET_ATOM_BLOOD_DNA(src)
 		if(blood_dna)
 			final_splatter.add_blood_DNA(blood_dna)
-		qdel(src)
 	else if(istype(bumped_atom, /obj/structure/window))
 		var/obj/structure/window/the_window = bumped_atom
 		the_window.become_bloodied(src)
-		qdel(src)
+	qdel(src)
 
 /// subtype of splatter capable of doing proper "stacking" behavior
 /obj/effect/decal/cleanable/blood/splatter/stacking
