@@ -22,7 +22,7 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 	if(!.)
 		return FALSE
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(!target_brain || HAS_TRAIT(target_brain, TRAIT_HEMISPHERECTOMITE) || HAS_TRAIT(target_brain, TRAIT_HEMISPHEREADDECTOMITE))
+	if(!target_brain || target_brain.hemispherectomized) //hemispherectomy is a one way street
 		return FALSE
 	return TRUE
 
@@ -64,8 +64,7 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 	)
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(target_brain)
-		target_brain.hemispherectomize(user, trait_source = EXPERIMENTAL_SURGERY_TRAIT)
-	target.cure_all_traumas(TRAUMA_RESILIENCE_LOBOTOMY)
+		target_brain.hemispherectomize(user)
 	if(target.mind)
 		var/list/antagonist_names = list()
 		for(var/datum/antagonist/antagonist as anything in target.mind.antag_datums)
@@ -116,7 +115,7 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 			user,
 			target,
 			span_warning("You remove the wrong part, causing more damage!"),
-			span_notice("[user] tears [target]'s brain apart!"),
+			span_notice("[user] successfully hemispherectomizes [target]!"),
 			span_notice("[user] completes the surgery on [target]'s brain."),
 		)
 		display_pain(target, "The pain in your head is PURE AGONY!")

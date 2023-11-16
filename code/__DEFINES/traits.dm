@@ -576,12 +576,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_MAINTENANCE_METABOLISM "maintenance_metabolism"
 #define TRAIT_CORONER_METABOLISM "coroner_metabolism"
 
-// BRAIN TRAITS
-/// Suffered a hemispherectomy. Good job!
-#define TRAIT_HEMISPHERECTOMITE "hemispherectomite"
-/// Suffered the opposite of a hemispherectomy, a hemisphereaddectomy. Bad job!
-#define TRAIT_HEMISPHEREADDECTOMITE "hemisphereaddectomite"
-
 // LUNG TRAITS
 /// Lungs always breathe normally when in vacuum/space.
 #define TRAIT_SPACEBREATHING "spacebreathing"

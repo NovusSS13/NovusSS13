@@ -68,14 +68,14 @@
 	if(prob(75)) // 75% chance to get a trauma from this
 		switch(rand(1, 3))//Now let's see what hopefully-not-important part of the brain we cut off
 			if(1)
-				target.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_MAGIC)
+				target.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 			if(2)
 				if(HAS_MIND_TRAIT(target, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
-					target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+					target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 				else
-					target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
+					target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 			if(3)
-				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(target_brain)
 		target_brain.flash_stroke_screen(target)
@@ -95,14 +95,14 @@
 		target_brain.apply_organ_damage(80)
 		switch(rand(1,3))
 			if(1)
-				target.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_MAGIC)
+				target.gain_trauma_type(BRAIN_TRAUMA_MILD, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 			if(2)
 				if(HAS_MIND_TRAIT(target, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
-					target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+					target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 				else
-					target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
+					target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 			if(3)
-				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
+				target.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 		target_brain.flash_stroke_screen(target)
 	else
 		user.visible_message(span_warning("[user] suddenly notices that the brain [user.p_they()] [user.p_were()] working on is not there anymore."), span_warning("You suddenly notice that the brain you were working on is not there anymore."))

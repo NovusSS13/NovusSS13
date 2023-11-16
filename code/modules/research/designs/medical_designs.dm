@@ -896,6 +896,14 @@
 	surgery = /datum/surgery/advanced/hemispherectomy
 	research_icon_state = "surgery_head"
 
+/datum/design/surgery/hemisphereaddectomy
+	name = "Hemisphereaddectomy"
+	desc = "This surgery is the complete opposite of a hemispherectomy. \
+			Unlike hemispherectomies, it has absolutely no therapeutic value and is only done for the sake of... \"Science\"."
+	id = "surgery_hemisphereaddectomy"
+	surgery = /datum/surgery/advanced/hemisphereaddectomy
+	research_icon_state = "surgery_head"
+
 /datum/design/surgery/pacify
 	name = "Pacification"
 	desc = "A surgical procedure which permanently inhibits the aggression center of the brain, making the patient unwilling to cause direct harm."

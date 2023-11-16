@@ -40,19 +40,30 @@
 	/// Maximum skillchip slots available. Do not reference this var directly and instead call get_max_skillchip_slots()
 	var/max_skillchip_slots = 5
 
+	/// Whether or not we have suffered a hemispherectomy
+	var/hemispherectomized = FALSE
 	/// Overlay state we use when hemispherectomized, if any
 	var/hemispherectomy_overlay = "hemispherectomy"
-	/// Stored mutable overlay for when we suffer a hemisphereaddectomy
-	var/mutable_appearance/hemisphereaddectomy_overlay
 	/// The hemisphere object we create when we get hemispherectomized
 	var/obj/item/hemisphere/hemisphere_type = /obj/item/hemisphere
 
+	/// Stored hemispheres, in case we get a hemisphereaddectomy
+	var/list/obj/item/hemisphere/extra_hemispheres
+	/// Hemisphereaddectomies are shartcode, so we need to keep track of the organ traits before we got another fucking hemisphere
+	var/list/old_organ_traits
+
 /obj/item/organ/brain/update_overlays()
 	. = ..()
-	if(hemispherectomy_overlay && HAS_TRAIT(src, TRAIT_HEMISPHERECTOMITE))
+	if(hemispherectomized && hemispherectomy_overlay)
 		. += hemispherectomy_overlay
-	else if(hemisphereaddectomy_overlay && HAS_TRAIT(src, TRAIT_HEMISPHEREADDECTOMITE))
-		. += hemisphereaddectomy_overlay
+	var/hemispheres = LAZYLEN(extra_hemispheres)
+	if(hemispheres)
+		var/pix_x = -hemispheres
+		for(var/obj/item/hemisphere/hemisphere as anything in extra_hemispheres)
+			var/mutable_appearance/hemisphere_appearance = mutable_appearance(hemisphere.icon, hemisphere.icon_state)
+			pix_x += 2
+			hemisphere_appearance.pixel_x = pix_x
+			. += hemisphere_appearance
 
 /obj/item/organ/brain/Insert(mob/living/carbon/receiver, special = FALSE, drop_if_replaced = TRUE, no_id_transfer = FALSE)
 	. = ..()
@@ -236,10 +247,11 @@
 	. = ..()
 	if(LAZYLEN(skillchips))
 		. += span_info("It has a skillchip embedded in it.")
-	if(HAS_TRAIT(src, TRAIT_HEMISPHERECTOMITE))
+	if(hemispherectomized)
 		. += span_bolddanger("Oh no... This brain has been mutilated...")
-	else if(HAS_TRAIT(src, TRAIT_HEMISPHEREADDECTOMITE))
-		. += span_bolddanger("Oh no... This brain has an additional chunk stitched onto it?")
+	else if(LAZYLEN(extra_hemispheres))
+		for(var/hemisphere in extra_hemispheres)
+			. += span_bolddanger("It has \a [hemisphere] grafted onto it...")
 	if(suicided)
 		. += span_deadsay("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
 		return
@@ -294,6 +306,7 @@
 	if(brainmob)
 		QDEL_NULL(brainmob)
 	QDEL_LIST(traumas)
+	QDEL_LIST(extra_hemispheres)
 
 	destroy_all_skillchips()
 	if(owner?.mind) //You aren't allowed to return to brains that don't exist
@@ -474,6 +487,8 @@
 			max_traumas = TRAUMA_LIMIT_LOBOTOMY
 		if(TRAUMA_RESILIENCE_MAGIC)
 			max_traumas = TRAUMA_LIMIT_MAGIC
+		if(TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+			max_traumas = TRAUMA_LIMIT_HEMISPHERECTOMY
 		if(TRAUMA_RESILIENCE_ABSOLUTE)
 			max_traumas = TRAUMA_LIMIT_ABSOLUTE
 
@@ -569,7 +584,7 @@
 		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
 		owner.death()
 
-/// Brains REALLY like ghosting people. we need special tricks to avoid that, namely removing the old brain with no_id_transfer
+/// Brains REALLY like ghosting people - we need special tricks to avoid that, namely removing the old brain with no_id_transfer
 /obj/item/organ/brain/replace_into(mob/living/carbon/new_owner, drop_if_replaced = FALSE)
 	var/obj/item/organ/brain/old_brain = new_owner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(old_brain)
@@ -588,34 +603,69 @@
 		return found_bodypart || active_hand
 	return active_hand
 
-/// Proc used to hemispherectomize the brain, and create the hemisphere object
-/obj/item/organ/brain/proc/hemispherectomize(mob/living/user, trait_source = EXPERIMENTAL_SURGERY_TRAIT, harmful = TRUE)
-	if(HAS_TRAIT_FROM(src, TRAIT_HEMISPHERECTOMITE, trait_source))
-		return
-	maxHealth *= 0.5
-	set_organ_damage(src.damage * 0.5)
-	low_threshold *= 0.5
-	high_threshold *= 0.5
-	if(hemisphere_type && !HAS_TRAIT(src, TRAIT_HEMISPHERECTOMITE))
-		var/obj/item/hemisphere = new hemisphere_type(drop_location(), src)
-		if(user)
-			user.put_in_hands(hemisphere)
-	ADD_TRAIT(src, TRAIT_HEMISPHERECTOMITE, trait_source)
+/// Proc used to hemispherectomize the brain, and create the hemisphere object, plus remove any extra hemispheres
+/obj/item/organ/brain/proc/hemispherectomize(mob/living/user, harmful = TRUE)
+	var/atom/drop_location = drop_location()
+	if(!hemispherectomized)
+		maxHealth *= 0.5
+		low_threshold *= 0.5
+		high_threshold *= 0.5
+		set_organ_damage(src.damage * 0.5)
+		if(hemisphere_type)
+			var/obj/item/hemisphere = new hemisphere_type(drop_location, src)
+			if(user)
+				user.put_in_hands(hemisphere)
 	if(harmful)
 		apply_organ_damage(60)
+	//this cures all traumas caused by hemisphereaddectomies, as well as lobotomy ones
+	cure_all_traumas(TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+	for(var/obj/item/hemisphere/hemisphere as anything in extra_hemispheres)
+		//remove the old brain traits, but don't bother with traumas because we just cure everything up to hemisphereaddectomy resilience
+		for(var/trait in hemisphere.brain_traits)
+			if(trait in old_organ_traits)
+				continue
+			remove_organ_trait(trait)
+		hemisphere.forceMove(drop_location)
+		if(user)
+			user.put_in_hands(hemisphere)
+	extra_hemispheres = null
+	old_organ_traits = null
+	hemispherectomized = TRUE
+	update_appearance()
+
+/// Proc used to merge a hemisphere into the brain, opposite of hemispherectomize basically
+/obj/item/organ/brain/proc/hemisphereaddectomize(mob/living/user, obj/item/hemisphere/hemisphere, harmful = TRUE)
+	// hemispherectomizing is a one way street, you can't go back!
+	if(hemispherectomized)
+		return
+	if(!LAZYLEN(extra_hemispheres))
+		old_organ_traits = LAZYCOPY(organ_traits)
+	if(harmful)
+		apply_organ_damage(60)
+	cure_all_traumas(TRAUMA_RESILIENCE_LOBOTOMY)
+	for(var/trait in hemisphere.brain_traits)
+		if(trait in organ_traits)
+			continue
+		add_organ_trait(trait)
+	for(var/trauma_type in hemisphere.brain_traumas)
+		if(!can_gain_trauma(trauma_type, TRAUMA_RESILIENCE_HEMISPHERECTOMY))
+			continue
+		gain_trauma(trauma_type, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+	hemisphere.forceMove(src)
+	LAZYADD(extra_hemispheres, hemisphere)
 	update_appearance()
 
 /// This proc is used to jumpscare the victim with stroke images in certain scenarios
-/obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim, silent = FALSE)
+/obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim, fade_in = 1 SECONDS, fade_out = 1 SECONDS, silent = FALSE)
 	var/atom/movable/screen/stroke = victim.overlay_fullscreen("stroke", /atom/movable/screen/fullscreen/stroke, rand(1, 9))
 	stroke.alpha = 0
 	animate(stroke, alpha = 255, easing = ELASTIC_EASING | EASE_IN | EASE_OUT)
-	addtimer(CALLBACK(src, PROC_REF(clear_stroke_screen), victim), 0.5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(clear_stroke_screen), victim, fade_out), fade_in)
 	if(!silent)
-		victim.playsound_local(victim.loc, "sound/hallucinations/lobotomy[rand(1,3)].ogg", vol = 80, vary = FALSE)
+		victim.playsound_local(victim.loc, "sound/hallucinations/lobotomy[rand(1,4)].ogg", vol = 80, vary = FALSE)
 
 /// This clears the victim's screen from the stroke image, if not qdeleted
-/obj/item/organ/brain/proc/clear_stroke_screen(mob/living/victim)
+/obj/item/organ/brain/proc/clear_stroke_screen(mob/living/victim, duration = 1 SECONDS)
 	if(QDELETED(victim))
 		return
-	victim.clear_fullscreen("stroke")
+	victim.clear_fullscreen("stroke", duration)

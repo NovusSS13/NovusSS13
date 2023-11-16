@@ -189,6 +189,7 @@
 	desc = "A disk containing a bunch of unethical surgical procedures."
 	surgeries = list(
 		/datum/surgery/advanced/hemispherectomy,
+		/datum/surgery/advanced/hemisphereaddectomy,
 		/datum/surgery/advanced/lobotomy,
 		/datum/surgery/advanced/pacify,
 	)
@@ -197,13 +198,13 @@
 /obj/item/disk/surgery/mkultra/Initialize(mapload)
 	. = ..()
 	update_appearance()
-	add_filter("glowie", 1, outline_filter(size = 2, color = COLOR_JADE)) //they glow in the dark
+	add_filter("glowie", 1, outline_filter(size = 1, color = COLOR_JADE)) //they glow in the dark
 	var/filter = get_filter("glowie")
 	if(!filter)
 		return
 
-	animate(filter, alpha = 110, time = 1.5 SECONDS, loop = -1)
-	animate(alpha = 40, time = 2.5 SECONDS)
+	animate(filter, alpha = 110, time = 2 SECONDS, loop = -1)
+	animate(alpha = 40, time = 2 SECONDS)
 
 /obj/item/disk/surgery/mkultra/update_overlays()
 	. = ..()

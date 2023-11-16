@@ -105,15 +105,17 @@
 #define TRAUMA_RESILIENCE_BASIC 1 //Curable with chems
 #define TRAUMA_RESILIENCE_SURGERY 2 //Curable with brain surgery
 #define TRAUMA_RESILIENCE_LOBOTOMY 3 //Curable with lobotomy
-#define TRAUMA_RESILIENCE_WOUND 4 //Curable by healing the head wound
-#define TRAUMA_RESILIENCE_MAGIC 5 //Curable only with magic
-#define TRAUMA_RESILIENCE_ABSOLUTE 6 //This is here to stay
+#define TRAUMA_RESILIENCE_HEMISPHERECTOMY 4 //Curable with hemisphereaddectomy, yes this is a bit of a misnomer
+#define TRAUMA_RESILIENCE_WOUND 5 //Curable by healing the head wound
+#define TRAUMA_RESILIENCE_MAGIC 6 //Curable only with magic
+#define TRAUMA_RESILIENCE_ABSOLUTE 7 //This is here to stay
 
 //Limit of traumas for each resilience tier
 #define TRAUMA_LIMIT_BASIC 3
 #define TRAUMA_LIMIT_SURGERY 2
 #define TRAUMA_LIMIT_WOUND 2
 #define TRAUMA_LIMIT_LOBOTOMY 3
+#define TRAUMA_LIMIT_HEMISPHERECTOMY 2
 #define TRAUMA_LIMIT_MAGIC 3
 #define TRAUMA_LIMIT_ABSOLUTE INFINITY
 

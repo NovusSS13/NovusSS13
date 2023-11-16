@@ -524,6 +524,7 @@
 	design_ids = list(
 		"surgery_pacify",
 		"surgery_hemispherectomy",
+		"surgery_hemisphereaddectomy",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 7500)
 	discount_experiments = list(/datum/experiment/scanning/random/organs/hard = 4500)
