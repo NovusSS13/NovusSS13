@@ -337,7 +337,7 @@
 		hearers -= src
 	var/raw_msg = message
 	if(audible_message_flags & EMOTE_MESSAGE)
-		message = span_emote("<b>[span_color("[src]", src.chat_color)]</b> [message]")
+		message = span_emote("<b>[span_name(span_color("[src]", src.chat_color))]</b> [message]")
 
 	for(var/mob/M in hearers)
 		if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())

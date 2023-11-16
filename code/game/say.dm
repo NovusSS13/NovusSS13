@@ -123,7 +123,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 			var/atom/movable/virtualspeaker/vspeaker = speaker
 			real_speaker = vspeaker.source
 		if(ismob(real_speaker))
-			namepart = span_color(namepart, colorize_string(namepart))
+			namepart = span_name(span_color(namepart, colorize_string(namepart)))
 
 	//End name span.
 	var/endspanpart = "</span>"
