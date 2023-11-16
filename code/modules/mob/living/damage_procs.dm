@@ -187,6 +187,8 @@
 		if(status_flags & GODMODE)
 			return
 
+		if(HAS_TRAIT(src, TRAIT_NOBREATH))
+			amount = min(amount, 0) //Prevents oxy damage but not healing
 		var/obj/item/organ/lungs/affected_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 		if(isnull(affected_lungs))
 			if(!(mob_respiration_type & required_respiration_type))  // if the mob has no lungs, use mob_respiration_type

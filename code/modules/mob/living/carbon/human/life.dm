@@ -302,6 +302,7 @@
 		return
 
 	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
+		losebreath = max(losebreath, 4)
 		adjustOxyLoss(4 * seconds_per_tick)
 	else if(!HAS_TRAIT(src, TRAIT_TOXIMMUNE))
 		adjustToxLoss(1 * seconds_per_tick)
