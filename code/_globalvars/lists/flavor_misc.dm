@@ -423,6 +423,7 @@ GLOBAL_LIST_INIT(admiral_messages, list(
 
 GLOBAL_LIST_INIT(junkmail_messages, world.file2list("strings/junkmail.txt"))
 
+// Messages displayed when very specific brain injuries occur
 GLOBAL_LIST_INIT(brain_injury_messages, list(
 	"WHO AM I?",
 	"WHAT AM I?",
