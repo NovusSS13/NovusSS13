@@ -36,7 +36,7 @@
 	owner.adjust_disgust_effect(33 * seconds_per_tick)
 	apply_organ_damage(5 * seconds_per_tick, 199)
 
-/obj/item/organ/hemisphere/psyker
+/obj/item/hemisphere/psyker
 	icon_state = "hemisphere-greyscale"
 	color = COLOR_BRIGHT_BLUE
 
