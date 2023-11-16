@@ -235,7 +235,7 @@
 		leg_owner.legcuffed = null
 		leg_owner.update_worn_legcuffs()
 	if(leg_owner.shoes)
-		leg_owner.dropItemToGround(owner.shoes, force = TRUE)
+		leg_owner.dropItemToGround(leg_owner.shoes, force = TRUE)
 
 /// Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails
 /obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner, special = FALSE, keep_old_organs = TRUE)
