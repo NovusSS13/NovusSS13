@@ -689,7 +689,7 @@
 		return
 	var/atom/movable/screen/stroke = victim.overlay_fullscreen("stroke", /atom/movable/screen/fullscreen/stroke, rand(1, 9))
 	stroke.alpha = 0
-	animate(stroke, alpha = 255, easing = CIRCULAR_EASING | EASE_IN | EASE_OUT)
+	animate(stroke, alpha = 255, easing = BOUNCE_EASING | EASE_IN | EASE_OUT)
 	addtimer(CALLBACK(src, PROC_REF(clear_stroke_screen), victim, fade_out), fade_in)
 	if(!silent)
 		victim.playsound_local(victim.loc, "sound/hallucinations/lobotomy[rand(1,4)].ogg", vol = 80, vary = FALSE)
