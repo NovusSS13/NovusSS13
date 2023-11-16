@@ -303,9 +303,10 @@
 
 	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
 		adjustOxyLoss(4 * seconds_per_tick)
-		Unconscious(8 SECONDS)
-	// Tissues die without blood circulation
-	adjustBruteLoss(1 * seconds_per_tick)
+	else if(!HAS_TRAIT(src, TRAIT_TOXIMMUNE))
+		adjustToxLoss(1 * seconds_per_tick)
+	else
+		adjustBruteLoss(1 * seconds_per_tick)
 
 /// Handles stomach adjacent stuff (hunger and disgust) if we lack a stomach.
 /mob/living/carbon/human/proc/handle_stomach(seconds_per_tick, times_fired)
