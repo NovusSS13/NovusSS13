@@ -63,6 +63,7 @@ GLOBAL_LIST_INIT(heavy_pirate_gangs, init_pirate_gangs(is_heavy = TRUE))
 	built_threat_content = replacetext(built_threat_content, "%PAYOFF", payoff)
 	return new /datum/comm_message(threat_title, built_threat_content, possible_answers)
 
+/*
 ///classic FTL-esque space pirates.
 /datum/pirate_gang/rogues
 	name = "Rogues"
@@ -98,7 +99,7 @@ GLOBAL_LIST_INIT(heavy_pirate_gangs, init_pirate_gangs(is_heavy = TRUE))
 	response_received = "A most generous donation. May the claws of Tizira reach into the furthest points of the cosmos."
 	response_too_late = "I see you're trying to pay, but the hunt is already on."
 	response_not_enough = "You've sent an insulting \"donation\". The hunt is on for you."
-
+*/
 ///undead skeleton crew looking for booty
 /datum/pirate_gang/skeletons
 	name = "Skeleton Pirates"
@@ -116,6 +117,7 @@ GLOBAL_LIST_INIT(heavy_pirate_gangs, init_pirate_gangs(is_heavy = TRUE))
 	response_too_late = "Too late to beg for mercy!"
 	response_not_enough = "Trying to cheat us? You'll regret this!"
 
+/*
 ///Expirienced formed employes of Interdyne Pharmaceutics now in a path of thievery and reckoning
 /datum/pirate_gang/interdyne
 	name = "Expharmacist Unrest"
@@ -190,3 +192,4 @@ GLOBAL_LIST_INIT(heavy_pirate_gangs, init_pirate_gangs(is_heavy = TRUE))
 	response_received = "An excellent haul, the synthesis shall resume."
 	response_too_late = "You were not ready then, and now that time has passed. We can only go forward, never back."
 	response_not_enough = "You have insulted us, but there shall be no feud, only swift justice!"
+*/
