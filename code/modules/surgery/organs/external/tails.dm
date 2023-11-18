@@ -135,6 +135,7 @@
 /obj/item/organ/tail/cat
 	name = "cat tail"
 	desc = "A severed cat tail. It doesn't seem to come from an actual cat..."
+	icon_state = "tail-cat"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat
 	wag_flags = WAG_ABLE
@@ -161,6 +162,7 @@
 /obj/item/organ/tail/lizard
 	name = "lizard tail"
 	desc = "A severed lizard tail. Somewhere, no doubt, a lizard hater is very pleased with themselves."
+	icon_state = "tail-lizard"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/lizard
 	wag_flags = WAG_ABLE

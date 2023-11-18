@@ -36,6 +36,10 @@
 	examine_panel = new(src)
 	GLOB.human_list += src
 
+// humans handle this shit on species
+/mob/living/carbon/human/setup_voice_pack()
+	return
+
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
 

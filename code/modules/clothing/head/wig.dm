@@ -20,10 +20,16 @@
 	. = ..()
 	if(ishuman(user) && (slot & ITEM_SLOT_HEAD))
 		item_flags |= EXAMINE_SKIP
+	if(HAS_TRAIT(user, TRAIT_WIG_DESTROYER))
+		to_chat(user, span_warning("[src] melts under the pressure of your extreme baldness!"))
+		addtimer(CALLBACK(src, PROC_REF(baldestruction)), 2 SECONDS)
 
 /obj/item/clothing/head/wig/dropped(mob/user)
 	. = ..()
 	item_flags &= ~EXAMINE_SKIP
+
+/obj/item/clothing/head/wig/proc/baldestruction()
+	acid_melt()
 
 /obj/item/clothing/head/wig/update_icon_state()
 	var/datum/sprite_accessory/hair_style = GLOB.hairstyles_list[hairstyle]
@@ -47,7 +53,7 @@
 	. += hair_overlay
 
 	// So that the wig actually blocks emissives.
-	hair_overlay.overlays += emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, src, alpha = hair_overlay.alpha)
+	. += emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, src, alpha = hair_overlay.alpha)
 
 /obj/item/clothing/head/wig/attack_self(mob/user)
 	var/new_style = tgui_input_list(user, "Select a hairstyle", "Wig Styling", GLOB.hairstyles_list - "Bald")

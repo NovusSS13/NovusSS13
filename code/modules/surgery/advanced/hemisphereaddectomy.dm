@@ -19,7 +19,7 @@
 	if(!.)
 		return FALSE
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(!target_brain || target_brain.hemispherectomized) //hemispherectomy is a one way street
+	if(!target_brain || target_brain.megamind || target_brain.hemispherectomized) //hemispherectomy is a one way street
 		return FALSE
 	return TRUE
 
@@ -53,8 +53,7 @@
 	)
 	display_pain(target, "You feel... agonizingly smart!")
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(target_brain)
-		target_brain.hemisphereaddectomize(user, tool)
+	if(target_brain && target_brain.hemisphereaddectomize(user, tool))
 		target_brain.flash_stroke_screen(target)
 		//if there is no mind inhabiting the target, offer it to ghosts
 		//or 10% chance for a ghost to take over entirely regardless, fuck you

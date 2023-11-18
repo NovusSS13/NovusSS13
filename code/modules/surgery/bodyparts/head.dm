@@ -287,6 +287,9 @@
 /obj/item/bodypart/head/get_limb_icon(dropped)
 	. = ..()
 	. += get_hair_and_lips_icon(dropped)
+	if(HAS_TRAIT(src, TRAIT_MEGAMIND))
+		for(var/image/overlay in .)
+			overlay.transform = overlay.transform.Scale(1.1)
 	return .
 
 /obj/item/bodypart/head/talk_into(mob/holder, message, channel, spans, datum/language/language, list/message_mods)

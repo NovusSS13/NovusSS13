@@ -404,6 +404,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_GUNFLIP "gunflip"
 /// Increases chance of getting special traumas, makes them harder to cure
 #define TRAIT_SPECIAL_TRAUMA_BOOST "special_trauma_boost"
+/// You become blue and incredibly smart
+#define TRAIT_MEGAMIND "megamind"
 /// Capable of handling having a psyker brain
 #define TRAIT_BIG_SKULL "big_skull"
 #define TRAIT_SPACEWALK "spacewalk"
@@ -758,6 +760,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_EASILY_GRABBED "easily_grabbed"
 #define TRAIT_SNOB "snob"
 #define TRAIT_BALD "bald"
+#define TRAIT_WIG_DESTROYER "wig_destroyer"
 #define TRAIT_SHAVED "shaved"
 #define TRAIT_BADTOUCH "bad_touch"
 #define TRAIT_EXTROVERT "extrovert"

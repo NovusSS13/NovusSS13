@@ -62,10 +62,7 @@
 			is_husked = FALSE
 			is_invisible = FALSE
 
-	draw_color = variable_color
-	if(should_draw_greyscale) //Should the limb be colored?
-		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
-
+	update_draw_color()
 	if(!is_creating || !owner)
 		return
 
@@ -87,12 +84,25 @@
 		skin_tone = ""
 		species_color = ""
 
+	update_draw_color()
+	recolor_mutant_overlays(force = TRUE)
+	return TRUE
+
+/// Updates the bodypart's draw color
+/obj/item/bodypart/proc/update_draw_color()
 	draw_color = variable_color
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 
-	recolor_mutant_overlays(force = TRUE)
-	return TRUE
+	//awful trait checks but like i cant think of anything else
+	if(owner)
+		//chinese easter egg unlock
+		if(HAS_TRAIT(owner, TRAIT_HULK) && HAS_TRAIT(owner, TRAIT_MEGAMIND))
+			draw_color = BlendRGB(COLOR_DARK_LIME, COLOR_BRIGHT_BLUE, 0.5)
+		else if(HAS_TRAIT(owner, TRAIT_HULK))
+			draw_color = COLOR_DARK_LIME
+		else if(HAS_TRAIT(owner, TRAIT_MEGAMIND))
+			draw_color = COLOR_BRIGHT_BLUE
 
 /// Updates the bodypart's icon when not attached to a mob
 /obj/item/bodypart/proc/update_icon_dropped()
@@ -137,9 +147,11 @@
 	if(is_invisible)
 		limb.icon = icon_invisible
 		limb.icon_state = "invisible_[body_zone]"
+		icon_exists(limb.icon, limb.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 		. += limb
 		if(aux_zone) //Hand shit
 			aux = image(limb.icon, "invisible_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
+			icon_exists(aux.icon, aux.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 			. += aux
 	// Handles making bodyparts look husked
 	else if(is_husked)
@@ -167,21 +179,20 @@
 			limb.icon_state = "[effective_limb_id]_[body_zone]"
 
 		icon_exists(limb.icon, limb.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
-
+		if(draw_color)
+			limb.color = "[draw_color]"
 		. += limb
 
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "[effective_limb_id]_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
-			. += aux
-
-		draw_color = variable_color
-		if(should_draw_greyscale) //Should the limb be colored outside of a forced color?
-			draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
-
-		if(draw_color)
-			limb.color = "[draw_color]"
+			aux = image(limb.icon, -BODYPARTS_HIGH_LAYER, image_dir)
+			if(is_dimorphic) //Does this type of limb have sexual dimorphism?
+				aux.icon_state = "[effective_limb_id]_[aux_zone]_[limb_gender]"
+			else
+				aux.icon_state = "[effective_limb_id]_[aux_zone]"
+			icon_exists(aux.icon, aux.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 			if(aux_zone)
 				aux.color = "[draw_color]"
+			. += aux
 
 	//EMISSIVE CODE START
 	// For some reason this was applied as an overlay on the aux image and limb image before.

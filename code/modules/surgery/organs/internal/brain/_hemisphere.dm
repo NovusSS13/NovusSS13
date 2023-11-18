@@ -16,6 +16,8 @@
 	var/list/brain_traits
 	/// Brain traumas of the brain we were cut off from, type -> resilience
 	var/list/brain_traumas
+	/// Memories from the mind of the brain we were cut off from (these are just copies)
+	var/list/stored_memories
 
 /obj/item/hemisphere/Initialize(mapload, obj/item/organ/brain/owner_brain)
 	. = ..()
@@ -30,6 +32,12 @@
 				if(trauma.resilience > TRAUMA_RESILIENCE_LOBOTOMY)
 					continue
 				brain_traumas |= trauma.type
+		var/datum/mind/memorizer = owner_brain.owner?.mind
+		if(LAZYLEN(memorizer?.memories))
+			LAZYINITLIST(stored_memories)
+			for(var/memory_path in memorizer.memories)
+				var/datum/memory/memory = memorizer.memories[memory_path]
+				stored_memories[memory_path] = memory.quick_copy_memory(memorizer)
 
 /obj/item/hemisphere/zombie
 	icon_state = "hemisphere-greyscale"

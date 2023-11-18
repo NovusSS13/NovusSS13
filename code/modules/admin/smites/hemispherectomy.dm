@@ -15,5 +15,5 @@
 		to_chat(user, span_warning("Their brain has already been hemispherectomized."), confidential = TRUE)
 		return
 
-	brain.hemispherectomize(target)
-	brain.traumatic_hemispherectomy(target)
+	if(brain.hemispherectomize(target))
+		brain.traumatic_hemispherectomy(target)
