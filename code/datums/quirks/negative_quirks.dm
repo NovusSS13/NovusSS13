@@ -301,7 +301,7 @@
 				span_warning("[source] gets knocked out!"),
 				span_userdanger("You get knocked out!"),
 				vision_distance = COMBAT_MESSAGE_RANGE,
-		)
+			)
 		source.Unconscious(3 SECONDS)
 
 /datum/quirk/frail
