@@ -389,7 +389,7 @@
 		. += span_warning("[t_He] [t_has] been reduced to a grotesque husk.")
 	if(HAS_TRAIT(src, TRAIT_TESLIUM_AFFECTED))
 		. += span_warning(span_color("[t_He] [t_is] emitting a gentle blue glow!", COLOR_CYAN))
-	if(HAS_TRAIT(src, TRAIT_BIG_SKULL))
+	if(HAS_TRAIT(src, TRAIT_MEGAMIND))
 		. += span_warning("[t_He] [t_has] a bulging, massive head!")
 
 /**

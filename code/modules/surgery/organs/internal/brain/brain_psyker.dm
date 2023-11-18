@@ -11,7 +11,16 @@
 		/datum/action/cooldown/spell/charged/psychic_booster,
 		/datum/action/cooldown/spell/forcewall/psychic_wall,
 	)
-	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_SPECIAL_TRAUMA_BOOST, TRAIT_MEGAMIND, TRAIT_ANTIMAGIC_NO_SELFBLOCK)
+	organ_traits = list(
+		TRAIT_ADVANCEDTOOLUSER,
+		TRAIT_LITERATE,
+		TRAIT_CAN_STRIP,
+		TRAIT_SPECIAL_TRAUMA_BOOST,
+		TRAIT_MEGAMIND,
+		TRAIT_ANTIMAGIC_NO_SELFBLOCK,
+		TRAIT_BALD,
+		TRAIT_SHAVED,
+	)
 	hemispherectomy_overlay = null
 	megamind = TRUE
 
@@ -35,7 +44,7 @@
 	var/obj/item/bodypart/head = owner.get_bodypart(BODY_ZONE_HEAD)
 	if(head)
 		head_name = head.name
-	to_chat(owner, span_userdanger("Your [head_name] hurts... It can't fit your brain!"))
+	to_chat(owner, span_userdanger("Your [head_name] hurts... It can't fit your [src]!"))
 	owner.adjust_disgust_effect(5 * seconds_per_tick)
 	apply_organ_damage(5 * seconds_per_tick, 199)
 
