@@ -62,17 +62,7 @@
 			is_husked = FALSE
 			is_invisible = FALSE
 
-	draw_color = variable_color
-	if(should_draw_greyscale) //Should the limb be colored?
-		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
-
-	//awful trait checks but like i cant think of anything else
-	if(owner)
-		if(HAS_TRAIT(owner, TRAIT_HULK))
-			draw_color = "#00aa00"
-		if(HAS_TRAIT(owner, TRAIT_MEGAMIND))
-			draw_color = COLOR_BRIGHT_BLUE
-
+	update_draw_color()
 	if(!is_creating || !owner)
 		return
 
@@ -94,12 +84,22 @@
 		skin_tone = ""
 		species_color = ""
 
+	update_draw_color()
+	recolor_mutant_overlays(force = TRUE)
+	return TRUE
+
+/// Updates the bodypart's draw color
+/obj/item/bodypart/proc/update_draw_color()
 	draw_color = variable_color
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 
-	recolor_mutant_overlays(force = TRUE)
-	return TRUE
+	//awful trait checks but like i cant think of anything else
+	if(owner)
+		if(HAS_TRAIT(owner, TRAIT_HULK))
+			draw_color = "#00AA00"
+		if(HAS_TRAIT(owner, TRAIT_MEGAMIND))
+			draw_color = COLOR_BRIGHT_BLUE
 
 /// Updates the bodypart's icon when not attached to a mob
 /obj/item/bodypart/proc/update_icon_dropped()

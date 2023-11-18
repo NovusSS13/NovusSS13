@@ -12,8 +12,12 @@
 	hair_hidden = FALSE
 	facial_hair_hidden = FALSE
 	if(owner)
-		if(HAS_TRAIT(human_head_owner, TRAIT_INVISIBLE_MAN) || HAS_TRAIT(human_head_owner, TRAIT_HUSK))
+		if(HAS_TRAIT(owner, TRAIT_INVISIBLE_MAN) || HAS_TRAIT(human_head_owner, TRAIT_HUSK))
 			hair_hidden = TRUE
+			facial_hair_hidden = TRUE
+		if(HAS_TRAIT(owner, TRAIT_BALD))
+			hair_hidden = TRUE
+		if(HAS_TRAIT(owner, TRAIT_SHAVED))
 			facial_hair_hidden = TRUE
 		if(istype(human_head_owner))
 			if(human_head_owner.head)
