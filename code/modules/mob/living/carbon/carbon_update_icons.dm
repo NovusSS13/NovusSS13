@@ -577,8 +577,7 @@
 		if(husk_type)
 			. += "-[husk_type]"
 	else
-		if(should_draw_greyscale && draw_color)
-			. += "-[draw_color]"
+		. += "-[draw_color]"
 		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
 			if(!overlay.can_draw_on_bodypart(src) || !overlay.can_draw_on_body(src, owner))
 				continue

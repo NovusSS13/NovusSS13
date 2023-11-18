@@ -116,7 +116,7 @@ GLOBAL_LIST_INIT(global_all_wound_types, list(
 #define BIO_BONE (1<<0)
 /// nothing right now, maybe slimepeople in the future, can only suffer slashing, piercing, and burn wounds
 #define BIO_FLESH (1<<1)
-/// standard humanoids, can suffer all wounds, needs mangled bone and flesh to dismember. conveniently, what you get when you combine BIO_BONE and BIO_FLESH
+/// standard humanoids, can suffer all wounds, needs mangled bone and flesh to dismember.
 #define BIO_FLESH_BONE (BIO_BONE | BIO_FLESH)
 
 

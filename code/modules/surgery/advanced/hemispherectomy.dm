@@ -22,7 +22,7 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 	if(!.)
 		return FALSE
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(!target_brain || target_brain.hemispherectomized) //hemispherectomy is a one way street
+	if(!target_brain || target_brain.megamind || target_brain.hemispherectomized) //hemispherectomy is a one way street
 		return FALSE
 	return TRUE
 
@@ -63,8 +63,7 @@ GLOBAL_LIST_EMPTY(hemispherectomy_victims)
 		span_notice("[user] completes the surgery on [target]'s brain."),
 	)
 	var/obj/item/organ/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(target_brain)
-		target_brain.hemispherectomize(user)
+	if(target_brain?.hemispherectomize(user))
 		target_brain.traumatic_hemispherectomy(target, silent = TRUE)
 	display_pain(target, pick(GLOB.brain_injury_messages)) //ensuring pain message gets displayed after chat nuke
 	return ..()

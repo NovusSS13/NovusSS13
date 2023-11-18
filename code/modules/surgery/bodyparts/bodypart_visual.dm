@@ -66,6 +66,13 @@
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 
+	//awful trait checks but like i cant think of anything else
+	if(owner)
+		if(HAS_TRAIT(owner, TRAIT_HULK))
+			draw_color = "#00aa00"
+		if(HAS_TRAIT(owner, TRAIT_MEGAMIND))
+			draw_color = COLOR_BRIGHT_BLUE
+
 	if(!is_creating || !owner)
 		return
 
@@ -137,9 +144,11 @@
 	if(is_invisible)
 		limb.icon = icon_invisible
 		limb.icon_state = "invisible_[body_zone]"
+		icon_exists(limb.icon, limb.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 		. += limb
 		if(aux_zone) //Hand shit
 			aux = image(limb.icon, "invisible_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
+			icon_exists(aux.icon, aux.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 			. += aux
 	// Handles making bodyparts look husked
 	else if(is_husked)
@@ -167,21 +176,20 @@
 			limb.icon_state = "[effective_limb_id]_[body_zone]"
 
 		icon_exists(limb.icon, limb.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
-
+		if(draw_color)
+			limb.color = "[draw_color]"
 		. += limb
 
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, "[effective_limb_id]_[aux_zone]", -BODYPARTS_HIGH_LAYER, image_dir)
-			. += aux
-
-		draw_color = variable_color
-		if(should_draw_greyscale) //Should the limb be colored outside of a forced color?
-			draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
-
-		if(draw_color)
-			limb.color = "[draw_color]"
+			aux = image(limb.icon, -BODYPARTS_HIGH_LAYER, image_dir)
+			if(is_dimorphic) //Does this type of limb have sexual dimorphism?
+				aux.icon_state = "[effective_limb_id]_[aux_zone]_[limb_gender]"
+			else
+				aux.icon_state = "[effective_limb_id]_[aux_zone]"
+			icon_exists(aux.icon, aux.icon_state, scream = TRUE) //Prints a stack trace on the first failure of a given iconstate.
 			if(aux_zone)
 				aux.color = "[draw_color]"
+			. += aux
 
 	//EMISSIVE CODE START
 	// For some reason this was applied as an overlay on the aux image and limb image before.

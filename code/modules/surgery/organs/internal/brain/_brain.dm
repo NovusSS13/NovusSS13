@@ -10,7 +10,7 @@
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_BRAIN
 	organ_flags = ORGAN_ORGANIC | ORGAN_VITAL
-	visual = TRUE
+	visual = TRUE //debrain overlay, basically
 	attack_verb_continuous = list("attacks", "slaps", "whacks")
 	attack_verb_simple = list("attack", "slap", "whack")
 
@@ -18,8 +18,8 @@
 	decay_factor = STANDARD_ORGAN_DECAY * 0.5 //30 minutes of decaying to result in a fully damaged brain, since a fast decay rate would be unfun gameplay-wise
 
 	maxHealth = BRAIN_DAMAGE_DEATH
-	low_threshold = 45
-	high_threshold = 120
+	low_threshold = BRAIN_DAMAGE_DEATH * 0.225
+	high_threshold = BRAIN_DAMAGE_DEATH * 0.6
 
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
 
@@ -51,6 +51,9 @@
 	var/list/obj/item/hemisphere/extra_hemispheres
 	/// Hemisphereaddectomies are shartcode, so we need to keep track of the organ traits before we got another fucking hemisphere
 	var/list/old_organ_traits
+
+	/// Megamind brains are at their peak potential, you can't add more hemispheres to them
+	var/megamind = FALSE
 
 /obj/item/organ/brain/update_overlays()
 	. = ..()
@@ -632,12 +635,13 @@
 	old_organ_traits = null
 	hemispherectomized = TRUE
 	update_appearance()
+	return TRUE
 
 /// Proc used to merge a hemisphere into the brain, opposite of hemispherectomize basically
 /obj/item/organ/brain/proc/hemisphereaddectomize(mob/living/user, obj/item/hemisphere/hemisphere, harmful = TRUE)
 	// hemispherectomizing is a one way street, you can't go back!
 	if(hemispherectomized)
-		return
+		return FALSE
 	if(!LAZYLEN(extra_hemispheres))
 		old_organ_traits = LAZYCOPY(organ_traits)
 	if(harmful)
@@ -653,13 +657,19 @@
 		gain_trauma(trauma_type, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 	hemisphere.forceMove(src)
 	LAZYADD(extra_hemispheres, hemisphere)
+	if(LAZYLEN(extra_hemispheres) > 3)
+		if(owner)
+			var/obj/item/organ/brain/megamind/megamind = new()
+			megamind.replace_into(owner)
+		return FALSE
 	update_appearance()
+	return TRUE
 
 /// Proc shared between the hemispherectomy smite and surgery
 /obj/item/organ/brain/proc/traumatic_hemispherectomy(mob/living/carbon/victim, silent = FALSE)
 	victim ||= owner
 	if(!owner)
-		return
+		return FALSE
 	if(victim.mind)
 		var/list/antagonist_names = list()
 		for(var/datum/antagonist/antagonist as anything in victim.mind.antag_datums)
@@ -673,12 +683,13 @@
 	if(!silent)
 		to_chat(victim, span_userdanger(pick(GLOB.brain_injury_messages)))
 	// Half of your brain is gone, let's see what kind of crippling brain damage you got as a gift!
-	var/traumatic_events = pick(6;1, 3;2, 1;0)
+	var/traumatic_events = pick(5;1, 4;2, 1;0)
 	for(var/i in 1 to traumatic_events)
 		if(HAS_MIND_TRAIT(victim, TRAIT_SPECIAL_TRAUMA_BOOST) && prob(50))
 			victim.gain_trauma_type(BRAIN_TRAUMA_SPECIAL, TRAUMA_RESILIENCE_MAGIC)
 		else
 			victim.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_MAGIC)
+	return TRUE
 
 /// This proc is used to jumpscare the victim with stroke images in certain scenarios
 /obj/item/organ/brain/proc/flash_stroke_screen(mob/living/victim, fade_in = 1 SECONDS, fade_out = 1 SECONDS, silent = FALSE)

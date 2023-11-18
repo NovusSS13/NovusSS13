@@ -4,6 +4,7 @@
 	desc = "Someone was a little too horny."
 	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "horns"
+	gender = PLURAL
 
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HORNS

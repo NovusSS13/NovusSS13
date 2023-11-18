@@ -25,8 +25,6 @@
 	if(..())
 		return
 	owner.add_traits(mutation_traits, GENETIC_MUTATION)
-	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
-		part.variable_color = "#00aa00"
 	owner.update_body_parts()
 	owner.add_mood_event("hulk", /datum/mood_event/hulk)
 	RegisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
@@ -80,8 +78,6 @@
 	if(..())
 		return
 	owner.remove_traits(mutation_traits, GENETIC_MUTATION)
-	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
-		part.variable_color = null
 	owner.update_body_parts()
 	owner.clear_mood_event("hulk")
 	UnregisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK)

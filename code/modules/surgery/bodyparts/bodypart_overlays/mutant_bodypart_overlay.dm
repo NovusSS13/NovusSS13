@@ -181,6 +181,10 @@
 		if(ORGAN_COLOR_DNA)
 			if(!ishuman(ownerlimb.owner))
 				return FALSE
+			//In some cases we just straight take the limb color
+			if(HAS_TRAIT(ownerlimb.owner, TRAIT_HULK) || HAS_TRAIT(ownerlimb.owner, TRAIT_MEGAMIND))
+				draw_color = ownerlimb.draw_color
+				return
 			var/dna_color = LAZYACCESS(ownerlimb.owner.dna.features, feature_color_key)
 			//DNA didn't really give us an answer? Try the DNA's mcolor!
 			if(!dna_color)
