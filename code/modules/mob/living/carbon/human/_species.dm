@@ -965,7 +965,7 @@
 			target.visible_message(span_danger("[user]'s [atk_verb] misses [target]!"), \
 							span_danger("You avoid [user]'s [atk_verb]!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
 			to_chat(user, span_warning("Your [atk_verb] misses [target]!"))
-			log_combat(user, target, "attempted to punch")
+			log_combat(user, target, "attempted to [atk_verb]")
 			return FALSE
 
 		var/armor_block = target.run_armor_check(affecting, MELEE)
@@ -986,10 +986,11 @@
 		var/attack_direction = get_dir(user, target)
 		var/attack_type = attacking_bodypart.attack_type
 		if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
+			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+			target.apply_damage(damage, STAMINA, affecting, armor_block)
 			if(damage >= 9)
 				target.force_say()
 			log_combat(user, target, "kicked")
-			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
 		else//other attacks deal full raw damage + 1.5x in stamina damage
 			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
 			target.apply_damage(damage*1.5, STAMINA, affecting, armor_block)
