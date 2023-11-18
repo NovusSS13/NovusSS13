@@ -1,0 +1,4 @@
+author: "MonstieHuntie"
+delete-after: True
+changes:
+  - bugfix: "Employees can no longer hold hands or come to friendly agreements with crewmembers without arms."
