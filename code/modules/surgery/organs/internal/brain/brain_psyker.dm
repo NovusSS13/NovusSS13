@@ -2,10 +2,10 @@
 	name = "psyker brain"
 	desc = "This brain is blue and has immense psychic powers. What kind of monstrosity would use that?"
 	icon_state = "brain-psyker"
+	w_class = WEIGHT_CLASS_NORMAL
 	maxHealth = BRAIN_DAMAGE_DEATH * 1.5
 	low_threshold = BRAIN_DAMAGE_DEATH * 1.5 * 0.225
 	high_threshold = BRAIN_DAMAGE_DEATH * 1.5 * 0.6
-	w_class = WEIGHT_CLASS_NORMAL
 	actions_types = list(
 		/datum/action/cooldown/spell/pointed/psychic_projection,
 		/datum/action/cooldown/spell/charged/psychic_booster,
