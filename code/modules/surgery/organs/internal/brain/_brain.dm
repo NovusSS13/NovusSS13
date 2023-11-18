@@ -593,7 +593,7 @@
 	if(old_brain)
 		old_brain.Remove(new_owner, special = TRUE, no_id_transfer = TRUE)
 		if(drop_if_replaced)
-			old_brain.forceMove(new_owner.loc)
+			old_brain.forceMove(new_owner.drop_location())
 		else
 			qdel(old_brain)
 	return Insert(new_owner, special = TRUE, drop_if_replaced = drop_if_replaced, no_id_transfer = TRUE)

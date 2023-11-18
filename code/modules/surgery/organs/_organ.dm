@@ -120,7 +120,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(replaced)
 		replaced.Remove(receiver, special = TRUE)
 		if(drop_if_replaced)
-			replaced.forceMove(get_turf(receiver))
+			replaced.forceMove(receiver.drop_location())
 		else
 			qdel(replaced)
 
