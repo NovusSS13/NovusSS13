@@ -11,6 +11,16 @@
 	user_message = span_love("You hold %TARGET's hand.")
 	target_message = span_love("%USER hold%USER_S your hand.")
 
+/datum/interaction/romance/handholding/evaluate_target(datum/component/interactable/user, datum/component/interactable/target, silent)
+	. = ..()
+	if(!.)
+		return
+	var/mob/living/carbon/human/human_target = target.parent
+	if(istype(human_target) && !human_target.get_bodypart(BODY_ZONE_L_ARM) && !human_target.get_bodypart(BODY_ZONE_R_ARM))
+		if(!silent)
+			to_chat(user, span_warning("[human_target.p_they(TRUE)] have no hands!"))
+		return FALSE
+
 /datum/interaction/romance/kisscheeks
 	name = "Kiss Cheeks"
 	desc = "Kiss them. On the cheek."
