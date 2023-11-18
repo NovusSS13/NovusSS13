@@ -2,6 +2,7 @@
 	name = "megabrain"
 	desc = "Oh you're a villain alright, just not a <b>super</b> one!"
 	icon_state = "brain-psyker"
+	w_class = WEIGHT_CLASS_NORMAL
 	maxHealth = BRAIN_DAMAGE_DEATH * 1.5
 	low_threshold = BRAIN_DAMAGE_DEATH * 1.5 * 0.225
 	high_threshold = BRAIN_DAMAGE_DEATH * 1.5 * 0.6
