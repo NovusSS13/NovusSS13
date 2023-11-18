@@ -41,6 +41,7 @@
 		return
 	pixel_x = -px_x
 	pixel_y = -px_y
+	forceMove(owner_location)
 	return AddComponent(/datum/component/movable_physics, \
 		physics_flags = MPHYSICS_QDEL_WHEN_NO_MOVEMENT, \
 		angle = fly_angle, \
@@ -110,7 +111,6 @@
 	update_icon_dropped()
 	phantom_owner.update_health_hud() //update the healthdoll
 	phantom_owner.update_body()
-	phantom_owner.update_body_parts()
 
 	SEND_SIGNAL(phantom_owner, COMSIG_CARBON_POST_REMOVE_LIMB, src, special, dismembered)
 	// drop_loc = null happens when a "dummy human" used for rendering icons on prefs screen gets its limbs replaced.
@@ -150,7 +150,7 @@
 			item_in_bodypart.transfer_mob_blood_dna(owner)
 
 	if(owner)
-		owner.update_body_parts()
+		owner.update_body()
 	else
 		update_icon_dropped()
 
@@ -360,6 +360,6 @@
 			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
 			new_organ.Insert(src, special = TRUE)
 
-		update_body_parts()
+		update_body()
 		return TRUE
 	return FALSE

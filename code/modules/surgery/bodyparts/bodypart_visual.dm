@@ -96,9 +96,12 @@
 
 	//awful trait checks but like i cant think of anything else
 	if(owner)
-		if(HAS_TRAIT(owner, TRAIT_HULK))
-			draw_color = "#00AA00"
-		if(HAS_TRAIT(owner, TRAIT_MEGAMIND))
+		//chinese easter egg unlock
+		if(HAS_TRAIT(owner, TRAIT_HULK) && HAS_TRAIT(owner, TRAIT_MEGAMIND))
+			draw_color = BlendRGB(COLOR_DARK_LIME, COLOR_BRIGHT_BLUE, 0.5)
+		else if(HAS_TRAIT(owner, TRAIT_HULK))
+			draw_color = COLOR_DARK_LIME
+		else if(HAS_TRAIT(owner, TRAIT_MEGAMIND))
 			draw_color = COLOR_BRIGHT_BLUE
 
 /// Updates the bodypart's icon when not attached to a mob

@@ -6,6 +6,7 @@
 	maxHealth = BRAIN_DAMAGE_DEATH * 1.5
 	low_threshold = BRAIN_DAMAGE_DEATH * 1.5 * 0.225
 	high_threshold = BRAIN_DAMAGE_DEATH * 1.5 * 0.6
+	healing_factor = STANDARD_ORGAN_HEALING //megamind brains heal on their own, they are just that good
 	organ_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_LITERATE,
