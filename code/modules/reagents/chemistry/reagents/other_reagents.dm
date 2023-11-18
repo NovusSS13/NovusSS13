@@ -1163,7 +1163,6 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/alcohol = 4)
 
-	liquid_fire_needs_oxygen
 	liquid_evaporation_rate = 20 //gasoline evaporates a lot
 	liquid_fire_power = 10
 	liquid_fire_burn_rate = 0.1
