@@ -1,5 +1,5 @@
 /obj/item/organ/brain/megamind
-	name = "megamind"
+	name = "megabrain"
 	desc = "Oh you're a villain alright, just not a <b>super</b> one!"
 	icon_state = "brain-psyker"
 	maxHealth = BRAIN_DAMAGE_DEATH * 1.5
