@@ -13,6 +13,7 @@
 		TRAIT_MEGAMIND,
 		TRAIT_ANTIMAGIC_NO_SELFBLOCK,
 		TRAIT_BALD,
+		TRAIT_WIG_DESTROYER.
 		TRAIT_SHAVED,
 	)
 	hemispherectomy_overlay = null
