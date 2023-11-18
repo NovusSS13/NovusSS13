@@ -655,13 +655,20 @@
 		if(!can_gain_trauma(trauma_type, TRAUMA_RESILIENCE_HEMISPHERECTOMY))
 			continue
 		gain_trauma(trauma_type, TRAUMA_RESILIENCE_HEMISPHERECTOMY)
+	if(owner?.mind)
+		for(var/memory_path in hemisphere.stored_memories)
+			var/datum/memory/memory = hemisphere.stored_memories[memory_path]
+			owner.mind.memories[memory_path] = memory.quick_copy_memory(owner.mind)
 	hemisphere.forceMove(src)
 	LAZYADD(extra_hemispheres, hemisphere)
-	if(LAZYLEN(extra_hemispheres) > 3)
+	if(LAZYLEN(extra_hemispheres) >= 4)
 		if(owner)
-			var/obj/item/organ/brain/megamind/megamind = new()
+			var/obj/item/organ/brain/megamind/megamind = new(loc)
 			megamind.replace_into(owner)
-		return FALSE
+		else
+			new /obj/item/organ/brain/megamind(loc)
+			qdel(src)
+		return TRUE
 	update_appearance()
 	return TRUE
 

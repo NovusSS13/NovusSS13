@@ -504,7 +504,7 @@
 		C.add_blocked_language(language, LANGUAGE_SPECIES)
 
 	// Change the voice pack of the human if it's not valid
-	if(!(C.voice_pack?.name in get_voice_packs()))
+	if(!old_species.properly_gained || (istype(C.voice_pack) && !(C.voice_pack.name in get_voice_packs())))
 		C.set_voice_pack(initial(voice_pack.name))
 	C.death_sound = death_sound
 
