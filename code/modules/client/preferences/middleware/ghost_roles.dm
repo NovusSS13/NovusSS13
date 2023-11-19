@@ -1,4 +1,5 @@
 /datum/preference_middleware/ghost_role_customization
+	priority = MIDDLEWARE_PRIORITY_BEFORE
 	key = "ghost_role_data"
 
 /datum/preference_middleware/ghost_role_customization/get_constant_data()

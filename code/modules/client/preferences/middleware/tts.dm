@@ -1,12 +1,12 @@
 /// Middleware to handle TTS
 /datum/preference_middleware/tts
-	/// Cooldown on requesting a TTS preview.
-	COOLDOWN_DECLARE(tts_test_cooldown)
-
+	priority = MIDDLEWARE_PRIORITY_BEFORE
 	action_delegations = list(
 		"play_voice" = PROC_REF(play_voice),
 		"play_voice_robot" = PROC_REF(play_voice_robot),
 	)
+	/// Cooldown on requesting a TTS preview.
+	COOLDOWN_DECLARE(tts_test_cooldown)
 
 /datum/preference_middleware/tts/proc/play_voice(list/params, mob/user)
 	if(!COOLDOWN_FINISHED(src, tts_test_cooldown))

@@ -1,6 +1,7 @@
 /// Middleware that handles telling the UI which name to show, and waht names
 /// they have.
 /datum/preference_middleware/names
+	priority = MIDDLEWARE_PRIORITY_BEFORE
 	action_delegations = list(
 		"randomize_name" = PROC_REF(randomize_name),
 	)

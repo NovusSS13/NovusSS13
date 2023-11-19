@@ -1,11 +1,11 @@
 /// Middleware to handle quirks
 /datum/preference_middleware/quirks
-	var/tainted = FALSE
-
+	priority = MIDDLEWARE_PRIORITY_AFTER
 	action_delegations = list(
 		"give_quirk" = PROC_REF(give_quirk),
 		"remove_quirk" = PROC_REF(remove_quirk),
 	)
+	var/tainted = FALSE
 
 /datum/preference_middleware/quirks/get_ui_static_data(mob/user)
 	if (preferences.current_window != PREFERENCE_TAB_CHARACTER_PREFERENCES)

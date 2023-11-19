@@ -135,10 +135,10 @@
 	cached_transform = null
 
 /datum/component/movable_physics/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_MOVABLE_NEWTONIAN_MOVE, .proc/on_newtonian_move)
-	RegisterSignal(parent, COMSIG_MOVABLE_BUMP, .proc/on_bump)
+	RegisterSignal(parent, COMSIG_MOVABLE_NEWTONIAN_MOVE, PROC_REF(on_newtonian_move))
+	RegisterSignal(parent, COMSIG_MOVABLE_BUMP, PROC_REF(on_bump))
 	if(isitem(parent))
-		RegisterSignal(parent, COMSIG_ITEM_PICKUP, .proc/on_item_pickup)
+		RegisterSignal(parent, COMSIG_ITEM_PICKUP, PROC_REF(on_item_pickup))
 	if(has_movement())
 		start_movement()
 	else if(physics_flags & MPHYSICS_QDEL_WHEN_NO_MOVEMENT)

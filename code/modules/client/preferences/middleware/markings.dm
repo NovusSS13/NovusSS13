@@ -1,6 +1,6 @@
 /// Middleware to handle markings
 /datum/preference_middleware/markings
-	priority = MIDDLEWARE_PRIORITY_BEFORE //modifying dna features, therefore we go before for the sake of safety
+	priority = MIDDLEWARE_PRIORITY_AFTER
 	action_delegations = list(
 		"add_marking" = .proc/add_marking,
 		"change_marking" = .proc/change_marking,
@@ -23,7 +23,7 @@
 		var/datum/body_marking_set/body_marking_set = GLOB.body_marking_sets[set_name]
 		if(!body_marking_set)
 			continue
-		else if(body_marking_set.compatible_species && !is_path_in_list(species_type, body_marking_set.compatible_species))
+		else if(body_marking_set.compatible_species && !is_type_in_typecache(species_type, body_marking_set.compatible_species))
 			continue
 		var/list/this_set = list()
 
@@ -43,7 +43,7 @@
 		var/list/this_zone_marking_choices = list()
 		for(var/marking_name in GLOB.body_markings_by_zone[zone])
 			var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
-			if(body_markings.compatible_species && !is_path_in_list(species_type, body_markings.compatible_species))
+			if(body_markings.compatible_species && !is_type_in_typecache(species_type, body_markings.compatible_species))
 				continue
 			var/list/this_marking_choice = list()
 
@@ -76,6 +76,7 @@
 
 /datum/preference_middleware/markings/apply_to_human(mob/living/carbon/human/target, datum/preferences/preferences)
 	target.clear_markings(update = FALSE)
+
 	for(var/marking_zone in preferences.body_markings)
 		for(var/marking_index in 1 to LAZYLEN(preferences.body_markings[marking_zone]))
 			var/marking_name = preferences.body_markings[marking_zone][marking_index]
@@ -89,6 +90,7 @@
 			var/marking_color_key = marking_key + "_color"
 			target.dna.features[marking_key] = marking_name
 			target.dna.features[marking_color_key] = marking_color
+
 	target.regenerate_markings(update = TRUE)
 
 /datum/preference_middleware/markings/proc/add_marking(list/params, mob/user)
@@ -101,7 +103,7 @@
 		if(marking_name == SPRITE_ACCESSORY_NONE)
 			continue
 		var/datum/sprite_accessory/body_markings/body_markings = GLOB.body_markings[marking_name]
-		if(body_markings.compatible_species && !is_path_in_list(species_type, body_markings.compatible_species))
+		if(body_markings.compatible_species && !is_type_in_typecache(species_type, body_markings.compatible_species))
 			continue
 		available_markings += marking_name
 	available_markings -= SPRITE_ACCESSORY_NONE
@@ -196,7 +198,7 @@
 		for(var/zone in assembled_markings)
 			for(var/marking_name in assembled_markings[zone])
 				var/datum/sprite_accessory/body_markings/body_marking = GLOB.body_markings[marking_name]
-				if(body_marking.compatible_species && !is_path_in_list(species_type, body_marking.compatible_species))
+				if(body_marking.compatible_species && !is_type_in_typecache(species_type, body_marking.compatible_species))
 					continue
 				LAZYADDASSOC(preferences.body_markings[zone], marking_name, assembled_markings[zone][marking_name])
 		preferences.character_preview_view.update_body()

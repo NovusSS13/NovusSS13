@@ -23,7 +23,7 @@
 		/obj/item/organ/genital/anus = SPRITE_ACCESSORY_NONE,
 	)
 	mutanttongue = /obj/item/organ/tongue/jelly
-	mutantlungs = /obj/item/organ/lungs/slime
+	mutantlungs = /obj/item/organ/lungs/jelly
 	mutanteyes = /obj/item/organ/eyes/jelly
 	mutantheart = null
 	meat = /obj/item/food/meat/slab/human/mutant/slime

@@ -5,6 +5,7 @@
 /// In the future, the existing toggles data should just be migrated to
 /// individual `/datum/preference/toggle`s.
 /datum/preference_middleware/legacy_toggles
+	priority = MIDDLEWARE_PRIORITY_BEFORE
 	// DO NOT ADD ANY NEW TOGGLES HERE!
 	// Use `/datum/preference/toggle` instead.
 	var/static/list/legacy_toggles = list(

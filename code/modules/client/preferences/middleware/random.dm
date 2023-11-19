@@ -1,5 +1,6 @@
 /// Middleware for handling randomization preferences
 /datum/preference_middleware/random
+	priority = MIDDLEWARE_PRIORITY_AFTER
 	action_delegations = list(
 		"randomize_character" = PROC_REF(randomize_character),
 		"set_random_preference" = PROC_REF(set_random_preference),

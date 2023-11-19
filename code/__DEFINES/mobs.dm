@@ -730,6 +730,7 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 GLOBAL_LIST_INIT(external_layer_bitflags, list(
 	EXTERNAL_BEHIND,
 	EXTERNAL_ADJACENT,
+	EXTERNAL_HIGH,
 	EXTERNAL_FRONT,
 ))
 

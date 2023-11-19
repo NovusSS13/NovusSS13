@@ -2239,7 +2239,7 @@
 					var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][target.dna.features[marking_key]]
 					if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
 						continue
-					else if(markings.compatible_species && !is_path_in_list(new_species.type, markings.compatible_species))
+					else if(markings.compatible_species && !is_type_in_typecache(new_species.type, markings.compatible_species))
 						continue
 					var/marking_color_key = marking_key + "_color"
 					var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)

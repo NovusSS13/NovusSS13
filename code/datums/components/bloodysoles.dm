@@ -101,12 +101,8 @@
 	if(HAS_TRAIT(parent_atom, TRAIT_LIGHT_STEP)) //the character is agile enough to don't mess their clothing and hands just from one blood splatter at floor
 		return TRUE
 
-	parent_atom.add_blood_DNA(GET_ATOM_BLOOD_DNA(pool))
-	switch(pool.blood_state)
-		if(BLOOD_STATE_CUM)
-			parent_atom.AddElement(/datum/element/decal/cum)
-		if(BLOOD_STATE_FEMCUM)
-			parent_atom.AddElement(/datum/element/decal/femcum)
+	if(pool.blood_state in GLOB.bloody_blood_states)
+		parent_atom.add_blood_DNA(GET_ATOM_BLOOD_DNA(pool))
 	update_icon()
 
 /**

@@ -553,8 +553,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[zone][marking_name]
 			if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
 				continue
-			if(!markings.compatible_species || is_path_in_list(species_type, markings.compatible_species))
-				LAZYADDASSOC(final_markings[zone], marking_name, sanitize_hexcolor(body_markings[zone][marking_name], DEFAULT_HEX_COLOR_LEN, TRUE))
+			if(markings.compatible_species && !is_type_in_typecache(species_type, markings.compatible_species))
+				continue
+			LAZYADDASSOC(final_markings[zone], marking_name, sanitize_hexcolor(body_markings[zone][marking_name], DEFAULT_HEX_COLOR_LEN, TRUE))
 	body_markings = final_markings
 	return final_markings
 

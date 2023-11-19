@@ -461,18 +461,3 @@
 	name = "Xeno Head"
 	icon_state = "xeno"
 	allowed_bodyparts = HEAD
-
-/datum/sprite_accessory/body_markings/mutant/tertiary/dtiger
-	name = "Dark Tiger Body"
-	icon_state = "dtiger"
-	allowed_bodyparts = CHEST
-
-/datum/sprite_accessory/body_markings/mutant/tertiary/ltiger
-	name = "Light Tiger Body"
-	icon_state = "ltiger"
-	allowed_bodyparts = CHEST
-
-/datum/sprite_accessory/body_markings/mutant/tertiary/lbelly
-	name = "Light Belly"
-	icon_state = "lbelly"
-	allowed_bodyparts = CHEST

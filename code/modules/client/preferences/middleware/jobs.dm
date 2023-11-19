@@ -1,4 +1,5 @@
 /datum/preference_middleware/jobs
+	priority = MIDDLEWARE_PRIORITY_BEFORE
 	action_delegations = list(
 		"set_job_preference" = PROC_REF(set_job_preference),
 	)

@@ -1,4 +1,5 @@
 /datum/preference_middleware/antags
+	priority = MIDDLEWARE_PRIORITY_BEFORE
 	action_delegations = list(
 		"set_antags" = PROC_REF(set_antags),
 	)

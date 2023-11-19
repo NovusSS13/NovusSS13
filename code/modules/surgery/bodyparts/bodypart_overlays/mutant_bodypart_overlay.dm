@@ -17,7 +17,7 @@
 
 ///Can't draw shit without a sprite accessory
 /datum/bodypart_overlay/mutant/can_draw_on_bodypart(obj/item/bodypart/ownerlimb)
-	return ..() && sprite_datum
+	return sprite_datum && ..()
 
 ///Completely random image and color generation (obeys what a player can choose from)
 /datum/bodypart_overlay/mutant/proc/randomize_appearance()
@@ -52,7 +52,7 @@
 	RETURN_TYPE(/list)
 	var/list/icon_state_builder = list()
 	var/gender = limb?.limb_gender || "m"
-	icon_state_builder += sprite_datum.gender_specific ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
+	icon_state_builder += (sprite_datum.gender_specific && limb.is_dimorphic) ? gender : "m" //Male is default because sprite accessories are so ancient they predate the concept of not hardcoding gender
 	var/actual_feature_key = get_icon_feature_key()
 	if(actual_feature_key)
 		icon_state_builder += actual_feature_key

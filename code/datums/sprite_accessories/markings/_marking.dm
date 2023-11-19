@@ -7,6 +7,11 @@
 	/// Species this set is compatible with - Set to null for no species restrictions
 	var/compatible_species = null
 
+/datum/sprite_accessory/body_markings/New()
+	. = ..()
+	if(compatible_species)
+		compatible_species = typecacheof(compatible_species)
+
 /// Prepares a dummy for preview in the character setup
 /datum/sprite_accessory/body_markings/proc/prepare_dummy(mob/living/carbon/human/dummy)
 	// set species for species specific markings
