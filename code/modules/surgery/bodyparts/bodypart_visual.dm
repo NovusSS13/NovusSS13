@@ -184,7 +184,7 @@
 		. += limb
 
 		if(aux_zone) //Hand shit
-			aux = image(limb.icon, -BODYPARTS_HIGH_LAYER, image_dir)
+			aux = image(icon = limb.icon, layer = -BODYPARTS_HIGH_LAYER, dir = image_dir)
 			if(is_dimorphic) //Does this type of limb have sexual dimorphism?
 				aux.icon_state = "[effective_limb_id]_[aux_zone]_[limb_gender]"
 			else
@@ -194,20 +194,19 @@
 				aux.color = "[draw_color]"
 			. += aux
 
-	//EMISSIVE CODE START
-	// For some reason this was applied as an overlay on the aux image and limb image before.
-	// I am very sure that this is unnecessary, and i need to treat it as part of the return list
-	// to be able to mask it proper in case this limb is a leg.
-	if(blocks_emissive)
-		var/atom/location = loc || owner || src
-		var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, location, layer = limb.layer, alpha = limb.alpha)
-		limb_em_block.dir = image_dir
-		. += limb_em_block
-		if(aux_zone)
-			var/mutable_appearance/aux_em_block = emissive_blocker(aux.icon, aux.icon_state, location, layer = aux.layer, alpha = aux.alpha)
-			aux_em_block.dir = image_dir
-			. += aux_em_block
-	//EMISSIVE CODE END
+	// Put bodypart_overlays on if not husked nor invisible
+	if(!is_husked && !is_invisible)
+		//Draw external organs like horns and frills
+		for(var/datum/bodypart_overlay/bodypart_overlay as anything in bodypart_overlays)
+			if(!bodypart_overlay.can_draw_on_bodypart(src) || (!dropped && !bodypart_overlay.can_draw_on_body(src, owner)))
+				continue
+			//Some externals have multiple layers for background, foreground and between
+			for(var/external_layer in GLOB.external_layer_bitflags)
+				if(!(bodypart_overlay.layers & external_layer))
+					continue
+				for(var/image/overlay in bodypart_overlay.get_overlays(external_layer, src))
+					overlay.dir = image_dir
+					. += overlay
 
 	//No need to handle leg layering if dropped, we only face south anyways
 	if(!dropped && ((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG)))
@@ -219,20 +218,16 @@
 			//add two masked images based on the old one
 			. += leg_source.generate_masked_leg(limb_image, image_dir)
 
-	// And finally put bodypart_overlays on if not husked nor invisible
-	if(!is_husked && !is_invisible)
-		//Draw external organs like horns and frills
-		for(var/datum/bodypart_overlay/bodypart_overlay as anything in bodypart_overlays)
-			if(!bodypart_overlay.can_draw_on_bodypart(src) || (!dropped && !bodypart_overlay.can_draw_on_body(src, owner)))
-				continue
-			//Some externals have multiple layers for background, foreground and between
-			for(var/external_layer in GLOB.external_layer_bitflags)
-				if(!(bodypart_overlay.layers & external_layer))
-					continue
-				for(var/image/overlay in bodypart_overlay.get_overlays(external_layer, src))
-					if(dropped)
-						overlay.dir = SOUTH
-					. += overlay
+	// Deal with emissives after all of that crap
+	if(blocks_emissive != EMISSIVE_BLOCK_NONE)
+		var/atom/location = loc || owner || src
+		var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, location, alpha = limb.alpha)
+		limb_em_block.dir = image_dir
+		. += limb_em_block
+		if(aux_zone)
+			var/mutable_appearance/aux_em_block = emissive_blocker(aux.icon, aux.icon_state, location, alpha = aux.alpha)
+			aux_em_block.dir = image_dir
+			. += aux_em_block
 
 	return .
 

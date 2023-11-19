@@ -83,7 +83,7 @@
 	var/list/appearances = list()
 	///here comes some truly bullshit coloring code
 	if(sprite_datum.color_amount <= 1)
-		var/mutable_appearance/final_appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = layer)
+		var/mutable_appearance/final_appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer)
 		if(sprite_datum.center)
 			center_image(final_appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
 		appearances += final_appearance
@@ -93,7 +93,7 @@
 			if(!suffix)
 				stack_trace("[sprite_datum.type] had a color amount bigger than GLOB.external_color_suffixes! ([sprite_datum.color_amount])]")
 				break
-			var/mutable_appearance/overlay = mutable_appearance(sprite_datum.icon, "[finished_icon_state]_[suffix]", layer = layer)
+			var/mutable_appearance/overlay = mutable_appearance(sprite_datum.icon, "[finished_icon_state]_[suffix]", layer)
 			if(sprite_datum.center)
 				center_image(overlay, sprite_datum.dimension_x, sprite_datum.dimension_y)
 			appearances += overlay
@@ -147,10 +147,10 @@
 	if(feature_key)
 		. += "[feature_key]"
 		if(sprite_datum.feature_suffix)
-			. += sprite_datum.feature_suffix
+			. += "[sprite_datum.feature_suffix]"
 	var/base_icon_state = get_base_icon_state()
 	if(base_icon_state)
-		. += "[get_base_icon_state()]"
+		. += "[base_icon_state]"
 	if(sprite_datum.color_amount > 0)
 		if(islist(draw_color))
 			for(var/subcolor in draw_color)

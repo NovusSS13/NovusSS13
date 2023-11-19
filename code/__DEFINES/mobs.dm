@@ -604,7 +604,7 @@ GLOBAL_LIST_INIT(human_heights_to_offsets, list(
 #define BODYPARTS_LAYER 32
 /// Mutantrace features (snout, body markings) that must appear above the body parts, but below underwear
 #define BODY_ADJ_LAYER 31
-/// Underwear, undershirts, socks, eyes, lips(makeup)
+/// Underwear, undershirts, socks, eyes, lips (makeup)
 #define BODY_LAYER 30
 /// Mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)
 #define FRONT_MUTATIONS_LAYER 29
