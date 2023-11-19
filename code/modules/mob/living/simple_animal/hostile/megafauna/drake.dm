@@ -56,8 +56,6 @@
 	speed = 5
 	move_to_delay = 5
 	ranged = TRUE
-	pixel_x = -32
-	base_pixel_x = -32
 	maptext_height = 64
 	maptext_width = 64
 	crusher_loot = list(/obj/structure/closet/crate/necropolis/dragon/crusher)
