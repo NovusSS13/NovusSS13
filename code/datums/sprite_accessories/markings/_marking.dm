@@ -18,7 +18,7 @@
 	if(compatible_species)
 		dummy.set_species(compatible_species[1])
 	else
-		dummy.set_species(/datum/species/mutant)
+		dummy.set_species(/datum/species/human)
 
 /datum/sprite_accessory/body_markings/none
 	name = SPRITE_ACCESSORY_NONE

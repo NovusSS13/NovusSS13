@@ -19,7 +19,7 @@
 	if(compatible_species)
 		dummy.set_species(compatible_species[1])
 	else
-		dummy.set_species(/datum/species/mutant)
+		dummy.set_species(/datum/species/human)
 
 /datum/body_marking_set/proc/assemble_body_markings_list(list/mutant_colors = default_colors, override_color)
 	RETURN_TYPE(/list)
