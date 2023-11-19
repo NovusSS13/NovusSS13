@@ -23,7 +23,7 @@
 		to_chat(user, span_warning("You can't scoop up anything while it's on fire!"))
 		return TRUE
 
-	if(liquids.height == 1)
+	if(liquids.liquid_state == LIQUID_STATE_PUDDLE)
 		to_chat(user, span_warning("The puddle is too shallow to scoop anything up!"))
 		return TRUE
 
