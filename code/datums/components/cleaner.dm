@@ -67,7 +67,7 @@
  */
 /datum/component/cleaner/proc/on_afterattack(datum/source, atom/target, mob/user, proximity_flag, click_parameters)
 	SIGNAL_HANDLER
-	if(!proximity_flag)
+	if(!proximity_flag || params2list(click_parameters)[RIGHT_CLICK])
 		return
 
 	var/clean_target

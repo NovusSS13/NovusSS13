@@ -62,7 +62,7 @@
 
 /obj/item/mop/proc/mop_liquids(turf/target, mob/user, proximity_flag, click_parameters)
 	. = NONE
-	if(proximity_flag)
+	if(!proximity_flag)
 		return
 
 	if(!istype(target) || !target.liquids)
@@ -70,7 +70,7 @@
 
 	. = COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN
 
-	var/free_space = reagents.maximum_volume - reagents.total_volume
+	var/free_space = round(reagents.maximum_volume - reagents.total_volume, CHEMICAL_VOLUME_ROUNDING) // floating point my beloved
 	if(free_space <= 0)
 		to_chat(user, span_warning("Your mop can't absorb any more liquids!"))
 		return

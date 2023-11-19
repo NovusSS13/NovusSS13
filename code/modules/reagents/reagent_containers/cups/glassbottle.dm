@@ -50,7 +50,7 @@
 /obj/item/reagent_containers/cup/glass/bottle/smash(mob/living/target, mob/thrower, ranged = FALSE, break_top)
 	if(bartender_check(target) && ranged)
 		return
-	SplashReagents(target, ranged, override_spillable = TRUE)
+	SplashReagents(target, thrower, override_spillable = TRUE)
 	var/obj/item/broken_bottle/B = new(drop_location())
 	if(!ranged && thrower)
 		thrower.put_in_hands(B)

@@ -104,19 +104,29 @@
 	//We are not on fire and werent ignited by a hotspot exposure, no fire pls
 	if(!hotspotted && !fire_state)
 		return FALSE
-	var/has_oxygen = FALSE
-	if(isopenturf(my_turf))
-		var/turf/open/open_turf = my_turf
-		var/datum/gas_mixture/air = open_turf.return_air()
-		if(air?.gases[GAS_O2] > 0)
-			has_oxygen = TRUE
+
 	var/total_burn_power = 0
+
+	var/has_oxygen = FALSE
+	var/datum/gas_mixture/air = my_turf.return_air()
+	if(air)
+		air.assert_gas(/datum/gas/oxygen) //this code used to actually convert oxygen into co2
+		has_oxygen = (air.gases[/datum/gas/oxygen][MOLES] >= 1) //sadly that made fires end stupidly fast
+		air.garbage_collect() //idc to fine tune it, if someone wants to do it for me, go ahead
+
 	for(var/datum/reagent/reagent_type as anything in reagent_list)
 		var/burn_power = initial(reagent_type.liquid_fire_power)
-		if(burn_power && (has_oxygen || !initial(reagent_type.liquid_fire_needs_oxygen)))
-			total_burn_power += burn_power * reagent_list[reagent_type]
+		if(!burn_power)
+			continue
+
+		if(initial(reagent_type.liquid_fire_needs_oxygen) && !has_oxygen)
+			continue
+
+		total_burn_power += burn_power * reagent_list[reagent_type]
+
 	if(!total_burn_power)
 		return FALSE
+
 	total_burn_power /= total_reagents //We get burn power per unit.
 	if(total_burn_power <= REQUIRED_FIRE_POWER_PER_UNIT)
 		return FALSE
