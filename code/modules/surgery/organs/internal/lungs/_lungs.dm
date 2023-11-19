@@ -804,13 +804,13 @@
 	safe_plasma_min = 4 //We breathe THIS!
 	safe_plasma_max = 0
 
-/obj/item/organ/lungs/slime
+/obj/item/organ/lungs/jelly
 	name = "vacuole"
 	desc = "A large organelle designed to store oxygen and other important gasses."
 
 	safe_plasma_max = 0 //We breathe this to gain POWER.
 
-/obj/item/organ/lungs/slime/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather_slime)
+/obj/item/organ/lungs/jelly/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather_slime)
 	. = ..()
 	if (breath?.gases[/datum/gas/plasma])
 		var/plasma_pp = breath.get_breath_partial_pressure(breath.gases[/datum/gas/plasma][MOLES])

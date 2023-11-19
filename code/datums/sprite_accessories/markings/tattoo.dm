@@ -2,6 +2,7 @@
 	icon = 'icons/mob/species/sprite_accessory/body_markings/tattoo_markings.dmi'
 	gender_specific = FALSE
 	default_color = "#112222" //slightly faded ink
+	compatible_species = null
 
 /datum/sprite_accessory/body_markings/tattoo/heart
 	name = "Tattoo - Heart"

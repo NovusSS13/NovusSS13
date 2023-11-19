@@ -352,13 +352,31 @@
 
 		//Copied from /datum/species/proc/on_species_gain()
 		//fucking stupid shit to be honest
-		for(var/obj/item/organ/organ_path as anything in dna?.species.cosmetic_organs)
-			//Load a persons preferences from DNA
-			var/zone = check_zone(initial(organ_path.zone))
-			if(zone != limb_zone)
-				continue
-			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
-			new_organ.Insert(src, special = TRUE)
+		if(dna)
+			for(var/obj/item/organ/organ_path as anything in dna.species.cosmetic_organs)
+				//Load a persons preferences from DNA
+				var/zone = check_zone(initial(organ_path.zone))
+				if(zone != limb_zone)
+					continue
+				var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
+				new_organ.Insert(src, special = TRUE)
+			var/list/marking_zones = list(limb.body_zone)
+			if(limb.aux_zone)
+				marking_zones |= limb.aux_zone
+			for(var/marking_zone in marking_zones)
+				for(var/marking_index in 1 to MAXIMUM_MARKINGS_PER_LIMB)
+					var/marking_key = "marking_[marking_zone]_[marking_index]"
+					if(!dna.features[marking_key] || (dna.features[marking_key] == SPRITE_ACCESSORY_NONE))
+						continue
+					var/datum/sprite_accessory/body_markings/markings = GLOB.body_markings_by_zone[marking_zone][dna.features[marking_key]]
+					if(!is_valid_rendering_sprite_accessory(markings)) //invalid marking...
+						continue
+					else if(markings.compatible_species && !is_type_in_typecache(dna.species, markings.compatible_species))
+						continue
+					var/marking_color_key = marking_key + "_color"
+					var/datum/bodypart_overlay/mutant/marking/marking = new(marking_zone, marking_key, marking_color_key)
+					marking.set_appearance(markings.type)
+					limb.add_bodypart_overlay(marking)
 
 		update_body()
 		return TRUE

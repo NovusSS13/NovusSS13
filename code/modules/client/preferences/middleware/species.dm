@@ -1,5 +1,6 @@
 /// Handles the assets for species icons
 /datum/preference_middleware/species
+	priority = MIDDLEWARE_PRIORITY_AFTER
 
 /datum/preference_middleware/species/get_ui_assets()
 	return list(

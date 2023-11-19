@@ -1,6 +1,6 @@
 /// Checks if a sprite accessory is actually valid for rendering
 /proc/is_valid_rendering_sprite_accessory(datum/sprite_accessory/sprite_accessory)
-	if (isnull(sprite_accessory) || !sprite_accessory.icon_state || (sprite_accessory.name == SPRITE_ACCESSORY_NONE))
+	if(isnull(sprite_accessory) || !sprite_accessory.icon_state || (sprite_accessory.name == SPRITE_ACCESSORY_NONE))
 		return FALSE
 	return TRUE
 
