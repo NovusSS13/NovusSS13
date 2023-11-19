@@ -1,0 +1,4 @@
+author: "NullDagaf"
+delete-after: True
+changes:
+  - bugfix: "mopping and scooping liquids now works as intended"
