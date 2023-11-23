@@ -46,6 +46,23 @@
 	///overlays which go unused for this amount of time get cleaned up
 	var/cache_expiration = 2 MINUTES
 
+/obj/effect/overlay/vis/steam
+	plane = GRAVITY_PULSE_PLANE
+	alpha = 64
+	/// Type of particle this uses
+	var/particle_type = /particles/smoke/steam/vent
+
+/obj/effect/overlay/vis/steam/Initialize(mapload)
+	. = ..()
+	if(particle_type)
+		particles = new particle_type()
+
+/obj/effect/overlay/vis/steam/scrubber
+	particle_type = /particles/smoke/steam/vent/scrubber
+
+/obj/effect/overlay/vis/steam/heavy
+	particle_type = /particles/smoke/steam/vent/heavy
+
 /obj/effect/overlay/atmos_excited
 	name = "excited group"
 	icon = null
