@@ -224,7 +224,7 @@
 /atom/movable/turf_liquid/forceMove(atom/destination, forced = FALSE)
 	if(forced)
 		return ..()
-	return
+	return FALSE
 
 /atom/movable/turf_liquid/update_overlays()
 	. = ..()
@@ -344,18 +344,18 @@
 /atom/movable/turf_liquid/proc/set_height(new_height)
 	var/prev_height = height
 	height = new_height
-	if(abs(height - prev_height) <= WATER_HEIGH_DIFFERENCE_DELTA_SPLASH)
+	if(immutable || (abs(height - prev_height) <= WATER_HEIGH_DIFFERENCE_DELTA_SPLASH))
 		return //nothing to do
 
 	//Splash
+	var/static/list/splash_sounds = list(
+		'sound/effects/water_splash1.ogg',
+		'sound/effects/water_splash2.ogg',
+		'sound/effects/water_splash3.ogg',
+		'sound/effects/water_splash4.ogg',
+	)
 	if(prob(WATER_HEIGH_DIFFERENCE_SOUND_CHANCE))
-		var/sound_to_play = pick(
-			'sound/effects/water_wade1.ogg',
-			'sound/effects/water_wade2.ogg',
-			'sound/effects/water_wade3.ogg',
-			'sound/effects/water_wade4.ogg',
-		)
-		playsound(my_turf, sound_to_play, 60, 0)
+		playsound(my_turf, pick(splash_sounds), 60, 0)
 
 	var/obj/effect/temp_visual/liquid_splash/splashy = new(my_turf)
 	splashy.color = color
@@ -380,7 +380,7 @@
 
 	var/dir = get_dir(my_turf, dest_turf)
 	for(var/atom/movable/movable as anything in my_turf)
-		if(movable.anchored || movable.pulledby || isobserver(movable) || (movable.move_resist >= INFINITY))
+		if(movable.anchored || movable.pulledby || isobserver(movable) || (movable.move_resist >= INFINITY) || HAS_TRAIT(movable, TRAIT_NEGATES_GRAVITY))
 			continue
 
 		if(!iscarbon(movable))
@@ -388,17 +388,11 @@
 			continue
 
 		var/mob/living/carbon/carbon_mob = movable
-		if(HAS_TRAIT(carbon_mob, TRAIT_NEGATES_GRAVITY))
-			continue
-
 		step(carbon_mob, dir)
 		if(prob(60) && (carbon_mob.body_position != LYING_DOWN))
 			to_chat(carbon_mob, span_userdanger("The current knocks you down!"))
 			carbon_mob.Paralyze(2 SECONDS)
 			carbon_mob.Knockdown(6 SECONDS)
-
-/atom/movable/turf_liquid/immutable/set_height(new_height)
-	height = new_height
 
 /atom/movable/turf_liquid/proc/movable_entered(turf/source_turf, atom/movable/movable)
 	SIGNAL_HANDLER
@@ -406,14 +400,14 @@
 		return //ghosts, camera eyes, etc. don't make water splashy splashy
 
 	if(liquid_state >= LIQUID_STATE_ANKLES)
+		var/static/list/splash_sounds = list(
+			'sound/effects/water_splash1.ogg',
+			'sound/effects/water_splash2.ogg',
+			'sound/effects/water_splash3.ogg',
+			'sound/effects/water_splash4.ogg',
+		)
 		if(prob(30))
-			var/sound_to_play = pick(
-				'sound/effects/water_wade1.ogg',
-				'sound/effects/water_wade2.ogg',
-				'sound/effects/water_wade3.ogg',
-				'sound/effects/water_wade4.ogg',
-			)
-			playsound(source_turf, sound_to_play, 50, 0)
+			playsound(source_turf, pick(splash_sounds), 50, 0)
 
 		if(iscarbon(movable))
 			var/mob/living/carbon/carbon_mob = movable
@@ -422,7 +416,7 @@
 	else if(isliving(movable))
 		var/mob/living/living_mob = movable
 		if(prob(7) && !(living_mob.movement_type & FLYING))
-			living_mob.slip(60, source_turf, NO_SLIP_WHEN_WALKING, 20, TRUE)
+			living_mob.slip(60, source_turf, NO_SLIP_WHEN_WALKING | SLIPPERY_TURF, 20, TRUE)
 
 	if(fire_state)
 		movable.fire_act((T20C + 50) + (50 * fire_state), 125)
@@ -536,7 +530,7 @@
 /atom/movable/turf_liquid/proc/examine_turf(turf/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
 
-	// This should always have reagents if this effect object exists, but as a sanity check...
+	// This should always have reagents if this object exists, but as a sanity check...
 	if(!length(reagent_list))
 		return
 
@@ -604,6 +598,8 @@
 
 /atom/movable/turf_liquid/immutable/Initialize(mapload)
 	. = ..()
+	if(!LAZYLEN(starting_mixture))
+		return
 	reagent_list = starting_mixture.Copy()
 	total_reagents = 0
 	for(var/key in reagent_list)

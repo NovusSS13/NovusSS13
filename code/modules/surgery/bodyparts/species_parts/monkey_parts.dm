@@ -10,7 +10,6 @@
 	dmg_overlay_type = SPECIES_MONKEY
 	is_dimorphic = FALSE
 	head_flags = HEAD_LIPS|HEAD_DEBRAIN
-	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 /obj/item/bodypart/chest/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -27,7 +26,6 @@
 	acceptable_bodytype = BODYTYPE_MONKEY
 	dmg_overlay_type = SPECIES_MONKEY
 	bodypart_traits = list(
-		TRAIT_NO_BLOOD_OVERLAY,
 		TRAIT_NO_UNDERWEAR,
 		TRAIT_NO_UNDERSHIRT,
 		TRAIT_NO_SOCKS,

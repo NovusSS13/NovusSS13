@@ -105,10 +105,6 @@
 		cut_overlay(I)
 		overlays_standing[cache_index] = null
 
-//used when putting/removing clothes that hide certain mutant body parts to just update those and not update the whole body.
-/mob/living/carbon/human/proc/update_mutant_bodyparts()
-	update_body_parts()
-
 /mob/living/carbon/update_body(is_creating = FALSE)
 	update_body_parts(is_creating)
 
@@ -331,19 +327,17 @@
 	apply_overlay(HANDS_LAYER)
 
 /mob/living/carbon/update_fire_overlay(stacks, on_fire = FALSE, last_icon_state, suffix = "")
-	remove_overlay(FIRE_LAYER)
-
 	var/fire_icon = "[dna?.species.fire_overlay || "human"]_[stacks > MOB_BIG_FIRE_STACK_THRESHOLD ? "big_fire" : "small_fire"][suffix]"
 	if(!GLOB.fire_appearances[fire_icon])
 		GLOB.fire_appearances[fire_icon] = mutable_appearance('icons/mob/effects/onfire.dmi', fire_icon, -FIRE_LAYER, appearance_flags = RESET_COLOR)
 
-	if((stacks > 0 && on_fire) || HAS_TRAIT(src, TRAIT_PERMANENTLY_ONFIRE))
+	if(fire_icon != last_icon_state && ((stacks > 0 && on_fire) || HAS_TRAIT(src, TRAIT_PERMANENTLY_ONFIRE)))
+		remove_overlay(FIRE_LAYER)
 		overlays_standing[FIRE_LAYER] = GLOB.fire_appearances[fire_icon]
 		apply_overlay(FIRE_LAYER)
 		return fire_icon
 
-	overlays_standing[FIRE_LAYER] = null
-	apply_overlay(FIRE_LAYER)
+	remove_overlay(FIRE_LAYER)
 	return null
 
 /mob/living/carbon/update_damage_overlays()
@@ -351,20 +345,18 @@
 
 	var/list/damage_overlays = list()
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		if(iter_part.dmg_overlay_type)
-			if(iter_part.brutestate)
-				var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0")
-				damage_overlay.layer = -DAMAGE_LAYER
-				if((iter_part.body_zone == BODY_ZONE_PRECISE_L_HAND) || (iter_part.body_zone == BODY_ZONE_PRECISE_R_HAND))
-					damage_overlay.layer = -DAMAGE_HIGH_LAYER
-				damage_overlays += damage_overlay
-			if(iter_part.burnstate)
-				var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
-				damage_overlay.layer = -DAMAGE_LAYER
-				if((iter_part.body_zone == BODY_ZONE_PRECISE_L_HAND) || (iter_part.body_zone == BODY_ZONE_PRECISE_R_HAND))
-					damage_overlay.layer = -DAMAGE_HIGH_LAYER
-				damage_overlays += damage_overlay
-	overlays_standing[DAMAGE_LAYER] = damage_overlays
+		if(!iter_part.dmg_overlay_type)
+			continue
+		if(iter_part.brutestate)
+			var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0")
+			damage_overlay.layer = -DAMAGE_LAYER
+			damage_overlays += damage_overlay
+		if(iter_part.burnstate)
+			var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
+			damage_overlay.layer = -DAMAGE_LAYER
+			damage_overlays += damage_overlay
+	if(damage_overlays.len)
+		overlays_standing[DAMAGE_LAYER] = damage_overlays
 
 	apply_overlay(DAMAGE_LAYER)
 
@@ -377,6 +369,7 @@
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		if(iter_part.bleed_overlay_icon)
 			wound_overlay.add_overlay(iter_part.bleed_overlay_icon)
+
 
 	apply_overlay(WOUND_LAYER)
 
@@ -427,9 +420,6 @@
 /mob/living/carbon/update_worn_head()
 	remove_overlay(HEAD_LAYER)
 
-	if(!get_bodypart(BODY_ZONE_HEAD)) //Decapitated
-		return
-
 	if(client && hud_used?.inv_slots[TOBITSHIFT(ITEM_SLOT_BACK) + 1])
 		var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_HEAD) + 1]
 		inv.update_appearance()
@@ -456,11 +446,13 @@
 
 //update whether handcuffs appears on our hud.
 /mob/living/carbon/proc/update_hud_handcuffed()
-	if(hud_used)
-		for(var/hand in hud_used.hand_slots)
-			var/atom/movable/screen/inventory/hand/H = hud_used.hand_slots[hand]
-			if(H)
-				H.update_appearance()
+	if(!hud_used)
+		return
+
+	for(var/hand in hud_used.hand_slots)
+		var/atom/movable/screen/inventory/hand/hand_hud = hud_used.hand_slots[hand]
+		if(hand_hud)
+			hand_hud.update_appearance()
 
 //update whether our head item appears on our hud.
 /mob/living/carbon/proc/update_hud_head(obj/item/I)
@@ -486,7 +478,7 @@
 	RETURN_TYPE(/list)
 
 	. = list()
-	if(blocks_emissive)
+	if(blocks_emissive != EMISSIVE_BLOCK_NONE)
 		. += emissive_blocker(standing.icon, standing.icon_state, src, alpha = standing.alpha)
 	SEND_SIGNAL(src, COMSIG_ITEM_GET_WORN_OVERLAYS, ., standing, isinhands, icon_file)
 
@@ -546,6 +538,8 @@
 		from_leg = 0 // If we have no legs, we set this to zero to avoid any math issues that might stem from it being NULL
 	for(var/obj/item/bodypart/chest/chest_checked in bodyparts) // Take the height from the chest
 		from_chest = chest_checked.top_offset
+	if(isnull(from_chest))
+		from_chest = 0
 	return (from_chest + from_leg) // The total hight of the chest and legs together
 
 /////////////////////////
