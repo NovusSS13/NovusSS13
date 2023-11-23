@@ -45,6 +45,13 @@
 		"[LIQUID_STATE_SHOULDERS]" = "%LIQUID going [span_warning("up to your shoulders")]",
 		"[LIQUID_STATE_FULLTILE]" = "%LIQUID going [span_danger("over your head")]",
 	)
+	/// Splashing sounds
+	var/static/list/splash_sounds = list(
+		'sound/effects/water_wade1.ogg',
+		'sound/effects/water_wade2.ogg',
+		'sound/effects/water_wade3.ogg',
+		'sound/effects/water_wade4.ogg',
+	)
 
 /atom/movable/turf_liquid/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
 	return
@@ -348,12 +355,6 @@
 		return //nothing to do
 
 	//Splash
-	var/static/list/splash_sounds = list(
-		'sound/effects/water_splash1.ogg',
-		'sound/effects/water_splash2.ogg',
-		'sound/effects/water_splash3.ogg',
-		'sound/effects/water_splash4.ogg',
-	)
 	if(prob(WATER_HEIGH_DIFFERENCE_SOUND_CHANCE))
 		playsound(my_turf, pick(splash_sounds), 60, 0)
 
@@ -400,12 +401,6 @@
 		return //ghosts, camera eyes, etc. don't make water splashy splashy
 
 	if(liquid_state >= LIQUID_STATE_ANKLES)
-		var/static/list/splash_sounds = list(
-			'sound/effects/water_splash1.ogg',
-			'sound/effects/water_splash2.ogg',
-			'sound/effects/water_splash3.ogg',
-			'sound/effects/water_splash4.ogg',
-		)
 		if(prob(30))
 			playsound(source_turf, pick(splash_sounds), 50, 0)
 

@@ -7,6 +7,9 @@
 /obj/effect/overlay/singularity_pull()
 	return
 
+/obj/effect/overlay/has_gravity(turf/gravity_turf)
+	return FALSE
+
 /obj/effect/overlay/beam//Not actually a projectile, just an effect.
 	name = "beam"
 	icon = 'icons/effects/beam.dmi'
