@@ -59,7 +59,7 @@
 	if(!(obscured & ITEM_SLOT_NECK))
 		if(wear_neck && !(wear_neck.item_flags & EXAMINE_SKIP))
 			. += "[t_He] [t_is] wearing [wear_neck.get_examine_string(user)] around [t_his] neck."
-		else if(undergoing_cardiac_arrest())
+		else if(shoeonhead && IS_ORGANIC_LIMB(shoeonhead) && undergoing_cardiac_arrest())
 			. += span_warning("<B>[t_His] jugular veins are severely distended!</B>")
 
 	//eyes
