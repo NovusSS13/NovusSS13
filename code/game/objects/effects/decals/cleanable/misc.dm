@@ -166,17 +166,17 @@
 	. = ..()
 	if(.)
 		return
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(isflyperson(H))
+	if(iscarbon(user))
+		var/mob/living/carbon/regurgitator = user
+		if(HAS_TRAIT(regurgitator, TRAIT_VOMIT_EATER))
 			playsound(get_turf(src), 'sound/items/drink.ogg', 50, TRUE) //slurp
-			H.visible_message(span_alert("[H] extends a small proboscis into the vomit pool, sucking it with a slurping sound."))
-			reagents.trans_to(H, reagents.total_volume, transfered_by = user, methods = INGEST)
+			regurgitator.visible_message(span_warning("[regurgitator] extends a small proboscis into the vomit pool, sucking it with a slurping sound."))
+			reagents.trans_to(regurgitator, reagents.total_volume, transfered_by = user, methods = INGEST)
 			qdel(src)
 
 /obj/effect/decal/cleanable/vomit/nebula
 	name = "nebula vomit"
-	desc = "Gosh, how... beautiful."
+	desc = "Gosh, how... beautiful?"
 	icon_state = "vomitnebula_1"
 	random_icon_states = list("vomitnebula_1", "vomitnebula_2", "vomitnebula_3", "vomitnebula_4")
 	beauty = 10
