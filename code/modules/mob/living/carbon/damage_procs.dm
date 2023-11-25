@@ -88,18 +88,17 @@
 	adjustFireLoss(diff, updating_health, forced, required_bodytype)
 
 /mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, required_biotype = MOB_ORGANIC)
-	if(!forced && !(mob_biotypes & required_biotype))
-		return
-	if(!forced && HAS_TRAIT(src, TRAIT_TOXINLOVER)) //damage becomes healing and healing becomes damage
-		amount = -amount
+	if(!forced)
+		if(!(mob_biotypes & required_biotype))
+			return
+		if(HAS_TRAIT(src, TRAIT_TOXINLOVER))//damage becomes healing and healing becomes damage
+			amount = -amount
+			if(amount > 0)
+				blood_volume = max(blood_volume - (5*amount), 0)
+			else
+				blood_volume = max(blood_volume - amount, 0)
 		if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
 			amount = min(amount, 0)
-		if(amount > 0)
-			blood_volume = max(blood_volume - (5*amount), 0)
-		else
-			blood_volume = max(blood_volume - amount, 0)
-	else if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
-		amount = min(amount, 0)
 	return ..()
 
 /mob/living/carbon/adjustStaminaLoss(amount, updating_stamina, forced, required_biotype)

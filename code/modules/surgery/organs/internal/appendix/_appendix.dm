@@ -20,6 +20,8 @@
 
 	/// As the name implies, current stage of inflamation - 0 is not inflamed
 	var/inflamation_stage = 0
+	/// Toxin damage to apply to owner when failing per second
+	var/inflammation_toxins = 2
 
 /obj/item/organ/appendix/update_name()
 	. = ..()
@@ -47,7 +49,7 @@
 
 	if(organ_flags & ORGAN_FAILING)
 		// forced to ensure people don't use it to gain tox as slime person
-		owner.adjustToxLoss(2 * seconds_per_tick, updating_health = TRUE, forced = TRUE)
+		owner.adjustToxLoss(inflammation_toxins * seconds_per_tick, updating_health = TRUE, forced = TRUE)
 	else if(inflamation_stage)
 		inflamation(seconds_per_tick)
 	else if(SPT_PROB(APPENDICITIS_PROB, seconds_per_tick))
@@ -80,9 +82,8 @@
 	if(inflamation_stage >= 2)
 		if(SPT_PROB(1.5, seconds_per_tick))
 			to_chat(organ_owner, span_warning("You feel a stabbing pain in your abdomen!"))
-			organ_owner.Stun(rand(40, 60))
-			// forced to ensure people don't use it to gain tox as slime person
-			organ_owner.adjustToxLoss(1, updating_health = TRUE, forced = TRUE)
+			organ_owner.Stun(rand(4, 6) SECONDS)
+			organ_owner.adjustToxLoss(inflammation_toxins/2, updating_health = TRUE)
 			apply_organ_damage(5)
 	if(inflamation_stage >= 3)
 		if(SPT_PROB(0.5, seconds_per_tick))

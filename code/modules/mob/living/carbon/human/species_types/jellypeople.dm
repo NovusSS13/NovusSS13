@@ -22,10 +22,12 @@
 		/obj/item/organ/genital/vagina = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/genital/anus = SPRITE_ACCESSORY_NONE,
 	)
+	mutanteyes = /obj/item/organ/eyes/jelly
 	mutanttongue = /obj/item/organ/tongue/jelly
 	mutantlungs = /obj/item/organ/lungs/jelly
-	mutanteyes = /obj/item/organ/eyes/jelly
 	mutantheart = null
+	mutantliver = /obj/item/organ/liver/jelly
+	mutantappendix = /obj/item/organ/appendix/jelly
 	meat = /obj/item/food/meat/slab/human/mutant/slime
 	exotic_blood = /datum/reagent/toxin/slimejelly
 	blood_deficiency_drain_rate = JELLY_REGEN_RATE + BLOOD_DEFICIENCY_MODIFIER
@@ -86,12 +88,6 @@
 			H.blood_volume += JELLY_REGEN_RATE * seconds_per_tick
 			if(H.blood_volume <= BLOOD_VOLUME_LOSE_NUTRITION) // don't lose nutrition if we are above a certain threshold, otherwise slimes on IV drips will still lose nutrition
 				H.adjust_nutrition(-1.25 * seconds_per_tick)
-
-	// we call lose_blood() here rather than quirk/process() to make sure that the blood loss happens in sync with life()
-	if(HAS_TRAIT(H, TRAIT_BLOOD_DEFICIENCY))
-		var/datum/quirk/blooddeficiency/blooddeficiency = H.get_quirk(/datum/quirk/blooddeficiency)
-		if(!isnull(blooddeficiency))
-			blooddeficiency.lose_blood(seconds_per_tick)
 
 	if(H.blood_volume < BLOOD_VOLUME_OKAY)
 		if(SPT_PROB(2.5, seconds_per_tick))
@@ -185,6 +181,7 @@
 	hair_alpha = 150
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	mutanteyes = /obj/item/organ/eyes
+
 	var/datum/action/innate/split_body/slime_split
 	var/list/mob/living/carbon/bodies
 	var/datum/action/innate/swap_body/swap_body

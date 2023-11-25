@@ -633,6 +633,8 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 /obj/item/organ/tongue/jelly
 	name = "jelly tongue"
 	desc = "Ah... That's not the sound I expected it to make. Sounds like a Space Autumn Bird."
+	icon = 'icons/obj/medical/organs/jelly_organs.dmi'
+	icon_state = "eugnot"
 	say_mod = "chirps"
 	liked_foodtypes = MEAT | BUGS
 	disliked_foodtypes = GROSS

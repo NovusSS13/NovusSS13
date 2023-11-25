@@ -25,8 +25,10 @@
 	var/toxTolerance = LIVER_DEFAULT_TOX_TOLERANCE
 	/// Modifies how much damage toxin deals to the liver
 	var/liver_resistance = LIVER_DEFAULT_TOX_RESISTANCE
-	var/filterToxins = TRUE //whether to filter toxins
-	var/operated = FALSE //whether the liver's been repaired with surgery and can be fixed again or not
+	/// If this liver even attempts to filter toxins at all
+	var/filterToxins = TRUE
+	/// Whether the liver's been repaired with surgery and can be fixed again or not
+	var/operated = FALSE
 
 /obj/item/organ/liver/Initialize(mapload)
 	. = ..()
@@ -104,7 +106,7 @@
 	var/liver_damage = 0
 	var/provide_pain_message = HAS_NO_TOXIN
 
-	if(filterToxins && !HAS_TRAIT(owner, TRAIT_TOXINLOVER))
+	if(filterToxins)
 		for(var/datum/reagent/toxin/toxin in cached_reagents)
 			if(toxin.affected_organ_flags && !(organ_flags & toxin.affected_organ_flags)) //this particular toxin does not affect this type of organ
 				continue
@@ -123,7 +125,7 @@
 	if(liver_damage)
 		apply_organ_damage(min(liver_damage * seconds_per_tick , MAX_TOXIN_LIVER_DAMAGE * seconds_per_tick))
 
-	if(provide_pain_message && damage > 10 && SPT_PROB(damage/6, seconds_per_tick)) //the higher the damage the higher the probability
+	if(provide_pain_message && damage >= 10 && SPT_PROB(damage/6, seconds_per_tick)) //the higher the damage the higher the probability
 		to_chat(owner, span_warning("You feel a dull pain in your abdomen."))
 
 /obj/item/organ/liver/handle_failing_organ(seconds_per_tick)

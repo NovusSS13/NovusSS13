@@ -214,6 +214,11 @@
 
 /// The rate at which alcohol affects the drinker
 #define ALCOHOL_RATE 0.005
+/// Greater numbers mean that less alcohol has greater intoxication potential
+#define ALCOHOL_THRESHOLD_MODIFIER 1
+/// The exponent applied to boozepwr to make higher volume alcohol at least a little bit damaging to the liver
+#define ALCOHOL_EXPONENT 1.6
+
 
 #define BLASTOFF_DANCE_MOVE_CHANCE_PER_UNIT 3
 #define BLASTOFF_DANCE_MOVES_PER_SUPER_MOVE 3
