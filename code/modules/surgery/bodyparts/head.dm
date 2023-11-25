@@ -127,7 +127,7 @@
 
 /obj/item/bodypart/head/examine(mob/user)
 	. = ..()
-	if(!show_organs_on_examine || !IS_ORGANIC_LIMB(src))
+	if(!show_organs_on_examine)
 		return
 	if(!brain)
 		. += span_deadsay("The brain has been removed from [src].")
@@ -146,13 +146,13 @@
 		. += span_deadsay("It's completely lifeless.")
 
 	if(!eyes)
-		. += span_info("[real_name]'s eyes have been removed.")
+		. += span_deadsay("[real_name]'s eyes have been removed.")
 
 	if(!ears)
-		. += span_info("[real_name]'s ears have been removed.")
+		. += span_deadsay("[real_name]'s ears have been removed.")
 
 	if(!tongue)
-		. += span_info("[real_name]'s tongue has been removed.")
+		. += span_deadsay("[real_name]'s tongue has been removed.")
 
 /obj/item/bodypart/head/try_attach_limb(mob/living/carbon/new_head_owner, special = FALSE)
 	// These are stored before calling super. This is so that if the head is from a different body, it persists its appearance.

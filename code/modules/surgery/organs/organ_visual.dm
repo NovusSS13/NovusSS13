@@ -4,6 +4,7 @@
  * Works in tandem with the /datum/sprite_accessory and /datum/bodypart_overlay/mutant datums to generate sprites.
  */
 /obj/item/organ
+	/// In case we have a detail overlay
 	/// The overlay datum that actually draws stuff on the limb
 	var/datum/bodypart_overlay/mutant/bodypart_overlay
 	/// If not null, overrides the appearance with this sprite accessory datum
@@ -12,12 +13,18 @@
 	/// With what DNA block do we mutate in mutate_feature() ? For genetics
 	var/dna_block
 
+	/// Set to true if for some reason you want to inherit the color from the bodypart overlay
+	var/inherit_color = FALSE
 	/**
-	 * Set to EXTERNAL_BEHIND, EXTERNAL_FRONT or EXTERNAL_ADJACENT if you want to draw one of those layers as the object sprite.
+	 * Set to TRUE if you want to draw the bodypart overlays as the object sprite.
 	 * FALSE to use your own.
 	 * This will not work if it doesn't have a limb to generate it's icon with, yes that is scuffed.
 	 */
 	var/use_mob_sprite_as_obj_sprite = FALSE
+	/// In case we have a detail overlay, this is the icon_state for it
+	var/detail_overlay
+	/// Whether or not the detail overlay should be colored according to the bodypart overlay's color
+	var/inherit_detail_color = FALSE
 	/// Does this organ have any bodytypes to pass to it's ownerlimb?
 	var/external_bodytypes = NONE
 	/// Which flags does a 'modification tool' need to have to restyle us, if it all possible (located in code/_DEFINES/mobs)
@@ -25,6 +32,18 @@
 
 /obj/item/organ/update_overlays()
 	. = ..()
+	if(!bodypart_overlay)
+		return
+
+	if(inherit_color)
+		color = tricolor_to_hex(bodypart_overlay.draw_color)
+
+	if(detail_overlay)
+		var/mutable_appearance/detail = mutable_appearance(icon, detail_overlay)
+		if(inherit_detail_color)
+			detail.color = tricolor_to_hex(bodypart_overlay.draw_color)
+		. += detail
+
 	if(!use_mob_sprite_as_obj_sprite)
 		return
 
@@ -57,8 +76,7 @@
 		else
 			bodypart_overlay.imprint_on_next_insertion = FALSE
 
-	if(use_mob_sprite_as_obj_sprite)
-		update_appearance()
+	update_appearance()
 
 /// Returns an examine list about the visual elements of this organ.
 /obj/item/organ/proc/visuals_examine(mob/user)
@@ -118,5 +136,5 @@
 		owner.update_body_parts()
 	else if(ownerlimb) //are we in a limb?
 		ownerlimb.update_icon_dropped()
-	else if(use_mob_sprite_as_obj_sprite) //are we out in the world, unprotected by flesh?
+	else //are we out in the world, unprotected by flesh?
 		update_appearance()

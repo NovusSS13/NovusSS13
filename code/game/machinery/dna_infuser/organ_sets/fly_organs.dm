@@ -42,6 +42,7 @@
 	toxic_foodtypes = NONE // these fucks eat vomit, i am sure they can handle drinking bleach or whatever too
 	modifies_speech = TRUE
 	languages_native = list(/datum/language/buzzwords)
+	organ_traits = list(TRAIT_VOMIT_EATER)
 
 /obj/item/organ/tongue/fly/modify_speech(datum/source, list/speech_args)
 	var/static/regex/fly_buzz = new("z+", "g")
@@ -108,10 +109,6 @@
 	// we do not lose any nutrition as a fly when vomiting out food
 	body.vomit(lost_nutrition = 0, stun = FALSE, distance = 2, force = TRUE, purge_ratio = 0.67)
 	playsound(get_turf(owner), 'sound/effects/splat.ogg', 50, TRUE)
-	body.visible_message(
-		span_danger("[body] vomits on the floor!"),
-		span_userdanger("You throw up on the floor!"),
-	)
 	return ..()
 
 /obj/item/organ/appendix/fly

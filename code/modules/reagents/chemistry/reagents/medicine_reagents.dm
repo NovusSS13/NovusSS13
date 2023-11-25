@@ -1092,8 +1092,13 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	inverse_chem_val = 0.35
 	inverse_chem = /datum/reagent/inverse/antihol
-	/// All status effects we remove on metabolize.
-	/// Does not include drunk (despite what you may thing) as that's decresed gradually
+	/// Amount of drunkness we remove
+	var/boozepwr = -65
+	/**
+	 * All status effects we remove on metabolize
+	 * Does not include drunk (despite what you may think) as that's decreased gradually
+	 * Only clears these if booze power is negative
+	 */
 	var/static/list/status_effects_to_clear = list(
 		/datum/status_effect/confusion,
 		/datum/status_effect/dizziness,
@@ -1102,11 +1107,25 @@
 	)
 
 /datum/reagent/medicine/antihol/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
-	for(var/effect in status_effects_to_clear)
-		affected_mob.remove_status_effect(effect)
-	affected_mob.reagents.remove_all_type(/datum/reagent/consumable/ethanol, 3 * REM * seconds_per_tick * normalise_creation_purity(), FALSE, TRUE)
+	if(boozepwr < 0)
+		for(var/effect in status_effects_to_clear)
+			affected_mob.remove_status_effect(effect)
+	var/creation_purity = normalise_creation_purity()
+	affected_mob.reagents.remove_all_type(/datum/reagent/consumable/ethanol, 3 * REM * seconds_per_tick * creation_purity, FALSE, TRUE)
 	affected_mob.adjustToxLoss(-0.2 * REM * seconds_per_tick, FALSE, required_biotype = affected_biotype)
-	affected_mob.adjust_drunk_effect(-10 * REM * seconds_per_tick * normalise_creation_purity())
+	if((boozepwr < 0) || (affected_mob.get_drunk_amount() < volume * boozepwr * ALCOHOL_THRESHOLD_MODIFIER * creation_purity))
+		var/booze_power = boozepwr
+		if(HAS_TRAIT(affected_mob, TRAIT_ALCOHOL_TOLERANCE)) //we're an accomplished drinker, so antihol is more powerful
+			booze_power *= 2
+		if(HAS_TRAIT(affected_mob, TRAIT_LIGHT_DRINKER)) //we're a light drinker, so antihol is less powerful
+			booze_power *= 0.7
+		// Volume, power, and server alcohol rate effect how quickly one gets drunk
+		affected_mob.adjust_drunk_effect(sqrt(volume) * booze_power * ALCOHOL_RATE * REM * seconds_per_tick * creation_purity)
+		if(boozepwr > 0)
+			var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+			var/heavy_drinker_multiplier = (HAS_TRAIT(affected_mob, TRAIT_HEAVY_DRINKER) ? 1 : 0.5) //heavy drinkers take MORE damage from antihol if necessary
+			if (istype(liver))
+				liver.apply_organ_damage(((max(sqrt(volume) * (boozepwr ** ALCOHOL_EXPONENT) * liver.alcohol_tolerance * heavy_drinker_multiplier * seconds_per_tick * creation_purity, 0))/150))
 	..()
 	. = TRUE
 

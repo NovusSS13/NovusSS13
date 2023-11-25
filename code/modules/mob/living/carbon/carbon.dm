@@ -426,7 +426,7 @@
 	else
 		if(message)
 			visible_message(span_danger("[src] throws up!"), span_userdanger("You throw up!"))
-			if(!isflyperson(src))
+			if(!HAS_TRAIT(src, TRAIT_VOMIT_EATER))
 				add_mood_event("vomit", /datum/mood_event/vomit)
 
 	if(stun)

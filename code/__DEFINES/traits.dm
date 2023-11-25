@@ -507,6 +507,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Trait which allows you to eat clothing
 #define TRAIT_CLOTHING_EATER "clothing_eater"
+/// Trait which allows you to eat vomit
+#define TRAIT_VOMIT_EATER "vomit_eater"
 /// Trait which allows you to eat rocks
 #define TRAIT_ROCK_EATER "rock_eater"
 /// Trait which allows you to gain bonuses from consuming rocks

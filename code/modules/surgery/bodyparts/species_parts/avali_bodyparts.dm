@@ -13,7 +13,6 @@
 	limb_id = SPECIES_AVALI
 	custom_eyes_icon = 'icons/mob/species/avali/avali_eyes.dmi'
 	head_flags = HEAD_EYESPRITES | HEAD_EYECOLOR | HEAD_EYEHOLES | HEAD_DEBRAIN
-	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
 
 /obj/item/bodypart/head/avali/Initialize(mapload)
 	worn_ears_offset = new(
@@ -45,7 +44,6 @@
 	limb_id = SPECIES_AVALI
 	acceptable_bodytype = BODYTYPE_AVALI
 	bodypart_traits = list(
-		TRAIT_NO_BLOOD_OVERLAY,
 		TRAIT_NO_UNDERSHIRT,
 		TRAIT_NO_UNDERWEAR,
 		TRAIT_NO_SOCKS,

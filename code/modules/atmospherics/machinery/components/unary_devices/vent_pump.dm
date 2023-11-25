@@ -34,6 +34,9 @@
 	///area this vent is assigned to
 	var/area/assigned_area
 
+	/// Fun distortion effect for when the vent is active
+	var/obj/effect/overlay/vis/steam/steam = /obj/effect/overlay/vis/steam
+
 /obj/machinery/atmospherics/components/unary/vent_pump/Initialize(mapload)
 	if(!id_tag)
 		id_tag = assign_random_name()
@@ -45,6 +48,18 @@
 		AddElement(/datum/element/contextual_screentip_tools, tool_screentips)
 	. = ..()
 	assign_to_area()
+	if(steam)
+		steam = new steam()
+
+/obj/machinery/atmospherics/components/unary/vent_pump/Destroy()
+	disconnect_from_area()
+
+	var/area/vent_area = get_area(src)
+	if(vent_area)
+		vent_area.air_vents -= src
+
+	QDEL_NULL(steam)
+	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
 	. = ..()
@@ -63,15 +78,6 @@
 	balloon_alert(user, "saved in buffer")
 	multi_tool.buffer = src
 	return TOOL_ACT_TOOLTYPE_SUCCESS
-
-/obj/machinery/atmospherics/components/unary/vent_pump/Destroy()
-	disconnect_from_area()
-
-	var/area/vent_area = get_area(src)
-	if(vent_area)
-		vent_area.air_vents -= src
-
-	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
 	. = ..()
@@ -107,6 +113,17 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on_exit_area(datum/source, area/area_to_unregister)
 	. = ..()
 	disconnect_from_area(area_to_unregister)
+
+/obj/machinery/atmospherics/components/unary/vent_pump/update_icon()
+	. = ..()
+
+	if(!steam)
+		return
+
+	if(welded || !on ||!is_operational)
+		vis_contents -= steam
+	else
+		vis_contents |= steam
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_icon_nopipes()
 	cut_overlays()

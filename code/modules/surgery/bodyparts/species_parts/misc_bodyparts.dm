@@ -107,10 +107,7 @@
 	is_dimorphic = TRUE
 	dmg_overlay_type = null
 	burn_modifier = 0.5 // = 1/2x generic burn damage
-	bodypart_traits = list(
-		TRAIT_TOXINLOVER,
-		TRAIT_NOBLOOD,
-	)
+	bodypart_traits = list(TRAIT_NOBLOOD)
 
 /obj/item/bodypart/arm/left/jelly
 	biological_state = BIO_INORGANIC
@@ -147,6 +144,7 @@
 	biological_state = BIO_INORGANIC
 	limb_id = SPECIES_SLIMEPERSON
 	is_dimorphic = TRUE
+	bodypart_traits = list(TRAIT_NOBLOOD)
 
 /obj/item/bodypart/arm/left/slime
 	biological_state = BIO_INORGANIC
@@ -175,6 +173,7 @@
 	biological_state = BIO_INORGANIC
 	limb_id = SPECIES_LUMINESCENT
 	is_dimorphic = TRUE
+	bodypart_traits = list(TRAIT_NOBLOOD)
 
 /obj/item/bodypart/arm/left/luminescent
 	biological_state = BIO_INORGANIC
@@ -286,6 +285,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	head_flags = HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
+	bodypart_traits = list(TRAIT_ANTENNAE)
 
 /obj/item/bodypart/chest/fly
 	limb_id = SPECIES_FLYPERSON
@@ -562,7 +562,10 @@
 	limb_id = SPECIES_GOLEM
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	bodypart_traits = list(TRAIT_CHUNKYFINGERS, TRAIT_FIST_MINING)
+	bodypart_traits = list(
+		TRAIT_CHUNKYFINGERS,
+		TRAIT_FIST_MINING,
+	)
 	unarmed_damage_low = 5
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 11
@@ -596,7 +599,10 @@
 	limb_id = SPECIES_GOLEM
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	bodypart_traits = list(TRAIT_CHUNKYFINGERS, TRAIT_FIST_MINING)
+	bodypart_traits = list(
+		TRAIT_CHUNKYFINGERS,
+		TRAIT_FIST_MINING,
+	)
 	unarmed_damage_low = 5
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 11

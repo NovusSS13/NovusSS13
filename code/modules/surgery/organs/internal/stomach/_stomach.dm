@@ -94,7 +94,6 @@
 	if(organ_flags & ORGAN_FAILING)
 		return
 	for(var/datum/reagent/bit as anything in reagents.reagent_list)
-
 		// If the reagent does not metabolize then it will sit in the stomach
 		// This has an effect on items like plastic causing them to take up space in the stomach
 		if(bit.metabolization_rate <= 0)

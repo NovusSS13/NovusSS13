@@ -51,6 +51,30 @@
 	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head."
 
+	//mask
+	if(wear_mask && !(obscured & ITEM_SLOT_MASK)  && !(wear_mask.item_flags & EXAMINE_SKIP))
+		. += "[t_He] [t_has] [wear_mask.get_examine_string(user)] on [t_his] face."
+
+	//neck
+	if(!(obscured & ITEM_SLOT_NECK))
+		if(wear_neck && !(wear_neck.item_flags & EXAMINE_SKIP))
+			. += "[t_He] [t_is] wearing [wear_neck.get_examine_string(user)] around [t_his] neck."
+		else if(shoeonhead && IS_ORGANIC_LIMB(shoeonhead) && undergoing_cardiac_arrest())
+			. += span_warning("<B>[t_His] jugular veins are severely distended!</B>")
+
+	//eyes
+	if(!(obscured & ITEM_SLOT_EYES))
+		if(glasses && !(glasses.item_flags & EXAMINE_SKIP))
+			. += "[t_He] [t_has] [glasses.get_examine_string(user)] covering [t_his] eyes."
+		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
+			. += span_warning("<B>[t_His] eyes are glowing with an [span_red("unnatural red aura")]!</B>")
+		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
+			. += span_warning("<B>[t_His] eyes are [span_bloody("<b>bloodshot</b>")]!</B>")
+
+	//ears
+	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
+		. += "[t_He] [t_has] [ears.get_examine_string(user)] on [t_his] ears."
+
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))
 		//accessory
@@ -82,9 +106,8 @@
 	if(!(obscured & ITEM_SLOT_GLOVES))
 		if(gloves && !(gloves.item_flags & EXAMINE_SKIP))
 			. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands."
-		else if(GET_ATOM_BLOOD_DNA_LENGTH(src) && blood_in_hands)
-			if(num_hands)
-				. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][span_bloody("<b>blood-stained</b>")] hand[num_hands > 1 ? "s" : ""]!")
+		else if(GET_ATOM_BLOOD_DNA_LENGTH(src) && blood_in_hands && num_hands)
+			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][span_bloody("<b>blood-stained</b>")] hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed
 	if(handcuffed && !(obscured && ITEM_SLOT_HANDCUFFED) && !(handcuffed.item_flags & EXAMINE_SKIP))
@@ -97,26 +120,6 @@
 	//shoes
 	if(shoes && !(obscured & ITEM_SLOT_FEET)  && !(shoes.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_is] wearing [shoes.get_examine_string(user)] on [t_his] feet."
-
-	//mask
-	if(wear_mask && !(obscured & ITEM_SLOT_MASK)  && !(wear_mask.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [wear_mask.get_examine_string(user)] on [t_his] face."
-
-	if(wear_neck && !(obscured & ITEM_SLOT_NECK)  && !(wear_neck.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_neck.get_examine_string(user)] around [t_his] neck."
-
-	//eyes
-	if(!(obscured & ITEM_SLOT_EYES))
-		if(glasses && !(glasses.item_flags & EXAMINE_SKIP))
-			. += "[t_He] [t_has] [glasses.get_examine_string(user)] covering [t_his] eyes."
-		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
-			. += span_warning("<B>[t_His] eyes are glowing with an [span_red("unnatural red aura")]!</B>")
-		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
-			. += span_warning("<B>[t_His] eyes are [span_bloody("<b>bloodshot</b>")]!</B>")
-
-	//ears
-	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [ears.get_examine_string(user)] on [t_his] ears."
 
 	//ID
 	if(wear_id && !(obscured & ITEM_SLOT_ID) && !(wear_id.item_flags & EXAMINE_SKIP))
@@ -159,7 +162,6 @@
 			just_sleeping = TRUE
 
 	var/list/msg = list()
-
 	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
 		msg += "[t_He] [t_is] severely malnourished.\n"
 	else if(nutrition >= NUTRITION_LEVEL_FAT)
@@ -415,7 +417,7 @@
 					"<a href='?src=[REF(src)];hud=s;add_crime=1;examine_time=[world.time]'>\[Add crime\]</a>",
 					"<a href='?src=[REF(src)];hud=s;add_note=1;examine_time=[world.time]'>\[Add note\]</a>"), "")
 	else if(isobserver(user))
-		. += span_info("<b>Traits:</b> [get_quirk_string(FALSE, CAT_QUIRK_ALL)]")
+		. += span_info("<b>Quirks:</b> [get_quirk_string(FALSE, CAT_QUIRK_ALL)]")
 	.[length(.)] += "</span>" //closes info class without creating another line
 
 	SEND_SIGNAL(src, COMSIG_ATOM_EXAMINE, user, .)

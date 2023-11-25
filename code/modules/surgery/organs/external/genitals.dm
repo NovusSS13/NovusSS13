@@ -5,6 +5,8 @@
 
 	visual = TRUE
 
+	inherit_color = TRUE
+
 	/// Whether or not we can coom
 	var/can_climax = TRUE
 
@@ -29,10 +31,9 @@
 
 /obj/item/organ/genital/update_icon_state()
 	. = ..()
-	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
-	color = overlay.draw_color
-	var/datum/sprite_accessory/genital/genital_accessory = overlay.sprite_datum
-	icon_state = "[genital_accessory.icon_state]_[overlay.genital_size][(overlay.uses_skintone && genital_accessory.supports_skintones) ? "_s" : ""]"
+	var/datum/bodypart_overlay/mutant/genital/overlay =  bodypart_overlay
+	var/datum/sprite_accessory/genital/accessory = overlay.sprite_datum
+	icon_state = "[accessory.icon_state]_[overlay.genital_size][(overlay.uses_skintone && accessory.supports_skintones) ? "_s" : ""]"
 
 /obj/item/organ/genital/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
@@ -192,8 +193,8 @@
 			return FALSE
 
 /datum/bodypart_overlay/mutant/genital/penis/get_base_icon_state()
-	var/datum/sprite_accessory/genital/genital_accessory = sprite_datum
-	return "[genital_accessory.icon_state]_[genital_size]_[arousal_state][(uses_skintone && genital_accessory.supports_skintones) ? "_s" : ""]"
+	var/datum/sprite_accessory/genital/accessory = sprite_datum
+	return "[accessory.icon_state]_[genital_size]_[arousal_state][(uses_skintone && accessory.supports_skintones) ? "_s" : ""]"
 
 /datum/bodypart_overlay/mutant/genital/penis/get_global_feature_list()
 	return GLOB.penis_list
@@ -243,8 +244,8 @@
 	feature_color_key = "testicles_color"
 
 /datum/bodypart_overlay/mutant/genital/testicles/get_base_icon_state()
-	var/datum/sprite_accessory/genital/genital_accessory = sprite_datum
-	return "[genital_accessory.icon_state]_[genital_size][(uses_skintone && genital_accessory.supports_skintones) ? "_s" : ""]"
+	var/datum/sprite_accessory/genital/accessory = sprite_datum
+	return "[accessory.icon_state]_[genital_size][(uses_skintone && accessory.supports_skintones) ? "_s" : ""]"
 
 /datum/bodypart_overlay/mutant/genital/testicles/get_global_feature_list()
 	return GLOB.testicles_list
@@ -276,8 +277,8 @@
 /obj/item/organ/genital/vagina/update_icon_state()
 	. = ..()
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
-	var/datum/sprite_accessory/genital/genital_accessory = overlay.sprite_datum
-	icon_state = "vagina[(overlay.uses_skintone && genital_accessory.supports_skintones) ? "_s" : ""]"
+	var/datum/sprite_accessory/genital/accessory = overlay.sprite_datum
+	icon_state = "vagina[(overlay.uses_skintone && accessory.supports_skintones) ? "_s" : ""]"
 
 /obj/item/organ/genital/vagina/get_genital_examine()
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
@@ -293,8 +294,8 @@
 	arousal_options = list("Not aroused" = 0, "Aroused" = 1)
 
 /datum/bodypart_overlay/mutant/genital/vagina/get_base_icon_state()
-	var/datum/sprite_accessory/genital/genital_accessory = sprite_datum
-	return "[genital_accessory.icon_state]_[arousal_state][(uses_skintone && genital_accessory.supports_skintones) ? "_s" : ""]"
+	var/datum/sprite_accessory/genital/accessory = sprite_datum
+	return "[accessory.icon_state]_[arousal_state][(uses_skintone && accessory.supports_skintones) ? "_s" : ""]"
 
 /datum/bodypart_overlay/mutant/genital/vagina/get_global_feature_list()
 	return GLOB.vagina_list
@@ -334,10 +335,9 @@
 		set_genital_size(size)
 
 /obj/item/organ/genital/breasts/set_genital_size(value)
-	var/datum/sprite_accessory/genital/breasts/sprite_accessory = bodypart_overlay.sprite_datum
-	value = clamp(text2num(value), 1, sprite_accessory.max_size)
-
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+	var/datum/sprite_accessory/genital/breasts/accessory = bodypart_overlay.sprite_datum
+	value = clamp(text2num(value), 1, accessory.max_size)
 	overlay.genital_size = value
 
 /obj/item/organ/genital/breasts/get_genital_examine()
@@ -356,8 +356,8 @@
 	feature_color_key = "breasts_color"
 
 /datum/bodypart_overlay/mutant/genital/breasts/get_base_icon_state()
-	var/datum/sprite_accessory/genital/genital_accessory = sprite_datum
-	return "[genital_accessory.icon_state]_[genital_size][(uses_skintone && genital_accessory.supports_skintones) ? "_s" : ""]"
+	var/datum/sprite_accessory/genital/accessory = sprite_datum
+	return "[accessory.icon_state]_[genital_size][(uses_skintone && accessory.supports_skintones) ? "_s" : ""]"
 
 /datum/bodypart_overlay/mutant/genital/breasts/get_global_feature_list()
 	return GLOB.breasts_list

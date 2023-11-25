@@ -55,6 +55,17 @@
 	/// Megamind brains are at their peak potential, you can't add more hemispheres to them
 	var/megamind = FALSE
 
+/obj/item/organ/brain/Destroy() //copypasted from MMIs.
+	if(brainmob)
+		QDEL_NULL(brainmob)
+	QDEL_LIST(traumas)
+	QDEL_LIST(extra_hemispheres)
+
+	destroy_all_skillchips()
+	if(owner?.mind) //You aren't allowed to return to brains that don't exist
+		owner.mind.set_current(null)
+	return ..()
+
 /obj/item/organ/brain/update_overlays()
 	. = ..()
 	if(hemispherectomized && hemispherectomy_overlay)
@@ -67,6 +78,122 @@
 			hemisphere_appearance.pixel_x = pix_x
 			pix_x += 2
 			. += hemisphere_appearance
+
+/obj/item/organ/brain/examine(mob/user)
+	. = ..()
+	if(LAZYLEN(skillchips))
+		. += span_info("It has a skillchip embedded in it.")
+	if(hemispherectomized)
+		. += span_warning("Oh no... This brain has been mutilated...")
+	else if(LAZYLEN(extra_hemispheres))
+		for(var/hemisphere in extra_hemispheres)
+			. += span_warning("It has \a [hemisphere] grafted onto it...")
+	if(suicided)
+		. += span_deadsay("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
+		return
+	if((brainmob && (brainmob.client || brainmob.get_ghost())) || decoy_override)
+		if(organ_flags & ORGAN_FAILING)
+			. += span_notice("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>mannitol</b>.")
+		else if(damage >= maxHealth*0.5)
+			. += span_notice("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>mannitol</b>.")
+		else
+			. += span_notice("You can feel the small spark of life still left in this one.")
+	else
+		. += span_deadsay("This one is completely devoid of life.")
+
+/obj/item/organ/brain/attack(mob/living/carbon/C, mob/user)
+	if(!istype(C))
+		return ..()
+
+	add_fingerprint(user)
+
+	if(user.zone_selected != BODY_ZONE_HEAD)
+		return ..()
+
+	var/target_has_brain = C.get_organ_by_type(/obj/item/organ/brain)
+
+	if(!target_has_brain && C.is_eyes_covered())
+		to_chat(user, span_warning("You're going to need to remove [C.p_their()] head cover first!"))
+		return
+
+	//since these people will be dead M != usr
+
+	if(!target_has_brain)
+		if(!C.get_bodypart(BODY_ZONE_HEAD) || !user.temporarilyRemoveItemFromInventory(src))
+			return
+		var/msg = "[C] has [src] inserted into [C.p_their()] head by [user]."
+		if(C == user)
+			msg = "[user] inserts [src] into [user.p_their()] head!"
+
+		C.visible_message(span_danger("[msg]"),
+						span_userdanger("[msg]"))
+
+		if(C != user)
+			to_chat(C, span_notice("[user] inserts [src] into your head."))
+			to_chat(user, span_notice("You insert [src] into [C]'s head."))
+		else
+			to_chat(user, span_notice("You insert [src] into your head.") )
+
+		Insert(C)
+	else
+		return ..()
+
+/obj/item/organ/brain/attackby(obj/item/O, mob/user, params)
+	user.changeNext_move(CLICK_CD_MELEE)
+
+	if(istype(O, /obj/item/borg/apparatus/organ_storage))
+		return //Borg organ bags shouldn't be killing brains
+
+	if(damage && O.is_drainable() && O.reagents.has_reagent(/datum/reagent/medicine/mannitol)) //attempt to heal the brain
+		. = TRUE //don't do attack animation.
+		if(brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
+			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
+			return
+
+		user.visible_message(span_notice("[user] starts to slowly pour the contents of [O] onto [src]."), span_notice("You start to slowly pour the contents of [O] onto [src]."))
+		if(!do_after(user, 3 SECONDS, src))
+			to_chat(user, span_warning("You failed to pour the contents of [O] onto [src]!"))
+			return
+
+		user.visible_message(span_notice("[user] pours the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."), span_notice("You pour the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."))
+		var/amount = O.reagents.get_reagent_amount(/datum/reagent/medicine/mannitol)
+		var/healto = max(0, damage - amount * 2)
+		O.reagents.remove_all(ROUND_UP(O.reagents.total_volume / amount * (damage - healto) * 0.5)) //only removes however much solution is needed while also taking into account how much of the solution is mannitol
+		set_organ_damage(healto) //heals 2 damage per unit of mannitol, and by using "set_organ_damage", we clear the failing variable if that was up
+		return
+
+	// Cutting out skill chips.
+	if(length(skillchips) && O.get_sharpness() == SHARP_EDGED)
+		to_chat(user,span_notice("You begin to excise skillchips from [src]."))
+		if(do_after(user, 15 SECONDS, target = src))
+			for(var/chip in skillchips)
+				var/obj/item/skillchip/skillchip = chip
+
+				if(!istype(skillchip))
+					stack_trace("Item of type [skillchip.type] qdel'd from [src] skillchip list.")
+					qdel(skillchip)
+					continue
+
+				remove_skillchip(skillchip)
+
+				if(skillchip.removable)
+					skillchip.forceMove(drop_location())
+					continue
+
+				qdel(skillchip)
+
+			skillchips = null
+		return
+
+	if(brainmob) //if we aren't trying to heal the brain, pass the attack onto the brainmob.
+		O.attack(brainmob, user) //Oh noooeeeee
+
+	if(O.force != 0 && !(O.item_flags & NOBLUDGEON))
+		user.do_attack_animation(src)
+		playsound(loc, 'sound/effects/meatslap.ogg', 50)
+		set_organ_damage(maxHealth) //fails the brain as the brain was attacked, they're pretty fragile.
+		visible_message(span_danger("[user] hits [src] with [O]!"))
+		to_chat(user, span_danger("You hit [src] with [O]!"))
 
 /obj/item/organ/brain/Insert(mob/living/carbon/receiver, special = FALSE, drop_if_replaced = TRUE, no_id_transfer = FALSE)
 	. = ..()
@@ -161,168 +288,26 @@
 		brainmob.forceMove(src)
 		head.brainmob = null
 
-/obj/item/organ/brain/proc/transfer_identity(mob/living/brainiac, silent = FALSE)
-	name = "[brainiac.name]'s [initial(name)]"
-	if(brainmob || decoy_override)
-		return
-	if(!brainiac.mind)
-		return
-
-	brainmob = new(src)
-	brainmob.name = brainiac.real_name
-	brainmob.real_name = brainiac.real_name
-	brainmob.timeofdeath = brainiac.timeofdeath
-
-	if(suicided)
-		ADD_TRAIT(brainmob, TRAIT_SUICIDED, REF(src))
-
-	if(brainiac.has_dna())
-		var/mob/living/carbon/carbon_brainiac = brainiac
-		if(!brainmob.stored_dna)
-			brainmob.stored_dna = new /datum/dna/stored(brainmob)
-		carbon_brainiac.dna.copy_dna(brainmob.stored_dna)
-		// Hack, fucked dna needs to follow the brain to prevent memes, so we need to copy over the trait sources and shit
-		for(var/source in GET_TRAIT_SOURCES(carbon_brainiac, TRAIT_BADDNA))
-			ADD_TRAIT(brainmob, TRAIT_BADDNA, source)
-	if(brainiac.mind && brainiac.mind.current)
-		brainiac.mind.transfer_to(brainmob)
-	if(!silent)
-		to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
-
-/obj/item/organ/brain/attackby(obj/item/O, mob/user, params)
-	user.changeNext_move(CLICK_CD_MELEE)
-
-	if(istype(O, /obj/item/borg/apparatus/organ_storage))
-		return //Borg organ bags shouldn't be killing brains
-
-	if(damage && O.is_drainable() && O.reagents.has_reagent(/datum/reagent/medicine/mannitol)) //attempt to heal the brain
-		. = TRUE //don't do attack animation.
-		if(brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
-			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
-			return
-
-		user.visible_message(span_notice("[user] starts to slowly pour the contents of [O] onto [src]."), span_notice("You start to slowly pour the contents of [O] onto [src]."))
-		if(!do_after(user, 3 SECONDS, src))
-			to_chat(user, span_warning("You failed to pour the contents of [O] onto [src]!"))
-			return
-
-		user.visible_message(span_notice("[user] pours the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."), span_notice("You pour the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."))
-		var/amount = O.reagents.get_reagent_amount(/datum/reagent/medicine/mannitol)
-		var/healto = max(0, damage - amount * 2)
-		O.reagents.remove_all(ROUND_UP(O.reagents.total_volume / amount * (damage - healto) * 0.5)) //only removes however much solution is needed while also taking into account how much of the solution is mannitol
-		set_organ_damage(healto) //heals 2 damage per unit of mannitol, and by using "set_organ_damage", we clear the failing variable if that was up
-		return
-
-	// Cutting out skill chips.
-	if(length(skillchips) && O.get_sharpness() == SHARP_EDGED)
-		to_chat(user,span_notice("You begin to excise skillchips from [src]."))
-		if(do_after(user, 15 SECONDS, target = src))
-			for(var/chip in skillchips)
-				var/obj/item/skillchip/skillchip = chip
-
-				if(!istype(skillchip))
-					stack_trace("Item of type [skillchip.type] qdel'd from [src] skillchip list.")
-					qdel(skillchip)
-					continue
-
-				remove_skillchip(skillchip)
-
-				if(skillchip.removable)
-					skillchip.forceMove(drop_location())
-					continue
-
-				qdel(skillchip)
-
-			skillchips = null
-		return
-
-	if(brainmob) //if we aren't trying to heal the brain, pass the attack onto the brainmob.
-		O.attack(brainmob, user) //Oh noooeeeee
-
-	if(O.force != 0 && !(O.item_flags & NOBLUDGEON))
-		user.do_attack_animation(src)
-		playsound(loc, 'sound/effects/meatslap.ogg', 50)
-		set_organ_damage(maxHealth) //fails the brain as the brain was attacked, they're pretty fragile.
-		visible_message(span_danger("[user] hits [src] with [O]!"))
-		to_chat(user, span_danger("You hit [src] with [O]!"))
-
-/obj/item/organ/brain/examine(mob/user)
+/obj/item/organ/brain/apply_organ_damage(damage_amount, maximum = maxHealth, required_organ_flag = NONE)
 	. = ..()
-	if(LAZYLEN(skillchips))
-		. += span_info("It has a skillchip embedded in it.")
-	if(hemispherectomized)
-		. += span_bolddanger("Oh no... This brain has been mutilated...")
-	else if(LAZYLEN(extra_hemispheres))
-		for(var/hemisphere in extra_hemispheres)
-			. += span_bolddanger("It has \a [hemisphere] grafted onto it...")
-	if(suicided)
-		. += span_deadsay("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
+	if(!owner)
 		return
-	if((brainmob && (brainmob.client || brainmob.get_ghost())) || decoy_override)
-		if(organ_flags & ORGAN_FAILING)
-			. += span_notice("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>mannitol</b>.")
-		else if(damage >= maxHealth*0.5)
-			. += span_notice("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>mannitol</b>.")
-		else
-			. += span_notice("You can feel the small spark of life still left in this one.")
+	if(damage >= (maxHealth * 0.3))
+		owner.add_mood_event("brain_damage", /datum/mood_event/brain_damage)
 	else
-		. += span_deadsay("This one is completely devoid of life.")
+		owner.clear_mood_event("brain_damage")
+	if(damage >= maxHealth && (owner.stat < DEAD)) //rip
+		to_chat(owner, span_userdanger("The last spark of life in your brain fizzles out..."))
+		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
+		owner.death()
 
-/obj/item/organ/brain/attack(mob/living/carbon/C, mob/user)
-	if(!istype(C))
-		return ..()
-
-	add_fingerprint(user)
-
-	if(user.zone_selected != BODY_ZONE_HEAD)
-		return ..()
-
-	var/target_has_brain = C.get_organ_by_type(/obj/item/organ/brain)
-
-	if(!target_has_brain && C.is_eyes_covered())
-		to_chat(user, span_warning("You're going to need to remove [C.p_their()] head cover first!"))
-		return
-
-	//since these people will be dead M != usr
-
-	if(!target_has_brain)
-		if(!C.get_bodypart(BODY_ZONE_HEAD) || !user.temporarilyRemoveItemFromInventory(src))
-			return
-		var/msg = "[C] has [src] inserted into [C.p_their()] head by [user]."
-		if(C == user)
-			msg = "[user] inserts [src] into [user.p_their()] head!"
-
-		C.visible_message(span_danger("[msg]"),
-						span_userdanger("[msg]"))
-
-		if(C != user)
-			to_chat(C, span_notice("[user] inserts [src] into your head."))
-			to_chat(user, span_notice("You insert [src] into [C]'s head."))
-		else
-			to_chat(user, span_notice("You insert [src] into your head.") )
-
-		Insert(C)
-	else
-		..()
-
-/obj/item/organ/brain/Destroy() //copypasted from MMIs.
-	if(brainmob)
-		QDEL_NULL(brainmob)
-	QDEL_LIST(traumas)
-	QDEL_LIST(extra_hemispheres)
-
-	destroy_all_skillchips()
-	if(owner?.mind) //You aren't allowed to return to brains that don't exist
-		owner.mind.set_current(null)
-	return ..()
-
-/obj/item/organ/brain/check_damage_thresholds(mob/M)
+/obj/item/organ/brain/check_damage_thresholds(mob/organ_owner)
 	. = ..()
 	//if we're not more injured than before, return without gambling for a trauma
 	if(damage <= prev_damage)
 		return
 
-	var/is_boosted = (owner && HAS_MIND_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST))
+	var/is_boosted = (organ_owner && HAS_MIND_TRAIT(organ_owner, TRAIT_SPECIAL_TRAUMA_BOOST))
 	var/effective_prev_damage = (prev_damage/maxHealth * BRAIN_DAMAGE_DEATH)
 	var/effective_damage = (damage/maxHealth * BRAIN_DAMAGE_DEATH)
 	damage_delta = effective_damage - effective_prev_damage
@@ -391,13 +376,64 @@
 		remove_trauma_from_traumas(trauma)
 		replacement_brain.add_trauma_to_traumas(trauma)
 
+// Brains REALLY like ghosting people - we need special tricks to avoid that, namely removing the old brain with no_id_transfer
+/obj/item/organ/brain/replace_into(mob/living/carbon/new_owner, drop_if_replaced = FALSE)
+	var/obj/item/organ/brain/old_brain = new_owner.get_organ_slot(ORGAN_SLOT_BRAIN)
+	if(old_brain)
+		old_brain.Remove(new_owner, special = TRUE, no_id_transfer = TRUE)
+		if(drop_if_replaced)
+			old_brain.forceMove(new_owner.drop_location())
+		else
+			qdel(old_brain)
+	return Insert(new_owner, special = TRUE, drop_if_replaced = drop_if_replaced, no_id_transfer = TRUE)
+
 /obj/item/organ/brain/machine_wash(obj/machinery/washing_machine/brainwasher)
 	. = ..()
 	if(HAS_TRAIT(brainwasher, TRAIT_BRAINWASHING))
 		set_organ_damage(0)
-		cure_all_traumas(TRAUMA_RESILIENCE_LOBOTOMY)
+		cure_all_traumas(TRAUMA_RESILIENCE_HEMISPHERECTOMY)
 	else
 		set_organ_damage(BRAIN_DAMAGE_DEATH)
+
+// It would be ABSOLUTELY PSYCHOTIC if for some reason a species did not have a brain, but hey, who knows?
+/obj/item/organ/brain/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	return owner_species.mutantbrain
+
+/// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
+/obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
+	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
+	if((target.body_position == LYING_DOWN) || !active_hand)
+		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % RIGHT_HANDS) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
+		return found_bodypart || active_hand
+	return active_hand
+
+/obj/item/organ/brain/proc/transfer_identity(mob/living/brainiac, silent = FALSE)
+	name = "[brainiac.name]'s [initial(name)]"
+	if(brainmob || decoy_override)
+		return
+	if(!brainiac.mind)
+		return
+
+	brainmob = new(src)
+	brainmob.name = brainiac.real_name
+	brainmob.real_name = brainiac.real_name
+	brainmob.timeofdeath = brainiac.timeofdeath
+
+	if(suicided)
+		ADD_TRAIT(brainmob, TRAIT_SUICIDED, REF(src))
+
+	if(brainiac.has_dna())
+		var/mob/living/carbon/carbon_brainiac = brainiac
+		if(!brainmob.stored_dna)
+			brainmob.stored_dna = new /datum/dna/stored(brainmob)
+		carbon_brainiac.dna.copy_dna(brainmob.stored_dna)
+		// Hack, fucked dna needs to follow the brain to prevent memes, so we need to copy over the trait sources and shit
+		for(var/source in GET_TRAIT_SOURCES(carbon_brainiac, TRAIT_BADDNA))
+			ADD_TRAIT(brainmob, TRAIT_BADDNA, source)
+	if(brainiac.mind && brainiac.mind.current)
+		brainiac.mind.transfer_to(brainmob)
+	if(!silent)
+		to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
 
 /obj/item/organ/brain/zombie
 	name = "zombie brain"
@@ -573,38 +609,6 @@
 		qdel(X)
 		amount_cured++
 	return amount_cured
-
-/obj/item/organ/brain/apply_organ_damage(damage_amount, maximum = maxHealth, required_organ_flag = NONE)
-	. = ..()
-	if(!owner)
-		return
-	if(damage >= (maxHealth * 0.3))
-		owner.add_mood_event("brain_damage", /datum/mood_event/brain_damage)
-	else
-		owner.clear_mood_event("brain_damage")
-	if(damage >= maxHealth && (owner.stat < DEAD)) //rip
-		to_chat(owner, span_userdanger("The last spark of life in your brain fizzles out..."))
-		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
-		owner.death()
-
-/// Brains REALLY like ghosting people - we need special tricks to avoid that, namely removing the old brain with no_id_transfer
-/obj/item/organ/brain/replace_into(mob/living/carbon/new_owner, drop_if_replaced = FALSE)
-	var/obj/item/organ/brain/old_brain = new_owner.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(old_brain)
-		old_brain.Remove(new_owner, special = TRUE, no_id_transfer = TRUE)
-		if(drop_if_replaced)
-			old_brain.forceMove(new_owner.drop_location())
-		else
-			qdel(old_brain)
-	return Insert(new_owner, special = TRUE, drop_if_replaced = drop_if_replaced, no_id_transfer = TRUE)
-
-/// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
-/obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
-	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
-	if((target.body_position == LYING_DOWN) || !active_hand)
-		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % RIGHT_HANDS) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
-		return found_bodypart || active_hand
-	return active_hand
 
 /// Proc used to hemispherectomize the brain, and create the hemisphere object, plus remove any extra hemispheres
 /obj/item/organ/brain/proc/hemispherectomize(mob/living/user, harmful = TRUE)

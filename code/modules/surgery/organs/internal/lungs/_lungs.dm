@@ -807,14 +807,16 @@
 /obj/item/organ/lungs/jelly
 	name = "vacuole"
 	desc = "A large organelle designed to store oxygen and other important gasses."
+	icon = 'icons/obj/medical/organs/jelly_organs.dmi'
+	icon_state = "vacuole"
 
 	safe_plasma_max = 0 //We breathe this to gain POWER.
 
-/obj/item/organ/lungs/jelly/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather_slime)
+/obj/item/organ/lungs/jelly/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather)
 	. = ..()
 	if (breath?.gases[/datum/gas/plasma])
 		var/plasma_pp = breath.get_breath_partial_pressure(breath.gases[/datum/gas/plasma][MOLES])
-		breather_slime.blood_volume += (0.2 * plasma_pp) // 10/s when breathing literally nothing but plasma, which will suffocate you.
+		breather.blood_volume += (0.2 * plasma_pp) // 10/s when breathing literally nothing but plasma, which will suffocate you.
 
 /obj/item/organ/lungs/cybernetic
 	name = "basic cybernetic lungs"

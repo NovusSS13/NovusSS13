@@ -25,43 +25,47 @@
 
 /obj/item/organ/tail/on_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
-	RegisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL, PROC_REF(wag))
 	original_owner ||= WEAKREF(organ_owner)
+	paired_spines = organ_owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
 
 	organ_owner.clear_mood_event("tail_lost")
 	organ_owner.clear_mood_event("tail_balance_lost")
-
 	if(IS_WEAKREF_OF(organ_owner, original_owner))
 		organ_owner.clear_mood_event("wrong_tail_regained")
-	else if(LAZYACCESS(organ_owner.dna.species.cosmetic_organs, type) && \
-		(organ_owner.dna.species.cosmetic_organs[type] != SPRITE_ACCESSORY_NONE))
+	else if(original_owner)
 		organ_owner.add_mood_event("wrong_tail_regained", /datum/mood_event/tail_regained_wrong)
+	else
+		for(var/tail_type in organ_owner.dna?.species.cosmetic_organs)
+			if(ispath(tail_type, /obj/item/organ/tail) && \
+				(organ_owner.dna.species.cosmetic_organs[tail_type] != SPRITE_ACCESSORY_NONE) && \
+				(type != tail_type))
+				organ_owner.add_mood_event("wrong_tail_regained", /datum/mood_event/tail_regained_wrong)
+				break
 
-	paired_spines = organ_owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
+	RegisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL, PROC_REF(wag))
 	RegisterSignal(organ_owner, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_for_spines))
 	RegisterSignal(organ_owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_for_spines_loss))
 
-/obj/item/organ/tail/Remove(mob/living/carbon/organ_owner, special, moving)
-	if(wag_flags & WAG_WAGGING)
-		wag(FALSE)
-	return ..()
-
 /obj/item/organ/tail/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
-	if(paired_spines)
-		paired_spines = null
+	if(wag_flags & WAG_WAGGING)
+		wag(FALSE)
+	paired_spines = null
+
+	for(var/tail_type in organ_owner.dna?.species.cosmetic_organs)
+		if(ispath(tail_type, /obj/item/organ/tail) && (organ_owner.dna.species.cosmetic_organs[tail_type] != SPRITE_ACCESSORY_NONE))
+			organ_owner.add_mood_event("tail_lost", /datum/mood_event/tail_lost)
+			organ_owner.add_mood_event("tail_balance_lost", /datum/mood_event/tail_balance_lost)
+
 	UnregisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL)
 	UnregisterSignal(organ_owner, COMSIG_CARBON_GAIN_ORGAN)
 	UnregisterSignal(organ_owner, COMSIG_CARBON_LOSE_ORGAN)
-	if(organ_owner.dna.species.cosmetic_organs[type] && (organ_owner.dna.species.cosmetic_organs[type] != SPRITE_ACCESSORY_NONE))
-		organ_owner.add_mood_event("tail_lost", /datum/mood_event/tail_lost)
-		organ_owner.add_mood_event("tail_balance_lost", /datum/mood_event/tail_balance_lost)
 
 /// Checks if the tail gained spines so we can pair!
 /obj/item/organ/tail/proc/check_for_spines(mob/living/carbon/source, obj/item/organ/organ)
 	SIGNAL_HANDLER
 
-	if(!istype(organ, /obj/item/organ/tail))
+	if(!istype(organ, /obj/item/organ/spines))
 		return
 	paired_spines = organ
 
@@ -115,20 +119,17 @@
 	return GLOB.tails_list
 
 /datum/bodypart_overlay/mutant/tail/get_base_icon_state()
-	var/datum/sprite_accessory/tails/wagger = sprite_datum
-	return ((wagging && wagger.can_wag) ? "wagging_" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
-
-/datum/bodypart_overlay/mutant/tail/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
-	if(owner.wear_suit?.flags_inv & HIDEJUMPSUIT)
-		return FALSE
-
-	return TRUE
+	var/datum/sprite_accessory/tails/accessory = sprite_datum
+	return ((wagging && accessory.can_wag) ? "wagging_" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
 
 /obj/item/organ/tail/mutant
 	name = "mutant tail"
-	icon_state = "tail-furry"
+	icon_state = "tail-fluffy"
 
+	detail_overlay = "tail-fluffy-detail"
+	inherit_detail_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/mutant
+	wag_flags = WAG_ABLE
 
 /datum/bodypart_overlay/mutant/tail/mutant
 
@@ -137,8 +138,11 @@
 	desc = "A severed cat tail. It doesn't seem to come from an actual cat..."
 	icon_state = "tail-cat"
 
+	detail_overlay = "tail-cat-detail"
+	inherit_detail_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat
 	wag_flags = WAG_ABLE
+
 	organ_traits = list(TRAIT_HATED_BY_DOGS)
 
 /// Cat tail bodypart overlay
@@ -151,6 +155,7 @@
 	name = "monkey tail"
 	desc = "A severed monkey tail. Animal cruelty is a serious crime, you know."
 
+	inherit_color = FALSE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/monkey
 
 /// Monkey tail bodypart overlay
@@ -164,6 +169,8 @@
 	desc = "A severed lizard tail. Somewhere, no doubt, a lizard hater is very pleased with themselves."
 	icon_state = "tail-lizard"
 
+	detail_overlay = "tail-lizard-detail"
+	inherit_detail_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/lizard
 	wag_flags = WAG_ABLE
 
@@ -181,10 +188,11 @@
 	name = "avali tail"
 	desc = "A severed avali tail. If you had more of these you could probably stitch them into some crude jump rope."
 
+	inherit_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/avali
 	wag_flags = WAG_ABLE
 
-/// Cat tail bodypart overlay
+/// Avali tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/avali
 	required_bodytype = BODYTYPE_AVALI
 

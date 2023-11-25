@@ -400,7 +400,7 @@
 	. += span_info("[p_they(TRUE)] [p_are()] a [weight_class_to_text(w_class)] item.")
 
 	if(item_flags & CRUEL_IMPLEMENT)
-		. += span_info("[src] seems quite practical for particularly [span_bloody("red")] procedures and experiments.")
+		. += span_info("[src] seem[p_s()] quite practical for particularly [span_bloody("red")] procedures and experiments.")
 
 	if(resistance_flags & INDESTRUCTIBLE)
 		. += span_info("[src] seem[p_s()] extremely robust! [p_they(TRUE)] will probably withstand anything that could happen to it!")

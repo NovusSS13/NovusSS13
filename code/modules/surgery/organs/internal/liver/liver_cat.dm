@@ -1,9 +1,9 @@
-/obj/item/organ/liver/felinid
+/obj/item/organ/liver/cat
 	name = "fluffy liver"
 	desc = "The liver of a felinid, strangely covered in fur."
 	color = COLOR_PINK
 
-/obj/item/organ/liver/felinid/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick, times_fired)
+/obj/item/organ/liver/cat/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick, times_fired)
 	. = ..()
 	if((. & COMSIG_MOB_STOP_REAGENT_CHECK) || (organ_flags & ORGAN_FAILING))
 		return

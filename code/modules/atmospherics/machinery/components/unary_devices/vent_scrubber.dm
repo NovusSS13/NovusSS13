@@ -30,6 +30,9 @@
 
 	COOLDOWN_DECLARE(check_turfs_cooldown)
 
+	/// Fun distortion effect for when the scrubber is active
+	var/obj/effect/overlay/vis/steam/steam = /obj/effect/overlay/vis/steam/scrubber
+
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Initialize(mapload)
 	if(!id_tag)
 		id_tag = assign_random_name()
@@ -42,10 +45,13 @@
 
 	assign_to_area()
 	AddElement(/datum/element/atmos_sensitive, mapload)
+	if(steam)
+		steam = new steam()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Destroy()
 	disconnect_from_area()
 	adjacent_turfs.Cut()
+	QDEL_NULL(steam)
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
@@ -129,6 +135,17 @@
 
 	atmos_conditions_changed()
 	return TRUE
+
+/obj/machinery/atmospherics/components/unary/vent_scrubber/update_icon()
+	. = ..()
+
+	if(!steam)
+		return
+
+	if(welded || !on ||!is_operational)
+		vis_contents -= steam
+	else
+		vis_contents |= steam
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/update_icon_nopipes()
 	cut_overlays()

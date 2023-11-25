@@ -1722,6 +1722,13 @@
 
 	// Some overrides may return `null`, prevent those from jamming up the list.
 	list_clear_nulls(species_perks)
+	if(!LAZYLEN(species_perks))
+		species_perks += list(list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = "face-meh",
+			SPECIES_PERK_NAME = "Remarkably Unremarkable",
+			SPECIES_PERK_DESC = "[plural_form] have absolutely no remarkable characteristics. How lame!",
+		))
 
 	// Now let's sort them out for cleanliness and sanity
 	var/list/perks_to_return = list(

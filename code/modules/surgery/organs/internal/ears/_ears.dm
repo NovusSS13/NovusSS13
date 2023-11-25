@@ -69,6 +69,9 @@
 	else
 		REMOVE_TRAIT(owner, TRAIT_DEAF, EAR_DAMAGE)
 
+/obj/item/organ/ears/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	return owner_species.mutantears
+
 /obj/item/organ/ears/proc/adjustEarDamage(ddmg, ddeaf)
 	if(owner.status_flags & GODMODE)
 		return
@@ -127,6 +130,8 @@
 
 	visual = TRUE
 	dna_block = DNA_EARS_BLOCK
+	detail_overlay = "ears-fluffy-detail"
+	inherit_detail_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/mutant
 
 /datum/bodypart_overlay/mutant/ears/mutant
@@ -136,13 +141,17 @@
 
 /obj/item/organ/ears/cat
 	name = "cat ears"
+	desc = "I canyat hear you!"
 	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "ears-fluffy"
 	damage_multiplier = 2
 
 	visual = TRUE
 	dna_block = DNA_EARS_BLOCK
+	detail_overlay = "ears-fluffy-detail"
+	inherit_detail_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/cat
+
 	organ_traits = list(TRAIT_HATED_BY_DOGS)
 
 /datum/bodypart_overlay/mutant/ears/cat
@@ -152,12 +161,15 @@
 
 /obj/item/organ/ears/avali
 	name = "avali ears"
+	desc = "Wait, avian ears shouldn't be like this..."
 	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "ears-fluffy"
 	damage_multiplier = 2
 
 	visual = TRUE
 	dna_block = DNA_EARS_BLOCK
+	detail_overlay = "ears-fluffy-detail"
+	inherit_detail_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/avali
 
 /obj/item/organ/ears/avali/on_insert(mob/living/carbon/human/ear_owner)

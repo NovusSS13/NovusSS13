@@ -32,6 +32,30 @@
 	velocity = list(0, 0.3, 0)
 	friction = 0.25
 
+/particles/smoke/steam/vent
+	spawning = 1
+	lifespan = 1 SECONDS
+	fade = 2 SECONDS
+	position = generator(GEN_SPHERE, 0, 8, NORMAL_RAND)
+	velocity = list(0, 0.3, 0)
+	friction = 0.25
+
+/particles/smoke/steam/vent/heavy
+	spawning = 2
+	lifespan = 2 SECONDS
+	position = generator(GEN_SPHERE, 0, 10, NORMAL_RAND)
+	velocity = list(0, 0, 0)
+
+/particles/smoke/steam/vent/scrubber
+	lifespan = 1.25 SECONDS
+	fade = 2 SECONDS
+	fadein = 0.5 SECONDS
+	gravity = list(0, -0.95)
+	position = generator(GEN_BOX, list(-8, 8, 0), list(8, 24, 0), NORMAL_RAND)
+	scale = 1.1
+	grow = -0.05
+	drift = null
+
 /particles/smoke/steam/bad
 	icon_state = list("steam_1" = 1, "smoke_1" = 1, "smoke_2" = 1, "smoke_3" = 1)
 	spawning = 2
