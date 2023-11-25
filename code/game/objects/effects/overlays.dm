@@ -49,6 +49,7 @@
 /obj/effect/overlay/vis/steam
 	plane = GRAVITY_PULSE_PLANE
 	alpha = 64
+	blend_mode = BLEND_ADD
 	/// Type of particle this uses
 	var/particle_type = /particles/smoke/steam/vent
 

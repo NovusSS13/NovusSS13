@@ -18,6 +18,7 @@
 	now_failing = "<span class='warning'>An explosion of pain erupts in your lower right abdomen!</span>"
 	now_fixed = "<span class='info'>The pain in your abdomen has subsided.</span>"
 
+	/// As the name implies, current stage of inflamation - 0 is not inflamed
 	var/inflamation_stage = 0
 
 /obj/item/organ/appendix/update_name()
@@ -25,8 +26,19 @@
 	name = "[inflamation_stage ? "inflamed " : null][initial(name)]"
 
 /obj/item/organ/appendix/update_icon_state()
+	. = ..()
 	icon_state = "[base_icon_state][inflamation_stage ? "inflamed" : ""]"
-	return ..()
+
+/obj/item/organ/appendix/on_remove(mob/living/carbon/organ_owner)
+	. = ..()
+	REMOVE_TRAIT(organ_owner, TRAIT_DISEASELIKE_SEVERITY_MEDIUM, type)
+	organ_owner.med_hud_set_status()
+
+/obj/item/organ/appendix/on_insert(mob/living/carbon/organ_owner)
+	. = ..()
+	if(inflamation_stage)
+		ADD_TRAIT(organ_owner, TRAIT_DISEASELIKE_SEVERITY_MEDIUM, type)
+		organ_owner.med_hud_set_status()
 
 /obj/item/organ/appendix/on_life(seconds_per_tick, times_fired)
 	. = ..()
@@ -41,6 +53,14 @@
 	else if(SPT_PROB(APPENDICITIS_PROB, seconds_per_tick))
 		become_inflamed()
 
+/obj/item/organ/appendix/get_status_text()
+	if((!(organ_flags & ORGAN_FAILING)) && inflamation_stage)
+		return "<font color='#ff9933'>Inflamed</font>"
+	return ..()
+
+/obj/item/organ/appendix/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	return owner_species.mutantappendix
+
 /obj/item/organ/appendix/proc/become_inflamed()
 	inflamation_stage = 1
 	update_appearance()
@@ -54,40 +74,20 @@
 	if(inflamation_stage < 3 && SPT_PROB(INFLAMATION_ADVANCEMENT_PROB, seconds_per_tick))
 		inflamation_stage += 1
 
-	switch(inflamation_stage)
-		if(1)
-			if(SPT_PROB(2.5, seconds_per_tick))
-				organ_owner.emote("cough")
-		if(2)
-			if(SPT_PROB(1.5, seconds_per_tick))
-				to_chat(organ_owner, span_warning("You feel a stabbing pain in your abdomen!"))
-				organ_owner.adjustOrganLoss(ORGAN_SLOT_APPENDIX, 5)
-				organ_owner.Stun(rand(40, 60))
-				organ_owner.adjustToxLoss(1, updating_health = TRUE, forced = TRUE)
-		if(3)
-			if(SPT_PROB(0.5, seconds_per_tick))
-				organ_owner.vomit(95)
-				organ_owner.adjustOrganLoss(ORGAN_SLOT_APPENDIX, 15)
-
-
-/obj/item/organ/appendix/get_availability(datum/species/owner_species, mob/living/owner_mob)
-	return owner_species.mutantappendix
-
-/obj/item/organ/appendix/on_remove(mob/living/carbon/organ_owner)
-	. = ..()
-	REMOVE_TRAIT(organ_owner, TRAIT_DISEASELIKE_SEVERITY_MEDIUM, type)
-	organ_owner.med_hud_set_status()
-
-/obj/item/organ/appendix/on_insert(mob/living/carbon/organ_owner)
-	. = ..()
-	if(inflamation_stage)
-		ADD_TRAIT(organ_owner, TRAIT_DISEASELIKE_SEVERITY_MEDIUM, type)
-		organ_owner.med_hud_set_status()
-
-/obj/item/organ/appendix/get_status_text()
-	if((!(organ_flags & ORGAN_FAILING)) && inflamation_stage)
-		return "<font color='#ff9933'>Inflamed</font>"
-	return ..()
+	if(inflamation_stage >= 1)
+		if(SPT_PROB(2.5, seconds_per_tick))
+			organ_owner.emote("cough")
+	if(inflamation_stage >= 2)
+		if(SPT_PROB(1.5, seconds_per_tick))
+			to_chat(organ_owner, span_warning("You feel a stabbing pain in your abdomen!"))
+			organ_owner.Stun(rand(40, 60))
+			// forced to ensure people don't use it to gain tox as slime person
+			organ_owner.adjustToxLoss(1, updating_health = TRUE, forced = TRUE)
+			apply_organ_damage(5)
+	if(inflamation_stage >= 3)
+		if(SPT_PROB(0.5, seconds_per_tick))
+			organ_owner.vomit(95)
+			apply_organ_damage(15)
 
 #undef APPENDICITIS_PROB
 #undef INFLAMATION_ADVANCEMENT_PROB

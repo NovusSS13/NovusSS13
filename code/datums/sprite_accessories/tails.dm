@@ -2,7 +2,7 @@
 	default_color = 1
 	default_colors = list(COLOR_ORANGE, COLOR_SOFT_RED, COLOR_WHITE)
 	/**
-	 * Whether or not we can wag
+	 * Whether or not we can wag!
 	 * Not about actually preventing the emote, it's just for sprite updates
 	 */
 	var/can_wag = FALSE
@@ -74,9 +74,7 @@
 	color_amount = 3
 
 /datum/sprite_accessory/tails/mutant/wagging
-	/* ENABLE THIS WHEN THE SPRITE FILE IS UNFUCKED... SOMEHOW
 	can_wag = TRUE
-	*/
 
 /datum/sprite_accessory/tails/mutant/wagging/big
 	icon = 'icons/mob/species/sprite_accessory/tails_mutant_big.dmi'

@@ -37,7 +37,7 @@
 	message_admins("[sm] is heading towards a cascade. [ADMIN_VERBOSEJMP(sm)]")
 	sm.investigate_log("is heading towards a cascade.", INVESTIGATE_ENGINE)
 
-	sm.warp = new(sm)
+	sm.warp = new /atom/movable/warp_effect/supermatter(sm)
 	sm.vis_contents += sm.warp
 	animate(sm.warp, time = 1, transform = matrix().Scale(0.5,0.5))
 	animate(time = 9, transform = matrix())

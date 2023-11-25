@@ -15,6 +15,7 @@
 	dna_block = DNA_FRILLS_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 
+	inherit_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/frills
 
 /datum/bodypart_overlay/mutant/frills

@@ -35,31 +35,6 @@
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_COMEDY_METABOLISM), PROC_REF(on_add_comedy_metabolism))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_COMEDY_METABOLISM), PROC_REF(on_remove_comedy_metabolism))
 
-/* Signal handler for the liver gaining the TRAIT_COMEDY_METABOLISM trait
- *
- * Adds the "squeak" component, so clown livers will act just like their
- * bike horns, and honk when you hit them with things, or throw them
- * against things, or step on them.
- *
- * The removal of the component, if this liver loses that trait, is handled
- * by the component itself.
- */
-/obj/item/organ/liver/proc/on_add_comedy_metabolism()
-	SIGNAL_HANDLER
-
-	// Are clown "bike" horns made from the livers of ex-clowns?
-	// Would that make the clown more or less likely to honk it
-	AddComponent(/datum/component/squeak, list('sound/items/bikehorn.ogg'=1), 50, falloff_exponent = 20)
-
-/* Signal handler for the liver losing the TRAIT_COMEDY_METABOLISM trait
- *
- * Basically just removes squeak component
- */
-/obj/item/organ/liver/proc/on_remove_comedy_metabolism()
-	SIGNAL_HANDLER
-
-	qdel(GetComponent(/datum/component/squeak))
-
 /// Registers COMSIG_SPECIES_HANDLE_CHEMICAL from owner
 /obj/item/organ/liver/on_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
@@ -69,16 +44,6 @@
 /obj/item/organ/liver/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_SPECIES_HANDLE_CHEMICAL)
-
-/**
- * This proc can be overriden by liver subtypes so they can handle certain chemicals in special ways.
- * Return null to continue running the normal on_mob_life() for that reagent.
- * Return COMSIG_MOB_STOP_REAGENT_CHECK to not run the normal metabolism effects.
- *
- * NOTE: If you return COMSIG_MOB_STOP_REAGENT_CHECK, that reagent will not be removed like normal! You must handle it manually.
- **/
-/obj/item/organ/liver/proc/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick, times_fired)
-	SIGNAL_HANDLER
 
 /obj/item/organ/liver/examine(mob/user)
 	. = ..()
@@ -233,6 +198,41 @@
 
 /obj/item/organ/liver/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantliver
+
+/**
+ * This proc can be overriden by liver subtypes so they can handle certain chemicals in special ways.
+ * Return null to continue running the normal on_mob_life() for that reagent.
+ * Return COMSIG_MOB_STOP_REAGENT_CHECK to not run the normal metabolism effects.
+ *
+ * NOTE: If you return COMSIG_MOB_STOP_REAGENT_CHECK, that reagent will not be removed like normal! You must handle it manually.
+ */
+/obj/item/organ/liver/proc/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick, times_fired)
+	SIGNAL_HANDLER
+
+/* Signal handler for the liver gaining the TRAIT_COMEDY_METABOLISM trait
+ *
+ * Adds the "squeak" component, so clown livers will act just like their
+ * bike horns, and honk when you hit them with things, or throw them
+ * against things, or step on them.
+ *
+ * The removal of the component, if this liver loses that trait, is handled
+ * by the component itself.
+ */
+/obj/item/organ/liver/proc/on_add_comedy_metabolism()
+	SIGNAL_HANDLER
+
+	// Are clown "bike" horns made from the livers of ex-clowns?
+	// Would that make the clown more or less likely to honk it
+	AddComponent(/datum/component/squeak, list('sound/items/bikehorn.ogg'=1), 50, falloff_exponent = 20)
+
+/* Signal handler for the liver losing the TRAIT_COMEDY_METABOLISM trait
+ *
+ * Basically just removes squeak component
+ */
+/obj/item/organ/liver/proc/on_remove_comedy_metabolism()
+	SIGNAL_HANDLER
+
+	qdel(GetComponent(/datum/component/squeak))
 
 // alien livers can ignore up to 15u of toxins, but they take x3 liver damage
 /obj/item/organ/liver/alien

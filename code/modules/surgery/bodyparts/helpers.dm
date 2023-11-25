@@ -37,7 +37,7 @@
 	return FALSE
 
 
-///Get the bodypart for whatever hand we have active, Only relevant for carbons
+/// Get the bodypart for whatever hand we have active, Only relevant for carbons
 /mob/proc/get_active_hand()
 	return FALSE
 

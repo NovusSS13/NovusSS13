@@ -5228,7 +5228,7 @@
 #include "code\modules\surgery\organs\internal\heart\_heart.dm"
 #include "code\modules\surgery\organs\internal\heart\heart_vampire.dm"
 #include "code\modules\surgery\organs\internal\liver\_liver.dm"
-#include "code\modules\surgery\organs\internal\liver\liver_felinid.dm"
+#include "code\modules\surgery\organs\internal\liver\liver_cat.dm"
 #include "code\modules\surgery\organs\internal\liver\liver_golem.dm"
 #include "code\modules\surgery\organs\internal\liver\liver_plasmaman.dm"
 #include "code\modules\surgery\organs\internal\liver\liver_skeleton.dm"

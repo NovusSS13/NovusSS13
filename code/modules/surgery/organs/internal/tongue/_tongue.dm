@@ -133,7 +133,7 @@
  *
  * Can be overriden by subtypes for more complex behavior.
  * Does not get called if the owner has ageusia.
- **/
+ */
 /obj/item/organ/tongue/proc/get_food_taste_reaction(obj/item/food, foodtypes = NONE)
 	var/food_taste_reaction
 	if(foodtypes & toxic_foodtypes)
@@ -161,7 +161,7 @@
 
 /obj/item/organ/tongue/Remove(mob/living/carbon/tongue_owner, special = FALSE)
 	. = ..()
-	temp_say_mod = ""
+	temp_say_mod = initial(temp_say_mod)
 	UnregisterSignal(tongue_owner, COMSIG_MOB_SAY)
 	REMOVE_TRAIT(tongue_owner, TRAIT_SPEAKS_CLEARLY, SPEAKING_FROM_TONGUE)
 	REMOVE_TRAIT(tongue_owner, TRAIT_AGEUSIA, ORGAN_TRAIT)
@@ -177,15 +177,11 @@
 
 /// Applies effects to our owner based on how damaged our tongue is
 /obj/item/organ/tongue/proc/apply_tongue_effects()
-	if(sense_of_taste)
-		//tongues can't taste food when they are failing
-		if(organ_flags & ORGAN_FAILING)
-			ADD_TRAIT(owner, TRAIT_AGEUSIA, ORGAN_TRAIT)
-		else
-			REMOVE_TRAIT(owner, TRAIT_AGEUSIA, ORGAN_TRAIT)
-	else
-		//tongues can't taste food when they lack a sense of taste
+	if(!sense_of_taste || (organ_flags & ORGAN_FAILING))
+		//tongues can't taste food when they don't have a sense of taste, or are failing
 		ADD_TRAIT(owner, TRAIT_AGEUSIA, ORGAN_TRAIT)
+	else
+		REMOVE_TRAIT(owner, TRAIT_AGEUSIA, ORGAN_TRAIT)
 	if(organ_flags & ORGAN_FAILING)
 		REMOVE_TRAIT(owner, TRAIT_SPEAKS_CLEARLY, SPEAKING_FROM_TONGUE)
 	else

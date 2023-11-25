@@ -15,24 +15,24 @@
 
 	dna_block = DNA_SPINES_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
+
+	inherit_color = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/spines
 
-	///A two-way reference between the tail and the spines because of wagging sprites. Bruh.
+	/// A two-way reference between the tail and the spines because of wagging sprites. Bruh.
 	var/obj/item/organ/tail/lizard/paired_tail
 
-/obj/item/organ/spines/Insert(mob/living/carbon/receiver, special, drop_if_replaced)
+/obj/item/organ/spines/on_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
-	if(.)
-		paired_tail = receiver.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
-		RegisterSignal(receiver, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_for_tail))
-		RegisterSignal(receiver, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_for_tail_loss))
+	paired_tail = organ_owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	RegisterSignal(organ_owner, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(check_for_tail))
+	RegisterSignal(organ_owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_for_tail_loss))
 
-/obj/item/organ/spines/Remove(mob/living/carbon/organ_owner, special, moving)
+/obj/item/organ/spines/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	var/datum/bodypart_overlay/mutant/spines/accessory = bodypart_overlay
 	accessory.wagging = FALSE
-	if(paired_tail)
-		paired_tail = null
+	paired_tail = null
 	UnregisterSignal(organ_owner, COMSIG_CARBON_GAIN_ORGAN)
 	UnregisterSignal(organ_owner, COMSIG_CARBON_LOSE_ORGAN)
 
@@ -43,7 +43,9 @@
 	if(!istype(organ, /obj/item/organ/tail))
 		return
 	paired_tail = organ
-	paired_tail.paired_spines = src
+	if(paired_tail.wag_flags & WAG_WAGGING)
+		var/datum/bodypart_overlay/mutant/spines/accessory = bodypart_overlay
+		accessory.wagging = TRUE
 
 /// Checks if the spines LOST the tail!
 /obj/item/organ/spines/proc/check_for_tail_loss(mob/living/carbon/source, obj/item/organ/organ)
@@ -52,7 +54,6 @@
 	if(paired_tail == organ)
 		var/datum/bodypart_overlay/mutant/spines/accessory = bodypart_overlay
 		accessory.wagging = FALSE
-		paired_tail.paired_spines = null
 		paired_tail = null
 
 /// Bodypart overlay for spines (wagging gets updated by tail)
@@ -68,14 +69,8 @@
 	return GLOB.spines_list
 
 /datum/bodypart_overlay/mutant/spines/get_base_icon_state()
-	var/datum/sprite_accessory/spines/wagger = sprite_datum
-	return ((wagging && wagger.can_wag) ? "wagging" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
-
-/datum/bodypart_overlay/mutant/spines/can_draw_on_body(obj/item/bodypart/ownerlimb, mob/living/carbon/human/owner)
-	if(owner.wear_suit?.flags_inv & HIDEJUMPSUIT)
-		return FALSE
-
-	return TRUE
+	var/datum/sprite_accessory/spines/accessory = sprite_datum
+	return ((wagging && accessory.can_wag) ? "wagging" : "") + sprite_datum.icon_state //add the wagging tag if we be wagging
 
 /obj/item/organ/spines/mutant
 	name = "mutant spines"

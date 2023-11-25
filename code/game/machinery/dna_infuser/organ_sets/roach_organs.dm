@@ -81,10 +81,6 @@
 	RegisterSignal(human_owner, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(modify_damage))
 	human_owner.physiology.knockdown_mod *= 3
 
-	var/obj/item/bodypart/chest/chest = human_owner.get_bodypart(BODY_ZONE_CHEST)
-	chest.add_bodypart_overlay(roach_shell)
-	human_owner.update_body_parts()
-
 /obj/item/organ/heart/roach/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	if(!ishuman(organ_owner) || QDELETED(organ_owner))
@@ -98,9 +94,13 @@
 	if(defense_timerid)
 		reset_damage(human_owner)
 
-	var/obj/item/bodypart/chest/chest = human_owner.get_bodypart(BODY_ZONE_CHEST)
-	chest.remove_bodypart_overlay(roach_shell)
-	human_owner.update_body_parts()
+/obj/item/organ/heart/roach/add_to_limb(obj/item/bodypart/bodypart, special)
+	. = ..()
+	bodypart.add_bodypart_overlay(roach_shell)
+
+/obj/item/organ/heart/roach/remove_from_limb(obj/item/bodypart/bodypart, special)
+	. = ..()
+	bodypart.remove_bodypart_overlay(roach_shell)
 
 /**
  * Signal proc for [COMSIG_MOB_APPLY_DAMAGE]

@@ -94,10 +94,10 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	use_mob_sprite_as_obj_sprite = TRUE
 	dna_block = DNA_POD_HAIR_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_PLANT
 
+	use_mob_sprite_as_obj_sprite = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/pod_hair
 
 	organ_traits = list(TRAIT_PLANT_SAFE)

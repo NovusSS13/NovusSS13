@@ -6,6 +6,7 @@
 	icon_state = "light"
 	pixel_x = -176
 	pixel_y = -176
+	blend_mode = BLEND_ADD
 
 /obj/effect/anomaly/grav
 	name = "gravitational anomaly"
@@ -13,7 +14,7 @@
 	icon_state = "shield2"
 	density = FALSE
 	aSignal = /obj/item/assembly/signaler/anomaly/grav
-	var/boing = 0
+	var/boing = FALSE
 	///Warp effect holder for displacement filter to "pulse" the anomaly
 	var/atom/movable/warp_effect/warp
 
@@ -41,7 +42,7 @@
 
 /obj/effect/anomaly/grav/anomalyEffect(seconds_per_tick)
 	..()
-	boing = 1
+	boing = TRUE
 	for(var/obj/O in orange(4, src))
 		if(!O.anchored)
 			step_towards(O,src)

@@ -3,6 +3,8 @@
 	name = "wings"
 	desc = "Spread your wings and FLLLLLLLLYYYYY!"
 	gender = PLURAL
+	icon = 'icons/obj/medical/organs/external_organs.dmi'
+	icon_state = "wings"
 
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_WINGS
@@ -11,7 +13,6 @@
 	process_life = FALSE
 	process_death = FALSE
 
-	use_mob_sprite_as_obj_sprite = TRUE
 	bodypart_overlay = /datum/bodypart_overlay/mutant/wings
 
 ///Checks if the wings can soften short falls
