@@ -184,21 +184,22 @@
 
 /obj/item/stack/examine(mob/user)
 	. = ..()
+	var/amount = get_amount()
 	if(is_cyborg)
 		if(singular_name)
-			. += "There is enough energy for [get_amount()] [singular_name]\s."
+			. += span_info("There is enough energy for [amount] [singular_name]\s.")
 		else
-			. += "There is enough energy for [get_amount()]."
+			. += span_info("There is enough energy for [amount].")
 		return
 	if(singular_name)
-		if(get_amount()>1)
-			. += "There are [get_amount()] [singular_name]\s in the stack."
+		if(amount>1)
+			. += span_info("There are [amount] [singular_name]\s in the stack.")
 		else
-			. += "There is [get_amount()] [singular_name] in the stack."
-	else if(get_amount()>1)
-		. += "There are [get_amount()] in the stack."
+			. += span_info("There is [amount] [singular_name] in the stack.")
+	else if(amount>1)
+		. += span_info("There are [amount] in the stack.")
 	else
-		. += "There is [get_amount()] in the stack."
+		. += span_info("There is [amount] in the stack.")
 	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
 
 /obj/item/stack/proc/get_amount()
