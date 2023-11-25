@@ -16,6 +16,6 @@
 
 	detail_overlay = "tail-fluffy-detail"
 	inherit_detail_color = TRUE
-	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat
+	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/mutant
 	sprite_accessory_override = /datum/sprite_accessory/tails/mutant/wagging/fox
 	wag_flags = WAG_ABLE
