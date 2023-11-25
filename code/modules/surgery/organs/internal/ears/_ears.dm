@@ -141,7 +141,7 @@
 
 /obj/item/organ/ears/cat
 	name = "cat ears"
-	desc = "I canyat believe you've done this."
+	desc = "I canyat hear you!"
 	icon = 'icons/obj/medical/organs/external_organs.dmi'
 	icon_state = "ears-fluffy"
 	damage_multiplier = 2
