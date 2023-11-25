@@ -140,7 +140,7 @@
 		return FALSE
 
 	target.age = 18
-	target.blood_type = pick(list("A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"))
+	target.blood_type = pick(GLOB.human_blood_types)
 	target.dna_string = "Unknown"
 	target.gender = "Unknown"
 	target.major_disabilities = ""

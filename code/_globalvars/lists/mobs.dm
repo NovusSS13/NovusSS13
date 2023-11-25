@@ -47,6 +47,8 @@ GLOBAL_LIST_EMPTY(roundstart_languages)
 /// An assoc list of species types to their features (from get_features())
 GLOBAL_LIST_EMPTY(features_by_species)
 
+GLOBAL_LIST_INIT(human_blood_types, list("O-","O+","A-","A+","B-","B+","AB-","AB+"))
+
 GLOBAL_LIST_INIT(offstation_customization_by_save_key, init_offstation_customization()) // i hate this name
 GLOBAL_LIST_INIT(valid_char_savekeys, init_valid_savekeys())
 
