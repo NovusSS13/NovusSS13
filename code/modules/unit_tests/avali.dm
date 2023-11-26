@@ -4,7 +4,7 @@
 	var/list/broken_icons = list()
 	var/list/no_fallback = list()
 
-	for(var/obj/item/path as anything in (subtypesof(/obj/item) - typesof(/obj/item/mod)))
+	for(var/obj/item/path as anything in (subtypesof(/obj/item) - typesof(/obj/item/mod))
 		var/cached_slot_flags = initial(path.slot_flags)
 		if(!cached_slot_flags || (cached_slot_flags & ITEM_SLOT_POCKETS) || initial(path.item_flags) & ABSTRACT)
 			continue
@@ -25,7 +25,7 @@
 		if(specified_gags) //works for us
 			continue
 
-		if(ispath(path, /obj/item/clothing/mask))
+		if(ispath(path, /obj/item/clothing/mask) || ispath(path, /obj/item/clothing/head))
 			continue //we dont care about these
 
 		var/fallback = initial(path.greyscale_config_worn_avali_fallback)
