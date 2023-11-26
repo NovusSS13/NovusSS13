@@ -25,7 +25,7 @@
 		if(specified_gags) //works for us
 			continue
 
-		if(ispath(path, /obj/item/clothing/mask))
+		if(ispath(path, /obj/item/clothing/mask) || ispath(path, /obj/item/clothing/head))
 			continue //we dont care about these
 
 		var/fallback = initial(path.greyscale_config_worn_avali_fallback)
