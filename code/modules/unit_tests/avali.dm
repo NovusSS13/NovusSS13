@@ -4,7 +4,7 @@
 	var/list/broken_icons = list()
 	var/list/no_fallback = list()
 
-	for(var/obj/item/path as anything in (subtypesof(/obj/item) - typesof(/obj/item/mod))
+	for(var/obj/item/path as anything in (subtypesof(/obj/item) - typesof(/obj/item/mod)))
 		var/cached_slot_flags = initial(path.slot_flags)
 		if(!cached_slot_flags || (cached_slot_flags & ITEM_SLOT_POCKETS) || initial(path.item_flags) & ABSTRACT)
 			continue
