@@ -1231,6 +1231,14 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 		screen -= object
 
+/// Debug wrapper proc for proccalling
+/client/proc/do_winset(control_id, params)
+	winset(src, control_id, params)
+
+/// Debug wrapper proc for proccalling
+/client/proc/do_winget(control_id, params)
+	winget(src, control_id, params)
+
 #undef ADMINSWARNED_AT
 #undef CURRENT_MINUTE
 #undef CURRENT_SECOND

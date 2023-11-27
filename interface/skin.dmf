@@ -148,6 +148,7 @@ window "infowindow"
 		left = "statwindow"
 		right = "outputwindow"
 		is-vert = false
+		splitter = 27.5
 	elem "changelog"
 		type = BUTTON
 		pos = 16,5
