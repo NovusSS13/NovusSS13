@@ -133,6 +133,11 @@
 	plane = FIELD_OF_VISION_BLOCKER_PLANE
 	screen_loc = "BOTTOM,LEFT"
 
+/atom/movable/screen/fov_blocker/Initialize(mapload)
+	. = ..()
+	// add a filter so the user is always visible in a coherent way
+	add_filter("user_mask", 1, alpha_mask_filter(icon = icon(icon, "user_mask"), flags = MASK_INVERSE))
+
 /atom/movable/screen/fov_shadow
 	icon = 'icons/effects/fov/field_of_view_new.dmi'
 	icon_state = "90"
