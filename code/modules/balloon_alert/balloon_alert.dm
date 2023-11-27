@@ -1,7 +1,7 @@
 #define BALLOON_TEXT_WIDTH 200
 #define BALLOON_TEXT_SPAWN_TIME (0.2 SECONDS)
 #define BALLOON_TEXT_FADE_TIME (0.1 SECONDS)
-#define BALLOON_TEXT_FULLY_VISIBLE_TIME (0.7 SECONDS)
+#define BALLOON_TEXT_FULLY_VISIBLE_TIME (1.5 SECONDS)
 #define BALLOON_TEXT_TOTAL_LIFETIME(mult) (BALLOON_TEXT_SPAWN_TIME + BALLOON_TEXT_FULLY_VISIBLE_TIME*mult + BALLOON_TEXT_FADE_TIME)
 /// The increase in duration per character in seconds
 #define BALLOON_TEXT_CHAR_LIFETIME_INCREASE_MULT (0.05)
@@ -34,7 +34,15 @@
 // if this would look bad on laggy clients.
 /atom/proc/balloon_alert_perform(mob/viewer, text)
 	var/client/viewer_client = viewer.client
-	if (isnull(viewer_client))
+	if (isnull(viewer_client?.prefs))
+		return
+
+	var/treated_text = capitalize(punctuate(text))
+	if (viewer_client.prefs.read_preference(/datum/preference/toggle/balloon_alerts_on_chat))
+		var/chat_content = span_balloontitle("[src]: ") + span_balloon(treated_text)
+		to_chat(viewer_client, balloon_block(span_infoplain(chat_content)))
+
+	if (!viewer_client.prefs.read_preference(/datum/preference/toggle/balloon_alerts_on_map))
 		return
 
 	var/bound_width = world.icon_size
@@ -47,13 +55,11 @@
 	balloon_alert.alpha = 0
 	balloon_alert.appearance_flags = RESET_ALPHA|RESET_COLOR|RESET_TRANSFORM
 	var/maptext_color =  sanitize_hexcolor(chat_color, DEFAULT_HEX_COLOR_LEN, TRUE, "#FFFFFF")
-	balloon_alert.maptext = MAPTEXT("<span style='text-align: center; color: [maptext_color]; -dm-text-outline: 1px #0005'>[text]</span>")
+	balloon_alert.maptext = MAPTEXT("<span style='text-align: center; color: [maptext_color]; -dm-text-outline: 1px #0005'>[treated_text]</span>")
 	balloon_alert.maptext_x = (BALLOON_TEXT_WIDTH - bound_width) * -0.5
 	WXH_TO_HEIGHT(viewer_client?.MeasureText(text, null, BALLOON_TEXT_WIDTH), balloon_alert.maptext_height)
 	balloon_alert.maptext_width = BALLOON_TEXT_WIDTH
 
-	var/content = span_balloontitle("[src]: ") + span_balloon("[capitalize(text)]")
-	to_chat(viewer_client, balloon_block(span_infoplain(content)))
 	viewer_client.images += balloon_alert
 
 	var/length_mult = 1 + max(0, length(strip_html_full(text)) - BALLOON_TEXT_CHAR_LIFETIME_INCREASE_MIN) * BALLOON_TEXT_CHAR_LIFETIME_INCREASE_MULT
