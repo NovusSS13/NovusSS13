@@ -1,0 +1,9 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - qol: "Balloon alerts last longer"
+  - qol: "Added two preferences for balloon alerts - Balloon alerts on map, and balloon alerts on chat"
+  - qol: "Increased max length for runechat characters from 110 to 255"
+  - qol: "Dark mode is now the default theme for tgchat"
+  - qol: "Courier new is now the default font for tgchat"
+  - qol: "Chat splitter is now higher by default, showing more of the chat"
