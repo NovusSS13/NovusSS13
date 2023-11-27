@@ -11,8 +11,9 @@
 	var/rel_x = observed_atom.x - my_turf.x
 	var/rel_y = observed_atom.y - my_turf.y
 	if(fov_view)
-		if(rel_x >= -1 && rel_x <= 1 && rel_y >= -1 && rel_y <= 1) //Cheap way to check inside that 3x3 box around you
-			return TRUE //Also checks if both are 0 to stop division by zero
+		// Prevents division by 0
+		if(!rel_x && !rel_y)
+			return TRUE
 
 		// Get the vector length so we can create a good directional vector
 		var/vector_len = sqrt(abs(rel_x) ** 2 + abs(rel_y) ** 2)
@@ -126,15 +127,20 @@
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(remove_image_from_clients), fov_image, clients_shown), time)
 
 /atom/movable/screen/fov_blocker
-	icon = 'icons/effects/fov/field_of_view.dmi'
+	icon = 'icons/effects/fov/field_of_view_new.dmi'
 	icon_state = "90"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	plane = FIELD_OF_VISION_BLOCKER_PLANE
 	screen_loc = "BOTTOM,LEFT"
 
 /atom/movable/screen/fov_shadow
-	icon = 'icons/effects/fov/field_of_view.dmi'
-	icon_state = "90_v"
+	icon = 'icons/effects/fov/field_of_view_new.dmi'
+	icon_state = "90"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	plane = ABOVE_LIGHTING_PLANE
 	screen_loc = "BOTTOM,LEFT"
+
+/atom/movable/screen/fov_shadow/Initialize(mapload)
+	. = ..()
+	// add a filter so the user is always visible in a coherent way
+	add_filter("user_mask", 1, alpha_mask_filter(icon = icon(icon, "user_mask"), flags = MASK_INVERSE))

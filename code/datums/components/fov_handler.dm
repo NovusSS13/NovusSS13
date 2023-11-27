@@ -7,13 +7,13 @@
 	/// Whether we are applying the masks now
 	var/applied_mask = FALSE
 	/// The angle of the mask we are applying
-	var/fov_angle = FOV_180_DEGREES
+	var/fov_angle = FOV_90_DEGREES
 	/// The blocker mask applied to a client's screen
 	var/atom/movable/screen/fov_blocker/blocker_mask
 	/// The shadow mask applied to a client's screen
 	var/atom/movable/screen/fov_shadow/visual_shadow
 
-/datum/component/fov_handler/Initialize(fov_type = FOV_180_DEGREES)
+/datum/component/fov_handler/Initialize(fov_type = FOV_90_DEGREES)
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/mob/living/mob_parent = parent
