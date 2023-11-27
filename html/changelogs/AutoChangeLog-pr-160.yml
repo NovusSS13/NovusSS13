@@ -1,0 +1,4 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - rscdel: "FoV is no longer babyproofed, there is no circle of vision in a 3x3 box on the player. It's just a 1x1 box as it should be."
