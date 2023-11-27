@@ -4,7 +4,12 @@
  * @license MIT
  */
 
-export const THEMES = ['light', 'dark'];
+export const THEME_DARK = 'dark';
+export const THEME_LIGHT = 'light';
+
+export const DEFAULT_THEME = THEME_DARK;
+
+export const THEMES = [THEME_LIGHT, THEME_DARK];
 
 const COLOR_DARK_BG = '#202020';
 const COLOR_DARK_BG_DARKER = '#171717';
@@ -31,7 +36,7 @@ export const setClientTheme = (name) => {
     Byond.command(`.output statbrowser:set_theme ${name}`);
   }, 1500);
 
-  if (name === 'light') {
+  if (name === THEME_LIGHT) {
     return Byond.winset({
       // Main windows
       'infowindow.background-color': 'none',
@@ -83,7 +88,7 @@ export const setClientTheme = (name) => {
       'input.text-color': '#000000',
     });
   }
-  if (name === 'dark') {
+  if (name === THEME_DARK) {
     Byond.winset({
       // Main windows
       'infowindow.background-color': COLOR_DARK_BG,

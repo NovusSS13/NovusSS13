@@ -6,6 +6,7 @@
 
 import { changeSettingsTab, loadSettings, openChatSettings, toggleSettings, updateSettings, addHighlightSetting, removeHighlightSetting, updateHighlightSetting } from './actions';
 import { createDefaultHighlightSetting } from './model';
+import { DEFAULT_THEME } from '../themes';
 import { SETTINGS_TABS, FONTS, MAX_HIGHLIGHT_SETTINGS } from './constants';
 
 const defaultHighlightSetting = createDefaultHighlightSetting();
@@ -15,7 +16,7 @@ const initialState = {
   fontSize: 13,
   fontFamily: FONTS[0],
   lineHeight: 1.2,
-  theme: 'light',
+  theme: DEFAULT_THEME,
   adminMusicVolume: 0.5,
   // Keep these two state vars for compatibility with other servers
   highlightText: '',
