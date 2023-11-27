@@ -463,10 +463,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		message = capitalize(message)
 		tts_message = capitalize(tts_message)
 
-	var/static/regex/punctuation_regex = regex(@"[^\w\s]$", "gi")
-	if(add_period && !punctuation_regex.Find(message))
-		message += "."
-		tts_message += "."
+	if(add_period)
+		message = punctuate(message)
+		tts_message = punctuate(tts_message)
 
 	///caps the length of individual letters to 3: ex: heeeeeeyy -> heeeyy
 	/// prevents TTS from choking on unrealistic text while keeping emphasis

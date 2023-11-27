@@ -20,9 +20,10 @@ export const SETTINGS_TABS = [
   },
 ];
 
-export const FONTS_DISABLED = 'Default';
+export const FONTS_DISABLED = 'System Default';
 
 export const FONTS = [
+  'Courier New', // By placing this at index zero, it is the default for our server
   FONTS_DISABLED,
   'Verdana',
   'Arial',
@@ -32,8 +33,8 @@ export const FONTS = [
   'Lucida Sans Unicode',
   'Tahoma',
   'Trebuchet MS',
-  'Courier New',
   'Lucida Console',
+  'Times New Roman',
 ];
 
 export const MAX_HIGHLIGHT_SETTINGS = 10;

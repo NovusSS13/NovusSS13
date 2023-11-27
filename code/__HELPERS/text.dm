@@ -1206,6 +1206,13 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		text2num(semver_regex.group[3]),
 	)
 
+/// Punctuates a string, if it isn't already punctuated
+/proc/punctuate(string, punctuation = ".")
+	var/static/regex/punctuation_regex = regex(@"[^\w\s]$", "gi")
+	if(!punctuation_regex.Find(string))
+		return string + punctuation
+	return string
+
 /**
  * Gets a color for a name, will return the same color for a given string consistently within a round.
  *

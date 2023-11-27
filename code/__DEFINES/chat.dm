@@ -22,8 +22,8 @@
 #define MESSAGE_TYPE_ATTACKLOG "attacklog"
 #define MESSAGE_TYPE_DEBUG "debug"
 
-/// Max length of chat message in characters
-#define CHAT_MESSAGE_MAX_LENGTH 110
+/// Max length of runechat message in characters
+#define CHAT_MESSAGE_MAX_LENGTH 255
 
 //debug printing macros (for development and testing)
 /// Used for debug messages to the world

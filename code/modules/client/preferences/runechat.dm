@@ -22,7 +22,7 @@
 	maximum = CHAT_MESSAGE_MAX_LENGTH
 
 /datum/preference/numeric/max_chat_length/create_default_value(datum/preferences/preferences)
-	return CHAT_MESSAGE_MAX_LENGTH
+	return 110 //old chat message max length
 
 /datum/preference/toggle/random_chat_color
 	priority = PREFERENCE_PRIORITY_AFTER_NAMES //does not actually matter but w/e
