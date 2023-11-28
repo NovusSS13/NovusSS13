@@ -344,6 +344,39 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/plane_master)
 	render_target = GRAVITY_PULSE_RENDER_TARGET
 	render_relay_planes = list()
 
+/atom/movable/screen/plane_master/reflection_displacement
+	name = "Reflection displacement"
+	documentation = "Solely exists to create a displacement mask for the reflection plane.\
+		<br>Note the lack of relay targets. This plane exists only as a render source for filters, it's never rendered anywhere."
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = REFLECTION_DISPLACEMENT_PLANE
+	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
+	render_target = REFLECTION_DISPLACEMENT_RENDER_TARGET
+	render_relay_planes = list()
+
+/atom/movable/screen/plane_master/reflection_mask
+	name = "Reflection mask"
+	documentation = "Solely exists to create an alpha mask for the reflection plane.\
+		<br>Note the lack of relay targets. This plane exists as a render source for filters, it's never rendered anywhere."
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = REFLECTION_MASK_PLANE
+	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
+	render_target = REFLECTION_MASK_RENDER_TARGET
+	render_relay_planes = list()
+
+/atom/movable/screen/plane_master/reflection
+	name = "Reflection"
+	documentation = "A complete reflection of RENDER_PLANE_GAME_WORLD, shifted down by 32 pixels.\
+		<br>Gets relayed to RENDER_PLANE_REFLECTION, where filters are actually applied."
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = REFLECTION_PLANE
+	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
+	render_relay_planes = list(RENDER_PLANE_REFLECTION)
+
+/atom/movable/screen/plane_master/reflection/Initialize(mapload, datum/plane_master_group/home, offset)
+	. = ..()
+	transform = transform.Translate(0, -world.icon_size)
+
 ///Contains just the floor
 /atom/movable/screen/plane_master/floor
 	name = "Floor"
