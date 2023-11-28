@@ -58,7 +58,7 @@
 	return ..()
 
 /// Used to maintain the wet floor overlay on the parent [/turf].
-/datum/component/shiny/proc/on_update_overlays(atom/source, list/overlays)
+/datum/component/wet_floor/proc/on_update_overlays(atom/source, list/overlays)
 	SIGNAL_HANDLER
 
 	if(current_overlay)
