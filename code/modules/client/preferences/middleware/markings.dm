@@ -2,14 +2,14 @@
 /datum/preference_middleware/markings
 	priority = MIDDLEWARE_PRIORITY_AFTER
 	action_delegations = list(
-		"add_marking" = .proc/add_marking,
-		"change_marking" = .proc/change_marking,
-		"remove_marking" = .proc/remove_marking,
-		"color_marking" = .proc/color_marking,
-		"color_marking_mutant_colors" = .proc/color_marking_mutant_colors,
-		"move_marking_up" = .proc/move_marking_up,
-		"move_marking_down" = .proc/move_marking_down,
-		"set_preset" = .proc/set_preset,
+		"add_marking" = PROC_REF(add_marking),
+		"change_marking" = PROC_REF(change_marking),
+		"remove_marking" = PROC_REF(remove_marking),
+		"color_marking" = PROC_REF(color_marking),
+		"color_marking_mutant_colors" = PROC_REF(color_marking_mutant_colors),
+		"move_marking_up" = PROC_REF(move_marking_up),
+		"move_marking_down" = PROC_REF(move_marking_down),
+		"set_preset" = PROC_REF(set_preset),
 	)
 
 /datum/preference_middleware/markings/get_ui_data(mob/user)
