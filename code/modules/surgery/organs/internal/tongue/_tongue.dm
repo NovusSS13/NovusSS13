@@ -241,6 +241,7 @@
 	desc = "A genetic branch of the high society Silver Scales that gives them their silverizing properties. To them, it is everything, and society traitors have their tongue forcibly revoked. Oddly enough, it itself is just blue."
 	icon_state = "silvertongue"
 	actions_types = list(/datum/action/cooldown/turn_to_statue)
+	organ_traits = list(TRAIT_WINE_TASTER)
 
 /datum/action/cooldown/turn_to_statue
 	name = "Become Statue"
@@ -572,7 +573,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	liked_foodtypes = VEGETABLES
 	disliked_foodtypes = FRUIT | CLOTH
 
-/obj/item/organ/tongue/robot
+/obj/item/organ/tongue/cybernetic
 	name = "robotic voicebox"
 	desc = "A voice synthesizer that can interface with organic lifeforms."
 	organ_flags = ORGAN_ROBOTIC
@@ -584,10 +585,10 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	taste_sensitivity = 25 // not as good as an organic tongue
 	voice_filter = "alimiter=0.9,acompressor=threshold=0.2:ratio=20:attack=10:release=50:makeup=2,highpass=f=1000"
 
-/obj/item/organ/tongue/robot/can_speak_language(language)
+/obj/item/organ/tongue/cybernetic/can_speak_language(language)
 	return TRUE // THE MAGIC OF ELECTRONICS
 
-/obj/item/organ/tongue/robot/modify_speech(datum/source, list/speech_args)
+/obj/item/organ/tongue/cybernetic/modify_speech(datum/source, list/speech_args)
 	speech_args[SPEECH_SPANS] |= SPAN_ROBOT
 
 /obj/item/organ/tongue/snail

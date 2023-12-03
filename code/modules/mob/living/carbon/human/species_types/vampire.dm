@@ -9,8 +9,8 @@
 	chat_color = LIGHT_COLOR_BLOOD_MAGIC
 	inherent_traits = list(
 		TRAIT_BLOOD_CLANS,
-		TRAIT_NOBREATH,
 		TRAIT_NOHUNGER,
+		TRAIT_NOBREATH,
 		TRAIT_USES_SKINTONES,
 	)
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID

@@ -18,6 +18,7 @@
 	icon_state = "alien_chest"
 	limb_id = BODYPART_ID_ALIEN
 	bodytype = BODYTYPE_ALIEN | BODYTYPE_ORGANIC
+	ass_image = 'icons/ass/assalien.png'
 	acceptable_bodytype = BODYTYPE_HUMANOID | BODYTYPE_ALIEN
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE

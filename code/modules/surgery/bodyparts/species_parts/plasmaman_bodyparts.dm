@@ -22,8 +22,10 @@
 	dmg_overlay_type = null
 	brute_modifier = 1.5 //Plasmemes are weak
 	burn_modifier = 1.5 //Plasmemes are weak
+	ass_image = 'icons/ass/assplasma.png'
 	bodypart_traits = list(
 		TRAIT_NOBLOOD,
+		TRAIT_NO_DNA_COPY,
 		TRAIT_NO_TRANSFORMATION_STING,
 		TRAIT_RADIMMUNE,
 	)

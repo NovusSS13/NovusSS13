@@ -346,7 +346,7 @@
 	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*6, /datum/material/glass = SMALL_MATERIAL_AMOUNT*4)
-	build_path = /obj/item/organ/eyes/robotic/shield
+	build_path = /obj/item/organ/eyes/cybernetic/shield
 	category = list(
 		RND_CATEGORY_CYBERNETICS + RND_SUBCATEGORY_CYBERNETICS_ORGANS_MISC
 	)
@@ -359,7 +359,7 @@
 	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*6, /datum/material/glass =HALF_SHEET_MATERIAL_AMOUNT)
-	build_path = /obj/item/organ/eyes/robotic/glow
+	build_path = /obj/item/organ/eyes/cybernetic/glow
 	category = list(
 		RND_CATEGORY_CYBERNETICS + RND_SUBCATEGORY_CYBERNETICS_ORGANS_MISC
 	)
@@ -474,7 +474,7 @@
 		/datum/material/diamond = HALF_SHEET_MATERIAL_AMOUNT,
 		/datum/material/bluespace = HALF_SHEET_MATERIAL_AMOUNT,
 	)
-	build_path = /obj/item/organ/eyes/robotic/xray
+	build_path = /obj/item/organ/eyes/cybernetic/xray
 	category = list(
 		RND_CATEGORY_CYBERNETICS + RND_SUBCATEGORY_CYBERNETICS_ORGANS_COMBAT
 	)
@@ -494,7 +494,7 @@
 		/datum/material/plasma =HALF_SHEET_MATERIAL_AMOUNT,
 		/datum/material/diamond =SHEET_MATERIAL_AMOUNT,
 	)
-	build_path = /obj/item/organ/eyes/robotic/thermals
+	build_path = /obj/item/organ/eyes/cybernetic/thermals
 	category = list(
 		RND_CATEGORY_CYBERNETICS + RND_SUBCATEGORY_CYBERNETICS_ORGANS_COMBAT
 	)
@@ -850,7 +850,7 @@
 	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
 	construction_time = 30
 	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*2.5, /datum/material/glass = SMALL_MATERIAL_AMOUNT*4)
-	build_path = /obj/item/organ/eyes/robotic/basic
+	build_path = /obj/item/organ/eyes/cybernetic/basic
 	category = list(
 		RND_CATEGORY_CYBERNETICS + RND_SUBCATEGORY_CYBERNETICS_ORGANS_1
 	)
@@ -860,7 +860,7 @@
 	name = "Cybernetic Eyes"
 	desc = "A pair of cybernetic eyes."
 	id = "cybernetic_eyes_improved"
-	build_path = /obj/item/organ/eyes/robotic
+	build_path = /obj/item/organ/eyes/cybernetic
 	category = list(
 		RND_CATEGORY_CYBERNETICS + RND_SUBCATEGORY_CYBERNETICS_ORGANS_2
 	)

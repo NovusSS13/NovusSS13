@@ -250,6 +250,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_MUTANT_COLORS "mutcolors"
 /// Species with this trait have mutant colors that cannot be chosen by the player, nor altered ingame by external means
 #define TRAIT_FIXED_MUTANT_COLORS "fixed_mutcolors"
+/// Humans with this trait will not get damage overlays
+#define TRAIT_NO_DAMAGE_OVERLAY "no_damage_overlay"
 /// Humans with this trait won't get bloody hands, nor bloody feet
 #define TRAIT_NO_BLOOD_OVERLAY "no_blood_overlay"
 /// Humans with this trait cannot have underwear
@@ -1175,15 +1177,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// the object has a label applied
 #define TRAIT_HAS_LABEL "labeled"
-
-// bodypart trait sources
-#define BODYPART_TRAIT "bodypart"
-#define HEAD_TRAIT "head"
-#define CHEST_TRAIT "chest"
-#define RIGHT_ARM_TRAIT "right_arm"
-#define LEFT_ARM_TRAIT "left_arm"
-#define RIGHT_LEG_TRAIT "right_leg"
-#define LEFT_LEG_TRAIT "left_leg"
 
 /// Trait given by echolocation component.
 #define ECHOLOCATION_TRAIT "echolocation"

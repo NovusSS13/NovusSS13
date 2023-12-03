@@ -57,7 +57,7 @@
 	required_count = 3
 	wanted_types = list(
 		/obj/item/organ/eyes = TRUE,
-		/obj/item/organ/eyes/robotic = FALSE,
+		/obj/item/organ/eyes/cybernetic = FALSE,
 	)
 
 /datum/bounty/item/medical/tongue

@@ -45,7 +45,6 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/avali,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/avali,
 	)
-	fire_overlay = "generic" //standard one looks bad
 
 /datum/species/avali/get_species_description()
 	return "From the icy moon of Avalon, come Avali; the nomadic chickens with ammonia-based biology \

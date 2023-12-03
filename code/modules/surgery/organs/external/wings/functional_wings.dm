@@ -169,7 +169,7 @@
 	sprite_accessory_override = /datum/sprite_accessory/wings/dragon
 
 ///robotic wings, which relate to androids.
-/obj/item/organ/wings/functional/robotic
+/obj/item/organ/wings/functional/cybernetic
 	name = "robotic wings"
 	desc = "Using microscopic hover-engines, or \"microwings,\" as they're known in the trade, these tiny devices are able to lift a few grams at a time. Gathering enough of them, and you can lift impressively large things."
 	organ_flags = ORGAN_ROBOTIC

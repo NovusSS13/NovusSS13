@@ -51,9 +51,9 @@
 	limb_id = BODYPART_ID_PSYKER
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodypart_traits = list(TRAIT_DISFIGURED, TRAIT_BIG_SKULL)
 	biological_state = BIO_INORGANIC
 	head_flags = HEAD_LIPS|HEAD_DEBRAIN
+	bodypart_traits = list(TRAIT_DISFIGURED, TRAIT_BIG_SKULL)
 
 /// flavorful variant of psykerizing that deals damage and sends messages before calling psykerize()
 /mob/living/carbon/human/proc/slow_psykerize()

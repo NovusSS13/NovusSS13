@@ -7,6 +7,7 @@
 	icon_greyscale = 'icons/mob/species/mutant/mutant_bodyparts.dmi'
 	limb_id = SPECIES_MUTANT
 	is_dimorphic = TRUE
+	ass_image = 'icons/ass/assmutant.png'
 
 /obj/item/bodypart/arm/left/mutant
 	icon_greyscale = 'icons/mob/species/mutant/mutant_bodyparts.dmi'

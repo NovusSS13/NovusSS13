@@ -24,7 +24,6 @@
 	unarmed_damage_low = 1 // Yeah, biteing is pretty weak, blame the monkey super-nerf
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4
-	bodypart_trait_source = HEAD_TRAIT
 
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/brain/brain //The brain organ
@@ -41,8 +40,8 @@
 	/// Flags related to appearance, such as hair, lips, etc
 	var/head_flags = HEAD_ALL_FLAGS
 
-	/// Custom icon for the eyes overlay.
-	var/custom_eyes_icon = null
+	/// Icon for the eyes overlay on get_eyes_overlay() and get_eyeless_overlay()
+	var/eyes_icon = 'icons/mob/species/sprite_accessory/human_face.dmi'
 
 	/// Hair style
 	var/hairstyle = "Bald"

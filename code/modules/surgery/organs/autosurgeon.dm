@@ -149,10 +149,10 @@
 	starting_organ = /obj/item/organ/cyberimp/arm/gun/laser
 
 /obj/item/autosurgeon/syndicate/thermal_eyes
-	starting_organ = /obj/item/organ/eyes/robotic/thermals
+	starting_organ = /obj/item/organ/eyes/cybernetic/thermals
 
 /obj/item/autosurgeon/syndicate/xray_eyes
-	starting_organ = /obj/item/organ/eyes/robotic/xray
+	starting_organ = /obj/item/organ/eyes/cybernetic/xray
 
 /obj/item/autosurgeon/syndicate/anti_stun
 	starting_organ = /obj/item/organ/cyberimp/brain/anti_stun

@@ -19,16 +19,16 @@
 
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 	meat = null
-	mutanttongue = /obj/item/organ/tongue/robot
+	mutanttongue = /obj/item/organ/tongue/cybernetic
 	mutantstomach = null
 	mutantappendix = null
 	mutantheart = null
 	mutantliver = null
 	mutantlungs = null
-	mutanteyes = /obj/item/organ/eyes/robotic
+	mutanteyes = /obj/item/organ/eyes/cybernetic
 	mutantears = /obj/item/organ/ears/cybernetic
 	species_language_holder = /datum/language_holder/synthetic
-	wing_types = list(/obj/item/organ/wings/functional/robotic)
+	wing_types = list(/obj/item/organ/wings/functional/cybernetic)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 
 	bodypart_overrides = list(
@@ -39,8 +39,3 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/android,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/android,
 	)
-
-/datum/species/android/on_species_gain(mob/living/carbon/C)
-	. = ..()
-	// Androids don't eat, hunger or metabolise foods. Let's do some cleanup.
-	C.set_safe_hunger_level()
