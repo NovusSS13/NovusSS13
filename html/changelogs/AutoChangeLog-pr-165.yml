@@ -1,0 +1,6 @@
+author: "ChungusGamer666"
+delete-after: True
+changes:
+  - bugfix: "Monkeys no longer have fucked up fire overlays"
+  - bugfix: "Avali no longer have damage overlays"
+  - rscadd: "Chunky fingers now properly tracks whether the ACTIVE hand has chunky fingers!"
