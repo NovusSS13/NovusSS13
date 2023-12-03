@@ -5,6 +5,8 @@
 #define ORGAN_SLOT_BRAIN_ANTIDROP "brain_antidrop"
 #define ORGAN_SLOT_BRAIN_ANTISTUN "brain_antistun"
 #define ORGAN_SLOT_BREATHING_TUBE "breathing_tube"
+#define ORGAN_SLOT_CHEST_BONUS "chest_bonus"
+#define ORGAN_SLOT_GROIN_BONUS "groin_bonus"
 #define ORGAN_SLOT_EARS "ears"
 #define ORGAN_SLOT_EYES "eyes"
 #define ORGAN_SLOT_HEART "heart"
@@ -129,6 +131,8 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_STOMACH,
 	ORGAN_SLOT_STOMACH_AID,
 	ORGAN_SLOT_BREATHING_TUBE,
+	ORGAN_SLOT_CHEST_BONUS,
+	ORGAN_SLOT_GROIN_BONUS,
 	ORGAN_SLOT_EARS,
 	ORGAN_SLOT_EYES,
 	ORGAN_SLOT_LUNGS,

@@ -155,6 +155,7 @@
 	icon_state = "demon_heart-on"
 	base_icon_state = "demon_heart"
 	decay_factor = 0
+	organ_traits = list(TRAIT_STABLEHEART)
 
 /obj/item/organ/heart/demon/Initialize(mapload)
 	. = ..()

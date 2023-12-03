@@ -2455,14 +2455,18 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Initializes the mob's voice pack
 /mob/living/proc/setup_voice_pack()
-	if(ispath(voice_pack))
-		set_voice_pack(initial(voice_pack.name))
-	else
-		set_voice_pack(voice_pack)
+	set_voice_pack(voice_pack)
 
 /// Setter for a mob's voice pack
-/mob/living/proc/set_voice_pack(voice_name)
-	voice_pack = GLOB.voice_packs[voice_name]
+/mob/living/proc/set_voice_pack(voice)
+	if(isnull(voice))
+		voice_pack = null
+		return
+
+	if(ispath(voice))
+		voice_pack = GLOB.voice_packs_by_type[voice]
+	else
+		voice_pack = GLOB.voice_packs[voice]
 
 /**
  * Helper proc for basic and simple animals to return true if the passed sentience type matches theirs

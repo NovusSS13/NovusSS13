@@ -261,7 +261,7 @@
 		var/mob/living/carbon/human/humantarget = target
 
 		// Organ damage, missing organs
-		if(humantarget.organs && humantarget.organs.len)
+		if(LAZYLEN(humantarget.organs))
 			var/render = FALSE
 			var/toReport = "<span class='info ml-1'>Organs:</span>\
 				<table class='ml-2'><tr>\
@@ -277,23 +277,22 @@
 						[advanced ? "<td><font color='#ff3333'>[CEILING(organ.damage,1)]</font></td>" : ""]\
 						<td>[status]</td></tr>"
 
+			//organ slots we care about, associated with the string we give for each of them
+			var/static/list/important_slots = list(
+				ORGAN_SLOT_BRAIN = "brain",
+				ORGAN_SLOT_EARS = "ears",
+				ORGAN_SLOT_EYES = "eyes",
+				ORGAN_SLOT_TONGUE = "tongue",
+				ORGAN_SLOT_HEART = "heart",
+				ORGAN_SLOT_LUNGS = "lungs",
+				ORGAN_SLOT_STOMACH = "stomach",
+				ORGAN_SLOT_LIVER = "liver",
+			)
+
 			var/missing_organs = list()
-			if(!humantarget.get_organ_slot(ORGAN_SLOT_BRAIN))
-				missing_organs += "brain"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBLOOD, SPECIES_TRAIT) && !humantarget.get_organ_slot(ORGAN_SLOT_HEART))
-				missing_organs += "heart"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBREATH, SPECIES_TRAIT) && !humantarget.get_organ_slot(ORGAN_SLOT_LUNGS))
-				missing_organs += "lungs"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_LIVERLESS_METABOLISM, SPECIES_TRAIT) && !humantarget.get_organ_slot(ORGAN_SLOT_LIVER))
-				missing_organs += "liver"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOHUNGER, SPECIES_TRAIT) && !humantarget.get_organ_slot(ORGAN_SLOT_STOMACH))
-				missing_organs += "stomach"
-			if(!humantarget.get_organ_slot(ORGAN_SLOT_TONGUE))
-				missing_organs += "tongue"
-			if(!humantarget.get_organ_slot(ORGAN_SLOT_EARS))
-				missing_organs += "ears"
-			if(!humantarget.get_organ_slot(ORGAN_SLOT_EYES))
-				missing_organs += "eyes"
+			for(var/organ_slot in important_slots)
+				if(!humantarget.get_organ_slot(organ_slot))
+					missing_organs += important_slots[organ_slot]
 
 			if(length(missing_organs))
 				render = TRUE
@@ -310,20 +309,7 @@
 			render_list += "<span class='info ml-1'>Genetic Stability: [humantarget.dna.stability]%.</span>\n"
 
 		// Species and body temperature
-		var/datum/species/targetspecies = humantarget.dna.species
-		var/mutant = humantarget.dna.check_mutation(/datum/mutation/human/hulk) \
-			|| targetspecies.mutantlungs != initial(targetspecies.mutantlungs) \
-			|| targetspecies.mutantbrain != initial(targetspecies.mutantbrain) \
-			|| targetspecies.mutantheart != initial(targetspecies.mutantheart) \
-			|| targetspecies.mutanteyes != initial(targetspecies.mutanteyes) \
-			|| targetspecies.mutantears != initial(targetspecies.mutantears) \
-			|| targetspecies.mutanttongue != initial(targetspecies.mutanttongue) \
-			|| targetspecies.mutantliver != initial(targetspecies.mutantliver) \
-			|| targetspecies.mutantstomach != initial(targetspecies.mutantstomach) \
-			|| targetspecies.mutantappendix != initial(targetspecies.mutantappendix) \
-			|| istype(humantarget.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS), /obj/item/organ/wings/functional)
-
-		render_list += "<span class='info ml-1'>Species: [targetspecies.name][mutant ? "-derived mutant" : ""]</span>\n"
+		render_list += "<span class='info ml-1'>Species: [humantarget.dna.species.name][humantarget.dna.check_mutant() ? "-derived mutant" : ""]</span>\n"
 		var/core_temperature_message = "Core temperature: [round(humantarget.coretemperature-T0C, 0.1)] &deg;C ([round(humantarget.coretemperature*1.8-459.67,0.1)] &deg;F)"
 		if(humantarget.coretemperature >= humantarget.get_body_temp_heat_damage_limit())
 			render_list += "<span class='alert ml-1'>☼ [core_temperature_message] ☼</span>\n"

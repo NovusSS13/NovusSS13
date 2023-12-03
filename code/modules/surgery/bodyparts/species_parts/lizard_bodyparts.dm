@@ -9,6 +9,7 @@
 	limb_id = SPECIES_LIZARD
 	is_dimorphic = TRUE
 	ass_image = 'icons/ass/asslizard.png'
+	bodypart_traits = list(TRAIT_TACKLING_TAILED_DEFENDER)
 
 /obj/item/bodypart/arm/left/lizard
 	icon_greyscale = 'icons/mob/species/lizard/bodyparts.dmi'
@@ -39,7 +40,7 @@
 	head_flags = HEAD_ALL_FLAGS & ~(HEAD_HAIR|HEAD_FACIAL_HAIR)
 
 /obj/item/bodypart/chest/lizard/ashwalker
-	bodypart_traits = list(TRAIT_VIRUSIMMUNE)
+	bodypart_traits = list(TRAIT_TACKLING_TAILED_DEFENDER, TRAIT_VIRUSIMMUNE)
 
 /obj/item/bodypart/arm/left/lizard/ashwalker
 	hand_traits = list(TRAIT_CHUNKYFINGERS)
@@ -57,7 +58,7 @@
 	bodypart_traits = list(TRAIT_HOLY)
 
 /obj/item/bodypart/chest/lizard/silverscale
-	bodypart_traits = list(TRAIT_VIRUSIMMUNE)
+	bodypart_traits = list(TRAIT_TACKLING_TAILED_DEFENDER, TRAIT_VIRUSIMMUNE)
 
 /obj/item/bodypart/arm/left/lizard/silverscale
 

@@ -35,8 +35,6 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal,
 	)
 
-	voice_pack = /datum/voice/ethereal
-
 	var/current_color
 	var/default_color
 	var/r1
@@ -241,11 +239,9 @@
 		TRAIT_MUTANT_COLORS,
 		TRAIT_FIXED_MUTANT_COLORS,
 		TRAIT_AGENDER,
-		TRAIT_TENACIOUS,
 		TRAIT_NOBREATH,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_VIRUSIMMUNE,
 	)
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/ethereal/lustrous,
@@ -255,8 +251,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/ethereal,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal,
 	)
-
-	voice_pack = /datum/voice/ethereal/lustrous
 
 /datum/species/ethereal/lustrous/on_species_gain(mob/living/carbon/new_lustrous, datum/species/old_species, pref_load)
 	. = ..()

@@ -67,11 +67,13 @@
 
 /obj/item/bodypart/arm/proc/on_active_hand(mob/living/carbon/source)
 	SHOULD_CALL_PARENT(TRUE)
-	source.add_traits(hand_traits, REF(src))
+	if(LAZYLEN(hand_traits))
+		source.add_traits(hand_traits, REF(src))
 
 /obj/item/bodypart/arm/proc/on_inactive_hand(mob/living/carbon/source)
 	SHOULD_CALL_PARENT(TRUE)
-	source.remove_traits(hand_traits, REF(src))
+	if(LAZYLEN(hand_traits))
+		source.remove_traits(hand_traits, REF(src))
 
 /obj/item/bodypart/arm/left
 	name = "left arm"

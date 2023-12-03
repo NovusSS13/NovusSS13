@@ -5,7 +5,6 @@
 	chat_color = COLOR_BEIGE
 	inherent_traits = list(
 		TRAIT_CAN_USE_FLIGHT_POTION,
-		TRAIT_TACKLING_WINGED_ATTACKER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_BUG
 
@@ -49,8 +48,6 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/moth,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/moth,
 	)
-
-	voice_pack = /datum/voice/moth
 
 /datum/species/moth/random_name(gender,unique,lastname)
 	if(unique)

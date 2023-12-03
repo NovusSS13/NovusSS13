@@ -50,6 +50,8 @@
 		TRAIT_NO_UNDERSHIRT,
 		TRAIT_NO_UNDERWEAR,
 		TRAIT_NO_SOCKS,
+		TRAIT_TACKLING_FRAIL_ATTACKER,
+		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 
 /obj/item/bodypart/chest/avali/Initialize(mapload)

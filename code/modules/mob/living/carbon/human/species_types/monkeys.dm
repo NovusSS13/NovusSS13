@@ -34,8 +34,6 @@
 
 	payday_modifier = 1.5 //i have no idea why this is set like this lmao
 
-	voice_pack = /datum/voice/monkey
-
 /datum/species/monkey/random_name(gender,unique,lastname)
 	var/randname = "monkey ([rand(1,999)])"
 

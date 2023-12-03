@@ -7,7 +7,6 @@
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
 		TRAIT_CAN_USE_FLIGHT_POTION,
-		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	mutantears = /obj/item/organ/ears/mutant
@@ -36,8 +35,6 @@
 	custom_bodyparts = TRUE // of course the stupid "custom" species gets this
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
-
-	voice_pack = /datum/voice/mutant
 
 /datum/species/mutant/get_species_description()
 	return "Some kind of beast in anthropomorphic form."

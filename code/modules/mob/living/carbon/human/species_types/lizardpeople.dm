@@ -7,7 +7,6 @@
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
 		TRAIT_CAN_USE_FLIGHT_POTION,
-		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	mutantlungs = /obj/item/organ/lungs/lizard //underwater breathing baby!
@@ -55,8 +54,6 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
 	)
-
-	voice_pack = /datum/voice/lizard
 
 /datum/species/lizard/on_species_gain(mob/living/carbon/new_lizard, datum/species/old_species, pref_load)
 	. = ..()
@@ -141,12 +138,6 @@ Lizard subspecies: ASHWALKERS
 	chat_color = COLOR_MAROON
 	mutantlungs = /obj/item/organ/lungs/lizard/lavaland
 	mutantbrain = /obj/item/organ/brain/primitive
-	inherent_traits = list(
-		TRAIT_MUTANT_COLORS,
-		TRAIT_CAN_USE_FLIGHT_POTION,
-		TRAIT_TACKLING_TAILED_DEFENDER,
-		TRAIT_FORBID_MINING_SHUTTLE_CONSOLE_OUTSIDE_STATION,
-	)
 	species_language_holder = /datum/language_holder/lizard/ash
 	digitigrade_customization = DIGITIGRADE_FORCED
 	examine_limb_id = SPECIES_LIZARD
@@ -168,6 +159,8 @@ Lizard subspecies: SILVER SCALED
 	chat_color = COLOR_VERY_LIGHT_GRAY
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	inherent_traits = list(
+		TRAIT_MUTANT_COLORS,
+		TRAIT_CAN_USE_FLIGHT_POTION,
 		TRAIT_NOBREATH,
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_RESISTHIGHPRESSURE,

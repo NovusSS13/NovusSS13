@@ -6,12 +6,9 @@
 	inherent_traits = list(
 		TRAIT_AGENDER,
 		TRAIT_GENELESS,
-		TRAIT_LAVA_IMMUNE,
 		TRAIT_NOBREATH,
 		TRAIT_PIERCEIMMUNE,
 	)
-	mutantheart = null
-	mutantlungs = null
 	inherent_biotypes = MOB_HUMANOID|MOB_MINERAL
 	damage_modifier = 10 //golem is stronk
 	siemens_coeff = 0
@@ -30,6 +27,9 @@
 	mutantstomach = /obj/item/organ/stomach/golem
 	mutantliver = /obj/item/organ/liver/golem
 	mutantappendix = /obj/item/organ/appendix/golem
+	mutantheart = null
+	mutantlungs = null
+
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem,
