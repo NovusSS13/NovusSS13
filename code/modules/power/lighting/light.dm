@@ -3,7 +3,9 @@
 	name = "light fixture"
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "tube"
-	desc = "Fear of the dark, fear of the dark... I have a constant fear that something's always near."
+	desc = "Have you run your fingers down the wall\n\
+		And have you felt your neck skin crawl\n\
+		When you're searching for the light?"
 	layer = WALL_OBJ_LAYER
 	plane = GAME_PLANE_UPPER
 	max_integrity = 100

@@ -15,7 +15,7 @@
 	nightshift_enabled = FALSE
 
 /obj/machinery/light/warm
-	bulb_colour = "#fae5c1"
+	bulb_colour = "#fad6c1"
 
 /obj/machinery/light/warm/no_nightlight
 	nightshift_allowed = FALSE
@@ -54,7 +54,10 @@
 	brightness = 4
 	nightshift_brightness = 4
 	fire_brightness = 3
-	desc = "Fear of the dark, fear of the dark... I have a phobia that someone's always there."
+	bulb_colour = "#ebf9ff"
+	fire_colour = "#bd3f46"
+	desc = "Fear of the dark, fear of the dark\n\
+		I have a constant fear that something's always near"
 	light_type = /obj/item/light/bulb
 
 /obj/machinery/light/small/broken
