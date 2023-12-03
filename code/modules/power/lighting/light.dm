@@ -48,7 +48,7 @@
 	///Set to FALSE to never let this light get switched to night mode.
 	var/nightshift_allowed = TRUE
 	///Brightness of the nightshift light
-	var/nightshift_brightness = 5
+	var/nightshift_brightness = 6
 	///Alpha of the nightshift light
 	var/nightshift_light_power = 0.25
 	///Basecolor of the nightshift light
@@ -60,7 +60,7 @@
 	///If true, overrides lights to use emergency lighting
 	var/major_emergency = FALSE
 	///Multiplier for this light's base brightness during a cascade
-	var/bulb_major_emergency_brightness_mul = 0.8
+	var/bulb_major_emergency_brightness_mul = 0.75
 	///Colour of the light when major emergency mode is on
 	var/bulb_emergency_colour = "#ff4e60"
 	///Multiplier for this light's base brightness in low power power mode
