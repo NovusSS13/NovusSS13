@@ -1186,6 +1186,32 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	floor.burn_tile()
 	qdel(src)
 
+/obj/effect/mapping_helpers/shiny_floor
+	name = "shiny floor"
+	icon = 'icons/effects/shine.dmi'
+	icon_state = "shiner"
+	/// Icon state for the shiny mask
+	var/mask_state = "full"
+	/// Icon state for the shiny displacement map
+	var/displacement_state = "flip"
+
+/obj/effect/mapping_helpers/shiny_floor/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/shiny_floor/LateInitialize()
+	var/turf/shiny = get_turf(src)
+	var/existing_shine = shiny.GetComponent(/datum/component/shiny)
+	if(existing_shine)
+		qdel(existing_shine)
+	shiny.AddComponent(/datum/component/shiny, mask_state, displacement_state)
+	qdel(src)
+
+/obj/effect/mapping_helpers/shiny_floor/partial
+	name = "partially shiny floor"
+	mask_state = "partial"
+	alpha = 128
+
 ///Applies BROKEN flag to the first found machine on a tile
 /obj/effect/mapping_helpers/broken_machine
 	name = "broken machine helper"

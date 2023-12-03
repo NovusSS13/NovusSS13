@@ -48,7 +48,7 @@ Color matrices are like regular colors but unlike with normal colors, you can go
 Unless you know what you're doing, only use the first three numbers. They're in RGB order.
 */
 
-///Has no special properties. Could be good against vampires in the future perhaps.
+///Very shiny and gives TRAIT_HOLY
 /datum/material/silver
 	name = "silver"
 	desc = "Silver"
@@ -62,6 +62,14 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 /datum/material/silver/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
 	return TRUE
+
+/datum/material/silver/on_applied(atom/source, amount, material_flags)
+	. = ..()
+	source.AddComponent(/datum/component/shiny)
+
+/datum/material/silver/on_removed(atom/source, amount, material_flags)
+	. = ..()
+	qdel(source.GetComponent(/datum/component/shiny))
 
 ///Slight force increase
 /datum/material/gold
@@ -155,7 +163,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	. = ..()
 	source.RemoveElement(/datum/element/firestacker, amount=1)
 	qdel(source.GetComponent(/datum/component/combustible_flooder))
-	qdel(source.GetComponent(/datum/component/explodable))
 
 /datum/material/plasma/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/toxin/plasma, rand(6, 8))

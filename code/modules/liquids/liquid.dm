@@ -68,7 +68,7 @@
 		SSliquids.add_active_turf(my_turf)
 
 		SEND_SIGNAL(my_turf, COMSIG_TURF_LIQUIDS_CREATION, src)
-	AddComponent(/datum/component/shiny)
+	AddComponent(/datum/component/shiny, check_callblack = CALLBACK(src, PROC_REF(should_shine)))
 	QUEUE_SMOOTH(src)
 	QUEUE_SMOOTH_NEIGHBORS(src)
 
@@ -95,6 +95,12 @@
 
 /atom/movable/turf_liquid/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
 	return
+
+/// We only shine when we are a puddle
+/atom/movable/turf_liquid/proc/should_shine(datum/component/shiny)
+	if(liquid_state > LIQUID_STATE_PUDDLE)
+		return FALSE
+	return TRUE
 
 /atom/movable/turf_liquid/proc/set_new_liquid_state(new_state)
 	liquid_state = new_state
