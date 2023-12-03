@@ -34,7 +34,7 @@
 
 /obj/machinery/light/red/dim
 	brightness = 4
-	bulb_power = 0.7
+	bulb_power = 0.35
 	fire_brightness = 2
 
 /obj/machinery/light/blacklight
@@ -43,8 +43,7 @@
 
 /obj/machinery/light/dim
 	nightshift_allowed = FALSE
-	bulb_colour = "#FFDDCC"
-	bulb_power = 0.6
+	bulb_power = 0.35
 
 // the smaller bulb light fixture
 
@@ -55,9 +54,7 @@
 	brightness = 4
 	nightshift_brightness = 4
 	fire_brightness = 3
-	bulb_colour = "#FFD6AA"
-	fire_colour = "#bd3f46"
-	desc = "A small lighting fixture."
+	desc = "Fear of the dark, fear of the dark... I have a phobia that someone's always there."
 	light_type = /obj/item/light/bulb
 
 /obj/machinery/light/small/broken
@@ -81,7 +78,7 @@
 
 /obj/machinery/light/small/red/dim
 	brightness = 2
-	bulb_power = 0.8
+	bulb_power = 0.35
 	fire_brightness = 2
 
 /obj/machinery/light/small/blacklight
