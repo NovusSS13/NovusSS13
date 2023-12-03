@@ -122,9 +122,6 @@
 	/// The body temperature limit the body can take before it starts taking damage from cold.
 	var/bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT
 
-	/// The icon_state of the fire overlay added when sufficently ablaze and standing. see onfire.dmi
-	var/fire_overlay = "human"
-
 	/// List of biotypes the mob belongs to. Used by diseases.
 	var/inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	/// The type of respiration the mob is capable of doing. Used by adjustOxyLoss.
@@ -147,9 +144,6 @@
 
 	///Unique cookie given by admins through prayers
 	var/species_cookie = /obj/item/food/cookie
-
-	///For custom overrides for species ass images
-	var/icon/ass_image
 
 	/// Voice pack that this species uses by default, for emotes
 	var/datum/voice/voice_pack = /datum/voice/none

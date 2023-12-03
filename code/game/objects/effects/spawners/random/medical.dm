@@ -56,7 +56,7 @@
 		/obj/item/organ/tongue/lizard,
 		/obj/item/organ/tongue/alien,
 		/obj/item/organ/tongue/ethereal,
-		/obj/item/organ/tongue/robot,
+		/obj/item/organ/tongue/cybernetic,
 		/obj/item/organ/tongue/zombie,
 		/obj/item/organ/appendix,
 		/obj/item/organ/liver/fly,

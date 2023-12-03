@@ -23,7 +23,7 @@
 		TRAIT_SUCCUMB_OVERRIDE,
 	)
 
-	mutantheart = /obj/item/organ/heart/zombie
+	mutantheart = /obj/item/organ/heart/zombie //purely for the funnies, has no practical purpose and starts out rotting
 	mutanttongue = /obj/item/organ/tongue/zombie
 	mutantstomach = null
 	mutantliver = null

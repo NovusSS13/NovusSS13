@@ -199,16 +199,17 @@
 	if(!eyeballs)
 		CRASH("[type] called get_eyes_overlays() while having no eyes!")
 
-	custom_eyes_icon ||= 'icons/mob/species/sprite_accessory/eyes.dmi'
+	if(!eyes_icon)
+		return .
 
 	var/image/left_eye
 	var/image/right_eye
 	if(can_rotate)
-		left_eye = mutable_appearance(custom_eyes_icon, "[eyeballs.eye_icon_state]_l", -BODY_LAYER)
-		right_eye = mutable_appearance(custom_eyes_icon, "[eyeballs.eye_icon_state]_r", -BODY_LAYER)
+		left_eye = mutable_appearance(eyes_icon, "[eyeballs.eye_icon_state]_l", -BODY_LAYER)
+		right_eye = mutable_appearance(eyes_icon, "[eyeballs.eye_icon_state]_r", -BODY_LAYER)
 	else
-		left_eye = image(custom_eyes_icon, "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
-		right_eye = image(custom_eyes_icon, "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
+		left_eye = image(eyes_icon, "[eyeballs.eye_icon_state]_l", -BODY_LAYER, SOUTH)
+		right_eye = image(eyes_icon, "[eyeballs.eye_icon_state]_r", -BODY_LAYER, SOUTH)
 
 	if(head_flags & HEAD_EYECOLOR)
 		left_eye.color = eyeballs.eye_color_left
@@ -237,14 +238,16 @@
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
 	RETURN_TYPE(/image)
-	var/eyeless_icon = (custom_eyes_icon ||= 'icons/mob/species/sprite_accessory/human_face.dmi')
+	if(!eyes_icon)
+		return
+
 	var/eyeless_icon_state = "eyes_missing"
 
 	var/image/eyeless_overlay
 	if(can_rotate)
-		eyeless_overlay = mutable_appearance(eyeless_icon, eyeless_icon_state, -HAIR_LAYER)
+		eyeless_overlay = mutable_appearance(eyes_icon, eyeless_icon_state, -HAIR_LAYER)
 	else
-		eyeless_overlay = image(eyeless_icon, eyeless_icon_state, -HAIR_LAYER, SOUTH)
+		eyeless_overlay = image(eyes_icon, eyeless_icon_state, -HAIR_LAYER, SOUTH)
 	worn_face_offset?.apply_offset(eyeless_overlay)
 	return eyeless_overlay
 

@@ -11,9 +11,9 @@
 	exotic_bloodtype = "LE"
 	siemens_coeff = 0.5 //They thrive on energy
 	inherent_traits = list(
+		TRAIT_AGENDER,
 		TRAIT_FIXED_MUTANT_COLORS,
 		TRAIT_MUTANT_COLORS,
-		TRAIT_AGENDER,
 	)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_cookie = /obj/item/food/energybar

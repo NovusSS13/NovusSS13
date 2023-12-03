@@ -1,6 +1,7 @@
 /obj/item/organ/heart/vampire
 	name = "vampire heart"
 	color = "#1C1C1C"
+	organ_traits = list(TRAIT_NOHUNGER)
 
 /obj/item/organ/heart/vampire/on_insert(mob/living/carbon/organ_owner, special)
 	. = ..()

@@ -56,6 +56,7 @@
 	limb_id = SPECIES_ABDUCTOR
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
+	ass_image = 'icons/ass/assgrey.png'
 	bodypart_traits = list(
 		TRAIT_NO_UNDERWEAR,
 		TRAIT_NO_UNDERSHIRT,
@@ -68,7 +69,7 @@
 	biological_state = BIO_INORGANIC
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
-	bodypart_traits = list(
+	hand_traits = list(
 		TRAIT_CHUNKYFINGERS,
 		TRAIT_CHUNKYFINGERS_IGNORE_BATON,
 	)
@@ -77,7 +78,7 @@
 	biological_state = BIO_INORGANIC
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
-	bodypart_traits = list(
+	hand_traits = list(
 		TRAIT_CHUNKYFINGERS,
 		TRAIT_CHUNKYFINGERS_IGNORE_BATON,
 	)
@@ -107,6 +108,7 @@
 	is_dimorphic = TRUE
 	dmg_overlay_type = null
 	burn_modifier = 0.5 // = 1/2x generic burn damage
+	ass_image = 'icons/ass/assslime.png'
 	bodypart_traits = list(TRAIT_NOBLOOD)
 
 /obj/item/bodypart/arm/left/jelly
@@ -243,13 +245,12 @@
 	is_dimorphic = TRUE
 	burn_modifier = 1.25
 	head_flags = HEAD_EYESPRITES|HEAD_EYECOLOR|HEAD_EYEHOLES|HEAD_DEBRAIN
-	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/chest/pod
 	limb_id = SPECIES_PODPERSON
 	is_dimorphic = TRUE
 	burn_modifier = 1.25
-	bodypart_traits = list(TRAIT_PLANT_SAFE)
+	ass_image = 'icons/ass/asspodperson.png'
 
 /obj/item/bodypart/arm/left/pod
 	limb_id = SPECIES_PODPERSON
@@ -258,7 +259,7 @@
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 	burn_modifier = 1.25
-	bodypart_traits = list(TRAIT_PLANT_SAFE)
+	hand_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/arm/right/pod
 	limb_id = SPECIES_PODPERSON
@@ -267,17 +268,15 @@
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 	burn_modifier = 1.25
-	bodypart_traits = list(TRAIT_PLANT_SAFE)
+	hand_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/leg/left/pod
 	limb_id = SPECIES_PODPERSON
 	burn_modifier = 1.25
-	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/leg/right/pod
 	limb_id = SPECIES_PODPERSON
 	burn_modifier = 1.25
-	bodypart_traits = list(TRAIT_PLANT_SAFE)
 
 ///FLY
 /obj/item/bodypart/head/fly
@@ -372,10 +371,10 @@
 	)
 
 /obj/item/bodypart/arm/left/shadow/nightmare
-	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
+	hand_traits = list(TRAIT_CHUNKYFINGERS)
 
 /obj/item/bodypart/arm/right/shadow/nightmare
-	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
+	hand_traits = list(TRAIT_CHUNKYFINGERS)
 
 /obj/item/bodypart/leg/left/shadow/nightmare
 
@@ -459,6 +458,7 @@
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 14
 	burn_modifier = 1.25
+	hand_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/arm/right/mushroom
 	limb_id = SPECIES_MUSHROOM
@@ -466,6 +466,7 @@
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 14
 	burn_modifier = 1.25
+	hand_traits = list(TRAIT_PLANT_SAFE)
 
 /obj/item/bodypart/leg/left/mushroom
 	limb_id = SPECIES_MUSHROOM
@@ -540,7 +541,6 @@
 		TRAIT_NOBLOOD,
 		TRAIT_NODISMEMBER,
 		TRAIT_NOFIRE,
-		TRAIT_NO_AUGMENTS,
 		TRAIT_NO_DNA_COPY,
 		TRAIT_NO_TRANSFORMATION_STING,
 	)
@@ -562,13 +562,13 @@
 	limb_id = SPECIES_GOLEM
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	bodypart_traits = list(
-		TRAIT_CHUNKYFINGERS,
-		TRAIT_FIST_MINING,
-	)
 	unarmed_damage_low = 5
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 11
+	hand_traits = list(
+		TRAIT_CHUNKYFINGERS,
+		TRAIT_FIST_MINING,
+	)
 
 /obj/item/bodypart/arm/left/golem/Initialize(mapload)
 	held_hand_offset =  new(
@@ -579,16 +579,13 @@
 	)
 	return ..()
 
-/obj/item/bodypart/arm/left/golem/set_owner(new_owner)
+/obj/item/bodypart/arm/left/golem/on_active_hand(mob/living/carbon/source)
 	. = ..()
-	if (. == FALSE)
-		return
-	if (owner)
-		owner.AddComponentFrom(REF(src), /datum/component/shovel_hands)
-	if (isnull(.))
-		return
-	var/mob/living/carbon/old_owner = .
-	old_owner.RemoveComponentSource(REF(src), /datum/component/shovel_hands)
+	source.AddComponentFrom(REF(src), /datum/component/shovel_hands)
+
+/obj/item/bodypart/arm/left/golem/on_inactive_hand(mob/living/carbon/source)
+	. = ..()
+	source.RemoveComponentSource(REF(src), /datum/component/shovel_hands)
 
 /obj/item/bodypart/arm/right/golem
 	icon = 'icons/mob/species/golem/golems.dmi'
@@ -599,13 +596,13 @@
 	limb_id = SPECIES_GOLEM
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	bodypart_traits = list(
-		TRAIT_CHUNKYFINGERS,
-		TRAIT_FIST_MINING,
-	)
 	unarmed_damage_low = 5
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 11
+	hand_traits = list(
+		TRAIT_CHUNKYFINGERS,
+		TRAIT_FIST_MINING,
+	)
 
 /obj/item/bodypart/arm/right/golem/Initialize(mapload)
 	held_hand_offset =  new(
@@ -616,16 +613,13 @@
 	)
 	return ..()
 
-/obj/item/bodypart/arm/right/golem/set_owner(new_owner)
+/obj/item/bodypart/arm/right/golem/on_active_hand(mob/living/carbon/source)
 	. = ..()
-	if (. == FALSE)
-		return
-	if (owner)
-		owner.AddComponentFrom(REF(src), /datum/component/shovel_hands)
-	if (isnull(.))
-		return
-	var/mob/living/carbon/old_owner = .
-	old_owner.RemoveComponentSource(REF(src), /datum/component/shovel_hands)
+	source.AddComponentFrom(REF(src), /datum/component/shovel_hands)
+
+/obj/item/bodypart/arm/right/golem/on_inactive_hand(mob/living/carbon/source)
+	. = ..()
+	source.RemoveComponentSource(REF(src), /datum/component/shovel_hands)
 
 /obj/item/bodypart/leg/left/golem
 	icon = 'icons/mob/species/golem/golems.dmi'

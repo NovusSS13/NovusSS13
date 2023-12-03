@@ -47,8 +47,6 @@
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_LAVALAND_SAFE
 	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 10)
 
-	ass_image = 'icons/ass/asslizard.png'
-
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard,
@@ -145,7 +143,8 @@ Lizard subspecies: ASHWALKERS
 	mutantbrain = /obj/item/organ/brain/primitive
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
-		TRAIT_VIRUSIMMUNE,
+		TRAIT_CAN_USE_FLIGHT_POTION,
+		TRAIT_TACKLING_TAILED_DEFENDER,
 		TRAIT_FORBID_MINING_SHUTTLE_CONSOLE_OUTSIDE_STATION,
 	)
 	species_language_holder = /datum/language_holder/lizard/ash
@@ -169,13 +168,10 @@ Lizard subspecies: SILVER SCALED
 	chat_color = COLOR_VERY_LIGHT_GRAY
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	inherent_traits = list(
-		TRAIT_HOLY,
 		TRAIT_NOBREATH,
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_VIRUSIMMUNE,
-		TRAIT_WINE_TASTER,
 	)
 	mutantlungs = null
 	damage_modifier = 10 //very light silvery scales soften blows
@@ -183,6 +179,14 @@ Lizard subspecies: SILVER SCALED
 	mutanttongue = /obj/item/organ/tongue/lizard/silver
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	examine_limb_id = SPECIES_LIZARD
+	bodypart_overrides = list(
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard/silverscale,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard/silverscale,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard/silverscale,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard/silverscale,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard/silverscale,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard/silverscale,
+	)
 	///stored features for when we turn back off of a silverscale.
 	var/list/old_features
 	///stored eye color for when we turn back off of a silverscale.

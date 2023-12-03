@@ -193,8 +193,6 @@
 
 	/// Traits that are given to the holder of the part. If you want an effect that changes this, don't add directly to this. Use the add_bodypart_trait() proc
 	var/list/bodypart_traits
-	/// The name of the trait source that the organ gives. Should not be altered during the events of gameplay, and will cause problems if it is.
-	var/bodypart_trait_source = BODYPART_TRAIT
 
 	/// List of feature offset datums which have actually been instantiated, managed automatically
 	var/list/feature_offsets
@@ -633,7 +631,7 @@
 		if(speed_modifier)
 			old_owner.update_bodypart_speed_modifier()
 		if(LAZYLEN(bodypart_traits))
-			old_owner.remove_traits(bodypart_traits, bodypart_trait_source)
+			old_owner.remove_traits(bodypart_traits, REF(src))
 		if(initial(can_be_disabled))
 			if(HAS_TRAIT(old_owner, TRAIT_NOLIMBDISABLE))
 				if(!owner || !HAS_TRAIT(owner, TRAIT_NOLIMBDISABLE))
@@ -657,7 +655,7 @@
 		if(speed_modifier)
 			owner.update_bodypart_speed_modifier()
 		if(LAZYLEN(bodypart_traits))
-			owner.add_traits(bodypart_traits, bodypart_trait_source)
+			owner.add_traits(bodypart_traits, REF(src))
 		if(initial(can_be_disabled))
 			if(HAS_TRAIT(owner, TRAIT_NOLIMBDISABLE))
 				set_can_be_disabled(FALSE)
@@ -681,7 +679,7 @@
 	if(!LAZYLEN(bodypart_traits))
 		return
 
-	owner.remove_traits(bodypart_traits, bodypart_trait_source)
+	owner.remove_traits(bodypart_traits, REF(src))
 
 /// Proc to change the value of the `can_be_disabled` variable and react to the event of its change.
 /obj/item/bodypart/proc/set_can_be_disabled(new_can_be_disabled)

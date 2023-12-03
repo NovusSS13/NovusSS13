@@ -1,3 +1,4 @@
+//NORMAL LIZARD
 /obj/item/bodypart/head/lizard
 	icon_greyscale = 'icons/mob/species/lizard/bodyparts.dmi'
 	limb_id = SPECIES_LIZARD
@@ -7,6 +8,7 @@
 	icon_greyscale = 'icons/mob/species/lizard/bodyparts.dmi'
 	limb_id = SPECIES_LIZARD
 	is_dimorphic = TRUE
+	ass_image = 'icons/ass/asslizard.png'
 
 /obj/item/bodypart/arm/left/lizard
 	icon_greyscale = 'icons/mob/species/lizard/bodyparts.dmi'
@@ -32,17 +34,35 @@
 	icon_greyscale = 'icons/mob/species/lizard/bodyparts.dmi'
 	limb_id = SPECIES_LIZARD
 
+//ASHWALKER
 /obj/item/bodypart/head/lizard/ashwalker
 	head_flags = HEAD_ALL_FLAGS & ~(HEAD_HAIR|HEAD_FACIAL_HAIR)
 
 /obj/item/bodypart/chest/lizard/ashwalker
+	bodypart_traits = list(TRAIT_VIRUSIMMUNE)
 
 /obj/item/bodypart/arm/left/lizard/ashwalker
-	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
+	hand_traits = list(TRAIT_CHUNKYFINGERS)
 
 /obj/item/bodypart/arm/right/lizard/ashwalker
-	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
+	hand_traits = list(TRAIT_CHUNKYFINGERS)
 
 /obj/item/bodypart/leg/left/lizard/ashwalker
 
 /obj/item/bodypart/leg/right/lizard/ashwalker
+
+//SILVERSCALE
+/obj/item/bodypart/head/lizard/silverscale
+	head_flags = HEAD_ALL_FLAGS & ~(HEAD_HAIR|HEAD_FACIAL_HAIR)
+	bodypart_traits = list(TRAIT_HOLY)
+
+/obj/item/bodypart/chest/lizard/silverscale
+	bodypart_traits = list(TRAIT_VIRUSIMMUNE)
+
+/obj/item/bodypart/arm/left/lizard/silverscale
+
+/obj/item/bodypart/arm/right/lizard/silverscale
+
+/obj/item/bodypart/leg/left/lizard/silverscale
+
+/obj/item/bodypart/leg/right/lizard/silverscale

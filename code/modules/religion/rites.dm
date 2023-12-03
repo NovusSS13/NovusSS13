@@ -134,7 +134,7 @@
 		/obj/item/organ/cyberimp/eyes/hud/medical,
 		/obj/item/organ/cyberimp/mouth/breathing_tube,
 		/obj/item/organ/cyberimp/chest/thrusters,
-		/obj/item/organ/eyes/robotic/glow,
+		/obj/item/organ/eyes/cybernetic/glow,
 	)
 	new blessing(altar_turf)
 	return TRUE

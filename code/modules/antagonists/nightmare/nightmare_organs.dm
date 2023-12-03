@@ -47,6 +47,7 @@
 	visual = TRUE
 	color = "#1C1C1C"
 	decay_factor = 0
+	organ_traits = list(TRAIT_NOHUNGER)
 	/// How many life ticks in the dark the owner has been dead for. Used for nightmare respawns.
 	var/respawn_progress = 0
 	/// The armblade granted to the host of this heart.

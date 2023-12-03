@@ -11,10 +11,15 @@
 	px_y = 0
 	grind_results = null
 	wound_resistance = 10
-	bodypart_trait_source = CHEST_TRAIT
 
 	/// The bodytype(s) allowed to attach to this chest.
 	var/acceptable_bodytype = BODYTYPE_HUMANOID
+
+	/// Fire overlay to apply when the owner is on fire
+	var/fire_overlay = "human"
+
+	/// Ass image that gets printed when the owner scans their ass on a printer - Will use the default if null
+	var/ass_image
 
 	/// Item inserted in the cavity of this chest, if any.
 	var/obj/item/cavity_item

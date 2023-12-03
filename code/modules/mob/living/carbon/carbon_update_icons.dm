@@ -327,7 +327,8 @@
 	apply_overlay(HANDS_LAYER)
 
 /mob/living/carbon/update_fire_overlay(stacks, on_fire = FALSE, last_icon_state, suffix = "")
-	var/fire_icon = "[dna?.species.fire_overlay || "human"]_[stacks > MOB_BIG_FIRE_STACK_THRESHOLD ? "big_fire" : "small_fire"][suffix]"
+	var/obj/item/bodypart/chest/chest = get_bodypart(BODY_ZONE_CHEST)
+	var/fire_icon = "[chest?.fire_overlay || "human"]_[stacks > MOB_BIG_FIRE_STACK_THRESHOLD ? "big_fire" : "small_fire"][suffix]"
 	if(!GLOB.fire_appearances[fire_icon])
 		GLOB.fire_appearances[fire_icon] = mutable_appearance('icons/mob/effects/onfire.dmi', fire_icon, -FIRE_LAYER, appearance_flags = RESET_COLOR)
 
@@ -342,6 +343,9 @@
 
 /mob/living/carbon/update_damage_overlays()
 	remove_overlay(DAMAGE_LAYER)
+
+	if(HAS_TRAIT(src, TRAIT_NO_DAMAGE_OVERLAY))
+		return
 
 	var/list/damage_overlays = list()
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)

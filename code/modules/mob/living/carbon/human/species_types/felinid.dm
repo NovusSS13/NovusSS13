@@ -25,7 +25,6 @@
 	species_language_holder = /datum/language_holder/felinid
 	family_heirlooms = list(/obj/item/toy/cattoy)
 
-	ass_image = 'icons/ass/asscat.png'
 	voice_pack = /datum/voice/human/felinid
 
 	payday_modifier = 1 //fuck you mangy cats
