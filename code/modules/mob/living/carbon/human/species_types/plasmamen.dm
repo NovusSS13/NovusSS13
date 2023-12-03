@@ -44,8 +44,6 @@
 	// This effects how fast body temp stabilizes, also if cold resit is lost on the mob
 	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 50) // about -50c
 
-	voice_pack = /datum/voice/plasmaman
-
 	/// If the bones themselves are burning clothes won't help you much
 	var/internal_fire = FALSE
 

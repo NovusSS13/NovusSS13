@@ -234,4 +234,4 @@
 	var/datum/examine_panel/examine_panel
 
 	/// A datum used to store emote sounds in
-	var/datum/voice/voice_pack
+	var/datum/voice/voice_pack = /datum/voice/none

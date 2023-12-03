@@ -18,8 +18,6 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	payday_modifier = 1.1
 
-	voice_pack = /datum/voice/human
-
 /datum/species/human/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.set_haircolor("#bb9966", update = FALSE) // brown
 	human.set_hairstyle("Business Hair", update = TRUE)

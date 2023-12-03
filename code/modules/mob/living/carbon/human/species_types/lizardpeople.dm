@@ -56,8 +56,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
 	)
 
-	voice_pack = /datum/voice/lizard
-
 /datum/species/lizard/on_species_gain(mob/living/carbon/new_lizard, datum/species/old_species, pref_load)
 	. = ..()
 	if(ishuman(new_lizard))

@@ -50,8 +50,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/moth,
 	)
 
-	voice_pack = /datum/voice/moth
-
 /datum/species/moth/random_name(gender,unique,lastname)
 	if(unique)
 		return random_unique_moth_name()

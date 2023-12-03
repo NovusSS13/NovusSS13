@@ -44,13 +44,15 @@
 	///What skin the species drops when gibbed by a gibber machine.
 	var/skinned_type
 	///flags for inventory slots the race can't equip stuff to. Golems cannot wear jumpsuits, for example.
-	var/no_equip_flags
+	var/no_equip_flags = NONE
 	/// What languages this species can understand and say.
 	/// Use a [language holder datum][/datum/language_holder] typepath in this var.
 	/// Should never be null.
 	var/datum/language_holder/species_language_holder = /datum/language_holder/human_basic
 	/// Whether or not this species can use custom bodypart icons, basically only important for character setup preferences.
 	var/custom_bodyparts = FALSE
+	///List of body marking sets we can use for randomization. We use sets to avoid creating fugly abominations.
+	var/list/body_marking_sets = list()
 	///The bodyparts this species uses. assoc of bodypart string - bodypart type. Make sure all the fucking entries are in or I'll skin you alive.
 	var/list/bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left,
@@ -64,8 +66,6 @@
 	var/list/mutant_organs = list()
 	///List of cosmetic organs to generate like horns, frills, wings, etc. list(typepath of organ = "Round Beautiful BDSM Snout").
 	var/list/cosmetic_organs = list()
-	///List of body marking sets we can use for randomization. We use sets to avoid creating fugly abominations.
-	var/list/body_marking_sets = list()
 	///Replaces default brain with a different organ
 	var/obj/item/organ/brain/mutantbrain = /obj/item/organ/brain
 	///Replaces default heart with a different organ
@@ -144,9 +144,6 @@
 
 	///Unique cookie given by admins through prayers
 	var/species_cookie = /obj/item/food/cookie
-
-	/// Voice pack that this species uses by default, for emotes
-	var/datum/voice/voice_pack = /datum/voice/none
 
 	/// List of family heirlooms this species can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
@@ -497,9 +494,6 @@
 	for(var/language in gaining_holder.blocked_languages)
 		C.add_blocked_language(language, LANGUAGE_SPECIES)
 
-	// Change the voice pack of the human if it's not valid
-	if(!old_species.properly_gained || (istype(C.voice_pack) && !(C.voice_pack.name in get_voice_packs())))
-		C.set_voice_pack(initial(voice_pack.name))
 	C.death_sound = death_sound
 
 	properly_gained = TRUE
@@ -2291,8 +2285,3 @@
 /datum/species/proc/check_head_flags(check_flags = NONE)
 	var/obj/item/bodypart/head/fake_head = bodypart_overrides[BODY_ZONE_HEAD]
 	return (initial(fake_head.head_flags) & check_flags)
-
-/// Returns the voice packs this species can use. By default, everything is valid.
-/datum/species/proc/get_voice_packs()
-	RETURN_TYPE(/list)
-	return GLOB.voice_packs

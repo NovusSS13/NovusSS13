@@ -127,6 +127,7 @@
 //useless organs we throw in just to fuck with surgeons a bit more. they aren't part of a bonus, just the (absolute) state of flies
 /obj/item/organ/fly
 	desc = FLY_INFUSED_ORGAN_DESC
+	slot = ORGAN_SLOT_CHEST_BONUS
 	visual = FALSE
 
 /obj/item/organ/fly/Initialize(mapload)
@@ -136,6 +137,7 @@
 
 /obj/item/organ/fly/groin //appendix is the only groin organ so we gotta have one of these too lol
 	zone = BODY_ZONE_PRECISE_GROIN
+	slot = ORGAN_SLOT_GROIN_BONUS
 
 #undef FLY_INFUSED_ORGAN_DESC
 #undef FLY_INFUSED_ORGAN_ICON

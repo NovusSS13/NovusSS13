@@ -37,6 +37,8 @@
 	var/say_mod = "says"
 	/// For temporary overrides of the above variable - This is fucking dumb.
 	var/temp_say_mod = ""
+	/// Voice pack that this tongue uses, for emotes
+	var/datum/voice/voice_pack = /datum/voice/human
 
 	/// Whether the owner of this tongue can taste anything. Being set to FALSE will mean no taste feedback will be provided.
 	var/sense_of_taste = TRUE
@@ -59,6 +61,14 @@
 	// - then we cache it via string list
 	// this results in tongues with identical possible languages sharing a cached list instance
 	languages_possible = string_list(get_possible_languages())
+
+/obj/item/organ/tongue/on_insert(mob/living/carbon/organ_owner, special)
+	. = ..()
+	organ_owner.set_voice_pack(voice_pack)
+
+/obj/item/organ/tongue/on_remove(mob/living/carbon/organ_owner, special)
+	. = ..()
+	organ_owner.set_voice_pack(initial(organ_owner.voice_pack))
 
 /obj/item/organ/tongue/transfer_to_limb(obj/item/bodypart/new_bodypart, special = FALSE)
 	. = ..()
@@ -218,6 +228,7 @@
 	languages_native = list(/datum/language/draconic)
 	liked_foodtypes = GORE | MEAT | SEAFOOD | NUTS | BUGS
 	disliked_foodtypes = GRAIN | DAIRY | CLOTH | GROSS
+	voice_pack = /datum/voice/lizard
 
 /obj/item/organ/tongue/lizard/modify_speech(datum/source, list/speech_args)
 	var/static/regex/lizard_hiss = new("s+", "g")
@@ -572,6 +583,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	modifies_speech = FALSE
 	liked_foodtypes = VEGETABLES
 	disliked_foodtypes = FRUIT | CLOTH
+	voice_pack = /datum/voice/plasmaman
 
 /obj/item/organ/tongue/cybernetic
 	name = "robotic voicebox"
@@ -619,6 +631,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	toxic_foodtypes = NONE //no food is particularly toxic to ethereals
 	attack_verb_continuous = list("shocks", "jolts", "zaps")
 	attack_verb_simple = list("shock", "jolt", "zap")
+	voice_pack = /datum/voice/ethereal
 
 // Ethereal tongues can speak all default + voltaic
 /obj/item/organ/tongue/ethereal/get_possible_languages()
@@ -630,6 +643,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	say_mod = "meows"
 	liked_foodtypes = SEAFOOD | ORANGES | BUGS | GORE
 	disliked_foodtypes = GROSS | CLOTH | RAW
+	voice_pack = /datum/voice/human/felinid
 
 /obj/item/organ/tongue/jelly
 	name = "jelly tongue"
@@ -640,6 +654,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	liked_foodtypes = MEAT | BUGS
 	disliked_foodtypes = GROSS
 	toxic_foodtypes = NONE
+	voice_pack = /datum/voice/jelly
 
 /obj/item/organ/tongue/jelly/get_food_taste_reaction(obj/item/food, foodtypes = NONE)
 	// a silver slime created this? what a delicacy!
@@ -653,6 +668,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	say_mod = "chimpers"
 	liked_foodtypes = MEAT | FRUIT | BUGS
 	disliked_foodtypes = CLOTH
+	voice_pack = /datum/voice/monkey
 
 /obj/item/organ/tongue/moth
 	name = "moth tongue"
@@ -661,6 +677,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	liked_foodtypes = VEGETABLES | DAIRY | CLOTH
 	disliked_foodtypes = FRUIT | GROSS | BUGS | GORE
 	toxic_foodtypes = MEAT | RAW | SEAFOOD
+	voice_pack = /datum/voice/moth
 	organ_traits = list(TRAIT_CLOTHING_EATER)
 
 /obj/item/organ/tongue/zombie

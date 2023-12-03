@@ -253,9 +253,6 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 			init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_hair, GLOB.facial_hairstyles_list, GLOB.facial_hairstyles_male_list, GLOB.facial_hairstyles_female_list)
 		L[DNA_FACIAL_HAIRSTYLE_BLOCK] = construct_block(GLOB.facial_hairstyles_list.Find(H.facial_hairstyle), GLOB.facial_hairstyles_list.len)
 		L[DNA_FACIAL_HAIR_COLOR_BLOCK] = sanitize_hexcolor(H.facial_hair_color, include_crunch = FALSE)
-		var/list/possible_voices = species.get_voice_packs()
-		var/voice_name = istype(holder.voice_pack) ? holder.voice_pack.name : "Silent"
-		L[DNA_VOICE_BLOCK] = construct_block(possible_voices.Find(voice_name) || 1, possible_voices.len)
 
 	for(var/blocknum in 1 to DNA_UNI_IDENTITY_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -438,10 +435,6 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 			set_uni_identity_block(blocknumber, construct_block(GLOB.facial_hairstyles_list.Find(H.facial_hairstyle), GLOB.facial_hairstyles_list.len))
 		if(DNA_FACIAL_HAIR_COLOR_BLOCK)
 			set_uni_identity_block(blocknumber, sanitize_hexcolor(H.facial_hair_color, include_crunch = FALSE))
-		if(DNA_VOICE_BLOCK)
-			var/list/possible_voices = species.get_voice_packs()
-			var/voice_name = istype(holder.voice_pack) ? holder.voice_pack.name : "Silent"
-			set_uni_identity_block(blocknumber, construct_block(possible_voices.Find(voice_name) || 1, possible_voices.len))
 
 /datum/dna/proc/update_uf_block(blocknumber)
 	if(!blocknumber)
@@ -768,8 +761,6 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		set_hairstyle(style, update = FALSE)
 	set_haircolor(sanitize_hexcolor(get_uni_identity_block(structure, DNA_HAIR_COLOR_BLOCK)), update = FALSE)
 	set_facial_haircolor(sanitize_hexcolor(get_uni_identity_block(structure, DNA_FACIAL_HAIR_COLOR_BLOCK)), update = FALSE)
-	var/list/possible_voices = dna.species.get_voice_packs()
-	set_voice_pack(possible_voices[deconstruct_block(get_uni_identity_block(structure, DNA_VOICE_BLOCK), possible_voices.len)])
 	var/features = dna.unique_features
 	if(dna.features["mcolor"])
 		dna.features["mcolor"] = unserialize_dna_tricolor(get_uni_feature_block(features, DNA_MUTANT_COLOR_BLOCK))
@@ -1152,3 +1143,24 @@ GLOBAL_LIST_INIT(features_to_blocks, init_features_to_dna_blocks())
 		qdel(eyes)
 		visible_message(span_notice("[src] looks up and their eyes melt away!"), span_userdanger("I understand now."))
 		addtimer(CALLBACK(src, PROC_REF(adjustOrganLoss), ORGAN_SLOT_BRAIN, 200), 20)
+
+/// Check if the owner of this DNA will be classified as a mutant by the health analyzer
+/datum/dna/proc/check_mutant()
+	if(!ishuman(holder))
+		return FALSE
+	if(check_mutation(/datum/mutation/human/hulk))
+		return TRUE
+	var/mob/living/carbon/human/human_holder = holder
+	for(var/obj/item/organ/organ as anything in human_holder.organs)
+		if(IS_ROBOTIC_ORGAN(organ))
+			continue
+		if(istype(organ, species.get_mutant_organ_type_for_slot(organ.slot)) || is_type_in_list(organ, species.mutant_organs) || is_type_in_list(organ, species.cosmetic_organs))
+			continue
+		return TRUE
+	for(var/obj/item/bodypart/bodypart as anything in human_holder.bodyparts)
+		if(IS_ROBOTIC_LIMB(bodypart))
+			continue
+		if(is_type_in_list(bodypart, flatten_list(species.bodypart_overrides)))
+			continue
+		return TRUE
+	return FALSE

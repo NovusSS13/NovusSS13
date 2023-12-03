@@ -35,8 +35,6 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal,
 	)
 
-	voice_pack = /datum/voice/ethereal
-
 	var/current_color
 	var/default_color
 	var/r1
@@ -255,8 +253,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/ethereal,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal,
 	)
-
-	voice_pack = /datum/voice/ethereal/lustrous
 
 /datum/species/ethereal/lustrous/on_species_gain(mob/living/carbon/new_lustrous, datum/species/old_species, pref_load)
 	. = ..()
