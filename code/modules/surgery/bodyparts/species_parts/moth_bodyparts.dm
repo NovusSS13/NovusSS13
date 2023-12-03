@@ -14,6 +14,7 @@
 	limb_id = SPECIES_MOTH
 	is_dimorphic = TRUE
 	should_draw_greyscale = FALSE
+	bodypart_traits = list(TRAIT_TACKLING_WINGED_ATTACKER)
 
 /obj/item/bodypart/arm/left/moth
 	icon = 'icons/mob/species/moth/bodyparts.dmi'

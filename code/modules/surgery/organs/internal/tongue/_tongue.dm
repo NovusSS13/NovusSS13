@@ -404,6 +404,8 @@
 	say_mod = "gibbers"
 	sense_of_taste = FALSE
 	modifies_speech = TRUE
+	organ_traits = list(TRAIT_NOHUNGER) //arbitrary but i thought it'd be kinda cool
+	/// Mothership this tongue is connected to
 	var/mothership
 
 /obj/item/organ/tongue/abductor/attack_self(mob/living/carbon/human/tongue_holder)
@@ -425,7 +427,7 @@
 /obj/item/organ/tongue/abductor/examine(mob/examining_mob)
 	. = ..()
 	if(HAS_MIND_TRAIT(examining_mob, TRAIT_ABDUCTOR_TRAINING) || isobserver(examining_mob))
-		. += span_notice("It can be attuned to a different channel by using it inhand.")
+		. += span_notice("It can be attuned to a different mothership by using it inhand.")
 		if(!mothership)
 			. += span_notice("It is not attuned to a specific mothership.")
 		else
@@ -461,6 +463,7 @@
 	taste_sensitivity = 32
 	liked_foodtypes = GROSS | MEAT | RAW | GORE
 	disliked_foodtypes = NONE
+	organ_traits = list(TRAIT_NOHUNGER) //arbitrary but i thought it'd be kinda cool
 
 // List of english words that translate to zombie phrases
 GLOBAL_LIST_INIT(english_to_zombie, list())

@@ -7,7 +7,6 @@
 	meat = /obj/item/food/meat/slab/human/mutant/shadow
 	inherent_traits = list(
 		TRAIT_AGENDER,
-		TRAIT_NOBREATH,
 	)
 	inherent_factions = list(FACTION_FAITHLESS)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
@@ -89,6 +88,7 @@
 	icon_state = "brain-shadow"
 	hemispherectomy_overlay = "hemispherectomy-greyscale"
 	hemisphere_type = /obj/item/hemisphere/shadow
+	organ_traits = list(TRAIT_NOBREATH) //arbitrary but i thought it'd be cool
 
 /obj/item/organ/brain/shadow/on_life(seconds_per_tick, times_fired)
 	. = ..()

@@ -4,7 +4,6 @@
 	chat_color = "#d5d5d5"
 	inherent_traits = list(
 		TRAIT_AGENDER,
-		TRAIT_NOHUNGER,
 		TRAIT_NOBREATH,
 	)
 	mutanttongue = /obj/item/organ/tongue/abductor

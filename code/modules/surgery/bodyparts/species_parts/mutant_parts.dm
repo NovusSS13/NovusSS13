@@ -8,6 +8,7 @@
 	limb_id = SPECIES_MUTANT
 	is_dimorphic = TRUE
 	ass_image = 'icons/ass/assmutant.png'
+	bodypart_traits = list(TRAIT_TACKLING_TAILED_DEFENDER)
 
 /obj/item/bodypart/arm/left/mutant
 	icon_greyscale = 'icons/mob/species/mutant/mutant_bodyparts.dmi'

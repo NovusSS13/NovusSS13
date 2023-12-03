@@ -4,6 +4,7 @@
 	icon_state = "ethereal_heart"
 	color = COLOR_GOLEM_GRAY
 	organ_flags = ORGAN_MINERAL
+	organ_traits = list(TRAIT_LAVA_IMMUNE)
 	/// Action which performs smelting
 	var/datum/action/cooldown/internal_smelting/smelter
 

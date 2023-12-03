@@ -4,7 +4,7 @@
  * so golems can only consume minerals even when injecting reagents.
  *
  * Actually consuming golem food is handled by /obj/item/organ/stomach/golem!
- **/
+ */
 /obj/item/organ/liver/golem
 	name = "porous rock"
 	desc = "A spongy rock capable of absorbing chemicals."

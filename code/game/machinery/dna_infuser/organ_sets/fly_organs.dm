@@ -64,6 +64,7 @@
 
 /obj/item/organ/heart/fly
 	desc = FLY_INFUSED_ORGAN_DESC
+	organ_traits = list(TRAIT_TACKLING_FRAIL_ATTACKER)
 
 /obj/item/organ/heart/fly/Initialize(mapload)
 	. = ..()

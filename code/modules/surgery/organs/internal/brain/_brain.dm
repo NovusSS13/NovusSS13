@@ -456,7 +456,7 @@
 /obj/item/organ/brain/primitive //No like books and stompy metal men
 	name = "primitive brain"
 	desc = "This juicy piece of meat has a clearly underdeveloped frontal lobe."
-	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP, TRAIT_PRIMITIVE) // No literacy
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP, TRAIT_PRIMITIVE, TRAIT_FORBID_MINING_SHUTTLE_CONSOLE_OUTSIDE_STATION) // No literacy
 
 /obj/item/organ/brain/golem
 	name = "crystalline matrix"
@@ -472,7 +472,7 @@
 	name = "lustrous brain"
 	desc = "This is your brain on bluespace dust. Not even once."
 	icon_state = "brain-bluespace"
-	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_SPECIAL_TRAUMA_BOOST)
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_TENACIOUS, TRAIT_SPECIAL_TRAUMA_BOOST)
 	hemispherectomy_overlay = "hemispherectomy-bluespace"
 	hemisphere_type = /obj/item/hemisphere/lustrous
 

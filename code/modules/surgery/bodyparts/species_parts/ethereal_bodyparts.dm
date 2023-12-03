@@ -103,5 +103,5 @@
 
 /obj/item/bodypart/head/ethereal/lustrous
 	limb_id = SPECIES_ETHEREAL_LUSTROUS
-	bodypart_traits = list(TRAIT_BIG_SKULL)
 	head_flags = NONE
+	bodypart_traits = list(TRAIT_BIG_SKULL, TRAIT_VIRUSIMMUNE)
