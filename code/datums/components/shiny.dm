@@ -40,7 +40,7 @@
 		return
 
 	if(shine_displacement)
-		var/mutable_appearance/displacer = mutable_appearance('icons/effects/shine.dmi', shine_displacement, offset_spokesman = source, plane = REFLECTION_DISPLACEMENT_PLANE, appearance_flags = RESET_COLOR)
+		var/mutable_appearance/displacer = mutable_appearance('icons/effects/shine.dmi', shine_displacement, offset_spokesman = source, plane = REFLECTION_DISPLACEMENT_PLANE, appearance_flags = RESET_COLOR|RESET_ALPHA)
 		overlays += displacer
 	var/mutable_appearance/reflector = mutable_appearance(source.icon, source.icon_state, offset_spokesman = source, plane = REFLECTION_MASK_PLANE, appearance_flags = RESET_COLOR)
 	reflector.add_filter("mask", 1, alpha_mask_filter(icon = icon('icons/effects/shine.dmi', shine_mask)))
