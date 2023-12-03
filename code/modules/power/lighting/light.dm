@@ -3,7 +3,9 @@
 	name = "light fixture"
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "tube"
-	desc = "A lighting fixture."
+	desc = "Have you run your fingers down the wall\n\
+		And have you felt your neck skin crawl\n\
+		When you're searching for the light?"
 	layer = WALL_OBJ_LAYER
 	plane = GAME_PLANE_UPPER
 	max_integrity = 100
@@ -23,7 +25,7 @@
 	///Luminosity when on, also used in power calculation
 	var/brightness = 8
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 1
+	var/bulb_power = 0.5
 	///Default colour of the light.
 	var/bulb_colour = LIGHT_COLOR_DEFAULT
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
@@ -48,11 +50,11 @@
 	///Set to FALSE to never let this light get switched to night mode.
 	var/nightshift_allowed = TRUE
 	///Brightness of the nightshift light
-	var/nightshift_brightness = 8
+	var/nightshift_brightness = 6
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.45
+	var/nightshift_light_power = 0.25
 	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#FFDDCC"
+	var/nightshift_light_color = "#e1ccff"
 	///If true, the light is in low power mode
 	var/low_power_mode = FALSE
 	///If true, this light cannot ever be in low power mode
@@ -62,7 +64,7 @@
 	///Multiplier for this light's base brightness during a cascade
 	var/bulb_major_emergency_brightness_mul = 0.75
 	///Colour of the light when major emergency mode is on
-	var/bulb_emergency_colour = "#ff4e4e"
+	var/bulb_emergency_colour = "#ff4e60"
 	///Multiplier for this light's base brightness in low power power mode
 	var/bulb_low_power_brightness_mul = 0.25
 	///Determines the colour of the light while it's in low power mode
@@ -70,14 +72,14 @@
 	///The multiplier for determining the light's power in low power mode
 	var/bulb_low_power_pow_mul = 0.75
 	///The minimum value for the light's power in low power mode
-	var/bulb_low_power_pow_min = 0.5
+	var/bulb_low_power_pow_min = 0.25
 	///The Light range to use when working in fire alarm status
 	var/fire_brightness = 4
 	///The Light colour to use when working in fire alarm status
 	var/fire_colour = COLOR_FIRE_LIGHT_RED
 
 	///Power usage - W per unit of luminosity
-	var/power_consumption_rate = 20
+	var/power_consumption_rate = 40
 
 /obj/machinery/light/Move()
 	if(status != LIGHT_BROKEN)
@@ -153,13 +155,17 @@
 	if(!on || status != LIGHT_OK)
 		return
 
+	. += emissive_appearance(overlay_icon, "[base_state]", src, alpha = src.alpha)
+
 	var/area/local_area = get_room_area(src)
 	if(low_power_mode || major_emergency || (local_area?.fire))
 		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
 		return
+
 	if(nightshift_enabled)
 		. += mutable_appearance(overlay_icon, "[base_state]_nightshift")
 		return
+
 	. += mutable_appearance(overlay_icon, base_state)
 
 // Area sensitivity is traditionally tied directly to power use, as an optimization
