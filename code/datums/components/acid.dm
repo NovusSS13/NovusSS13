@@ -188,7 +188,7 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 		stage = 1
 
 /// Used to maintain the acid overlay on the parent [/atom].
-/datum/component/acid/proc/on_update_overlays(atom/parent_atom, list/overlays)
+/datum/component/acid/proc/on_update_overlays(atom/source, list/overlays)
 	SIGNAL_HANDLER
 
 	if(acid_overlay)
@@ -210,7 +210,7 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 	return COMPONENT_CLEANED
 
 /// Handles water diluting the acid on the object.
-/datum/component/acid/proc/on_expose_reagent(atom/parent_atom, datum/reagent/exposing_reagent, reac_volume)
+/datum/component/acid/proc/on_expose_reagent(atom/source, datum/reagent/exposing_reagent, reac_volume)
 	SIGNAL_HANDLER
 
 	if(!istype(exposing_reagent, /datum/reagent/water))

@@ -32,6 +32,8 @@
 	var/knock_sound = 'sound/effects/glassknock.ogg'
 	var/bash_sound = 'sound/effects/glassbash.ogg'
 	var/hit_sound = 'sound/effects/glasshit.ogg'
+	/// Shiny icon state this window uses, if null, the shiny component will not apply
+	var/shiny = "partial"
 	/// If some inconsiderate jerk has had their blood spilled on this window, thus making it cleanable
 	var/bloodied = FALSE
 	/// Datum that the shard and debris type is pulled from for when the glass is broken.
@@ -69,6 +71,8 @@
 	RegisterSignal(src, COMSIG_OBJ_PAINTED, PROC_REF(on_painted))
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM, AfterRotation = CALLBACK(src, PROC_REF(AfterRotation)))
+	if(!isnull(shiny))
+		AddComponent(/datum/component/shiny, shiny, check_callback = CALLBACK(src, PROC_REF(should_shine)))
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
@@ -130,6 +134,17 @@
 
 	if(istype(mover, /obj/structure/windoor_assembly) || istype(mover, /obj/machinery/door/window))
 		return valid_build_direction(loc, mover.dir, is_fulltile = FALSE)
+
+	return TRUE
+
+/// Shining looks really bad when there is another window above us
+/obj/structure/window/proc/should_shine(datum/component/shine)
+	var/turf/north_turf = get_step(src, NORTH)
+	if(!north_turf)
+		return TRUE
+
+	if(locate(/obj/structure/window) in north_turf)
+		return FALSE
 
 	return TRUE
 

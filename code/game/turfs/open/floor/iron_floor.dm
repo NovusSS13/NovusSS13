@@ -412,6 +412,10 @@
 	base_icon_state = "showroomfloor"
 	floor_tile = /obj/item/stack/tile/iron/showroomfloor
 
+/turf/open/floor/iron/showroomfloor/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/shiny, "partial")
+
 /turf/open/floor/iron/showroomfloor/airless
 	initial_gas_mix = AIRLESS_ATMOS
 
@@ -429,6 +433,9 @@
 	base_icon_state = "freezerfloor"
 	floor_tile = /obj/item/stack/tile/iron/freezer
 
+/turf/open/floor/iron/freezer/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/shiny, "partial")
 /turf/open/floor/iron/freezer/airless
 	initial_gas_mix = AIRLESS_ATMOS
 

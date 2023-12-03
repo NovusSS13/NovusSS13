@@ -11,6 +11,8 @@
 	var/current_overlay
 	var/permanent = FALSE
 	var/last_process = 0
+	/// Tracks whether or not we created a shiny component on the parent turf, so we can delete it once we go away
+	var/made_shiny = FALSE
 
 /datum/component/wet_floor/InheritComponent(datum/newcomp, orig, strength, duration_minimum, duration_add, duration_maximum, _permanent)
 	if(!newcomp) //We are getting passed the arguments of a would-be new component, but not a new component
@@ -33,11 +35,17 @@
 	last_process = world.time
 
 /datum/component/wet_floor/RegisterWithParent()
+	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
 	RegisterSignal(parent, COMSIG_TURF_IS_WET, PROC_REF(is_wet))
 	RegisterSignal(parent, COMSIG_TURF_MAKE_DRY, PROC_REF(dry))
+	if(!HAS_TRAIT(parent, TRAIT_SHINY))
+		parent.AddComponent(/datum/component/shiny)
+		made_shiny = TRUE
 
 /datum/component/wet_floor/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_TURF_IS_WET, COMSIG_TURF_MAKE_DRY))
+	UnregisterSignal(parent, list(COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_TURF_IS_WET, COMSIG_TURF_MAKE_DRY))
+	if(made_shiny)
+		qdel(parent.GetComponent(/datum/component/shiny))
 
 /datum/component/wet_floor/Destroy()
 	STOP_PROCESSING(SSwet_floors, src)
@@ -48,6 +56,13 @@
 	else
 		stack_trace("Warning: Wet floor component wasn't on a turf when being destroyed! This is really bad!")
 	return ..()
+
+/// Used to maintain the wet floor overlay on the parent [/turf].
+/datum/component/wet_floor/proc/on_update_overlays(atom/source, list/overlays)
+	SIGNAL_HANDLER
+
+	if(current_overlay)
+		overlays += current_overlay
 
 /datum/component/wet_floor/proc/update_overlay()
 	var/intended

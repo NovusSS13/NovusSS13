@@ -12,26 +12,35 @@
 #define PLANE_SPACE -25
 #define PLANE_SPACE_PARALLAX -20
 
-#define GRAVITY_PULSE_PLANE -13
+#define GRAVITY_PULSE_PLANE -17
 #define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
 
-#define RENDER_PLANE_TRANSPARENT -12 //Transparent plane that shows openspace underneath the floor
+#define REFLECTION_DISPLACEMENT_PLANE -16
+#define REFLECTION_DISPLACEMENT_RENDER_TARGET "*REFLECTION_DISPLACEMENT_RENDER_TARGET"
 
-#define TRANSPARENT_FLOOR_PLANE -11
+#define REFLECTION_MASK_PLANE -15
+#define REFLECTION_MASK_RENDER_TARGET "*REFLECTION_MASK_RENDER_TARGET"
 
-#define FLOOR_PLANE -10
+#define REFLECTION_PLANE -14
 
-#define WALL_PLANE -9
-#define GAME_PLANE -8
-#define GAME_PLANE_FOV_HIDDEN -7
-#define GAME_PLANE_UPPER -6
-#define WALL_PLANE_UPPER -5
-#define GAME_PLANE_UPPER_FOV_HIDDEN -4
+#define RENDER_PLANE_TRANSPARENT -13 //Transparent plane that shows openspace underneath the floor
+
+#define TRANSPARENT_FLOOR_PLANE -12
+
+#define FLOOR_PLANE -11
+
+#define WALL_PLANE -10
+#define GAME_PLANE -9
+#define GAME_PLANE_FOV_HIDDEN -8
+#define GAME_PLANE_UPPER -7
+#define WALL_PLANE_UPPER -6
+#define GAME_PLANE_UPPER_FOV_HIDDEN -5
 
 ///Slightly above the game plane but does not catch mouse clicks. Useful for certain visuals that should be clicked through, like seethrough trees
-#define SEETHROUGH_PLANE -3
-#define ABOVE_GAME_PLANE -2
+#define SEETHROUGH_PLANE -4
+#define ABOVE_GAME_PLANE -3
 
+#define RENDER_PLANE_REFLECTION -2
 #define RENDER_PLANE_GAME_WORLD -1
 
 #define DEFAULT_PLANE 0 //Marks out the default plane, even if we don't use it
@@ -135,13 +144,14 @@
 #define GLASS_FLOOR_LAYER 2.046
 #define TRAM_RAIL_LAYER 2.047
 #define TRAM_FLOOR_LAYER 2.048
-#define ABOVE_OPEN_TURF_LAYER 2.049
+#define TURF_LIQUID_LAYER 2.049
+#define ABOVE_OPEN_TURF_LAYER 2.05
 
 //WALL_PLANE layers
-#define CLOSED_TURF_LAYER 2.05
+#define CLOSED_TURF_LAYER 2.06
 
 // GAME_PLANE layers
-#define BULLET_HOLE_LAYER 2.06
+#define BULLET_HOLE_LAYER 2.07
 #define ABOVE_NORMAL_TURF_LAYER 2.08
 #define GAS_PIPE_HIDDEN_LAYER 2.35 //layer = initial(layer) + piping_layer / 1000 in atmospherics/update_icon() to determine order of pipe overlap
 #define WIRE_BRIDGE_LAYER 2.44

@@ -5,6 +5,7 @@
 	base_icon_state = "water"
 	anchored = TRUE
 	plane = FLOOR_PLANE
+	layer = TURF_LIQUID_LAYER
 	color = "#DDDDFF"
 
 	//For being on fire
@@ -14,7 +15,7 @@
 
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = SMOOTH_GROUP_WATER
-	canSmoothWith = SMOOTH_GROUP_WATER + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
+	canSmoothWith = SMOOTH_GROUP_WATER + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	/// Turf that owns us, should always be kept up to date
@@ -53,8 +54,53 @@
 		'sound/effects/water_wade4.ogg',
 	)
 
+/atom/movable/turf_liquid/Initialize(mapload)
+	. = ..()
+	if(isspaceturf(my_turf))
+		return INITIALIZE_HINT_QDEL
+	if(!SSliquids)
+		CRASH("Liquid Turf created with the liquids sybsystem not yet initialized!")
+	if(!immutable)
+		my_turf = loc
+		RegisterSignal(my_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
+		RegisterSignal(my_turf, COMSIG_ATOM_INTERCEPT_Z_FALL, PROC_REF(mob_fall))
+		RegisterSignal(my_turf, COMSIG_ATOM_EXAMINE, PROC_REF(examine_turf))
+		SSliquids.add_active_turf(my_turf)
+
+		SEND_SIGNAL(my_turf, COMSIG_TURF_LIQUIDS_CREATION, src)
+	AddComponent(/datum/component/shiny, check_callblack = CALLBACK(src, PROC_REF(should_shine)))
+	QUEUE_SMOOTH(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
+
+/atom/movable/turf_liquid/Destroy(force)
+	if(my_turf)
+		UnregisterSignal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_INTERCEPT_Z_FALL, COMSIG_ATOM_EXAMINE))
+		if(my_turf.lgroup)
+			my_turf.lgroup.remove_from_group(my_turf)
+		if(SSliquids.evaporation_queue[my_turf])
+			SSliquids.evaporation_queue -= my_turf
+		if(SSliquids.processing_fire[my_turf])
+			SSliquids.processing_fire -= my_turf
+		//Is added because it could invoke a change to neighboring liquids
+		SSliquids.add_active_turf(my_turf)
+		my_turf.liquids = null
+		my_turf = null
+		QUEUE_SMOOTH_NEIGHBORS(src)
+	return ..()
+
+/atom/movable/turf_liquid/extinguish()
+	. = ..()
+	if(fire_state)
+		set_fire_state(LIQUID_FIRE_STATE_NONE)
+
 /atom/movable/turf_liquid/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
 	return
+
+/// We only shine when we are a puddle
+/atom/movable/turf_liquid/proc/should_shine(datum/component/shiny)
+	if(liquid_state > LIQUID_STATE_PUDDLE)
+		return FALSE
+	return TRUE
 
 /atom/movable/turf_liquid/proc/set_new_liquid_state(new_state)
 	liquid_state = new_state
@@ -139,11 +185,6 @@
 		return FALSE
 	//Finally, we burn
 	return total_burn_power
-
-/atom/movable/turf_liquid/extinguish()
-	. = ..()
-	if(fire_state)
-		set_fire_state(LIQUID_FIRE_STATE_NONE)
 
 /atom/movable/turf_liquid/proc/process_fire()
 	if(!fire_state)
@@ -445,46 +486,6 @@
 		fallen_mob.adjustOxyLoss(5)
 		fallen_mob.emote("cough")
 		to_chat(fallen_mob, span_userdanger("You fall in and swallow some water!"))
-
-/atom/movable/turf_liquid/Initialize(mapload)
-	. = ..()
-	if(isspaceturf(my_turf))
-		return INITIALIZE_HINT_QDEL
-	if(!SSliquids)
-		CRASH("Liquid Turf created with the liquids sybsystem not yet initialized!")
-	if(!immutable)
-		my_turf = loc
-		RegisterSignal(my_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
-		RegisterSignal(my_turf, COMSIG_ATOM_INTERCEPT_Z_FALL, PROC_REF(mob_fall))
-		RegisterSignal(my_turf, COMSIG_ATOM_EXAMINE, PROC_REF(examine_turf))
-		SSliquids.add_active_turf(my_turf)
-
-		SEND_SIGNAL(my_turf, COMSIG_TURF_LIQUIDS_CREATION, src)
-
-	update_appearance()
-	QUEUE_SMOOTH(src)
-	QUEUE_SMOOTH_NEIGHBORS(src)
-
-/atom/movable/turf_liquid/Destroy(force)
-	if(my_turf)
-		UnregisterSignal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_INTERCEPT_Z_FALL, COMSIG_ATOM_EXAMINE))
-		if(my_turf.lgroup)
-			my_turf.lgroup.remove_from_group(my_turf)
-		if(SSliquids.evaporation_queue[my_turf])
-			SSliquids.evaporation_queue -= my_turf
-		if(SSliquids.processing_fire[my_turf])
-			SSliquids.processing_fire -= my_turf
-		//Is added because it could invoke a change to neighboring liquids
-		SSliquids.add_active_turf(my_turf)
-		my_turf.liquids = null
-		my_turf = null
-		QUEUE_SMOOTH_NEIGHBORS(src)
-	return ..()
-
-/atom/movable/turf_liquid/immutable/Destroy(force)
-	if(force)
-		stack_trace("Something tried to hard destroy an immutable liquid.")
-	return ..()
 
 //Exposes my turf with simulated reagents
 /atom/movable/turf_liquid/proc/ExposeMyTurf()
