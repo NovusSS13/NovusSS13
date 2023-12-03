@@ -472,7 +472,7 @@
 	name = "lustrous brain"
 	desc = "This is your brain on bluespace dust. Not even once."
 	icon_state = "brain-bluespace"
-	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_TENACIOUS, TRAIT_SPECIAL_TRAUMA_BOOST)
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP, TRAIT_SPECIAL_TRAUMA_BOOST)
 	hemispherectomy_overlay = "hemispherectomy-bluespace"
 	hemisphere_type = /obj/item/hemisphere/lustrous
 
