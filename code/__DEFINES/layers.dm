@@ -29,19 +29,18 @@
 
 #define FLOOR_PLANE -11
 
-#define RENDER_PLANE_REFLECTION -10
-
-#define WALL_PLANE -9
-#define GAME_PLANE -8
-#define GAME_PLANE_FOV_HIDDEN -7
-#define GAME_PLANE_UPPER -6
-#define WALL_PLANE_UPPER -5
-#define GAME_PLANE_UPPER_FOV_HIDDEN -4
+#define WALL_PLANE -10
+#define GAME_PLANE -9
+#define GAME_PLANE_FOV_HIDDEN -8
+#define GAME_PLANE_UPPER -7
+#define WALL_PLANE_UPPER -6
+#define GAME_PLANE_UPPER_FOV_HIDDEN -5
 
 ///Slightly above the game plane but does not catch mouse clicks. Useful for certain visuals that should be clicked through, like seethrough trees
-#define SEETHROUGH_PLANE -3
-#define ABOVE_GAME_PLANE -2
+#define SEETHROUGH_PLANE -4
+#define ABOVE_GAME_PLANE -3
 
+#define RENDER_PLANE_REFLECTION -2
 #define RENDER_PLANE_GAME_WORLD -1
 
 #define DEFAULT_PLANE 0 //Marks out the default plane, even if we don't use it
