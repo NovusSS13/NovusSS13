@@ -22,11 +22,11 @@
 	owner.blood_volume -= 0.125 * seconds_per_tick
 	if(owner.blood_volume <= BLOOD_VOLUME_SURVIVE)
 		to_chat(owner, span_userdanger("You ran out of blood!"))
-		owner.investigate_log("has been dusted by a lack of blood (vampire).", INVESTIGATE_DEATHS)
+		owner.investigate_log("has been dusted by a lack of blood (vampire heart).", INVESTIGATE_DEATHS)
 		owner.dust()
 	var/area/holy_area = get_area(owner)
 	if(istype(holy_area, /area/station/service/chapel))
-		to_chat(vampire, span_userdanger("You don't belong here!"))
+		to_chat(owner, span_userdanger("You don't belong here!"))
 		owner.adjustFireLoss(10 * seconds_per_tick)
 		owner.adjust_fire_stacks(3 * seconds_per_tick)
 		owner.ignite_mob()
