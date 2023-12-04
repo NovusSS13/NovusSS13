@@ -1,5 +1,0 @@
-author: "ChungusGamer666"
-delete-after: True
-changes:
-  - bugfix: "Mutant identification on health analyzers now works properly"
-  - refactor: "Voice packs are now stored in the tongue, not on your species"
