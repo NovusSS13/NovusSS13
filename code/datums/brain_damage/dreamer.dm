@@ -213,7 +213,6 @@
 	if(!owner.client)
 		return
 	//Shit on THA walls
-	var/list/turf/closed/wall/walllist = list()
 	for(var/turf/closed/wall in view(owner))
 		if(!prob(3))
 			continue
