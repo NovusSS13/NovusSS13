@@ -198,7 +198,7 @@
 		INVOKE_ASYNC(src, PROC_REF(handle_floor), floor)
 
 /datum/brain_trauma/special/dreamer/proc/handle_floor(turf/open/floor)
-	var/mutable_appearance/fake_floor = image(floor.icon, floor, floor.icon_state)
+	var/mutable_appearance/fake_floor = image(floor.icon, floor, floor.icon_state, floor.layer + 0.01)
 	owner.client.images += fake_floor
 	var/offset = pick(-3,-2, -1, 1, 2, 3)
 	var/disappearfirst = rand(1 SECONDS, 3 SECONDS) * abs(offset)
@@ -263,5 +263,5 @@
 		scared.playsound_local(scared, pick(spookies), vol = 100, vary = FALSE)
 	icon_state = "[base_icon_state][rand(1, hall_amount)]"
 	animate(src, alpha = 255, time = fade_in, easing = BOUNCE_EASING | EASE_IN | EASE_OUT)
-	animate(time = duration, easing = LINEAR_EASING)
+	animate(time = duration, easing = BOUNCE_EASING | EASE_IN | EASE_OUT)
 	animate(alpha = 0, time = fade_out, easing = LINEAR_EASING)
