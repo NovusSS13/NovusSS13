@@ -18,6 +18,8 @@
 ///from base of mob/update_transform()
 #define COMSIG_LIVING_POST_UPDATE_TRANSFORM "living_post_update_transform"
 
+///from base of mob/living/set_combat_mode: (new_mode, silent)
+#define COMSIG_LIVING_SET_COMBAT_MODE "living_set_combat_mode"
 ///from /obj/structure/door/crush(): (mob/living/crushed, /obj/machinery/door/crushing_door)
 #define COMSIG_LIVING_DOORCRUSHED "living_doorcrush"
 ///from base of mob/living/resist() (/mob/living)

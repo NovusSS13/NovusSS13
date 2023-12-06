@@ -706,7 +706,7 @@
 	overdose_threshold = 40
 	ph = 2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	var/datum/brain_trauma/special/beepsky/beepsky_hallucination
+	var/datum/brain_trauma/severe/beepsky/beepsky_hallucination
 
 /datum/reagent/consumable/ethanol/beepsky_smash/on_mob_metabolize(mob/living/carbon/drinker)
 	if(HAS_TRAIT(drinker, TRAIT_ALCOHOL_TOLERANCE))

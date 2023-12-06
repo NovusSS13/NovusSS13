@@ -719,3 +719,7 @@
 	if(QDELETED(victim))
 		return
 	victim.clear_fullscreen("stroke", duration)
+
+/atom/movable/screen/fullscreen/stroke
+	icon = 'icons/hud/stroke.dmi'
+	icon_state = "stroke"

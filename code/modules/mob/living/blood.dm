@@ -4,7 +4,7 @@
 
 // Takes care blood loss and regeneration
 /mob/living/carbon/human/handle_blood(seconds_per_tick, times_fired)
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_BLOODLOSSIMMUNE) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
 		return
 
 	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump blood.
