@@ -193,7 +193,7 @@
 		return
 	//Floors go crazy go stupid
 	for(var/turf/open/floor in view(owner))
-		if(!prob(7))
+		if(!SPT_PROB(4, seconds_per_tick))
 			continue
 		INVOKE_ASYNC(src, PROC_REF(handle_floor), floor)
 
@@ -214,7 +214,7 @@
 		return
 	//Shit on THA walls
 	for(var/turf/closed/wall in view(owner))
-		if(!prob(3))
+		if(!SPT_PROB(2, seconds_per_tick))
 			continue
 		INVOKE_ASYNC(src, PROC_REF(handle_wall), wall)
 
