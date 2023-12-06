@@ -343,6 +343,21 @@
 		"I'll give you THOUGHTS. IMAGES. SOUNDS.",
 		"This is the best thing that ever happened to me."
 	],
+	"dreamer_radio": [
+		"Let the blood flow, let the blood flo-ow, let the blood flo-o-ow!",
+		"We are DYING to see your WONDERS.",
+		"We will help you wake up.",
+		"You can kill us.",
+		"Let's wake up, together.",
+		"Slaughter us!",
+		"Where is the blood? You've killed someone!",
+		"%OWNER just killed someone!",
+		"Kill %OWNER!",
+		"%OWNER is insane!",
+		"Why are you doing this, %OWNER?",
+		"What the hell is wrong with you, %OWNER?",
+		"%OWNER is killing me!"
+	],
 	"dreamer_ooc": [
 		"My ANUS is <span style='color: #DC143C'>BLEEDING!</span>",
 		"%OWNER is the dreamer!",

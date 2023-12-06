@@ -40,7 +40,7 @@
 /datum/preference/choiced/mutant/testicles_size/compile_constant_data()
 	var/list/data = ..()
 
-	data[CHOICED_PREFERENCE_DISPLAY_NAMES] = GLOB.penis_size_names
+	data[CHOICED_PREFERENCE_DISPLAY_NAMES] = GLOB.testicles_size_names
 
 	return data
 
