@@ -96,6 +96,8 @@
 	if(prob(4))
 		var/list/objects = list()
 		for(var/obj/object in view(owner))
+			if(object.invisibility < owner.see_invisible || HAS_TRAIT(object, TRAIT_T_RAY_VISIBLE))
+				continue
 			var/weight = 1
 			if(isitem(object))
 				weight = 3
