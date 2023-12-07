@@ -3,8 +3,8 @@
 	name = "Flagellating Compulsions"
 	desc = "Patient feels compelled to injure themselves in various incapacitating and horrific ways. There seems to be an odd genetic... trigger, following these compulsions may lead to?"
 	scan_desc = "damaged frontal lobe"
-	gain_text = span_notice("You feel burdened!")
-	lose_text = span_warning("You no longer feel the need to burden yourself!")
+	gain_text = span_warning("You feel burdened!")
+	lose_text = span_notice("You no longer feel the need to burden yourself!")
 	random_gain = FALSE
 	/// goes from 0 to 9 (but can be beyond 9, just does nothing) and gives rewards. increased by disabling yourself with debuffs
 	var/burden_level = 0

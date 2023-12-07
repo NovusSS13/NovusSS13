@@ -268,6 +268,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NOHUNGER "no_hunger"
 /// This carbon doesn't bleed
 #define TRAIT_NOBLOOD "noblood"
+/// This carbon bleeds, but is functionally immune to the effects of blood loss
+#define TRAIT_BLOODLOSSIMMUNE "bloodloss_immune"
 /// This just means that the carbon will always have functional liverless metabolism
 #define TRAIT_LIVERLESS_METABOLISM "liverless_metabolism"
 /// Humans with this trait cannot be turned into zombies
@@ -869,6 +871,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define MAGIC_TRAIT "magic"
 #define TRAUMA_TRAIT "trauma"
 #define STROKE_TRAIT "stroke"
+#define DREAMER_TRAIT "dreamer"
 #define FLIGHTPOTION_TRAIT "flightpotion"
 /// Trait inherited by experimental surgeries
 #define EXPERIMENTAL_SURGERY_TRAIT "experimental_surgery"

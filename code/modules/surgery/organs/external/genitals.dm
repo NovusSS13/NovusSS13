@@ -232,6 +232,12 @@
 	. = ..()
 	set_genital_size(receiver.dna.features["testicles_size"] || 2)
 
+/obj/item/organ/genital/testicles/set_genital_size(value)
+	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
+
+	value = clamp(text2num(value), 1, 3)
+	overlay.genital_size = value
+
 /obj/item/organ/genital/testicles/get_genital_examine()
 	var/datum/bodypart_overlay/mutant/genital/overlay = bodypart_overlay
 

@@ -120,6 +120,7 @@
 /mob/living/proc/set_combat_mode(new_mode, silent = TRUE)
 	if(combat_mode == new_mode)
 		return
+	SEND_SIGNAL(src, COMSIG_LIVING_SET_COMBAT_MODE, new_mode, silent)
 	. = combat_mode
 	combat_mode = new_mode
 	if(hud_used?.action_intent)

@@ -187,7 +187,7 @@
 
 /obj/item/shovel/serrated/examine(mob/user)
 	. = ..()
-	if( !(user.mind && HAS_TRAIT(user.mind, TRAIT_MORBID)) )
+	if(!HAS_MIND_TRAIT(user, TRAIT_MORBID))
 		return
 	. += span_deadsay("You feel an intense, strange craving to 'dig' straight through living flesh with this shovel. Why else would it be serrated? The thought is mesmerizing...")
 
