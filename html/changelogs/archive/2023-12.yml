@@ -8,3 +8,6 @@
   - bugfix: Avali no longer have damage overlays
   - rscadd: Chunky fingers now properly tracks whether the ACTIVE hand has chunky
       fingers!
+2023-12-07:
+  ChungusGamer666:
+  - bugfix: Broken light fixtures are less broken
