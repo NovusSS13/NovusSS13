@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>code&#x2F;__DEFINES&#x2F;organs.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="code/__DEFINES/organs.html#define">Define Details</a></header>
+<main>
+<h1>code/__DEFINES/organs.dm 
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="code/__DEFINES/organs.html#define/STANDARD_ORGAN_DECAY">STANDARD_ORGAN_DECAY</a></th><td>designed to fail organs when left to decay for ~15 minutes</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_ORGANIC">ORGAN_ORGANIC</a></th><td>Organic organs, the default - Don't get affected by EMPs</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_ROBOTIC">ORGAN_ROBOTIC</a></th><td>Synthetic organs, or cybernetic organs - React to EMPs and don't rot, nor heal naturally</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_MINERAL">ORGAN_MINERAL</a></th><td>Mineral organs - Snowflakey</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_FROZEN">ORGAN_FROZEN</a></th><td>Frozen organs, don't deteriorate</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_FAILING">ORGAN_FAILING</a></th><td>Failing organs perform damaging effects until replaced or fixed, and typically they don't function properly either</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_EMP">ORGAN_EMP</a></th><td>Synthetic organ affected by an EMP - Deteriorates over time</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_VITAL">ORGAN_VITAL</a></th><td>Removing this organ KILLS the owner - Currently only the brain</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_EDIBLE">ORGAN_EDIBLE</a></th><td>Can be eaten</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_UNREMOVABLE">ORGAN_UNREMOVABLE</a></th><td>Can't be removed using surgery or other common means</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_HIDDEN">ORGAN_HIDDEN</a></th><td>Can't be seen by scanners, doesn't anger body purists</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_DESTROYED">ORGAN_DESTROYED</a></th><td>Has been destroyed beyond any relief</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/IS_ORGANIC_ORGAN">IS_ORGANIC_ORGAN</a></th><td>Helper to figure out if an organ is organic</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/IS_ROBOTIC_ORGAN">IS_ROBOTIC_ORGAN</a></th><td>Helper to figure out if an organ is robotic</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_COLOR_NONE">ORGAN_COLOR_NONE</a></th><td>Doesn't have coloring, really!</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_COLOR_LIMB">ORGAN_COLOR_LIMB</a></th><td>Uses the parent limb's drawcolor value</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_COLOR_OVERRIDE">ORGAN_COLOR_OVERRIDE</a></th><td>Uses /datum/bodypart_overlay/proc/override_color()'s return value</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_COLOR_DNA">ORGAN_COLOR_DNA</a></th><td>Uses a DNA feature for coloring, if one is available</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_COLOR_MUTANT">ORGAN_COLOR_MUTANT</a></th><td>Uses specifically the mcolor feature for coloring, if available</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_COLOR_HAIR">ORGAN_COLOR_HAIR</a></th><td>Uses the parent's hair color</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_COLOR_FACIAL_HAIR">ORGAN_COLOR_FACIAL_HAIR</a></th><td>Uses the parent's facial hair color</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/ORGAN_COLOR_EYE">ORGAN_COLOR_EYE</a></th><td>Uses the parent's eye color</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/WAG_ABLE">WAG_ABLE</a></th><td>Tail is capable of wagging</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/WAG_WAGGING">WAG_WAGGING</a></th><td>Tail is currently wagging</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/GENITAL_VISIBILITY_NEVER">GENITAL_VISIBILITY_NEVER</a></th><td>Never visible</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/GENITAL_VISIBILITY_CLOTHING">GENITAL_VISIBILITY_CLOTHING</a></th><td>Visible when naked</td></tr>
+        <tr><th><a href="code/__DEFINES/organs.html#define/GENITAL_VISIBILITY_ALWAYS">GENITAL_VISIBILITY_ALWAYS</a></th><td>Always visible</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/GENITAL_VISIBILITY_ALWAYS"><aside class="declaration">#define </aside>GENITAL_VISIBILITY_ALWAYS
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L120">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 120"/></a>
+    </h3>
+    <p>Always visible</p><h3 id="define/GENITAL_VISIBILITY_CLOTHING"><aside class="declaration">#define </aside>GENITAL_VISIBILITY_CLOTHING
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L118">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 118"/></a>
+    </h3>
+    <p>Visible when naked</p><h3 id="define/GENITAL_VISIBILITY_NEVER"><aside class="declaration">#define </aside>GENITAL_VISIBILITY_NEVER
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L116">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 116"/></a>
+    </h3>
+    <p>Never visible</p><h3 id="define/IS_ORGANIC_ORGAN"><aside class="declaration">#define </aside>IS_ORGANIC_ORGAN
+            <aside>(organ)</aside>
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L86">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 86"/></a>
+    </h3>
+    <p>Helper to figure out if an organ is organic</p><h3 id="define/IS_ROBOTIC_ORGAN"><aside class="declaration">#define </aside>IS_ROBOTIC_ORGAN
+            <aside>(organ)</aside>
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L88">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 88"/></a>
+    </h3>
+    <p>Helper to figure out if an organ is robotic</p><h3 id="define/ORGAN_COLOR_DNA"><aside class="declaration">#define </aside>ORGAN_COLOR_DNA
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L98">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 98"/></a>
+    </h3>
+    <p>Uses a DNA feature for coloring, if one is available</p><h3 id="define/ORGAN_COLOR_EYE"><aside class="declaration">#define </aside>ORGAN_COLOR_EYE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L106">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 106"/></a>
+    </h3>
+    <p>Uses the parent's eye color</p><h3 id="define/ORGAN_COLOR_FACIAL_HAIR"><aside class="declaration">#define </aside>ORGAN_COLOR_FACIAL_HAIR
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L104">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 104"/></a>
+    </h3>
+    <p>Uses the parent's facial hair color</p><h3 id="define/ORGAN_COLOR_HAIR"><aside class="declaration">#define </aside>ORGAN_COLOR_HAIR
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L102">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 102"/></a>
+    </h3>
+    <p>Uses the parent's hair color</p><h3 id="define/ORGAN_COLOR_LIMB"><aside class="declaration">#define </aside>ORGAN_COLOR_LIMB
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L94">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 94"/></a>
+    </h3>
+    <p>Uses the parent limb's drawcolor value</p><h3 id="define/ORGAN_COLOR_MUTANT"><aside class="declaration">#define </aside>ORGAN_COLOR_MUTANT
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L100">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 100"/></a>
+    </h3>
+    <p>Uses specifically the mcolor feature for coloring, if available</p><h3 id="define/ORGAN_COLOR_NONE"><aside class="declaration">#define </aside>ORGAN_COLOR_NONE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L92">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 92"/></a>
+    </h3>
+    <p>Doesn't have coloring, really!</p><h3 id="define/ORGAN_COLOR_OVERRIDE"><aside class="declaration">#define </aside>ORGAN_COLOR_OVERRIDE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L96">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 96"/></a>
+    </h3>
+    <p>Uses /datum/bodypart_overlay/proc/override_color()'s return value</p><h3 id="define/ORGAN_DESTROYED"><aside class="declaration">#define </aside>ORGAN_DESTROYED
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L83">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 83"/></a>
+    </h3>
+    <p>Has been destroyed beyond any relief</p><h3 id="define/ORGAN_EDIBLE"><aside class="declaration">#define </aside>ORGAN_EDIBLE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L77">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 77"/></a>
+    </h3>
+    <p>Can be eaten</p><h3 id="define/ORGAN_EMP"><aside class="declaration">#define </aside>ORGAN_EMP
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L73">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 73"/></a>
+    </h3>
+    <p>Synthetic organ affected by an EMP - Deteriorates over time</p><h3 id="define/ORGAN_FAILING"><aside class="declaration">#define </aside>ORGAN_FAILING
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L71">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 71"/></a>
+    </h3>
+    <p>Failing organs perform damaging effects until replaced or fixed, and typically they don't function properly either</p><h3 id="define/ORGAN_FROZEN"><aside class="declaration">#define </aside>ORGAN_FROZEN
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L69">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 69"/></a>
+    </h3>
+    <p>Frozen organs, don't deteriorate</p><h3 id="define/ORGAN_HIDDEN"><aside class="declaration">#define </aside>ORGAN_HIDDEN
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L81">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 81"/></a>
+    </h3>
+    <p>Can't be seen by scanners, doesn't anger body purists</p><h3 id="define/ORGAN_MINERAL"><aside class="declaration">#define </aside>ORGAN_MINERAL
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L67">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 67"/></a>
+    </h3>
+    <p>Mineral organs - Snowflakey</p><h3 id="define/ORGAN_ORGANIC"><aside class="declaration">#define </aside>ORGAN_ORGANIC
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L63">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 63"/></a>
+    </h3>
+    <p>Organic organs, the default - Don't get affected by EMPs</p><h3 id="define/ORGAN_ROBOTIC"><aside class="declaration">#define </aside>ORGAN_ROBOTIC
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L65">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 65"/></a>
+    </h3>
+    <p>Synthetic organs, or cybernetic organs - React to EMPs and don't rot, nor heal naturally</p><h3 id="define/ORGAN_UNREMOVABLE"><aside class="declaration">#define </aside>ORGAN_UNREMOVABLE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L79">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 79"/></a>
+    </h3>
+    <p>Can't be removed using surgery or other common means</p><h3 id="define/ORGAN_VITAL"><aside class="declaration">#define </aside>ORGAN_VITAL
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L75">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 75"/></a>
+    </h3>
+    <p>Removing this organ KILLS the owner - Currently only the brain</p><h3 id="define/STANDARD_ORGAN_DECAY"><aside class="declaration">#define </aside>STANDARD_ORGAN_DECAY
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L59">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 59"/></a>
+    </h3>
+    <p>designed to fail organs when left to decay for ~15 minutes</p><h3 id="define/WAG_ABLE"><aside class="declaration">#define </aside>WAG_ABLE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L110">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 110"/></a>
+    </h3>
+    <p>Tail is capable of wagging</p><h3 id="define/WAG_WAGGING"><aside class="declaration">#define </aside>WAG_WAGGING
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/organs.dm#L112">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;organs.dm 112"/></a>
+    </h3>
+    <p>Tail is currently wagging</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>code&#x2F;__DEFINES&#x2F;preferences.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="code/__DEFINES/preferences.html#define">Define Details</a></header>
+<main>
+<h1>code/__DEFINES/preferences.dm 
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="code/__DEFINES/preferences.html#define/DB_FLAG_EXEMPT">DB_FLAG_EXEMPT</a></th><td>Is the user exempt from the job exp system?</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/DB_FLAG_AGE_VETTED">DB_FLAG_AGE_VETTED</a></th><td>Did the user pass the automated age gate?</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/DB_FLAG_READ_RULES">DB_FLAG_READ_RULES</a></th><td>Has the user read the rules yet?</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_CHARACTER">PREFERENCE_CHARACTER</a></th><td>This preference is character specific.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PLAYER">PREFERENCE_PLAYER</a></th><td>This preference is account specific.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_TAB_CHARACTER_PREFERENCES">PREFERENCE_TAB_CHARACTER_PREFERENCES</a></th><td>Open the character preference window</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_TAB_GAME_PREFERENCES">PREFERENCE_TAB_GAME_PREFERENCES</a></th><td>Open the game preferences window</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_TAB_KEYBINDINGS">PREFERENCE_TAB_KEYBINDINGS</a></th><td>Open the keybindings window</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_CATEGORY_FEATURES">PREFERENCE_CATEGORY_FEATURES</a></th><td>These will be shown in the character sidebar, but at the bottom.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_CATEGORY_CLOTHING">PREFERENCE_CATEGORY_CLOTHING</a></th><td>Any preferences that will show to the sides of the character in the setup menu.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_CATEGORY_NON_CONTEXTUAL">PREFERENCE_CATEGORY_NON_CONTEXTUAL</a></th><td>Preferences that will be put into the 3rd list, and are not contextual.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_CATEGORY_SECONDARY_FEATURES">PREFERENCE_CATEGORY_SECONDARY_FEATURES</a></th><td>These will show in the list to the right of the character preview.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES">PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES</a></th><td>These are preferences that are supplementary for main features, such as hair color being affixed to hair.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_CATEGORY_BACKGROUND">PREFERENCE_CATEGORY_BACKGROUND</a></th><td>Preferences that will be put into the background list, which is on a separate tab.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_CATEGORY_GAME_PREFERENCES">PREFERENCE_CATEGORY_GAME_PREFERENCES</a></th><td>Will be put under the game preferences window.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PRIORITY_DEFAULT">PREFERENCE_PRIORITY_DEFAULT</a></th><td>The default priority level</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PRIORITY_SPECIES">PREFERENCE_PRIORITY_SPECIES</a></th><td>The priority at which species runs, needed for external organs to apply properly.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PRIORITY_GENDER">PREFERENCE_PRIORITY_GENDER</a></th><td>The priority at which gender is determined, needed for proper randomization.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PRIORITY_BODY_TYPE">PREFERENCE_PRIORITY_BODY_TYPE</a></th><td>The priority at which body type is decided, applied after gender so we can support the &quot;use gender&quot; option.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PRIORITY_BODYPARTS">PREFERENCE_PRIORITY_BODYPARTS</a></th><td>Some preferences get applied directly to bodyparts (anything head_flags dependent right now).
+These must apply after species, as species gaining might replace the bodyparts of the human.
+These also should apply after gender and body type, as those might change the bodyparts.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PRIORITY_NAMES">PREFERENCE_PRIORITY_NAMES</a></th><td>The priority at which names are decided, needed for proper randomization.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PRIORITY_NAME_MODIFICATIONS">PREFERENCE_PRIORITY_NAME_MODIFICATIONS</a></th><td>Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PREFERENCE_PRIORITY_AFTER_NAMES">PREFERENCE_PRIORITY_AFTER_NAMES</a></th><td>Preferences that require the name to be set properly to work</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/MAX_PREFERENCE_PRIORITY">MAX_PREFERENCE_PRIORITY</a></th><td>The maximum preference priority, keep this updated, but don't use it for <code>priority</code>.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/MIDDLEWARE_PRIORITY_BEFORE">MIDDLEWARE_PRIORITY_BEFORE</a></th><td>Middleware that comes before normal prefs</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/MIDDLEWARE_PRIORITY_AFTER">MIDDLEWARE_PRIORITY_AFTER</a></th><td>Middleware that comes after normal prefs</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/MIDDLEWARE_PRIORITY_DEFAULT">MIDDLEWARE_PRIORITY_DEFAULT</a></th><td>Default middleware priority</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PLAYTIME_HARDCORE_RANDOM">PLAYTIME_HARDCORE_RANDOM</a></th><td>The time needed to unlock hardcore random mode in preferences</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/PLAYTIME_VETERAN">PLAYTIME_VETERAN</a></th><td>The time needed to unlock the gamer cloak in preferences</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/SPRITE_ACCESSORY_NONE">SPRITE_ACCESSORY_NONE</a></th><td>The key used for sprite accessories that should never actually be applied to the player.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/LEGS_NORMAL">LEGS_NORMAL</a></th><td>Normal legs, the default for everyone</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/LEGS_DIGITIGRADE">LEGS_DIGITIGRADE</a></th><td>Digitigrade pref, used in feature if you're meant to be a Digitigrade.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/DIGITIGRADE_NEVER">DIGITIGRADE_NEVER</a></th><td>The species does not have digitigrade legs in generation.</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/DIGITIGRADE_OPTIONAL">DIGITIGRADE_OPTIONAL</a></th><td>The species can have digitigrade legs in generation</td></tr>
+        <tr><th><a href="code/__DEFINES/preferences.html#define/DIGITIGRADE_FORCED">DIGITIGRADE_FORCED</a></th><td>The species is forced to have digitigrade legs in generation.</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/DB_FLAG_AGE_VETTED"><aside class="declaration">#define </aside>DB_FLAG_AGE_VETTED
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L80">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 80"/></a>
+    </h3>
+    <p>Did the user pass the automated age gate?</p><h3 id="define/DB_FLAG_EXEMPT"><aside class="declaration">#define </aside>DB_FLAG_EXEMPT
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L78">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 78"/></a>
+    </h3>
+    <p>Is the user exempt from the job exp system?</p><h3 id="define/DB_FLAG_READ_RULES"><aside class="declaration">#define </aside>DB_FLAG_READ_RULES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L82">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 82"/></a>
+    </h3>
+    <p>Has the user read the rules yet?</p><h3 id="define/DIGITIGRADE_FORCED"><aside class="declaration">#define </aside>DIGITIGRADE_FORCED
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L204">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 204"/></a>
+    </h3>
+    <p>The species is forced to have digitigrade legs in generation.</p><h3 id="define/DIGITIGRADE_NEVER"><aside class="declaration">#define </aside>DIGITIGRADE_NEVER
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L200">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 200"/></a>
+    </h3>
+    <p>The species does not have digitigrade legs in generation.</p><h3 id="define/DIGITIGRADE_OPTIONAL"><aside class="declaration">#define </aside>DIGITIGRADE_OPTIONAL
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L202">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 202"/></a>
+    </h3>
+    <p>The species can have digitigrade legs in generation</p><h3 id="define/LEGS_DIGITIGRADE"><aside class="declaration">#define </aside>LEGS_DIGITIGRADE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L196">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 196"/></a>
+    </h3>
+    <p>Digitigrade pref, used in feature if you're meant to be a Digitigrade.</p><h3 id="define/LEGS_NORMAL"><aside class="declaration">#define </aside>LEGS_NORMAL
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L194">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 194"/></a>
+    </h3>
+    <p>Normal legs, the default for everyone</p><h3 id="define/MAX_PREFERENCE_PRIORITY"><aside class="declaration">#define </aside>MAX_PREFERENCE_PRIORITY
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L173">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 173"/></a>
+    </h3>
+    <p>The maximum preference priority, keep this updated, but don't use it for <code>priority</code>.</p><h3 id="define/MIDDLEWARE_PRIORITY_AFTER"><aside class="declaration">#define </aside>MIDDLEWARE_PRIORITY_AFTER
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L179">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 179"/></a>
+    </h3>
+    <p>Middleware that comes after normal prefs</p><h3 id="define/MIDDLEWARE_PRIORITY_BEFORE"><aside class="declaration">#define </aside>MIDDLEWARE_PRIORITY_BEFORE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L177">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 177"/></a>
+    </h3>
+    <p>Middleware that comes before normal prefs</p><h3 id="define/MIDDLEWARE_PRIORITY_DEFAULT"><aside class="declaration">#define </aside>MIDDLEWARE_PRIORITY_DEFAULT
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L182">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 182"/></a>
+    </h3>
+    <p>Default middleware priority</p><h3 id="define/PLAYTIME_HARDCORE_RANDOM"><aside class="declaration">#define </aside>PLAYTIME_HARDCORE_RANDOM
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L186">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 186"/></a>
+    </h3>
+    <p>The time needed to unlock hardcore random mode in preferences</p><h3 id="define/PLAYTIME_VETERAN"><aside class="declaration">#define </aside>PLAYTIME_VETERAN
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L188">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 188"/></a>
+    </h3>
+    <p>The time needed to unlock the gamer cloak in preferences</p><h3 id="define/PREFERENCE_CATEGORY_BACKGROUND"><aside class="declaration">#define </aside>PREFERENCE_CATEGORY_BACKGROUND
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L138">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 138"/></a>
+    </h3>
+    <p>Preferences that will be put into the background list, which is on a separate tab.</p><h3 id="define/PREFERENCE_CATEGORY_CLOTHING"><aside class="declaration">#define </aside>PREFERENCE_CATEGORY_CLOTHING
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L126">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 126"/></a>
+    </h3>
+    <p>Any preferences that will show to the sides of the character in the setup menu.</p><h3 id="define/PREFERENCE_CATEGORY_FEATURES"><aside class="declaration">#define </aside>PREFERENCE_CATEGORY_FEATURES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L123">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 123"/></a>
+    </h3>
+    <p>These will be shown in the character sidebar, but at the bottom.</p><h3 id="define/PREFERENCE_CATEGORY_GAME_PREFERENCES"><aside class="declaration">#define </aside>PREFERENCE_CATEGORY_GAME_PREFERENCES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L141">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 141"/></a>
+    </h3>
+    <p>Will be put under the game preferences window.</p><h3 id="define/PREFERENCE_CATEGORY_NON_CONTEXTUAL"><aside class="declaration">#define </aside>PREFERENCE_CATEGORY_NON_CONTEXTUAL
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L129">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 129"/></a>
+    </h3>
+    <p>Preferences that will be put into the 3rd list, and are not contextual.</p><h3 id="define/PREFERENCE_CATEGORY_SECONDARY_FEATURES"><aside class="declaration">#define </aside>PREFERENCE_CATEGORY_SECONDARY_FEATURES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L132">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 132"/></a>
+    </h3>
+    <p>These will show in the list to the right of the character preview.</p><h3 id="define/PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES"><aside class="declaration">#define </aside>PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L135">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 135"/></a>
+    </h3>
+    <p>These are preferences that are supplementary for main features, such as hair color being affixed to hair.</p><h3 id="define/PREFERENCE_CHARACTER"><aside class="declaration">#define </aside>PREFERENCE_CHARACTER
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L108">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 108"/></a>
+    </h3>
+    <p>This preference is character specific.</p><h3 id="define/PREFERENCE_PLAYER"><aside class="declaration">#define </aside>PREFERENCE_PLAYER
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L110">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 110"/></a>
+    </h3>
+    <p>This preference is account specific.</p><h3 id="define/PREFERENCE_PRIORITY_AFTER_NAMES"><aside class="declaration">#define </aside>PREFERENCE_PRIORITY_AFTER_NAMES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L170">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 170"/></a>
+    </h3>
+    <p>Preferences that require the name to be set properly to work</p><h3 id="define/PREFERENCE_PRIORITY_BODYPARTS"><aside class="declaration">#define </aside>PREFERENCE_PRIORITY_BODYPARTS
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L161">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 161"/></a>
+    </h3>
+    <p>Some preferences get applied directly to bodyparts (anything head_flags dependent right now).
+These must apply after species, as species gaining might replace the bodyparts of the human.
+These also should apply after gender and body type, as those might change the bodyparts.</p><h3 id="define/PREFERENCE_PRIORITY_BODY_TYPE"><aside class="declaration">#define </aside>PREFERENCE_PRIORITY_BODY_TYPE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L154">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 154"/></a>
+    </h3>
+    <p>The priority at which body type is decided, applied after gender so we can support the &quot;use gender&quot; option.</p><h3 id="define/PREFERENCE_PRIORITY_DEFAULT"><aside class="declaration">#define </aside>PREFERENCE_PRIORITY_DEFAULT
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L145">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 145"/></a>
+    </h3>
+    <p>The default priority level</p><h3 id="define/PREFERENCE_PRIORITY_GENDER"><aside class="declaration">#define </aside>PREFERENCE_PRIORITY_GENDER
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L151">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 151"/></a>
+    </h3>
+    <p>The priority at which gender is determined, needed for proper randomization.</p><h3 id="define/PREFERENCE_PRIORITY_NAMES"><aside class="declaration">#define </aside>PREFERENCE_PRIORITY_NAMES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L164">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 164"/></a>
+    </h3>
+    <p>The priority at which names are decided, needed for proper randomization.</p><h3 id="define/PREFERENCE_PRIORITY_NAME_MODIFICATIONS"><aside class="declaration">#define </aside>PREFERENCE_PRIORITY_NAME_MODIFICATIONS
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L167">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 167"/></a>
+    </h3>
+    <p>Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.</p><h3 id="define/PREFERENCE_PRIORITY_SPECIES"><aside class="declaration">#define </aside>PREFERENCE_PRIORITY_SPECIES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L148">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 148"/></a>
+    </h3>
+    <p>The priority at which species runs, needed for external organs to apply properly.</p><h3 id="define/PREFERENCE_TAB_CHARACTER_PREFERENCES"><aside class="declaration">#define </aside>PREFERENCE_TAB_CHARACTER_PREFERENCES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L114">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 114"/></a>
+    </h3>
+    <p>Open the character preference window</p><h3 id="define/PREFERENCE_TAB_GAME_PREFERENCES"><aside class="declaration">#define </aside>PREFERENCE_TAB_GAME_PREFERENCES
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L117">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 117"/></a>
+    </h3>
+    <p>Open the game preferences window</p><h3 id="define/PREFERENCE_TAB_KEYBINDINGS"><aside class="declaration">#define </aside>PREFERENCE_TAB_KEYBINDINGS
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L120">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 120"/></a>
+    </h3>
+    <p>Open the keybindings window</p><h3 id="define/SPRITE_ACCESSORY_NONE"><aside class="declaration">#define </aside>SPRITE_ACCESSORY_NONE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/preferences.dm#L191">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;preferences.dm 191"/></a>
+    </h3>
+    <p>The key used for sprite accessories that should never actually be applied to the player.</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;interaction - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/interaction.html#var">Var Details</a> - <a href="datum/interaction.html#proc">Proc Details</a></header>
+<main>
+<h1>interaction <aside>/<a href="datum.html">datum</a>/<a href="datum/interaction.html">interaction</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L1">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 1"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/interaction.html#var/blind_message">blind_message</a></th><td>Message for well, blind bystanders (can also be DEAF message, if this is INTERACTION_AUDIBLE)</td></tr>
+            <tr><th><a href="datum/interaction.html#var/category">category</a></th><td>Category of the interaction, please use defines for these</td></tr>
+            <tr><th><a href="datum/interaction.html#var/color">color</a></th><td>Color for the button on the UI, if any</td></tr>
+            <tr><th><a href="datum/interaction.html#var/desc">desc</a></th><td>Description of the interaction, currently a tooltip when hovered over on the UI</td></tr>
+            <tr><th><a href="datum/interaction.html#var/icon">icon</a></th><td>Fontawesome icon of the interaction, appears besides the name if there is one</td></tr>
+            <tr><th><a href="datum/interaction.html#var/interaction_flags">interaction_flags</a></th><td>Many flags that regulate the behavior of this interaction, such as INTERACTION_AUDIBLE and INTERACTION_COOLDOWN</td></tr>
+            <tr><th><a href="datum/interaction.html#var/lust_gain_target">lust_gain_target</a></th><td>Lust applied to the target</td></tr>
+            <tr><th><a href="datum/interaction.html#var/lust_gain_user">lust_gain_user</a></th><td>Lust applied to the user</td></tr>
+            <tr><th><a href="datum/interaction.html#var/maximum_distance">maximum_distance</a></th><td>Maximum distance this interaction can normally be used at</td></tr>
+            <tr><th><a href="datum/interaction.html#var/maximum_repeat_time">maximum_repeat_time</a></th><td>Maximum time for repeating this interaction on the interface knob</td></tr>
+            <tr><th><a href="datum/interaction.html#var/maximum_tk_distance">maximum_tk_distance</a></th><td>Maximum distance this interaction can be used at, with telekinesis</td></tr>
+            <tr><th><a href="datum/interaction.html#var/message">message</a></th><td>Message exhibited to bystanders for this interaction, can be a list</td></tr>
+            <tr><th><a href="datum/interaction.html#var/message_range">message_range</a></th><td>Range the message gets exhibited for</td></tr>
+            <tr><th><a href="datum/interaction.html#var/minimum_repeat_time">minimum_repeat_time</a></th><td>Minimum time for repeating this interaction on the interface knob</td></tr>
+            <tr><th><a href="datum/interaction.html#var/name">name</a></th><td>Name of the interaction, very obvious</td></tr>
+            <tr><th><a href="datum/interaction.html#var/sound_extrarange">sound_extrarange</a></th><td>Extra range for the sound</td></tr>
+            <tr><th><a href="datum/interaction.html#var/sound_vary">sound_vary</a></th><td>Whether or not the sound varies</td></tr>
+            <tr><th><a href="datum/interaction.html#var/sound_volume">sound_volume</a></th><td>Volume the sound plays at</td></tr>
+            <tr><th><a href="datum/interaction.html#var/sounds">sounds</a></th><td>Sounds this interaction can play, simple unweighted list of files or a single sound file</td></tr>
+            <tr><th><a href="datum/interaction.html#var/target_clear_time">target_clear_time</a></th><td>How much time it takes to clear last_interaction_as_target</td></tr>
+            <tr><th><a href="datum/interaction.html#var/target_climax_cooldown_duration_max">target_climax_cooldown_duration_max</a></th><td>Maximum sex cooldown applied to the target when climaxing</td></tr>
+            <tr><th><a href="datum/interaction.html#var/target_climax_cooldown_duration_min">target_climax_cooldown_duration_min</a></th><td>Minimum sex cooldown applied to the target when climaxing</td></tr>
+            <tr><th><a href="datum/interaction.html#var/target_cooldown_duraction">target_cooldown_duraction</a></th><td>Cooldown applied to the target</td></tr>
+            <tr><th><a href="datum/interaction.html#var/target_hands_required">target_hands_required</a></th><td>Number of hands the target must have, not necessarily usable</td></tr>
+            <tr><th><a href="datum/interaction.html#var/target_message">target_message</a></th><td>Message exhibited to the target for this interaction, can be a list</td></tr>
+            <tr><th><a href="datum/interaction.html#var/target_types_allowed">target_types_allowed</a></th><td>Typecache of target types that can use this interaction</td></tr>
+            <tr><th><a href="datum/interaction.html#var/usage_flags">usage_flags</a></th><td>Interaction usage flags, AKA whether you can use it on yourself, or others</td></tr>
+            <tr><th><a href="datum/interaction.html#var/user_clear_time">user_clear_time</a></th><td>How much time it takes to clear last_interaction_as_user</td></tr>
+            <tr><th><a href="datum/interaction.html#var/user_climax_cooldown_duration_max">user_climax_cooldown_duration_max</a></th><td>Maximum sex cooldown applied to the user when climaxing</td></tr>
+            <tr><th><a href="datum/interaction.html#var/user_climax_cooldown_duration_min">user_climax_cooldown_duration_min</a></th><td>Minimum sex cooldown applied to the user when climaxing</td></tr>
+            <tr><th><a href="datum/interaction.html#var/user_cooldown_duration">user_cooldown_duration</a></th><td>Cooldown applied to the user</td></tr>
+            <tr><th><a href="datum/interaction.html#var/user_hands_required">user_hands_required</a></th><td>Number of hands the user must have, not necessarily usable</td></tr>
+            <tr><th><a href="datum/interaction.html#var/user_message">user_message</a></th><td>Message exhibited to the user for this interaction, can be a list</td></tr>
+            <tr><th><a href="datum/interaction.html#var/user_types_allowed">user_types_allowed</a></th><td>Typecache of user types that can use this interaction</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/interaction.html#proc/allow_interaction">allow_interaction</a></th><td>Determines whether or not this interaction can be used by the user on the target</td></tr>
+            <tr><th><a href="datum/interaction.html#proc/distance_checks">distance_checks</a></th><td>Checks if the distance between user and target is valid to perform this interaction</td></tr>
+            <tr><th><a href="datum/interaction.html#proc/evaluate_target">evaluate_target</a></th><td>Checks if the target can have this interaction performed on them</td></tr>
+            <tr><th><a href="datum/interaction.html#proc/evaluate_user">evaluate_user</a></th><td>Checks if the user can perform this interaction on the target</td></tr>
+            <tr><th><a href="datum/interaction.html#proc/handle_target_climax">handle_target_climax</a></th><td>Generic behavior for target climax</td></tr>
+            <tr><th><a href="datum/interaction.html#proc/handle_target_lust">handle_target_lust</a></th><td>Basically handles moaning</td></tr>
+            <tr><th><a href="datum/interaction.html#proc/handle_user_climax">handle_user_climax</a></th><td>Generic behavior for user climax</td></tr>
+            <tr><th><a href="datum/interaction.html#proc/handle_user_lust">handle_user_lust</a></th><td>Basically handles moaning</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/blind_message"><aside class="declaration">var </aside>blind_message
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L26">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 26"/></a></h3>
+        <p>Message for well, blind bystanders (can also be DEAF message, if this is INTERACTION_AUDIBLE)</p><h3 id="var/category"><aside class="declaration">var </aside>category
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L12">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 12"/></a></h3>
+        <p>Category of the interaction, please use defines for these</p><h3 id="var/color"><aside class="declaration">var </aside>color
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L9">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 9"/></a></h3>
+        <p>Color for the button on the UI, if any</p><h3 id="var/desc"><aside class="declaration">var </aside>desc
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L5">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 5"/></a></h3>
+        <p>Description of the interaction, currently a tooltip when hovered over on the UI</p><h3 id="var/icon"><aside class="declaration">var </aside>icon
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L7">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 7"/></a></h3>
+        <p>Fontawesome icon of the interaction, appears besides the name if there is one</p><h3 id="var/interaction_flags"><aside class="declaration">var </aside>interaction_flags
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L17">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 17"/></a></h3>
+        <p>Many flags that regulate the behavior of this interaction, such as INTERACTION_AUDIBLE and INTERACTION_COOLDOWN</p><h3 id="var/lust_gain_target"><aside class="declaration">var </aside>lust_gain_target
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L67">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 67"/></a></h3>
+        <p>Lust applied to the target</p><h3 id="var/lust_gain_user"><aside class="declaration">var </aside>lust_gain_user
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L65">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 65"/></a></h3>
+        <p>Lust applied to the user</p><h3 id="var/maximum_distance"><aside class="declaration">var </aside>maximum_distance
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L70">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 70"/></a></h3>
+        <p>Maximum distance this interaction can normally be used at</p><h3 id="var/maximum_repeat_time"><aside class="declaration">var </aside>maximum_repeat_time
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L57">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 57"/></a></h3>
+        <p>Maximum time for repeating this interaction on the interface knob</p><h3 id="var/maximum_tk_distance"><aside class="declaration">var </aside>maximum_tk_distance
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L72">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 72"/></a></h3>
+        <p>Maximum distance this interaction can be used at, with telekinesis</p><h3 id="var/message"><aside class="declaration">var </aside>message
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L20">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 20"/></a></h3>
+        <p>Message exhibited to bystanders for this interaction, can be a list</p><h3 id="var/message_range"><aside class="declaration">var </aside>message_range
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L28">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 28"/></a></h3>
+        <p>Range the message gets exhibited for</p><h3 id="var/minimum_repeat_time"><aside class="declaration">var </aside>minimum_repeat_time
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L55">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 55"/></a></h3>
+        <p>Minimum time for repeating this interaction on the interface knob</p><h3 id="var/name"><aside class="declaration">var </aside>name
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L3">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 3"/></a></h3>
+        <p>Name of the interaction, very obvious</p><h3 id="var/sound_extrarange"><aside class="declaration">var </aside>sound_extrarange
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L35">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 35"/></a></h3>
+        <p>Extra range for the sound</p><h3 id="var/sound_vary"><aside class="declaration">var </aside>sound_vary
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L37">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 37"/></a></h3>
+        <p>Whether or not the sound varies</p><h3 id="var/sound_volume"><aside class="declaration">var </aside>sound_volume
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L33">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 33"/></a></h3>
+        <p>Volume the sound plays at</p><h3 id="var/sounds"><aside class="declaration">var </aside>sounds
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L31">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 31"/></a></h3>
+        <p>Sounds this interaction can play, simple unweighted list of files or a single sound file</p><h3 id="var/target_clear_time"><aside class="declaration">var </aside>target_clear_time
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L62">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 62"/></a></h3>
+        <p>How much time it takes to clear last_interaction_as_target</p><h3 id="var/target_climax_cooldown_duration_max"><aside class="declaration">var </aside>target_climax_cooldown_duration_max
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L51">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 51"/></a></h3>
+        <p>Maximum sex cooldown applied to the target when climaxing</p><h3 id="var/target_climax_cooldown_duration_min"><aside class="declaration">var </aside>target_climax_cooldown_duration_min
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L49">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 49"/></a></h3>
+        <p>Minimum sex cooldown applied to the target when climaxing</p><h3 id="var/target_cooldown_duraction"><aside class="declaration">var </aside>target_cooldown_duraction
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L42">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 42"/></a></h3>
+        <p>Cooldown applied to the target</p><h3 id="var/target_hands_required"><aside class="declaration">var </aside>target_hands_required
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L77">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 77"/></a></h3>
+        <p>Number of hands the target must have, not necessarily usable</p><h3 id="var/target_message"><aside class="declaration">var </aside>target_message
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L22">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 22"/></a></h3>
+        <p>Message exhibited to the target for this interaction, can be a list</p><h3 id="var/target_types_allowed"><aside class="declaration">var </aside>target_types_allowed
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L82">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 82"/></a></h3>
+        <p>Typecache of target types that can use this interaction</p><h3 id="var/usage_flags"><aside class="declaration">var </aside>usage_flags
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L15">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 15"/></a></h3>
+        <p>Interaction usage flags, AKA whether you can use it on yourself, or others</p><h3 id="var/user_clear_time"><aside class="declaration">var </aside>user_clear_time
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L60">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 60"/></a></h3>
+        <p>How much time it takes to clear last_interaction_as_user</p><h3 id="var/user_climax_cooldown_duration_max"><aside class="declaration">var </aside>user_climax_cooldown_duration_max
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L47">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 47"/></a></h3>
+        <p>Maximum sex cooldown applied to the user when climaxing</p><h3 id="var/user_climax_cooldown_duration_min"><aside class="declaration">var </aside>user_climax_cooldown_duration_min
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L45">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 45"/></a></h3>
+        <p>Minimum sex cooldown applied to the user when climaxing</p><h3 id="var/user_cooldown_duration"><aside class="declaration">var </aside>user_cooldown_duration
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L40">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 40"/></a></h3>
+        <p>Cooldown applied to the user</p><h3 id="var/user_hands_required"><aside class="declaration">var </aside>user_hands_required
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L75">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 75"/></a></h3>
+        <p>Number of hands the user must have, not necessarily usable</p><h3 id="var/user_message"><aside class="declaration">var </aside>user_message
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L24">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 24"/></a></h3>
+        <p>Message exhibited to the user for this interaction, can be a list</p><h3 id="var/user_types_allowed"><aside class="declaration">var </aside>user_types_allowed
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L80">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 80"/></a></h3>
+        <p>Typecache of user types that can use this interaction</p><h2 id="proc">Proc Details</h2><h3 id="proc/allow_interaction"><aside class="declaration">proc </aside>allow_interaction<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/user, /<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/target, silent, check_cooldown) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L95">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 95"/></a></aside>
+        </h3>
+        <p>Determines whether or not this interaction can be used by the user on the target</p><h3 id="proc/distance_checks"><aside class="declaration">proc </aside>distance_checks<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/user, /<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/target, silent) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L119">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 119"/></a></aside>
+        </h3>
+        <p>Checks if the distance between user and target is valid to perform this interaction</p><h3 id="proc/evaluate_target"><aside class="declaration">proc </aside>evaluate_target<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/user, /<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/target, silent, check_cooldown) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L166">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 166"/></a></aside>
+        </h3>
+        <p>Checks if the target can have this interaction performed on them</p><h3 id="proc/evaluate_user"><aside class="declaration">proc </aside>evaluate_user<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/user, /<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/target, silent, check_cooldown) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L141">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 141"/></a></aside>
+        </h3>
+        <p>Checks if the user can perform this interaction on the target</p><h3 id="proc/handle_target_climax"><aside class="declaration">proc </aside>handle_target_climax<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/user, /<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/target) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L309">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 309"/></a></aside>
+        </h3>
+        <p>Generic behavior for target climax</p><h3 id="proc/handle_target_lust"><aside class="declaration">proc </aside>handle_target_lust<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/user, /<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/target) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L348">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 348"/></a></aside>
+        </h3>
+        <p>Basically handles moaning</p><h3 id="proc/handle_user_climax"><aside class="declaration">proc </aside>handle_user_climax<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/user, /<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/target) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L303">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 303"/></a></aside>
+        </h3>
+        <p>Generic behavior for user climax</p><h3 id="proc/handle_user_lust"><aside class="declaration">proc </aside>handle_user_lust<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/user, /<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a>/target) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/interactions/_interaction.dm#L315">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;interactions&#x2F;_interaction.dm 315"/></a></aside>
+        </h3>
+        <p>Basically handles moaning</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>

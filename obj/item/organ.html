@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;obj&#x2F;item&#x2F;organ - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="obj/item/organ.html#var">Var Details</a> - <a href="obj/item/organ.html#proc">Proc Details</a></header>
+<main>
+<h1>organ <aside>/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/organ.html">organ</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L1">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 1"/></a></h1>
+
+<p>System for drawing organs with overlays.
+These overlays are drawn directly on the bodypart, attached to a person or not.
+Works in tandem with the /datum/sprite_accessory and /datum/bodypart_overlay/mutant datums to generate sprites.</p><table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="obj/item/organ.html#var/bodypart_overlay">bodypart_overlay</a></th><td>In case we have a detail overlay
+The overlay datum that actually draws stuff on the limb</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/damage">damage</a></th><td>Total damage this organ has sustained.
+Should only ever be modified by apply_organ_damage!</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/detail_overlay">detail_overlay</a></th><td>In case we have a detail overlay, this is the icon_state for it</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/dna_block">dna_block</a></th><td>With what DNA block do we mutate in mutate_feature() ? For genetics</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/external_bodytypes">external_bodytypes</a></th><td>Does this organ have any bodytypes to pass to it's ownerlimb?</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/failure_time">failure_time</a></th><td>Time the organ has failed for so far in deciseconds</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/food_reagents">food_reagents</a></th><td>Reagents for when the organ is edible</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/healing_factor">healing_factor</a></th><td>Healing factor and decay factor function on % of maxhealth, and do not work by applying a static number per tick</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/inherit_color">inherit_color</a></th><td>Set to true if for some reason you want to inherit the color from the bodypart overlay</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/inherit_detail_color">inherit_detail_color</a></th><td>Whether or not the detail overlay should be colored according to the bodypart overlay's color</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/maxHealth">maxHealth</a></th><td>Maximum damage the organ can take, ever.</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/organ_effects">organ_effects</a></th><td>Status Effects that are given to the holder of the organ.</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/organ_flags">organ_flags</a></th><td>Random flags that describe this organ</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/organ_traits">organ_traits</a></th><td>Traits that are given to the holder of the organ.
+If you want an effect that changes this, don't add directly to this. Use the add_organ_trait() proc.</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/owner">owner</a></th><td>The mob that owns this organ.</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/ownerlimb">ownerlimb</a></th><td>Reference to the limb we're inside of</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/process_death">process_death</a></th><td>Whether or not we process outside of the body</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/process_life">process_life</a></th><td>Whether or not we process inside of the body</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/reagent_vol">reagent_vol</a></th><td>The size of the reagent container</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/restyle_flags">restyle_flags</a></th><td>Which flags does a 'modification tool' need to have to restyle us, if it all possible (located in code/_DEFINES/mobs)</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/slot">slot</a></th><td>The organ slot this organ is supposed to inhabit. This should be unique by type. (Lungs, Appendix, Stomach, etc)
+Do NOT add slots with matching names to different zones - it will break the organs_slot list!</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/sprite_accessory_override">sprite_accessory_override</a></th><td>If not null, overrides the appearance with this sprite accessory datum</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/use_mob_sprite_as_obj_sprite">use_mob_sprite_as_obj_sprite</a></th><td>Set to TRUE if you want to draw the bodypart overlays as the object sprite.
+FALSE to use your own.
+This will not work if it doesn't have a limb to generate it's icon with, yes that is scuffed.</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/visual">visual</a></th><td>Do we effect the appearance of our mob - Used to save time in preference code</td></tr>
+            <tr><th><a href="obj/item/organ.html#var/zone">zone</a></th><td>The body zone this organ is supposed to inhabit.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/OnEatFrom">OnEatFrom</a></th><td>Ensures that bitten organs cannot be used for well, anything</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/add_organ_status">add_organ_status</a></th><td>Add a Status Effect to an organ that it will give its owner.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/add_organ_trait">add_organ_trait</a></th><td>Add a Trait to an organ that it will give its owner.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/add_to_limb">add_to_limb</a></th><td>Adds the organ to a limb</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/apply_organ_damage">apply_organ_damage</a></th><td>Adjusts an organ's damage by the amount &quot;damage_amount&quot;, up to a maximum amount, which is by default max damage</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/attempt_feature_restyle">attempt_feature_restyle</a></th><td>Restyles the external organ from a list of valid options</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/become_failing">become_failing</a></th><td>Things that should happen when an organ becomes failing</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/before_organ_replacement">before_organ_replacement</a></th><td>Called before organs are replaced in regenerate_organs with new ones</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/check_damage_thresholds">check_damage_thresholds</a></th><td></td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/clear_failing">clear_failing</a></th><td>Things that should clear up when an organ is no longer failing</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/examine">examine</a></th><td>Damage decrements by a percent of its maxhealth
+Damage decrements again by a percent of its maxhealth, up to a total of 4 extra times depending on the owner's health</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/exit_wardrobe">exit_wardrobe</a></th><td>Used as callbacks by object pooling</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/fly_away">fly_away</a></th><td>Called on drop_organs for the organ to &quot;fly away&quot; using movable physics</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/get_availability">get_availability</a></th><td></td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/get_status_text">get_status_text</a></th><td>Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/get_valid_restyles">get_valid_restyles</a></th><td>Helper proc to fetch a list of styles a player might want to restyle their features into during the round : returns list(&quot;Cabbage&quot; = /datum/sprite_accessory/cabbage)</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/handle_failing_organ">handle_failing_organ</a></th><td>Organs don't die instantly, and neither should you when you get fucked up</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/imprint_dna">imprint_dna</a></th><td>Proc used to change the organ to match the DNA of the owner, IF POSSIBLE.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/initialize_visuals">initialize_visuals</a></th><td>Initializes visual elements of an organ</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/mutate_features">mutate_features</a></th><td>Update our appearance after something changed dna features (if we have an attached DNA block)</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/on_attempt_feature_restyle">on_attempt_feature_restyle</a></th><td>Invoke async so we dont break signals</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/on_death">on_death</a></th><td>Runs decay while outside of a body</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/on_find">on_find</a></th><td>Special interactions when &quot;found&quot; in organ manipulation surgery</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/on_insert">on_insert</a></th><td>Called after the organ is inserted into a mob.
+Adds Traits, Actions, and Status Effects on the mob in which the organ is impanted.
+Override this proc to create unique side-effects for inserting your organ. Must be called by overrides.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/on_life">on_life</a></th><td>Called once every life tick on every organ in a carbon's body</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/on_owner_examine">on_owner_examine</a></th><td>Special examine messages when the owner gets examined</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/on_remove">on_remove</a></th><td>Called after the organ is removed from a mob.
+Removes Traits, Actions, and Status Effects on the mob in which the organ was implanted.
+Override this proc to create unique side-effects for removing your organ. Must be called by overrides.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/on_surgical_removal">on_surgical_removal</a></th><td>Proc that gets called when the organ is surgically removed by someone, can be used for special effects
+Currently only used so surplus organs can explode when surgically removed.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/organ_failure">organ_failure</a></th><td></td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/remove_from_limb">remove_from_limb</a></th><td>Removes the organ from the limb</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/remove_organ_status">remove_organ_status</a></th><td>Removes a Status Effect from an organ, and by extension, its owner.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/remove_organ_trait">remove_organ_trait</a></th><td>Removes a Trait from an organ, and by extension, its owner.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/replace_into">replace_into</a></th><td>Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/set_organ_damage">set_organ_damage</a></th><td>Sets an organ's damage to the amount &quot;damage_amount&quot;, and in doing so clears or sets the failing flag, good for when you have an effect that should fix an organ if broken</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/set_zone">set_zone</a></th><td>Changes the body zone of an organ, handling removal from one limb and insertion to the other
+Never modify the zone directly, it will fuck shit up.</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/simple_change_sprite">simple_change_sprite</a></th><td>If you need to change an organ's visuals for simple one-offs, use this.
+Pass the accessory type : /datum/accessory/something</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/transfer_to_limb">transfer_to_limb</a></th><td>Transfers the organ to a given detached limb, this proc should only be used on dismemberment</td></tr>
+            <tr><th><a href="obj/item/organ.html#proc/visuals_examine">visuals_examine</a></th><td>Returns an examine list about the visual elements of this organ.</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/bodypart_overlay"><aside class="declaration">var </aside>bodypart_overlay
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/bodypart_overlay.html">bodypart_overlay</a>/<a href="datum/bodypart_overlay/mutant.html">mutant</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L9">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 9"/></a></h3>
+        <p>In case we have a detail overlay
+The overlay datum that actually draws stuff on the limb</p><h3 id="var/damage"><aside class="declaration">var </aside>damage
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L26">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 26"/></a></h3>
+        <p>Total damage this organ has sustained.
+Should only ever be modified by apply_organ_damage!</p><h3 id="var/detail_overlay"><aside class="declaration">var </aside>detail_overlay
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L25">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 25"/></a></h3>
+        <p>In case we have a detail overlay, this is the icon_state for it</p><h3 id="var/dna_block"><aside class="declaration">var </aside>dna_block
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L14">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 14"/></a></h3>
+        <p>With what DNA block do we mutate in mutate_feature() ? For genetics</p><h3 id="var/external_bodytypes"><aside class="declaration">var </aside>external_bodytypes
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L29">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 29"/></a></h3>
+        <p>Does this organ have any bodytypes to pass to it's ownerlimb?</p><h3 id="var/failure_time"><aside class="declaration">var </aside>failure_time
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L34">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 34"/></a></h3>
+        <p>Time the organ has failed for so far in deciseconds</p><h3 id="var/food_reagents"><aside class="declaration">var </aside>food_reagents
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L46">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 46"/></a></h3>
+        <p>Reagents for when the organ is edible</p><h3 id="var/healing_factor"><aside class="declaration">var </aside>healing_factor
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L28">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 28"/></a></h3>
+        <p>Healing factor and decay factor function on % of maxhealth, and do not work by applying a static number per tick</p><h3 id="var/inherit_color"><aside class="declaration">var </aside>inherit_color
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L17">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 17"/></a></h3>
+        <p>Set to true if for some reason you want to inherit the color from the bodypart overlay</p><h3 id="var/inherit_detail_color"><aside class="declaration">var </aside>inherit_detail_color
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L27">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 27"/></a></h3>
+        <p>Whether or not the detail overlay should be colored according to the bodypart overlay's color</p><h3 id="var/maxHealth"><aside class="declaration">var </aside>maxHealth
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L21">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 21"/></a></h3>
+        <p>Maximum damage the organ can take, ever.</p><h3 id="var/organ_effects"><aside class="declaration">var </aside>organ_effects
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L69">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 69"/></a></h3>
+        <p>Status Effects that are given to the holder of the organ.</p><h3 id="var/organ_flags"><aside class="declaration">var </aside>organ_flags
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L19">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 19"/></a></h3>
+        <p>Random flags that describe this organ</p><h3 id="var/organ_traits"><aside class="declaration">var </aside>organ_traits
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L61">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 61"/></a></h3>
+        <p>Traits that are given to the holder of the organ.
+If you want an effect that changes this, don't add directly to this. Use the add_organ_trait() proc.</p><h3 id="var/owner"><aside class="declaration">var </aside>owner
+            <aside>&ndash; /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L8">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 8"/></a></h3>
+        <p>The mob that owns this organ.</p><h3 id="var/ownerlimb"><aside class="declaration">var </aside>ownerlimb
+            <aside>&ndash; /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/bodypart.html">bodypart</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L10">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 10"/></a></h3>
+        <p>Reference to the limb we're inside of</p><h3 id="var/process_death"><aside class="declaration">var </aside>process_death
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L55">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 55"/></a></h3>
+        <p>Whether or not we process outside of the body</p><h3 id="var/process_life"><aside class="declaration">var </aside>process_life
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L53">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 53"/></a></h3>
+        <p>Whether or not we process inside of the body</p><h3 id="var/reagent_vol"><aside class="declaration">var </aside>reagent_vol
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L48">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 48"/></a></h3>
+        <p>The size of the reagent container</p><h3 id="var/restyle_flags"><aside class="declaration">var </aside>restyle_flags
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L31">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 31"/></a></h3>
+        <p>Which flags does a 'modification tool' need to have to restyle us, if it all possible (located in code/_DEFINES/mobs)</p><h3 id="var/slot"><aside class="declaration">var </aside>slot
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L17">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 17"/></a></h3>
+        <p>The organ slot this organ is supposed to inhabit. This should be unique by type. (Lungs, Appendix, Stomach, etc)
+Do NOT add slots with matching names to different zones - it will break the organs_slot list!</p><h3 id="var/sprite_accessory_override"><aside class="declaration">var </aside>sprite_accessory_override
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L11">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 11"/></a></h3>
+        <p>If not null, overrides the appearance with this sprite accessory datum</p><h3 id="var/use_mob_sprite_as_obj_sprite"><aside class="declaration">var </aside>use_mob_sprite_as_obj_sprite
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L23">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 23"/></a></h3>
+        <p>Set to TRUE if you want to draw the bodypart overlays as the object sprite.
+FALSE to use your own.
+This will not work if it doesn't have a limb to generate it's icon with, yes that is scuffed.</p><h3 id="var/visual"><aside class="declaration">var </aside>visual
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L51">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 51"/></a></h3>
+        <p>Do we effect the appearance of our mob - Used to save time in preference code</p><h3 id="var/zone"><aside class="declaration">var </aside>zone
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L12">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 12"/></a></h3>
+        <p>The body zone this organ is supposed to inhabit.</p><h2 id="proc">Proc Details</h2><h3 id="proc/OnEatFrom"><aside class="declaration">proc </aside>OnEatFrom<aside>(eater, feeder) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L403">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 403"/></a></aside>
+        </h3>
+        <p>Ensures that bitten organs cannot be used for well, anything</p><h3 id="proc/add_organ_status"><aside class="declaration">proc </aside>add_organ_status<aside>(status) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L294">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 294"/></a></aside>
+        </h3>
+        <p>Add a Status Effect to an organ that it will give its owner.</p><h3 id="proc/add_organ_trait"><aside class="declaration">proc </aside>add_organ_trait<aside>(trait) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L280">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 280"/></a></aside>
+        </h3>
+        <p>Add a Trait to an organ that it will give its owner.</p><h3 id="proc/add_to_limb"><aside class="declaration">proc </aside>add_to_limb<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/bodypart.html">bodypart</a>/bodypart, special) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L260">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 260"/></a></aside>
+        </h3>
+        <p>Adds the organ to a limb</p><h3 id="proc/apply_organ_damage"><aside class="declaration">proc </aside>apply_organ_damage<aside>(damage_amount, maximum, required_organ_flag) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L413">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 413"/></a></aside>
+        </h3>
+        <p>Adjusts an organ's damage by the amount &quot;damage_amount&quot;, up to a maximum amount, which is by default max damage</p><h3 id="proc/attempt_feature_restyle"><aside class="declaration">proc </aside>attempt_feature_restyle<aside>(/<a href="atom.html">atom</a>/source, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/trimmer, /<a href="atom.html">atom</a>/<a href="atom/movable.html">movable</a>/original_target, body_zone, restyle_type, style_speed) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_restyling.dm#L70">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_restyling.dm 70"/></a></aside>
+        </h3>
+        <p>Restyles the external organ from a list of valid options</p><h3 id="proc/become_failing"><aside class="declaration">proc </aside>become_failing<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L436">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 436"/></a></aside>
+        </h3>
+        <p>Things that should happen when an organ becomes failing</p><h3 id="proc/before_organ_replacement"><aside class="declaration">proc </aside>before_organ_replacement<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/organ.html">organ</a>/replacement) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L515">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 515"/></a></aside>
+        </h3>
+        <p>Called before organs are replaced in regenerate_organs with new ones</p><h3 id="proc/check_damage_thresholds"><aside class="declaration">proc </aside>check_damage_thresholds<aside>(/<a href="mob.html">mob</a>/organ_owner) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L462">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 462"/></a></aside>
+        </h3>
+        <ul>
+<li>check_damage_thresholds</li>
+<li>input: mob/organ_owner (a mob, the owner of the organ we call the proc on)</li>
+<li>output: returns a message should get displayed.</li>
+<li>description: By checking our current damage against our previous damage, we can decide whether we've passed an organ threshold.</li>
+<li>If we have, send the corresponding threshold message to the owner, if such a message exists.</li>
+</ul><h3 id="proc/clear_failing"><aside class="declaration">proc </aside>clear_failing<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L448">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 448"/></a></aside>
+        </h3>
+        <p>Things that should clear up when an organ is no longer failing</p><h3 id="proc/examine"><aside class="parent"><a title="/atom" href="atom.html#proc/examine">&uarr;</a></aside>examine<aside>(/<a href="mob.html">mob</a>/user) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L365">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 365"/></a></aside>
+        </h3>
+        <p>Damage decrements by a percent of its maxhealth
+Damage decrements again by a percent of its maxhealth, up to a total of 4 extra times depending on the owner's health</p><h3 id="proc/exit_wardrobe"><aside class="declaration">proc </aside>exit_wardrobe<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L393">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 393"/></a></aside>
+        </h3>
+        <p>Used as callbacks by object pooling</p><h3 id="proc/fly_away"><aside class="declaration">proc </aside>fly_away<aside>(/<a href="turf.html">turf</a>/<a href="turf/open.html">open</a>/owner_location, fly_angle, horizontal_multiplier, vertical_multiplier) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L543">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 543"/></a></aside>
+        </h3>
+        <p>Called on drop_organs for the organ to &quot;fly away&quot; using movable physics</p><h3 id="proc/get_availability"><aside class="declaration">proc </aside>get_availability<aside>(/<a href="datum.html">datum</a>/<a href="datum/species.html">species</a>/owner_species, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/owner_mob) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L511">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 511"/></a></aside>
+        </h3>
+        <ul>
+<li>
+<p>get_availability</p>
+</li>
+<li>
+<p>returns whether the species should innately have this organ.</p>
+</li>
+<li>
+<p>regenerate organs works with generic organs, so we need to get whether it can accept certain organs just by what this returns.</p>
+</li>
+<li>
+<p>This is set to return true or false, depending on if a species has a trait that would nulify the purpose of the organ.</p>
+</li>
+<li>
+<p>For example, lungs won't be given if you have NO_BREATH, stomachs check for NO_HUNGER, and livers check for NO_METABOLISM.</p>
+</li>
+<li>
+<p>If you want a carbon to have a trait that normally blocks an organ but still want the organ. Attach the trait to the organ using the organ_traits var</p>
+</li>
+<li>
+<p>Arguments:</p>
+</li>
+<li>
+<p>owner_species - species, needed to return the mutant slot as true or false. stomach set to null means it shouldn't have one.</p>
+</li>
+<li>
+<p>owner_mob - for more specific checks, like nightmares.</p>
+</li>
+</ul><h3 id="proc/get_status_text"><aside class="declaration">proc </aside>get_status_text<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L525">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 525"/></a></aside>
+        </h3>
+        <p>Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.</p><h3 id="proc/get_valid_restyles"><aside class="declaration">proc </aside>get_valid_restyles<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_restyling.dm#L4">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_restyling.dm 4"/></a></aside>
+        </h3>
+        <p>Helper proc to fetch a list of styles a player might want to restyle their features into during the round : returns list(&quot;Cabbage&quot; = /datum/sprite_accessory/cabbage)</p><h3 id="proc/handle_failing_organ"><aside class="declaration">proc </aside>handle_failing_organ<aside>(seconds_per_tick) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L482">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 482"/></a></aside>
+        </h3>
+        <p>Organs don't die instantly, and neither should you when you get fucked up</p><h3 id="proc/imprint_dna"><aside class="declaration">proc </aside>imprint_dna<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/receiver, /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/bodypart.html">bodypart</a>/owner_limb) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L119">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 119"/></a></aside>
+        </h3>
+        <p>Proc used to change the organ to match the DNA of the owner, IF POSSIBLE.</p><h3 id="proc/initialize_visuals"><aside class="declaration">proc </aside>initialize_visuals<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L62">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 62"/></a></aside>
+        </h3>
+        <p>Initializes visual elements of an organ</p><h3 id="proc/mutate_features"><aside class="declaration">proc </aside>mutate_features<aside>(/list/features, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/<a href="mob/living/carbon/human.html">human</a>/human) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L106">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 106"/></a></aside>
+        </h3>
+        <p>Update our appearance after something changed dna features (if we have an attached DNA block)</p><h3 id="proc/on_attempt_feature_restyle"><aside class="declaration">proc </aside>on_attempt_feature_restyle<aside>(/<a href="atom.html">atom</a>/source, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/trimmer, /<a href="atom.html">atom</a>/<a href="atom/movable.html">movable</a>/original_target, body_zone, restyle_type, style_speed) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_restyling.dm#L61">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_restyling.dm 61"/></a></aside>
+        </h3>
+        <p>Invoke async so we dont break signals</p><h3 id="proc/on_death"><aside class="declaration">proc </aside>on_death<aside>(seconds_per_tick, times_fired) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L329">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 329"/></a></aside>
+        </h3>
+        <p>Runs decay while outside of a body</p><h3 id="proc/on_find"><aside class="declaration">proc </aside>on_find<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/finder) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L313">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 313"/></a></aside>
+        </h3>
+        <p>Special interactions when &quot;found&quot; in organ manipulation surgery</p><h3 id="proc/on_insert"><aside class="declaration">proc </aside>on_insert<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/organ_owner, special) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L150">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 150"/></a></aside>
+        </h3>
+        <p>Called after the organ is inserted into a mob.
+Adds Traits, Actions, and Status Effects on the mob in which the organ is impanted.
+Override this proc to create unique side-effects for inserting your organ. Must be called by overrides.</p><h3 id="proc/on_life"><aside class="declaration">proc </aside>on_life<aside>(seconds_per_tick, times_fired) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L341">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 341"/></a></aside>
+        </h3>
+        <p>Called once every life tick on every organ in a carbon's body</p>
+<p>NOTE: THIS IS VERY HOT. Be careful what you put in here
+To give you some scale, if there's 100 carbons in the game, they each have maybe 9 organs
+So that's 900 calls to this proc every life process. Please don't be dumb</p><h3 id="proc/on_owner_examine"><aside class="declaration">proc </aside>on_owner_examine<aside>(/<a href="datum.html">datum</a>/source, /<a href="mob.html">mob</a>/user, /list/examine_list) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L308">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 308"/></a></aside>
+        </h3>
+        <p>Special examine messages when the owner gets examined</p><h3 id="proc/on_remove"><aside class="declaration">proc </aside>on_remove<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/organ_owner, special) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L200">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 200"/></a></aside>
+        </h3>
+        <p>Called after the organ is removed from a mob.
+Removes Traits, Actions, and Status Effects on the mob in which the organ was implanted.
+Override this proc to create unique side-effects for removing your organ. Must be called by overrides.</p><h3 id="proc/on_surgical_removal"><aside class="declaration">proc </aside>on_surgical_removal<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/user, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/old_owner, target_zone, /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/tool) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L320">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 320"/></a></aside>
+        </h3>
+        <p>Proc that gets called when the organ is surgically removed by someone, can be used for special effects
+Currently only used so surplus organs can explode when surgically removed.</p><h3 id="proc/organ_failure"><aside class="declaration">proc </aside>organ_failure<aside>(seconds_per_tick) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L497">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 497"/></a></aside>
+        </h3>
+        <ul>
+<li>
+<p>organ_failure</p>
+</li>
+<li>
+<p>generic proc for handling dying organs</p>
+</li>
+<li>
+<p>Arguments:</p>
+</li>
+<li>
+<p>seconds_per_tick - seconds since last tick</p>
+</li>
+</ul><h3 id="proc/remove_from_limb"><aside class="declaration">proc </aside>remove_from_limb<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/bodypart.html">bodypart</a>/bodypart, special) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L270">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 270"/></a></aside>
+        </h3>
+        <p>Removes the organ from the limb</p><h3 id="proc/remove_organ_status"><aside class="declaration">proc </aside>remove_organ_status<aside>(status) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L301">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 301"/></a></aside>
+        </h3>
+        <p>Removes a Status Effect from an organ, and by extension, its owner.</p><h3 id="proc/remove_organ_trait"><aside class="declaration">proc </aside>remove_organ_trait<aside>(trait) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L287">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 287"/></a></aside>
+        </h3>
+        <p>Removes a Trait from an organ, and by extension, its owner.</p><h3 id="proc/replace_into"><aside class="declaration">proc </aside>replace_into<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/new_owner, drop_if_replaced) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L539">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 539"/></a></aside>
+        </h3>
+        <p>Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target</p><h3 id="proc/set_organ_damage"><aside class="declaration">proc </aside>set_organ_damage<aside>(damage_amount, required_organ_flag) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L453">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 453"/></a></aside>
+        </h3>
+        <p>Sets an organ's damage to the amount &quot;damage_amount&quot;, and in doing so clears or sets the failing flag, good for when you have an effect that should fix an organ if broken</p><h3 id="proc/set_zone"><aside class="declaration">proc </aside>set_zone<aside>(new_zone, special) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L244">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 244"/></a></aside>
+        </h3>
+        <p>Changes the body zone of an organ, handling removal from one limb and insertion to the other
+Never modify the zone directly, it will fuck shit up.</p><h3 id="proc/simple_change_sprite"><aside class="declaration">proc </aside>simple_change_sprite<aside>(accessory_type) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L130">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 130"/></a></aside>
+        </h3>
+        <p>If you need to change an organ's visuals for simple one-offs, use this.
+Pass the accessory type : /datum/accessory/something</p><h3 id="proc/transfer_to_limb"><aside class="declaration">proc </aside>transfer_to_limb<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/bodypart.html">bodypart</a>/new_bodypart, special) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/_organ.dm#L232">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;_organ.dm 232"/></a></aside>
+        </h3>
+        <p>Transfers the organ to a given detached limb, this proc should only be used on dismemberment</p><h3 id="proc/visuals_examine"><aside class="declaration">proc </aside>visuals_examine<aside>(/<a href="mob.html">mob</a>/user) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/surgery/organs/organ_visual.dm#L82">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;surgery&#x2F;organs&#x2F;organ_visual.dm 82"/></a></aside>
+        </h3>
+        <p>Returns an examine list about the visual elements of this organ.</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>

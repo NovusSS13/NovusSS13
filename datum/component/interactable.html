@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;component&#x2F;interactable - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/component/interactable.html#var">Var Details</a> - <a href="datum/component/interactable.html#proc">Proc Details</a></header>
+<main>
+<h1>interactable <aside>/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/interactable.html">interactable</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L2">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 2"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/clear_target_interaction_timer">clear_target_interaction_timer</a></th><td>Used to clear var/last_interaction_as_target, important for rendering appropriate messages</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/clear_user_interaction_timer">clear_user_interaction_timer</a></th><td>Used to clear var/last_interaction_as_user, important for rendering appropriate messages</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/genitals_allowed">genitals_allowed</a></th><td>Whether or not other people can interact with our genital options</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/last_interaction_as_target">last_interaction_as_target</a></th><td>Does not need to be a weakref since interaction datums are singletons</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/last_interaction_as_target_time">last_interaction_as_target_time</a></th><td>Last world.time we received an interaction</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/last_interaction_as_user">last_interaction_as_user</a></th><td>Does not need to be a weakref since interaction datums are singletons</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/last_interaction_as_user_time">last_interaction_as_user_time</a></th><td>Last world.time we did an interaction</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/last_interaction_target">last_interaction_target</a></th><td>Last interaction target, for use with repeat_last_action</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/next_interaction">next_interaction</a></th><td>Cooldown until we can do another interaction with INTERACTION_COOLDOWN</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/next_sexual_interaction">next_sexual_interaction</a></th><td>Cooldown until we can do another interaction with INTERACTION_SEX_COOLDOWN</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/qualities_callback">qualities_callback</a></th><td>Interaction qualities callback</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/repeat_last_action">repeat_last_action</a></th><td>Time to wait before repeating our last action as user, null if we don't want to repeats</td></tr>
+            <tr><th><a href="datum/component/interactable.html#var/underwear_allowed">underwear_allowed</a></th><td>Whether or not other people can interact with our underwear options</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/component/interactable.html#proc/get_qualities">get_qualities</a></th><td>Returns a list of descriptive qualities we have, such as &quot;acting gentle&quot;, &quot;clothed&quot;, etc</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/clear_target_interaction_timer"><aside class="declaration">var </aside>clear_target_interaction_timer
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L21">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 21"/></a></h3>
+        <p>Used to clear var/last_interaction_as_target, important for rendering appropriate messages</p><h3 id="var/clear_user_interaction_timer"><aside class="declaration">var </aside>clear_user_interaction_timer
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L15">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 15"/></a></h3>
+        <p>Used to clear var/last_interaction_as_user, important for rendering appropriate messages</p><h3 id="var/genitals_allowed"><aside class="declaration">var </aside>genitals_allowed
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L29">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 29"/></a></h3>
+        <p>Whether or not other people can interact with our genital options</p><h3 id="var/last_interaction_as_target"><aside class="declaration">var </aside>last_interaction_as_target
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/interaction.html">interaction</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L17">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 17"/></a></h3>
+        <p>Does not need to be a weakref since interaction datums are singletons</p><h3 id="var/last_interaction_as_target_time"><aside class="declaration">var </aside>last_interaction_as_target_time
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L19">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 19"/></a></h3>
+        <p>Last world.time we received an interaction</p><h3 id="var/last_interaction_as_user"><aside class="declaration">var </aside>last_interaction_as_user
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/interaction.html">interaction</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L11">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 11"/></a></h3>
+        <p>Does not need to be a weakref since interaction datums are singletons</p><h3 id="var/last_interaction_as_user_time"><aside class="declaration">var </aside>last_interaction_as_user_time
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L13">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 13"/></a></h3>
+        <p>Last world.time we did an interaction</p><h3 id="var/last_interaction_target"><aside class="declaration">var </aside>last_interaction_target
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/weakref.html">weakref</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L24">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 24"/></a></h3>
+        <p>Last interaction target, for use with repeat_last_action</p><h3 id="var/next_interaction"><aside class="declaration">var </aside>next_interaction
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L7">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 7"/></a></h3>
+        <p>Cooldown until we can do another interaction with INTERACTION_COOLDOWN</p><h3 id="var/next_sexual_interaction"><aside class="declaration">var </aside>next_sexual_interaction
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L9">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 9"/></a></h3>
+        <p>Cooldown until we can do another interaction with INTERACTION_SEX_COOLDOWN</p><h3 id="var/qualities_callback"><aside class="declaration">var </aside>qualities_callback
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/callback.html">callback</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L4">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 4"/></a></h3>
+        <p>Interaction qualities callback</p><h3 id="var/repeat_last_action"><aside class="declaration">var </aside>repeat_last_action
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L26">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 26"/></a></h3>
+        <p>Time to wait before repeating our last action as user, null if we don't want to repeats</p><h3 id="var/underwear_allowed"><aside class="declaration">var </aside>underwear_allowed
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L31">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 31"/></a></h3>
+        <p>Whether or not other people can interact with our underwear options</p><h2 id="proc">Proc Details</h2><h3 id="proc/get_qualities"><aside class="declaration">proc </aside>get_qualities<aside>(temp_gender) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/interactable.dm#L332">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;interactable.dm 332"/></a></aside>
+        </h3>
+        <p>Returns a list of descriptive qualities we have, such as &quot;acting gentle&quot;, &quot;clothed&quot;, etc</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>code&#x2F;modules&#x2F;admin&#x2F;sql_ban_system.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+</header>
+<main>
+<h1>code/modules/admin/sql_ban_system.dm 
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/admin/sql_ban_system.dm">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;admin&#x2F;sql_ban_system.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th>/proc/<a href="global.html#proc/retrieve_ban_cache">retrieve_ban_cache</a></th>
+                <td>Gets the ban cache of the passed in client
+If the cache has not been generated, we start off a query
+If we still have a query going for this request, we just sleep until it's recieved back</td></tr>
+        <tr><th>/proc/<a href="global.html#proc/notify_all_banned_players">notify_all_banned_players</a></th>
+                <td>Notifies all banned players about their ban and gives them a link to appeal from the config. If it was a server ban, it also kicks them.</td></tr>
+        <tr><th>/proc/<a href="global.html#proc/create_system_ban">create_system_ban</a></th>
+                <td>Basically, a version of create_ban exclusively for code use, for any automated bans not performed by admins.</td></tr></table></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>

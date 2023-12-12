@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>code&#x2F;__DEFINES&#x2F;interactions.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="code/__DEFINES/interactions.html#define">Define Details</a></header>
+<main>
+<h1>code/__DEFINES/interactions.dm 
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_SELF">INTERACTION_SELF</a></th><td>Self interaction, can be used on yourself</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_OTHER">INTERACTION_OTHER</a></th><td>Other interaction, can be used on others</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_AUDIBLE">INTERACTION_AUDIBLE</a></th><td>Use audible_message instead of visible_message</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_COOLDOWN">INTERACTION_COOLDOWN</a></th><td>Respects interaction_cooldown</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_SEX_COOLDOWN">INTERACTION_SEX_COOLDOWN</a></th><td>Respects &quot;orgasm&quot; cooldown, aka reffractive period or whatever</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_USER_LUST">INTERACTION_USER_LUST</a></th><td>Interaction will handle lust on the user, if applicable</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_TARGET_LUST">INTERACTION_TARGET_LUST</a></th><td>Interaction will handle lust on the target, if applicable</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_USER_CLIMAX">INTERACTION_USER_CLIMAX</a></th><td>Interaction will call climax() on the user, if applicable</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_TARGET_CLIMAX">INTERACTION_TARGET_CLIMAX</a></th><td>Interaction will call climax() on the target, if applicable</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_CATEGORY_MEAN">INTERACTION_CATEGORY_MEAN</a></th><td>Mean interactions, such as giving someone the finger</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_CATEGORY_FRIENDLY">INTERACTION_CATEGORY_FRIENDLY</a></th><td>Nice interactions, such as a handshake</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_CATEGORY_ROMANTIC">INTERACTION_CATEGORY_ROMANTIC</a></th><td>Romantic interactions, like kissing and holding hands</td></tr>
+        <tr><th><a href="code/__DEFINES/interactions.html#define/INTERACTION_CATEGORY_SEXUAL">INTERACTION_CATEGORY_SEXUAL</a></th><td>SAY GEX</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/INTERACTION_AUDIBLE"><aside class="declaration">#define </aside>INTERACTION_AUDIBLE
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L9">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 9"/></a>
+    </h3>
+    <p>Use audible_message instead of visible_message</p><h3 id="define/INTERACTION_CATEGORY_FRIENDLY"><aside class="declaration">#define </aside>INTERACTION_CATEGORY_FRIENDLY
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L27">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 27"/></a>
+    </h3>
+    <p>Nice interactions, such as a handshake</p><h3 id="define/INTERACTION_CATEGORY_MEAN"><aside class="declaration">#define </aside>INTERACTION_CATEGORY_MEAN
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L25">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 25"/></a>
+    </h3>
+    <p>Mean interactions, such as giving someone the finger</p><h3 id="define/INTERACTION_CATEGORY_ROMANTIC"><aside class="declaration">#define </aside>INTERACTION_CATEGORY_ROMANTIC
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L29">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 29"/></a>
+    </h3>
+    <p>Romantic interactions, like kissing and holding hands</p><h3 id="define/INTERACTION_CATEGORY_SEXUAL"><aside class="declaration">#define </aside>INTERACTION_CATEGORY_SEXUAL
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L31">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 31"/></a>
+    </h3>
+    <p>SAY GEX</p><h3 id="define/INTERACTION_COOLDOWN"><aside class="declaration">#define </aside>INTERACTION_COOLDOWN
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L11">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 11"/></a>
+    </h3>
+    <p>Respects interaction_cooldown</p><h3 id="define/INTERACTION_OTHER"><aside class="declaration">#define </aside>INTERACTION_OTHER
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L5">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 5"/></a>
+    </h3>
+    <p>Other interaction, can be used on others</p><h3 id="define/INTERACTION_SELF"><aside class="declaration">#define </aside>INTERACTION_SELF
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L3">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 3"/></a>
+    </h3>
+    <p>Self interaction, can be used on yourself</p><h3 id="define/INTERACTION_SEX_COOLDOWN"><aside class="declaration">#define </aside>INTERACTION_SEX_COOLDOWN
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L13">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 13"/></a>
+    </h3>
+    <p>Respects &quot;orgasm&quot; cooldown, aka reffractive period or whatever</p><h3 id="define/INTERACTION_TARGET_CLIMAX"><aside class="declaration">#define </aside>INTERACTION_TARGET_CLIMAX
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L21">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 21"/></a>
+    </h3>
+    <p>Interaction will call climax() on the target, if applicable</p><h3 id="define/INTERACTION_TARGET_LUST"><aside class="declaration">#define </aside>INTERACTION_TARGET_LUST
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L17">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 17"/></a>
+    </h3>
+    <p>Interaction will handle lust on the target, if applicable</p><h3 id="define/INTERACTION_USER_CLIMAX"><aside class="declaration">#define </aside>INTERACTION_USER_CLIMAX
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L19">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 19"/></a>
+    </h3>
+    <p>Interaction will call climax() on the user, if applicable</p><h3 id="define/INTERACTION_USER_LUST"><aside class="declaration">#define </aside>INTERACTION_USER_LUST
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/__DEFINES/interactions.dm#L15">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;interactions.dm 15"/></a>
+    </h3>
+    <p>Interaction will handle lust on the user, if applicable</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>

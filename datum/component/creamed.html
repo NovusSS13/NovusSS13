@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;component&#x2F;creamed - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/component/creamed.html#var">Var Details</a> - <a href="datum/component/creamed.html#proc">Proc Details</a></header>
+<main>
+<h1>creamed <aside>/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/creamed.html">creamed</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L6">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 6"/></a></h1>
+
+<p>Creamed component</p>
+<p>For when you have pie on your face... or something else...</p><table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/component/creamed.html#var/bodypart_overlay">bodypart_overlay</a></th><td>Creampie bodypart overlay we use for carbon mobs</td></tr>
+            <tr><th><a href="datum/component/creamed.html#var/cover_lips">cover_lips</a></th><td>Text string for use in examine (&quot;Their lips are covered in coom!&quot;)</td></tr>
+            <tr><th><a href="datum/component/creamed.html#var/my_head">my_head</a></th><td>Cached head for carbons, to ensure proper removal of the creampie overlay</td></tr>
+            <tr><th><a href="datum/component/creamed.html#var/normal_overlay">normal_overlay</a></th><td>Creampie overlay we use for non-carbon mobs</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/component/creamed.html#proc/clean_up">clean_up</a></th><td>Callback to remove pieface</td></tr>
+            <tr><th><a href="datum/component/creamed.html#proc/create_overlays">create_overlays</a></th><td>Creates the overlay, as well as bodypart overlay if applicable</td></tr>
+            <tr><th><a href="datum/component/creamed.html#proc/get_creamable_list">get_creamable_list</a></th><td>Returns the typecache of mobs we can apply to</td></tr>
+            <tr><th><a href="datum/component/creamed.html#proc/lost_head">lost_head</a></th><td>Removes component when the head gets dismembered</td></tr>
+            <tr><th><a href="datum/component/creamed.html#proc/on_creamed">on_creamed</a></th><td>Proc to handle misc events, such as creating a memory or mood event</td></tr>
+            <tr><th><a href="datum/component/creamed.html#proc/on_uncreamed">on_uncreamed</a></th><td>Proc to handle reversal of misc events, such as removing the mood event</td></tr>
+            <tr><th><a href="datum/component/creamed.html#proc/update_overlays">update_overlays</a></th><td>Ensures normal_overlay overlay in case the mob is not a carbon</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/bodypart_overlay"><aside class="declaration">var </aside>bodypart_overlay
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/bodypart_overlay.html">bodypart_overlay</a>/<a href="datum/bodypart_overlay/simple.html">simple</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L12">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 12"/></a></h3>
+        <p>Creampie bodypart overlay we use for carbon mobs</p><h3 id="var/cover_lips"><aside class="declaration">var </aside>cover_lips
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L8">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 8"/></a></h3>
+        <p>Text string for use in examine (&quot;Their lips are covered in coom!&quot;)</p><h3 id="var/my_head"><aside class="declaration">var </aside>my_head
+            <aside>&ndash; /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/bodypart.html">bodypart</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L16">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 16"/></a></h3>
+        <p>Cached head for carbons, to ensure proper removal of the creampie overlay</p><h3 id="var/normal_overlay"><aside class="declaration">var </aside>normal_overlay
+            <aside>&ndash; /mutable_appearance</aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L10">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 10"/></a></h3>
+        <p>Creampie overlay we use for non-carbon mobs</p><h2 id="proc">Proc Details</h2><h3 id="proc/clean_up"><aside class="declaration">proc </aside>clean_up<aside>(/<a href="datum.html">datum</a>/source, clean_types) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L88">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 88"/></a></aside>
+        </h3>
+        <p>Callback to remove pieface</p><h3 id="proc/create_overlays"><aside class="declaration">proc </aside>create_overlays<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L71">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 71"/></a></aside>
+        </h3>
+        <p>Creates the overlay, as well as bodypart overlay if applicable</p><h3 id="proc/get_creamable_list"><aside class="declaration">proc </aside>get_creamable_list<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L75">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 75"/></a></aside>
+        </h3>
+        <p>Returns the typecache of mobs we can apply to</p><h3 id="proc/lost_head"><aside class="declaration">proc </aside>lost_head<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/bodypart.html">bodypart</a>/source, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/owner, special, dismembered) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L105">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 105"/></a></aside>
+        </h3>
+        <p>Removes component when the head gets dismembered</p><h3 id="proc/on_creamed"><aside class="declaration">proc </aside>on_creamed<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L80">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 80"/></a></aside>
+        </h3>
+        <p>Proc to handle misc events, such as creating a memory or mood event</p><h3 id="proc/on_uncreamed"><aside class="declaration">proc </aside>on_uncreamed<aside>() 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L84">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 84"/></a></aside>
+        </h3>
+        <p>Proc to handle reversal of misc events, such as removing the mood event</p><h3 id="proc/update_overlays"><aside class="declaration">proc </aside>update_overlays<aside>(/<a href="atom.html">atom</a>/parent_atom, /list/overlays) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/datums/components/creamed/_creamed.dm#L98">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;creamed&#x2F;_creamed.dm 98"/></a></aside>
+        </h3>
+        <p>Ensures normal_overlay overlay in case the mob is not a carbon</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>

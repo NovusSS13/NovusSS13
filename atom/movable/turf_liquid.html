@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;atom&#x2F;movable&#x2F;turf_liquid - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="atom/movable/turf_liquid.html#var">Var Details</a> - <a href="atom/movable/turf_liquid.html#proc">Proc Details</a></header>
+<main>
+<h1>turf_liquid <aside>/<a href="atom.html">atom</a>/<a href="atom/movable.html">movable</a>/<a href="atom/movable/turf_liquid.html">turf_liquid</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/liquids/liquid.dm#L1">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;liquids&#x2F;liquid.dm 1"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="atom/movable/turf_liquid.html#var/liquid_state_messages">liquid_state_messages</a></th><td>State-specific message chunks for examine_turf()</td></tr>
+            <tr><th><a href="atom/movable/turf_liquid.html#var/my_turf">my_turf</a></th><td>Turf that owns us, should always be kept up to date</td></tr>
+            <tr><th><a href="atom/movable/turf_liquid.html#var/no_effects">no_effects</a></th><td>If true, we won't display any visual effects</td></tr>
+            <tr><th><a href="atom/movable/turf_liquid.html#var/splash_sounds">splash_sounds</a></th><td>Splashing sounds</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="atom/movable/turf_liquid.html#proc/examine_turf">examine_turf</a></th><td>Handles COMSIG_ATOM_EXAMINE for the turf.</td></tr>
+            <tr><th><a href="atom/movable/turf_liquid.html#proc/should_shine">should_shine</a></th><td>We only shine when we are a puddle</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/liquid_state_messages"><aside class="declaration">var </aside>liquid_state_messages
+            <aside>&ndash; /static/list</aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/liquids/liquid.dm#L42">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;liquids&#x2F;liquid.dm 42"/></a></h3>
+        <p>State-specific message chunks for examine_turf()</p><h3 id="var/my_turf"><aside class="declaration">var </aside>my_turf
+            <aside>&ndash; /<a href="turf.html">turf</a></aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/liquids/liquid.dm#L22">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;liquids&#x2F;liquid.dm 22"/></a></h3>
+        <p>Turf that owns us, should always be kept up to date</p><h3 id="var/no_effects"><aside class="declaration">var </aside>no_effects
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/liquids/liquid.dm#L39">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;liquids&#x2F;liquid.dm 39"/></a></h3>
+        <p>If true, we won't display any visual effects</p><h3 id="var/splash_sounds"><aside class="declaration">var </aside>splash_sounds
+            <aside>&ndash; /static/list</aside>
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/liquids/liquid.dm#L50">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;liquids&#x2F;liquid.dm 50"/></a></h3>
+        <p>Splashing sounds</p><h2 id="proc">Proc Details</h2><h3 id="proc/examine_turf"><aside class="declaration">proc </aside>examine_turf<aside>(/<a href="turf.html">turf</a>/source, /<a href="mob.html">mob</a>/examiner, /list/examine_list) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/liquids/liquid.dm#L526">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;liquids&#x2F;liquid.dm 526"/></a></aside>
+        </h3>
+        <p>Handles COMSIG_ATOM_EXAMINE for the turf.</p>
+<p>Adds reagent info to examine text.
+Arguments:</p>
+<ul>
+<li>source - the turf we're peekin at</li>
+<li>examiner - the user</li>
+<li>examine_text - the examine list</li>
+</ul><h3 id="proc/should_shine"><aside class="declaration">proc </aside>should_shine<aside>(/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/shiny) 
+        
+    
+            <a href="https://github.com/NovusSS13/NovusSS13/blob/60b1c08cc112487f351e809b69e38d654802ecd5/code/modules/liquids/liquid.dm#L100">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;liquids&#x2F;liquid.dm 100"/></a></aside>
+        </h3>
+        <p>We only shine when we are a puddle</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/NovusSS13/NovusSS13/tree/60b1c08cc112487f351e809b69e38d654802ecd5">60b1c08</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.7.3</a></footer>
+</body>
+</html>
