@@ -50,8 +50,7 @@
 	unarmed_damage_low = 1 /// monkey punches must be really weak, considering they bite people instead and their bites are weak as hell.
 	unarmed_damage_high = 2
 	unarmed_stun_threshold = 3
-	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
-	hand_traits = list(TRAIT_GUN_NATURAL)
+	bodypart_traits = list(TRAIT_NO_BLOODY_HANDS)
 
 /obj/item/bodypart/arm/right/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -69,8 +68,7 @@
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2
 	unarmed_stun_threshold = 3
-	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
-	hand_traits = list(TRAIT_GUN_NATURAL)
+	bodypart_traits = list(TRAIT_NO_BLOODY_HANDS)
 
 /obj/item/bodypart/leg/left/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -88,7 +86,7 @@
 	unarmed_damage_low = 2
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4
-	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
+	bodypart_traits = list(TRAIT_NO_BLOODY_SOLES)
 
 /obj/item/bodypart/leg/right/monkey
 	icon = 'icons/mob/species/monkey/bodyparts.dmi'
@@ -106,4 +104,4 @@
 	unarmed_damage_low = 2
 	unarmed_damage_high = 3
 	unarmed_stun_threshold = 4
-	bodypart_traits = list(TRAIT_NO_BLOOD_OVERLAY)
+	bodypart_traits = list(TRAIT_NO_BLOODY_SOLES)

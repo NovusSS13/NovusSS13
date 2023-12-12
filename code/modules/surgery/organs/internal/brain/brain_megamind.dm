@@ -13,6 +13,7 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_SPECIAL_TRAUMA_BOOST,
 		TRAIT_MEGAMIND,
+		TRAIT_BIG_SKULL,
 		TRAIT_ANTIMAGIC_NO_SELFBLOCK,
 		TRAIT_BALD,
 		TRAIT_WIG_DESTROYER,
@@ -46,7 +47,8 @@
 
 /obj/item/organ/brain/megamind/add_to_limb(obj/item/bodypart/bodypart, special)
 	. = ..()
-	ADD_TRAIT(bodypart, TRAIT_MEGAMIND, REF(src))
+	if(TRAIT_MEGAMIND in organ_traits)
+		ADD_TRAIT(bodypart, TRAIT_MEGAMIND, REF(src))
 
 /obj/item/organ/brain/megamind/remove_from_limb(obj/item/bodypart/bodypart, special)
 	. = ..()

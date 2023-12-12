@@ -117,7 +117,7 @@
 /// You should not be using this
 #define GET_TRAIT_SOURCES(target, trait) target._status_traits?[trait] || list()
 /// A simple helper for checking traits in a mob's mind
-#define HAS_MIND_TRAIT(target, trait) (HAS_TRAIT(target, trait) || (target.mind ? HAS_TRAIT(target.mind, trait) : FALSE))
+#define HAS_MIND_TRAIT(target, trait) (HAS_TRAIT(target, trait) || (target.mind && HAS_TRAIT(target.mind, trait)))
 
 /*
 Remember to update _globalvars/traits.dm if you're adding/removing/renaming traits.
@@ -252,8 +252,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_FIXED_MUTANT_COLORS "fixed_mutcolors"
 /// Humans with this trait will not get damage overlays
 #define TRAIT_NO_DAMAGE_OVERLAY "no_damage_overlay"
-/// Humans with this trait won't get bloody hands, nor bloody feet
-#define TRAIT_NO_BLOOD_OVERLAY "no_blood_overlay"
+/// Humans with this trait won't get bloody hands
+#define TRAIT_NO_BLOODY_HANDS "no_bloody_hands"
+/// Humans with this trait won't get bloody soles
+#define TRAIT_NO_BLOODY_SOLES "no_bloody_soles"
 /// Humans with this trait cannot have underwear
 #define TRAIT_NO_UNDERWEAR "no_underwear"
 /// Humans with this trait cannot have undershirts

@@ -146,12 +146,12 @@
 		if(4)
 			to_chat(owner, span_userdanger("Overwhelming pain knocks you out!"))
 			owner.vomit(blood = TRUE, distance = rand(1,2))
-			owner.emote("Scream")
+			owner.emote("scream")
 			owner.AdjustUnconscious(2.5 SECONDS)
 		if(5)
 			to_chat(owner, span_userdanger("You feel as if your guts are about to melt!"))
 			owner.vomit(blood = TRUE,distance = rand(1,3))
-			owner.emote("Scream")
+			owner.emote("scream")
 			owner.AdjustUnconscious(5 SECONDS)
 
 	switch(failure_time)
@@ -190,6 +190,7 @@
 	var/mob/living/carbon/human/humie_owner = owner
 	if(!humie_owner.get_organ_slot(ORGAN_SLOT_EYES) || humie_owner.is_eyes_covered())
 		return
+
 	switch(failure_time)
 		if(0 to 3 * LIVER_FAILURE_STAGE_SECONDS - 1)
 			examine_list += span_notice("[owner]'s eyes are slightly yellow.")
@@ -241,8 +242,8 @@
 	name = "alien liver" // doesnt matter for actual aliens because they dont take toxin damage
 	desc = "A liver that used to belong to a killer alien, who knows what it used to eat."
 	icon_state = "liver-x" // Same sprite as fly-person liver.
-	liver_resistance = 0.333 * LIVER_DEFAULT_TOX_RESISTANCE // -66%
 	toxTolerance = 15 // complete toxin immunity like xenos have would be too powerful
+	liver_resistance = 0.333 * LIVER_DEFAULT_TOX_RESISTANCE // -66%
 
 /obj/item/organ/liver/cybernetic
 	name = "basic cybernetic liver"

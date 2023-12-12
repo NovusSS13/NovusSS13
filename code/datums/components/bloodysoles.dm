@@ -303,7 +303,7 @@
 	unregister()
 
 /datum/component/bloodysoles/feet/update_icon()
-	if(!ishuman(wielder) || HAS_TRAIT(wielder, TRAIT_NO_BLOOD_OVERLAY))
+	if(!ishuman(wielder) || HAS_TRAIT(wielder, TRAIT_NO_BLOODY_SOLES))
 		return
 	var/mob/living/carbon/human/human_wielder = wielder
 	var/chosen_overlay = bloody_feet
