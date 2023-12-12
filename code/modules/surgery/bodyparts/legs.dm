@@ -55,6 +55,19 @@
 	else if(!bodypart_disabled)
 		owner.set_usable_legs(owner.usable_legs + 1)
 
+/obj/item/bodypart/leg/drop_limb(special, dismembered)
+	var/mob/living/carbon/leg_owner = owner
+	. = ..()
+	if(special || !leg_owner)
+		return
+
+	if(leg_owner.legcuffed)
+		leg_owner.dropItemToGround(owner.legcuffed, force = TRUE)
+		leg_owner.legcuffed = null
+		leg_owner.update_worn_legcuffs()
+	if(leg_owner.shoes)
+		leg_owner.dropItemToGround(leg_owner.shoes, force = TRUE)
+
 // Legs never get the top offset applied!
 /obj/item/bodypart/leg/get_applicable_top_offset()
 	return 0

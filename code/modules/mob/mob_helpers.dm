@@ -384,12 +384,12 @@
 	var/t_has = p_have()
 	var/t_is = p_are()
 	if(HAS_TRAIT(src, TRAIT_SUICIDED))
-		. += span_deadsay("[t_He] appear[p_s()] to have committed suicide... there is no hope of recovery.")
+		. += span_deadsay("[t_He] appear[p_s()] to have committed suicide... There is no hope of recovery.")
 	if(HAS_TRAIT(src, TRAIT_HUSK))
 		. += span_warning("[t_He] [t_has] been reduced to a grotesque husk.")
 	if(HAS_TRAIT(src, TRAIT_TESLIUM_AFFECTED))
 		. += span_warning(span_color("[t_He] [t_is] emitting a gentle blue glow!", COLOR_CYAN))
-	if(HAS_TRAIT(src, TRAIT_MEGAMIND))
+	if(HAS_TRAIT(src, TRAIT_BIG_SKULL))
 		. += span_warning("[t_He] [t_has] a bulging, massive head!")
 
 /**

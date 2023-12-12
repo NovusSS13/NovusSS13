@@ -242,6 +242,12 @@
 			real_name = owner.real_name
 	update_hair_and_lips(dropping_limb, is_creating)
 
+/obj/item/bodypart/head/update_draw_color()
+	. = ..()
+	//TRAIT_MEGAMIND also gets applied to dismembered heads
+	if(!owner && HAS_TRAIT(src, TRAIT_MEGAMIND))
+		draw_color = COLOR_BRIGHT_BLUE
+
 /obj/item/bodypart/head/generate_icon_key()
 	. = ..()
 	if(lip_style)

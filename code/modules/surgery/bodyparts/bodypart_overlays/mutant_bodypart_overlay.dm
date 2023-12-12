@@ -181,7 +181,7 @@
 		if(ORGAN_COLOR_DNA)
 			if(!ishuman(ownerlimb.owner))
 				return FALSE
-			//In some cases we just straight take the limb color
+			//In some cases we just straight take the limb color no matter what
 			if(HAS_TRAIT(ownerlimb.owner, TRAIT_HULK) || HAS_TRAIT(ownerlimb.owner, TRAIT_MEGAMIND))
 				draw_color = ownerlimb.draw_color
 				return

@@ -94,13 +94,13 @@
 	if(restyle_flags)
 		var/list/restyle_tools = list()
 		if(restyle_flags & EXTERNAL_RESTYLE_PLANT)
-			restyle_tools += "secateurs"
+			restyle_tools += "<em>secateurs</em>"
 		if(restyle_flags & EXTERNAL_RESTYLE_FLESH)
-			restyle_tools += "surgical tools"
+			restyle_tools += "<em>surgical tools</em>"
 		if(restyle_flags & EXTERNAL_RESTYLE_ENAMEL)
-			restyle_tools += "files"
+			restyle_tools += "<em>files</em>"
 		if(length(restyle_tools))
-			. += span_info("This organ can be restyled with <em>[english_list(restyle_tools)]</em>.")
+			. += span_info("This organ can be restyled with [english_list(restyle_tools)]</em>.")
 
 /// Update our appearance after something changed dna features (if we have an attached DNA block)
 /obj/item/organ/proc/mutate_features(list/features, mob/living/carbon/human/human)

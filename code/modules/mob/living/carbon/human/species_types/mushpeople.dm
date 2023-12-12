@@ -4,8 +4,8 @@
 	id = SPECIES_MUSHROOM
 	chat_color = COLOR_CARGO_BROWN
 	inherent_traits = list(
-		TRAIT_FIXED_MUTANT_COLORS,
 		TRAIT_MUTANT_COLORS,
+		TRAIT_FIXED_MUTANT_COLORS,
 		TRAIT_NOBREATH,
 	)
 	inherent_factions = list(FACTION_MUSHROOM)

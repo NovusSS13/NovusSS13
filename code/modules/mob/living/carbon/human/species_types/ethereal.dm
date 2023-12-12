@@ -233,23 +233,20 @@
 	mutantbrain = /obj/item/organ/brain/lustrous
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	inherent_traits = list(
-		TRAIT_NO_UNDERWEAR,
-		TRAIT_NO_UNDERSHIRT,
-		TRAIT_NO_SOCKS,
+		TRAIT_AGENDER,
 		TRAIT_MUTANT_COLORS,
 		TRAIT_FIXED_MUTANT_COLORS,
-		TRAIT_AGENDER,
 		TRAIT_NOBREATH,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
 	)
 	bodypart_overrides = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ethereal/lustrous,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/ethereal/lustrous,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/ethereal/lustrous,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ethereal,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/ethereal,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/ethereal,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/ethereal,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/ethereal/lustrous,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/ethereal/lustrous,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal/lustrous,
 	)
 
 /datum/species/ethereal/lustrous/on_species_gain(mob/living/carbon/new_lustrous, datum/species/old_species, pref_load)

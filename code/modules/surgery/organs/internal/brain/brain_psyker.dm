@@ -17,7 +17,6 @@
 		TRAIT_LITERATE,
 		TRAIT_CAN_STRIP,
 		TRAIT_SPECIAL_TRAUMA_BOOST,
-		TRAIT_MEGAMIND,
 		TRAIT_ANTIMAGIC_NO_SELFBLOCK,
 	)
 	hemispherectomy_overlay = null
@@ -52,7 +51,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	biological_state = BIO_INORGANIC
-	head_flags = HEAD_LIPS|HEAD_DEBRAIN
+	head_flags = HEAD_DEBRAIN
 	bodypart_traits = list(TRAIT_DISFIGURED, TRAIT_BIG_SKULL)
 
 /// flavorful variant of psykerizing that deals damage and sends messages before calling psykerize()

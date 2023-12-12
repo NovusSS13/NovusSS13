@@ -16,6 +16,8 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/mushroom_cap
 
+	organ_traits = list(TRAIT_PLANT_SAFE)
+
 /datum/bodypart_overlay/mutant/mushroom_cap
 	layers = EXTERNAL_ADJACENT
 	feature_key = "mushroom_caps"

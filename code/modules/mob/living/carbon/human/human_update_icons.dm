@@ -183,7 +183,7 @@ There are several things that need to be remembered:
 	//Bloody hands begin
 	var/obj/item/bodypart/left_hand = get_bodypart(BODY_ZONE_PRECISE_L_HAND)
 	var/obj/item/bodypart/right_hand = get_bodypart(BODY_ZONE_PRECISE_R_HAND)
-	if(!gloves && blood_in_hands && !HAS_TRAIT(src, TRAIT_NO_BLOOD_OVERLAY) && (num_hands > 0) && \
+	if(!gloves && blood_in_hands && !HAS_TRAIT(src, TRAIT_NO_BLOODY_HANDS) && (num_hands > 0) && \
 		(!left_hand || (left_hand.bodytype & BODYTYPE_HUMANOID)) && \
 		(!right_hand || (right_hand.bodytype & BODYTYPE_HUMANOID)))
 		var/mutable_appearance/bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)

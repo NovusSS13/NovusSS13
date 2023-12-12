@@ -7,8 +7,6 @@
 	gender = PLURAL
 	w_class = WEIGHT_CLASS_SMALL
 
-	var/respiration_type = NONE // The type(s) of gas this lung needs for respiration
-
 	healing_factor = STANDARD_ORGAN_HEALING
 	decay_factor = STANDARD_ORGAN_DECAY * 0.9 // fails around 16.5 minutes, lungs are one of the last organs to die (of the ones we have)
 
@@ -18,11 +16,12 @@
 	low_threshold_cleared = "<span class='info'>You can breathe normally again.</span>"
 	high_threshold_cleared = "<span class='info'>The constriction around your chest loosens as your breathing calms down.</span>"
 
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/salbutamol = 5)
+
 	var/failed = FALSE
 	var/operated = FALSE //whether we can still have our damages fixed through surgery
 
-
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/salbutamol = 5)
+	var/respiration_type = NONE // The type(s) of gas this lung needs for respiration
 
 	/// Our previous breath's partial pressures, in the form gas id -> partial pressure
 	var/list/last_partial_pressures = list()

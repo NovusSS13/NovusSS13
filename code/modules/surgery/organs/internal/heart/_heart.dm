@@ -44,7 +44,7 @@
 /obj/item/organ/heart/on_life(seconds_per_tick, times_fired)
 	. = ..()
 	// If the owner doesn't need a heart, we don't need to do anything with it.
-	if(!owner.needs_heart())
+	if(HAS_TRAIT(owner, TRAIT_STABLEHEART) || !owner.needs_heart())
 		return
 
 	if(!failed && (organ_flags & ORGAN_FAILING) && owner.can_heartattack()) //heart broke, stopped beating, death imminent... unless you have veins that pump blood without a heart
@@ -124,28 +124,25 @@
 	return ..()
 
 /// Worker proc that checks logic for if a pump can happen, and applies effects/notifications from doing so
-/obj/item/organ/heart/cursed/proc/on_pump(mob/owner)
+/obj/item/organ/heart/cursed/proc/on_pump(mob/living/carbon/organ_owner)
 	var/next_pump = last_pump + pump_delay - (1 SECONDS) // pump a second early
 	if(world.time < next_pump)
-		to_chat(owner, span_userdanger("Too soon!"))
+		to_chat(organ_owner, span_userdanger("Too soon!"))
 		return
 
 	last_pump = world.time
-	playsound(owner,'sound/effects/singlebeat.ogg', 40, TRUE)
-	to_chat(owner, span_notice("Your heart beats."))
+	playsound(organ_owner,'sound/effects/singlebeat.ogg', 40, TRUE)
+	to_chat(organ_owner, span_notice("Your heart beats."))
 
-	if(!ishuman(owner))
+	if(HAS_TRAIT(organ_owner, TRAIT_NOBLOOD) || !organ_owner.dna)
 		return
-	var/mob/living/carbon/human/accursed = owner
 
-	if(HAS_TRAIT(accursed, TRAIT_NOBLOOD) || !accursed.dna)
-		return
-	accursed.blood_volume = min(accursed.blood_volume + (blood_loss * 0.5), BLOOD_VOLUME_MAXIMUM)
-	accursed.remove_client_colour(/datum/client_colour/cursed_heart_blood)
+	organ_owner.blood_volume = min(organ_owner.blood_volume + (blood_loss * 0.5), BLOOD_VOLUME_MAXIMUM)
+	organ_owner.adjustBruteLoss(-heal_brute)
+	organ_owner.adjustFireLoss(-heal_burn)
+	organ_owner.adjustOxyLoss(-heal_oxy)
+	organ_owner.remove_client_colour(/datum/client_colour/cursed_heart_blood)
 	add_colour = TRUE
-	accursed.adjustBruteLoss(-heal_brute)
-	accursed.adjustFireLoss(-heal_burn)
-	accursed.adjustOxyLoss(-heal_oxy)
 
 /obj/item/organ/heart/cursed/on_life(seconds_per_tick, times_fired)
 	if(!owner.client || !ishuman(owner)) // Let's be fair, if you're not here to pump, you're not here to suffer.
@@ -155,24 +152,23 @@
 	if(world.time <= (last_pump + pump_delay))
 		return
 
-	var/mob/living/carbon/human/accursed = owner
-	if(HAS_TRAIT(accursed, TRAIT_NOBLOOD) || !accursed.dna)
+	if(HAS_TRAIT(owner, TRAIT_NOBLOOD) || !owner.dna)
 		return
 
-	accursed.blood_volume = max(accursed.blood_volume - blood_loss, 0)
-	to_chat(accursed, span_userdanger("You have to keep pumping your blood!"))
+	owner.blood_volume = max(owner.blood_volume - blood_loss, 0)
+	to_chat(owner, span_userdanger("You have to keep pumping your blood!"))
 	if(add_colour)
-		accursed.add_client_colour(/datum/client_colour/cursed_heart_blood) //bloody screen so real
+		owner.add_client_colour(/datum/client_colour/cursed_heart_blood) //bloody screen so real
 		add_colour = FALSE
 
-/obj/item/organ/heart/cursed/on_insert(mob/living/carbon/accursed)
+/obj/item/organ/heart/cursed/on_insert(mob/living/carbon/organ_owner, special = FALSE)
 	. = ..()
 	last_pump = world.time // give them time to react
-	to_chat(accursed, span_userdanger("Your heart has been replaced with a cursed one, you have to pump this one manually otherwise you'll die!"))
+	to_chat(organ_owner, span_userdanger("Your heart has been replaced with a cursed one, you have to pump this one manually otherwise you'll die!"))
 
-/obj/item/organ/heart/cursed/Remove(mob/living/carbon/accursed, special = FALSE)
+/obj/item/organ/heart/cursed/Remove(mob/living/carbon/organ_owner, special = FALSE)
 	. = ..()
-	accursed.remove_client_colour(/datum/client_colour/cursed_heart_blood)
+	organ_owner.remove_client_colour(/datum/client_colour/cursed_heart_blood)
 
 /datum/action/item_action/organ_action/cursed_heart
 	name = "Pump your blood"
