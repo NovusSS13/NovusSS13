@@ -57,6 +57,27 @@
 		var/atom/movable/screen/inventory/hand/hand_screen_object = owner.hud_used.hand_slots["[held_index]"]
 		hand_screen_object?.update_appearance()
 
+/obj/item/bodypart/arm/drop_limb(special, dismembered)
+	var/mob/living/carbon/arm_owner = owner
+	. = ..()
+	if(special || !arm_owner)
+		return
+
+	if(arm_owner.hand_bodyparts[held_index] == src)
+		// We only want to do this if the limb being removed is the active hand part.
+		// This catches situations where limbs are "hot-swapped" such as augmentations and roundstart prosthetics.
+		arm_owner.dropItemToGround(arm_owner.get_item_for_held_index(held_index), 1)
+	if(arm_owner.handcuffed)
+		arm_owner.dropItemToGround(arm_owner.handcuffed, force = TRUE)
+		arm_owner.set_handcuffed(null)
+		arm_owner.update_handcuffed()
+	if(arm_owner.hud_used)
+		var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]
+		associated_hand?.update_appearance()
+	if(arm_owner.gloves)
+		arm_owner.dropItemToGround(arm_owner.gloves, force = TRUE)
+	arm_owner.update_worn_gloves() //to remove the bloody hands overlay
+
 /obj/item/bodypart/arm/proc/on_swap_hands(mob/living/carbon/source)
 	SIGNAL_HANDLER
 

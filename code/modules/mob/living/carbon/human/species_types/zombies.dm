@@ -108,10 +108,10 @@
 
 	// Infectious zombies have slow legs
 	bodypart_overrides = list(
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/zombie,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/zombie,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/zombie,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/zombie,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/zombie/infectious,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/zombie/infectious,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/zombie/infectious,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/zombie/infectious,
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/zombie/infectious,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/zombie/infectious,
 	)
@@ -185,12 +185,12 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 
 	bodypart_overrides = list(
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/zombie,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/zombie,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/zombie,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/zombie,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/zombie,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/zombie
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/zombie/krokodil,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/zombie/krokodil,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/zombie/krokodil,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/zombie/krokodil,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/zombie/krokodil,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/zombie/krokodil,
 	)
 
 #undef REGENERATION_DELAY

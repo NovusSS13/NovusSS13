@@ -5195,6 +5195,7 @@
 #include "code\modules\surgery\bodyparts\species_parts\android_parts.dm"
 #include "code\modules\surgery\bodyparts\species_parts\avali_bodyparts.dm"
 #include "code\modules\surgery\bodyparts\species_parts\ethereal_bodyparts.dm"
+#include "code\modules\surgery\bodyparts\species_parts\golem_bodyparts.dm"
 #include "code\modules\surgery\bodyparts\species_parts\larva_parts.dm"
 #include "code\modules\surgery\bodyparts\species_parts\lizard_bodyparts.dm"
 #include "code\modules\surgery\bodyparts\species_parts\misc_bodyparts.dm"
