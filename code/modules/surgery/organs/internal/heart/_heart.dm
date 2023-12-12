@@ -124,24 +124,24 @@
 	return ..()
 
 /// Worker proc that checks logic for if a pump can happen, and applies effects/notifications from doing so
-/obj/item/organ/heart/cursed/proc/on_pump(mob/owner)
+/obj/item/organ/heart/cursed/proc/on_pump(mob/living/carbon/organ_owner)
 	var/next_pump = last_pump + pump_delay - (1 SECONDS) // pump a second early
 	if(world.time < next_pump)
-		to_chat(owner, span_userdanger("Too soon!"))
+		to_chat(organ_owner, span_userdanger("Too soon!"))
 		return
 
 	last_pump = world.time
-	playsound(owner,'sound/effects/singlebeat.ogg', 40, TRUE)
-	to_chat(owner, span_notice("Your heart beats."))
+	playsound(organ_owner,'sound/effects/singlebeat.ogg', 40, TRUE)
+	to_chat(organ_owner, span_notice("Your heart beats."))
 
-	if(HAS_TRAIT(owner, TRAIT_NOBLOOD) || !owner.dna)
+	if(HAS_TRAIT(organ_owner, TRAIT_NOBLOOD) || !organ_owner.dna)
 		return
 
-	owner.blood_volume = min(owner.blood_volume + (blood_loss * 0.5), BLOOD_VOLUME_MAXIMUM)
-	owner.adjustBruteLoss(-heal_brute)
-	owner.adjustFireLoss(-heal_burn)
-	owner.adjustOxyLoss(-heal_oxy)
-	owner.remove_client_colour(/datum/client_colour/cursed_heart_blood)
+	organ_owner.blood_volume = min(organ_owner.blood_volume + (blood_loss * 0.5), BLOOD_VOLUME_MAXIMUM)
+	organ_owner.adjustBruteLoss(-heal_brute)
+	organ_owner.adjustFireLoss(-heal_burn)
+	organ_owner.adjustOxyLoss(-heal_oxy)
+	organ_owner.remove_client_colour(/datum/client_colour/cursed_heart_blood)
 	add_colour = TRUE
 
 /obj/item/organ/heart/cursed/on_life(seconds_per_tick, times_fired)

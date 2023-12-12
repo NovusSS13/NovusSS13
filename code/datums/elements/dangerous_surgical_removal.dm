@@ -18,7 +18,7 @@
 	UnregisterSignal(source, COMSIG_ATOM_EXAMINE)
 	UnregisterSignal(source, COMSIG_ORGAN_SURGICALLY_REMOVED)
 
-/datum/element/climbable/proc/on_examine(atom/source, mob/user, list/examine_texts)
+/datum/element/dangerous_surgical_removal/proc/on_examine(atom/source, mob/user, list/examine_texts)
 	SIGNAL_HANDLER
 
 	if(!HAS_MIND_TRAIT(user, TRAIT_ENTRAILS_READER) && !isobserver(user))
